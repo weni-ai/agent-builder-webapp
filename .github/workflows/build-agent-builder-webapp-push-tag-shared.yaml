@@ -1,9 +1,8 @@
-name: Build Agent-Builder-WebApp in Shared (Push Tag)
+name: Build Agent Builder WebApp in Shared (Push Tag)
 
 on:
   push:
     tags:
-      - '*.*.*-develop'
       - '*.*.*-staging'
       - '*.*.*'
 
@@ -52,7 +51,7 @@ jobs:
         run: |
           {
             echo 'BUILD_ENV_ARGS<<EOFenv'
-            cat webapp-secret/agent-builder/${{ steps.setup.outputs.MANIFESTS_ENVIRONMENT }}/env || exit 1
+            cat webapp-secret/agent_builder/${{ steps.setup.outputs.MANIFESTS_ENVIRONMENT }}/env || exit 1
             echo EOFenv
           } | tee -a "$GITHUB_OUTPUT"
           rm -rf webapp-secret

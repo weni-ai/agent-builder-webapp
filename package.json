@@ -1,0 +1,53 @@
+{
+  "name": "agent-builder-webapp",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development rspack server --port 8081",
+    "build": "cross-env NODE_ENV=production rspack build",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "format": "npm run lint --fix"
+  },
+  "dependencies": {
+    "@rspack/cli": "^1.1.5",
+    "@rspack/core": "^1.1.5",
+    "@sentry/vue": "^9.19.0",
+    "@vueuse/core": "^10.11.0",
+    "@weni/unnnic-system": "^3.2.4",
+    "axios": "^1.7.2",
+    "cross-env": "^7.0.3",
+    "date-fns": "^4.1.0",
+    "dompurify": "^3.1.7",
+    "dotenv": "^16.4.7",
+    "html-rspack-plugin": "^6.0.2",
+    "jsdom": "^27.0.0",
+    "marked": "^14.1.2",
+    "pinia": "^3.0.2",
+    "sass-loader": "^16.0.4",
+    "vue": "3.5.11",
+    "vue-i18n": "^10.0.1",
+    "vue-loader": "^17.4.2",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@pinia/testing": "^1.0.1",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vitejs/plugin-vue-jsx": "^5.1.1",
+    "@vitest/coverage-istanbul": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "@vue/test-utils": "^2.4.6",
+    "@weni/eslint-config": "^2.0.0",
+    "eslint": "9.33.0",
+    "node-sass": "^9.0.0",
+    "sass": "^1.69.7",
+    "typescript": "~5.8.0",
+    "vite": "6.3.6",
+    "vitest": "3.2.4"
+  }
+}

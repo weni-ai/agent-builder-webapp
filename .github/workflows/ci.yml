@@ -1,0 +1,26 @@
+name: CI
+on: push
+jobs:
+  lint-test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Run lint
+        run: npm run lint
+      - name: Run coverage
+        run: npm run coverage
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: weni-ai/agent_builder
+      - name: Build application
+        run: npm run build
