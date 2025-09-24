@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
 import App from './App.vue';
 import i18n from './utils/plugins/i18n.ts';
@@ -17,9 +18,12 @@ export default async function mountAgentBuilderApp({
   let appRef = null;
   const app = createApp(App);
 
+  const pinia = createPinia();
+
   app
-  .use(i18n)
+  .use(pinia)
   .use(Unnnic)
+  .use(i18n)
 
   app.provide(gbKey, gbInstance);
 
