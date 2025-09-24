@@ -213,7 +213,7 @@
     },
     "tunings": {
       "project_details": "Project details",
-      "agent_backend": "Agent backend: | Agents backend:",
+      "agents_backend": "Agents backends:",
       "agent_model": "{agent} model:",
       "characters_usage": "Characters usage:",
       "characters_usage_description": "This is the average number of characters your agent is currently using in all areas: Instructions, Knowledge Base, and any other settings."

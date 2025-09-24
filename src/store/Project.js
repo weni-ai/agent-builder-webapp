@@ -5,15 +5,10 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 
 export const useProjectStore = defineStore('Project', () => {
   const uuid = sessionStorage.getItem('projectUuid') || '';
-  const isMultiAgents = ref(null);
   const details = ref({
     status: null,
     contentBaseUuid: null,
   });
-
-  async function updateIsMultiAgents(boolean) {
-    isMultiAgents.value = boolean;
-  }
 
   async function getRouterDetails() {
     details.value.status = 'loading';
@@ -50,8 +45,6 @@ export const useProjectStore = defineStore('Project', () => {
 
   return {
     uuid,
-    isMultiAgents,
-    updateIsMultiAgents,
     getRouterDetails,
     getProjectDetails,
     details,

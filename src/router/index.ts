@@ -45,6 +45,7 @@ const routes = [
       {
         path: 'tunings',
         name: 'tunings',
+        component: () => import('@/views/Tunings.vue'),
       },
     ]
   },

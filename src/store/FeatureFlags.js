@@ -1,4 +1,3 @@
-import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { computed, inject, watch } from 'vue';
 
@@ -21,11 +20,7 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
     return projectList.includes(currentProjectUuid.value);
   };
 
-  const upgradeToMultiAgents = ref(false);
-
   const flags = computed(() => ({
-    agentsTeam: useProjectStore().isMultiAgents,
-    upgradeToMultiAgents,
     supervisorExport: isProjectEnabledForFlag('FF_SUPERVISOR_EXPORT'),
     newSupervisor: growthbook?.isOn('new_supervisor'),
   }));
@@ -43,12 +38,7 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
     { immediate: true },
   );
 
-  function editUpgradeToMultiAgents(value) {
-    upgradeToMultiAgents.value = value;
-  }
-
   return {
     flags,
-    editUpgradeToMultiAgents,
   };
 });

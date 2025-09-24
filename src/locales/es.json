@@ -213,7 +213,7 @@
     },
     "tunings": {
       "project_details": "Detalles del proyecto",
-      "agent_backend": "Backend del agente: | Backend de agentes:",
+      "agents_backend": "Backend de agentes:",
       "agent_model": "Modelo del {agent}:",
       "characters_usage": "Uso de caracteres:",
       "characters_usage_description": "Este es el número medio de caracteres que tu agente está usando en todas las áreas: Instrucciones, Base de Conocimientos y cualquier otra configuración."
