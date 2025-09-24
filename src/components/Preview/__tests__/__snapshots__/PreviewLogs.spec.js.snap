@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PreviewLogs.vue > Component rendering > matches snapshot 1`] = `
+"<section data-v-b04d9899="" data-testid="preview-logs" class="preview-logs preview-logs--left">
+  <!--v-if-->
+  <ol data-v-b04d9899="" class="preview-logs__logs preview-logs__logs--left">
+    <li data-v-b04d9899="" class="logs__log logs__log--left logs-enter-from logs-enter-active" data-testid="preview-logs-log">
+      <p data-v-b04d9899="" class="log__agent-name log__agent-name--left" data-testid="preview-logs-log-agent-name">Test Agent 1</p>
+      <ol data-v-b04d9899="" class="log__steps">
+        <li data-v-b04d9899="" class="steps__step steps__step--left" data-testid="preview-logs-log-step">
+          <section data-v-b04d9899="" class="steps__step-icon" data-testid="preview-logs-log-step-icon"><span data-v-b9587550="" data-v-b04d9899="" class="material-symbols-rounded unnnic-icon-scheme--neutral-darkest unnnic-icon-size--lg material-symbols-rounded--filled step-icon__background" data-testid="material-icon" translate="no">circle</span><span data-v-b9587550="" data-v-b04d9899="" class="material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--sm step-icon__icon" data-testid="preview-logs-log-step-icon-icon" translate="no">icon-1</span></section>
+          <p data-v-b04d9899="">First trace summary</p><button data-v-b04d9899="" class="step__see-full" data-testid="preview-logs-log-step-see-full">View details</button>
+        </li>
+        <li data-v-b04d9899="" class="steps__step steps__step--left" data-testid="preview-logs-log-step">
+          <section data-v-b04d9899="" class="steps__step-icon" data-testid="preview-logs-log-step-icon"><span data-v-b9587550="" data-v-b04d9899="" class="material-symbols-rounded unnnic-icon-scheme--neutral-darkest unnnic-icon-size--lg material-symbols-rounded--filled step-icon__background" data-testid="material-icon" translate="no">circle</span><span data-v-b9587550="" data-v-b04d9899="" class="material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--sm step-icon__icon" data-testid="preview-logs-log-step-icon-icon" translate="no">icon-2</span></section>
+          <p data-v-b04d9899="">Second trace summary</p>
+          <!--v-if-->
+        </li>
+      </ol>
+    </li>
+    <li data-v-b04d9899="" class="logs__log logs__log--left logs-enter-from logs-enter-active" data-testid="preview-logs-log">
+      <p data-v-b04d9899="" class="log__agent-name log__agent-name--left" data-testid="preview-logs-log-agent-name">Manager</p>
+      <ol data-v-b04d9899="" class="log__steps">
+        <li data-v-b04d9899="" class="steps__step steps__step--left" data-testid="preview-logs-log-step">
+          <!--v-if-->
+          <p data-v-b04d9899="">Manager trace</p>
+          <!--v-if-->
+        </li>
+      </ol>
+    </li>
+  </ol>
+  <article data-v-b04d9899="" class="preview-logs__progress-bar preview-logs__progress-bar--left" data-testid="preview-logs-progress-bar"></article>
+  <preview-logs-details-modal-stub data-v-b04d9899="" title="" log="" modelvalue="false" data-testid="preview-logs-details-modal"></preview-logs-details-modal-stub>
+</section>"
+`;

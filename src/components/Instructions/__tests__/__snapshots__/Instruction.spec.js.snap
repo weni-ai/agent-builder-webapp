@@ -1,21 +1,21 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Instruction.vue > Component rendering > should match snapshot 1`] = `
-"<section data-v-cba3a9e7="" class="instruction">
-  <p data-v-cba3a9e7="" class="instruction__text" data-testid="instruction-text">Test instruction</p>
+"<section data-v-708d6c3c="" class="instruction">
+  <p data-v-708d6c3c="" class="instruction__text" data-testid="instruction-text">Test instruction</p>
   <!--v-if-->
-  <content-item-actions-stub data-v-cba3a9e7="" actions="[object Object],[object Object]" triggericon="more_vert" triggersize="avatar-nano" popoverpositionhorizontal="right-right" popoverpositionvertical="top-bottom" minwidth="170px" data-testid="instruction-actions"></content-item-actions-stub>
+  <content-item-actions-stub data-v-708d6c3c="" actions="[object Object],[object Object]" triggericon="more_vert" triggersize="avatar-nano" popoverpositionhorizontal="right-right" popoverpositionvertical="top-bottom" minwidth="170px" data-testid="instruction-actions"></content-item-actions-stub>
 </section>
-<modal-remove-instruction-stub data-v-cba3a9e7="" instruction="[object Object]" modelvalue="false" data-testid="modal-remove-instruction"></modal-remove-instruction-stub>"
+<modal-remove-instruction-stub data-v-708d6c3c="" instruction="[object Object]" modelvalue="false" data-testid="modal-remove-instruction"></modal-remove-instruction-stub>"
 `;
 
 exports[`Instruction.vue > Edit mode > should match snapshot > edit-mode 1`] = `
-"<section data-v-cba3a9e7="" class="instruction">
-  <section data-v-cba3a9e7="" class="instruction__input">
-    <unnnic-input-stub data-v-cba3a9e7="" placeholder="" type="normal" modelvalue="Test instruction" nativetype="text" allowtogglepassword="false" hascloudycolor="false" size="sm" mask="" class="input__field" data-testid="instruction-input"></unnnic-input-stub>
+"<section data-v-708d6c3c="" class="instruction">
+  <section data-v-708d6c3c="" class="instruction__input">
+    <unnnic-input-stub data-v-708d6c3c="" placeholder="" type="normal" modelvalue="Test instruction" nativetype="text" allowtogglepassword="false" hascloudycolor="false" size="sm" mask="" class="input__field" data-testid="instruction-input"></unnnic-input-stub>
   </section>
-  <unnnic-button-stub data-v-cba3a9e7="" size="small" text="Save" type="secondary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" next="false" disabled="false" loading="false" data-testid="instruction-save-button"></unnnic-button-stub>
-  <unnnic-button-stub data-v-cba3a9e7="" size="small" text="Cancel" type="tertiary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" next="false" disabled="false" loading="false" data-testid="instruction-cancel-button"></unnnic-button-stub>
+  <unnnic-button-stub data-v-708d6c3c="" size="small" text="Save" type="secondary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" next="false" disabled="false" loading="false" data-testid="instruction-save-button"></unnnic-button-stub>
+  <unnnic-button-stub data-v-708d6c3c="" size="small" text="Cancel" type="tertiary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" next="false" disabled="false" loading="false" data-testid="instruction-cancel-button"></unnnic-button-stub>
 </section>
-<modal-remove-instruction-stub data-v-cba3a9e7="" instruction="[object Object]" modelvalue="false" data-testid="modal-remove-instruction"></modal-remove-instruction-stub>"
+<modal-remove-instruction-stub data-v-708d6c3c="" instruction="[object Object]" modelvalue="false" data-testid="modal-remove-instruction"></modal-remove-instruction-stub>"
 `;

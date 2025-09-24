@@ -1,10 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`InstructionsSection.vue > should match snapshot 1`] = `
-"<section data-v-638ce419="" class="instructions-section">
-  <h2 data-v-638ce419="" class="instructions-section__title" data-testid="instructions-section-title">Instructions list</h2>
-  <anonymous-stub data-v-638ce419="" size="md" activetab="custom" tabs="custom,default,safety_topics" data-testid="instructions-section-tab"></anonymous-stub>
-  <instructions-list-stub data-v-638ce419="" instructions="[object Object],[object Object]" isloading="false" showactions="true" data-testid="instructions-custom"></instructions-list-stub>
+"<section data-v-9546d415="" class="instructions-section">
+  <h2 data-v-9546d415="" class="instructions-section__title" data-testid="instructions-section-title">Instructions list</h2>
+  <anonymous-stub data-v-9546d415="" size="md" activetab="custom" tabs="custom,default,safety_topics" data-testid="instructions-section-tab"></anonymous-stub>
+  <instructions-list-stub data-v-9546d415="" instructions="[object Object],[object Object]" isloading="false" showactions="true" data-testid="instructions-custom"></instructions-list-stub>
   <!--v-if-->
   <!--v-if-->
 </section>"

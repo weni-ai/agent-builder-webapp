@@ -3,19 +3,19 @@
 exports[`Skill.vue > renders correctly 1`] = `
 <section
   class="skill"
-  data-v-29c532b5=""
+  data-v-d187fcda=""
 >
   <p
     class="skill__icon"
     data-testid="skill-icon"
-    data-v-29c532b5=""
+    data-v-d187fcda=""
   >
     icon-1
   </p>
   <p
     class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy skill__title skill__title"
     data-testid="skill-name"
-    data-v-29c532b5=""
+    data-v-d187fcda=""
     data-v-ec8da4ad=""
   >
     
