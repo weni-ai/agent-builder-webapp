@@ -25,19 +25,23 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 
 import { useTuningsStore } from '@/store/Tunings';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
 import { useProjectStore } from '@/store/Project';
+import { useUserStore } from '@/store/User';
+
+import initHotjar from '@/utils/plugins/Hotjar.js';
 
 import Sidebar from '@/components/Sidebar/index.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const alertStore = useAlertStore();
 const projectStore = useProjectStore();
+const userStore = useUserStore();
 
 onMounted(() => {
   useTuningsStore().fetchCredentials();
@@ -45,11 +49,18 @@ onMounted(() => {
   agentsTeamStore.loadOfficialAgents();
   agentsTeamStore.loadMyAgents();
   useProfileStore().load();
+  userStore.getUserDetails();
 
   if (!projectStore.details.contentBaseUuid) {
     projectStore.getRouterDetails();
   }
 });
+
+watch(
+  () => userStore.user.email,
+  (email) => {
+    if (email) initHotjar(email);
+  });
 </script>
 
 <style lang="scss" scoped>
