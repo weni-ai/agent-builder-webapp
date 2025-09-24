@@ -5,10 +5,10 @@ import Unnnic from '@weni/unnnic-system';
 
 import { usePreviewStore } from '@/store/Preview';
 
-import PreviewLogs from '@/components/Brain/PreviewLogs.vue';
+import PreviewLogs from '@/components/Preview/PreviewLogs.vue';
 import PreviewDetails from '../PreviewDetails.vue';
 
-vi.mock('@/components/Brain/PreviewLogs.vue');
+vi.mock('@/components/Preview/PreviewLogs.vue');
 vi.mock('../PreviewVisualFlow.vue');
 
 describe('PreviewDetails.vue', () => {

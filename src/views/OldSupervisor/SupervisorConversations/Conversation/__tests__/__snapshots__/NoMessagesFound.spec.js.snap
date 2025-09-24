@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NoMessagesFound.vue > Component rendering > should match snapshot 1`] = `
+"<section data-v-907ffd13="" class="no-messages-found"><span data-v-9846e6db="" data-v-907ffd13="" class="material-symbols-rounded unnnic-icon-scheme--neutral-dark unnnic-icon-size--md no-messages-found__icon" data-testid="no-messages-icon" translate="no">search_off</span>
+  <p data-v-ec8da4ad="" data-v-907ffd13="" class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-bold unnnic-text--color-neutral-dark no-messages-found__title no-messages-found__title" data-testid="no-messages-title">No messages found in this conversation</p>
+  <p data-v-ec8da4ad="" data-v-907ffd13="" class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-dark" data-testid="no-messages-description">
+    <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+  <p data-v-907ffd13="" data-testid="no-messages-description-i18n">If the message was sent by human support or triggered an automatic action, you can find it in <a data-v-907ffd13="" href="https://connect.example.com/projects/test-project-uuid-123/studio/contact" class="no-messages-found__link" target="_blank" data-testid="studio-link">Studio</a>.</p>
+  </p>
+</section>"
+`;
