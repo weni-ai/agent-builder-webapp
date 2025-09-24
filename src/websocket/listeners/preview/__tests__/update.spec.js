@@ -3,7 +3,7 @@ import { setActivePinia, createPinia } from 'pinia';
 
 import update from '../update.js';
 import { useFlowPreviewStore } from '@/store/FlowPreview';
-import i18n from '@/utils/plugins/i18n.js';
+import i18n from '@/utils/plugins/i18n';
 
 vi.mock('@/store/FlowPreview', () => ({
   useFlowPreviewStore: vi.fn(),

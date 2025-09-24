@@ -5,6 +5,7 @@ import {
 } from 'vue-router';
 import { isFederatedModule } from '@/utils/moduleFederation';
 import { RouteRecordRaw } from 'vue-router';
+import { useProjectStore } from '@/store/Project';
 
 const routes = [
   {
@@ -32,6 +33,14 @@ const routes = [
       {
         path: 'knowledge',
         name: 'knowledge',
+        component: () => import('@/views/Knowledge.vue'),
+        beforeEnter: async (to, from, next) => {
+          const projectStore = useProjectStore();
+          if (!projectStore.details.contentBaseUuid) {
+            await projectStore.getRouterDetails();
+          }
+          next();
+        },
       },
       {
         path: 'tunings',

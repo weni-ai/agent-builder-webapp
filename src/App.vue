@@ -31,11 +31,13 @@ import { useTuningsStore } from '@/store/Tunings';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
+import { useProjectStore } from '@/store/Project';
 
 import Sidebar from '@/components/Sidebar/index.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const alertStore = useAlertStore();
+const projectStore = useProjectStore();
 
 onMounted(() => {
   useTuningsStore().fetchCredentials();
@@ -43,6 +45,10 @@ onMounted(() => {
   agentsTeamStore.loadOfficialAgents();
   agentsTeamStore.loadMyAgents();
   useProfileStore().load();
+
+  if (!projectStore.details.contentBaseUuid) {
+    projectStore.getRouterDetails();
+  }
 });
 </script>
 

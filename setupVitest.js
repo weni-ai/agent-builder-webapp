@@ -1,5 +1,5 @@
 import { config } from '@vue/test-utils';
-import i18n from '@/utils/plugins/i18n.js';
+import i18n from '@/utils/plugins/i18n';
 import UnnnicSystemPlugin from '@/utils/plugins/UnnnicSystem.js';
 
 config.global.plugins = [i18n, UnnnicSystemPlugin];

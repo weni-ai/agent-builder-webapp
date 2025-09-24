@@ -378,6 +378,120 @@
       }
     }
   },
+  "content_bases": {
+    "description": "Adicione informações através de arquivos, links ou texto para que o agente possa responder com precisão",
+    "quick_test": "Teste rápido",
+    "sidebar_quick_test_title": "Teste rápido da base {name}",
+    "sidebar_quick_test_description": "Envie uma mensagem para testar essa base de conteúdo e saiba quais perguntas ela é capaz de responder",
+    "write_content": "Escrever conteúdo",
+    "write_content_placeholder": "Digite aqui o conteúdo",
+    "write_content_help": "Não sabe como adicionar conteúdo à base de conhecimento da IA? <a href=\"#\" target=\"_blank\">Veja a documentação</a>",
+    "changes_saved": "Alterações salvas",
+    "time_ago_minutes": "Adicionado {minutes} minutos atrás",
+    "time_ago_hours": "Adicionado {hours} horas atrás",
+    "time_ago_days": "Adicionado {days} dias atrás",
+    "tabs": {
+      "files": "Arquivos",
+      "sites": "Sites",
+      "text": "Texto"
+    },
+    "text": {
+      "description": "Escreva manualmente o conteúdo que o agente usará para responder às perguntas",
+      "error": "Erro ao carregar arquivo",
+      "save": "Salvar"
+    },
+    "file_with_error": "Arquivo com erro. Exclua e adicione-o novamente.",
+    "site_with_error": "Site com erro. Exclua e adicione-o novamente.",
+    "actions": {
+      "see_details": "Ver detalhes",
+      "download_file": "Baixar arquivo",
+      "access_site": "Acessar site",
+      "remove_site": "Remover site",
+      "remove_file": "Remover arquivo",
+      "edit_action": "Editar ação",
+      "remove_action": "Remover ação"
+    },
+    "files": {
+      "upload_content": "Carregar conteúdo de arquivos",
+      "drag_and_drop_your_file_here": "Arraste e solte seu arquivo aqui para adicionar o conteúdo à base de conhecimento da IA",
+      "supported_files": "Formatos suportados: {suportedFormats}.<br /> Limite de {limitMB} MB por arquivo.",
+      "sup_files": "{suportedFormats}.<br /> Limite de {limitMB} MB por arquivo.",
+      "description": "Carregue os documentos e arquivos que o agente usará para gerar as respostas",
+      "file_error": "Arquivo com erro. Exclua e adicione-o novamente.",
+      "browse_file": "Adicionar arquivo",
+      "uploaded_files": "Arquivos carregados",
+      "status": {
+        "uploading": "Carregando conteúdo",
+        "uploaded": "Conteúdo carregado",
+        "processing": "Processando conteúdo"
+      },
+      "content_of_the_files_has_been_added": "O conteúdo dos arquivos foi adicionado à base",
+      "file_removed_from_base": "{name} removido da base de conteúdo",
+      "unsupported_format": "O formato do arquivo não é suportado",
+      "exceeds_limit": "O tamanho do arquivo excede o limite de {limitMB} MB",
+      "delete_file": {
+        "title": "Excluir arquivo",
+        "description": "Tem certeza de que deseja excluir o arquivo <b>{name}</b>?<br />O conteúdo deste arquivo será removido da base da IA.",
+        "cancel": "Cancelar",
+        "delete": "Excluir"
+      },
+      "preview": {
+        "title": "Informações do arquivo",
+        "name": "Arquivo:",
+        "date": "Data do conteúdo:",
+        "content_added_to_the_agent": "Conteúdo do arquivo adicionado ao agente:",
+        "not_found": {
+          "title": "Não foi possível visualizar o conteúdo do arquivo",
+          "description": "Não foi possível localizar o conteúdo do arquivo.<br />Exclua o arquivo e tente adicioná-lo novamente."
+        },
+        "bedrock": {
+          "title": "A visualização de conteúdo não está disponível"
+        }
+      }
+    },
+    "sites": {
+      "title": "Insira as URLs dos sites dos quais o agente pode extrair informações",
+      "description": "Certifique-se de que os sites sejam confiáveis e contenham dados relevantes",
+      "modal": {
+        "description": "Insira a URL do site para extrair o conteúdo",
+        "fields": {
+          "link": {
+            "label": "URL do site"
+          }
+        },
+        "buttons": {
+          "cancel": "Cancelar",
+          "finish": "Concluir"
+        }
+      },
+      "uploaded_sites": "Sites carregados",
+      "content_of_the_sites_has_been_added": "Conteúdo dos sites adicionado à base",
+      "sidebar_add": {
+        "title": "Carregar conteúdo do site",
+        "description": "Adicione o conteúdo dos sites à base de conhecimento da IA",
+        "fields": {
+          "link": {
+            "label": "Link do site",
+            "placeholder": "www.exemplo.com"
+          }
+        },
+        "button_more_one": "Adicionar mais um site",
+        "button_load_content": "Carregar conteúdos"
+      },
+      "add_site": "Adicionar site",
+      "delete_site": {
+        "title": "Excluir site",
+        "description": "Tem certeza de que deseja excluir o site <b>{name}</b>?<br />O conteúdo deste site será removido da base da IA.",
+        "cancel": "Cancelar",
+        "delete": "Excluir"
+      },
+      "preview": {
+        "title": "Informações do site",
+        "name": "Site:",
+        "content_added_to_the_agent": "Conteúdo do site adicionado ao agente:"
+      }
+    }
+  },
   "profile": {
     "edit_manager_profile": "Editar perfil do Manager",
     "description": "Personalize as informações básicas e o comportamento do agente",

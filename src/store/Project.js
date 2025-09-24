@@ -8,6 +8,7 @@ export const useProjectStore = defineStore('Project', () => {
   const isMultiAgents = ref(null);
   const details = ref({
     status: null,
+    contentBaseUuid: null,
   });
 
   async function updateIsMultiAgents(boolean) {

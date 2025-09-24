@@ -378,6 +378,120 @@
       }
     }
   },
+  "content_bases": {
+    "description": "Add information through files, links, or text so the agent can respond accurately",
+    "quick_test": "Quick test",
+    "sidebar_quick_test_title": "Quick test of base {name}",
+    "sidebar_quick_test_description": "Send a message to test this content base and see which questions it can answer",
+    "write_content": "Write content",
+    "write_content_placeholder": "Enter your content here",
+    "write_content_help": "Don't know how to add content to the AI knowledge base? <a href=\"#\" target=\"_blank\">See the documentation</a>",
+    "changes_saved": "Changes saved",
+    "time_ago_minutes": "Added {minutes} minutes ago",
+    "time_ago_hours": "Added {hours} hours ago",
+    "time_ago_days": "Added {days} days ago",
+    "tabs": {
+      "files": "Files",
+      "sites": "Sites",
+      "text": "Text"
+    },
+    "text": {
+      "description": "Manually write the content the agent will use to answer questions",
+      "error": "Error loading file",
+      "save": "Save"
+    },
+    "file_with_error": "File with error. Delete and add it again.",
+    "site_with_error": "Site with error. Delete and add it again.",
+    "actions": {
+      "see_details": "View details",
+      "download_file": "Download file",
+      "access_site": "Go to site",
+      "remove_site": "Remove site",
+      "remove_file": "Remove file",
+      "edit_action": "Edit action",
+      "remove_action": "Remove action"
+    },
+    "files": {
+      "upload_content": "Upload content from files",
+      "drag_and_drop_your_file_here": "Drag and drop your file here to add content to the AI knowledge base",
+      "supported_files": "Supported formats: {suportedFormats}.<br /> Limit of {limitMB} MB per file.",
+      "sup_files": "{suportedFormats}.<br /> Limit of {limitMB} MB per file.",
+      "description": "Upload documents and files the agent will use to generate responses",
+      "file_error": "File with error. Delete and add it again.",
+      "browse_file": "Add file",
+      "uploaded_files": "Uploaded files",
+      "status": {
+        "uploading": "Uploading content",
+        "uploaded": "Uploaded content",
+        "processing": "Processing content"
+      },
+      "content_of_the_files_has_been_added": "File content added to the base",
+      "file_removed_from_base": "{name} removed from content base",
+      "unsupported_format": "File format not supported",
+      "exceeds_limit": "File size exceeds the limit of {limitMB} MB",
+      "delete_file": {
+        "title": "Delete file",
+        "description": "Are you sure you want to delete the file <b>{name}</b>?<br /> The content of this file will be removed from the AI base.",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "preview": {
+        "title": "File information",
+        "name": "File:",
+        "date": "Content date:",
+        "content_added_to_the_agent": "File content added to agent:",
+        "not_found": {
+          "title": "Failed to view file content",
+          "description": "Failed to locate the file content.<br /> Delete the file and try adding it again."
+        },
+        "bedrock": {
+          "title": "Content preview is not available"
+        }
+      }
+    },
+    "sites": {
+      "title": "Enter the site URLs from which the agent can extract information",
+      "description": "Make sure the sites are trustworthy and contain relevant information",
+      "modal": {
+        "description": "Enter the site URL to extract content",
+        "fields": {
+          "link": {
+            "label": "Site URL"
+          }
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "finish": "Done"
+        }
+      },
+      "uploaded_sites": "Uploaded sites",
+      "content_of_the_sites_has_been_added": "Site content added to the base",
+      "sidebar_add": {
+        "title": "Upload site content",
+        "description": "Add site content to the AI knowledge base",
+        "fields": {
+          "link": {
+            "label": "Site link",
+            "placeholder": "www.example.com"
+          }
+        },
+        "button_more_one": "Add another site",
+        "button_load_content": "Upload content"
+      },
+      "add_site": "Add site",
+      "delete_site": {
+        "title": "Delete site",
+        "description": "Are you sure you want to delete the site <b>{name}</b>?<br /> All content from this site will be removed from the AI base.",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "preview": {
+        "title": "Site information",
+        "name": "Site:",
+        "content_added_to_the_agent": "Site content added to agent:"
+      }
+    }
+  },
   "profile": {
     "edit_manager_profile": "Edit Manager profile",
     "description": "Customize the basic information and behavior of the agent",
