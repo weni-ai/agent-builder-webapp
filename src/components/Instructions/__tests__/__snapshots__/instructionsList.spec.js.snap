@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`InstructionsList.vue > should match snapshot 1`] = `
+"<section data-v-e11d36b5="" class="instructions-list" data-testid="instructions">
+  <instruction-stub data-v-e11d36b5="" instruction="[object Object]" tag="" showactions="false" data-testid="instruction-added"></instruction-stub>
+  <instruction-stub data-v-e11d36b5="" instruction="[object Object]" tag="" showactions="false" data-testid="instruction-added"></instruction-stub>
+</section>"
+`;

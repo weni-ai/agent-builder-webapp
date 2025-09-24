@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Instructions.vue > Component rendering > should match snapshot 1`] = `
+"<section data-v-d5e26ea0="" class="instructions">
+  <agent-builder-header-stub data-v-d5e26ea0="" class="" withdivider="false" actionssize="none" data-testid="instructions-header"></agent-builder-header-stub>
+  <new-instruction-stub data-v-d5e26ea0="" data-testid="new-instruction"></new-instruction-stub>
+  <instructions-section-stub data-v-d5e26ea0="" data-testid="instructions-section"></instructions-section-stub>
+</section>"
+`;

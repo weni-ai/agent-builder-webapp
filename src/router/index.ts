@@ -21,6 +21,8 @@ const routes = [
       {
         path: 'instructions',
         name: 'instructions',
+        component: () =>
+          import('@/views/Instructions/index.vue'),
       },
       {
         path: 'agents',
