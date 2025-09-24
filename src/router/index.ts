@@ -27,6 +27,7 @@ const routes = [
       {
         path: 'agents',
         name: 'agents',
+        component: () => import('@/views/AgentsTeam/index.vue'),
       },
       {
         path: 'knowledge',

@@ -1,9 +1,12 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import Particles from '@tsparticles/vue3';
+import { loadSlim } from '@tsparticles/slim';
 
 import App from './App.vue';
 import router from './router';
 import i18n from './utils/plugins/i18n.ts';
+import UnnnicDivider from './components/Divider.vue';
 import UnnnicIntelligenceText from './components/unnnic-intelligence/Text.vue';
 import Unnnic from './utils/plugins/UnnnicSystem.ts';
 import { gbKey, initializeGrowthBook } from './utils/Growthbook.js';
@@ -28,6 +31,13 @@ export default async function mountAgentBuilderApp({
   .use(Unnnic)
   .use(i18n)
 
+  app.use(Particles, {
+    init: async (engine) => {
+      await loadSlim(engine);
+    },
+  });
+
+  app.component('UnnnicDivider', UnnnicDivider);
   app.component('UnnnicIntelligenceText', UnnnicIntelligenceText);
 
   app.provide(gbKey, gbInstance);

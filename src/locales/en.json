@@ -348,6 +348,13 @@
         "refresh": "Clear conversations",
         "export": "Export conversations"
       },
+      "preview_tests_placeholder": "Write a message",
+      "preview_tests_attachments": {
+        "photos_or_videos": "Photos and videos",
+        "photos": "Photos",
+        "file": "File",
+        "location": "Location"
+      },
       "placeholder": "Start a conversation with your agent to test it",
       "save_changes_to_test_the_agent": "Save changes to test the agent",
       "field_changed_to_value": "Parameter {field} changed to {value}",

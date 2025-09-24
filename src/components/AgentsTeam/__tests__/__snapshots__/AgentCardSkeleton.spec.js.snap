@@ -1,0 +1,81 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AgentCardSkeleton.vue > renders correctly 1`] = `
+<section
+  class="agent-card-skeleton"
+  data-testid="agent-card-skeleton"
+  data-v-7f150013=""
+>
+  <div
+    data-testid="skeleton-loading"
+    data-v-7f150013=""
+  >
+    
+    <span
+      class="unnnic-skeleton"
+      style="background-color: rgb(232, 244, 244); animation: SkeletonLoading 1.5s ease-in-out infinite; width: 30%; height: 22px;"
+    >
+       ‌ 
+    </span>
+    
+  </div>
+  <div
+    data-testid="skeleton-loading"
+    data-v-7f150013=""
+  >
+    
+    <span
+      class="unnnic-skeleton"
+      style="background-color: rgb(232, 244, 244); animation: SkeletonLoading 1.5s ease-in-out infinite; width: 100%; height: 44px;"
+    >
+       ‌ 
+    </span>
+    
+  </div>
+  <section
+    class="agent-card-skeleton__skills"
+    data-testid="skills-section"
+    data-v-7f150013=""
+  >
+    <div
+      data-testid="skills-skeleton-loading"
+      data-v-7f150013=""
+    >
+      
+      <span
+        class="unnnic-skeleton"
+        style="background-color: rgb(232, 244, 244); animation: SkeletonLoading 1.5s ease-in-out infinite; width: 100px; height: 30px;"
+      >
+         ‌ 
+      </span>
+      
+    </div>
+    <div
+      data-testid="skills-skeleton-loading"
+      data-v-7f150013=""
+    >
+      
+      <span
+        class="unnnic-skeleton"
+        style="background-color: rgb(232, 244, 244); animation: SkeletonLoading 1.5s ease-in-out infinite; width: 150px; height: 30px;"
+      >
+         ‌ 
+      </span>
+      
+    </div>
+  </section>
+  <div
+    data-testid="skeleton-loading"
+    data-v-7f150013=""
+  >
+    
+    <span
+      class="unnnic-skeleton"
+      style="background-color: rgb(232, 244, 244); animation: SkeletonLoading 1.5s ease-in-out infinite; width: 100%; height: 38px;"
+    >
+       ‌ 
+    </span>
+    
+  </div>
+</section>
+`;

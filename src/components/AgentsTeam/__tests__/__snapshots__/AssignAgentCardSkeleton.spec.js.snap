@@ -1,0 +1,81 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AgentCardSkeleton.vue > renders correctly 1`] = `
+<section
+  class="assign-agent-card-skeleton"
+  data-testid="assign-agent-card-skeleton"
+  data-v-e7b21008=""
+>
+  <div
+    data-testid="skeleton-loading"
+    data-v-e7b21008=""
+  >
+    
+    <span
+      class="unnnic-skeleton"
+      style="background-color: rgb(232, 244, 244); background-image: linear-gradient( 90deg, #E8F4F4, rgba(255,255,255,0.375), #E8F4F4 ); animation: SkeletonLoading 1.5s ease-in-out infinite; width: 30%; height: 22px;"
+    >
+       ‌ 
+    </span>
+    
+  </div>
+  <div
+    data-testid="skeleton-loading"
+    data-v-e7b21008=""
+  >
+    
+    <span
+      class="unnnic-skeleton"
+      style="background-color: rgb(232, 244, 244); background-image: linear-gradient( 90deg, #E8F4F4, rgba(255,255,255,0.375), #E8F4F4 ); animation: SkeletonLoading 1.5s ease-in-out infinite; width: 100%; height: 44px;"
+    >
+       ‌ 
+    </span>
+    
+  </div>
+  <section
+    class="assign-agent-card-skeleton__skills"
+    data-testid="skills-section"
+    data-v-e7b21008=""
+  >
+    <div
+      data-testid="skills-skeleton-loading"
+      data-v-e7b21008=""
+    >
+      
+      <span
+        class="unnnic-skeleton"
+        style="background-color: rgb(232, 244, 244); background-image: linear-gradient( 90deg, #E8F4F4, rgba(255,255,255,0.375), #E8F4F4 ); animation: SkeletonLoading 1.5s ease-in-out infinite; width: 100px; height: 30px;"
+      >
+         ‌ 
+      </span>
+      
+    </div>
+    <div
+      data-testid="skills-skeleton-loading"
+      data-v-e7b21008=""
+    >
+      
+      <span
+        class="unnnic-skeleton"
+        style="background-color: rgb(232, 244, 244); background-image: linear-gradient( 90deg, #E8F4F4, rgba(255,255,255,0.375), #E8F4F4 ); animation: SkeletonLoading 1.5s ease-in-out infinite; width: 150px; height: 30px;"
+      >
+         ‌ 
+      </span>
+      
+    </div>
+  </section>
+  <div
+    data-testid="skeleton-loading"
+    data-v-e7b21008=""
+  >
+    
+    <span
+      class="unnnic-skeleton"
+      style="background-color: rgb(232, 244, 244); background-image: linear-gradient( 90deg, #E8F4F4, rgba(255,255,255,0.375), #E8F4F4 ); animation: SkeletonLoading 1.5s ease-in-out infinite; width: 100%; height: 38px;"
+    >
+       ‌ 
+    </span>
+    
+  </div>
+</section>
+`;

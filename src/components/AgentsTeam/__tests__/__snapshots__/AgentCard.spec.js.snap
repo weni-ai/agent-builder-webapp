@@ -1,0 +1,111 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AgentCard.vue > renders correctly 1`] = `
+<section
+  class="agent-card"
+  data-testid="agent-card"
+  data-v-eb2aecd0=""
+>
+  <section
+    class="agent-card__content"
+    data-v-eb2aecd0=""
+  >
+    <p
+      class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-bold unnnic-text--color-neutral-darkest"
+      data-testid="title"
+      data-v-eb2aecd0=""
+      data-v-ec8da4ad=""
+    >
+      
+      Test Title
+      
+    </p>
+    <p
+      class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy content__description content__description"
+      data-testid="description"
+      data-v-eb2aecd0=""
+      data-v-ec8da4ad=""
+      title="Test Description"
+    >
+      
+      Test Description
+      
+    </p>
+    <section
+      class="content__skills"
+      data-v-eb2aecd0=""
+    >
+      
+      <section
+        class="skill"
+        data-testid="skill"
+        data-v-29c532b5=""
+        data-v-eb2aecd0=""
+      >
+        <p
+          class="skill__icon"
+          data-testid="skill-icon"
+          data-v-29c532b5=""
+        >
+          icon-1
+        </p>
+        <p
+          class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy skill__title skill__title"
+          data-testid="skill-name"
+          data-v-29c532b5=""
+          data-v-ec8da4ad=""
+        >
+          
+          Skill 1
+          
+        </p>
+      </section>
+      <section
+        class="skill"
+        data-testid="skill"
+        data-v-29c532b5=""
+        data-v-eb2aecd0=""
+      >
+        <p
+          class="skill__icon"
+          data-testid="skill-icon"
+          data-v-29c532b5=""
+        >
+          icon-2
+        </p>
+        <p
+          class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy skill__title skill__title"
+          data-testid="skill-name"
+          data-v-29c532b5=""
+          data-v-ec8da4ad=""
+        >
+          
+          Skill 2
+          
+        </p>
+      </section>
+      
+    </section>
+  </section>
+  <button
+    class="agent-card__button unnnic-button unnnic-button--size-small unnnic-button--primary agent-card__button"
+    data-testid="assign-button"
+    data-v-27a31b8d=""
+    data-v-eb2aecd0=""
+  >
+    <!---->
+    <!---->
+    <!---->
+    <span
+      class="unnnic-button__label"
+      data-testid="button-label"
+      data-v-27a31b8d=""
+    >
+      
+      
+       Assign to team
+    </span>
+    <!---->
+  </button>
+</section>
+`;

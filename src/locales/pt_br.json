@@ -348,6 +348,13 @@
         "refresh": "Limpar conversas",
         "export": "Exportar conversas"
       },
+      "preview_tests_placeholder": "Digite uma mensagem",
+      "preview_tests_attachments": {
+        "photos_or_videos": "Fotos e vídeos",
+        "photos": "Fotos",
+        "file": "Arquivo",
+        "location": "Localização"
+      },
       "placeholder": "Inicie uma conversa com seu agente para testá-lo",
       "save_changes_to_test_the_agent": "Salve as alterações para testar o agente",
       "field_changed_to_value": "Parâmetro {field} alterado para {value}",
