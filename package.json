@@ -15,6 +15,7 @@
     "format": "npm run lint --fix"
   },
   "dependencies": {
+    "@growthbook/growthbook": "^1.6.1",
     "@rspack/cli": "^1.1.5",
     "@rspack/core": "^1.1.5",
     "@sentry/vue": "^9.19.0",

@@ -3,6 +3,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import i18n from './utils/plugins/i18n.ts';
 import Unnnic from './utils/plugins/UnnnicSystem.ts';
+import { gbKey, initializeGrowthBook } from './utils/Growthbook.js';
 
 import './styles/global.scss';
 import '@weni/unnnic-system/dist/style.css';
@@ -11,6 +12,7 @@ import '@weni/unnnic-system/dist/style.css';
 export default async function mountAgentBuilderApp({
   containerId = 'app',
 } = {}) {
+  const gbInstance = await initializeGrowthBook();
 
   let appRef = null;
   const app = createApp(App);
@@ -18,6 +20,8 @@ export default async function mountAgentBuilderApp({
   app
   .use(i18n)
   .use(Unnnic)
+
+  app.provide(gbKey, gbInstance);
 
   app.mount(`#${containerId}`);
   appRef = app;
