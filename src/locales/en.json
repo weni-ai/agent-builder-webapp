@@ -1,0 +1,455 @@
+{
+  "and": " and ",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "back": "Back",
+  "next": "Next",
+  "finish": "Done",
+  "speed": "Speed",
+  "new": "New",
+  "save_changes": "Save changes",
+  "unauthorized": "You don't have permission to perform this action",
+  "internal_server_error": "Internal server error",
+  "unexpected_error": "An unexpected error occurred",
+  "agent_builder": {
+    "tabs": {
+      "supervisor": {
+        "title": "Supervisor",
+        "description": "Review and analyze conversations between agents and customers."
+      },
+      "instructions": {
+        "title": "Instructions",
+        "description": "Write quick rules to shape the agent’s behavior"
+      },
+      "agents": {
+        "title": "Agents",
+        "description": "Create the perfect team of agents"
+      },
+      "knowledge": {
+        "title": "Knowledge",
+        "description": "Add knowledge through files, links, or text so the agent can reply accurately"
+      },
+      "tunings": {
+        "title": "Settings",
+        "description": "Manage the settings and track the changes made"
+      }
+    },
+    "supervisor": {
+      "learn_details_conversations": "Learn about the details of a conversation.",
+      "conversation_details": {
+        "title": "About conversation",
+        "what_is_a_conversation": "What is a conversation?",
+        "what_is_a_conversation_description": "We consider all messages exchanged within 24 hours of the contact's first message as a single conversation.",
+        "optimized_resolution": "Optimized Resolutions",
+        "optimized_resolution_description": "Conversations that ended with a clear and effective resolution for the contact.",
+        "other_conclusion": "Other Conclusions",
+        "other_conclusion_description": "Conversations that ended in other ways, such as brief interactions, greetings, drop-offs, or cases that followed a different flow without a direct resolution.",
+        "transferred_to_human_support": "Transferred to Human Support",
+        "transferred_to_human_support_description": "Includes conversations (Optimized Resolutions e Other Conclusions) that were forwarded do a human agent."
+      },
+      "conversations_count": "{count} conversations found",
+      "unnamed_contact": "Unnamed contact",
+      "attended_by_agent": {
+        "title": "Assisted by an agent",
+        "tooltip": "Conversations completed by an agent"
+      },
+      "forwarded_human_support": {
+        "title": "Transferred to human support",
+        "tooltip": "Conversations transferred to human support"
+      },
+      "conversation_start_finish": {
+        "start": "Conversation started: {datetime}",
+        "finish": "Conversation finished: {datetime}"
+      },
+      "contact_urn": "Contact URN: {urn}",
+      "view_logs": "Show logs",
+      "hide_logs": "Hide logs",
+      "search": "Search",
+      "conversations_empty": "No conversations found",
+      "no_messages_found": {
+        "title": "No messages found in this conversation",
+        "description": "If the message was sent by human support or triggered an automatic action, you can find it in {studio_link}.",
+        "studio_link": "Studio"
+      },
+      "unclassified_status_tooltip": "Conversations closed before September 8, 2025 cannot be classified",
+      "export": {
+        "title": "Export to email",
+        "description": "We'll prepare the file with the AI information and send it to the following emails:",
+        "token_label": "Project API token",
+        "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
+        "token_help": "You can find this token in the",
+        "project_settings": "project settings",
+        "and_paste": "and paste it here",
+        "send": "Send export",
+        "success": "The export will be sent to all listed emails soon",
+        "error": "Error sending export. Try again later."
+      },
+      "filters": {
+        "filter_conversations": "Filter conversations",
+        "count_applied_filters": "(1 filter applied) | ({count} filters applied)",
+        "filter_conversations_drawer": "Filter conversations",
+        "apply_filters": "Apply filters",
+        "clear_filters": "Clear filters",
+        "period": {
+          "label": "Period"
+        },
+        "status": {
+          "conversations": "Conversations",
+          "in_progress": "In progress",
+          "optimized_resolution": "Optimized Resolutions",
+          "other_conclusion": "Other Conclusions",
+          "unclassified": "Unclassified",
+          "transferred_to_human_support": "Transferred to human support"
+        },
+        "csat": {
+          "csat": "CSAT",
+          "very_satisfied": "🤩 Very satisfied",
+          "satisfied": "😃 Satisfied",
+          "neutral": "😐 Neutral",
+          "dissatisfied": "😔 Dissatisfied",
+          "very_dissatisfied": "😡 Very dissatisfied"
+        },
+        "topic": {
+          "topic": "Topic"
+        }
+      },
+      "load_conversations": {
+        "error": "Error loading conversations"
+      }
+    },
+    "instructions": {
+      "new_instruction": {
+        "title": "New custom instruction",
+        "textarea": {
+          "placeholder": "You're funny, but don't make jokes",
+          "description": "Keep instructions clear, direct, and in the imperative."
+        },
+        "add_instruction": "Add instruction",
+        "success_alert": "Custom instruction added",
+        "error_alert": "Error adding instruction custom"
+      },
+      "instructions_list": {
+        "title": "Instructions list",
+        "tabs": {
+          "default": "Default instructions",
+          "safety_topics": "Safety topics",
+          "custom": "Custom instructions",
+          "default_description": "Core, read-only rules set by the system. They apply to every conversation for this agent.",
+          "safety_topics_description": "The agent does not discuss these topics. They are automatically defined and cannot be edited.",
+          "custom_description": " Your custom instructions for this agent. Editable and removable."
+        },
+        "default_instruction": "Default instruction",
+        "default_instructions": [
+          "When necessary, you seek specialized assistance from team members, who are available to help resolve the case.",
+          "You MUST NEVER, under ANY CIRCUMSTANCES, discuss topics that are outside your area of expertise.",
+          "Make sure that you optimize your communication by contacting MULTIPLE agents at the same time whenever possible.",
+          "Keep your communications with other agents concise and terse, do not engage in any chit-chat.",
+          "Only communicate with the agents that are necessary to help with the User's query.",
+          "Answer strictly with facts found in the knowledgebase block; do not rely on prior knowledge, assumptions, or external sources.",
+          "Do not infer unstated details, generalize beyond what is written, fill gaps, or speculate—even if the topic seems obvious."
+        ],
+        "safety_topics": [
+          "Politics",
+          "Physical health",
+          "Physical or moral violence", 
+          "Sexual content",
+          "Prejudice",
+          "Hate",
+          "Religion",
+          "Suicide",
+          "Self-harm",
+          "Beliefs",
+          "Gender identity",
+          "Sex and relationships"
+        ],
+        "no_custom_instructions": "No custom instructions added"
+      },
+      "edit_instruction": {
+        "title": "Edit instruction",
+        "success_alert": "Custom instruction edited",
+        "error_alert": "Error editing instruction custom",
+        "save": "Save",
+        "cancel": "Cancel"
+      },
+      "remove_instruction": {
+        "title": "Remove instruction",
+        "modal_description": "Are you sure you want to remove the instruction?",
+        "remove": "Remove",
+        "cancel": "Cancel",
+        "success_alert": "Custom instruction removed",
+        "error_alert": "Error removing instruction custom"
+      }
+    },
+    "traces": {
+      "search_result_received": "Search results received",
+      "searching_knowledge_base": "Searching information in the knowledge base",
+      "invoking_model": "Triggering the model",
+      "model_response_received": "Model response received",
+      "thinking": "Thinking",
+      "delegating_to_agent": "Assigning the task to the agent",
+      "forwarding_to_manager": "Forwarding to the manager",
+      "executing_tool": "Executing tool {function}",
+      "tool_result_received": "Tool results received",
+      "sending_response_for_manager": "Sending response to the manager",
+      "sending_final_response": "Sending final response",
+      "applying_safety_rules": "Applying security rules",
+      "processing_message": "Processing message",
+      "filter_logs": {
+        "title": "Filter logs",
+        "placeholder": "Search log",
+        "categories": {
+          "placeholder": "Categories",
+          "knowledge": "Knowledge",
+          "thinking": "Thinking",
+          "delegating_to_agent": "Assigning the task to the agent",
+          "forwarding_to_manager": "Forwarding to the manager",
+          "tool": "Tool",
+          "sending_response_for_manager": "Sending to the manager",
+          "sending_final_response": "Sending final reply",
+          "applying_guardrails": "Applying security rules"
+        },
+        "no_logs_found": "No logs found"
+      }
+    },
+    "tunings": {
+      "project_details": "Project details",
+      "agent_backend": "Agent backend: | Agents backend:",
+      "agent_model": "{agent} model:",
+      "characters_usage": "Characters usage:",
+      "characters_usage_description": "This is the average number of characters your agent is currently using in all areas: Instructions, Knowledge Base, and any other settings."
+    }
+  },
+  "router": {
+    "agents_team": {
+      "description": "Create the perfect team of agents",
+      "card": {
+        "assign": "Assign to the team",
+        "assigned": "Assigned",
+        "success_assign_alert": "{agent} assigned to team successfully",
+        "success_unassign_alert": "{agent} removed from team successfully",
+        "error_alert": "Error updating team",
+        "official": "Official",
+        "custom": "Custom",
+        "remove_agent": "Remove agent"
+      },
+      "drawer": {
+        "title": "Assign {name} to team",
+        "description": "Enter the credentials to assign the agent",
+        "use_credentials": "Use the credentials configured in Settings",
+        "assign": "Assign",
+        "credentials_used_by_this_agent": "Credentials used by this agent",
+        "credentials_shared_with_all_agents": "These credentials will be shared to allow access by all agents"
+      },
+      "active_team": {
+        "title": "Active team",
+        "no_team": "No agents assigned to your team",
+        "no_team_description": "Go to {assign_agents} to view the gallery and assign agents to your team"
+      },
+      "gallery": {
+        "title": "Agent gallery",
+        "search_placeholder": "Search agent or skill",
+        "official_agents": "Official agents",
+        "custom_agents": "Custom agents",
+        "no_agent_found": "No agents found",
+        "custom_agents_description": "Custom agents are created using the Weni CLI",
+        "weni_cli_documentation": "Weni CLI documentation",
+        "weni_cli_documentation_description": "See the {weni_cli_documentation} for detailed instructions"
+      },
+      "create_agent": "Create agent",
+      "preview": "Preview",
+      "assign_agents": "Assign agents"
+    },
+    "content": {
+      "fields": {
+        "search_placeholder": "Search"
+      }
+    },
+    "tunings": {
+      "save_changes": "Save changes",
+      "changes_saved": "Changes saved",
+      "description": "Manage settings and track the changes made",
+      "tabs": {
+        "config": "Settings",
+        "credentials": "Credentials",
+        "history": "Change history"
+      },
+      "history": {
+        "no_changes": "No changes made in Agent Builder",
+        "description": "Track the history of changes made in Agent Builder",
+        "sub_description": "View all changes or apply a filter by type",
+        "fields": {
+          "change": "Change",
+          "date": "Date",
+          "all-changes": "All changes",
+          "customization-changes": "Custom changes",
+          "content-changes": "Content changes",
+          "actions-changes": "Action changes",
+          "settings-changes": "Settings changes",
+          "add-action": "added an action ({value})",
+          "changes": "made {value} changes",
+          "update-name-action": "changed an action ({value})",
+          "update-prompt-action": "changed an action's prompt ({value})",
+          "remove-action": "removed an action ({value})",
+          "update-personality": "changed personality ({value})",
+          "update-goal": "changed the goal ({value})",
+          "update-name": "changed the name ({value})",
+          "update-role": "changed the role ({value})",
+          "add-instruction": "added an instruction ({value})",
+          "remove-instruction": "removed an instruction ({value})",
+          "update-instruction": "changed an instruction ({value})",
+          "add-content": "added content ({value})",
+          "update-content": "updated content ({value})",
+          "remove-content": "removed content ({value})",
+          "update-model": "changed the model",
+          "brain-on": "activated Agent Builder",
+          "brain-off": "deactivated Agent Builder"
+        }
+      },
+      "credentials": {
+        "no_credentials": "No credentials provided",
+        "used_by_official_agents": "Credentials used by official agents",
+        "used_by_customized_agents": "Credentials used by custom agents",
+        "used_by": "Used by",
+        "no_agents_using": "No agents using them",
+        "credentials_updated_successfully": "Credentials updated successfully",
+        "get_error": "Error requesting credentials",
+        "save_error": "Error saving credentials"
+      },
+      "settings": {
+        "save_error": "Error saving settings",
+        "agents_preview": {
+          "title": "Agent preview",
+          "agents_progressive_feedback": {
+            "title": "Agent progressive feedback",
+            "description": "The agent can provide brief updates while formulating the final response, helping the contact follow the process in real time."
+          },
+          "multiple_message_format": {
+            "title": "Multiple message format",
+            "description": "The agent can send multiple formatted messages, such as quick responses, lists, CTAs, and catalogs."
+          }
+        },
+        "human_support": {
+          "title": "Human support",
+          "description": "The agent can transfer the conversation to human support."
+        }
+      },
+      "save_success": "Settings saved successfully"
+    },
+    "preview": {
+      "title": "Agent preview",
+      "active": "Active Agent Builder",
+      "no_logs_registered": "No log records",
+      "see_full_details": "View details",
+      "manager_task": "Coordinating team tasks",
+      "visual_flow": "Visual flow",
+      "logs": "Logs",
+      "agents_preview": "Agent preview",
+      "options": {
+        "refresh": "Clear conversations",
+        "export": "Export conversations"
+      },
+      "placeholder": "Start a conversation with your agent to test it",
+      "save_changes_to_test_the_agent": "Save changes to test the agent",
+      "field_changed_to_value": "Parameter {field} changed to {value}",
+      "flow_started": "Flow {name} started",
+      "flow_finished": "Flow completed",
+      "message_forwarded_to_brain": "Message forwarded to Agent Builder",
+      "media_and_location_unavailable": "No media and location actions added",
+      "standby": "Standby mode",
+      "catalog": {
+        "title": "Product catalog",
+        "view_cart": "View cart ({quantity} item) | View cart ({quantity} items)",
+        "add_to_cart": "Add to cart",
+        "subtotal": "Subtotal",
+        "place_order": "Checkout",
+        "your_cart": "Cart",
+        "order_summary": "Order summary",
+        "order_details": "Order details",
+        "view_order_details": "View order details",
+        "items": "item | items",
+        "remove": "Remove"
+      }
+    }
+  },
+  "profile": {
+    "edit_manager_profile": "Edit Manager profile",
+    "description": "Customize the basic information and behavior of the agent",
+    "save_btn": "Save changes",
+    "save_success": "Changes saved successfully",
+    "save_error": "Error saving changes",
+    "invalid_field": "Required field",
+    "invalid_get_data": "Error trying to retrieve data",
+    "fields": {
+      "name": {
+        "title": "What name does the agent use to introduce himself?",
+        "description": "This is the name displayed during interactions with users",
+        "placeholder": "Taylor"
+      },
+      "occupation": {
+        "title": "What's the main role of the agent?",
+        "placeholder": "Customer support assistant",
+        "description": "Define the agent's main role so that users know how it can help them"
+      },
+      "goal": {
+        "title": "What's the main goal of the agent?",
+        "placeholder": "Answer customer questions",
+        "description": "This helps define what the agent intends to achieve during interactions"
+      },
+      "personality": {
+        "title": "What's the agent's tone of voice?",
+        "description": "Choose how the agent communicates with users"
+      },
+      "personalities": {
+        "friendly": "Friendly",
+        "extrovert": "Extrovert",
+        "cooperative": "Cooperative",
+        "generous": "Generous",
+        "relaxed": "Relaxed",
+        "organized": "Organized",
+        "systematic": "Systematic",
+        "innovative": "Innovative",
+        "creative": "Creative",
+        "intellectual": "Intellectual"
+      }
+    },
+    "instructions": {
+      "title": "General instructions",
+      "sub_title": "Define how you want the agent to behave",
+      "add_instruction_btn": "Add instruction",
+      "instruction": {
+        "title": "Instruction",
+        "placeholder": "You're funny, but don't make jokes"
+      },
+      "modals": {
+        "title": "Delete instruction",
+        "description": "Are you sure you want to delete the instruction?",
+        "success_message": "Instruction deleted",
+        "error_message": "Error deleting instruction",
+        "back_btn": "Cancel",
+        "remove_btn": "Remove"
+      }
+    },
+    "human_support": {
+      "title": "Human support",
+      "switch": {
+        "enabled": "Activated",
+        "disabled": "Deactivated"
+      },
+      "fields": {
+        "rules": {
+          "title": "When should the agent transfer the conversation to a human?",
+          "placeholder": "If the user asks for human support, the agent should transfer them to human support."
+        }
+      }
+    }
+  },
+  "time": {
+    "time_ago_minutes": "{count} minute ago | {count} minutes ago",
+    "time_ago_hours": "{count} hour ago | {count} hours ago",
+    "time_ago_days": "{count} day ago | {count} days ago",
+    "time_ago_months": "{count} month ago | {count} months ago"
+  },
+  "audio_recorder": {
+    "discard_button": "Discard"
+  }
+}

@@ -1,13 +1,19 @@
 import { createApp } from 'vue';
+
 import App from './App.vue';
-import router from './router';
+import i18n from './utils/plugins/i18n.ts';
+
+import './styles/global.scss';
+import '@weni/unnnic-system/dist/style.css';
+
 
 export default async function mountAgentBuilderApp({
   containerId = 'app',
 } = {}) {
   let appRef = null;
   const app = createApp(App);
-  app.use(router);
+
+  app.use(i18n)
 
   app.mount(`#${containerId}`);
   appRef = app;

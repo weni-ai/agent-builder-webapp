@@ -1,0 +1,455 @@
+{
+  "and": " e ",
+  "delete": "Excluir",
+  "cancel": "Cancelar",
+  "back": "Voltar",
+  "next": "Avançar",
+  "finish": "Concluir",
+  "speed": "Velocidade",
+  "new": "Novo",
+  "save_changes": "Salvar alterações",
+  "unauthorized": "Você não tem permissão para executar esta ação",
+  "internal_server_error": "Erro interno do servidor",
+  "unexpected_error": "Ocorreu um erro inesperado",
+  "agent_builder": {
+    "tabs": {
+      "supervisor": {
+        "title": "Supervisor",
+        "description": "Analise e revise conversas entre agentes e clientes."
+      },
+      "instructions": {
+        "title": "Instruções",
+        "description": "Escreva regras rápidas para moldar o comportamento do agente"
+      },
+      "agents": {
+        "title": "Agentes",
+        "description": "Crie a equipe de agentes perfeita"
+      },
+      "knowledge": {
+        "title": "Conhecimento",
+        "description": "Adicione conhecimento através de arquivos, links ou texto para que o agente possa responder com precisão"
+      },
+      "tunings": {
+        "title": "Ajustes",
+        "description": "Gerencie as configurações e acompanhe as alterações realizadas"
+      }
+    },
+    "supervisor": {
+      "learn_details_conversations": "Aprenda sobre os detalhes de uma conversa.",
+      "conversation_details": {
+        "title": "Sobre conversa",
+        "what_is_a_conversation": "O que é uma conversa?",
+        "what_is_a_conversation_description": "Consideramos todas as mensagens trocadas dentro de 24 horas do primeiro contato como uma única conversa.",
+        "optimized_resolution": "Resoluções Otimizadas",
+        "optimized_resolution_description": "Conversas que terminaram com uma resolução clara e eficaz para o contato.",
+        "other_conclusion": "Outras Conclusões",
+        "other_conclusion_description": "Conversas que terminaram de outras formas, como interações breves, saudações, desistências ou casos que seguiram um fluxo diferente sem uma resolução direta.",
+        "transferred_to_human_support": "Transferido para o Suporte Humano",
+        "transferred_to_human_support_description": "Inclui conversas (Resoluções Otimizadas e Outras Conclusões) que foram encaminhadas para um atendente humano."
+      },
+      "conversations_count": "{count} conversas encontradas",
+      "unnamed_contact": "Contato sem nome",
+      "attended_by_agent": {
+        "title": "Atendido pelo agente",
+        "tooltip": "Conversas resolvidas pelo agente"
+      },
+      "forwarded_human_support": {
+        "title": "Encaminhado para suporte humano",
+        "tooltip": "Conversas encaminhadas para suporte humano"
+      },
+      "conversation_start_finish": {
+        "start": "Conversa iniciada: {datetime}",
+        "finish": "Conversa finalizada: {datetime}"
+      },
+      "contact_urn": "URN do contato: {urn}",
+      "view_logs": "Mostrar logs",
+      "hide_logs": "Ocultar logs",
+      "search": "Buscar",
+      "conversations_empty": "Nenhuma conversa encontrada",
+      "no_messages_found": {
+        "title": "Nenhuma mensagem encontrada nesta conversa",
+        "description": "Se a mensagem foi enviada pelo suporte humano ou ativou uma ação automática, você pode encontrá-la no {studio_link}.",
+        "studio_link": "Estúdio"
+      },
+      "unclassified_status_tooltip": "Conversas encerradas antes de 8 de setembro de 2025 não podem ser classificadas",
+      "export": {
+        "title": "Enviar exportação por email",
+        "description": "Vamos preparar o arquivo com os dados de IA e enviá-lo para os seguintes emails:",
+        "token_label": "Token de API do projeto",
+        "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
+        "token_help": "Você pode encontrar este token nas",
+        "project_settings": "configurações do projeto",
+        "and_paste": "e colá-lo aqui",
+        "send": "Enviar exportação",
+        "success": "A exportação será enviada para todos os emails listados em breve",
+        "error": "Erro ao enviar exportação. Tente novamente mais tarde."
+      },
+      "filters": {
+        "filter_conversations": "Filtrar conversas",
+        "count_applied_filters": "(1 filtro aplicado) | ({count} filtros aplicados)",
+        "filter_conversations_drawer": "Filtrar conversas",
+        "apply_filters": "Aplicar filtros",
+        "clear_filters": "Limpar filtros",
+        "period": {
+          "label": "Período"
+        },
+        "status": {
+          "conversations": "Conversas",
+          "in_progress": "Em progresso",
+          "optimized_resolution": "Resoluções Otimizadas",
+          "other_conclusion": "Outras Conclusões",
+          "unclassified": "Não classificado",
+          "transferred_to_human_support": "Encaminhado para suporte humano"
+        },
+        "csat": {
+          "csat": "CSAT",
+          "very_satisfied": "🤩 Muito satisfeito",
+          "satisfied": "😃 Satisfeito",
+          "neutral": "😐 Neutro",
+          "dissatisfied": "😔 Insatisfeito",
+          "very_dissatisfied": "😡 Muito insatisfeito"
+        },
+        "topic": {
+          "topic": "Tópico"
+        }
+      },
+      "load_conversations": {
+        "error": "Erro ao carregar conversas"
+      }
+    },
+    "instructions": {
+      "new_instruction": {
+        "title": "Nova instrução personalizada",
+        "textarea": {
+          "placeholder": "Você é engraçado, mas não faz piadas",
+          "description": "Mantenha as instruções claras, diretas e imperativas."
+        },
+        "add_instruction": "Adicionar instrução",
+        "success_alert": "Instrução personalizada adicionada",
+        "error_alert": "Erro ao adicionar instrução personalizada"
+      },
+      "instructions_list": {
+        "title": "Lista de instruções",
+        "tabs": {
+          "default": "Instruções padrão",
+          "safety_topics": "Tópicos de segurança",
+          "custom": "Instruções personalizadas",
+          "default_description": "Regras centrais, somente leitura, definidas pelo sistema. Elas se aplicam a todas as conversas deste agente.",
+          "safety_topics_description": "O agente não discute esses assuntos. São definidos automaticamente e não podem ser editados.",
+          "custom_description": "Suas instruções personalizadas para este agente. Podem ser editadas e removidas."
+        },
+        "default_instruction": "Instrução padrão",
+        "default_instructions": [
+          "Quando necessário, você deve buscar assistência especializada com os membros da equipe, que estão disponíveis para ajudar a resolver o caso.",
+          "Você NUNCA, em NENHUMA CIRCUNSTÂNCIA, deve discutir assuntos que estejam fora da sua área de especialização.",
+          "Garanta que a comunicação seja otimizada entrando em contato com MÚLTIPLOS agentes ao mesmo tempo, sempre que possível.",
+          "Mantenha sua comunicação com outros agentes concisa e objetiva, sem conversas paralelas.",
+          "Comunique-se apenas com os agentes necessários para ajudar na solicitação do Usuário.",
+          "Responda estritamente com base nos fatos encontrados no bloco de base de conhecimento; não utilize conhecimento prévio, suposições ou fontes externas.",
+          "Não infira detalhes não declarados, não generalize além do que está escrito, não preencha lacunas nem especule — mesmo que o assunto pareça óbvio."
+        ],
+        "safety_topics": [
+          "Política",
+          "Saúde física",
+          "Violência física ou moral", 
+          "Conteúdo sexual",
+          "Preconceito",
+          "Ódio",
+          "Religião",
+          "Suicídio",
+          "Autolesão",
+          "Crenças",
+          "Identidade de gênero",
+          "Relações sexuais"
+        ],
+        "no_custom_instructions": "Nenhuma instrução personalizada adicionada"
+      },
+      "edit_instruction": {
+        "title": "Editar instrução",
+        "success_alert": "Instrução personalizada editada",
+        "error_alert": "Erro ao editar instrução personalizada",
+        "save": "Salvar",
+        "cancel": "Cancelar"
+      },
+      "remove_instruction": {
+        "title": "Remover instrução",
+        "modal_description": "Tem certeza de que deseja remover a instrução?",
+        "remove": "Remover",
+        "cancel": "Cancelar",
+        "success_alert": "Instrução personalizada removida",
+        "error_alert": "Erro ao remover instrução personalizada"
+      }
+    },
+    "traces": {
+      "search_result_received": "Resultado da busca recebido",
+      "searching_knowledge_base": "Buscando informações na base de conhecimento",
+      "invoking_model": "Acionando o modelo",
+      "model_response_received": "Resposta do modelo recebida",
+      "thinking": "Pensando",
+      "delegating_to_agent": "Atribuindo tarefa ao agente",
+      "forwarding_to_manager": "Encaminhando para o manager",
+      "executing_tool": "Executando ferramenta {function}",
+      "tool_result_received": "Resultado da ferramenta recebido",
+      "sending_response_for_manager": "Enviando resposta ao manager",
+      "sending_final_response": "Enviando resposta final",
+      "applying_safety_rules": "Aplicando regras de segurança",
+      "processing_message": "Processando mensagem",
+      "filter_logs": {
+        "title": "Filtrar logs",
+        "placeholder": "Buscar log",
+        "categories": {
+          "placeholder": "Categorias",
+          "knowledge": "Conhecimento",
+          "thinking": "Pensando",
+          "delegating_to_agent": "Atribuindo tarefa ao agente",
+          "forwarding_to_manager": "Encaminhando para o manager",
+          "tool": "Ferramenta",
+          "sending_response_for_manager": "Enviando para o manager",
+          "sending_final_response": "Enviando resposta final",
+          "applying_guardrails": "Aplicando regras de segurança"
+        },
+        "no_logs_found": "Nenhum log encontrado"
+      }
+    },
+    "tunings": {
+      "project_details": "Detalhes do projeto",
+      "agent_backend": "Backend do agente: | Backend dos agentes:",
+      "agent_model": "Modelo do {agent}:",
+      "characters_usage": "Uso de caracteres:",
+      "characters_usage_description": "Este é o número médio de caracteres que seu agente está usando em todas as áreas: Instruções, Base de Conhecimento e quaisquer outras configurações."
+    }
+  },
+  "router": {
+    "agents_team": {
+      "description": "Crie a equipe de agentes perfeita",
+      "card": {
+        "assign": "Atribuir ao time",
+        "assigned": "Atribuído",
+        "success_assign_alert": "{agent} atribuído ao time com sucesso",
+        "success_unassign_alert": "{agent} removido do time com sucesso",
+        "error_alert": "Erro ao atualizar time",
+        "official": "Oficial",
+        "custom": "Personalizado",
+        "remove_agent": "Remover agente"
+      },
+      "drawer": {
+        "title": "Atribuir {name} ao time",
+        "description": "Insira as credenciais para atribuir o agente",
+        "use_credentials": "Usar credenciais configuradas em Ajustes",
+        "assign": "Atribuir",
+        "credentials_used_by_this_agent": "Credenciais usadas por este agente",
+        "credentials_shared_with_all_agents": "Essas credenciais serão compartilhadas para que todos os agentes tenham acesso"
+      },
+      "active_team": {
+        "title": "Equipe ativa",
+        "no_team": "Nenhum agente atribuído à sua equipe",
+        "no_team_description": "Vá para {assign_agents} para ver a galeria e atribuir agentes à sua equipe"
+      },
+      "gallery": {
+        "title": "Galeria de agentes",
+        "search_placeholder": "Buscar agente ou habilidade",
+        "official_agents": "Agentes oficiais",
+        "custom_agents": "Agentes personalizados",
+        "no_agent_found": "Nenhum agente encontrado",
+        "custom_agents_description": "Agentes personalizados são criados usando o Weni CLI",
+        "weni_cli_documentation": "Documentação do Weni CLI",
+        "weni_cli_documentation_description": "Consulte a {weni_cli_documentation} para ver instruções detalhadas"
+      },
+      "create_agent": "Criar agente",
+      "preview": "Prévia",
+      "assign_agents": "Atribuir agentes"
+    },
+    "content": {
+      "fields": {
+        "search_placeholder": "Buscar"
+      }
+    },
+    "tunings": {
+      "save_changes": "Salvar alterações",
+      "changes_saved": "Alterações salvas",
+      "description": "Gerencie as configurações e acompanhe as alterações feitas",
+      "tabs": {
+        "config": "Configurações",
+        "credentials": "Credenciais",
+        "history": "Histórico de alterações"
+      },
+      "history": {
+        "no_changes": "Nenhuma alteração foi feita no Agent Builder",
+        "description": "Acompanhe o histórico de alterações feitas no Agent Builder",
+        "sub_description": "Veja a lista completa ou filtre pelo tipo de alteração",
+        "fields": {
+          "change": "Alteração",
+          "date": "Data",
+          "all-changes": "Todas as alterações",
+          "customization-changes": "Alterações de personalização",
+          "content-changes": "Alterações de contéudo",
+          "actions-changes": "Alterações de ações",
+          "settings-changes": "Alterações de configurações",
+          "add-action": "adicionou uma ação ({value})",
+          "changes": "fez {value} alterações",
+          "update-name-action": "alterou uma ação ({value})",
+          "update-prompt-action": "alterou o prompt de uma ação ({value})",
+          "remove-action": "removeu uma ação ({value})",
+          "update-personality": "alterou a personalidade ({value})",
+          "update-goal": "alterou o objetivo ({value})",
+          "update-name": "alterou o nome ({value})",
+          "update-role": "alterou a função ({value})",
+          "add-instruction": "adicionou uma instrução ({value})",
+          "remove-instruction": "removeu uma instrução ({value})",
+          "update-instruction": "alterou uma instrução ({value})",
+          "add-content": "adicionou um conteúdo ({value})",
+          "update-content": "alterou um conteúdo ({value})",
+          "remove-content": "removeu um conteúdo ({value})",
+          "update-model": "alterou o modelo",
+          "brain-on": "ativou o Agent Builder",
+          "brain-off": "desativou o Agent Builder"
+        }
+      },
+      "credentials": {
+        "no_credentials": "Nenhuma credencial informada",
+        "used_by_official_agents": "Credenciais usadas pelos agentes oficiais",
+        "used_by_customized_agents": "Credenciais usadas pelos agentes personalizados",
+        "used_by": "Usadas por",
+        "no_agents_using": "Nenhum agente usando",
+        "credentials_updated_successfully": "Credenciais atualizadas com sucesso",
+        "get_error": "Erro ao solicitar credenciais",
+        "save_error": "Erro ao salvar credenciais"
+      },
+      "settings": {
+        "save_error": "Erro ao salvar configurações",
+        "agents_preview": {
+          "title": "Prévia dos agentes",
+          "agents_progressive_feedback": {
+            "title": "Feedback progressivo dos agentes",
+            "description": "O agente pode fornecer atualizações breves enquanto formula a resposta final, ajudando o contato a acompanhar o processo em tempo real."
+          },
+          "multiple_message_format": {
+            "title": "Formato de mensagem múltipla",
+            "description": "O agente pode enviar várias mensagens formatadas, como respostas rápidas, listas, CTAs e catálogos."
+          }
+        },
+        "human_support": {
+          "title": "Suporte humano",
+          "description": "O agente pode encaminhar a conversa ao suporte humano."
+        }
+      },
+      "save_success": "Configurações salvas com sucesso"
+    },
+    "preview": {
+      "title": "Prévia do agente",
+      "active": "Agent Builder ativo",
+      "no_logs_registered": "Nenhum registro de logs",
+      "see_full_details": "Ver detalhes",
+      "manager_task": "Coordenando tarefas da equipe",
+      "visual_flow": "Fluxo visual",
+      "logs": "Logs",
+      "agents_preview": "Prévia dos agentes",
+      "options": {
+        "refresh": "Limpar conversas",
+        "export": "Exportar conversas"
+      },
+      "placeholder": "Inicie uma conversa com seu agente para testá-lo",
+      "save_changes_to_test_the_agent": "Salve as alterações para testar o agente",
+      "field_changed_to_value": "Parâmetro {field} alterado para {value}",
+      "flow_started": "Fluxo {name} iniciado",
+      "flow_finished": "Fluxo finalizado",
+      "message_forwarded_to_brain": "Mensagem redirecionada para o Agent Builder",
+      "media_and_location_unavailable": "Nenhuma ação de mídias e localização cadastrada",
+      "standby": "Modo de espera",
+      "catalog": {
+        "title": "Catálogo de produtos",
+        "view_cart": "Ver carrinho ({quantity} item) | Ver carrinho ({quantity} itens)",
+        "add_to_cart": "Adicionar ao carrinho",
+        "subtotal": "Subtotal",
+        "place_order": "Finalizar compra",
+        "your_cart": "Seu carrinho",
+        "order_summary": "Resumo do pedido",
+        "order_details": "Detalhes do pedido",
+        "view_order_details": "Ver detalhes do pedido",
+        "items": "item | itens",
+        "remove": "Remover"
+      }
+    }
+  },
+  "profile": {
+    "edit_manager_profile": "Editar perfil do Manager",
+    "description": "Personalize as informações básicas e o comportamento do agente",
+    "save_btn": "Salvar alterações",
+    "save_success": "Alterações salvas com sucesso",
+    "save_error": "Erro ao salvar alterações",
+    "invalid_field": "Campo obrigatório",
+    "invalid_get_data": "Erro ao tentar buscar os dados",
+    "fields": {
+      "name": {
+        "title": "Qual nome o agente usa para se apresentar?",
+        "description": "Este é o nome exibido durante as interações com os usuários",
+        "placeholder": "Tainá"
+      },
+      "occupation": {
+        "title": "Qual é a função principal do agente?",
+        "placeholder": "Assistente de suporte ao cliente",
+        "description": "Defina a função principal do agente para que os usuários entendam como isso os ajuda"
+      },
+      "goal": {
+        "title": "Qual é o objetivo principal do agente?",
+        "placeholder": "Responder perguntas dos clientes",
+        "description": "Isso ajuda a definir o que o agente pretende alcançar durante as interações"
+      },
+      "personality": {
+        "title": "Qual é o tom de voz do agente?",
+        "description": "Escolha a forma como o agente se comunica com os usuários"
+      },
+      "personalities": {
+        "friendly": "Amigável",
+        "extrovert": "Extrovertido",
+        "cooperative": "Cooperativo",
+        "generous": "Generoso",
+        "relaxed": "Relaxado",
+        "organized": "Organizado",
+        "systematic": "Sistemático",
+        "innovative": "Inovador",
+        "creative": "Criativo",
+        "intellectual": "Intelectual"
+      }
+    },
+    "instructions": {
+      "title": "Instruções gerais",
+      "sub_title": "Defina como você quer que o agente se comporte",
+      "add_instruction_btn": "Adicionar instrução",
+      "instruction": {
+        "title": "Instrução",
+        "placeholder": "Você é engraçado, mas não faz piadas"
+      },
+      "modals": {
+        "title": "Excluir instrução",
+        "description": "Tem certeza de que deseja excluir a instrução?",
+        "success_message": "Instrução excluída",
+        "error_message": "Erro ao excluir instrução",
+        "back_btn": "Cancelar",
+        "remove_btn": "Remover"
+      }
+    },
+    "human_support": {
+      "title": "Suporte humano",
+      "switch": {
+        "enabled": "Ativado",
+        "disabled": "Desativado"
+      },
+      "fields": {
+        "rules": {
+          "title": "Quando o agente deve transferir a conversa para um humano?",
+          "placeholder": "Se o usuário pedir suporte humano, o agente deve transferi-lo para o suporte humano."
+        }
+      }
+    }
+  },
+  "time": {
+    "time_ago_minutes": "Há {count} minuto | Há {count} minutos",
+    "time_ago_hours": "Há {count} hora | Há {count} horas",
+    "time_ago_days": "Há {count} dia | Há {count} dias",
+    "time_ago_months": "Há {count} mês | Há {count} meses"
+  },
+  "audio_recorder": {
+    "discard_button": "Descartar"
+  }
+}
