@@ -1,6 +1,5 @@
 import request from '@/api/nexusaiRequest';
 import forceHttps from '@/api/utils/forceHttps';
-import { Actions } from './nexus/Actions';
 import { AgentsTeam } from './nexus/AgentsTeam';
 import { Supervisor } from './nexus/Supervisor';
 import { Instructions } from './nexus/Instructions';
@@ -11,120 +10,6 @@ import { ProjectDetailsAdapter } from './adapters/tunings/projectDetails';
 import i18n from '@/utils/plugins/i18n';
 
 export default {
-  question: {
-    create({ contentBaseUuid, text, language }) {
-      return request.$http.post('api/v1/wenigpt_question/quick-test', {
-        content_base_uuid: contentBaseUuid,
-        text,
-        language,
-      });
-    },
-
-    feedback: {
-      create({ contentBaseUuid, questionUuid, value, feedback }) {
-        return request.$http.post(
-          `api/${contentBaseUuid}/content-base-logs/${questionUuid}`,
-          {
-            value,
-            feedback,
-          },
-        );
-      },
-    },
-  },
-
-  listIntelligences({ next, orgUuid } = {}) {
-    if (next) {
-      return request.$http.get(forceHttps(next));
-    }
-
-    return request.$http.get(`api/${orgUuid}/intelligences/`);
-  },
-
-  createIntelligence({ orgUuid, name, description }) {
-    return request.$http.post(`api/${orgUuid}/intelligences/`, {
-      name,
-      description,
-    });
-  },
-
-  readIntelligence({ orgUuid, intelligenceUuid }) {
-    return request.$http.get(
-      `api/${orgUuid}/intelligences/${intelligenceUuid}/`,
-    );
-  },
-
-  updateIntelligence({ orgUuid, intelligenceUuid, name, description }) {
-    return request.$http.put(
-      `api/${orgUuid}/intelligences/${intelligenceUuid}/`,
-      {
-        name,
-        description,
-      },
-    );
-  },
-
-  deleteIntelligence({ orgUuid, intelligenceUuid }) {
-    return request.$http.delete(
-      `api/${orgUuid}/intelligences/${intelligenceUuid}/`,
-    );
-  },
-
-  createIntelligenceContentBase({
-    intelligenceUuid,
-    title,
-    language,
-    description,
-  }) {
-    return request.$http.post(`api/${intelligenceUuid}/content-bases/`, {
-      title,
-      language,
-      description,
-    });
-  },
-
-  patchIntelligenceContentBase({
-    intelligenceUuid,
-    contentBaseUuid,
-    title,
-    language,
-    description,
-  }) {
-    return request.$http.patch(
-      `api/${intelligenceUuid}/content-bases/${contentBaseUuid}/`,
-      {
-        title,
-        language,
-        description,
-      },
-    );
-  },
-
-  listIntelligencesContentBases({ intelligenceUuid, next }) {
-    if (next) {
-      return request.$http.get(forceHttps(next));
-    }
-
-    return request.$http.get(`api/${intelligenceUuid}/content-bases/`);
-  },
-
-  readIntelligenceContentBase({
-    intelligenceUuid,
-    contentBaseUuid,
-    obstructiveErrorProducer,
-  }) {
-    return request.$http.get(
-      `api/${intelligenceUuid}/content-bases/${contentBaseUuid}/`,
-      { obstructiveErrorProducer },
-    );
-  },
-
-  deleteIntelligenceContentBase({ intelligenceUuid, contentBaseUuid }) {
-    return request.$http.delete(
-      `api/${intelligenceUuid}/content-bases/${contentBaseUuid}/`,
-    );
-  },
-
   agent_builder: {
     user: {
       read() {
@@ -141,8 +26,6 @@ export default {
         obstructiveErrorProducer,
       });
     },
-
-    actions: Actions,
 
     agents_team: AgentsTeam,
 
@@ -231,18 +114,6 @@ export default {
           if (filter) url = url + `&model_group=${filter}`;
 
           return request.$http.get(url);
-        },
-      },
-
-      advanced: {
-        read({ projectUuid }) {
-          return request.$http.get(`api/${projectUuid}/project`);
-        },
-
-        edit({ projectUuid, brain_on }) {
-          return request.$http.patch(`api/${projectUuid}/project`, {
-            brain_on,
-          });
         },
       },
 
