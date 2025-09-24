@@ -41,6 +41,14 @@ export const Supervisor = {
       return data;
     },
 
+    async getLogs({ projectUuid, messageId }) {
+      const { data } = await nexusRequest.$http.get(
+        `api/agents/traces/?project_uuid=${projectUuid}&log_id=${messageId}`,
+      );
+
+      return data;
+    },
+
     async getTopics({ projectUuid }) {
       const { data } = await nexusRequest.$http.get(
         `/api/${projectUuid}/topics/`,

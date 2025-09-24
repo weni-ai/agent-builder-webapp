@@ -1,7 +1,6 @@
 import request from '@/api/nexusaiRequest';
 import forceHttps from '@/api/utils/forceHttps';
 import { Actions } from './nexus/Actions';
-import { Monitoring } from './nexus/Monitoring';
 import { AgentsTeam } from './nexus/AgentsTeam';
 import { Supervisor } from './nexus/Supervisor';
 import { Instructions } from './nexus/Instructions';
@@ -142,8 +141,6 @@ export default {
         obstructiveErrorProducer,
       });
     },
-
-    monitoring: Monitoring,
 
     actions: Actions,
 

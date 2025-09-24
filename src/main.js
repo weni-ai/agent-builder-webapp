@@ -4,6 +4,7 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
 import i18n from './utils/plugins/i18n.ts';
+import UnnnicIntelligenceText from './components/unnnic-intelligence/Text.vue';
 import Unnnic from './utils/plugins/UnnnicSystem.ts';
 import { gbKey, initializeGrowthBook } from './utils/Growthbook.js';
 
@@ -26,6 +27,8 @@ export default async function mountAgentBuilderApp({
   .use(router)
   .use(Unnnic)
   .use(i18n)
+
+  app.component('UnnnicIntelligenceText', UnnnicIntelligenceText);
 
   app.provide(gbKey, gbInstance);
 

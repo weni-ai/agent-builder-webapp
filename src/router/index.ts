@@ -16,6 +16,7 @@ const routes = [
       {
         path: 'supervisor',
         name: 'supervisor',
+        component: () => import('@/views/Supervisor/index.vue'),
       },
       {
         path: 'instructions',
