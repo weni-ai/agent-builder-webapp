@@ -3,7 +3,10 @@ import { reactive, ref } from 'vue';
 
 export const useAlertStore = defineStore('alert', () => {
   const id = ref(0);
-  const alert = reactive({});
+  const alert = reactive({
+    text: '',
+    type: '',
+  });
 
   function addAlert({ text, type }) {
     id.value += 1;

@@ -9,6 +9,15 @@
       >
         <RouterView />
       </main>
+
+      <UnnnicAlert
+        v-if="alertStore.data.text"
+        :key="alertStore.id"
+        data-testid="alert-pinia"
+        class="app-alert"
+        v-bind="alertStore.data"
+        @close="alertStore.close"
+      />
     </section>
   </div>
 </template>
@@ -21,10 +30,12 @@ import { onMounted } from 'vue';
 import { useTuningsStore } from '@/store/Tunings';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { useProfileStore } from '@/store/Profile';
+import { useAlertStore } from '@/store/Alert';
 
 import Sidebar from '@/components/Sidebar/index.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
+const alertStore = useAlertStore();
 
 onMounted(() => {
   useTuningsStore().fetchCredentials();
@@ -56,5 +67,9 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
   }
+}
+
+.app-alert {
+  z-index: 100000;
 }
 </style>
