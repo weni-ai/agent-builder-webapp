@@ -1,0 +1,345 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AgentsGallery.vue > should match snapshot 1`] = `
+<section
+  class="unnnic-modal-dialog agents-gallery-modal"
+  data-testid="modal-dialog"
+  data-v-4005123d=""
+  data-v-ab1febba=""
+>
+  <section
+    class="unnnic-modal-dialog__overlay"
+    data-testid="modal-overlay"
+    data-v-ab1febba=""
+  />
+  <section
+    class="unnnic-modal-dialog__container unnnic-modal-dialog__container--lg"
+    data-testid="modal-container"
+    data-v-ab1febba=""
+  >
+    <!---->
+    <section
+      class="unnnic-modal-dialog__container__body"
+      data-v-ab1febba=""
+    >
+      <header
+        class="unnnic-modal-dialog__container__header"
+        data-v-ab1febba=""
+      >
+        <section
+          class="unnnic-modal-dialog__container__title-container"
+          data-v-ab1febba=""
+        >
+          <!---->
+          <h1
+            class="unnnic-modal-dialog__container__title-text"
+            data-testid="title-text"
+            data-v-ab1febba=""
+          >
+            Agents gallery
+          </h1>
+        </section>
+        <span
+          class="material-symbols-rounded unnnic-icon-scheme--neutral-darkest unnnic-icon-size--md unnnic--clickable"
+          data-testid="close-icon"
+          data-v-9846e6db=""
+          data-v-ab1febba=""
+          translate="no"
+        >
+          close
+        </span>
+      </header>
+      <section
+        class="unnnic-modal-dialog__container__content"
+        data-v-ab1febba=""
+      >
+        
+        <section
+          class="agents-gallery"
+          data-testid="agents-gallery"
+          data-v-4005123d=""
+        >
+          <div
+            class="unnnic-side-bar-menu agents-gallery__sidebar"
+            data-testid="sidebar-menu"
+            data-v-4005123d=""
+          >
+            <p
+              class="unnnic-side-bar-menu__title"
+            />
+            
+            
+            <section
+              class="side-bar-item side-bar-item--active unnnic--clickable sidebar__item"
+              data-testid="sidebar-item"
+              data-v-4005123d=""
+            >
+              <!---->
+              <p
+                class="side-bar-item__label"
+              >
+                Official agents
+              </p>
+              <!--v-if-->
+            </section>
+            <section
+              class="side-bar-item unnnic--clickable sidebar__item"
+              data-testid="sidebar-item"
+              data-v-4005123d=""
+            >
+              <!---->
+              <p
+                class="side-bar-item__label"
+              >
+                Custom agents
+              </p>
+              <!--v-if-->
+            </section>
+            
+            
+          </div>
+          <section
+            class="agents-gallery__content"
+            data-v-4005123d=""
+          >
+            <div
+              class="unnnic-form md"
+              data-testid="search-input"
+              data-v-29b8feb1=""
+              data-v-4005123d=""
+            >
+              <!---->
+              <div
+                class="text-input size--md text-input--icon-right-size-sm unnnic-form-input"
+                data-testid="search-input"
+                data-v-29b8feb1=""
+                data-v-c1401a33=""
+                mask=""
+              >
+                <input
+                  class="unnnic-form-input input-itself input size-md normal input--has-icon-left unnnic-form-input input-itself"
+                  data-testid="search-input"
+                  data-v-244e8315=""
+                  data-v-c1401a33=""
+                  hascloudycolor="false"
+                  iconleft="search"
+                  iconrightsize="sm"
+                  placeholder="Search by agent or skill"
+                  type="text"
+                  value=""
+                />
+                <span
+                  class="material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--sm icon-left"
+                  data-testid="material-icon"
+                  data-v-9846e6db=""
+                  data-v-c1401a33=""
+                  translate="no"
+                >
+                  search
+                </span>
+                <!---->
+              </div>
+              <!---->
+            </div>
+            <!--v-if-->
+            <section
+              class="content__cards"
+              data-testid="agent-cards"
+              data-v-4005123d=""
+            >
+              
+              
+              
+              <section
+                class="assign-agent-card"
+                data-testid="assign-agent-card"
+                data-v-73104bd4=""
+              >
+                <section
+                  class="assign-agent-card__content"
+                  data-v-73104bd4=""
+                >
+                  <header
+                    class="content__header"
+                    data-v-73104bd4=""
+                  >
+                    <p
+                      class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-bold unnnic-text--color-neutral-darkest"
+                      data-testid="title"
+                      data-v-73104bd4=""
+                      data-v-ec8da4ad=""
+                    >
+                      
+                      Agent 1
+                      
+                    </p>
+                    <!--v-if-->
+                  </header>
+                  <p
+                    class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy content__description content__description"
+                    data-testid="description"
+                    data-v-73104bd4=""
+                    data-v-ec8da4ad=""
+                  >
+                    
+                    Description 1
+                    
+                  </p>
+                  <section
+                    class="content__skills"
+                    data-v-73104bd4=""
+                  >
+                    
+                    <section
+                      class="skill"
+                      data-testid="skill"
+                      data-v-29c532b5=""
+                      data-v-73104bd4=""
+                    >
+                      <p
+                        class="skill__icon"
+                        data-testid="skill-icon"
+                        data-v-29c532b5=""
+                      >
+                        🛒
+                      </p>
+                      <p
+                        class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy skill__title skill__title"
+                        data-testid="skill-name"
+                        data-v-29c532b5=""
+                        data-v-ec8da4ad=""
+                      >
+                        
+                        Skill 1
+                        
+                      </p>
+                    </section>
+                    
+                  </section>
+                </section>
+                <button
+                  class="assign-agent-card__button unnnic-button unnnic-button--size-small unnnic-button--primary assign-agent-card__button"
+                  data-testid="assign-button"
+                  data-v-73104bd4=""
+                  data-v-d127031e=""
+                >
+                  <!---->
+                  <!---->
+                  <!---->
+                  <span
+                    class="unnnic-button__label"
+                    data-testid="button-label"
+                    data-v-d127031e=""
+                  >
+                    
+                    
+                     Assign to team
+                  </span>
+                  <!---->
+                </button>
+              </section>
+              <!--v-if-->
+              
+              
+              <section
+                class="assign-agent-card"
+                data-testid="assign-agent-card"
+                data-v-73104bd4=""
+              >
+                <section
+                  class="assign-agent-card__content"
+                  data-v-73104bd4=""
+                >
+                  <header
+                    class="content__header"
+                    data-v-73104bd4=""
+                  >
+                    <p
+                      class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-bold unnnic-text--color-neutral-darkest"
+                      data-testid="title"
+                      data-v-73104bd4=""
+                      data-v-ec8da4ad=""
+                    >
+                      
+                      Agent 2
+                      
+                    </p>
+                    <!--v-if-->
+                  </header>
+                  <p
+                    class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy content__description content__description"
+                    data-testid="description"
+                    data-v-73104bd4=""
+                    data-v-ec8da4ad=""
+                  >
+                    
+                    Description 2
+                    
+                  </p>
+                  <section
+                    class="content__skills"
+                    data-v-73104bd4=""
+                  >
+                    
+                    <section
+                      class="skill"
+                      data-testid="skill"
+                      data-v-29c532b5=""
+                      data-v-73104bd4=""
+                    >
+                      <p
+                        class="skill__icon"
+                        data-testid="skill-icon"
+                        data-v-29c532b5=""
+                      >
+                        🛒
+                      </p>
+                      <p
+                        class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy skill__title skill__title"
+                        data-testid="skill-name"
+                        data-v-29c532b5=""
+                        data-v-ec8da4ad=""
+                      >
+                        
+                        Skill 2
+                        
+                      </p>
+                    </section>
+                    
+                  </section>
+                </section>
+                <button
+                  class="assign-agent-card__button unnnic-button unnnic-button--size-small unnnic-button--primary assign-agent-card__button"
+                  data-testid="assign-button"
+                  data-v-73104bd4=""
+                  data-v-d127031e=""
+                >
+                  <!---->
+                  <!---->
+                  <!---->
+                  <span
+                    class="unnnic-button__label"
+                    data-testid="button-label"
+                    data-v-d127031e=""
+                  >
+                    
+                    
+                     Assign to team
+                  </span>
+                  <!---->
+                </button>
+              </section>
+              <!--v-if-->
+              
+              
+              
+            </section>
+          </section>
+        </section>
+        
+      </section>
+      <!---->
+    </section>
+  </section>
+</section>
+`;

@@ -1,0 +1,58 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ActiveTeam.vue > Component rendering > should match snapshot 1`] = `
+<section
+  class="active-team"
+  data-v-b17fe699=""
+>
+  <!--v-if-->
+  <section
+    class="active-team__empty"
+    data-testid="empty-state"
+    data-v-b17fe699=""
+  >
+    <unnnic-icon-stub
+      class="empty__icon"
+      clickable="false"
+      data-v-b17fe699=""
+      filled="true"
+      icon="workspaces"
+      next="false"
+      scheme="neutral-soft"
+      size="xl"
+    />
+    <unnnic-intelligence-text-stub
+      color="neutral-dark"
+      data-v-b17fe699=""
+      family="secondary"
+      lineheight="md"
+      size="body-lg"
+      tag="p"
+      weight="bold"
+    />
+    <section
+      class="empty__description"
+      data-v-b17fe699=""
+    >
+      <!-- This comment prevents from auto-capitalizing i18n-t to I18nT which would break the component -->
+      <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+      <div
+        class="description__text"
+        data-v-b17fe699=""
+        keypath="router.agents_team.active_team.no_team_description"
+        tag="p"
+      >
+        
+        <p
+          class="description__assign-agents"
+          data-testid="assign-agents-link"
+          data-v-b17fe699=""
+        >
+          Assign agents
+        </p>
+        
+      </div>
+    </section>
+  </section>
+</section>
+`;
