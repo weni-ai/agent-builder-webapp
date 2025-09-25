@@ -53,7 +53,7 @@ jobs:
         OLD_IMAGE=869898323958.dkr.ecr.us-east-1.amazonaws.com/agent-builder:webapp-${{ needs.setup.outputs.image_tag_latest }}
       target_repository: weni-ai/kubernetes-manifests-platform
       target_repository_branch: main
-      target_application: agent-builder
+      target_application: agent-builder-webapp
       target_patch_file: deployment.json
       kludge_webapp_secret_enable: true
     secrets: inherit
