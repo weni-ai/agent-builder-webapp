@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import { beforeEach, expect } from 'vitest';
 import BasesFormText from '../BasesFormText.vue';
 import Unnnic from '@weni/unnnic-system';
+import { createTestingPinia } from '@pinia/testing';
 
 const response = {
   data: {
@@ -21,6 +22,16 @@ const createRequest = vi
   .spyOn(nexusaiAPI.intelligences.contentBases.texts, 'create')
   .mockResolvedValue(response);
 
+const pinia = createTestingPinia({
+  initialState: {
+    Project: {
+      details: {
+        contentBaseUuid: '5678',
+      },
+    },
+  },
+});
+
 describe('BasesFormText.vue', () => {
   let wrapper;
 
@@ -38,6 +49,7 @@ describe('BasesFormText.vue', () => {
       },
 
       global: {
+        plugins: [pinia],
         mocks: {
           $route: {
             params: {

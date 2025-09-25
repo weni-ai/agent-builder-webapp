@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AgentsTeam } from '@/api/nexus/AgentsTeam';
 import request from '@/api/nexusaiRequest';
-import globalStore from '@/store';
 
 vi.mock('@/api/nexusaiRequest', () => ({
   default: {

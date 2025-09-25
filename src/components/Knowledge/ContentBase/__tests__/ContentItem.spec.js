@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import ContentItem from '@/components/Knowledge/ContentBase/ContentItem.vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
-import { createStore } from 'vuex';
+import { createTestingPinia } from '@pinia/testing';
 
 nexusaiAPI.intelligences.contentBases.files.download = vi
   .fn()
@@ -51,27 +51,17 @@ function createFileObject(
   }[type];
 }
 
-const store = createStore({
-  state() {
-    return {
-      Actions: {
-        status: null,
-        data: [],
-
-        types: {
-          status: null,
-          data: [],
-        },
+const pinia = createTestingPinia({
+  initialState: {
+    alert: {
+      text: '',
+      type: '',
+    },
+    Project: {
+      details: {
+        contentBaseUuid: '1234',
       },
-
-      Auth: {
-        connectProjectUuid: '5678',
-      },
-
-      router: {
-        contentBaseUuid: '4321',
-      },
-    };
+    },
   },
 });
 
@@ -88,7 +78,7 @@ describe('ContentItem.vue', () => {
         },
 
         global: {
-          plugins: [store],
+          plugins: [pinia],
           stubs: ['teleport'],
         },
       });
@@ -143,7 +133,7 @@ describe('ContentItem.vue', () => {
           compressed: true,
         },
         global: {
-          plugins: [store],
+          plugins: [pinia],
           stubs: ['teleport'],
         },
       });
@@ -175,7 +165,7 @@ describe('ContentItem.vue', () => {
           compressed: true,
         },
         global: {
-          plugins: [store],
+          plugins: [pinia],
           stubs: ['teleport'],
         },
       });
@@ -237,7 +227,7 @@ describe('ContentItem.vue', () => {
             },
 
             global: {
-              plugins: [store],
+              plugins: [pinia],
             },
           });
         });
@@ -268,7 +258,7 @@ describe('ContentItem.vue', () => {
             },
 
             global: {
-              plugins: [store],
+              plugins: [pinia],
             },
           });
         });
@@ -293,7 +283,7 @@ describe('ContentItem.vue', () => {
             },
 
             global: {
-              plugins: [store],
+              plugins: [pinia],
             },
           });
         });
@@ -318,7 +308,7 @@ describe('ContentItem.vue', () => {
             },
 
             global: {
-              plugins: [store],
+              plugins: [pinia],
             },
           });
         });
@@ -341,7 +331,7 @@ describe('ContentItem.vue', () => {
         },
 
         global: {
-          plugins: [store],
+          plugins: [pinia],
         },
       });
     });

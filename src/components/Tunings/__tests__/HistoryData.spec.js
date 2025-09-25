@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import HistoryData from '@/components/Brain/Tunings/HistoryData.vue';
+import HistoryData from '@/components/Tunings/HistoryData.vue';
 import { describe, test, expect, beforeEach, afterEach } from 'vitest';
 
 describe('HistoryData.vue', () => {

@@ -1,8 +1,9 @@
 import { mount } from '@vue/test-utils';
 import ModalAddSite from '@/components/Knowledge/ContentBase/ModalAddSite.vue';
 import nexusaiAPI from '@/api/nexusaiAPI.js';
-import { createStore } from 'vuex';
+import { createTestingPinia } from '@pinia/testing';
 import i18n from '@/utils/plugins/i18n';
+import { useAlertStore } from '@/store/Alert';
 
 vi.spyOn(
   nexusaiAPI.intelligences.contentBases.sites,
@@ -13,16 +14,18 @@ vi.spyOn(
   },
 });
 
-const store = createStore({
-  state() {
-    return {
-      alert: null,
-    };
+const pinia = createTestingPinia({
+  initialState: {
+    alert: {
+      text: '',
+      type: '',
+    },
   },
 });
 
 describe('ModalAddSite', () => {
   let wrapper;
+  let alertStore;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -32,9 +35,11 @@ describe('ModalAddSite', () => {
         contentBaseUuid: 'testContentBaseUuid',
       },
       global: {
-        plugins: [store],
+        plugins: [pinia],
       },
     });
+
+    alertStore = useAlertStore();
   });
 
   it('should render modal with the correct title', () => {
@@ -101,7 +106,7 @@ describe('ModalAddSite', () => {
         'testContentBaseUuid',
       ]);
 
-      expect(store.state.alert).toEqual({
+      expect(alertStore.add).toHaveBeenCalledWith({
         type: 'success',
         text: i18n.global.t(
           'content_bases.sites.content_of_the_sites_has_been_added',

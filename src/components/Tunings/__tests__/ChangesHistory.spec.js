@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import ChangesHistory from '@/components/Brain/Tunings/ChangesHistory.vue';
+import ChangesHistory from '@/components/Tunings/ChangesHistory.vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { nextTick } from 'vue';
 import { createTestingPinia } from '@pinia/testing';

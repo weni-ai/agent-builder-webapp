@@ -1,9 +1,10 @@
 import { mount } from '@vue/test-utils';
-import ContentFiles from '@/components/Brain/ContentFiles.vue';
+import ContentFiles from '@/components/Knowledge/ContentFiles.vue';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { createStore } from 'vuex';
+import { createTestingPinia } from '@pinia/testing';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
+import { useAlertStore } from '@/store/Alert';
 
 const deleteRequest = vi
   .spyOn(nexusaiAPI.intelligences.contentBases.files, 'delete')
@@ -68,21 +69,17 @@ const generateFiles = () => ({
   ],
 });
 
-const store = createStore({
-  state() {
-    return {
-      Actions: {
-        status: null,
-        data: [],
-
-        types: {
-          status: null,
-          data: [],
-        },
+const pinia = createTestingPinia({
+  initialState: {
+    alert: {
+      text: '',
+      type: '',
+    },
+    Project: {
+      details: {
+        contentBaseUuid: '1234',
       },
-
-      alert: null,
-    };
+    },
   },
 });
 
@@ -92,7 +89,7 @@ const setup = ({ files }) =>
       files,
     },
     global: {
-      plugins: [store, i18n],
+      plugins: [pinia],
       mocks: {
         $route: {
           params: {
@@ -106,6 +103,7 @@ const setup = ({ files }) =>
 describe('ContentFiles.vue', () => {
   let wrapper;
   let files;
+  let alertStore;
 
   beforeEach(() => {
     registeredEventListeners = [];
@@ -116,6 +114,8 @@ describe('ContentFiles.vue', () => {
     wrapper = setup({
       files,
     });
+
+    alertStore = useAlertStore();
 
     vi.clearAllMocks();
   });
@@ -197,7 +197,7 @@ describe('ContentFiles.vue', () => {
     it('should show alert message', () => {
       inputFile.wrapperElement.dispatchEvent(new Event('change'));
 
-      expect(store.state.alert).toEqual({
+      expect(alertStore.add).toHaveBeenCalledWith({
         text: errorMessage,
         type: 'error',
       });

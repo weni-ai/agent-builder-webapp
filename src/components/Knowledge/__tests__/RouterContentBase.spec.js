@@ -3,33 +3,14 @@ import RouterContentBase from '@/components/Knowledge/RouterContentBase.vue';
 import ContentFiles from '@/components/Knowledge/ContentFiles.vue';
 import ContentSites from '@/components/Knowledge/ContentSites.vue';
 import ContentText from '@/components/Knowledge/ContentText.vue';
-import { createStore } from 'vuex';
+import { createTestingPinia } from '@pinia/testing';
 import { expect } from 'vitest';
 
-// Criação do Vuex Store para o teste
-const store = createStore({
-  state() {
-    return {
-      Actions: {
-        status: null,
-        data: [],
-
-        types: {
-          status: null,
-          data: [],
-        },
-      },
-
-      Brain: {
-        contentText: {
-          current: '',
-        },
-      },
-    };
-  },
-  mutations: {
-    updateContentText(state, text) {
-      state.Brain.contentText.current = text;
+const pinia = createTestingPinia({
+  initialState: {
+    alert: {
+      text: '',
+      type: '',
     },
   },
 });
@@ -60,7 +41,7 @@ describe('RouterContentBase', () => {
         textProp: mockTextProp,
       },
       global: {
-        plugins: [store],
+        plugins: [pinia],
         components: {
           ContentFiles,
           ContentSites,

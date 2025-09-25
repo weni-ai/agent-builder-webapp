@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { format } from 'date-fns';
 
-import ConversationDate from '@/views/AgentBuilder/Supervisor/SupervisorConversations/ConversationsTable/ConversationDate.vue';
+import ConversationDate from '@/views/Supervisor/SupervisorConversations/ConversationsTable/ConversationDate.vue';
 
 describe('ConversationDate.vue', () => {
   let wrapper;

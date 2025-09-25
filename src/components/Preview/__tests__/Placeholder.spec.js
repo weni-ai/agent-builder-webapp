@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import Placeholder from '@/views/Brain/Preview/Placeholder.vue';
+import Placeholder from '@/components/Preview/Placeholder.vue';
 
 describe('Placeholder', () => {
   let wrapper;

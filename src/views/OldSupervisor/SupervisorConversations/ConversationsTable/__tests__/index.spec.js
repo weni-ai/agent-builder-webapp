@@ -3,9 +3,9 @@ import { createTestingPinia } from '@pinia/testing';
 import { useOldSupervisorStore } from '@/store/OldSupervisor';
 import { vi } from 'vitest';
 
-import ConversationsTable from '@/views/AgentBuilder/OldSupervisor/SupervisorConversations/ConversationsTable/index.vue';
-import ConversationInfos from '@/views/AgentBuilder/OldSupervisor/SupervisorConversations/ConversationsTable/ConversationInfos.vue';
-import ConversationDate from '@/views/AgentBuilder/OldSupervisor/SupervisorConversations/ConversationsTable/ConversationDate.vue';
+import ConversationsTable from '@/views/OldSupervisor/SupervisorConversations/ConversationsTable/index.vue';
+import ConversationInfos from '@/views/OldSupervisor/SupervisorConversations/ConversationsTable/ConversationInfos.vue';
+import ConversationDate from '@/views/OldSupervisor/SupervisorConversations/ConversationsTable/ConversationDate.vue';
 import Unnnic from '@weni/unnnic-system';
 
 vi.mock('@/api/nexus/OldSupervisor', () => ({

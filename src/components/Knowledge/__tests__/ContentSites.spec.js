@@ -1,9 +1,10 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import ContentSites from '@/components/Brain/ContentSites.vue';
+import ContentSites from '@/components/Knowledge/ContentSites.vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { useRoute } from 'vue-router';
-import { createStore } from 'vuex';
+import { createTestingPinia } from '@pinia/testing';
+import { useAlertStore } from '@/store/Alert';
 
 const deleteRequest = vi
   .spyOn(nexusaiAPI.intelligences.contentBases.sites, 'delete')
@@ -40,11 +41,19 @@ const generateItems = () => ({
   ],
 });
 
-const storeMock = createStore({
-  state() {
-    return {
-      alert: null,
-    };
+const pinia = createTestingPinia({
+  initialState: {
+    alert: {
+      alert: {
+        text: '',
+        type: '',
+      },
+    },
+    Project: {
+      details: {
+        contentBaseUuid: 'uuuid-01',
+      },
+    },
   },
 });
 
@@ -55,7 +64,7 @@ const setup = (items) =>
       shape: 'accordion',
     },
     global: {
-      plugins: [storeMock],
+      plugins: [pinia],
       mocks: {
         $route: {
           params: {
@@ -84,7 +93,7 @@ vi.mock('vue-router', () => ({
 describe('ContentSites.vue', () => {
   let wrapper;
   let items;
-
+  let alertStore;
   beforeEach(() => {
     useRoute.mockImplementationOnce(() => ({
       name: 'router-profile',
@@ -95,6 +104,7 @@ describe('ContentSites.vue', () => {
 
     items = generateItems();
     wrapper = setup(items);
+    alertStore = useAlertStore();
     vi.clearAllMocks();
   });
 
@@ -202,7 +212,7 @@ describe('ContentSites.vue', () => {
       await buttonRemove.trigger('click');
       await wrapper.vm.$nextTick();
 
-      expect(storeMock.state.alert).toEqual({
+      expect(alertStore.add).toHaveBeenCalledWith({
         type: 'default',
         text: expect.any(String),
       });

@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { useRouter } from 'vue-router';
 
-import Supervisor from '@/views/AgentBuilder/Supervisor/index.vue';
+import Supervisor from '@/views/Supervisor/index.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
 
 vi.mock('vue-router', () => ({

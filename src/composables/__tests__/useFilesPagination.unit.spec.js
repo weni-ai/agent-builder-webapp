@@ -1,10 +1,19 @@
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { useFilesPagination } from '../useFilesPagination.js';
+import { createTestingPinia } from '@pinia/testing';
 
 const filesListRequest = vi.spyOn(
   nexusaiAPI.intelligences.contentBases.files,
   'list',
 );
+
+createTestingPinia({
+  initialState: {
+    IndexingProcess: {
+      itemsBeingProcessed: [],
+    },
+  },
+});
 
 describe('filesPagination.js', () => {
   let files;

@@ -1,7 +1,7 @@
 import { expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 
-import ConversationInfos from '@/views/AgentBuilder/Supervisor/SupervisorConversations/ConversationsTable/ConversationInfos.vue';
+import ConversationInfos from '@/views/Supervisor/SupervisorConversations/ConversationsTable/ConversationInfos.vue';
 
 describe('ConversationInfos.vue', () => {
   let wrapper;

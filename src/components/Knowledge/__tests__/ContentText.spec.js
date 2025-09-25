@@ -1,44 +1,16 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it } from 'vitest';
-import ContentText from '@/components/Brain/ContentText.vue';
-import { createStore } from 'vuex';
+import { createTestingPinia } from '@pinia/testing';
+import ContentText from '@/components/Knowledge/ContentText.vue';
 
-const store = createStore({
-  state() {
-    return {
-      Brain: {
-        contentText: {
-          uuid: null,
-          current: '',
-          old: '',
-        },
+const pinia = createTestingPinia({
+  initialState: {
+    Knowledge: {
+      contentText: {
+        uuid: null,
+        current: '',
+        old: '',
       },
-    };
-  },
-
-  getters: {
-    actionsTypesAvailable() {
-      return [];
-    },
-  },
-
-  actions: {
-    async loadActions({ state: { Actions: state } }) {
-      if (state.status !== null) {
-        return;
-      }
-
-      try {
-        state.status = 'loading';
-
-        const { data } = { data: [] };
-
-        state.data = data;
-
-        state.status = 'complete';
-      } catch (error) {
-        state.status = 'error';
-      }
     },
   },
 });
@@ -54,7 +26,7 @@ describe('ContentText.vue', () => {
       },
 
       global: {
-        plugins: [store],
+        plugins: [pinia],
       },
     });
   };

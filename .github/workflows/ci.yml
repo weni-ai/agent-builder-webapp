@@ -15,12 +15,12 @@ jobs:
           npm install
       - name: Run lint
         run: npm run lint
-      # - name: Run coverage
-      #   run: npm run test:coverage
-      # - name: Upload coverage reports to Codecov
-      #   uses: codecov/codecov-action@v5
-      #   with:
-      #     token: ${{ secrets.CODECOV_TOKEN }}
-      #     slug: weni-ai/agent_builder
+      - name: Run coverage
+        run: npm run test:coverage
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: weni-ai/agent-builder-webapp
       - name: Build application
         run: npm run build

@@ -1,5 +1,6 @@
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { useSitesPagination } from '../useSitesPagination.js';
+import { createTestingPinia } from '@pinia/testing';
 
 vi.spyOn(nexusaiAPI.intelligences.contentBases.sites, 'list').mockResolvedValue(
   {
@@ -25,6 +26,14 @@ vi.spyOn(nexusaiAPI.intelligences.contentBases.sites, 'list').mockResolvedValue(
     ],
   },
 );
+
+createTestingPinia({
+  initialState: {
+    IndexingProcess: {
+      itemsBeingProcessed: [],
+    },
+  },
+});
 
 describe('sitesPagination.js', () => {
   let sites;

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import HistoryItem from '@/components/Brain/Tunings/HistoryItem.vue';
+import HistoryItem from '@/components/Tunings/HistoryItem.vue';
 
 describe('HistoryItem.vue', () => {
   let wrapper;
