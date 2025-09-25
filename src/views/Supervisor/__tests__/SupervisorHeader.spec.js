@@ -1,6 +1,5 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { format, subDays } from 'date-fns';
 import SupervisorHeader from '../SupervisorHeader.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
@@ -56,7 +55,6 @@ vi.mock('vue-router', () => {
 
 describe('SupervisorHeader', () => {
   let wrapper;
-  let supervisorStore;
   let featureFlagsStore;
 
   beforeEach(() => {
@@ -66,7 +64,6 @@ describe('SupervisorHeader', () => {
       },
     });
 
-    supervisorStore = useSupervisorStore();
     featureFlagsStore = useFeatureFlagsStore();
   });
 

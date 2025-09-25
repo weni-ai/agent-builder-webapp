@@ -182,10 +182,11 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
 
   async function loadLogs({ messageId }) {
     try {
-      const response = await nexusaiAPI.agent_builder.supervisor.conversations.getLogs({
-        projectUuid: projectUuid.value,
-        messageId,
-      });
+      const response =
+        await nexusaiAPI.agent_builder.supervisor.conversations.getLogs({
+          projectUuid: projectUuid.value,
+          messageId,
+        });
 
       return response;
     } catch (error) {

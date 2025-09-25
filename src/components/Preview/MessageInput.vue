@@ -84,15 +84,13 @@ const inputFile = useTemplateRef('file');
 const currentAllowedMediaFormats = ref('');
 
 const attachActions = [
-    {
-      scheme: 'neutral-dark',
-      icon: 'image',
-      text: i18n.global.t(
-        'router.preview.preview_tests_attachments.photos',
-      ),
-      onClick: () => openFileSelection('photo'),
-    },
-  ]
+  {
+    scheme: 'neutral-dark',
+    icon: 'image',
+    text: i18n.global.t('router.preview.preview_tests_attachments.photos'),
+    onClick: () => openFileSelection('photo'),
+  },
+];
 
 function openFileSelection(type) {
   const mapTypes = {

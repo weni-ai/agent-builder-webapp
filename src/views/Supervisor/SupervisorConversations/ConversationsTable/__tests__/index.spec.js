@@ -113,13 +113,13 @@ describe('ConversationsTable.vue', () => {
   });
 
   // Temporaly disabled
-  // it('correctly displays the conversations count', () => {
-  //   expect(conversationsCount().text()).toBe(
-  //     i18n.global.t('agent_builder.supervisor.conversations_count', {
-  //       count: 2,
-  //     }),
-  //   );
-  // });
+  it.skip('correctly displays the conversations count', () => {
+    expect(conversationsCount().text()).toBe(
+      i18n.global.t('agent_builder.supervisor.conversations_count', {
+        count: 2,
+      }),
+    );
+  });
 
   it('passes correct props to ConversationRow component', () => {
     const conversationRow = conversationRows()[0];

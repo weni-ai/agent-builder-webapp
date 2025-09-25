@@ -43,17 +43,15 @@ const text = ref({
   value: '',
 });
 
-const contentBaseUuid = computed(
-  () => projectStore.details.contentBaseUuid,
-);
+const contentBaseUuid = computed(() => projectStore.details.contentBaseUuid);
 
 const files = useFilesPagination({
-    contentBaseUuid: contentBaseUuid.value,
-  });
+  contentBaseUuid: contentBaseUuid.value,
+});
 
 const sites = useSitesPagination({
-    contentBaseUuid: contentBaseUuid.value,
-  });
+  contentBaseUuid: contentBaseUuid.value,
+});
 
 async function loadContentBaseText() {
   text.value.status = 'loading';

@@ -159,7 +159,6 @@ export const useProfileStore = defineStore('profile', () => {
       return { status: 'success' };
     } catch (error) {
       return { status: 'error' };
-
     } finally {
       isSaving.value = false;
     }

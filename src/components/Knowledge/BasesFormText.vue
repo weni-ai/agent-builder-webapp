@@ -114,6 +114,7 @@ export default {
           if (this.useUpdate) {
             this.$emit('update:oldValue', contentBaseTextData.text);
           } else {
+            // eslint-disable-next-line vue/no-mutating-props
             this.item.oldValue = contentBaseTextData.text;
           }
         } else {
@@ -127,7 +128,9 @@ export default {
             this.$emit('update:uuid', contentBaseTextData.uuid);
             this.$emit('update:oldValue', contentBaseTextData.text);
           } else {
+            // eslint-disable-next-line vue/no-mutating-props
             this.item.uuid = contentBaseTextData.uuid;
+            // eslint-disable-next-line vue/no-mutating-props
             this.item.oldValue = contentBaseTextData.text;
           }
         }

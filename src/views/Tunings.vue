@@ -67,7 +67,7 @@ const tabs = ref(
 
 const activeTab = ref('config');
 
-const props = defineProps({
+defineProps({
   data: {
     type: Object,
     default: () => {

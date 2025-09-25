@@ -28,7 +28,7 @@ describe('Tunings components adapter', () => {
     ];
 
     fromApiTestCases.forEach(({ name, input, expected }) => {
-      it(name, () => {
+      it(`${name}`, () => {
         const obj = {
           name: 'Test Component',
           description: 'Test description',
@@ -68,7 +68,7 @@ describe('Tunings components adapter', () => {
     ];
 
     fromApiTestCases.forEach(({ name, input, expected }) => {
-      it(name, () => {
+      it(`${name}`, () => {
         const obj = {
           name: 'Test Component',
           description: 'Test description',

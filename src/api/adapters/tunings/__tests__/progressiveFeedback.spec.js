@@ -28,7 +28,7 @@ describe('Tunings progressiveFeedback adapter', () => {
     ];
 
     fromApiTestCases.forEach(({ name, input, expected }) => {
-      it(name, () => {
+      it(`${name}`, () => {
         const obj = {
           name: 'Test Feedback',
           description: 'Test description',
@@ -68,7 +68,7 @@ describe('Tunings progressiveFeedback adapter', () => {
     ];
 
     toApiTestCases.forEach(({ name, input, expected }) => {
-      it(name, () => {
+      it(`${name}`, () => {
         const obj = {
           name: 'Test Feedback',
           description: 'Test description',

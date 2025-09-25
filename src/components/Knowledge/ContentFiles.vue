@@ -248,21 +248,21 @@ export default {
       );
 
       if (isNotAllowedFormat) {
-        return (this.alertStore.add({
+        return this.alertStore.add({
           type: 'error',
           text: this.$t('content_bases.files.unsupported_format'),
-        }));
+        });
       }
 
       const fileSizeInMegabytes = file.size / Math.pow(1024, 2);
 
       if (fileSizeInMegabytes > fileSizeLimitInMegabytes) {
-        return (this.alertStore.add({
+        return this.alertStore.add({
           type: 'error',
           text: this.$t('content_bases.files.exceeds_limit', {
             limitMB: fileSizeLimitInMegabytes,
           }),
-        }));
+        });
       }
 
       const fileItem = reactive({

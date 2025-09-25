@@ -169,14 +169,6 @@ describe('Instruction.vue', () => {
       expect(findComponent('cancelButton').props('size')).toBe('small');
     });
 
-    it('renders the correct cancel button', () => {
-      expect(findComponent('cancelButton').props('type')).toBe('tertiary');
-      expect(findComponent('cancelButton').props('size')).toBe('small');
-      expect(findComponent('cancelButton').props('text')).toBe(
-        i18n.global.t('agent_builder.instructions.edit_instruction.cancel'),
-      );
-    });
-
     describe('Save button', () => {
       it('is disabled when the input is empty', async () => {
         wrapper.vm.editingText = '';

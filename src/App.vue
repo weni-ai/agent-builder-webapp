@@ -60,7 +60,8 @@ watch(
   () => userStore.user.email,
   (email) => {
     if (email) initHotjar(email);
-  });
+  },
+);
 </script>
 
 <style lang="scss" scoped>

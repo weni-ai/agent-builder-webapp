@@ -106,9 +106,7 @@ describe('SupervisorFilters.vue', () => {
 
       expect(buttonFilter().props('text')).toContain(countTranslation(3));
     });
-  });
 
-  describe('Filter drawer', () => {
     beforeEach(() => {
       wrapper.vm.openFilterDrawer();
     });

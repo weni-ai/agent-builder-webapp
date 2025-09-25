@@ -21,7 +21,6 @@ vi.mock('vue-router', () => ({
 describe('Supervisor view', () => {
   let wrapper;
   let supervisorStore;
-  let router;
 
   beforeEach(() => {
     const pinia = createPinia();
@@ -29,7 +28,7 @@ describe('Supervisor view', () => {
 
     supervisorStore = useSupervisorStore();
 
-    router = useRouter();
+    useRouter();
 
     wrapper = shallowMount(Supervisor, {
       global: {

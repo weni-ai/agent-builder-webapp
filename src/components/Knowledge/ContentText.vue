@@ -12,7 +12,7 @@
     </header>
 
     <BasesFormText
-      v-model="modelValue.current"
+      :modelValue="modelValue.current"
       useUpdate
       :item="{
         isLoading,
@@ -29,7 +29,7 @@
 import BasesFormText from '@/components/Knowledge/BasesFormText.vue';
 import { useKnowledgeStore } from '@/store/Knowledge';
 
-const props = defineProps({
+defineProps({
   modelValue: {
     type: Object,
     default() {

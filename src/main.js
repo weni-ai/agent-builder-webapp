@@ -16,7 +16,6 @@ import env from './utils/env';
 import './styles/global.scss';
 import '@weni/unnnic-system/dist/style.css';
 
-
 export default async function mountAgentBuilderApp({
   containerId = 'app',
 } = {}) {
@@ -27,11 +26,7 @@ export default async function mountAgentBuilderApp({
 
   const pinia = createPinia();
 
-  app
-  .use(pinia)
-  .use(router)
-  .use(Unnnic)
-  .use(i18n)
+  app.use(pinia).use(router).use(Unnnic).use(i18n);
 
   app.use(Particles, {
     init: async (engine) => {

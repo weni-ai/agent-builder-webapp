@@ -119,12 +119,14 @@ describe('ContentItem.vue', () => {
       };
 
       describe('is false', () => {
+        // eslint-disable-next-line vitest/expect-expect
         it('does not show the remove action', async () => {
           await checkRemoveActionVisibility(false, false);
         });
       });
 
       describe('is true', () => {
+        // eslint-disable-next-line vitest/expect-expect
         it('shows the remove action', async () => {
           await checkRemoveActionVisibility(true, true);
         });

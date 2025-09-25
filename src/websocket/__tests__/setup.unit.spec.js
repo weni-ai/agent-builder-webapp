@@ -11,11 +11,6 @@ vi.stubEnv('NEXUS_WEBSOCKET_BASE_URL', 'ws://mock-url');
 
 describe('WebSocketSetup', () => {
   let webSocketSetup;
-  const mockApp = {
-    appToken: 'mockToken',
-    appProject: 'mockProject',
-    updateUserStatus: vi.fn(),
-  };
 
   beforeEach(() => {
     webSocketSetup = new WebSocketSetup({

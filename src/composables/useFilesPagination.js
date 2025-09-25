@@ -20,7 +20,11 @@ export function useFilesPagination({ contentBaseUuid }) {
     }),
   });
 
-  useIndexingProcessStore().useIndexingProcess(pagination.data, 'files', contentBaseUuid);
+  useIndexingProcessStore().useIndexingProcess(
+    pagination.data,
+    'files',
+    contentBaseUuid,
+  );
 
   return pagination;
 }

@@ -74,6 +74,7 @@ const branchPositions = computed(() => {
   const managerEl = managerRef.value.$el;
   const managerRect = managerEl.getBoundingClientRect();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   visualFlowHeight.value; // Only access to ensure reactivity
 
   agentRefs.value.forEach((agentRef, index) => {

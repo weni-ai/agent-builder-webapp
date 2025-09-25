@@ -1,9 +1,5 @@
 <template>
-  <section
-    :class="[
-      'tunings-header-actions'
-    ]"
-  >
+  <section :class="['tunings-header-actions']">
     <UnnnicButton
       type="secondary"
       :loading="projectStore.details.status === 'loading'"
@@ -40,11 +36,11 @@ const projectStore = useProjectStore();
 const showModalProjectDetails = ref(false);
 
 const isTuningsSaveButtonDisabled = computed(() => {
-  return !tuningsStore.isCredentialsValid && !tuningsStore.isSettingsValid
+  return !tuningsStore.isCredentialsValid && !tuningsStore.isSettingsValid;
 });
 
 const isTuningsSaveButtonLoading = computed(() => {
-  return tuningsStore.isLoadingTunings
+  return tuningsStore.isLoadingTunings;
 });
 
 async function saveTunings() {

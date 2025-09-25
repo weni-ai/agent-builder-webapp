@@ -19,7 +19,7 @@ export const useProjectStore = defineStore('Project', () => {
         obstructiveErrorProducer: true,
       });
 
-      details.value = {...details.value, contentBaseUuid: data.uuid};
+      details.value = { ...details.value, contentBaseUuid: data.uuid };
       details.value.status = 'success';
     } catch (error) {
       console.error(error);
@@ -35,7 +35,7 @@ export const useProjectStore = defineStore('Project', () => {
         projectUuid: uuid,
       });
 
-      details.value = {...details.value, ...data};
+      details.value = { ...details.value, ...data };
       details.value.status = 'success';
     } catch (error) {
       console.error(error);

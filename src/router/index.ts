@@ -18,15 +18,15 @@ const routes = [
       {
         path: 'supervisor',
         name: 'supervisor',
-        component: () => useFeatureFlagsStore().flags.newSupervisor ?
-          import('@/views/Supervisor/index.vue') :
-          import('@/views/OldSupervisor/index.vue'),
+        component: () =>
+          useFeatureFlagsStore().flags.newSupervisor
+            ? import('@/views/Supervisor/index.vue')
+            : import('@/views/OldSupervisor/index.vue'),
       },
       {
         path: 'instructions',
         name: 'instructions',
-        component: () =>
-          import('@/views/Instructions/index.vue'),
+        component: () => import('@/views/Instructions/index.vue'),
       },
       {
         path: 'agents',
@@ -50,11 +50,9 @@ const routes = [
         name: 'tunings',
         component: () => import('@/views/Tunings.vue'),
       },
-    ]
+    ],
   },
-
 ] as RouteRecordRaw[];
-
 
 const history = isFederatedModule
   ? createMemoryHistory() // To isolate routing from parent app

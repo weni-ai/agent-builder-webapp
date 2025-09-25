@@ -131,7 +131,9 @@ const isAddSiteOpen = ref(false);
 const modalDeleteSite = ref(null);
 const alertStore = useAlertStore();
 
-const contentBaseUuid = computed(() => useProjectStore().details.contentBaseUuid);
+const contentBaseUuid = computed(
+  () => useProjectStore().details.contentBaseUuid,
+);
 
 const openAddSite = () => {
   isAddSiteOpen.value = true;

@@ -109,9 +109,11 @@ export default defineConfig({
       name: 'agent_builder',
       filename: 'remoteEntry.js',
       remotes: {
-        ...(connectUrl ? {
-          connect: `connect@${connectUrl}/remoteEntry.js`,
-        } : {}),
+        ...(connectUrl
+          ? {
+              connect: `connect@${connectUrl}/remoteEntry.js`,
+            }
+          : {}),
       },
       shared: {
         ...pkg,

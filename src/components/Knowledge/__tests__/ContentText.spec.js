@@ -31,7 +31,7 @@ const store = createStore({
       try {
         state.status = 'loading';
 
-        const { data } = mockItems;
+        const { data } = { data: [] };
 
         state.data = data;
 

@@ -109,12 +109,10 @@
 <script>
 import { ref, computed, onMounted, onBeforeUnmount, watch, toValue } from 'vue';
 import ContentItem from '@/components/Knowledge/ContentBase/ContentItem.vue';
-import BasesFormGenericListHeader from '@/components/Knowledge/BasesFormGenericListHeader.vue';
 
 export default {
   components: {
     ContentItem,
-    BasesFormGenericListHeader,
   },
   props: {
     hideSearchInput: {

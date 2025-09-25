@@ -322,7 +322,7 @@ describe('PreviewLogs.vue', () => {
     ];
 
     unknownCases.forEach(({ description, log }) => {
-      it(description, () => {
+      it(`${description}`, () => {
         const summary = wrapper.vm.getLogSummary(log);
         expect(summary).toBe('Unknown');
       });

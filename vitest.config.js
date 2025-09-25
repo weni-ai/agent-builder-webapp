@@ -7,9 +7,7 @@ export default mergeConfig(
   defineConfig({
     test: {
       environment: 'jsdom',
-      exclude: [
-        ...configDefaults.exclude,
-      ],
+      exclude: [...configDefaults.exclude],
       root: fileURLToPath(new URL('./', import.meta.url)),
       globals: true,
       setupFiles: './setupVitest.js',

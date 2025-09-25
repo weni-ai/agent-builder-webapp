@@ -131,7 +131,7 @@ defineProps({
   height: fit-content;
   min-height: calc(
     ($unnnic-font-size-body-gt + $unnnic-line-height-md) * 2 +
-    $unnnic-spacing-sm * 2
+      $unnnic-spacing-sm * 2
   );
 
   z-index: 1;

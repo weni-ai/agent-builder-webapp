@@ -33,7 +33,11 @@ export function useSitesPagination({ contentBaseUuid }) {
     }),
   });
 
-  useIndexingProcessStore().useIndexingProcess(pagination.data, 'sites', contentBaseUuid);
+  useIndexingProcessStore().useIndexingProcess(
+    pagination.data,
+    'sites',
+    contentBaseUuid,
+  );
 
   return pagination;
 }

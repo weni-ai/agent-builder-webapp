@@ -9,33 +9,31 @@
     @update:model-value="emit('update:modelValue', $event)"
   >
     <ProjectInfo
-      :title="
-        $t('agent_builder.tunings.agents_backend')
-      "
+      :title="$t('agent_builder.tunings.agents_backend')"
       :description="projectDetails.backend"
     />
 
+    <UnnnicDivider ySpacing="sm" />
+
+    <ProjectInfo
+      v-for="agent in projectDetails.agentsModels"
+      :key="agent.name"
+      :title="$t('agent_builder.tunings.agent_model', { agent: agent.name })"
+      :description="agent.model"
+    />
+
+    <template v-if="projectDetails.charactersCount">
       <UnnnicDivider ySpacing="sm" />
 
       <ProjectInfo
-        v-for="agent in projectDetails.agentsModels"
-        :key="agent.name"
-        :title="$t('agent_builder.tunings.agent_model', { agent: agent.name })"
-        :description="agent.model"
+        :title="$t('agent_builder.tunings.characters_usage')"
+        :description="charactersUsage"
       />
 
-      <template v-if="projectDetails.charactersCount">
-        <UnnnicDivider ySpacing="sm" />
-
-        <ProjectInfo
-          :title="$t('agent_builder.tunings.characters_usage')"
-          :description="charactersUsage"
-        />
-
-        <p class="project-details-modal__info-explanation">
-          {{ $t('agent_builder.tunings.characters_usage_description') }}
-        </p>
-      </template>
+      <p class="project-details-modal__info-explanation">
+        {{ $t('agent_builder.tunings.characters_usage_description') }}
+      </p>
+    </template>
   </UnnnicModalDialog>
 </template>
 
