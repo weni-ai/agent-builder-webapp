@@ -114,7 +114,7 @@ function handleAgentsGallery() {
 
     .empty__description {
       display: flex;
-      align-items: center;
+      align-items: baseline;
       gap: $unnnic-spacing-nano / 2;
 
       .description__text {

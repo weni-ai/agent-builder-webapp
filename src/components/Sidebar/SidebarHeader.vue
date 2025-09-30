@@ -6,15 +6,17 @@
   >
     <template v-if="isLoading">
       <UnnnicSkeletonLoading
+        class="sidebar-header__skeleton"
         tag="div"
         width="100%"
-        height="19px"
+        height="20px"
         data-testid="sidebar-header-skeleton"
       />
       <UnnnicSkeletonLoading
+        class="sidebar-header__skeleton"
         tag="div"
         width="100%"
-        height="17px"
+        height="18px"
         data-testid="sidebar-header-skeleton"
       />
     </template>
@@ -89,6 +91,10 @@ function openDrawer() {
     font-family: $unnnic-font-family-secondary;
     font-size: $unnnic-font-size-body-md;
     line-height: $unnnic-font-size-body-md + $unnnic-line-height-md;
+  }
+
+  &__skeleton {
+    display: flex;
   }
 }
 </style>
