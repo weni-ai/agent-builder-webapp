@@ -6,7 +6,6 @@ import {
 import { isFederatedModule } from '@/utils/moduleFederation';
 import { RouteRecordRaw } from 'vue-router';
 import { useProjectStore } from '@/store/Project';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 const routes = [
   {
@@ -18,10 +17,7 @@ const routes = [
       {
         path: 'supervisor',
         name: 'supervisor',
-        component: () =>
-          useFeatureFlagsStore().flags.newSupervisor
-            ? import('@/views/Supervisor/index.vue')
-            : import('@/views/OldSupervisor/index.vue'),
+        component: () => import('@/views/Supervisor/index.vue'),
       },
       {
         path: 'instructions',
