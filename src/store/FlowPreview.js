@@ -1,17 +1,11 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { get, attempt } from 'lodash';
+import { get } from 'lodash';
 
 import useFlowPreview from '@/composables/useFlowPreview';
 
 export const useFlowPreviewStore = defineStore('flowPreview', () => {
-  const {
-    preview,
-    previewInit,
-    previewStart,
-    previewHasQuickReplies,
-    previewResume,
-  } = useFlowPreview();
+  const { preview, previewInit } = useFlowPreview();
 
   const messages = ref([]);
   const messageInput = ref('');
@@ -49,13 +43,7 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
   function treatAnswerResponse(
     answer,
     data,
-    {
-      onBroadcast,
-      onFlowStart,
-      onMediaUnavailable,
-      onCancelled,
-      fallbackMessage = '',
-    },
+    { onBroadcast, onMediaUnavailable, onCancelled, fallbackMessage = '' },
   ) {
     if (data.type === 'broadcast') {
       handleBroadcastResponse(answer, data, fallbackMessage, onBroadcast);
@@ -71,8 +59,6 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
           reason: null,
         },
       });
-
-      if (onFlowStart) onFlowStart(answer, data);
     } else if (data.type === 'media_and_location_unavailable') {
       answer.status = 'loaded';
       answer.type = data.type;
@@ -128,9 +114,6 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
     messageInput,
 
     previewInit,
-    previewStart,
-    previewResume,
-    previewHasQuickReplies,
 
     addMessage,
     clearMessages,
