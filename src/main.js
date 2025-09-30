@@ -12,12 +12,27 @@ import UnnnicIntelligenceText from './components/unnnic-intelligence/Text.vue';
 import Unnnic from './utils/plugins/UnnnicSystem.ts';
 import { gbKey, initializeGrowthBook } from './utils/Growthbook.js';
 import env from './utils/env';
+import { moduleStorage } from './utils/storage';
+import { safeImport, isFederatedModule } from './utils/moduleFederation';
 
 import './styles/global.scss';
 import '@weni/unnnic-system/dist/style.css';
 
+let sharedStore = null;
+
+try {
+  const { useSharedStore } = await safeImport(
+    () => import('connect/sharedStore'),
+    'connect/sharedStore',
+  );
+  sharedStore = useSharedStore?.();
+} catch (error) {
+  console.error(error);
+}
+
 export default async function mountAgentBuilderApp({
   containerId = 'app',
+  initialRoute,
 } = {}) {
   const gbInstance = await initializeGrowthBook();
 
@@ -33,6 +48,8 @@ export default async function mountAgentBuilderApp({
       await loadSlim(engine);
     },
   });
+
+  if (isFederatedModule && initialRoute) await router.replace(initialRoute);
 
   if (env('SENTRY_URL')) {
     Sentry.init({
@@ -57,6 +74,11 @@ export default async function mountAgentBuilderApp({
     });
   }
 
+  if (sharedStore) {
+    moduleStorage.setItem('authToken', sharedStore.auth.token);
+    moduleStorage.setItem('projectUuid', sharedStore.current.project.uuid);
+  }
+
   app.component('UnnnicDivider', UnnnicDivider);
   app.component('UnnnicIntelligenceText', UnnnicIntelligenceText);
 
@@ -65,9 +87,9 @@ export default async function mountAgentBuilderApp({
   app.mount(`#${containerId}`);
   appRef = app;
 
-  return {
-    app: appRef,
-  };
+  return { app: appRef, router };
 }
 
-mountAgentBuilderApp();
+if (!sharedStore) {
+  mountAgentBuilderApp();
+}

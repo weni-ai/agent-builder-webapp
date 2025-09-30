@@ -108,6 +108,9 @@ export default defineConfig({
     new rspack.container.ModuleFederationPlugin({
       name: 'agent_builder',
       filename: 'remoteEntry.js',
+      exposes: {
+        './main': './src/main.js',
+      },
       remotes: {
         ...(connectUrl
           ? {
