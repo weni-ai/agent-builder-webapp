@@ -194,48 +194,6 @@ function isMedia(message) {
   return !!getFileType(message);
 }
 
-function treatEvents(replace, events) {
-  const processedEvents = events
-    .filter(({ type }) => type === 'msg_created')
-    .map(({ type, msg }) => {
-      if (type === 'msg_created') {
-        return {
-          type: 'answer',
-          text: msg.response?.msg.text || msg.text,
-          status: 'loaded',
-          question_uuid: null,
-          feedback: {
-            value: null,
-            reason: null,
-          },
-        };
-      }
-    });
-
-  flowPreviewStore.replaceMessage(replace, processedEvents);
-  scrollToLastMessage();
-}
-
-async function flowResume(answer, { text }) {
-  const {
-    data: { events },
-  } = await flowPreviewStore.previewResume(text);
-
-  treatEvents(answer, events);
-}
-
-async function flowStart(answer, flow) {
-  const {
-    data: { events },
-  } = await flowPreviewStore.previewStart({
-    flowName: flow.name,
-    flowUuid: flow.uuid,
-    flowParams: flow.params,
-  });
-
-  treatEvents(answer, events);
-}
-
 function sendMenuMessage(messageContent) {
   previewMenuMessage.value = null;
   showPreviewMenu.value = false;
@@ -306,11 +264,6 @@ async function answer(question) {
     flowPreviewStore.removeMessage(answer);
   };
 
-  if (flowPreviewStore.preview.session?.status === 'waiting') {
-    flowResume(answer, { text: question });
-    return;
-  }
-
   let questionMediaUrl;
   const isQuestionMedia = isMedia(question);
   if (isQuestionMedia) {
@@ -343,13 +296,6 @@ async function answer(question) {
 
     flowPreviewStore.treatAnswerResponse(answer, data, {
       onBroadcast: () => scrollToLastMessage(),
-      onFlowStart: (answer, data) => {
-        flowStart(answer, {
-          name: data.name,
-          uuid: data.uuid,
-          params: data.params,
-        });
-      },
       fallbackMessage: i18n.global.t('quick_test.unable_to_find_an_answer'),
     });
   } catch {
