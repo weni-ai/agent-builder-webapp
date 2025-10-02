@@ -21,7 +21,7 @@ export const createHttpClient = (baseUrlKey) => {
     baseURL: env(baseUrlKey),
     headers: {
       ...(userStore.user.token
-        ? { Authorization: `${userStore.user.token}` }
+        ? { Authorization: `Bearer ${userStore.user.token}` }
         : {}),
     },
   });

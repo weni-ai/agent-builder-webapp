@@ -2,11 +2,12 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
+import { moduleStorage } from '@/utils/storage';
 
 export const useUserStore = defineStore('User', () => {
   const user = reactive({
     email: null,
-    token: localStorage.getItem('authToken') || null,
+    token: moduleStorage.getItem('authToken') || null,
   });
 
   async function getUserDetails() {

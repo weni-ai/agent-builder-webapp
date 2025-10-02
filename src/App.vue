@@ -1,24 +1,25 @@
 <template>
-  <div id="app">
-    <section class="agent-builder">
-      <Sidebar data-testid="agent-builder-sidebar" />
+  <div
+    id="app"
+    :class="`app-agent-builder app-agent-builder--${!isFederatedModule ? 'dev' : 'prod'}`"
+  >
+    <Sidebar data-testid="agent-builder-sidebar" />
 
-      <main
-        class="agent-builder__content"
-        data-testid="agent-builder-content"
-      >
-        <RouterView />
-      </main>
+    <main
+      class="agent-builder__content"
+      data-testid="agent-builder-content"
+    >
+      <RouterView />
+    </main>
 
-      <UnnnicAlert
-        v-if="alertStore.data.text"
-        :key="alertStore.id"
-        data-testid="alert-pinia"
-        class="app-alert"
-        v-bind="alertStore.data"
-        @close="alertStore.close"
-      />
-    </section>
+    <UnnnicAlert
+      v-if="alertStore.data.text"
+      :key="alertStore.id"
+      data-testid="alert-pinia"
+      class="app-alert"
+      v-bind="alertStore.data"
+      @close="alertStore.close"
+    />
   </div>
 </template>
 
@@ -33,6 +34,7 @@ import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
 import { useProjectStore } from '@/store/Project';
 import { useUserStore } from '@/store/User';
+import { isFederatedModule } from './utils/moduleFederation';
 
 import initHotjar from '@/utils/plugins/Hotjar.js';
 
@@ -65,14 +67,21 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.agent-builder {
+.app-agent-builder {
   overflow: hidden;
 
   display: grid;
   grid-template-columns: auto 1fr;
 
-  height: 100vh;
-  width: 100vw;
+  &--prod {
+    height: 100%;
+    width: 100%;
+  }
+
+  &--dev {
+    height: 100vh;
+    width: 100vw;
+  }
 
   .agent-builder__content {
     padding: $unnnic-spacing-sm;

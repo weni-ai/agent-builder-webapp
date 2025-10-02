@@ -62,7 +62,7 @@ describe('nexusaiRequest.js', () => {
     expect(axios.create).toHaveBeenCalledWith({
       baseURL: env('NEXUS_API_BASE_URL'),
       headers: {
-        Authorization: 'token123',
+        Authorization: 'Bearer token123',
       },
     });
   });
