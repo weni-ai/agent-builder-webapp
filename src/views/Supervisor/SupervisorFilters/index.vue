@@ -71,11 +71,11 @@ const countAppliedFilters = computed(() => {
 });
 
 const filterButtonText = computed(() => {
-  const { t, tc } = i18n.global;
+  const { t } = i18n.global;
   const count = countAppliedFilters.value;
 
   const text = t('agent_builder.supervisor.filters.filter_conversations');
-  const countText = tc(
+  const countText = t(
     'agent_builder.supervisor.filters.count_applied_filters',
     count,
     {
