@@ -231,7 +231,7 @@ describe('Catalog', () => {
       await wrapper.vm.$nextTick();
 
       expect(wrapper.vm.cartButtonText).toBe(
-        i18n.global.tc(
+        i18n.global.t(
           'router.preview.catalog.view_cart',
           mockMessage.catalog_message.products.length,
           { quantity: mockMessage.catalog_message.products.length },

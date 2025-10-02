@@ -87,7 +87,7 @@ const emit = defineEmits(['view-details', 'close-order-details']);
 const isOrderDetailsOpen = ref(false);
 
 const itemsText = computed(() => {
-  return `${props.order.productsQuantity} ${i18n.global.tc('router.preview.catalog.items', props.order.productsQuantity)}`;
+  return `${props.order.productsQuantity} ${i18n.global.t('router.preview.catalog.items', props.order.productsQuantity)}`;
 });
 
 const subtotalText = computed(() => {

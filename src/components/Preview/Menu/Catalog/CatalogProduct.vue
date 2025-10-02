@@ -100,7 +100,7 @@ const titleText = computed(() => {
     return props.product.product;
   }
 
-  return `${props.product.product} (${props.quantity} ${i18n.global.tc('router.preview.catalog.items', props.quantity)})`;
+  return `${props.product.product} (${props.quantity} ${i18n.global.t('router.preview.catalog.items', props.quantity)})`;
 });
 
 function updateQuantity(quantity) {
