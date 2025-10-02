@@ -12,7 +12,7 @@
     </header>
 
     <BasesFormText
-      :modelValue="modelValue.current"
+      v-model="knowledgeStore.contentText.current"
       useUpdate
       :item="{
         isLoading,

@@ -44,6 +44,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
 
       instructions.data.unshift({
         ...newInstruction,
+        status: 'complete',
         id: instructionResponse.id,
       });
       newInstruction.status = null;
