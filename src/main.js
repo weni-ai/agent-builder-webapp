@@ -58,11 +58,11 @@ export default async function mountAgentBuilderApp({
       environment: env('SENTRY_ENVIRONMENT'),
       integrations: [
         Sentry.browserTracingIntegration({ router }),
-        Sentry.replayIntegration(),
+        // Sentry.replayIntegration(), // Disabled due to CSP violations in federated module
       ],
       tracesSampleRate: 1.0,
-      replaysSessionSampleRate: 0.1,
-      replaysOnErrorSampleRate: 1.0,
+      // replaysSessionSampleRate: 0.1,
+      // replaysOnErrorSampleRate: 1.0,
       trackComponents: true,
       beforeSend: (event) => {
         if (window.location.hostname === 'localhost') {
