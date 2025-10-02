@@ -51,14 +51,6 @@ export default async function mountAgentBuilderApp({
 
   if (isFederatedModule && initialRoute) await router.replace(initialRoute);
 
-  console.log('envs =>>');
-  console.log('PUBLIC_PATH_URL', env('PUBLIC_PATH_URL'));
-  console.log(
-    'MODULE_FEDERATION_CONNECT_URL',
-    env('MODULE_FEDERATION_CONNECT_URL'),
-  );
-  console.log('NEXUS_API_BASE_URL', env('NEXUS_API_BASE_URL'));
-
   if (env('SENTRY_URL')) {
     Sentry.init({
       app,
