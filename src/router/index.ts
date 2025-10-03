@@ -10,7 +10,6 @@ import { useProjectStore } from '@/store/Project';
 const routes = [
   {
     path: '/',
-    alias: '/init',
     name: 'home',
     redirect: { name: 'supervisor' },
     children: [
@@ -47,6 +46,11 @@ const routes = [
         component: () => import('@/views/Tunings.vue'),
       },
     ],
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notFound',
+    redirect: { name: 'supervisor' },
   },
 ] as RouteRecordRaw[];
 

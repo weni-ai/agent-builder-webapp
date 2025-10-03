@@ -40,12 +40,12 @@
         "title": "About conversation",
         "what_is_a_conversation": "What is a conversation?",
         "what_is_a_conversation_description": "We consider all messages exchanged within 24 hours of the contact's first message as a single conversation.",
-        "optimized_resolution": "Optimized Resolutions",
+        "optimized_resolution": "AI-Assisted",
         "optimized_resolution_description": "Conversations that ended with a clear and effective resolution for the contact.",
-        "other_conclusion": "Other Conclusions",
+        "other_conclusion": "Not Assisted",
         "other_conclusion_description": "Conversations that ended in other ways, such as brief interactions, greetings, drop-offs, or cases that followed a different flow without a direct resolution.",
         "transferred_to_human_support": "Transferred to Human Support",
-        "transferred_to_human_support_description": "Includes conversations (Optimized Resolutions e Other Conclusions) that were forwarded do a human agent."
+        "transferred_to_human_support_description": "Includes conversations (AI-Assisted e Not Assisted) that were forwarded do a human agent."
       },
       "conversations_count": "{count} conversations found",
       "unnamed_contact": "Unnamed contact",
@@ -96,8 +96,8 @@
         "status": {
           "conversations": "Conversations",
           "in_progress": "In progress",
-          "optimized_resolution": "Optimized Resolutions",
-          "other_conclusion": "Other Conclusions",
+          "optimized_resolution": "AI-Assisted",
+          "other_conclusion": "Not Assisted",
           "unclassified": "Unclassified",
           "transferred_to_human_support": "Transferred to human support"
         },
