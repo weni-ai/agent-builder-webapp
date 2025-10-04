@@ -8,7 +8,7 @@ const pinia = createTestingPinia({
     Knowledge: {
       contentText: {
         uuid: null,
-        current: '',
+        current: 'Initial text',
         old: '',
       },
     },
@@ -21,7 +21,6 @@ describe('ContentText.vue', () => {
   const createWrapper = (props = {}) => {
     wrapper = mount(ContentText, {
       props: {
-        modelValue: { current: 'Initial text' },
         ...props,
       },
 
