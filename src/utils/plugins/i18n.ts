@@ -5,16 +5,16 @@ import ptbr from '@/locales/pt_br.json';
 import es from '@/locales/es.json';
 
 const languages = {
-  'en-US': en,
-  'pt-BR': ptbr,
+  en,
+  'pt-br': ptbr,
   es,
 };
 
 const messages = Object.assign(languages);
 
 const i18n = createI18n({
-  locale: 'en-US',
-  fallbackLocale: 'en-US',
+  locale: 'en',
+  fallbackLocale: 'en',
   messages,
   warnHtmlInMessage: 'off',
 });

@@ -12,29 +12,27 @@ import UnnnicIntelligenceText from './components/unnnic-intelligence/Text.vue';
 import Unnnic from './utils/plugins/UnnnicSystem.ts';
 import { gbKey, initializeGrowthBook } from './utils/Growthbook.js';
 import env from './utils/env';
-import { moduleStorage } from './utils/storage';
-import { safeImport, isFederatedModule } from './utils/moduleFederation';
+import { isFederatedModule } from './utils/moduleFederation';
+import { getJwtToken } from './utils/jwt.js';
+import { getProjectUuid } from './utils/project.js';
+import { setupLanguageListener } from './utils/language.js';
 
 import './styles/global.scss';
 import '@weni/unnnic-system/dist/style.css';
-
-let sharedStore = null;
-
-try {
-  const { useSharedStore } = await safeImport(
-    () => import('connect/sharedStore'),
-    'connect/sharedStore',
-  );
-  sharedStore = useSharedStore?.();
-} catch (error) {
-  console.error(error);
-}
 
 export default async function mountAgentBuilderApp({
   containerId = 'app',
   initialRoute,
 } = {}) {
   const gbInstance = await initializeGrowthBook();
+
+  if (!isFederatedModule) {
+    await Promise.all([
+      getJwtToken(),
+      getProjectUuid(),
+      setupLanguageListener(),
+    ]);
+  }
 
   let appRef = null;
   const app = createApp(App);
@@ -74,11 +72,6 @@ export default async function mountAgentBuilderApp({
     });
   }
 
-  if (sharedStore) {
-    moduleStorage.setItem('authToken', sharedStore.auth.token);
-    moduleStorage.setItem('projectUuid', sharedStore.current.project.uuid);
-  }
-
   app.component('UnnnicDivider', UnnnicDivider);
   app.component('UnnnicIntelligenceText', UnnnicIntelligenceText);
 
@@ -90,6 +83,6 @@ export default async function mountAgentBuilderApp({
   return { app: appRef, router };
 }
 
-if (!sharedStore) {
+if (!isFederatedModule) {
   mountAgentBuilderApp();
 }
