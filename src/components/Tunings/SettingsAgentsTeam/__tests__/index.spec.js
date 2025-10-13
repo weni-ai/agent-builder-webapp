@@ -1,15 +1,10 @@
 import { shallowMount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { createTestingPinia } from '@pinia/testing';
-
-import { useProjectStore } from '@/store/Project';
 
 import SettingsAgentsTeam from '../index.vue';
 
 describe('SettingsAgentsTeam/index.vue', () => {
   let wrapper;
-  let pinia;
-  let projectStore;
 
   const agentsPreviewComponent = () =>
     wrapper.findComponent('[data-testid="agents-preview"]');
@@ -19,23 +14,7 @@ describe('SettingsAgentsTeam/index.vue', () => {
     wrapper.find('[data-testid="settings-agents-team"]');
 
   beforeEach(() => {
-    pinia = createTestingPinia({
-      initialState: {
-        Project: {
-          details: {
-            backend: 'bedrock',
-          },
-        },
-      },
-    });
-
-    wrapper = shallowMount(SettingsAgentsTeam, {
-      global: {
-        plugins: [pinia],
-      },
-    });
-
-    projectStore = useProjectStore();
+    wrapper = shallowMount(SettingsAgentsTeam);
   });
 
   afterEach(() => {
@@ -50,13 +29,6 @@ describe('SettingsAgentsTeam/index.vue', () => {
 
     it('renders the HumanSupport component', () => {
       expect(humanSupportComponent().exists()).toBe(true);
-    });
-
-    it('not renders the AgentsPreview component when backend is openai', async () => {
-      projectStore.details.backend = 'openai';
-      await wrapper.vm.$nextTick();
-      expect(wrapper.vm.showAgentsPreview).toBe(false);
-      expect(agentsPreviewComponent().exists()).toBe(false);
     });
   });
 
