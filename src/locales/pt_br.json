@@ -122,7 +122,11 @@
         "title": "Nova instrução personalizada",
         "validate_instruction_by_ai": {
           "switch": "Validar instrução por IA",
-          "button": "Validar instrução"
+          "button": "Validar instrução",
+          "modal_title": "Validar instrução",
+          "cancel_button": "Cancelar",
+          "publish_button": "Publicar",
+          "error_alert": "Erro ao obter sugestão de instrução por IA"
         },
         "textarea": {
           "placeholder": "Você é engraçado, mas não faz piadas",

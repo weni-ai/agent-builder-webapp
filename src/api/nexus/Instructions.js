@@ -57,4 +57,14 @@ export const Instructions = {
   async delete({ projectUuid, id }) {
     await request.$http.delete(`api/${projectUuid}/customization/?id=${id}`);
   },
+
+  async getSuggestionByAI({ projectUuid, instruction }) {
+    const response = await request.$http.post(
+      `api/${projectUuid}/instructions-classification/`,
+      {
+        instruction,
+      },
+    );
+    return response;
+  },
 };
