@@ -3,7 +3,10 @@
     class="new-instruction"
     data-testid="new-instruction"
   >
-    <header class="new-instruction__header">
+    <header
+      class="new-instruction__header"
+      data-testid="new-instruction-header"
+    >
       <h2
         class="new-instruction__title"
         data-testid="new-instruction-title"
@@ -11,6 +14,7 @@
         {{ $t('agent_builder.instructions.new_instruction.title') }}
       </h2>
       <UnnnicSwitch
+        data-testid="new-instruction-switch-validate-instruction-by-ai"
         :modelValue="instructionsStore.validateInstructionByAI"
         :textRight="
           $t(

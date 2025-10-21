@@ -122,7 +122,7 @@
         "title": "New custom instruction",
         "validate_instruction_by_ai": {
           "switch": "Validate instruction by AI",
-          "button": "Validade instruction"
+          "button": "Validate instruction"
         },
         "textarea": {
           "placeholder": "You're funny, but don't make jokes",
