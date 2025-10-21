@@ -1,13 +1,18 @@
 <template>
-  <section class="modal-validate-instruction__textarea">
+  <section
+    data-testid="modal-validate-instruction-textarea"
+    class="modal-validate-instruction__textarea"
+  >
     <UnnnicTextArea
       v-model="modelValue"
+      data-testid="instruction-textarea"
       :placeholder="
         $t('agent_builder.instructions.new_instruction.textarea.placeholder')
       "
       resize="none"
     />
     <UnnnicButton
+      data-testid="revalidate-button"
       :text="
         $t(
           'agent_builder.instructions.new_instruction.validate_instruction_by_ai.re-validate_button',
