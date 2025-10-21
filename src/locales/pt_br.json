@@ -120,11 +120,15 @@
     "instructions": {
       "new_instruction": {
         "title": "Nova instrução personalizada",
+        "validate_instruction_by_ai": {
+          "switch": "Validar instrução por IA",
+          "button": "Validar instrução"
+        },
         "textarea": {
           "placeholder": "Você é engraçado, mas não faz piadas",
           "description": "Mantenha as instruções claras, diretas e imperativas."
         },
-        "add_instruction": "Adicionar instrução",
+        "publish_instruction": "Publicar instrução",
         "success_alert": "Instrução personalizada adicionada",
         "error_alert": "Erro ao adicionar instrução personalizada"
       },
@@ -536,7 +540,6 @@
     "instructions": {
       "title": "Instruções gerais",
       "sub_title": "Defina como você quer que o agente se comporte",
-      "add_instruction_btn": "Adicionar instrução",
       "instruction": {
         "title": "Instrução",
         "placeholder": "Você é engraçado, mas não faz piadas"
