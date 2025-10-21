@@ -122,7 +122,11 @@
         "title": "New custom instruction",
         "validate_instruction_by_ai": {
           "switch": "Validate instruction by AI",
-          "button": "Validate instruction"
+          "button": "Validate instruction",
+          "modal_title": "Validate instruction",
+          "cancel_button": "Cancel",
+          "publish_button": "Publish",
+          "error_alert": "Error getting instruction suggestion by AI"
         },
         "textarea": {
           "placeholder": "You're funny, but don't make jokes",
