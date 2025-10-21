@@ -52,6 +52,8 @@ describe('NewInstruction.vue', () => {
       '[data-testid="new-instruction-switch-validate-instruction-by-ai"]',
     textarea: '[data-testid="new-instruction-textarea"]',
     addButton: '[data-testid="add-instruction-button"]',
+    modalValidateInstruction:
+      '[data-testid="modal-validate-instruction-by-ai"]',
   };
 
   describe('Component rendering', () => {
@@ -68,6 +70,7 @@ describe('NewInstruction.vue', () => {
       );
       expect(findComponent('textarea').exists()).toBe(true);
       expect(findComponent('addButton').exists()).toBe(true);
+      expect(findComponent('modalValidateInstruction').exists()).toBe(false);
     });
 
     describe('Title rendering', () => {
@@ -124,6 +127,13 @@ describe('NewInstruction.vue', () => {
         instructionsStore.validateInstructionByAI = true;
         await findComponent('addButton').vm.$emit('click');
         expect(instructionsStore.addInstruction).not.toHaveBeenCalled();
+      });
+
+      it('opens the modal validate instruction when the primary button is clicked when validate instruction by AI is enabled', async () => {
+        expect(findComponent('modalValidateInstruction').exists()).toBe(false);
+        instructionsStore.validateInstructionByAI = true;
+        await findComponent('addButton').vm.$emit('click');
+        expect(findComponent('modalValidateInstruction').exists()).toBe(true);
       });
     });
   });
