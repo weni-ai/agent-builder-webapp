@@ -124,6 +124,7 @@
           "switch": "Validar instrução por IA",
           "button": "Validar instrução",
           "modal_title": "Validar instrução",
+          "re-validate_button": "Re-validar",
           "cancel_button": "Cancelar",
           "publish_button": "Publicar",
           "error_alert": "Erro ao obter sugestão de instrução por IA"
