@@ -117,12 +117,13 @@ export const useInstructionsStore = defineStore('Instructions', () => {
         (instruction) => instruction.id !== id,
       );
       callAlert('default', 'remove_instruction.success_alert');
+      return { status: null };
     } catch (error) {
       instruction.status = 'error';
       callAlert('error', 'remove_instruction.error_alert');
     }
 
-    return { status: instruction.status };
+    return { status: instruction?.status };
   }
 
   function updateValidateInstructionByAI(value: boolean) {
