@@ -3,12 +3,29 @@
     class="new-instruction"
     data-testid="new-instruction"
   >
-    <h2
-      class="new-instruction__title"
-      data-testid="new-instruction-title"
+    <header
+      class="new-instruction__header"
+      data-testid="new-instruction-header"
     >
-      {{ $t('agent_builder.instructions.new_instruction.title') }}
-    </h2>
+      <h2
+        class="new-instruction__title"
+        data-testid="new-instruction-title"
+      >
+        {{ $t('agent_builder.instructions.new_instruction.title') }}
+      </h2>
+      <UnnnicSwitch
+        data-testid="new-instruction-switch-validate-instruction-by-ai"
+        :modelValue="instructionsStore.validateInstructionByAI"
+        :textRight="
+          $t(
+            'agent_builder.instructions.new_instruction.validate_instruction_by_ai.switch',
+          )
+        "
+        @update:model-value="
+          instructionsStore.updateValidateInstructionByAI($event)
+        "
+      />
+    </header>
     <UnnnicTextArea
       v-model="instructionsStore.newInstruction.text"
       data-testid="new-instruction-textarea"
@@ -23,19 +40,39 @@
       class="new-instruction__add-instruction-button"
       data-testid="add-instruction-button"
       :disabled="!newInstruction.text.trim()"
-      :text="$t('agent_builder.instructions.new_instruction.add_instruction')"
+      :text="primaryButtonText"
       :loading="newInstruction.status === 'loading'"
-      @click="instructionsStore.addInstruction"
+      @click="handlePrimaryButton"
     />
   </section>
 </template>
 
 <script setup>
 import { computed } from 'vue';
+import i18n from '@/utils/plugins/i18n';
 import { useInstructionsStore } from '@/store/Instructions';
 
 const instructionsStore = useInstructionsStore();
+
 const newInstruction = computed(() => instructionsStore.newInstruction);
+const primaryButtonText = computed(() => {
+  const newInstructionText = (value) =>
+    i18n.global.t(`agent_builder.instructions.new_instruction.${value}`);
+
+  return instructionsStore.validateInstructionByAI
+    ? newInstructionText('validate_instruction_by_ai.button')
+    : newInstructionText('publish_instruction');
+});
+
+function openValidateInstructionByAIModal() {
+  console.log('openValidateInstructionByAIModal');
+}
+
+function handlePrimaryButton() {
+  return instructionsStore.validateInstructionByAI
+    ? openValidateInstructionByAIModal()
+    : instructionsStore.addInstruction();
+}
 </script>
 
 <style lang="scss" scoped>
@@ -50,6 +87,13 @@ const newInstruction = computed(() => instructionsStore.newInstruction);
 
   & > * {
     grid-column: 1 / -1;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $unnnic-space-2;
   }
 
   &__title {
