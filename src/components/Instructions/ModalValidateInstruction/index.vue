@@ -1,5 +1,6 @@
 <template>
   <UnnnicModalDialog
+    data-testid="modal-validate-instruction-by-ai"
     :modelValue="modelValue"
     size="lg"
     showCloseIcon
