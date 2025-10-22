@@ -26,8 +26,8 @@ exports[`ModalValidateInstruction.vue > Component rendering > should match snaps
           </button>
         </section>
         <hr data-v-f999d120="" class="divider divider--y-spacing-md divider--scheme-neutral-soft" data-testid="modal-validate-instruction-divider">
-        <section data-v-66a45c0f="" data-testid="modal-validate-instruction-validation-results" class="modal-validate-instruction__validation-results">
-          <h2 data-v-66a45c0f="" class="modal-validate-instruction__title">Validation results</h2>
+        <section data-v-66a45c0f="" class="modal-validate-instruction__validation-results" data-testid="modal-validate-instruction-validation-results">
+          <h2 data-v-66a45c0f="" class="modal-validate-instruction__title" data-testid="modal-validate-instruction-validation-results-title">Validation results</h2>
           <!--v-if-->
         </section>
       </section>

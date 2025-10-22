@@ -1,9 +1,9 @@
 <template>
-  <section
-    data-testid="modal-validate-instruction-validation-results"
-    class="modal-validate-instruction__validation-results"
-  >
-    <h2 class="modal-validate-instruction__title">
+  <section class="modal-validate-instruction__validation-results">
+    <h2
+      class="modal-validate-instruction__title"
+      data-testid="modal-validate-instruction-validation-results-title"
+    >
       {{
         $t(
           'agent_builder.instructions.new_instruction.validate_instruction_by_ai.results.title',
@@ -12,6 +12,7 @@
     </h2>
     <UnnnicSkeletonLoading
       v-if="instructionsStore.instructionSuggestedByAI.status === 'loading'"
+      data-testid="modal-validate-instruction-validation-results-loading"
       class="modal-validate-instruction__loading"
       tag="div"
       width="100%"
@@ -25,6 +26,7 @@
       <TempToast
         v-for="classification in classifications"
         :key="classification.type"
+        data-testid="modal-validate-instruction-validation-results-toast"
         :type="classification.type"
         :title="classification.name"
         :description="classification.reason"
