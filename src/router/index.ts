@@ -7,10 +7,26 @@ import { isFederatedModule } from '@/utils/moduleFederation';
 import { RouteRecordRaw } from 'vue-router';
 import { useProjectStore } from '@/store/Project';
 
+const parseNextPath = (nextPath, to) => {
+  const [path, queryString] = nextPath.split('?');
+  const query = { ...to.query };
+
+  if (queryString) {
+    const urlParams = new URLSearchParams(queryString);
+    for (const [key, value] of urlParams) {
+      query[key] = value;
+    }
+  }
+
+  delete query.next;
+  delete query.next_from_redirect;
+
+  return { path, query };
+};
+
 const routes = [
   {
     path: '/',
-    alias: '/init',
     name: 'home',
     redirect: { name: 'supervisor' },
     children: [
@@ -48,6 +64,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notFound',
+    redirect: { name: 'supervisor' },
+  },
 ] as RouteRecordRaw[];
 
 const history = isFederatedModule
@@ -59,14 +80,23 @@ const router = createRouter({
   routes,
 });
 
-router.afterEach((router) => {
-  delete router.query.next;
-  delete router.query.projectUuid;
+router.beforeEach((to, from, next) => {
+  const nextPath = to.query.next;
 
-  window.dispatchEvent(
-    new CustomEvent('updateRoute', {
-      detail: { path: router.path, query: router.query },
-    }),
+  if (nextPath) {
+    next(parseNextPath(nextPath as string, to));
+  } else {
+    next();
+  }
+});
+
+router.afterEach((to, from) => {
+  window.parent.postMessage(
+    {
+      event: 'changePathname',
+      pathname: window.location.pathname,
+    },
+    '*',
   );
 });
 

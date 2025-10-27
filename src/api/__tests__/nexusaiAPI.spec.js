@@ -316,13 +316,13 @@ describe('nexusaiAPI.js', () => {
       projectUuid: 'project1',
       text: 'Sample text',
       contact_urn: 'contact1',
-      language: 'en-US',
+      language: 'en',
     });
 
     expect(request.$http.post).toHaveBeenCalledWith('api/project1/preview/', {
       text: 'Sample text',
       contact_urn: 'contact1',
-      language: 'en-US',
+      language: 'en',
     });
     expect(result).toEqual(mockResponse);
   });

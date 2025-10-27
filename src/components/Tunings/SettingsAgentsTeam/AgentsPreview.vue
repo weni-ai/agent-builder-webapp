@@ -13,6 +13,7 @@
 
     <form class="agents-preview__form">
       <SettingsField
+        v-if="showProgressiveFeedback"
         v-model="tuningsStore.settings.data.progressiveFeedback"
         data-testid="progressive-feedback"
         :textRight="
@@ -63,6 +64,10 @@ const isLoading = computed(() => {
     projectStore.details.status === 'loading' ||
     tuningsStore.settings.status === 'loading'
   );
+});
+
+const showProgressiveFeedback = computed(() => {
+  return !useProjectStore().details?.backend?.toLowerCase().includes('openai');
 });
 </script>
 

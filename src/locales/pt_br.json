@@ -40,12 +40,12 @@
         "title": "Sobre conversa",
         "what_is_a_conversation": "O que é uma conversa?",
         "what_is_a_conversation_description": "Consideramos todas as mensagens trocadas dentro de 24 horas do primeiro contato como uma única conversa.",
-        "optimized_resolution": "Resoluções Otimizadas",
+        "optimized_resolution": "Atendido por IA",
         "optimized_resolution_description": "Conversas que terminaram com uma resolução clara e eficaz para o contato.",
-        "other_conclusion": "Outras Conclusões",
+        "other_conclusion": "Não atendido",
         "other_conclusion_description": "Conversas que terminaram de outras formas, como interações breves, saudações, desistências ou casos que seguiram um fluxo diferente sem uma resolução direta.",
         "transferred_to_human_support": "Transferido para o Suporte Humano",
-        "transferred_to_human_support_description": "Inclui conversas (Resoluções Otimizadas e Outras Conclusões) que foram encaminhadas para um atendente humano."
+        "transferred_to_human_support_description": "Inclui conversas (Atendido por IA e Não atendido) que foram encaminhadas para um atendente humano."
       },
       "conversations_count": "{count} conversas encontradas",
       "unnamed_contact": "Contato sem nome",
@@ -96,8 +96,8 @@
         "status": {
           "conversations": "Conversas",
           "in_progress": "Em progresso",
-          "optimized_resolution": "Resoluções Otimizadas",
-          "other_conclusion": "Outras Conclusões",
+          "optimized_resolution": "Atendido por IA",
+          "other_conclusion": "Não atendido",
           "unclassified": "Não classificado",
           "transferred_to_human_support": "Encaminhado para suporte humano"
         },

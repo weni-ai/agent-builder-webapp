@@ -7,10 +7,12 @@ import SettingsField from '../SettingsField.vue';
 import Text from '@/components/unnnic-intelligence/Text.vue';
 import { useTuningsStore } from '@/store/Tunings';
 import i18n from '@/utils/plugins/i18n';
+import { useProjectStore } from '@/store/Project';
 
 describe('AgentsPreview.vue', () => {
   let wrapper;
   let store;
+  let projectStore;
 
   const titleText = () => wrapper.findComponent('[data-testid="title"]');
   const settingsFields = () => wrapper.findAllComponents(SettingsField);
@@ -22,7 +24,17 @@ describe('AgentsPreview.vue', () => {
   beforeEach(() => {
     wrapper = shallowMount(AgentsPreview, {
       global: {
-        plugins: [createTestingPinia()],
+        plugins: [
+          createTestingPinia({
+            initialState: {
+              Project: {
+                details: {
+                  backend: 'bedrock',
+                },
+              },
+            },
+          }),
+        ],
         stubs: {
           UnnnicIntelligenceText: Text,
           SettingsField,
@@ -31,6 +43,7 @@ describe('AgentsPreview.vue', () => {
     });
 
     store = useTuningsStore();
+    projectStore = useProjectStore();
     store.settings.data.components = true;
     store.settings.data.progressiveFeedback = false;
   });
@@ -56,6 +69,22 @@ describe('AgentsPreview.vue', () => {
 
     it('renders exactly two settings fields', () => {
       expect(settingsFields()).toHaveLength(2);
+    });
+
+    it('not renders the progressive feedback field when backend is openai', async () => {
+      projectStore.details.backend = 'openai';
+      await wrapper.vm.$nextTick();
+      expect(wrapper.vm.showProgressiveFeedback).toBe(false);
+      expect(progressiveFeedbackField().exists()).toBe(false);
+      expect(multipleMessageFormatField().exists()).toBe(true);
+    });
+
+    it('renders the progressive feedback field when backend is not openai', async () => {
+      projectStore.details.backend = 'bedrock';
+      await wrapper.vm.$nextTick();
+      expect(wrapper.vm.showProgressiveFeedback).toBe(true);
+      expect(progressiveFeedbackField().exists()).toBe(true);
+      expect(multipleMessageFormatField().exists()).toBe(true);
     });
   });
 

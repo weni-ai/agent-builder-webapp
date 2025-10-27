@@ -1,10 +1,11 @@
 import { shallowMount } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { createPinia, setActivePinia } from 'pinia';
+import { createTestingPinia } from '@pinia/testing';
 import { useRouter } from 'vue-router';
 
 import Supervisor from '@/views/Supervisor/index.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 vi.mock('vue-router', () => ({
   useRoute: vi.fn(() => ({
@@ -21,12 +22,18 @@ vi.mock('vue-router', () => ({
 describe('Supervisor view', () => {
   let wrapper;
   let supervisorStore;
+  let featureFlagsStore;
 
   beforeEach(() => {
-    const pinia = createPinia();
-    setActivePinia(pinia);
+    const pinia = createTestingPinia();
 
     supervisorStore = useSupervisorStore();
+    featureFlagsStore = useFeatureFlagsStore();
+
+    vi.spyOn(featureFlagsStore, 'flags', 'get').mockReturnValue({
+      supervisorExport: false,
+      newSupervisor: true,
+    });
 
     useRouter();
 
@@ -39,6 +46,7 @@ describe('Supervisor view', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('matches snapshot', () => {
