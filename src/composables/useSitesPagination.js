@@ -2,10 +2,9 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 import { usePagination } from './usePagination';
 import { useIndexingProcessStore } from '@/store/IndexingProcess.js';
 
-export function useSitesPagination({ contentBaseUuid }) {
+export function useSitesPagination() {
   const loadSites = async (params) => {
-    const { data } =
-      await nexusaiAPI.intelligences.contentBases.sites.list(params);
+    const { data } = await nexusaiAPI.knowledge.sites.list(params);
 
     return {
       data: {
@@ -17,9 +16,6 @@ export function useSitesPagination({ contentBaseUuid }) {
   const pagination = usePagination({
     load: {
       request: loadSites,
-      params: {
-        contentBaseUuid,
-      },
     },
     transform: (site) => ({
       ...site,
@@ -33,11 +29,7 @@ export function useSitesPagination({ contentBaseUuid }) {
     }),
   });
 
-  useIndexingProcessStore().useIndexingProcess(
-    pagination.data,
-    'sites',
-    contentBaseUuid,
-  );
+  useIndexingProcessStore().useIndexingProcess(pagination.data, 'sites');
 
   return pagination;
 }

@@ -92,12 +92,6 @@ export default {
     };
   },
 
-  computed: {
-    contentBaseUuid() {
-      return this.projectStore.details.contentBaseUuid;
-    },
-  },
-
   methods: {
     async saveText() {
       try {
@@ -105,8 +99,7 @@ export default {
 
         if (this.item.uuid) {
           const { data: contentBaseTextData } =
-            await nexusaiAPI.intelligences.contentBases.texts.edit({
-              contentBaseUuid: this.contentBaseUuid,
+            await nexusaiAPI.knowledge.texts.edit({
               contentBaseTextUuid: this.item.uuid,
               text: this.modelValue,
             });
@@ -119,8 +112,7 @@ export default {
           }
         } else {
           const { data: contentBaseTextData } =
-            await nexusaiAPI.intelligences.contentBases.texts.create({
-              contentBaseUuid: this.contentBaseUuid,
+            await nexusaiAPI.knowledge.texts.create({
               text: this.modelValue,
             });
 

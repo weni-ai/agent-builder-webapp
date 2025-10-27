@@ -53,7 +53,6 @@
     <ModalAddSite
       v-if="isAddSiteOpen"
       v-model="isAddSiteOpen"
-      :contentBaseUuid="contentBaseUuid"
       @close="closeAddSite"
       @added-site="addedSites"
     />
@@ -108,12 +107,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import ModalAddSite from '@/components/Knowledge/ContentBase/ModalAddSite.vue';
 import ContentList from '@/components/Knowledge/ContentBase/ContentList.vue';
 import i18n from '@/utils/plugins/i18n';
-import { useProjectStore } from '@/store/Project';
 import { useAlertStore } from '@/store/Alert';
 
 const props = defineProps({
@@ -130,10 +128,6 @@ const props = defineProps({
 const isAddSiteOpen = ref(false);
 const modalDeleteSite = ref(null);
 const alertStore = useAlertStore();
-
-const contentBaseUuid = computed(
-  () => useProjectStore().details.contentBaseUuid,
-);
 
 const openAddSite = () => {
   isAddSiteOpen.value = true;
@@ -170,9 +164,8 @@ const closeModal = () => {
 const remove = () => {
   modalDeleteSite.value.status = 'deleting';
 
-  nexusaiAPI.intelligences.contentBases.sites
+  nexusaiAPI.knowledge.sites
     .delete({
-      contentBaseUuid: contentBaseUuid.value,
       linkUuid: modalDeleteSite.value.uuid,
     })
     .then(() => {
