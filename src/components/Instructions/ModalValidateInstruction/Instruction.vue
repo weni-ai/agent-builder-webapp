@@ -1,16 +1,18 @@
 <template>
   <section
-    data-testid="modal-validate-instruction-textarea"
-    class="modal-validate-instruction__textarea"
+    data-testid="modal-validate-instruction"
+    class="modal-validate-instruction"
   >
-    <UnnnicTextArea
-      v-model="modelValue"
-      data-testid="instruction-textarea"
-      :placeholder="
-        $t('agent_builder.instructions.new_instruction.textarea.placeholder')
-      "
-      resize="none"
-    />
+    <section class="modal-validate-instruction__instruction">
+      <UnnnicTextArea
+        v-model="modelValue"
+        data-testid="instruction-textarea"
+        :placeholder="
+          $t('agent_builder.instructions.new_instruction.textarea.placeholder')
+        "
+      />
+      <InstructionAISuggestion />
+    </section>
     <UnnnicButton
       data-testid="revalidate-button"
       :text="
@@ -30,6 +32,8 @@ import { computed } from 'vue';
 
 import { useInstructionsStore } from '@/store/Instructions';
 
+import InstructionAISuggestion from './InstructionAISuggestion.vue';
+
 const instructionsStore = useInstructionsStore();
 
 const modelValue = defineModel<string>('modelValue');
@@ -46,8 +50,12 @@ function revalidateInstructionByAI() {
 </script>
 
 <style lang="scss" scoped>
-.modal-validate-instruction__textarea {
+.modal-validate-instruction {
   display: grid;
   gap: $unnnic-space-2;
+
+  &__instruction {
+    position: relative;
+  }
 }
 </style>

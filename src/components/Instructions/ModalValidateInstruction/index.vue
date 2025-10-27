@@ -28,9 +28,9 @@
     }"
     @update:model-value="close"
   >
-    <InstructionTextarea
+    <Instruction
       v-model="newInstruction"
-      data-testid="modal-validate-instruction-textarea"
+      data-testid="modal-validate-instruction"
     />
 
     <template
@@ -50,7 +50,7 @@ import { onMounted, ref } from 'vue';
 
 import { useInstructionsStore } from '@/store/Instructions';
 
-import InstructionTextarea from './InstructionTextarea.vue';
+import Instruction from './Instruction.vue';
 import InstructionValidationResults from './InstructionValidationResults.vue';
 
 const emit = defineEmits(['update:modelValue']);
