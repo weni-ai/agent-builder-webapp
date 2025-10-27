@@ -5,10 +5,7 @@ import { createTestingPinia } from '@pinia/testing';
 import i18n from '@/utils/plugins/i18n';
 import { useAlertStore } from '@/store/Alert';
 
-vi.spyOn(
-  nexusaiAPI.intelligences.contentBases.sites,
-  'create',
-).mockResolvedValue({
+vi.spyOn(nexusaiAPI.knowledge.sites, 'create').mockResolvedValue({
   data: {
     uuid: '1234',
   },
@@ -31,9 +28,6 @@ describe('ModalAddSite', () => {
     vi.clearAllMocks();
 
     wrapper = mount(ModalAddSite, {
-      props: {
-        contentBaseUuid: 'testContentBaseUuid',
-      },
       global: {
         plugins: [pinia],
       },
@@ -86,10 +80,7 @@ describe('ModalAddSite', () => {
 
       await finishButton.trigger('click');
 
-      expect(
-        nexusaiAPI.intelligences.contentBases.sites.create,
-      ).toHaveBeenCalledWith({
-        contentBaseUuid: 'testContentBaseUuid',
+      expect(nexusaiAPI.knowledge.sites.create).toHaveBeenCalledWith({
         link: 'https://www.valid-url.com',
       });
 
@@ -103,7 +94,6 @@ describe('ModalAddSite', () => {
           created_file_name: 'https://www.valid-url.com',
           status: 'processing',
         },
-        'testContentBaseUuid',
       ]);
 
       expect(alertStore.add).toHaveBeenCalledWith({
@@ -117,10 +107,9 @@ describe('ModalAddSite', () => {
 
   describe('when the add site API fails', () => {
     it('should set site status to "fail" and not emit addedSite event', async () => {
-      vi.spyOn(
-        nexusaiAPI.intelligences.contentBases.sites,
-        'create',
-      ).mockRejectedValue(new Error('API error'));
+      vi.spyOn(nexusaiAPI.knowledge.sites, 'create').mockRejectedValue(
+        new Error('API error'),
+      );
 
       const input = wrapper.findComponent('[data-test="site-input"]');
       await input.setValue('www.valid-url.com');

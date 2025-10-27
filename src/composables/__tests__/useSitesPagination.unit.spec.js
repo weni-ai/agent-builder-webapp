@@ -2,30 +2,28 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 import { useSitesPagination } from '../useSitesPagination.js';
 import { createTestingPinia } from '@pinia/testing';
 
-vi.spyOn(nexusaiAPI.intelligences.contentBases.sites, 'list').mockResolvedValue(
-  {
-    data: [
-      {
-        uuid: '1',
-        link: 'https://linkone.dev/',
-        status: 'success',
-        created_at: '2024-08-08T00:00:00.000000Z',
-      },
-      {
-        uuid: '2',
-        link: 'https://linktwo.dev/',
-        status: 'fail',
-        created_at: '2024-08-08T00:00:00.000000Z',
-      },
-      {
-        uuid: '3',
-        link: 'https://linkthree.dev/',
-        status: 'success',
-        created_at: '2024-08-08T00:00:00.000000Z',
-      },
-    ],
-  },
-);
+vi.spyOn(nexusaiAPI.knowledge.sites, 'list').mockResolvedValue({
+  data: [
+    {
+      uuid: '1',
+      link: 'https://linkone.dev/',
+      status: 'success',
+      created_at: '2024-08-08T00:00:00.000000Z',
+    },
+    {
+      uuid: '2',
+      link: 'https://linktwo.dev/',
+      status: 'fail',
+      created_at: '2024-08-08T00:00:00.000000Z',
+    },
+    {
+      uuid: '3',
+      link: 'https://linkthree.dev/',
+      status: 'success',
+      created_at: '2024-08-08T00:00:00.000000Z',
+    },
+  ],
+});
 
 createTestingPinia({
   initialState: {
@@ -41,7 +39,7 @@ describe('sitesPagination.js', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    sites = useSitesPagination({ contentBaseUuid: '1234' });
+    sites = useSitesPagination();
   });
 
   it('status should be null', () => {

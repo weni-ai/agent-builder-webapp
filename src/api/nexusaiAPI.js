@@ -2,7 +2,7 @@ import request from '@/api/nexusaiRequest';
 import { AgentsTeam } from './nexus/AgentsTeam';
 import { Supervisor } from './nexus/Supervisor';
 import { Instructions } from './nexus/Instructions';
-import { ContentBases } from './nexus/Knowledge';
+import { Knowledge } from './nexus/Knowledge';
 
 import { ProgressiveFeedbackAdapter } from './adapters/tunings/progressiveFeedback';
 import { ComponentsAdapter } from './adapters/tunings/components';
@@ -183,7 +183,5 @@ export default {
     },
   },
 
-  intelligences: {
-    contentBases: ContentBases, // TODO: Change to "Knowledge" after refactoring
-  },
+  knowledge: Knowledge,
 };

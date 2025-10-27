@@ -120,7 +120,6 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 import { get } from 'lodash';
 import ContentList from '@/components/Knowledge/ContentBase/ContentList.vue';
 import { reactive, toValue } from 'vue';
-import { useProjectStore } from '@/store/Project';
 import { useAlertStore } from '@/store/Alert';
 
 const allowedFormats = ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx'];
@@ -143,10 +142,8 @@ export default {
   },
 
   setup() {
-    const projectStore = useProjectStore();
     const alertStore = useAlertStore();
     return {
-      projectStore,
       alertStore,
     };
   },
@@ -197,10 +194,6 @@ export default {
 
     filesData() {
       return toValue(this.files.data);
-    },
-
-    contentBaseUuid() {
-      return this.projectStore.details.contentBaseUuid;
     },
   },
   mounted() {
@@ -282,9 +275,8 @@ export default {
 
       fileItem.status = 'uploading';
 
-      nexusaiAPI.intelligences.contentBases.files
+      nexusaiAPI.knowledge.files
         .create({
-          contentBaseUuid: this.contentBaseUuid,
           file,
           extension_file: extension,
 
@@ -328,9 +320,8 @@ export default {
     remove() {
       this.modalDeleteFile.status = 'deleting';
 
-      nexusaiAPI.intelligences.contentBases.files
+      nexusaiAPI.knowledge.files
         .delete({
-          contentBaseUuid: this.contentBaseUuid,
           fileUuid: this.modalDeleteFile.uuid,
         })
         .then(() => {
