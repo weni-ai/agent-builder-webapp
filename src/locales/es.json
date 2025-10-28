@@ -305,15 +305,10 @@
           "change": "Cambio",
           "date": "Fecha",
           "all-changes": "Todos los cambios",
-          "customization-changes": "Cambios de personalización",
+          "instructions-changes": "Cambios de instrucciones",
           "content-changes": "Cambios de contenido",
-          "actions-changes": "Cambios de acciones",
           "settings-changes": "Cambios de configuración",
-          "add-action": "agregó una acción ({value})",
           "changes": "realizó {value} cambios",
-          "update-name-action": "cambió una acción ({value})",
-          "update-prompt-action": "cambió el prompt de una acción ({value})",
-          "remove-action": "removió una acción ({value})",
           "update-personality": "cambió la personalidad ({value})",
           "update-goal": "cambió el objetivo ({value})",
           "update-name": "cambió el nombre ({value})",
@@ -323,10 +318,7 @@
           "update-instruction": "cambió una instrucción ({value})",
           "add-content": "agregó un contenido ({value})",
           "update-content": "cambió un contenido ({value})",
-          "remove-content": "removió un contenido ({value})",
-          "update-model": "cambió el modelo",
-          "brain-on": "activó Agent Builder",
-          "brain-off": "desactivó Agent Builder"
+          "remove-content": "removió un contenido ({value})"
         }
       },
       "credentials": {
