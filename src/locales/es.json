@@ -139,7 +139,9 @@
           "see_ai_suggestion": {
             "trigger": "Ver sugestión de IA",
             "title": "Sugestión de IA",
-            "apply_button": "Aplicar sugestión de IA"
+            "apply_button": "Aplicar sugestión de IA",
+            "suggestion_applied": "Sugestión de IA aplicada",
+            "no_ai_suggestion_tooltip": "No hay sugestión de IA"
           }
         },
         "textarea": {

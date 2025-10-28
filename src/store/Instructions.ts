@@ -39,10 +39,10 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   const instructionSuggestedByAI = reactive<InstructionSuggestedByAI>({
     data: {
       instruction: '',
-      classification: '',
-      reason: '',
+      classification: [],
       suggestion: '',
     },
+    suggestionApplied: false,
     status: null,
   });
 
@@ -152,6 +152,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
         instruction: newInstruction.text,
         ...response,
       };
+      instructionSuggestedByAI.suggestionApplied = false;
       instructionSuggestedByAI.status = 'complete';
     } catch (error) {
       instructionSuggestedByAI.status = 'error';
@@ -167,6 +168,14 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     moduleStorage.setItem('validateInstructionByAI', value);
   }
 
+  function resetInstructionSuggestedByAI() {
+    instructionSuggestedByAI.data = {
+      instruction: '',
+      classification: [],
+      suggestion: '',
+    };
+  }
+
   return {
     instructions,
     newInstruction,
@@ -179,5 +188,6 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     removeInstruction,
     getInstructionSuggestionByAI,
     updateValidateInstructionByAI,
+    resetInstructionSuggestedByAI,
   };
 });

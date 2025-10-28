@@ -65,9 +65,10 @@ function close() {
   emit('update:modelValue', false);
 }
 
-function publishInstruction() {
+async function publishInstruction() {
   instructionsStore.newInstruction.text = newInstruction.value;
-  instructionsStore.addInstruction();
+  await instructionsStore.addInstruction();
+  close();
 }
 
 onMounted(() => {

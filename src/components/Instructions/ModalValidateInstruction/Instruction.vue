@@ -11,7 +11,10 @@
           $t('agent_builder.instructions.new_instruction.textarea.placeholder')
         "
       />
-      <InstructionAISuggestion />
+      <InstructionAISuggestion
+        v-if="!isSuggestionLoading"
+        @apply-suggestion="applySuggestion"
+      />
     </section>
     <UnnnicButton
       data-testid="revalidate-button"
@@ -21,7 +24,7 @@
         )
       "
       :disabled="revalidateButtonTextDisabled"
-      :loading="instructionsStore.instructionSuggestedByAI.status === 'loading'"
+      :loading="isSuggestionLoading"
       @click="revalidateInstructionByAI"
     />
   </section>
@@ -38,14 +41,29 @@ const instructionsStore = useInstructionsStore();
 
 const modelValue = defineModel<string>('modelValue');
 
-const revalidateButtonTextDisabled = computed(
-  () =>
+const isSuggestionLoading = computed(() => {
+  return instructionsStore.instructionSuggestedByAI.status === 'loading';
+});
+
+const revalidateButtonTextDisabled = computed(() => {
+  const isInstructionEqualsToNewInstruction =
+    modelValue.value?.trim() === instructionsStore.newInstruction.text?.trim();
+
+  return (
     !modelValue.value?.trim() ||
-    modelValue.value?.trim() === instructionsStore.newInstruction.text?.trim(),
-);
+    isInstructionEqualsToNewInstruction ||
+    instructionsStore.instructionSuggestedByAI.suggestionApplied
+  );
+});
 
 function revalidateInstructionByAI() {
   instructionsStore.getInstructionSuggestionByAI();
+}
+
+function applySuggestion(suggestion: string) {
+  modelValue.value = suggestion;
+  instructionsStore.instructionSuggestedByAI.suggestionApplied = true;
+  instructionsStore.resetInstructionSuggestedByAI();
 }
 </script>
 

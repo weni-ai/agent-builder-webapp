@@ -139,7 +139,9 @@
           "see_ai_suggestion": {
             "trigger": "See AI suggestion",
             "title": "AI suggestion",
-            "apply_button": "Apply AI suggestion"
+            "apply_button": "Apply AI suggestion",
+            "suggestion_applied": "AI suggestion applied",
+            "no_ai_suggestion_tooltip": "No AI suggestion"
           }
         },
         "textarea": {

@@ -59,12 +59,22 @@ export const Instructions = {
   },
 
   async getSuggestionByAI({ projectUuid, instruction }) {
-    const response = await request.$http.post(
-      `api/${projectUuid}/instructions-classification/`,
+    const response = await fetch(
+      // TODO: remove this mock API when the real API is deployed
+      `https://nexus.apip.stg.cloud.weni.ai/api/${projectUuid}/instructions-classification/`,
       {
-        instruction,
+        method: 'POST',
+        body: JSON.stringify({ instruction }),
       },
     );
-    return response;
+    return response.json();
+
+    // const response = await request.$http.post(
+    //   `api/${projectUuid}/instructions-classification/`,
+    //   {
+    //     instruction,
+    //   },
+    // );
+    // return response;
   },
 };
