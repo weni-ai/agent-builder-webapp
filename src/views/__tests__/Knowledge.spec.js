@@ -4,21 +4,8 @@ import { createTestingPinia } from '@pinia/testing';
 
 import Knowledge from '@/views/Knowledge.vue';
 
-vi.mock('vue-router', () => ({
-  useRoute: vi.fn(() => ({
-    params: {
-      contentBaseUuid: 'test-uuid',
-    },
-  })),
-}));
-
 const pinia = createTestingPinia({
   initialState: {
-    Project: {
-      details: {
-        contentBaseUuid: 'fallback-uuid',
-      },
-    },
     Knowledge: {
       contentText: {
         uuid: null,
@@ -31,44 +18,42 @@ const pinia = createTestingPinia({
 
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
-    intelligences: {
-      contentBases: {
-        texts: {
-          list: vi.fn().mockResolvedValue({
-            data: {
-              results: [
-                {
-                  uuid: 'text-uuid',
-                  text: 'Sample text content',
-                },
-              ],
-            },
-          }),
-        },
-        files: {
-          list: vi.fn().mockResolvedValue({
-            data: {
-              results: [
-                {
-                  uuid: 'file-uuid',
-                  name: 'sample-file.pdf',
-                  status: 'success',
-                },
-              ],
-            },
-          }),
-        },
-        sites: {
-          list: vi.fn().mockResolvedValue({
-            data: [
+    knowledge: {
+      texts: {
+        list: vi.fn().mockResolvedValue({
+          data: {
+            results: [
               {
-                uuid: 'site-uuid',
-                link: 'https://example.com',
+                uuid: 'text-uuid',
+                text: 'Sample text content',
+              },
+            ],
+          },
+        }),
+      },
+      files: {
+        list: vi.fn().mockResolvedValue({
+          data: {
+            results: [
+              {
+                uuid: 'file-uuid',
+                name: 'sample-file.pdf',
                 status: 'success',
               },
             ],
-          }),
-        },
+          },
+        }),
+      },
+      sites: {
+        list: vi.fn().mockResolvedValue({
+          data: [
+            {
+              uuid: 'site-uuid',
+              link: 'https://example.com',
+              status: 'success',
+            },
+          ],
+        }),
       },
     },
   },

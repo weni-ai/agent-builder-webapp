@@ -2,10 +2,7 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 import { useFilesPagination } from '../useFilesPagination.js';
 import { createTestingPinia } from '@pinia/testing';
 
-const filesListRequest = vi.spyOn(
-  nexusaiAPI.intelligences.contentBases.files,
-  'list',
-);
+const filesListRequest = vi.spyOn(nexusaiAPI.knowledge.files, 'list');
 
 createTestingPinia({
   initialState: {
@@ -63,7 +60,7 @@ describe('filesPagination.js', () => {
       },
     });
 
-    files = useFilesPagination({ contentBaseUuid: '1234' });
+    files = useFilesPagination();
   });
 
   it('status should be null', () => {
