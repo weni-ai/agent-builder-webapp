@@ -1,12 +1,15 @@
 import { reactive, ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 
+import type { InstructionSuggestedByAI } from './types/Instructions.types';
+
 import { useProjectStore } from './Project';
 import { useAlertStore } from './Alert';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 
 import i18n from '@/utils/plugins/i18n';
+import { moduleStorage } from '@/utils/storage';
 
 function callAlert(type, alertText) {
   const alertStore = useAlertStore();
@@ -26,6 +29,20 @@ export const useInstructionsStore = defineStore('Instructions', () => {
 
   const newInstruction = reactive({
     text: '',
+    status: null,
+  });
+
+  const validateInstructionByAI = ref<boolean>(
+    moduleStorage.getItem('validateInstructionByAI') ?? true,
+  );
+
+  const instructionSuggestedByAI = reactive<InstructionSuggestedByAI>({
+    data: {
+      instruction: '',
+      classification: [],
+      suggestion: '',
+    },
+    suggestionApplied: false,
     status: null,
   });
 
@@ -112,21 +129,65 @@ export const useInstructionsStore = defineStore('Instructions', () => {
         (instruction) => instruction.id !== id,
       );
       callAlert('default', 'remove_instruction.success_alert');
+      return { status: null };
     } catch (error) {
       instruction.status = 'error';
       callAlert('error', 'remove_instruction.error_alert');
     }
 
-    return { status: instruction.status };
+    return { status: instruction?.status };
+  }
+
+  async function getInstructionSuggestionByAI() {
+    instructionSuggestedByAI.status = 'loading';
+
+    try {
+      const response =
+        await nexusaiAPI.agent_builder.instructions.getSuggestionByAI({
+          projectUuid: projectUuid.value,
+          instruction: newInstruction.text,
+        });
+
+      instructionSuggestedByAI.data = {
+        instruction: newInstruction.text,
+        ...response,
+      };
+      instructionSuggestedByAI.suggestionApplied = false;
+      instructionSuggestedByAI.status = 'complete';
+    } catch (error) {
+      instructionSuggestedByAI.status = 'error';
+      callAlert(
+        'error',
+        'new_instruction.validate_instruction_by_ai.error_alert',
+      );
+    }
+  }
+
+  function updateValidateInstructionByAI(value: boolean) {
+    validateInstructionByAI.value = value;
+    moduleStorage.setItem('validateInstructionByAI', value);
+  }
+
+  function resetInstructionSuggestedByAI() {
+    instructionSuggestedByAI.data = {
+      instruction: '',
+      classification: [],
+      suggestion: '',
+    };
   }
 
   return {
     instructions,
     newInstruction,
+    validateInstructionByAI,
+    instructionSuggestedByAI,
     activeInstructionsListTab,
     addInstruction,
     loadInstructions,
     editInstruction,
     removeInstruction,
+    getInstructionSuggestionByAI,
+    updateValidateInstructionByAI,
+    resetInstructionSuggestedByAI,
   };
 });

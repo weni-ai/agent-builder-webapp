@@ -120,11 +120,35 @@
     "instructions": {
       "new_instruction": {
         "title": "New custom instruction",
+        "validate_instruction_by_ai": {
+          "switch": "Validate instruction by AI",
+          "button": "Validate instruction",
+          "modal_title": "Validate instruction",
+          "re-validate_button": "Re-validate",
+          "cancel_button": "Cancel",
+          "publish_button": "Publish",
+          "error_alert": "Error getting instruction suggestion by AI",
+          "results": {
+            "title": "Validation results",
+            "duplicate": "Duplicate",
+            "conflicts": "Conflicts",
+            "ambiguity": "Ambiguity",
+            "lack_of_clarity": "Clarity: too generic",
+            "no_problems_found": "No problems found. Ready to publish!"
+          },
+          "see_ai_suggestion": {
+            "trigger": "See AI suggestion",
+            "title": "AI suggestion",
+            "apply_button": "Apply AI suggestion",
+            "suggestion_applied": "AI suggestion applied",
+            "no_ai_suggestion_tooltip": "No AI suggestion"
+          }
+        },
         "textarea": {
           "placeholder": "You're funny, but don't make jokes",
           "description": "Keep instructions clear, direct, and in the imperative."
         },
-        "add_instruction": "Add instruction",
+        "publish_instruction": "Publish instruction",
         "success_alert": "Custom instruction added",
         "error_alert": "Error adding instruction custom"
       },
@@ -536,7 +560,6 @@
     "instructions": {
       "title": "General instructions",
       "sub_title": "Define how you want the agent to behave",
-      "add_instruction_btn": "Add instruction",
       "instruction": {
         "title": "Instruction",
         "placeholder": "You're funny, but don't make jokes"

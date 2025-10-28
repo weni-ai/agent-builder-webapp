@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`InstructionTextarea.vue > Component rendering > should match snapshot 1`] = `
+"<section data-v-413107b4="" data-testid="modal-validate-instruction-textarea" class="modal-validate-instruction__textarea">
+  <section data-v-bee89e89="" data-v-adccf3ee="" data-v-413107b4="" class="unnnic-form-element" data-testid="instruction-textarea" resize="none">
+    <!----><textarea data-v-adccf3ee="" class="unnnic-text-area__textarea unnnic-text-area__textarea--size-md unnnic-text-area__textarea--type-normal" placeholder="You're funny, but don't make jokes" value="Initial text"></textarea>
+    <!---->
+    <!---->
+  </section><button data-v-992d21f0="" data-v-413107b4="" data-testid="revalidate-button" class="unnnic-button unnnic-button--size-large unnnic-button--primary">
+    <!---->
+    <!---->
+    <!----><span data-v-992d21f0="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Re-validate</span>
+    <!---->
+  </button>
+</section>"
+`;
