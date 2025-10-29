@@ -49,13 +49,6 @@ const routes = [
         path: 'knowledge',
         name: 'knowledge',
         component: () => import('@/views/Knowledge.vue'),
-        beforeEnter: async (to, from, next) => {
-          const projectStore = useProjectStore();
-          if (!projectStore.details.contentBaseUuid) {
-            await projectStore.getRouterDetails();
-          }
-          next();
-        },
       },
       {
         path: 'tunings',
