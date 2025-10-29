@@ -81,15 +81,11 @@ const filterOptions = [
   },
   {
     value: 'Customization',
-    label: i18n.global.t('router.tunings.history.fields.customization-changes'),
+    label: i18n.global.t('router.tunings.history.fields.instructions-changes'),
   },
   {
     value: 'Content',
     label: i18n.global.t('router.tunings.history.fields.content-changes'),
-  },
-  {
-    value: 'Action',
-    label: i18n.global.t('router.tunings.history.fields.actions-changes'),
   },
   {
     value: 'Config',
