@@ -59,6 +59,7 @@ defineProps<{
     grid-column: 2 / 3;
 
     font: $unnnic-font-caption-2;
+    color: $unnnic-color-fg-emphasized;
   }
 }
 </style>
