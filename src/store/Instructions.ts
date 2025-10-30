@@ -7,6 +7,7 @@ import { useAlertStore } from './Alert';
 import nexusaiAPI from '@/api/nexusaiAPI';
 
 import i18n from '@/utils/plugins/i18n';
+import { moduleStorage } from '@/utils/storage';
 
 function callAlert(type, alertText) {
   const alertStore = useAlertStore();
@@ -28,6 +29,10 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     text: '',
     status: null,
   });
+
+  const validateInstructionByAI = ref<boolean>(
+    moduleStorage.getItem('validateInstructionByAI') ?? true,
+  );
 
   const activeInstructionsListTab = ref('custom');
 
@@ -120,13 +125,20 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     return { status: instruction.status };
   }
 
+  function updateValidateInstructionByAI(value: boolean) {
+    validateInstructionByAI.value = value;
+    moduleStorage.setItem('validateInstructionByAI', value);
+  }
+
   return {
     instructions,
     newInstruction,
+    validateInstructionByAI,
     activeInstructionsListTab,
     addInstruction,
     loadInstructions,
     editInstruction,
     removeInstruction,
+    updateValidateInstructionByAI,
   };
 });

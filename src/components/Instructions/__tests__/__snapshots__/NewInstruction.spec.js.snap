@@ -2,8 +2,11 @@
 
 exports[`NewInstruction.vue > Component rendering > should match snapshot 1`] = `
 "<section data-v-0b69887d="" class="new-instruction" data-testid="new-instruction">
-  <h2 data-v-0b69887d="" class="new-instruction__title" data-testid="new-instruction-title">New custom instruction</h2>
+  <header data-v-0b69887d="" class="new-instruction__header" data-testid="new-instruction-header">
+    <h2 data-v-0b69887d="" class="new-instruction__title" data-testid="new-instruction-title">New custom instruction</h2>
+    <unnnic-switch-stub data-v-0b69887d="" size="medium" textleft="" textright="Validate instruction by AI" disabled="false" modelvalue="true" usevmodel="false" data-testid="new-instruction-switch-validate-instruction-by-ai"></unnnic-switch-stub>
+  </header>
   <anonymous-stub data-v-0b69887d="" modelvalue="" placeholder="You're funny, but don't make jokes" size="md" message="Keep instructions clear, direct, and in the imperative." disabled="false" type="normal" errors="" data-testid="new-instruction-textarea"></anonymous-stub>
-  <unnnic-button-stub data-v-0b69887d="" size="large" text="Add instruction" type="primary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" next="false" disabled="true" loading="false" class="new-instruction__add-instruction-button" data-testid="add-instruction-button"></unnnic-button-stub>
+  <unnnic-button-stub data-v-0b69887d="" size="large" text="Validate instruction" type="primary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" next="false" disabled="true" loading="false" class="new-instruction__add-instruction-button" data-testid="add-instruction-button"></unnnic-button-stub>
 </section>"
 `;
