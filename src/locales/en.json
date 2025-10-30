@@ -124,6 +124,7 @@
           "switch": "Validate instruction by AI",
           "button": "Validate instruction",
           "modal_title": "Validate instruction",
+          "re-validate_button": "Re-validate",
           "cancel_button": "Cancel",
           "publish_button": "Publish",
           "error_alert": "Error getting instruction suggestion by AI"
