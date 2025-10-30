@@ -8,7 +8,7 @@ export const useIndexingProcessStore = defineStore('IndexingProcess', () => {
   const itemsBeingProcessed = ref([]);
   const alertStore = useAlertStore();
 
-  function addItemBeingProcessed(type, itemUuid, item, contentBaseUuid) {
+  function addItemBeingProcessed(type, itemUuid, item) {
     const alreadyIn = itemsBeingProcessed.value.find(
       ({ uuid }) => uuid === itemUuid,
     );
@@ -18,7 +18,6 @@ export const useIndexingProcessStore = defineStore('IndexingProcess', () => {
         type,
         uuid: itemUuid,
         item,
-        contentBaseUuid,
       });
     }
   }
@@ -33,12 +32,10 @@ export const useIndexingProcessStore = defineStore('IndexingProcess', () => {
   }
 
   async function checkIfItemHasAlreadyBeenProcessed() {
-    const { type, uuid, item, contentBaseUuid } =
-      itemsBeingProcessed.value.at(0);
+    const { type, uuid, item } = itemsBeingProcessed.value.at(0);
 
-    await nexusaiAPI.intelligences.contentBases[type]
+    await nexusaiAPI.knowledge[type]
       .read({
-        contentBaseUuid,
         uuid,
       })
       .then(({ data }) => {
@@ -89,14 +86,14 @@ export const useIndexingProcessStore = defineStore('IndexingProcess', () => {
     });
   }
 
-  function useIndexingProcess(items, type, contentBaseUuid) {
+  function useIndexingProcess(items, type) {
     watch(
       () => items,
       (items) => {
         toValue(items)
           .filter(({ status }) => status === 'processing')
           .forEach((item) => {
-            addItemBeingProcessed(type, item.uuid, item, contentBaseUuid);
+            addItemBeingProcessed(type, item.uuid, item);
           });
       },
       { deep: true },

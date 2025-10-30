@@ -3,13 +3,11 @@ import ContentItem from '@/components/Knowledge/ContentBase/ContentItem.vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { createTestingPinia } from '@pinia/testing';
 
-nexusaiAPI.intelligences.contentBases.files.download = vi
-  .fn()
-  .mockResolvedValue({
-    data: {
-      file: 'https://link.api/link-to-the-file',
-    },
-  });
+nexusaiAPI.knowledge.files.download = vi.fn().mockResolvedValue({
+  data: {
+    file: 'https://link.api/link-to-the-file',
+  },
+});
 
 function createFileObject(
   type,
@@ -56,11 +54,6 @@ const pinia = createTestingPinia({
     alert: {
       text: '',
       type: '',
-    },
-    Project: {
-      details: {
-        contentBaseUuid: '1234',
-      },
     },
   },
 });
@@ -191,9 +184,7 @@ describe('ContentItem.vue', () => {
 
         await action.trigger('click');
 
-        expect(
-          nexusaiAPI.intelligences.contentBases.files.download,
-        ).toHaveBeenCalledWith({
+        expect(nexusaiAPI.knowledge.files.download).toHaveBeenCalledWith({
           file_name:
             'Name of the Text-1618c0f6-60f7-4540-8a9a-77fd77c6c8c3.txt',
           fileUuid: '00bf7cd5-d6ce-47b8-b982-2b2939765bf8',
