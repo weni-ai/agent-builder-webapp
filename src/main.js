@@ -13,9 +13,10 @@ import Unnnic from './utils/plugins/UnnnicSystem.ts';
 import { gbKey, initializeGrowthBook } from './utils/Growthbook.js';
 import env from './utils/env';
 import { isFederatedModule } from './utils/moduleFederation';
-import { getJwtToken } from './utils/jwt.js';
+import { getJwtToken, setupTokenRefreshListener } from './utils/jwt.js';
 import { getProjectUuid } from './utils/project.js';
 import { setupLanguageListener } from './utils/language.js';
+import { useUserStore } from './store/User.js';
 
 import './styles/global.scss';
 import '@weni/unnnic-system/dist/style.css';
@@ -26,7 +27,8 @@ export default async function mountAgentBuilderApp({
 } = {}) {
   const gbInstance = await initializeGrowthBook();
 
-  if (!isFederatedModule) {
+  const isInIframe = window.self !== window.top;
+  if (!isFederatedModule && isInIframe) {
     await Promise.all([
       getJwtToken(),
       getProjectUuid(),
@@ -40,6 +42,11 @@ export default async function mountAgentBuilderApp({
   const pinia = createPinia();
 
   app.use(pinia).use(router).use(Unnnic).use(i18n);
+
+  if (!isFederatedModule && isInIframe) {
+    const userStore = useUserStore();
+    setupTokenRefreshListener(userStore);
+  }
 
   app.use(Particles, {
     init: async (engine) => {
