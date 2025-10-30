@@ -1,6 +1,8 @@
 import { reactive, ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 
+import type { InstructionSuggestedByAI } from './types/Instructions.types';
+
 import { useProjectStore } from './Project';
 import { useAlertStore } from './Alert';
 
@@ -33,6 +35,16 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   const validateInstructionByAI = ref<boolean>(
     moduleStorage.getItem('validateInstructionByAI') ?? true,
   );
+
+  const instructionSuggestedByAI = reactive<InstructionSuggestedByAI>({
+    data: {
+      instruction: '',
+      classification: '',
+      reason: '',
+      suggestion: '',
+    },
+    status: null,
+  });
 
   const activeInstructionsListTab = ref('custom');
 
@@ -126,6 +138,30 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     return { status: instruction?.status };
   }
 
+  async function getInstructionSuggestionByAI() {
+    instructionSuggestedByAI.status = 'loading';
+
+    try {
+      const response =
+        await nexusaiAPI.agent_builder.instructions.getSuggestionByAI({
+          projectUuid: projectUuid.value,
+          instruction: newInstruction.text,
+        });
+
+      instructionSuggestedByAI.data = {
+        instruction: newInstruction.text,
+        ...response,
+      };
+      instructionSuggestedByAI.status = 'complete';
+    } catch (error) {
+      instructionSuggestedByAI.status = 'error';
+      callAlert(
+        'error',
+        'new_instruction.validate_instruction_by_ai.error_alert',
+      );
+    }
+  }
+
   function updateValidateInstructionByAI(value: boolean) {
     validateInstructionByAI.value = value;
     moduleStorage.setItem('validateInstructionByAI', value);
@@ -135,11 +171,13 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     instructions,
     newInstruction,
     validateInstructionByAI,
+    instructionSuggestedByAI,
     activeInstructionsListTab,
     addInstruction,
     loadInstructions,
     editInstruction,
     removeInstruction,
+    getInstructionSuggestionByAI,
     updateValidateInstructionByAI,
   };
 });

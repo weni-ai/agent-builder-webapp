@@ -44,15 +44,27 @@
       :loading="newInstruction.status === 'loading'"
       @click="handlePrimaryButton"
     />
+
+    <ModalValidateInstruction
+      v-if="showValidateInstructionByAIModal"
+      v-model="showValidateInstructionByAIModal"
+      data-testid="modal-validate-instruction-by-ai"
+    />
   </section>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+
 import i18n from '@/utils/plugins/i18n';
+
 import { useInstructionsStore } from '@/store/Instructions';
 
+import ModalValidateInstruction from './ModalValidateInstruction/index.vue';
+
 const instructionsStore = useInstructionsStore();
+
+const showValidateInstructionByAIModal = ref(false);
 
 const newInstruction = computed(() => instructionsStore.newInstruction);
 const primaryButtonText = computed(() => {
@@ -65,7 +77,7 @@ const primaryButtonText = computed(() => {
 });
 
 function openValidateInstructionByAIModal() {
-  console.log('openValidateInstructionByAIModal');
+  showValidateInstructionByAIModal.value = true;
 }
 
 function handlePrimaryButton() {
@@ -84,6 +96,10 @@ function handlePrimaryButton() {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   row-gap: $unnnic-spacing-sm;
+
+  :deep(textarea) {
+    resize: none;
+  }
 
   & > * {
     grid-column: 1 / -1;
