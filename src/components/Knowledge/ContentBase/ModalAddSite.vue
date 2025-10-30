@@ -56,13 +56,6 @@ const alertStore = useAlertStore();
 
 const emit = defineEmits(['close', 'addedSite', 'update:modelValue']);
 
-const props = defineProps({
-  contentBaseUuid: {
-    type: String,
-    required: true,
-  },
-});
-
 const site = ref('');
 
 const onInput = (event) => {
@@ -83,11 +76,10 @@ function addSite() {
       status: 'uploading',
     });
 
-    emit('addedSite', newSite, props.contentBaseUuid);
+    emit('addedSite', newSite);
 
-    nexusaiAPI.intelligences.contentBases.sites
+    nexusaiAPI.knowledge.sites
       .create({
-        contentBaseUuid: props.contentBaseUuid,
         link: newSite.created_file_name,
       })
       .then(({ data }) => {

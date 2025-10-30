@@ -18,6 +18,12 @@ vi.mock('@/api/utils/forceHttps', () => ({
   default: vi.fn((url) => `https://${url}`),
 }));
 
+vi.mock('@/utils/storage', () => ({
+  moduleStorage: {
+    getItem: vi.fn(() => 'project1'),
+  },
+}));
+
 describe('nexusaiAPI.js', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -27,13 +33,12 @@ describe('nexusaiAPI.js', () => {
     const mockResponse = { data: 'mockData' };
     request.$http.post.mockResolvedValue(mockResponse);
 
-    const result = await nexusaiAPI.intelligences.contentBases.texts.create({
-      contentBaseUuid: 'contentBase1',
+    const result = await nexusaiAPI.knowledge.texts.create({
       text: 'Sample Text',
     });
 
     expect(request.$http.post).toHaveBeenCalledWith(
-      'api/contentBase1/content-bases-text/',
+      'api/project1/inline-content-base-text/',
       {
         text: 'Sample Text',
       },
@@ -49,14 +54,13 @@ describe('nexusaiAPI.js', () => {
     const mockResponse = { data: 'mockData' };
     request.$http.put.mockResolvedValue(mockResponse);
 
-    const result = await nexusaiAPI.intelligences.contentBases.texts.edit({
-      contentBaseUuid: 'contentBase1',
+    const result = await nexusaiAPI.knowledge.texts.edit({
       contentBaseTextUuid: 'text1',
       text: 'Updated Text',
     });
 
     expect(request.$http.put).toHaveBeenCalledWith(
-      'api/contentBase1/content-bases-text/text1/',
+      'api/project1/inline-content-base-text/text1/',
       {
         text: 'Updated Text',
       },
@@ -72,13 +76,12 @@ describe('nexusaiAPI.js', () => {
     const mockResponse = { data: 'mockData' };
     request.$http.post.mockResolvedValue(mockResponse);
 
-    const result = await nexusaiAPI.intelligences.contentBases.sites.create({
-      contentBaseUuid: 'contentBase1',
+    const result = await nexusaiAPI.knowledge.sites.create({
       link: 'https://example.com',
     });
 
     expect(request.$http.post).toHaveBeenCalledWith(
-      'api/contentBase1/content-bases-link/',
+      'api/project1/inline-content-base-link/',
       {
         link: 'https://example.com',
       },
@@ -90,12 +93,10 @@ describe('nexusaiAPI.js', () => {
     const mockResponse = { data: 'mockData' };
     request.$http.get.mockResolvedValue(mockResponse);
 
-    const result = await nexusaiAPI.intelligences.contentBases.sites.list({
-      contentBaseUuid: 'contentBase1',
-    });
+    const result = await nexusaiAPI.knowledge.sites.list({});
 
     expect(request.$http.get).toHaveBeenCalledWith(
-      'api/contentBase1/content-bases-link/',
+      'api/project1/inline-content-base-link/',
     );
     expect(result).toEqual(mockResponse);
   });
@@ -104,13 +105,12 @@ describe('nexusaiAPI.js', () => {
     const mockResponse = { data: 'mockData' };
     request.$http.get.mockResolvedValue(mockResponse);
 
-    const result = await nexusaiAPI.intelligences.contentBases.sites.read({
-      contentBaseUuid: 'contentBase1',
+    const result = await nexusaiAPI.knowledge.sites.read({
       uuid: 'link1',
     });
 
     expect(request.$http.get).toHaveBeenCalledWith(
-      'api/contentBase1/content-bases-link/link1/',
+      'api/project1/inline-content-base-link/link1/',
     );
     expect(result).toEqual(mockResponse);
   });
@@ -119,13 +119,12 @@ describe('nexusaiAPI.js', () => {
     const mockResponse = { data: 'mockData' };
     request.$http.delete.mockResolvedValue(mockResponse);
 
-    const result = await nexusaiAPI.intelligences.contentBases.sites.delete({
-      contentBaseUuid: 'contentBase1',
+    const result = await nexusaiAPI.knowledge.sites.delete({
       linkUuid: 'link1',
     });
 
     expect(request.$http.delete).toHaveBeenCalledWith(
-      'api/contentBase1/content-bases-link/link1/',
+      'api/project1/inline-content-base-link/link1/',
     );
     expect(result).toEqual(mockResponse);
   });
@@ -138,14 +137,13 @@ describe('nexusaiAPI.js', () => {
       type: 'text/plain',
     });
 
-    const result = await nexusaiAPI.intelligences.contentBases.files.create({
-      contentBaseUuid: 'contentBase1',
+    const result = await nexusaiAPI.knowledge.files.create({
       file: file,
       extension_file: 'pdf',
     });
 
     expect(request.$http.post).toHaveBeenCalledWith(
-      'api/contentBase1/content-bases-file/',
+      'api/project1/inline-content-base-file/',
       expect.any(FormData),
       {
         onUploadProgress: undefined,
@@ -158,12 +156,10 @@ describe('nexusaiAPI.js', () => {
     const mockResponse = { data: 'mockData' };
     request.$http.get.mockResolvedValue(mockResponse);
 
-    const result = await nexusaiAPI.intelligences.contentBases.files.list({
-      contentBaseUuid: 'contentBase1',
-    });
+    const result = await nexusaiAPI.knowledge.files.list({});
 
     expect(request.$http.get).toHaveBeenCalledWith(
-      'api/contentBase1/content-bases-file/',
+      'api/project1/inline-content-base-file/',
     );
     expect(result).toEqual(mockResponse);
   });
@@ -172,13 +168,12 @@ describe('nexusaiAPI.js', () => {
     const mockResponse = { data: 'mockData' };
     request.$http.get.mockResolvedValue(mockResponse);
 
-    const result = await nexusaiAPI.intelligences.contentBases.files.read({
-      contentBaseUuid: 'contentBase1',
+    const result = await nexusaiAPI.knowledge.files.read({
       uuid: 'file1',
     });
 
     expect(request.$http.get).toHaveBeenCalledWith(
-      'api/contentBase1/content-bases-file/file1/',
+      'api/project1/inline-content-base-file/file1/',
     );
     expect(result).toEqual(mockResponse);
   });
@@ -187,13 +182,12 @@ describe('nexusaiAPI.js', () => {
     const mockResponse = { data: 'mockData' };
     request.$http.delete.mockResolvedValue(mockResponse);
 
-    const result = await nexusaiAPI.intelligences.contentBases.files.delete({
-      contentBaseUuid: 'contentBase1',
+    const result = await nexusaiAPI.knowledge.files.delete({
       fileUuid: 'file1',
     });
 
     expect(request.$http.delete).toHaveBeenCalledWith(
-      'api/contentBase1/content-bases-file/file1/',
+      'api/project1/inline-content-base-file/file1/',
     );
     expect(result).toEqual(mockResponse);
   });
@@ -202,7 +196,7 @@ describe('nexusaiAPI.js', () => {
     const mockResponse = { data: 'mockData' };
     request.$http.post.mockResolvedValue(mockResponse);
 
-    const result = await nexusaiAPI.intelligences.contentBases.files.download({
+    const result = await nexusaiAPI.knowledge.files.download({
       fileUuid: 'file1',
       file_name: 'filename.pdf',
     });
@@ -211,28 +205,6 @@ describe('nexusaiAPI.js', () => {
       file_name: 'filename.pdf',
       content_base_file: 'file1',
     });
-    expect(result).toEqual(mockResponse);
-  });
-
-  it('should preview document', async () => {
-    const mockResponse = { data: 'mockData' };
-    request.$http.post.mockResolvedValue(mockResponse);
-
-    const result = await nexusaiAPI.intelligences.contentBases.files.preview({
-      projectUuid: 'project1',
-      contentBaseUuid: 'contentBase1',
-      fileUuid: 'file1',
-      page: 1,
-    });
-
-    expect(request.$http.post).toHaveBeenCalledWith(
-      'api/project1/document-preview/',
-      {
-        content_base_uuid: 'contentBase1',
-        content_base_file_uuid: 'file1',
-        page_number: 1,
-      },
-    );
     expect(result).toEqual(mockResponse);
   });
 

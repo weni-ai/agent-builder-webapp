@@ -6,10 +6,19 @@ export async function getJwtToken() {
       if (event.data.event === 'updateToken') {
         moduleStorage.setItem('authToken', event.data.token);
         window.removeEventListener('message', eventHandler);
+
         return resolve();
       }
     };
     window.addEventListener('message', eventHandler);
     window.parent.postMessage({ event: 'getToken' }, '*');
+  });
+}
+
+export function setupTokenRefreshListener(userStore) {
+  window.addEventListener('message', (event) => {
+    if (event.data.event === 'updateToken') {
+      userStore.setToken(event.data.token);
+    }
   });
 }

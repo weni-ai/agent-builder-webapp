@@ -7,11 +7,11 @@ import i18n from '@/utils/plugins/i18n';
 import { useAlertStore } from '@/store/Alert';
 
 const deleteRequest = vi
-  .spyOn(nexusaiAPI.intelligences.contentBases.files, 'delete')
+  .spyOn(nexusaiAPI.knowledge.files, 'delete')
   .mockResolvedValue({});
 
 const createRequest = vi
-  .spyOn(nexusaiAPI.intelligences.contentBases.files, 'create')
+  .spyOn(nexusaiAPI.knowledge.files, 'create')
   .mockResolvedValue({
     data: {
       uuid: '1',
@@ -75,11 +75,6 @@ const pinia = createTestingPinia({
       text: '',
       type: '',
     },
-    Project: {
-      details: {
-        contentBaseUuid: '1234',
-      },
-    },
   },
 });
 
@@ -90,13 +85,6 @@ const setup = ({ files }) =>
     },
     global: {
       plugins: [pinia],
-      mocks: {
-        $route: {
-          params: {
-            contentBaseUuid: '1234',
-          },
-        },
-      },
     },
   });
 
@@ -239,7 +227,6 @@ describe('ContentFiles.vue', () => {
 
       expect(createRequest).toHaveBeenCalledWith(
         expect.objectContaining({
-          contentBaseUuid: '1234',
           file: textFile,
           extension_file: 'txt',
         }),
@@ -288,7 +275,6 @@ describe('ContentFiles.vue', () => {
         await buttonRemove.trigger('click');
 
         expect(deleteRequest).toHaveBeenCalledWith({
-          contentBaseUuid: '1234',
           fileUuid: '2',
         });
       });
