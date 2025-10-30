@@ -43,7 +43,7 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
           class="material-symbols-rounded unnnic-icon-scheme--neutral-darkest unnnic-icon-size--md unnnic--clickable"
           data-testid="close-icon"
           data-v-ab1febba=""
-          data-v-b9587550=""
+          data-v-fb16c4d6=""
           translate="no"
         >
           close
@@ -119,7 +119,7 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
                 <input
                   class="unnnic-form-input input-itself input size-md normal input--has-icon-left unnnic-form-input input-itself"
                   data-testid="search-input"
-                  data-v-0caa2ccb=""
+                  data-v-9bf9daac=""
                   data-v-c1401a33=""
                   hascloudycolor="false"
                   iconleft="search"
@@ -131,8 +131,8 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
                 <span
                   class="material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--sm icon-left"
                   data-testid="material-icon"
-                  data-v-b9587550=""
                   data-v-c1401a33=""
+                  data-v-fb16c4d6=""
                   translate="no"
                 >
                   search

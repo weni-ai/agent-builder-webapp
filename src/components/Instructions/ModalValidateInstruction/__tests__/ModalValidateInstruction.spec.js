@@ -33,6 +33,9 @@ describe('ModalValidateInstruction.vue', () => {
   const SELECTORS = {
     modal: '[data-testid="modal-validate-instruction-by-ai"]',
     instructionTextarea: '[data-testid="modal-validate-instruction-textarea"]',
+    instructionDivider: '[data-testid="modal-validate-instruction-divider"]',
+    instructionValidationResults:
+      '[data-testid="modal-validate-instruction-validation-results"]',
   };
   const findComponent = (component) =>
     wrapper.findComponent(SELECTORS[component]);
@@ -103,6 +106,28 @@ describe('ModalValidateInstruction.vue', () => {
       expect(instructionTextarea.props('modelValue')).toBe(
         instructionsStore.newInstruction.text,
       );
+    });
+
+    describe('Validation results rendering', () => {
+      it('renders the instruction divider', () => {
+        const instructionDivider = findComponent('instructionDivider');
+        expect(instructionDivider.exists()).toBe(true);
+      });
+
+      it('renders the instruction validation results with correct props', () => {
+        const instructionValidationResults = findComponent(
+          'instructionValidationResults',
+        );
+        expect(instructionValidationResults.exists()).toBe(true);
+      });
+
+      it('does not render the instruction validation results when the instruction suggested by AI status is error', async () => {
+        instructionsStore.instructionSuggestedByAI.status = 'error';
+        await wrapper.vm.$nextTick();
+        expect(findComponent('instructionValidationResults').exists()).toBe(
+          false,
+        );
+      });
     });
   });
 

@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`NoMessagesFound.vue > Component rendering > should match snapshot 1`] = `
-"<section data-v-0a0dfcdc="" class="no-messages-found"><span data-v-b9587550="" data-v-0a0dfcdc="" class="material-symbols-rounded unnnic-icon-scheme--neutral-soft unnnic-icon-size--md material-symbols-rounded--filled no-messages-found__icon" data-testid="no-messages-icon" translate="no">sms</span>
+"<section data-v-0a0dfcdc="" class="no-messages-found"><span data-v-fb16c4d6="" data-v-0a0dfcdc="" class="material-symbols-rounded unnnic-icon-scheme--neutral-soft unnnic-icon-size--md material-symbols-rounded--filled no-messages-found__icon" data-testid="no-messages-icon" translate="no">sms</span>
   <p data-v-ec8da4ad="" data-v-0a0dfcdc="" class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy no-messages-found__title no-messages-found__title" data-testid="no-messages-title">No messages found in this conversation</p>
   <p data-v-ec8da4ad="" data-v-0a0dfcdc="" class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-clean" data-testid="no-messages-description">
     <!-- eslint-disable-next-line vue/component-name-in-template-casing -->

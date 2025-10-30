@@ -127,7 +127,15 @@
           "re-validate_button": "Re-validar",
           "cancel_button": "Cancelar",
           "publish_button": "Publicar",
-          "error_alert": "Error al obtener sugestión de instrucción por IA"
+          "error_alert": "Error al obtener sugestión de instrucción por IA",
+          "results": {
+            "title": "Resultados de la validación",
+            "duplicate": "Duplicado",
+            "conflicts": "Conflicto",
+            "ambiguity": "Ambigüedad",
+            "lack_of_clarity": "Claridad: demasiado genérico",
+            "no_problems_found": "No se encontraron problemas. Listo para publicar!"
+          }
         },
         "textarea": {
           "placeholder": "Eres gracioso, pero no haces bromas",
