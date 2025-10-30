@@ -15,11 +15,11 @@ const response = {
 const callAlert = vi.spyOn(Unnnic, 'unnnicCallAlert');
 
 const editRequest = vi
-  .spyOn(nexusaiAPI.intelligences.contentBases.texts, 'edit')
+  .spyOn(nexusaiAPI.knowledge.texts, 'edit')
   .mockResolvedValue(response);
 
 const createRequest = vi
-  .spyOn(nexusaiAPI.intelligences.contentBases.texts, 'create')
+  .spyOn(nexusaiAPI.knowledge.texts, 'create')
   .mockResolvedValue(response);
 
 const pinia = createTestingPinia({
@@ -50,13 +50,6 @@ describe('BasesFormText.vue', () => {
 
       global: {
         plugins: [pinia],
-        mocks: {
-          $route: {
-            params: {
-              contentBaseUuid: '5678',
-            },
-          },
-        },
       },
     });
   });
@@ -74,16 +67,6 @@ describe('BasesFormText.vue', () => {
               uuid: textUuid,
               oldValue: 'Hello World!',
               value: 'Hello World!',
-            },
-          },
-
-          global: {
-            mocks: {
-              $route: {
-                params: {
-                  contentBaseUuid: '5678',
-                },
-              },
             },
           },
         });
@@ -125,7 +108,6 @@ describe('BasesFormText.vue', () => {
             it('should call edit method', () => {
               expect(editRequest).toHaveBeenCalledWith(
                 expect.objectContaining({
-                  contentBaseUuid: '5678',
                   contentBaseTextUuid: '1234',
                   text: 'Hello World Edited!',
                 }),
@@ -135,7 +117,6 @@ describe('BasesFormText.vue', () => {
             it('should call create method', () => {
               expect(createRequest).toHaveBeenCalledWith(
                 expect.objectContaining({
-                  contentBaseUuid: '5678',
                   text: 'Hello World Edited!',
                 }),
               );

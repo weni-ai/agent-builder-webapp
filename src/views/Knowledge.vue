@@ -18,12 +18,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { get } from 'lodash';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 
-import { useProjectStore } from '@/store/Project';
 import { useKnowledgeStore } from '@/store/Knowledge';
 
 import RouterContentBase from '@/components/Knowledge/RouterContentBase.vue';
@@ -32,7 +31,6 @@ import { useSitesPagination } from '@/composables/useSitesPagination';
 
 import AgentBuilderHeader from '@/components/Header.vue';
 
-const projectStore = useProjectStore();
 const knowledgeStore = useKnowledgeStore();
 
 const text = ref({
@@ -43,23 +41,15 @@ const text = ref({
   value: '',
 });
 
-const contentBaseUuid = computed(() => projectStore.details.contentBaseUuid);
+const files = useFilesPagination();
 
-const files = useFilesPagination({
-  contentBaseUuid: contentBaseUuid.value,
-});
-
-const sites = useSitesPagination({
-  contentBaseUuid: contentBaseUuid.value,
-});
+const sites = useSitesPagination();
 
 async function loadContentBaseText() {
   text.value.status = 'loading';
 
   const { data: contentBaseTextsData } =
-    await nexusaiAPI.intelligences.contentBases.texts.list({
-      contentBaseUuid: contentBaseUuid.value,
-    });
+    await nexusaiAPI.knowledge.texts.list();
 
   const textData = get(contentBaseTextsData, 'results.0.text', '');
   const uuid = get(contentBaseTextsData, 'results.0.uuid', '');
