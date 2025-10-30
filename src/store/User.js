@@ -20,8 +20,14 @@ export const useUserStore = defineStore('User', () => {
     }
   }
 
+  function setToken(token) {
+    user.token = token;
+    moduleStorage.setItem('authToken', token);
+  }
+
   return {
     user,
     getUserDetails,
+    setToken,
   };
 });

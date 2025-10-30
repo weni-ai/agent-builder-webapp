@@ -298,15 +298,10 @@
           "change": "Change",
           "date": "Date",
           "all-changes": "All changes",
-          "customization-changes": "Custom changes",
+          "instructions-changes": "Instructions changes",
           "content-changes": "Content changes",
-          "actions-changes": "Action changes",
           "settings-changes": "Settings changes",
-          "add-action": "added an action ({value})",
           "changes": "made {value} changes",
-          "update-name-action": "changed an action ({value})",
-          "update-prompt-action": "changed an action's prompt ({value})",
-          "remove-action": "removed an action ({value})",
           "update-personality": "changed personality ({value})",
           "update-goal": "changed the goal ({value})",
           "update-name": "changed the name ({value})",
@@ -316,10 +311,7 @@
           "update-instruction": "changed an instruction ({value})",
           "add-content": "added content ({value})",
           "update-content": "updated content ({value})",
-          "remove-content": "removed content ({value})",
-          "update-model": "changed the model",
-          "brain-on": "activated Agent Builder",
-          "brain-off": "deactivated Agent Builder"
+          "remove-content": "removed content ({value})"
         }
       },
       "credentials": {
