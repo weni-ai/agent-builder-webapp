@@ -7,7 +7,7 @@ import { createTestingPinia } from '@pinia/testing';
 import { useAlertStore } from '@/store/Alert';
 
 const deleteRequest = vi
-  .spyOn(nexusaiAPI.intelligences.contentBases.sites, 'delete')
+  .spyOn(nexusaiAPI.knowledge.sites, 'delete')
   .mockResolvedValue({});
 
 const generateItems = () => ({
@@ -49,11 +49,6 @@ const pinia = createTestingPinia({
         type: '',
       },
     },
-    Project: {
-      details: {
-        contentBaseUuid: 'uuuid-01',
-      },
-    },
   },
 });
 
@@ -65,21 +60,6 @@ const setup = (items) =>
     },
     global: {
       plugins: [pinia],
-      mocks: {
-        $route: {
-          params: {
-            contentBaseUuid: '1234',
-          },
-        },
-        $store: {
-          state: {
-            alert: null,
-            router: {
-              contentBaseUuid: '1234',
-            },
-          },
-        },
-      },
     },
   });
 
@@ -97,9 +77,6 @@ describe('ContentSites.vue', () => {
   beforeEach(() => {
     useRoute.mockImplementationOnce(() => ({
       name: 'router-profile',
-      params: {
-        contentBaseUuid: 'uuuid-01',
-      },
     }));
 
     items = generateItems();
@@ -169,10 +146,7 @@ describe('ContentSites.vue', () => {
       it('should request to remove the file', async () => {
         const buttonRemove = wrapper.find('[data-test="button-remove"]');
         await buttonRemove.trigger('click');
-        expect(
-          nexusaiAPI.intelligences.contentBases.sites.delete,
-        ).toHaveBeenCalledWith({
-          contentBaseUuid: 'uuuid-01',
+        expect(nexusaiAPI.knowledge.sites.delete).toHaveBeenCalledWith({
           linkUuid: '2',
         });
       });
@@ -183,7 +157,6 @@ describe('ContentSites.vue', () => {
         await buttonRemove.trigger('click');
         expect(deleteRequest).toHaveBeenCalledWith(
           expect.objectContaining({
-            contentBaseUuid: 'uuuid-01',
             linkUuid: '2',
           }),
         );

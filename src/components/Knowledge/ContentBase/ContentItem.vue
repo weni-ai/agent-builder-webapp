@@ -254,11 +254,10 @@ export default {
       try {
         this.downloading = true;
 
-        const { data } =
-          await nexusaiAPI.intelligences.contentBases.files.download({
-            file_name: this.file.file_name,
-            fileUuid: this.file.uuid,
-          });
+        const { data } = await nexusaiAPI.knowledge.files.download({
+          file_name: this.file.file_name,
+          fileUuid: this.file.uuid,
+        });
 
         const a = createDownloadAnchor({
           name: this.fileName,
