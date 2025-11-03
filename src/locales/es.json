@@ -254,7 +254,8 @@
         "error_alert": "Error al actualizar equipo",
         "official": "Oficial",
         "custom": "Personalizado",
-        "remove_agent": "Remover agente"
+        "remove_agent": "Remover agente del equipo",
+        "delete_agent": "Eliminar agente"
       },
       "drawer": {
         "title": "Asignar {name} al equipo",
@@ -283,7 +284,7 @@
       "preview": "Vista previa",
       "assign_agents": "Asignar agentes",
       "modal_delete_agent": {
-        "title": "Remover {agent_name}",
+        "title": "Eliminar {agent_name}",
         "description": "¿Estás seguro de querer eliminar el {agent_name}? Esta acción no puede ser revertida",
         "delete": "Eliminar",
         "cancel": "Cancelar",

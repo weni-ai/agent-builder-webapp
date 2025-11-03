@@ -175,12 +175,19 @@ const isDeleteAgentModalOpen = ref(false);
 const tuningsStore = useTuningsStore();
 
 const assignAgentHeaderActions = computed(() => [
-  {
-    scheme: 'aux-red-500',
-    icon: 'delete',
-    text: i18n.global.t('router.agents_team.card.remove_agent'),
-    onClick: handleRemoveAgent,
-  },
+  isAgentInTeam()
+    ? {
+        scheme: 'aux-red-500',
+        icon: 'delete',
+        text: i18n.global.t('router.agents_team.card.remove_agent'),
+        onClick: toggleAgentAssignment,
+      }
+    : {
+        scheme: 'aux-red-500',
+        icon: 'delete',
+        text: i18n.global.t('router.agents_team.card.delete_agent'),
+        onClick: toggleDeleteAgentModal,
+      },
 ]);
 
 function isAgentInTeam() {
@@ -212,14 +219,6 @@ async function assignAgent() {
     console.error(error);
   } finally {
     isToggleAgentAssignmentLoading.value = false;
-  }
-}
-
-async function handleRemoveAgent() {
-  if (isAgentInTeam()) {
-    toggleAgentAssignment();
-  } else {
-    toggleDeleteAgentModal();
   }
 }
 

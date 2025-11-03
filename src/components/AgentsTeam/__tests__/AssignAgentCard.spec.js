@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 
 import { createTestingPinia } from '@pinia/testing';
@@ -285,23 +285,47 @@ describe('AssignAgentCard.vue', () => {
         );
       });
 
-      it('should have correct actions configuration', async () => {
-        await wrapper.setProps({
-          assignment: false,
-          agent: {
-            ...wrapper.props('agent'),
-            uuid: 'agent',
-          },
+      describe('should have correct actions configuration', () => {
+        it('when agent is in team', async () => {
+          agentsTeamStore.activeTeam.data.agents = [
+            {
+              uuid: 'agent',
+            },
+          ];
+          await wrapper.setProps({
+            assignment: false,
+            agent: {
+              ...wrapper.props('agent'),
+              uuid: 'agent',
+            },
+          });
+
+          const actions = wrapper.vm.assignAgentHeaderActions;
+          expect(actions).toHaveLength(1);
+          expect(actions[0]).toMatchObject({
+            scheme: 'aux-red-500',
+            icon: 'delete',
+            text: i18n.global.t('router.agents_team.card.remove_agent'),
+          });
+          expect(actions[0].onClick).toBe(wrapper.vm.toggleAgentAssignment);
         });
 
-        const actions = wrapper.vm.assignAgentHeaderActions;
-        expect(actions).toHaveLength(1);
-        expect(actions[0]).toMatchObject({
-          scheme: 'aux-red-500',
-          icon: 'delete',
-          text: i18n.global.t('router.agents_team.card.remove_agent'),
+        it('when agent is not in team', async () => {
+          agentsTeamStore.activeTeam.data.agents = [];
+          await wrapper.setProps({
+            assignment: false,
+            agent: { ...wrapper.props('agent'), uuid: 'agent' },
+          });
+
+          const actions = wrapper.vm.assignAgentHeaderActions;
+          expect(actions).toHaveLength(1);
+          expect(actions[0]).toMatchObject({
+            scheme: 'aux-red-500',
+            icon: 'delete',
+            text: i18n.global.t('router.agents_team.card.delete_agent'),
+          });
+          expect(actions[0].onClick).toBe(wrapper.vm.toggleDeleteAgentModal);
         });
-        expect(typeof actions[0].onClick).toBe('function');
       });
     });
   });
@@ -576,51 +600,6 @@ describe('AssignAgentCard.vue', () => {
       await wrapper.vm.toggleDrawerAssigning();
 
       expect(wrapper.vm.isAssignDrawerOpen).toBe(false);
-    });
-  });
-
-  describe('handleRemoveAgent', () => {
-    beforeEach(() => {
-      agentsTeamStore.toggleAgentAssignment = vi.fn().mockResolvedValue({
-        status: 'success',
-      });
-      agentsTeamStore.activeTeam.data.agents = [];
-    });
-
-    it('should set isAssigning to true when agent is in team', async () => {
-      agentsTeamStore.activeTeam.data.agents = [
-        {
-          uuid: 'agent-in-team',
-        },
-      ];
-
-      await wrapper.setProps({
-        agent: {
-          ...wrapper.props('agent'),
-          uuid: 'agent-in-team',
-        },
-      });
-
-      await wrapper.vm.handleRemoveAgent();
-
-      expect(wrapper.vm.isAssigning).toBe(true);
-    });
-
-    it('should open delete modal when agent is not in team', async () => {
-      agentsTeamStore.activeTeam.data.agents = [];
-
-      await wrapper.setProps({
-        agent: {
-          ...wrapper.props('agent'),
-          uuid: 'agent',
-        },
-      });
-
-      expect(wrapper.vm.isDeleteAgentModalOpen).toBe(false);
-
-      await wrapper.vm.handleRemoveAgent();
-
-      expect(wrapper.vm.isDeleteAgentModalOpen).toBe(true);
     });
   });
 
