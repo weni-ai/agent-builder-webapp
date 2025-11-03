@@ -263,8 +263,8 @@
         "description": "Are you sure you want to remove the {agent_name}? This action cannot be reversed",
         "delete": "Delete",
         "cancel": "Cancel",
-        "success_alert": "Agent deleted",
-        "error_alert": "Error deleting agent"
+        "success_alert": "Agent {agent_name} deleted",
+        "error_alert": "Error deleting agent {agent_name}"
       }
     },
     "content": {

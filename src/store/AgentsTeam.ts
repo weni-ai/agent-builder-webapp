@@ -168,7 +168,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       await nexusaiAPI.router.agents_team.deleteAgent(agent.uuid);
 
       myAgents.data = myAgents.data.filter(
-        (agent) => agent.uuid !== agent.uuid,
+        (mappedAgent) => mappedAgent.uuid !== agent.uuid,
       );
 
       alertStore.add({
