@@ -287,8 +287,8 @@
         "description": "Tem certeza de que deseja remover o {agent_name}? Esta ação não pode ser revertida",
         "delete": "Remover",
         "cancel": "Cancelar",
-        "success_alert": "Agente removido",
-        "error_alert": "Erro ao remover agente"
+        "success_alert": "Agente {agent_name} removido",
+        "error_alert": "Erro ao remover agente {agent_name}"
       }
     },
     "content": {

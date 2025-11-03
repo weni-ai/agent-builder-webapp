@@ -64,7 +64,7 @@
           >
             <ContentItemActions
               :actions="assignAgentHeaderActions"
-              minWidth="175px"
+              minWidth="auto"
               data-testid="content-item-actions"
             />
           </section>
