@@ -230,7 +230,8 @@
         "error_alert": "Error updating team",
         "official": "Official",
         "custom": "Custom",
-        "remove_agent": "Remove agent"
+        "remove_agent": "Remove agent from team",
+        "delete_agent": "Delete agent"
       },
       "drawer": {
         "title": "Assign {name} to team",
@@ -259,8 +260,8 @@
       "preview": "Preview",
       "assign_agents": "Assign agents",
       "modal_delete_agent": {
-        "title": "Remove {agent_name}",
-        "description": "Are you sure you want to remove the {agent_name}? This action cannot be reversed",
+        "title": "Delete {agent_name}",
+        "description": "Are you sure you want to delete the {agent_name}? This action cannot be reversed",
         "delete": "Delete",
         "cancel": "Cancel",
         "success_alert": "Agent {agent_name} deleted",

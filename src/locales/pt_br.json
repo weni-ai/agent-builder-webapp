@@ -230,7 +230,8 @@
         "error_alert": "Erro ao atualizar time",
         "official": "Oficial",
         "custom": "Personalizado",
-        "remove_agent": "Remover agente"
+        "remove_agent": "Remover agente do time",
+        "delete_agent": "Excluir agente"
       },
       "drawer": {
         "title": "Atribuir {name} ao time",
@@ -259,12 +260,12 @@
       "preview": "Prévia",
       "assign_agents": "Atribuir agentes",
       "modal_delete_agent": {
-        "title": "Remover {agent_name}",
-        "description": "Tem certeza de que deseja remover o {agent_name}? Esta ação não pode ser revertida",
-        "delete": "Remover",
+        "title": "Excluir {agent_name}",
+        "description": "Tem certeza de que deseja excluir o {agent_name}? Esta ação não pode ser revertida",
+        "delete": "Excluir",
         "cancel": "Cancelar",
-        "success_alert": "Agente {agent_name} removido",
-        "error_alert": "Erro ao remover agente {agent_name}"
+        "success_alert": "Agente {agent_name} excluído",
+        "error_alert": "Erro ao excluir agente {agent_name}"
       }
     },
     "content": {
