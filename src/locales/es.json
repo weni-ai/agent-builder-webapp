@@ -257,7 +257,15 @@
       },
       "create_agent": "Crear agente",
       "preview": "Vista previa",
-      "assign_agents": "Asignar agentes"
+      "assign_agents": "Asignar agentes",
+      "modal_delete_agent": {
+        "title": "Remover {agent_name}",
+        "description": "¿Estás seguro de querer eliminar el {agent_name}? Esta acción no puede ser revertida",
+        "delete": "Eliminar",
+        "cancel": "Cancelar",
+        "success_alert": "Agente eliminado",
+        "error_alert": "Error al eliminar agente"
+      }
     },
     "content": {
       "fields": {

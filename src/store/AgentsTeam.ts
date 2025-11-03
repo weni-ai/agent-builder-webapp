@@ -7,6 +7,15 @@ import agentIconService from '@/utils/agentIconService';
 
 import i18n from '@/utils/plugins/i18n';
 
+interface Agent {
+  uuid: string;
+  name: string;
+  assigned: boolean;
+  is_official: boolean;
+  id: string;
+  description: string;
+}
+
 export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   const linkToCreateAgent = 'https://github.com/weni-ai/weni-cli';
 
@@ -150,6 +159,32 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
   }
 
+  async function deleteAgent(agent: Agent) {
+    if (!agent) {
+      throw new Error('Agent not found');
+    }
+
+    try {
+      await nexusaiAPI.router.agents_team.deleteAgent(agent.uuid);
+      alertStore.add({
+        text: i18n.global.t(
+          'router.agents_team.modal_delete_agent.success_alert',
+          { agent_name: agent.name },
+        ),
+        type: 'success',
+      });
+    } catch (error) {
+      console.error('error', error);
+
+      alertStore.add({
+        text: i18n.global.t(
+          'router.agents_team.modal_delete_agent.error_alert',
+        ),
+        type: 'error',
+      });
+    }
+  }
+
   return {
     linkToCreateAgent,
     activeTeam,
@@ -161,5 +196,6 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     loadOfficialAgents,
     loadMyAgents,
     toggleAgentAssignment,
+    deleteAgent,
   };
 });

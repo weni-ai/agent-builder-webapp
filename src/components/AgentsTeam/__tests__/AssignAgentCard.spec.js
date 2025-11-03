@@ -18,6 +18,14 @@ const pinia = createTestingPinia({
       status: null,
       data: [],
     },
+    activeTeam: {
+      data: {
+        manager: {
+          id: 'manager',
+        },
+        agents: [],
+      },
+    },
   },
 });
 
@@ -84,50 +92,215 @@ describe('AssignAgentCard.vue', () => {
   });
 
   describe('ContentHeader', () => {
-    it('should render header actions when assignment is false', async () => {
-      await wrapper.setProps({ assignment: false });
-      expect(
-        wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
-      ).toBe(true);
-    });
+    describe('Header actions visibility', () => {
+      it('should render header actions when assignment is false regardless of agent state', async () => {
+        await wrapper.setProps({
+          assignment: false,
+          agent: {
+            ...wrapper.props('agent'),
+            uuid: 'agent',
+            assigned: true,
+            is_official: true,
+          },
+        });
 
-    it('should not render header actions when assignment is true', () => {
-      expect(
-        wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
-      ).toBe(false);
-    });
-
-    it('should render official tag when agent is official', async () => {
-      await wrapper.setProps({
-        assignment: false,
-        agent: {
-          ...wrapper.props('agent'),
-          is_official: true,
-        },
+        expect(
+          wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
+        ).toBe(true);
       });
 
-      const tag = wrapper.findComponent('[data-testid="agent-tag"]');
-      expect(tag.props('text')).toBe(
-        i18n.global.t('router.agents_team.card.official'),
-      );
+      it('should render header actions when assignment is true, agent is not assigned and not official', async () => {
+        await wrapper.setProps({
+          assignment: true,
+          agent: {
+            ...wrapper.props('agent'),
+            is_official: false,
+            assigned: false,
+            uuid: 'agent',
+          },
+        });
 
-      expect(tag.props('scheme')).toBe('weni');
-    });
-
-    it('should render custom tag when agent is not official', async () => {
-      await wrapper.setProps({
-        assignment: false,
-        agent: {
-          ...wrapper.props('agent'),
-          is_official: false,
-        },
+        expect(
+          wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
+        ).toBe(true);
       });
 
-      const tag = wrapper.findComponent('[data-testid="agent-tag"]');
-      expect(tag.props('text')).toBe(
-        i18n.global.t('router.agents_team.card.custom'),
-      );
-      expect(tag.props('scheme')).toBe('aux-purple');
+      it('should not render header actions when assignment is true and agent is assigned', async () => {
+        await wrapper.setProps({
+          assignment: true,
+          agent: {
+            ...wrapper.props('agent'),
+            is_official: false,
+            assigned: true,
+            uuid: 'agent',
+          },
+        });
+
+        expect(
+          wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
+        ).toBe(false);
+      });
+
+      it('should not render header actions when assignment is true and agent is official', async () => {
+        await wrapper.setProps({
+          assignment: true,
+          agent: {
+            ...wrapper.props('agent'),
+            is_official: true,
+            assigned: false,
+            uuid: 'agent',
+          },
+        });
+
+        expect(
+          wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
+        ).toBe(false);
+      });
+
+      it('should not render header actions when assignment is true, agent is assigned and official', async () => {
+        await wrapper.setProps({
+          assignment: true,
+          agent: {
+            ...wrapper.props('agent'),
+            is_official: true,
+            assigned: true,
+            uuid: 'agent',
+          },
+        });
+
+        expect(
+          wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
+        ).toBe(false);
+      });
+    });
+
+    describe('Agent tag', () => {
+      beforeEach(() => {
+        agentsTeamStore.activeTeam.data.agents.push({
+          uuid: 'agent',
+        });
+      });
+
+      it('should render official tag when agent is official and in team', async () => {
+        await wrapper.setProps({
+          assignment: false,
+          agent: {
+            ...wrapper.props('agent'),
+            is_official: true,
+            uuid: 'agent',
+          },
+        });
+
+        const tag = wrapper.findComponent('[data-testid="agent-tag"]');
+        expect(tag.props('text')).toBe(
+          i18n.global.t('router.agents_team.card.official'),
+        );
+
+        expect(tag.props('scheme')).toBe('weni');
+      });
+
+      it('should render custom tag when agent is not official and in team', async () => {
+        await wrapper.setProps({
+          assignment: false,
+          agent: {
+            ...wrapper.props('agent'),
+            is_official: false,
+            uuid: 'agent',
+          },
+        });
+
+        const tag = wrapper.findComponent('[data-testid="agent-tag"]');
+        expect(tag.props('text')).toBe(
+          i18n.global.t('router.agents_team.card.custom'),
+        );
+        expect(tag.props('scheme')).toBe('aux-purple');
+      });
+
+      it('should not render tag when agent is not in team', async () => {
+        agentsTeamStore.activeTeam.data.agents = [];
+
+        await wrapper.setProps({
+          assignment: false,
+          agent: {
+            ...wrapper.props('agent'),
+            is_official: false,
+            uuid: 'different-agent',
+          },
+        });
+
+        const tag = wrapper.findComponent('[data-testid="agent-tag"]');
+        expect(tag.exists()).toBe(false);
+      });
+    });
+
+    describe('ContentItemActions', () => {
+      it('should show ContentItemActions when header actions are visible and not loading', async () => {
+        await wrapper.setProps({
+          assignment: false,
+          agent: {
+            ...wrapper.props('agent'),
+            uuid: 'agent',
+          },
+        });
+
+        expect(
+          wrapper
+            .findComponent('[data-testid="content-item-actions"]')
+            .exists(),
+        ).toBe(true);
+      });
+
+      it('should hide ContentItemActions when toggle agent assignment is loading', async () => {
+        await wrapper.setProps({
+          assignment: false,
+          agent: {
+            ...wrapper.props('agent'),
+            uuid: 'agent',
+          },
+        });
+
+        wrapper.vm.isToggleAgentAssignmentLoading = true;
+        await wrapper.vm.$nextTick();
+
+        const actionsContent = wrapper.find('.actions__content');
+        expect(actionsContent.attributes('style')).toContain('display: none');
+      });
+
+      it('should show loading icon when toggle agent assignment is loading', async () => {
+        await wrapper.setProps({
+          assignment: false,
+          agent: {
+            ...wrapper.props('agent'),
+            uuid: 'agent',
+          },
+        });
+
+        wrapper.vm.isToggleAgentAssignmentLoading = true;
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.find('[data-testid="loading-icon"]').exists()).toBe(
+          true,
+        );
+      });
+
+      it('should have correct actions configuration', async () => {
+        await wrapper.setProps({
+          assignment: false,
+          agent: {
+            ...wrapper.props('agent'),
+            uuid: 'agent',
+          },
+        });
+
+        const actions = wrapper.vm.assignAgentHeaderActions;
+        expect(actions).toHaveLength(1);
+        expect(actions[0]).toMatchObject({
+          scheme: 'aux-red-500',
+          icon: 'delete',
+          text: i18n.global.t('router.agents_team.card.remove_agent'),
+        });
+        expect(typeof actions[0].onClick).toBe('function');
+      });
     });
   });
 
@@ -401,6 +574,101 @@ describe('AssignAgentCard.vue', () => {
       await wrapper.vm.toggleDrawerAssigning();
 
       expect(wrapper.vm.isAssignDrawerOpen).toBe(false);
+    });
+  });
+
+  describe('handleRemoveAgent', () => {
+    beforeEach(() => {
+      agentsTeamStore.toggleAgentAssignment = vi.fn().mockResolvedValue({
+        status: 'success',
+      });
+      agentsTeamStore.activeTeam.data.agents = [];
+    });
+
+    it('should set isAssigning to true when agent is in team', async () => {
+      agentsTeamStore.activeTeam.data.agents = [
+        {
+          uuid: 'agent-in-team',
+        },
+      ];
+
+      await wrapper.setProps({
+        agent: {
+          ...wrapper.props('agent'),
+          uuid: 'agent-in-team',
+        },
+      });
+
+      await wrapper.vm.handleRemoveAgent();
+
+      expect(wrapper.vm.isAssigning).toBe(true);
+    });
+
+    it('should open delete modal when agent is not in team', async () => {
+      agentsTeamStore.activeTeam.data.agents = [];
+
+      await wrapper.setProps({
+        agent: {
+          ...wrapper.props('agent'),
+          uuid: 'agent',
+        },
+      });
+
+      expect(wrapper.vm.isDeleteAgentModalOpen).toBe(false);
+
+      await wrapper.vm.handleRemoveAgent();
+
+      expect(wrapper.vm.isDeleteAgentModalOpen).toBe(true);
+    });
+  });
+
+  describe('toggleDeleteAgentModal', () => {
+    it('should toggle the isDeleteAgentModalOpen state', async () => {
+      expect(wrapper.vm.isDeleteAgentModalOpen).toBe(false);
+
+      await wrapper.vm.toggleDeleteAgentModal();
+
+      expect(wrapper.vm.isDeleteAgentModalOpen).toBe(true);
+
+      await wrapper.vm.toggleDeleteAgentModal();
+
+      expect(wrapper.vm.isDeleteAgentModalOpen).toBe(false);
+    });
+  });
+
+  describe('isAgentInTeam', () => {
+    beforeEach(() => {
+      agentsTeamStore.activeTeam.data.agents = [];
+    });
+
+    it('should return true when agent is in team', async () => {
+      await wrapper.setProps({
+        agent: {
+          ...wrapper.props('agent'),
+          uuid: 'agent-in-team',
+        },
+      });
+
+      agentsTeamStore.activeTeam.data.agents = [
+        {
+          uuid: 'agent-in-team',
+        },
+      ];
+
+      expect(wrapper.vm.isAgentInTeam()).toBe(true);
+    });
+
+    it('should return false when agent is not in team', async () => {
+      agentsTeamStore.activeTeam.data.agents = [];
+
+      await wrapper.setProps({
+        agent: {
+          ...wrapper.props('agent'),
+          uuid: 'agent-not-in-team',
+        },
+      });
+
+      expect(wrapper.vm.isAgentInTeam()).toBe(false);
     });
   });
 });
