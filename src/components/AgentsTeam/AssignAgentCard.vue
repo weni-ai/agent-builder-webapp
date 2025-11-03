@@ -53,12 +53,14 @@
           <UnnnicIconLoading
             v-if="isToggleAgentAssignmentLoading"
             size="avatar-nano"
+            class="actions__content"
             data-testid="loading-icon"
           />
           <!-- v-show used instead of v-else to prevent ContentItemActions popover rendering error -->
           <section
             v-show="!isToggleAgentAssignmentLoading"
             class="actions__content"
+            data-testid="content-item-actions-content"
           >
             <ContentItemActions
               :actions="assignAgentHeaderActions"

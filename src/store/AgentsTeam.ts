@@ -166,6 +166,11 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
     try {
       await nexusaiAPI.router.agents_team.deleteAgent(agent.uuid);
+
+      myAgents.data = myAgents.data.filter(
+        (agent) => agent.uuid !== agent.uuid,
+      );
+
       alertStore.add({
         text: i18n.global.t(
           'router.agents_team.modal_delete_agent.success_alert',

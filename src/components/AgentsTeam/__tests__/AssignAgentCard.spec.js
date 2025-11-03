@@ -262,7 +262,9 @@ describe('AssignAgentCard.vue', () => {
         wrapper.vm.isToggleAgentAssignmentLoading = true;
         await wrapper.vm.$nextTick();
 
-        const actionsContent = wrapper.find('.actions__content');
+        const actionsContent = wrapper.find(
+          '[data-testid="content-item-actions-content"]',
+        );
         expect(actionsContent.attributes('style')).toContain('display: none');
       });
 

@@ -39,6 +39,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
           <!-- v-show used instead of v-else to prevent ContentItemActions popover rendering error -->
           <section
             class="actions__content"
+            data-testid="content-item-actions-content"
             data-v-b58c7d6a=""
           >
             
