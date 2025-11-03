@@ -128,4 +128,10 @@ export const AgentsTeam = {
       data,
     };
   },
+
+  async deleteAgent(uuid) {
+    return await request.$http.delete(
+      `api/project/${projectUuid.value}/agents/${uuid}`,
+    );
+  },
 };

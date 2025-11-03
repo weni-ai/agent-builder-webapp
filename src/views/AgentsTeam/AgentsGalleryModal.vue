@@ -203,7 +203,7 @@ watch(
 
 <style lang="scss" scoped>
 .agents-gallery-modal {
-  :deep(.unnnic-modal-dialog__container) {
+  & > :deep(.unnnic-modal-dialog__container) {
     width: 75vw;
     height: 85vh;
   }
