@@ -83,6 +83,7 @@ class ModuleStorage {
   }
 }
 
-export const moduleStorage = new ModuleStorage(MODULE_PREFIX, false);
+export const moduleLocalStorage = new ModuleStorage(MODULE_PREFIX, false);
+export const moduleSessionStorage = new ModuleStorage(MODULE_PREFIX, true);
 
 export { ModuleStorage };

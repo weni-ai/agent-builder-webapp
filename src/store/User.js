@@ -2,12 +2,12 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
-import { moduleStorage } from '@/utils/storage';
+import { moduleLocalStorage } from '@/utils/storage';
 
 export const useUserStore = defineStore('User', () => {
   const user = reactive({
     email: null,
-    token: moduleStorage.getItem('authToken') || null,
+    token: moduleLocalStorage.getItem('authToken') || null,
   });
 
   async function getUserDetails() {
@@ -22,7 +22,7 @@ export const useUserStore = defineStore('User', () => {
 
   function setToken(token) {
     user.token = token;
-    moduleStorage.setItem('authToken', token);
+    moduleLocalStorage.setItem('authToken', token);
   }
 
   return {
