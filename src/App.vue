@@ -3,7 +3,7 @@
     id="app"
     :class="`app-agent-builder app-agent-builder--${!isFederatedModule ? 'dev' : 'prod'}`"
   >
-    <Sidebar data-testid="agent-builder-sidebar" />
+    <Sidebar v-if="route.path.startsWith('/build')" data-testid="agent-builder-sidebar" />
 
     <main
       class="agent-builder__content"
@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 
 import { onMounted, watch } from 'vue';
 
@@ -39,6 +39,8 @@ import { isFederatedModule } from './utils/moduleFederation';
 import initHotjar from '@/utils/plugins/Hotjar.js';
 
 import Sidebar from '@/components/Sidebar/index.vue';
+
+const route = useRoute();
 
 const agentsTeamStore = useAgentsTeamStore();
 const alertStore = useAlertStore();

@@ -6,11 +6,8 @@ import {
 } from 'vue-router';
 import { isFederatedModule } from '@/utils/moduleFederation';
 import { RouteRecordRaw } from 'vue-router';
-import {
-  getCurrentModule,
-  setModule,
-  type AgentBuilderModule,
-} from '@/utils/modules';
+
+type AgentBuilderModule = 'conversations' | 'agents' | 'build';
 
 const parseNextPath = (nextPath, to) => {
   const [path, queryString] = nextPath.split('?');
@@ -29,61 +26,65 @@ const parseNextPath = (nextPath, to) => {
   return { path, query };
 };
 
-const getNotFoundRoute = (name: string) => {
-  return {
-    path: '/:pathMatch(.*)*',
-    name: 'notFound',
-    redirect: { name },
-  };
-};
-
 const conversationsRoutes: RouteRecordRaw[] = [
   {
-    path: '/',
+    path: '/conversations',
     name: 'conversations',
     component: () => import('@/views/Supervisor/index.vue'),
-  },
-  {
-    ...getNotFoundRoute('conversations'),
   },
 ];
 
 const agentsRoutes: RouteRecordRaw[] = [
   {
-    path: '/',
+    path: '/agents',
     name: 'agents',
     component: () => import('@/views/AgentsTeam/index.vue'),
-  },
-  {
-    ...getNotFoundRoute('agents'),
   },
 ];
 
 const buildRoutes: RouteRecordRaw[] = [
   {
-    path: '/',
+    path: '/build',
     name: 'build',
     redirect: { name: 'instructions' },
-  },
-  {
-    path: '/instructions',
-    name: 'instructions',
-    component: () => import('@/views/Instructions/index.vue'),
-  },
-  {
-    path: '/knowledge',
-    name: 'knowledge',
-    component: () => import('@/views/Knowledge.vue'),
-  },
-  {
-    path: '/tunings',
-    name: 'tunings',
-    component: () => import('@/views/Tunings.vue'),
-  },
-  {
-    ...getNotFoundRoute('build'),
+    children: [
+      {
+        path: '/build/instructions',
+        name: 'instructions',
+        component: () => import('@/views/Instructions/index.vue'),
+      },
+      {
+        path: '/build/knowledge',
+        name: 'knowledge',
+        component: () => import('@/views/Knowledge.vue'),
+      },
+      {
+        path: '/build/tunings',
+        name: 'tunings',
+        component: () => import('@/views/Tunings.vue'),
+      },
+    ]
   },
 ];
+
+/**
+ * Determines which module routes to load based on current path
+ */
+const getCurrentModuleFromPath = (): AgentBuilderModule => {
+  const path = window.location.pathname;
+  
+  if (path.startsWith('/conversations')) {
+    return 'conversations';
+  }
+  
+  if (path.startsWith('/agents')) {
+    return 'agents';
+  }
+  
+  return 'build';
+};
+
+const currentModule = getCurrentModuleFromPath();
 
 const moduleRoutesMap: Record<AgentBuilderModule, RouteRecordRaw[]> = {
   conversations: conversationsRoutes,
@@ -91,10 +92,14 @@ const moduleRoutesMap: Record<AgentBuilderModule, RouteRecordRaw[]> = {
   build: buildRoutes,
 };
 
-const currentModule = getCurrentModule();
-const routes = moduleRoutesMap[currentModule] || buildRoutes;
-
-setModule(currentModule);
+const routes: RouteRecordRaw[] = [
+  ...moduleRoutesMap[currentModule],
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notFound',
+    redirect: { name: currentModule },
+  },
+];
 
 const history = isFederatedModule
   ? createMemoryHistory() // To isolate routing from parent app
