@@ -49,12 +49,57 @@ export default {
 
 <style lang="scss" scoped>
 .content-section {
-  word-wrap: break-word;
-  overflow-wrap: anywhere;
-  max-width: 100%;
-
   & > * {
+    max-width: 100%;
+
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
     text-wrap: auto;
+  }
+
+  // Markdown elements styling
+  :deep(p) {
+    margin: $unnnic-space-2 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  :deep(a) {
+    text-decoration: underline;
+    
+    cursor: pointer;
+  }
+
+  :deep(ul), :deep(ol) {
+    margin: $unnnic-space-2 0;
+    list-style: initial;
+    padding-left: $unnnic-space-4;
+  }
+
+  :deep(li) {
+    margin: $unnnic-space-1 0;
+  }
+
+  :deep(h1) {
+    font: $unnnic-font-display-1;
+  }
+
+  :deep(h2) {
+    font: $unnnic-font-display-2;
+  }
+
+  :deep(h3) {
+    font: $unnnic-font-display-3;
+  }
+
+  :deep(h4) {
+    font: $unnnic-font-display-4;
   }
 }
 </style>
