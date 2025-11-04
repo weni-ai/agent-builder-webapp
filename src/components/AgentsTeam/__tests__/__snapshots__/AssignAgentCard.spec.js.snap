@@ -29,7 +29,36 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
           Test Title
           
         </p>
-        <!--v-if-->
+        <section
+          class="header__actions"
+          data-testid="assign-agent-card-actions"
+          data-v-b58c7d6a=""
+        >
+          <!--v-if-->
+          <!--v-if-->
+          <!-- v-show used instead of v-else to prevent ContentItemActions popover rendering error -->
+          <section
+            class="actions__content"
+            data-testid="content-item-actions-content"
+            data-v-b58c7d6a=""
+          >
+            
+            
+            <span
+              class="material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--avatar-nano button-menu"
+              data-testid="content-item-actions"
+              data-v-90d29858=""
+              data-v-b9587550=""
+              translate="no"
+            >
+              more_vert
+            </span>
+            
+            <!--teleport start-->
+            <!--teleport end-->
+            
+          </section>
+        </section>
         <p
           class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy header__description header__description"
           data-testid="description"
@@ -126,6 +155,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
     isassigning="false"
     modelvalue="false"
   />
+  <!---->
   
 </div>
 `;

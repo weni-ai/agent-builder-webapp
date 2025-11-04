@@ -32,11 +32,12 @@
         </UnnnicIntelligenceText>
 
         <section
-          v-if="!assignment"
+          v-if="shouldShowActions"
           class="header__actions"
           data-testid="assign-agent-card-actions"
         >
           <UnnnicTag
+            v-if="isAgentInTeam"
             type="next"
             :text="
               agent.is_official
@@ -50,15 +51,19 @@
           <UnnnicIconLoading
             v-if="isToggleAgentAssignmentLoading"
             size="avatar-nano"
+            class="actions__content"
+            data-testid="loading-icon"
           />
           <!-- v-show used instead of v-else to prevent ContentItemActions popover rendering error -->
           <section
             v-show="!isToggleAgentAssignmentLoading"
             class="actions__content"
+            data-testid="content-item-actions-content"
           >
             <ContentItemActions
               :actions="assignAgentHeaderActions"
-              minWidth="175px"
+              minWidth="auto"
+              data-testid="content-item-actions"
             />
           </section>
         </section>
@@ -118,6 +123,11 @@
     :isAssigning="isDrawerAssigning"
     @assign="toggleDrawerAssigning"
   />
+
+  <DeleteAgentModal
+    v-model="isDeleteAgentModalOpen"
+    :agent="agent"
+  />
 </template>
 
 <script setup>
@@ -133,6 +143,7 @@ import AssignAgentDrawer from './AssignAgentDrawer.vue';
 import ContentItemActions from '@/components/ContentItemActions.vue';
 import Skill from './Skill.vue';
 import AgentIcon from './AgentIcon.vue';
+import DeleteAgentModal from './DeleteAgentModal.vue';
 
 const props = defineProps({
   loading: {
@@ -157,17 +168,37 @@ const isAssignDrawerOpen = ref(false);
 const isAssigning = ref(false);
 const isDrawerAssigning = ref(false);
 const isToggleAgentAssignmentLoading = ref(false);
+const isDeleteAgentModalOpen = ref(false);
 
 const tuningsStore = useTuningsStore();
 
+const isAgentInTeam = computed(() => {
+  return agentsTeamStore.activeTeam.data.agents.some(
+    (agent) => agent.uuid === props.agent.uuid,
+  );
+});
+
 const assignAgentHeaderActions = computed(() => [
-  {
-    scheme: 'aux-red-500',
-    icon: 'delete',
-    text: i18n.global.t('router.agents_team.card.remove_agent'),
-    onClick: toggleAgentAssignment,
-  },
+  isAgentInTeam.value
+    ? {
+        scheme: 'aux-red-500',
+        icon: 'delete',
+        text: i18n.global.t('router.agents_team.card.remove_agent'),
+        onClick: toggleAgentAssignment,
+      }
+    : {
+        scheme: 'aux-red-500',
+        icon: 'delete',
+        text: i18n.global.t('router.agents_team.card.delete_agent'),
+        onClick: toggleDeleteAgentModal,
+      },
 ]);
+
+const shouldShowActions = computed(() => {
+  const { assignment, agent } = props;
+
+  return (assignment && !agent.assigned && !agent.is_official) || !assignment;
+});
 
 async function toggleDrawer() {
   isAssignDrawerOpen.value = !isAssignDrawerOpen.value;
@@ -193,6 +224,10 @@ async function assignAgent() {
   } finally {
     isToggleAgentAssignmentLoading.value = false;
   }
+}
+
+async function toggleDeleteAgentModal() {
+  isDeleteAgentModalOpen.value = !isDeleteAgentModalOpen.value;
 }
 
 async function toggleAgentAssignment() {
@@ -255,6 +290,7 @@ async function toggleDrawerAssigning() {
 
         .actions__content {
           display: flex;
+          margin-left: auto;
         }
       }
 
