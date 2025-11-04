@@ -32,14 +32,12 @@
         </UnnnicIntelligenceText>
 
         <section
-          v-if="
-            (assignment && !agent.assigned && !agent.is_official) || !assignment
-          "
+          v-if="shouldShowActions"
           class="header__actions"
           data-testid="assign-agent-card-actions"
         >
           <UnnnicTag
-            v-if="isAgentInTeam()"
+            v-if="isAgentInTeam"
             type="next"
             :text="
               agent.is_official
@@ -174,8 +172,14 @@ const isDeleteAgentModalOpen = ref(false);
 
 const tuningsStore = useTuningsStore();
 
+const isAgentInTeam = computed(() => {
+  return agentsTeamStore.activeTeam.data.agents.some(
+    (agent) => agent.uuid === props.agent.uuid,
+  );
+});
+
 const assignAgentHeaderActions = computed(() => [
-  isAgentInTeam()
+  isAgentInTeam.value
     ? {
         scheme: 'aux-red-500',
         icon: 'delete',
@@ -190,11 +194,11 @@ const assignAgentHeaderActions = computed(() => [
       },
 ]);
 
-function isAgentInTeam() {
-  return agentsTeamStore.activeTeam.data.agents.some(
-    (agent) => agent.uuid === props.agent.uuid,
-  );
-}
+const shouldShowActions = computed(() => {
+  const { assignment, agent } = props;
+
+  return (assignment && !agent.assigned && !agent.is_official) || !assignment;
+});
 
 async function toggleDrawer() {
   isAssignDrawerOpen.value = !isAssignDrawerOpen.value;
