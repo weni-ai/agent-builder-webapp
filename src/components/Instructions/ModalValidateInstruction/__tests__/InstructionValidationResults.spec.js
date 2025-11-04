@@ -5,6 +5,7 @@ import { createTestingPinia } from '@pinia/testing';
 import InstructionValidationResults from '../InstructionValidationResults.vue';
 import i18n from '@/utils/plugins/i18n';
 import { useInstructionsStore } from '@/store/Instructions';
+import { formatListToReadable } from '@/utils/formatters';
 
 const SELECTORS = {
   title: '[data-testid="modal-validate-instruction-validation-results-title"]',
@@ -112,7 +113,7 @@ describe('InstructionValidationResults.vue', () => {
   });
 
   describe('Warning state', () => {
-    it('renders multiple warning toasts when classification contains items', async () => {
+    it('renders one warning toast when classification contains items and the title is the formatted list of the classification names', async () => {
       const classifications = [
         MOCK_CLASSIFICATIONS.duplicate,
         MOCK_CLASSIFICATIONS.conflict,
@@ -130,10 +131,10 @@ describe('InstructionValidationResults.vue', () => {
         getTranslation('lack_of_clarity'),
       ];
 
-      expect(toasts).toHaveLength(4);
+      expect(toasts).toHaveLength(1);
       toasts.forEach((toast, index) => {
         expect(toast.props('type')).toBe('warning');
-        expect(toast.props('title')).toBe(expectedTitles[index]);
+        expect(toast.props('title')).toBe(formatListToReadable(expectedTitles));
       });
     });
 
@@ -146,8 +147,9 @@ describe('InstructionValidationResults.vue', () => {
       await setStoreStatus('complete', classifications);
 
       const toasts = findAllToasts();
-      expect(toasts[0].props('description')).toBe('Duplicate reason');
-      expect(toasts[1].props('description')).toBe('Ambiguity detected');
+      expect(toasts[0].props('description')).toBe(
+        MOCK_CLASSIFICATIONS.duplicate.reason,
+      );
     });
   });
 

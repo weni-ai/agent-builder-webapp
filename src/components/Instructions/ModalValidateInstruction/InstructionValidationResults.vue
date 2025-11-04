@@ -24,7 +24,6 @@
       "
     >
       <TempToast
-        v-for="classification in classifications"
         :key="classification.type"
         data-testid="modal-validate-instruction-validation-results-toast"
         :type="classification.type"
@@ -42,13 +41,16 @@ import { useInstructionsStore } from '@/store/Instructions';
 import { Classification } from '@/store/types/Instructions.types';
 
 import i18n from '@/utils/plugins/i18n';
+import { formatListToReadable } from '@/utils/formatters';
 
 import TempToast from './TempToast.vue';
 
 const instructionsStore = useInstructionsStore();
-const classifications = computed<
-  { type: 'warning' | 'success'; name: string; reason: string }[]
->(() => {
+const classification = computed<{
+  type: 'warning' | 'success';
+  name: string;
+  reason: string;
+}>(() => {
   const getTranslation = (key: string) =>
     i18n.global.t(
       `agent_builder.instructions.new_instruction.validate_instruction_by_ai.results.${key}`,
@@ -64,20 +66,26 @@ const classifications = computed<
     instructionsStore.instructionSuggestedByAI.data.classification;
 
   if (results.length) {
-    return results.map((result: Classification) => ({
+    const resultList = results.map((result: Classification) => ({
       ...result,
       type: 'warning' as const,
       name: titleMappings[result.name] || result.reason,
     }));
+
+    return {
+      type: 'warning' as const,
+      name: formatListToReadable(
+        resultList.map((result: Classification) => result.name),
+      ),
+      reason: resultList[0].reason,
+    };
   }
 
-  return [
-    {
-      type: 'success' as const,
-      name: getTranslation('no_problems_found'),
-      reason: '',
-    },
-  ];
+  return {
+    type: 'success' as const,
+    name: getTranslation('no_problems_found'),
+    reason: '',
+  };
 });
 </script>
 
