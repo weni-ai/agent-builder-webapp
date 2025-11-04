@@ -36,17 +36,6 @@
             :text="statusProps.text"
           />
         </UnnnicToolTip>
-
-        <UnnnicTag
-          v-if="conversation.transferred_to_human_support"
-          class="cell__status"
-          scheme="aux-yellow-500"
-          :text="
-            $t(
-              'agent_builder.supervisor.filters.status.transferred_to_human_support',
-            )
-          "
-        />
       </td>
     </section>
 
@@ -113,6 +102,9 @@ const statusProps = computed(() => {
     },
     unclassified: {
       scheme: 'neutral-cloudy',
+    },
+    transferred_to_human_support: {
+      scheme: 'aux-yellow-500',
     },
   };
 
