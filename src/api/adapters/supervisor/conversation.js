@@ -12,6 +12,7 @@ export const ConversationAdapter = {
       1: 'other_conclusion',
       2: 'in_progress',
       3: 'unclassified',
+      4: 'transferred_to_human_support',
     };
 
     const csatMap = {
@@ -34,7 +35,6 @@ export const ConversationAdapter = {
           urn: result.urn,
           status: statusMap[result.resolution] || 'in_progress',
           csat: csatMap[result.csat] || null,
-          transferred_to_human_support: result.has_chats_room,
           topics: result.topic,
         })),
       };
@@ -64,6 +64,7 @@ export const ConversationAdapter = {
       other_conclusion: 1,
       in_progress: 2,
       unclassified: 3,
+      transferred_to_human_support: 4,
     };
 
     const csatMap = {
@@ -88,9 +89,6 @@ export const ConversationAdapter = {
           csat: csat.map((csatItem) => csatMap[csatItem]),
         }),
       ...(isArray(topics) && topics.length > 0 && { topics }),
-      ...(status.includes('transferred_to_human_support') && {
-        has_chats_room: true,
-      }),
     };
 
     return params;
