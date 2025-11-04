@@ -40,16 +40,18 @@ const getNotFoundRoute = (name: string) => {
 const conversationsRoutes: RouteRecordRaw[] = [
   {
     path: '/',
+    name: 'conversations',
     component: () => import('@/views/Supervisor/index.vue'),
   },
   {
-    ...getNotFoundRoute('supervisor'),
+    ...getNotFoundRoute('conversations'),
   },
 ];
 
 const agentsRoutes: RouteRecordRaw[] = [
   {
     path: '/',
+    name: 'agents',
     component: () => import('@/views/AgentsTeam/index.vue'),
   },
   {
@@ -60,6 +62,7 @@ const agentsRoutes: RouteRecordRaw[] = [
 const buildRoutes: RouteRecordRaw[] = [
   {
     path: '/',
+    name: 'build',
     redirect: { name: 'instructions' },
   },
   {
@@ -78,7 +81,7 @@ const buildRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Tunings.vue'),
   },
   {
-    ...getNotFoundRoute('instructions'),
+    ...getNotFoundRoute('build'),
   },
 ];
 
