@@ -133,7 +133,7 @@
             "duplicate": "Duplicate",
             "conflicts": "Conflicts",
             "ambiguity": "Ambiguity",
-            "lack_of_clarity": "Clarity: too generic",
+            "lack_of_clarity": "Clarity",
             "no_problems_found": "No problems found. Ready to publish!"
           }
         },
