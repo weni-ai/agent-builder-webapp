@@ -1,3 +1,4 @@
+
 import {
   createRouter,
   createWebHistory,
@@ -5,7 +6,11 @@ import {
 } from 'vue-router';
 import { isFederatedModule } from '@/utils/moduleFederation';
 import { RouteRecordRaw } from 'vue-router';
-import { useProjectStore } from '@/store/Project';
+import {
+  getCurrentModule,
+  setModule,
+  type AgentBuilderModule,
+} from '@/utils/modules';
 
 const parseNextPath = (nextPath, to) => {
   const [path, queryString] = nextPath.split('?');
@@ -24,45 +29,69 @@ const parseNextPath = (nextPath, to) => {
   return { path, query };
 };
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    redirect: { name: 'supervisor' },
-    children: [
-      {
-        path: 'supervisor',
-        name: 'supervisor',
-        component: () => import('@/views/Supervisor/index.vue'),
-      },
-      {
-        path: 'instructions',
-        name: 'instructions',
-        component: () => import('@/views/Instructions/index.vue'),
-      },
-      {
-        path: 'agents',
-        name: 'agents',
-        component: () => import('@/views/AgentsTeam/index.vue'),
-      },
-      {
-        path: 'knowledge',
-        name: 'knowledge',
-        component: () => import('@/views/Knowledge.vue'),
-      },
-      {
-        path: 'tunings',
-        name: 'tunings',
-        component: () => import('@/views/Tunings.vue'),
-      },
-    ],
-  },
-  {
+const getNotFoundRoute = (name: string) => {
+  return {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
-    redirect: { name: 'supervisor' },
+    redirect: { name },
+  };
+};
+
+const conversationsRoutes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    component: () => import('@/views/Supervisor/index.vue'),
   },
-] as RouteRecordRaw[];
+  {
+    ...getNotFoundRoute('supervisor'),
+  },
+];
+
+const agentsRoutes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    component: () => import('@/views/AgentsTeam/index.vue'),
+  },
+  {
+    ...getNotFoundRoute('agents'),
+  },
+];
+
+const buildRoutes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    redirect: { name: 'instructions' },
+  },
+  {
+    path: '/instructions',
+    name: 'instructions',
+    component: () => import('@/views/Instructions/index.vue'),
+  },
+  {
+    path: '/knowledge',
+    name: 'knowledge',
+    component: () => import('@/views/Knowledge.vue'),
+  },
+  {
+    path: '/tunings',
+    name: 'tunings',
+    component: () => import('@/views/Tunings.vue'),
+  },
+  {
+    ...getNotFoundRoute('instructions'),
+  },
+];
+
+const moduleRoutesMap: Record<AgentBuilderModule, RouteRecordRaw[]> = {
+  conversations: conversationsRoutes,
+  agents: agentsRoutes,
+  build: buildRoutes,
+};
+
+const currentModule = getCurrentModule();
+const routes = moduleRoutesMap[currentModule] || buildRoutes;
+
+setModule(currentModule);
 
 const history = isFederatedModule
   ? createMemoryHistory() // To isolate routing from parent app
@@ -88,6 +117,7 @@ router.afterEach((to, from) => {
     {
       event: 'changePathname',
       pathname: window.location.pathname,
+      module: currentModule,
     },
     '*',
   );
