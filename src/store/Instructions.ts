@@ -5,6 +5,7 @@ import type { InstructionSuggestedByAI } from './types/Instructions.types';
 
 import { useProjectStore } from './Project';
 import { useAlertStore } from './Alert';
+import { useFeatureFlagsStore } from './FeatureFlags';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 
@@ -32,8 +33,12 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     status: null,
   });
 
+  const featureFlagInstructionsValidatedByAI =
+    useFeatureFlagsStore().flags.instructionsValidatedByAI;
+  const storedValidation = moduleStorage.getItem('validateInstructionByAI');
+
   const validateInstructionByAI = ref<boolean>(
-    moduleStorage.getItem('validateInstructionByAI') ?? true,
+    featureFlagInstructionsValidatedByAI ? (storedValidation ?? true) : false,
   );
 
   const instructionSuggestedByAI = reactive<InstructionSuggestedByAI>({
