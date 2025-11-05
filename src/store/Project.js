@@ -2,10 +2,10 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
-import { moduleStorage } from '@/utils/storage';
+import { moduleLocalStorage } from '@/utils/storage';
 
 export const useProjectStore = defineStore('Project', () => {
-  const uuid = moduleStorage.getItem('projectUuid') || '';
+  const uuid = moduleLocalStorage.getItem('projectUuid') || '';
   const details = ref({
     status: null,
     contentBaseUuid: null,

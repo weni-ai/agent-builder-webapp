@@ -1,6 +1,6 @@
 import request from '@/api/nexusaiRequest';
 import forceHttps from '@/api/utils/forceHttps';
-import { moduleStorage } from '@/utils/storage';
+import { moduleLocalStorage } from '@/utils/storage';
 
 const INLINE_CONTENT_BASE_ENDPOINTS = {
   TEXT: 'inline-content-base-text',
@@ -16,7 +16,7 @@ const INLINE_CONTENT_BASE_ENDPOINTS = {
  * @returns {string} Generated endpoint URL
  */
 const generateContentBaseEndpoint = ({ type, itemUuid }) => {
-  const projectUuid = moduleStorage.getItem('projectUuid');
+  const projectUuid = moduleLocalStorage.getItem('projectUuid');
 
   let baseEndpoint;
 

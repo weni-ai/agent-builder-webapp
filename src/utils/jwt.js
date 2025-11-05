@@ -1,10 +1,10 @@
-import { moduleStorage } from '@/utils/storage';
+import { moduleLocalStorage } from '@/utils/storage';
 
 export async function getJwtToken() {
   return new Promise((resolve) => {
     const eventHandler = (event) => {
       if (event.data.event === 'updateToken') {
-        moduleStorage.setItem('authToken', event.data.token);
+        moduleLocalStorage.setItem('authToken', event.data.token);
         window.removeEventListener('message', eventHandler);
 
         return resolve();
