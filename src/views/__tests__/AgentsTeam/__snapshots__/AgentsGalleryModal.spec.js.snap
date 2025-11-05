@@ -4,46 +4,46 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
 <section
   class="unnnic-modal-dialog agents-gallery-modal"
   data-testid="agents-gallery-modal"
-  data-v-ab1febba=""
+  data-v-a7e44667=""
   data-v-e8ff269c=""
 >
   <section
     class="unnnic-modal-dialog__overlay"
     data-testid="modal-overlay"
-    data-v-ab1febba=""
+    data-v-a7e44667=""
   />
   <section
     class="unnnic-modal-dialog__container unnnic-modal-dialog__container--lg"
     data-testid="modal-container"
-    data-v-ab1febba=""
+    data-v-a7e44667=""
   >
     <!---->
     <section
       class="unnnic-modal-dialog__container__body"
-      data-v-ab1febba=""
+      data-v-a7e44667=""
     >
       <header
         class="unnnic-modal-dialog__container__header"
-        data-v-ab1febba=""
+        data-v-a7e44667=""
       >
         <section
           class="unnnic-modal-dialog__container__title-container"
-          data-v-ab1febba=""
+          data-v-a7e44667=""
         >
           <!---->
           <h1
             class="unnnic-modal-dialog__container__title-text"
             data-testid="title-text"
-            data-v-ab1febba=""
+            data-v-a7e44667=""
           >
             Agent gallery
           </h1>
         </section>
         <span
-          class="material-symbols-rounded unnnic-icon-scheme--neutral-darkest unnnic-icon-size--md unnnic--clickable"
+          class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--md unnnic-icon__size--md unnnic--clickable"
           data-testid="close-icon"
-          data-v-ab1febba=""
-          data-v-fb16c4d6=""
+          data-v-62451e85=""
+          data-v-a7e44667=""
           translate="no"
         >
           close
@@ -51,7 +51,7 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
       </header>
       <section
         class="unnnic-modal-dialog__container__content"
-        data-v-ab1febba=""
+        data-v-a7e44667=""
       >
         
         <section
@@ -129,10 +129,10 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
                   value=""
                 />
                 <span
-                  class="material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--sm icon-left"
+                  class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--sm unnnic-icon__size--sm icon-left"
                   data-testid="material-icon"
+                  data-v-62451e85=""
                   data-v-c1401a33=""
-                  data-v-fb16c4d6=""
                   translate="no"
                 >
                   search

@@ -17,7 +17,6 @@ exports[`ActiveTeam.vue > Component rendering > should match snapshot 1`] = `
       data-v-b17fe699=""
       filled="true"
       icon="workspaces"
-      next="false"
       scheme="neutral-soft"
       size="xl"
     />
