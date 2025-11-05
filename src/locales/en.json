@@ -135,6 +135,13 @@
             "ambiguity": "Ambiguity",
             "lack_of_clarity": "Clarity",
             "no_problems_found": "No problems found. Ready to publish!"
+          },
+          "see_ai_suggestion": {
+            "trigger": "See AI suggestion",
+            "title": "AI suggestion",
+            "apply_button": "Apply AI suggestion",
+            "suggestion_applied": "AI suggestion applied",
+            "no_ai_suggestion_tooltip": "No AI suggestion"
           }
         },
         "textarea": {
