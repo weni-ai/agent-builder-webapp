@@ -8,5 +8,6 @@ exports[`NewInstruction.vue > Component rendering > should match snapshot 1`] = 
   </header>
   <anonymous-stub data-v-0b69887d="" modelvalue="" placeholder="You're funny, but don't make jokes" size="md" message="Keep instructions clear, direct, and in the imperative." disabled="false" type="normal" errors="" data-testid="new-instruction-textarea"></anonymous-stub>
   <unnnic-button-stub data-v-0b69887d="" size="large" text="Validate instruction" type="primary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" next="false" disabled="true" loading="false" class="new-instruction__add-instruction-button" data-testid="add-instruction-button"></unnnic-button-stub>
+  <!--v-if-->
 </section>"
 `;
