@@ -32,6 +32,7 @@ describe('ModalValidateInstruction.vue', () => {
 
   const SELECTORS = {
     modal: '[data-testid="modal-validate-instruction-by-ai"]',
+    instructionTextarea: '[data-testid="modal-validate-instruction-textarea"]',
   };
   const findComponent = (component) =>
     wrapper.findComponent(SELECTORS[component]);
@@ -94,6 +95,14 @@ describe('ModalValidateInstruction.vue', () => {
       );
       expect(modal.props('primaryButtonProps').disabled).toBe(false);
       expect(modal.props('primaryButtonProps').loading).toBe(false);
+    });
+
+    it('renders the instruction textarea with correct props', () => {
+      const instructionTextarea = findComponent('instructionTextarea');
+      expect(instructionTextarea.exists()).toBe(true);
+      expect(instructionTextarea.props('modelValue')).toBe(
+        instructionsStore.newInstruction.text,
+      );
     });
   });
 
