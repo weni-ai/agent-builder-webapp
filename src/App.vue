@@ -7,7 +7,7 @@
       isBuildModule ? 'app-agent-builder--build' : '',
     ]"
   >
-    <BuildSidebar
+    <Sidebar
       v-if="isBuildModule"
       data-testid="build-sidebar"
     />
@@ -46,7 +46,7 @@ import { isFederatedModule } from './utils/moduleFederation';
 
 import initHotjar from '@/utils/plugins/Hotjar.js';
 
-import BuildSidebar from '@/components/BuildSidebar/index.vue';
+import Sidebar from '@/components/Sidebar/index.vue';
 
 const { isBuildModule } = useCurrentModule();
 

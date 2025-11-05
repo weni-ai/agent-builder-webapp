@@ -42,8 +42,8 @@ import { useRoute, useRouter } from 'vue-router';
 
 import useBuildViews from '@/composables/useBuildViews';
 import SidebarHeader from './SidebarHeader.vue';
-import SideBarItem from '@/components/BuildSidebar/SideBarItem.vue';
-import SidebarMenu from '@/components/BuildSidebar/SidebarMenu.vue';
+import SideBarItem from '@/components/Sidebar/SideBarItem.vue';
+import SidebarMenu from '@/components/Sidebar/SidebarMenu.vue';
 
 const route = useRoute();
 const router = useRouter();
