@@ -51,17 +51,17 @@ const buildRoutes: RouteRecordRaw[] = [
     redirect: { name: 'instructions' },
     children: [
       {
-        path: '/build/instructions',
+        path: 'instructions',
         name: 'instructions',
         component: () => import('@/views/Instructions/index.vue'),
       },
       {
-        path: '/build/knowledge',
+        path: 'knowledge',
         name: 'knowledge',
         component: () => import('@/views/Knowledge.vue'),
       },
       {
-        path: '/build/tunings',
+        path: 'tunings',
         name: 'tunings',
         component: () => import('@/views/Tunings.vue'),
       },

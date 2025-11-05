@@ -32,7 +32,7 @@
 
         <SupervisorHeaderDetails
           v-if="
-            currentView.page === 'supervisor' &&
+            currentView.page === 'conversations' &&
             featureFlagsStore.flags.newSupervisor
           "
         />
@@ -90,8 +90,8 @@ const currentView = computed(() => {
   const views = [
     ...useBuildViews().value,
     {
-      title: t('agent_builder.tabs.supervisor.title'),
-      description: t('agent_builder.tabs.supervisor.description'),
+      title: t('agent_builder.tabs.conversations.title'),
+      description: t('agent_builder.tabs.conversations.description'),
       page: 'conversations',
     },
     {

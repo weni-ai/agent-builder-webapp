@@ -13,8 +13,8 @@
   "unexpected_error": "An unexpected error occurred",
   "agent_builder": {
     "tabs": {
-      "supervisor": {
-        "title": "Supervisor",
+      "conversations": {
+        "title": "Conversations",
         "description": "Review and analyze conversations between agents and customers."
       },
       "instructions": {
