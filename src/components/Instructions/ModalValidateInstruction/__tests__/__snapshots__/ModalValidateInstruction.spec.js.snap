@@ -10,31 +10,36 @@ exports[`ModalValidateInstruction.vue > Component rendering > should match snaps
         <section data-v-ab1febba="" class="unnnic-modal-dialog__container__title-container">
           <!---->
           <h1 data-v-ab1febba="" class="unnnic-modal-dialog__container__title-text" data-testid="title-text">Validate instruction</h1>
-        </section><span data-v-b9587550="" data-v-ab1febba="" class="material-symbols-rounded unnnic-icon-scheme--neutral-darkest unnnic-icon-size--md unnnic--clickable" data-testid="close-icon" translate="no">close</span>
+        </section><span data-v-fb16c4d6="" data-v-ab1febba="" class="material-symbols-rounded unnnic-icon-scheme--neutral-darkest unnnic-icon-size--md unnnic--clickable" data-testid="close-icon" translate="no">close</span>
       </header>
       <section data-v-ab1febba="" class="unnnic-modal-dialog__container__content">
         <section data-v-413107b4="" data-testid="modal-validate-instruction-textarea" class="modal-validate-instruction__textarea">
-          <section data-v-47963e08="" data-v-adccf3ee="" data-v-413107b4="" class="unnnic-form-element" data-testid="instruction-textarea" resize="none">
+          <section data-v-bee89e89="" data-v-adccf3ee="" data-v-413107b4="" class="unnnic-form-element" data-testid="instruction-textarea" resize="none">
             <!----><textarea data-v-adccf3ee="" class="unnnic-text-area__textarea unnnic-text-area__textarea--size-md unnnic-text-area__textarea--type-normal" placeholder="You're funny, but don't make jokes" value="Test instruction text"></textarea>
             <!---->
             <!---->
-          </section><button data-v-73cbd3a2="" data-v-413107b4="" data-testid="revalidate-button" disabled="" class="unnnic-button unnnic-button--size-large unnnic-button--primary">
+          </section><button data-v-992d21f0="" data-v-413107b4="" data-testid="revalidate-button" disabled="" class="unnnic-button unnnic-button--size-large unnnic-button--primary">
             <!---->
             <!---->
-            <!----><span data-v-73cbd3a2="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Re-validate</span>
+            <!----><span data-v-992d21f0="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Re-validate</span>
             <!---->
           </button>
         </section>
+        <hr data-v-f999d120="" class="divider divider--y-spacing-md divider--scheme-neutral-soft" data-testid="modal-validate-instruction-divider">
+        <section data-v-66a45c0f="" class="modal-validate-instruction__validation-results" data-testid="modal-validate-instruction-validation-results">
+          <h2 data-v-66a45c0f="" class="modal-validate-instruction__title" data-testid="modal-validate-instruction-validation-results-title">Validation results</h2>
+          <!--v-if-->
+        </section>
       </section>
-      <section data-v-ab1febba="" data-testid="actions-section" class="unnnic-modal-dialog__container__actions unnnic-modal-dialog__container__actions--divider"><button data-v-73cbd3a2="" data-v-ab1febba="" data-testid="secondary-button" class="unnnic-modal-dialog__container__actions__secondary-button unnnic-button unnnic-button--size-large unnnic-button--tertiary unnnic-modal-dialog__container__actions__secondary-button">
+      <section data-v-ab1febba="" data-testid="actions-section" class="unnnic-modal-dialog__container__actions unnnic-modal-dialog__container__actions--divider"><button data-v-992d21f0="" data-v-ab1febba="" data-testid="secondary-button" class="unnnic-modal-dialog__container__actions__secondary-button unnnic-button unnnic-button--size-large unnnic-button--tertiary unnnic-modal-dialog__container__actions__secondary-button">
           <!---->
           <!---->
-          <!----><span data-v-73cbd3a2="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Cancel</span>
+          <!----><span data-v-992d21f0="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Cancel</span>
           <!---->
-        </button><button data-v-73cbd3a2="" data-v-ab1febba="" data-testid="primary-button" class="unnnic-modal-dialog__container__actions__primary-button unnnic-button unnnic-button--size-large unnnic-button--primary unnnic-modal-dialog__container__actions__primary-button">
+        </button><button data-v-992d21f0="" data-v-ab1febba="" data-testid="primary-button" class="unnnic-modal-dialog__container__actions__primary-button unnnic-button unnnic-button--size-large unnnic-button--primary unnnic-modal-dialog__container__actions__primary-button">
           <!---->
           <!---->
-          <!----><span data-v-73cbd3a2="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Publish</span>
+          <!----><span data-v-992d21f0="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Publish</span>
           <!---->
         </button></section>
     </section>

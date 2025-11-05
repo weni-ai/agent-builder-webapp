@@ -130,7 +130,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
     <button
       class="assign-agent-card__button unnnic-button unnnic-button--size-small unnnic-button--primary assign-agent-card__button"
       data-testid="assign-button"
-      data-v-73cbd3a2=""
+      data-v-992d21f0=""
       data-v-b58c7d6a=""
     >
       <!---->
@@ -139,7 +139,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
       <span
         class="unnnic-button__label"
         data-testid="button-label"
-        data-v-73cbd3a2=""
+        data-v-992d21f0=""
         style="visibility: visible;"
       >
         

@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`InstructionValidationResults.vue > Component rendering > should match snapshot 1`] = `
+"<section data-v-66a45c0f="" class="modal-validate-instruction__validation-results">
+  <h2 data-v-66a45c0f="" class="modal-validate-instruction__title" data-testid="modal-validate-instruction-validation-results-title">Validation results</h2>
+  <!--v-if-->
+</section>"
+`;

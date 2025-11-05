@@ -32,6 +32,16 @@
       v-model="newInstruction"
       data-testid="modal-validate-instruction-textarea"
     />
+
+    <template
+      v-if="instructionsStore.instructionSuggestedByAI.status !== 'error'"
+    >
+      <UnnnicDivider data-testid="modal-validate-instruction-divider" />
+
+      <InstructionValidationResults
+        data-testid="modal-validate-instruction-validation-results"
+      />
+    </template>
   </UnnnicModalDialog>
 </template>
 
@@ -41,6 +51,7 @@ import { onMounted, ref } from 'vue';
 import { useInstructionsStore } from '@/store/Instructions';
 
 import InstructionTextarea from './InstructionTextarea.vue';
+import InstructionValidationResults from './InstructionValidationResults.vue';
 
 const emit = defineEmits(['update:modelValue']);
 

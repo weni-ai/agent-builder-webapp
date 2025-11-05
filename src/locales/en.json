@@ -127,7 +127,15 @@
           "re-validate_button": "Re-validate",
           "cancel_button": "Cancel",
           "publish_button": "Publish",
-          "error_alert": "Error getting instruction suggestion by AI"
+          "error_alert": "Error getting instruction suggestion by AI",
+          "results": {
+            "title": "Validation results",
+            "duplicate": "Duplicate",
+            "conflicts": "Conflicts",
+            "ambiguity": "Ambiguity",
+            "lack_of_clarity": "Clarity",
+            "no_problems_found": "No problems found. Ready to publish!"
+          }
         },
         "textarea": {
           "placeholder": "You're funny, but don't make jokes",
