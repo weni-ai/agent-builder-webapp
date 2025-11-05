@@ -1,4 +1,3 @@
-
 import {
   createRouter,
   createWebHistory,
@@ -6,8 +5,11 @@ import {
 } from 'vue-router';
 import { isFederatedModule } from '@/utils/moduleFederation';
 import { RouteRecordRaw } from 'vue-router';
-
-type AgentBuilderModule = 'conversations' | 'agents' | 'build';
+import {
+  getCurrentModuleFromPath,
+  MODULE_PATHS,
+  type AgentBuilderModule,
+} from '@/composables/useCurrentModule';
 
 const parseNextPath = (nextPath, to) => {
   const [path, queryString] = nextPath.split('?');
@@ -28,7 +30,7 @@ const parseNextPath = (nextPath, to) => {
 
 const conversationsRoutes: RouteRecordRaw[] = [
   {
-    path: '/conversations',
+    path: MODULE_PATHS.conversations,
     name: 'conversations',
     component: () => import('@/views/Supervisor/index.vue'),
   },
@@ -36,7 +38,7 @@ const conversationsRoutes: RouteRecordRaw[] = [
 
 const agentsRoutes: RouteRecordRaw[] = [
   {
-    path: '/agents',
+    path: MODULE_PATHS.agents,
     name: 'agents',
     component: () => import('@/views/AgentsTeam/index.vue'),
   },
@@ -44,7 +46,7 @@ const agentsRoutes: RouteRecordRaw[] = [
 
 const buildRoutes: RouteRecordRaw[] = [
   {
-    path: '/build',
+    path: MODULE_PATHS.build,
     name: 'build',
     redirect: { name: 'instructions' },
     children: [
@@ -63,28 +65,12 @@ const buildRoutes: RouteRecordRaw[] = [
         name: 'tunings',
         component: () => import('@/views/Tunings.vue'),
       },
-    ]
+    ],
   },
 ];
 
-/**
- * Determines which module routes to load based on current path
- */
-const getCurrentModuleFromPath = (): AgentBuilderModule => {
-  const path = window.location.pathname;
-  
-  if (path.startsWith('/conversations')) {
-    return 'conversations';
-  }
-  
-  if (path.startsWith('/agents')) {
-    return 'agents';
-  }
-  
-  return 'build';
-};
-
-const currentModule = getCurrentModuleFromPath();
+const currentModule =
+  getCurrentModuleFromPath(window.location.pathname) || 'build';
 
 const moduleRoutesMap: Record<AgentBuilderModule, RouteRecordRaw[]> = {
   conversations: conversationsRoutes,
@@ -120,7 +106,7 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-router.afterEach((to, from) => {
+router.afterEach((_to, _from) => {
   window.parent.postMessage(
     {
       event: 'changePathname',

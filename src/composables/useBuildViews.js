@@ -1,7 +1,7 @@
 import { computed } from 'vue';
 import i18n from '@/utils/plugins/i18n';
 
-export default function useAgentBuilderViews() {
+export default function useBuildViews() {
   const t = (value) => i18n.global.t(value);
 
   return computed(() => [

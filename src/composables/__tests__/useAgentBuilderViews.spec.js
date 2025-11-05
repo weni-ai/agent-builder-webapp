@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import useAgentBuilderViews from '../useAgentBuilderViews';
+import useAgentBuilderViews from '../useBuildViews';
 import i18n from '@/utils/plugins/i18n';
 
 const { t } = i18n.global;

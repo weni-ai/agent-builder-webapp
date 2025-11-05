@@ -40,14 +40,14 @@
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import useAgentBuilderViews from '@/composables/useAgentBuilderViews';
+import useBuildViews from '@/composables/useBuildViews';
 import SidebarHeader from './SidebarHeader.vue';
-import SideBarItem from '@/components/Sidebar/SideBarItem.vue';
-import SidebarMenu from '@/components/Sidebar/SidebarMenu.vue';
+import SideBarItem from '@/components/BuildSidebar/SideBarItem.vue';
+import SidebarMenu from '@/components/BuildSidebar/SidebarMenu.vue';
 
 const route = useRoute();
 const router = useRouter();
-const views = useAgentBuilderViews();
+const views = useBuildViews();
 
 const activeNav = computed(() => {
   return views.value.find((e) => e.page === route.name)?.page;

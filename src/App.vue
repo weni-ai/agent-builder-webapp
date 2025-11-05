@@ -1,9 +1,16 @@
 <template>
   <div
     id="app"
-    :class="`app-agent-builder app-agent-builder--${!isFederatedModule ? 'dev' : 'prod'}`"
+    :class="[
+      'app-agent-builder',
+      !isFederatedModule ? 'app-agent-builder--dev' : 'app-agent-builder--prod',
+      isBuildModule ? 'app-agent-builder--build' : '',
+    ]"
   >
-    <Sidebar v-if="route.path.startsWith('/build')" data-testid="agent-builder-sidebar" />
+    <BuildSidebar
+      v-if="isBuildModule"
+      data-testid="build-sidebar"
+    />
 
     <main
       class="agent-builder__content"
@@ -24,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView, useRoute } from 'vue-router';
+import { RouterView } from 'vue-router';
 
 import { onMounted, watch } from 'vue';
 
@@ -34,13 +41,14 @@ import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
 import { useProjectStore } from '@/store/Project';
 import { useUserStore } from '@/store/User';
+import { useCurrentModule } from '@/composables/useCurrentModule';
 import { isFederatedModule } from './utils/moduleFederation';
 
 import initHotjar from '@/utils/plugins/Hotjar.js';
 
-import Sidebar from '@/components/Sidebar/index.vue';
+import BuildSidebar from '@/components/BuildSidebar/index.vue';
 
-const route = useRoute();
+const { isBuildModule } = useCurrentModule();
 
 const agentsTeamStore = useAgentsTeamStore();
 const alertStore = useAlertStore();
@@ -73,7 +81,10 @@ watch(
   overflow: hidden;
 
   display: grid;
-  grid-template-columns: auto 1fr;
+
+  &--build {
+    grid-template-columns: auto 1fr;
+  }
 
   &--prod {
     height: 100%;
