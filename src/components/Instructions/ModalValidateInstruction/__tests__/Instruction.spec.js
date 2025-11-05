@@ -2,11 +2,11 @@ import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
-import InstructionTextarea from '../InstructionTextarea.vue';
+import Instruction from '../Instruction.vue';
 import i18n from '@/utils/plugins/i18n';
 import { useInstructionsStore } from '@/store/Instructions';
 
-describe('InstructionTextarea.vue', () => {
+describe('Instruction.vue', () => {
   let wrapper;
   let instructionsStore;
 
@@ -31,7 +31,7 @@ describe('InstructionTextarea.vue', () => {
   });
 
   const SELECTORS = {
-    container: '[data-testid="modal-validate-instruction-textarea"]',
+    container: '[data-testid="modal-validate-instruction"]',
     instructionTextarea: '[data-testid="instruction-textarea"]',
     revalidateButton: '[data-testid="revalidate-button"]',
   };
@@ -45,7 +45,7 @@ describe('InstructionTextarea.vue', () => {
       status: 'complete',
     });
 
-    wrapper = mount(InstructionTextarea, {
+    wrapper = mount(Instruction, {
       props: {
         modelValue: 'Initial text',
       },
@@ -68,7 +68,7 @@ describe('InstructionTextarea.vue', () => {
     it('renders the container wrapper', () => {
       expect(find('container').exists()).toBe(true);
       expect(find('container').classes()).toContain(
-        'modal-validate-instruction__textarea',
+        'modal-validate-instruction',
       );
     });
 

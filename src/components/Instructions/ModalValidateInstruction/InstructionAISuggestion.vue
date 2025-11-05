@@ -60,14 +60,14 @@
             instructionsStore.instructionSuggestedByAI.data.suggestion = $event
           "
         />
-        <template #footer>
+        <UnnnicPopoverFooter>
           <UnnnicButton
             iconLeft="bi:stars"
             @click="applySuggestion"
           >
             {{ aiSuggestionTranslation('apply_button') }}
           </UnnnicButton>
-        </template>
+        </UnnnicPopoverFooter>
       </UnnnicPopoverContent>
     </UnnnicPopover>
   </section>
@@ -76,6 +76,8 @@
 <script setup lang="ts">
 import { useInstructionsStore } from '@/store/Instructions';
 import { computed, ref } from 'vue';
+import { UnnnicPopoverFooter } from '@weni/unnnic-system';
+
 import i18n from '@/utils/plugins/i18n';
 
 const emit = defineEmits(['applySuggestion']);
@@ -136,6 +138,7 @@ function applySuggestion() {
 .instruction-ai-suggestion__trigger {
   font: $unnnic-font-action;
   color: $unnnic-color-fg-active;
+  cursor: pointer;
 
   &--disabled {
     color: $unnnic-color-fg-muted;
