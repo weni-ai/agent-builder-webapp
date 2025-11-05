@@ -120,11 +120,15 @@
     "instructions": {
       "new_instruction": {
         "title": "New custom instruction",
+        "validate_instruction_by_ai": {
+          "switch": "Validate instruction by AI",
+          "button": "Validate instruction"
+        },
         "textarea": {
           "placeholder": "You're funny, but don't make jokes",
           "description": "Keep instructions clear, direct, and in the imperative."
         },
-        "add_instruction": "Add instruction",
+        "publish_instruction": "Publish instruction",
         "success_alert": "Custom instruction added",
         "error_alert": "Error adding instruction custom"
       },
@@ -537,7 +541,6 @@
     "instructions": {
       "title": "General instructions",
       "sub_title": "Define how you want the agent to behave",
-      "add_instruction_btn": "Add instruction",
       "instruction": {
         "title": "Instruction",
         "placeholder": "You're funny, but don't make jokes"
