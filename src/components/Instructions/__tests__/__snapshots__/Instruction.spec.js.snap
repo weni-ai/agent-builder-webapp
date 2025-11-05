@@ -14,8 +14,8 @@ exports[`Instruction.vue > Edit mode > should match snapshot > edit-mode 1`] = `
   <section data-v-708d6c3c="" class="instruction__input">
     <unnnic-input-stub data-v-708d6c3c="" placeholder="" type="normal" modelvalue="Test instruction" nativetype="text" allowtogglepassword="false" hascloudycolor="false" size="sm" mask="" class="input__field" data-testid="instruction-input"></unnnic-input-stub>
   </section>
-  <unnnic-button-stub data-v-708d6c3c="" size="small" text="Save" type="secondary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" next="false" disabled="false" loading="false" data-testid="instruction-save-button"></unnnic-button-stub>
-  <unnnic-button-stub data-v-708d6c3c="" size="small" text="Cancel" type="tertiary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" next="false" disabled="false" loading="false" data-testid="instruction-cancel-button"></unnnic-button-stub>
+  <unnnic-button-stub data-v-708d6c3c="" size="small" text="Save" type="secondary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" disabled="false" loading="false" data-testid="instruction-save-button"></unnnic-button-stub>
+  <unnnic-button-stub data-v-708d6c3c="" size="small" text="Cancel" type="tertiary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" disabled="false" loading="false" data-testid="instruction-cancel-button"></unnnic-button-stub>
 </section>
 <modal-remove-instruction-stub data-v-708d6c3c="" instruction="[object Object]" modelvalue="false" data-testid="modal-remove-instruction"></modal-remove-instruction-stub>"
 `;
