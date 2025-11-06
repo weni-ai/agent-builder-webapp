@@ -32,7 +32,7 @@
 
         <SupervisorHeaderDetails
           v-if="
-            currentView.page === 'supervisor' &&
+            currentView.page === 'conversations' &&
             featureFlagsStore.flags.newSupervisor
           "
         />
@@ -53,11 +53,12 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
-import useAgentBuilderViews from '@/composables/useAgentBuilderViews';
+import useBuildViews from '@/composables/useBuildViews';
 
 import SupervisorHeaderDetails from './Supervisor/SupervisorHeaderDetails.vue';
 
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
+import i18n from '@/utils/plugins/i18n';
 
 const route = useRoute();
 
@@ -84,8 +85,23 @@ const props = defineProps({
 const featureFlagsStore = useFeatureFlagsStore();
 
 const currentView = computed(() => {
-  const views = useAgentBuilderViews();
-  return views.value.find((e) => e.page === route.name) || views.value[0];
+  const { t } = i18n.global;
+
+  const views = [
+    ...useBuildViews().value,
+    {
+      title: t('agent_builder.tabs.conversations.title'),
+      description: t('agent_builder.tabs.conversations.description'),
+      page: 'conversations',
+    },
+    {
+      title: t('agent_builder.tabs.agents.title'),
+      description: t('agent_builder.tabs.agents.description'),
+      page: 'agents',
+    },
+  ];
+
+  return views.find((e) => e.page === route.name) || views[0];
 });
 </script>
 
