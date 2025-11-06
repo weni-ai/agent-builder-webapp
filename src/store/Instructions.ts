@@ -147,7 +147,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     instructionSuggestedByAI.status = 'loading';
 
     try {
-      const response =
+      const { data } =
         await nexusaiAPI.agent_builder.instructions.getSuggestionByAI({
           projectUuid: projectUuid.value,
           instruction: newInstruction.text,
@@ -155,7 +155,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
 
       instructionSuggestedByAI.data = {
         instruction: newInstruction.text,
-        ...response,
+        ...data,
       };
       instructionSuggestedByAI.suggestionApplied = false;
       instructionSuggestedByAI.status = 'complete';

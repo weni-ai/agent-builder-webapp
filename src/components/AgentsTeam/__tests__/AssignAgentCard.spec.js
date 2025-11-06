@@ -636,7 +636,7 @@ describe('AssignAgentCard.vue', () => {
         },
       ];
 
-      expect(wrapper.vm.isAgentInTeam()).toBe(true);
+      expect(wrapper.vm.isAgentInTeam).toBe(true);
     });
 
     it('should return false when agent is not in team', async () => {
@@ -649,7 +649,7 @@ describe('AssignAgentCard.vue', () => {
         },
       });
 
-      expect(wrapper.vm.isAgentInTeam()).toBe(false);
+      expect(wrapper.vm.isAgentInTeam).toBe(false);
     });
   });
 });
