@@ -57,7 +57,7 @@ const revalidateButtonTextDisabled = computed(() => {
 });
 
 function revalidateInstructionByAI() {
-  instructionsStore.getInstructionSuggestionByAI();
+  instructionsStore.getInstructionSuggestionByAI(modelValue.value);
 }
 
 function applySuggestion(suggestion: string) {

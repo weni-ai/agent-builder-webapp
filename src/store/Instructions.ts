@@ -143,19 +143,19 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     return { status: instruction?.status };
   }
 
-  async function getInstructionSuggestionByAI() {
+  async function getInstructionSuggestionByAI(instruction: string) {
     instructionSuggestedByAI.status = 'loading';
 
     try {
-      const response =
+      const { data } =
         await nexusaiAPI.agent_builder.instructions.getSuggestionByAI({
           projectUuid: projectUuid.value,
-          instruction: newInstruction.text,
+          instruction,
         });
 
       instructionSuggestedByAI.data = {
-        instruction: newInstruction.text,
-        ...response,
+        instruction,
+        ...data,
       };
       instructionSuggestedByAI.suggestionApplied = false;
       instructionSuggestedByAI.status = 'complete';
