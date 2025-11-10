@@ -77,7 +77,7 @@ onMounted(() => {
     instructionsStore.newInstruction.text;
 
   if (isInstructionNotSuggested) {
-    instructionsStore.getInstructionSuggestionByAI();
+    instructionsStore.getInstructionSuggestionByAI(newInstruction.value);
   }
 });
 </script>
