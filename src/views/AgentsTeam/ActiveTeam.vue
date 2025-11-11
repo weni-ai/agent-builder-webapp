@@ -1,8 +1,8 @@
 <template>
-  <section class="active-team">
+  <section class="assigned-agents">
     <section
       v-if="isLoadingTeam || activeTeam.length"
-      class="active-team__cards"
+      class="assigned-agents__cards"
     >
       <template v-if="isLoadingTeam">
         <AssignAgentCard
@@ -26,46 +26,33 @@
 
     <section
       v-if="!isLoadingTeam && activeTeam.length === 0"
-      class="active-team__empty"
+      class="assigned-agents__empty"
       data-testid="empty-state"
     >
       <UnnnicIcon
-        class="empty__icon"
+        class="assigned-agents__empty-icon"
         size="xl"
         scheme="neutral-soft"
         icon="workspaces"
         filled
       />
 
-      <UnnnicIntelligenceText
-        tag="p"
-        family="secondary"
-        size="body-lg"
-        color="neutral-dark"
-        weight="bold"
-      >
-        {{ $t('router.agents_team.active_team.no_team') }}
-      </UnnnicIntelligenceText>
+      <section class="assigned-agents__empty-content">
+        <h3 class="assigned-agents__empty-title">
+          {{ $t('agents.assigned_agents.no_agents.title') }}
+        </h3>
 
-      <section class="empty__description">
-        <!-- This comment prevents from auto-capitalizing i18n-t to I18nT which would break the component -->
-        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
-        <i18n-t
-          class="description__text"
-          keypath="router.agents_team.active_team.no_team_description"
-          tag="p"
-        >
-          <template #assign_agents>
-            <p
-              class="description__assign-agents"
-              data-testid="assign-agents-link"
-              @click="handleAgentsGallery"
-            >
-              {{ $t('router.agents_team.assign_agents') }}
-            </p>
-          </template>
-        </i18n-t>
+        <p class="assigned-agents__empty-description">
+          {{ $t('agents.assigned_agents.no_agents.description') }}
+        </p>
       </section>
+
+      <UnnnicButton
+        class="assigned-agents__empty-button"
+        :text="$t('agents.assigned_agents.no_agents.assign_agents_button')"
+        type="primary"
+        @click="handleAgentsGallery"
+      />
     </section>
   </section>
 </template>
@@ -92,7 +79,7 @@ function handleAgentsGallery() {
 </script>
 
 <style lang="scss" scoped>
-.active-team {
+.assigned-agents {
   display: flex;
   flex-direction: column;
   gap: $unnnic-spacing-sm;
@@ -104,48 +91,30 @@ function handleAgentsGallery() {
 
     display: flex;
     flex-direction: column;
+    gap: $unnnic-space-4;
     align-items: center;
     justify-content: center;
 
-    .empty__icon {
-      margin-bottom: $unnnic-spacing-ant;
-      font-size: $unnnic-font-size-body-gt * 4;
+    &-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: $unnnic-space-2;
     }
 
-    .empty__description {
-      display: flex;
-      align-items: baseline;
-      gap: $unnnic-spacing-nano / 2;
+    &-title {
+      color: $unnnic-color-fg-emphasized;
+      font: $unnnic-font-display-3;
+    }
 
-      .description__text {
-        font-family: $unnnic-font-family-secondary;
-        font-size: $unnnic-font-size-body-md;
-        color: $unnnic-color-neutral-cloudy;
-        display: contents;
-      }
+    &-description {
+      color: $unnnic-color-fg-base;
+      font: $unnnic-font-body;
+    }
 
-      .description__assign-agents {
-        position: relative;
-
-        font-size: $unnnic-font-size-body-md;
-        color: $unnnic-color-neutral-cloudy;
-        font-weight: $unnnic-font-weight-bold;
-
-        cursor: pointer;
-
-        &::after {
-          content: '';
-
-          position: absolute;
-          bottom: 0;
-          left: 0;
-
-          width: 100%;
-          height: 1px;
-
-          background-color: $unnnic-color-neutral-cloudy;
-        }
-      }
+    &-button {
+      width: 250px;
     }
   }
 
