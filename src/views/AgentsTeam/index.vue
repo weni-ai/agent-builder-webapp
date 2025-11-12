@@ -1,35 +1,33 @@
 <template>
-  <section class="agents-team">
-    <AgentBuilderHeader
-      withDivider
-      actionsSize="lg"
-      data-testid="agents-team-header"
+  <section class="view-agents">
+    <UnnnicPageHeader
+      :title="$t('agents.title')"
+      :description="$t('agents.description')"
+      data-testid="agents-header"
     >
-      <template #actions>
-        <section class="agents-team__actions">
-          <UnnnicButton
-            data-testid="assign-agents-button"
-            type="secondary"
-            iconLeft="add"
-            @click="handleAgentsGallery"
-          >
-            {{ $t('router.agents_team.assign_agents') }}
-          </UnnnicButton>
-
-          <UnnnicButton
-            data-testid="preview-button"
-            type="primary"
-            iconLeft="play_arrow"
-            iconsFilled
-            @click="handlePreview"
-          >
-            {{ $t('router.agents_team.preview') }}
-          </UnnnicButton>
-        </section>
+      <template
+        v-if="agentsTeamStore.activeTeam.data.agents.length > 0"
+        #actions
+      >
+        <UnnnicButton
+          :text="$t('agents.assign_agents_button')"
+          type="secondary"
+          data-testid="assign-agents-button"
+          @click="handleAgentsGallery"
+        />
+        <UnnnicButton
+          data-testid="preview-button"
+          type="primary"
+          iconLeft="play_arrow"
+          iconsFilled
+          @click="handlePreview"
+        >
+          {{ $t('router.agents_team.preview') }}
+        </UnnnicButton>
       </template>
-    </AgentBuilderHeader>
+    </UnnnicPageHeader>
 
-    <ActiveTeam data-testid="active-team" />
+    <AssignedAgents data-testid="assigned-agents" />
 
     <AgentsGalleryModal data-testid="agents-gallery-modal" />
 
@@ -43,18 +41,18 @@
 <script setup>
 import { ref, onUnmounted } from 'vue';
 
-import AgentBuilderHeader from '@/components/Header.vue';
 import PreviewDrawer from '@/components/Preview/PreviewDrawer.vue';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { usePreviewStore } from '@/store/Preview';
 
-import ActiveTeam from './ActiveTeam.vue';
+import AssignedAgents from './AssignedAgents.vue';
 import AgentsGalleryModal from './AgentsGalleryModal.vue';
 
 const isPreviewOpen = ref(false);
 
 const previewStore = usePreviewStore();
+const agentsTeamStore = useAgentsTeamStore();
 
 const handleAgentsGallery = () => {
   useAgentsTeamStore().isAgentsGalleryOpen = true;
@@ -73,15 +71,10 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-section.agents-team {
+section.view-agents {
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto 1fr;
+  gap: $unnnic-space-4;
   height: 100%;
-
-  .agents-team__actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: $unnnic-spacing-sm;
-  }
 }
 </style>

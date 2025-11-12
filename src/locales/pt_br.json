@@ -243,9 +243,20 @@
       "characters_usage_description": "Este é o número médio de caracteres que seu agente está usando em todas as áreas: Instruções, Base de Conhecimento e quaisquer outras configurações."
     }
   },
+  "agents": {
+    "title": "Agentes",
+    "description": "Visualize e gerencie seus agentes atribuídos",
+    "assign_agents_button": "Atribuir agentes",
+    "assigned_agents": {
+      "no_agents": {
+        "title": "Nenhum agente atribuído ainda",
+        "description": "Adicione seu primeiro agente para começar a lidar com consultas de produtos, pedidos e mais.",
+        "assign_agents_button": "Atribuir seu primeiro agente"
+      }
+    }
+  },
   "router": {
     "agents_team": {
-      "description": "Crie a equipe de agentes perfeita",
       "card": {
         "assign": "Atribuir ao time",
         "assigned": "Atribuído",
@@ -281,8 +292,6 @@
         "weni_cli_documentation_description": "Consulte a {weni_cli_documentation} para ver instruções detalhadas"
       },
       "create_agent": "Criar agente",
-      "preview": "Prévia",
-      "assign_agents": "Atribuir agentes",
       "modal_delete_agent": {
         "title": "Excluir {agent_name}",
         "description": "Tem certeza de que deseja excluir o {agent_name}? Esta ação não pode ser revertida",
