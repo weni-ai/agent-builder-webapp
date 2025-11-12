@@ -42,7 +42,7 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
         <span
           class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--md unnnic-icon__size--md unnnic--clickable"
           data-testid="close-icon"
-          data-v-62451e85=""
+          data-v-10e3a145=""
           data-v-a7e44667=""
           translate="no"
         >
@@ -102,45 +102,51 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
             class="agents-gallery__content"
             data-v-e8ff269c=""
           >
-            <div
-              class="unnnic-form md"
+            <section
+              class="unnnic-form-element unnnic-form md"
               data-testid="search-input"
+              data-v-27c59990=""
+              data-v-363eb089=""
               data-v-e8ff269c=""
-              data-v-fefd47bc=""
             >
               <!---->
+              
               <div
-                class="text-input size--md text-input--icon-right-size-sm unnnic-form-input"
+                class="text-input size--md unnnic-form-input"
                 data-testid="search-input"
-                data-v-c1401a33=""
-                data-v-fefd47bc=""
+                data-v-27c59990=""
+                data-v-964b1ff1=""
+                hascloudycolor="false"
                 mask=""
               >
                 <input
                   class="unnnic-form-input input-itself input size-md normal input--has-icon-left unnnic-form-input input-itself"
                   data-testid="search-input"
-                  data-v-9bf9daac=""
-                  data-v-c1401a33=""
+                  data-v-5c6d9ab7=""
+                  data-v-964b1ff1=""
                   hascloudycolor="false"
                   iconleft="search"
-                  iconrightsize="sm"
+                  iconleftclickable="false"
+                  iconright=""
+                  iconrightclickable="false"
                   placeholder="Search agent or skill"
                   type="text"
                   value=""
                 />
                 <span
-                  class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--sm unnnic-icon__size--sm icon-left"
+                  class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--fg-base unnnic-icon-size--ant unnnic-icon__size--ant icon-left"
                   data-testid="material-icon"
-                  data-v-62451e85=""
-                  data-v-c1401a33=""
+                  data-v-10e3a145=""
+                  data-v-964b1ff1=""
                   translate="no"
                 >
                   search
                 </span>
                 <!---->
               </div>
+              
               <!---->
-            </div>
+            </section>
             <!--v-if-->
             <section
               class="content__cards"

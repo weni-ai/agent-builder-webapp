@@ -35,14 +35,21 @@
         scheme="neutral-soft"
         icon="workspaces"
         filled
+        data-testid="assigned-agents-icon"
       />
 
       <section class="assigned-agents__empty-content">
-        <h3 class="assigned-agents__empty-title">
+        <h3
+          class="assigned-agents__empty-title"
+          data-testid="assigned-agents-title"
+        >
           {{ $t('agents.assigned_agents.no_agents.title') }}
         </h3>
 
-        <p class="assigned-agents__empty-description">
+        <p
+          class="assigned-agents__empty-description"
+          data-testid="assigned-agents-description"
+        >
           {{ $t('agents.assigned_agents.no_agents.description') }}
         </p>
       </section>
@@ -51,6 +58,7 @@
         class="assigned-agents__empty-button"
         :text="$t('agents.assigned_agents.no_agents.assign_agents_button')"
         type="primary"
+        data-testid="assigned-agents-button"
         @click="handleAgentsGallery"
       />
     </section>

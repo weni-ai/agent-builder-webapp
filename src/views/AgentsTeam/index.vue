@@ -3,6 +3,7 @@
     <UnnnicPageHeader
       :title="$t('agents.title')"
       :description="$t('agents.description')"
+      data-testid="agents-header"
     >
       <template
         v-if="agentsTeamStore.activeTeam.data.agents.length > 0"
@@ -10,13 +11,23 @@
       >
         <UnnnicButton
           :text="$t('agents.assign_agents_button')"
-          type="primary"
+          type="secondary"
+          data-testid="assign-agents-button"
           @click="handleAgentsGallery"
         />
+        <UnnnicButton
+          data-testid="preview-button"
+          type="primary"
+          iconLeft="play_arrow"
+          iconsFilled
+          @click="handlePreview"
+        >
+          {{ $t('router.agents_team.preview') }}
+        </UnnnicButton>
       </template>
     </UnnnicPageHeader>
 
-    <ActiveTeam data-testid="active-team" />
+    <AssignedAgents data-testid="assigned-agents" />
 
     <AgentsGalleryModal data-testid="agents-gallery-modal" />
 
@@ -35,7 +46,7 @@ import PreviewDrawer from '@/components/Preview/PreviewDrawer.vue';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { usePreviewStore } from '@/store/Preview';
 
-import ActiveTeam from './ActiveTeam.vue';
+import AssignedAgents from './AssignedAgents.vue';
 import AgentsGalleryModal from './AgentsGalleryModal.vue';
 
 const isPreviewOpen = ref(false);
