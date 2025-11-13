@@ -23,7 +23,6 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
   const flags = computed(() => ({
     supervisorExport: isProjectEnabledForFlag('FF_SUPERVISOR_EXPORT'),
     newSupervisor: growthbook?.isOn('new_supervisor'),
-    instructionsValidatedByAI: growthbook?.isOn('instructions_validated_by_ai'),
   }));
 
   watch(
