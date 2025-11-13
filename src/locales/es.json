@@ -240,7 +240,18 @@
       "agents_backend": "Backend de agentes:",
       "agent_model": "Modelo del {agent}:",
       "characters_usage": "Uso de caracteres:",
-      "characters_usage_description": "Este es el número medio de caracteres que tu agente está usando en todas las áreas: Instrucciones, Base de Conocimientos y cualquier otra configuración."
+      "characters_usage_description": "Este es el número medio de caracteres que tu agente está usando en todas las áreas: Instrucciones, Base de Conocimientos y cualquier otra configuración.",
+      "voice_settings": {
+        "title": "Configuración de voz",
+        "switch": {
+          "text": "Usar voz",
+          "description": "Con esta función habilitada, el agente puede manejar llamadas de WhatsApp."
+        },
+        "change_voice": {
+          "title": "Elige la voz para las respuestas del agente",
+          "description": "Haz clic para escuchar las voces y elegir la que mejor se adapte a tu agente"
+        }
+      }
     }
   },
   "router": {
