@@ -21,6 +21,11 @@ import HumanSupport from './HumanSupport.vue';
 .settings-agents-team {
   display: flex;
   flex-direction: column;
-  gap: $unnnic-spacing-md;
+  gap: $unnnic-space-6;
+
+  > :not(:last-child) {
+    padding-bottom: $unnnic-space-6;
+    border-bottom: 1px solid $unnnic-color-border-base;
+  }
 }
 </style>
