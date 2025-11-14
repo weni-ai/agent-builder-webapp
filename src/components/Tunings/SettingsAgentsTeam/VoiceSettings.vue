@@ -26,11 +26,16 @@
           <p class="voice-settings__change-voice-title">
             {{ $t('agent_builder.tunings.voice_settings.change_voice.title') }}
           </p>
-          <UnnnicSelectSmart
-            v-model:modelValue="selectedVoice"
-            class="voice-settings__change-voice-select"
-            :options="voiceOptions"
-          />
+
+          <section class="voice-settings__change-voice-select-container">
+            <UnnnicSelectSmart
+              v-model:modelValue="selectedVoice"
+              class="voice-settings__change-voice-select"
+              :options="voiceOptions"
+            />
+            <AudioPlayerBar :audio="selectedVoice[0]?.audio" />
+          </section>
+
           <p class="voice-settings__change-voice-description">
             {{
               $t(
@@ -51,6 +56,8 @@ import { useTuningsStore } from '@/store/Tunings';
 
 import LoadingFormElement from '@/components/LoadingFormElement.vue';
 import SettingsField from './SettingsField.vue';
+import AudioPlayerBar from '@/components/AudioPlayerBar.vue';
+import shimmerAudio from '@/assets/audio/agent_voice/shimmer.wav';
 
 const tunings = useTuningsStore();
 
@@ -75,9 +82,16 @@ const voiceOptions = computed(() => {
   return voices.map((voice) => ({
     value: voice.toLowerCase(),
     label: voice,
+    audio: shimmerAudio,
   }));
 });
-const selectedVoice = ref([]);
+const selectedVoice = ref([
+  {
+    value: 'shimmer',
+    label: 'Shimmer',
+    audio: shimmerAudio,
+  },
+]);
 </script>
 
 <style lang="scss" scoped>
@@ -106,6 +120,12 @@ const selectedVoice = ref([]);
     &-title {
       font: $unnnic-font-body;
       color: $unnnic-color-fg-base;
+    }
+
+    &-select-container {
+      display: flex;
+      align-items: center;
+      gap: $unnnic-space-2;
     }
 
     &-select {
