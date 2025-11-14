@@ -1,17 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import useAgentBuilderViews from '../useAgentBuilderViews';
+import useBuildViews from '../useBuildViews';
 import i18n from '@/utils/plugins/i18n';
 
 const { t } = i18n.global;
 
-describe('useAgentBuilderViews', () => {
+describe('useBuildViews', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   describe('composable structure', () => {
     it('should return a computed property', () => {
-      const result = useAgentBuilderViews();
+      const result = useBuildViews();
 
       expect(result).toBeDefined();
       expect(result.value).toBeDefined();
@@ -19,9 +19,9 @@ describe('useAgentBuilderViews', () => {
     });
 
     it('should return an array of view objects', () => {
-      const result = useAgentBuilderViews();
+      const result = useBuildViews();
 
-      expect(result.value).toHaveLength(5);
+      expect(result.value).toHaveLength(3);
       result.value.forEach((view) => {
         expect(view).toHaveProperty('title');
         expect(view).toHaveProperty('description');
@@ -35,22 +35,8 @@ describe('useAgentBuilderViews', () => {
     let views;
 
     beforeEach(() => {
-      const result = useAgentBuilderViews();
+      const result = useBuildViews();
       views = result.value;
-    });
-
-    it('should have supervisor view with correct properties', () => {
-      const supervisorView = views.find((view) => view.page === 'supervisor');
-
-      expect(supervisorView).toBeDefined();
-      expect(supervisorView.title).toBe(
-        t('agent_builder.tabs.supervisor.title'),
-      );
-      expect(supervisorView.description).toBe(
-        t('agent_builder.tabs.supervisor.description'),
-      );
-      expect(supervisorView.page).toBe('supervisor');
-      expect(supervisorView.icon).toBe('sms');
     });
 
     it('should have instructions view with correct properties', () => {
@@ -67,18 +53,6 @@ describe('useAgentBuilderViews', () => {
       );
       expect(instructionsView.page).toBe('instructions');
       expect(instructionsView.icon).toBe('format_list_bulleted');
-    });
-
-    it('should have agents view with correct properties', () => {
-      const agentsView = views.find((view) => view.page === 'agents');
-
-      expect(agentsView).toBeDefined();
-      expect(agentsView.title).toBe(t('agent_builder.tabs.agents.title'));
-      expect(agentsView.description).toBe(
-        t('agent_builder.tabs.agents.description'),
-      );
-      expect(agentsView.page).toBe('agents');
-      expect(agentsView.icon).toBe('workspaces');
     });
 
     it('should have knowledge view with correct properties', () => {
@@ -108,23 +82,17 @@ describe('useAgentBuilderViews', () => {
 
   describe('view order and completeness', () => {
     it('should return views in the correct order', () => {
-      const result = useAgentBuilderViews();
+      const result = useBuildViews();
       const views = result.value;
 
-      const expectedOrder = [
-        'supervisor',
-        'instructions',
-        'agents',
-        'knowledge',
-        'tunings',
-      ];
+      const expectedOrder = ['instructions', 'knowledge', 'tunings'];
       const actualOrder = views.map((view) => view.page);
 
       expect(actualOrder).toEqual(expectedOrder);
     });
 
     it('should have unique page identifiers', () => {
-      const result = useAgentBuilderViews();
+      const result = useBuildViews();
       const views = result.value;
 
       const pages = views.map((view) => view.page);
@@ -134,7 +102,7 @@ describe('useAgentBuilderViews', () => {
     });
 
     it('should have unique icons for each view', () => {
-      const result = useAgentBuilderViews();
+      const result = useBuildViews();
       const views = result.value;
 
       const icons = views.map((view) => view.icon);
@@ -144,7 +112,7 @@ describe('useAgentBuilderViews', () => {
     });
 
     it('should have all required properties for each view', () => {
-      const result = useAgentBuilderViews();
+      const result = useBuildViews();
       const views = result.value;
 
       const requiredProperties = ['title', 'description', 'page', 'icon'];
