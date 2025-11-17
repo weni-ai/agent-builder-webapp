@@ -7,6 +7,7 @@
     ]"
   >
     <section
+      ref="scrollContainer"
       class="supervisor__content"
       @scroll="loadConversations"
     >
@@ -30,7 +31,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, watch, ref } from 'vue';
+import { computed, onBeforeMount, watch, ref, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 import SupervisorHeader from './SupervisorHeader.vue';
@@ -48,10 +49,14 @@ const router = useRouter();
 const route = useRoute();
 
 const supervisorConversations = ref(null);
+const scrollContainer = ref(null);
+const isCheckingScroll = ref(false);
 
 const selectedConversation = computed(() => {
   return supervisorStore.selectedConversation;
 });
+
+const conversations = computed(() => supervisorStore.conversations);
 
 function updateQuery(filters = supervisorStore.filters) {
   const cleanedFilters = cleanParams(filters);
@@ -62,26 +67,56 @@ function updateQuery(filters = supervisorStore.filters) {
   });
 }
 
-function loadConversations(event) {
+function hasMoreConversationsToLoad() {
   const { next } = supervisorStore.conversations.data;
+  const isLoading = supervisorStore.conversations.status === 'loading';
+  const hasError = supervisorStore.conversations.status === 'error';
 
-  if (
-    !next ||
-    ['loading', 'error'].includes(supervisorStore.conversations.status)
-  ) {
-    return;
-  }
+  return next && !isLoading && !hasError;
+}
 
-  const { scrollTop, clientHeight, scrollHeight } = event.target;
+function isScrollReachedBottom() {
+  const { scrollTop, clientHeight, scrollHeight } = scrollContainer.value;
 
-  const safeDistance = 10;
+  const SAFE_DISTANCE = 10;
   const isInScrollBottom =
-    scrollTop + clientHeight + safeDistance >= scrollHeight;
+    scrollTop + clientHeight + SAFE_DISTANCE >= scrollHeight;
 
-  const shouldLoadMore = isInScrollBottom;
+  return isInScrollBottom;
+}
+
+function hasScrollbar() {
+  const container = scrollContainer.value;
+  return container.scrollHeight > container.clientHeight;
+}
+
+async function checkAndLoadMoreIfNeeded() {
+  if (isCheckingScroll.value) return;
+
+  isCheckingScroll.value = true;
+
+  try {
+    await nextTick();
+
+    if (!scrollContainer.value) return;
+
+    if (!hasMoreConversationsToLoad()) return;
+
+    if (!hasScrollbar()) {
+      supervisorConversations.value?.loadMoreConversations();
+    }
+  } finally {
+    isCheckingScroll.value = false;
+  }
+}
+
+function loadConversations() {
+  if (!hasMoreConversationsToLoad()) return;
+
+  const shouldLoadMore = isScrollReachedBottom();
 
   if (shouldLoadMore) {
-    supervisorConversations.value.loadMoreConversations();
+    supervisorConversations.value?.loadMoreConversations();
   }
 }
 
@@ -101,6 +136,14 @@ watch(
       conversationUuid,
     });
   },
+);
+
+watch(
+  () => conversations.value.data.results?.length,
+  () => {
+    checkAndLoadMoreIfNeeded();
+  },
+  { immediate: true },
 );
 
 onBeforeMount(async () => {
