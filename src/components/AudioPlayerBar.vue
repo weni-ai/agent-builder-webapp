@@ -76,7 +76,7 @@ const progressPercentage = computed(() => {
   return (currentTime.value / duration.value) * 100;
 });
 
-const togglePlayPause = async () => {
+async function togglePlayPause() {
   if (!audioRef.value || hasError.value || props.disabled) return;
 
   try {
@@ -89,61 +89,77 @@ const togglePlayPause = async () => {
     console.error('Error toggling audio playback:', error);
     hasError.value = true;
   }
-};
+}
 
-const handleProgressChange = (event) => {
+function isBarActive(index) {
+  return (progressPercentage.value / 100) * 75 >= index;
+}
+
+function handleProgressChange(event) {
   if (!audioRef.value) return;
   const newTime = parseFloat(event.target.value);
   audioRef.value.currentTime = newTime;
   currentTime.value = newTime;
-};
+}
 
-const isBarActive = (index) => {
-  return (progressPercentage.value / 100) * 75 >= index;
-};
-
-const handleLoadedMetadata = () => {
+function handleLoadedMetadata() {
   duration.value = audioRef.value.duration;
   isLoading.value = false;
   hasError.value = false;
-};
+}
 
-const handleTimeUpdate = () => {
+function handleTimeUpdate() {
   currentTime.value = audioRef.value.currentTime;
-};
+}
 
-const handlePlay = () => {
+function handlePlay() {
   isPlaying.value = true;
-};
+}
 
-const handlePause = () => {
+function handlePause() {
   isPlaying.value = false;
-};
+}
 
-const handleEnded = () => {
+function handleEnded() {
   isPlaying.value = false;
   currentTime.value = 0;
-};
+}
 
-const handleError = () => {
+function handleError() {
   hasError.value = true;
   isLoading.value = false;
   isPlaying.value = false;
-};
+}
 
-const handleLoadStart = () => {
+function handleLoadStart() {
   isLoading.value = true;
   hasError.value = false;
-};
+}
+
+function resetCurrentAudio() {
+  audioRef.value.pause();
+  audioRef.value.currentTime = 0;
+  currentTime.value = 0;
+  isPlaying.value = false;
+}
 
 watch(
   () => props.disabled,
   (newDisabled) => {
     if (newDisabled && audioRef.value) {
-      audioRef.value.pause();
-      audioRef.value.currentTime = 0;
-      currentTime.value = 0;
-      isPlaying.value = false;
+      resetCurrentAudio();
+    }
+  },
+);
+
+watch(
+  () => props.audio,
+  (newAudio) => {
+    if (newAudio) {
+      resetCurrentAudio();
+
+      audioRef.value.src = newAudio;
+      audioRef.value.load();
     }
   },
 );
