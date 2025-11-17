@@ -61,10 +61,14 @@ COPY --from=old_css --chown=nginx:nginx /usr/share/nginx/html/agent-builder/asse
 
 COPY docker/docker-entrypoint.sh /
 
+RUN cd /usr/share/nginx/html/agent-builder/ \
+    && /file_handler.sh css
+
+COPY --from=builder --chown=nginx:nginx /app/dist /usr/share/nginx/html/agent-builder/
+
 RUN mv /usr/share/nginx/html/agent-builder/index.html /usr/share/nginx/html/agent-builder/index.html.tmpl \
     && cd /usr/share/nginx/html/agent-builder/ \
-    && ln -s /tmp/index.html \
-    && /file_handler.sh css
+    && ln -s /tmp/index.html
 
 EXPOSE 8080
 ENTRYPOINT ["/docker-entrypoint.sh"]
