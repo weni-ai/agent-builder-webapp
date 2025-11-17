@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
 
 const props = defineProps({
   audio: {
@@ -102,43 +102,55 @@ const isBarActive = (index) => {
   return (progressPercentage.value / 100) * 75 >= index;
 };
 
+const handleLoadedMetadata = () => {
+  duration.value = audioRef.value.duration;
+  isLoading.value = false;
+  hasError.value = false;
+};
+
+const handleTimeUpdate = () => {
+  currentTime.value = audioRef.value.currentTime;
+};
+
+const handlePlay = () => {
+  isPlaying.value = true;
+};
+
+const handlePause = () => {
+  isPlaying.value = false;
+};
+
+const handleEnded = () => {
+  isPlaying.value = false;
+  currentTime.value = 0;
+};
+
+const handleError = () => {
+  hasError.value = true;
+  isLoading.value = false;
+  isPlaying.value = false;
+};
+
+const handleLoadStart = () => {
+  isLoading.value = true;
+  hasError.value = false;
+};
+
+watch(
+  () => props.disabled,
+  (newDisabled) => {
+    if (newDisabled && audioRef.value) {
+      audioRef.value.pause();
+      audioRef.value.currentTime = 0;
+      currentTime.value = 0;
+      isPlaying.value = false;
+    }
+  },
+);
+
 onMounted(() => {
   const audio = audioRef.value;
   if (!audio) return;
-
-  const handleLoadedMetadata = () => {
-    duration.value = audio.duration;
-    isLoading.value = false;
-    hasError.value = false;
-  };
-
-  const handleTimeUpdate = () => {
-    currentTime.value = audio.currentTime;
-  };
-
-  const handlePlay = () => {
-    isPlaying.value = true;
-  };
-
-  const handlePause = () => {
-    isPlaying.value = false;
-  };
-
-  const handleEnded = () => {
-    isPlaying.value = false;
-    currentTime.value = 0;
-  };
-
-  const handleError = () => {
-    hasError.value = true;
-    isLoading.value = false;
-    isPlaying.value = false;
-  };
-
-  const handleLoadStart = () => {
-    isLoading.value = true;
-    hasError.value = false;
-  };
 
   audio.addEventListener('loadedmetadata', handleLoadedMetadata);
   audio.addEventListener('timeupdate', handleTimeUpdate);
