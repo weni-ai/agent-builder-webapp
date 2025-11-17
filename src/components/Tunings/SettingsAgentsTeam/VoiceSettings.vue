@@ -27,13 +27,17 @@
             {{ $t('agent_builder.tunings.voice_settings.change_voice.title') }}
           </p>
 
-          <section class="voice-settings__change-voice-select-container">
+          <section class="voice-settings__reproduction">
             <UnnnicSelectSmart
               v-model:modelValue="selectedVoice"
-              class="voice-settings__change-voice-select"
+              class="voice-settings__select"
               :options="voiceOptions"
+              :disabled="!useVoice"
             />
-            <AudioPlayerBar :audio="selectedVoice[0]?.audio" />
+            <AudioPlayerBar
+              :audio="selectedVoice[0]?.audio"
+              :disabled="!useVoice"
+            />
           </section>
 
           <p class="voice-settings__change-voice-description">
@@ -122,20 +126,26 @@ const selectedVoice = ref([
       color: $unnnic-color-fg-base;
     }
 
-    &-select-container {
-      display: flex;
-      align-items: center;
-      gap: $unnnic-space-2;
-    }
-
-    &-select {
-      max-width: 250px;
-    }
-
     &-description {
       font: $unnnic-font-caption-2;
       color: $unnnic-color-fg-base;
     }
+  }
+
+  &__reproduction {
+    padding: $unnnic-space-3 $unnnic-space-4;
+    border-radius: $unnnic-radius-4;
+    border: 1px solid $unnnic-color-border-soft;
+
+    display: flex;
+    align-items: center;
+    gap: $unnnic-space-2;
+
+    width: fit-content;
+  }
+
+  &__select {
+    max-width: 250px;
   }
 }
 </style>

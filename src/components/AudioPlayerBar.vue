@@ -1,5 +1,7 @@
 <template>
-  <section class="audio-player-bar">
+  <section
+    :class="['audio-player-bar', { 'audio-player-bar--disabled': disabled }]"
+  >
     <audio
       ref="audioRef"
       :src="audio"
@@ -12,7 +14,7 @@
       class="audio-player-bar__play-button"
       :icon="isPlaying ? 'pause' : 'play_arrow'"
       filled
-      scheme="gray-500"
+      :scheme="disabled ? 'bg-muted' : 'gray-500'"
       size="lg"
       clickable
       :aria-label="isPlaying ? 'Pause audio' : 'Play audio'"
@@ -27,7 +29,7 @@
         :max="duration || 0"
         step="0.001"
         :value="currentTime"
-        :disabled="hasError || isLoading"
+        :disabled="hasError || isLoading || disabled"
         :style="{
           '--progress': duration > 0 ? `${progressPercentage}%` : '0%',
         }"
@@ -38,7 +40,10 @@
         :key="i"
         :class="[
           'audio-player-bar__bar',
-          { 'audio-player-bar__bar--active': isBarActive(i) },
+          {
+            'audio-player-bar__bar--active': isBarActive(i),
+            'audio-player-bar__bar--disabled': disabled,
+          },
         ]"
         aria-hidden
       />
@@ -49,10 +54,14 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 
-defineProps({
+const props = defineProps({
   audio: {
     type: String,
     required: true,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -68,7 +77,7 @@ const progressPercentage = computed(() => {
 });
 
 const togglePlayPause = async () => {
-  if (!audioRef.value || hasError.value) return;
+  if (!audioRef.value || hasError.value || props.disabled) return;
 
   try {
     if (isPlaying.value) {
@@ -158,8 +167,12 @@ onMounted(() => {
 
   cursor: pointer;
 
-  &__play-button {
-    flex-shrink: 0;
+  &--disabled {
+    cursor: not-allowed;
+
+    .audio-player-bar__play-button {
+      cursor: not-allowed;
+    }
   }
 
   &__progress-bar {
@@ -213,6 +226,10 @@ onMounted(() => {
     height: 100%;
     background-color: $unnnic-color-gray-200;
     border-radius: $unnnic-radius-2;
+
+    &--disabled {
+      background-color: $unnnic-color-bg-muted;
+    }
 
     &--active {
       background-color: $unnnic-color-gray-500;
