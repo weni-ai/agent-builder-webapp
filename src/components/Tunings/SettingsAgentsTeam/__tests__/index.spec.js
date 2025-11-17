@@ -37,9 +37,10 @@ describe('SettingsAgentsTeam/index.vue', () => {
       const container = mainContainer();
       const children = Array.from(container.element.children);
 
-      expect(children).toHaveLength(2);
+      expect(children).toHaveLength(3);
       expect(children[0].getAttribute('data-testid')).toBe('agents-preview');
-      expect(children[1].getAttribute('data-testid')).toBe('human-support');
+      expect(children[1].getAttribute('data-testid')).toBe('voice-settings');
+      expect(children[2].getAttribute('data-testid')).toBe('human-support');
     });
   });
 });
