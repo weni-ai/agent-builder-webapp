@@ -5,6 +5,7 @@
       :src="audio"
       preload="metadata"
       style="display: none"
+      aria-hidden
     />
 
     <UnnnicIcon
@@ -28,31 +29,25 @@
         :value="currentTime"
         :disabled="hasError || isLoading"
         :style="{
-          '--progress':
-            duration > 0 ? `${(currentTime / duration) * 100}%` : '0%',
+          '--progress': duration > 0 ? `${progressPercentage}%` : '0%',
         }"
         @input="handleProgressChange"
       />
       <span
         v-for="i in 75"
         :key="i"
-        class="audio-player-bar__bar"
+        :class="[
+          'audio-player-bar__bar',
+          { 'audio-player-bar__bar--active': isBarActive(i) },
+        ]"
+        aria-hidden
       />
     </section>
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-
-/**
- * AudioPlayerBar - Audio message component
- *
- * Simple audio player with:
- * - Play/pause button
- * - Range input for progress
- * - Time display
- */
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 
 defineProps({
   audio: {
@@ -67,6 +62,10 @@ const currentTime = ref(0);
 const duration = ref(0);
 const isLoading = ref(true);
 const hasError = ref(false);
+
+const progressPercentage = computed(() => {
+  return (currentTime.value / duration.value) * 100;
+});
 
 const togglePlayPause = async () => {
   if (!audioRef.value || hasError.value) return;
@@ -88,6 +87,10 @@ const handleProgressChange = (event) => {
   const newTime = parseFloat(event.target.value);
   audioRef.value.currentTime = newTime;
   currentTime.value = newTime;
+};
+
+const isBarActive = (index) => {
+  return (progressPercentage.value / 100) * 75 >= index;
 };
 
 onMounted(() => {
@@ -152,9 +155,8 @@ onMounted(() => {
 .audio-player-bar {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem;
-  background-color: transparent;
+
+  cursor: pointer;
 
   &__play-button {
     flex-shrink: 0;
@@ -164,27 +166,28 @@ onMounted(() => {
     position: absolute;
 
     flex: 1;
+
+    width: 100%;
     height: $unnnic-icon-size-5;
-    background: transparent;
+
     outline: none;
-    cursor: pointer;
+    background: transparent;
     -webkit-appearance: none;
     appearance: none;
 
+    cursor: pointer;
+
     &::-webkit-slider-thumb {
+      width: $unnnic-space-3;
+      height: $unnnic-space-3;
+
       -webkit-appearance: none;
       appearance: none;
-      width: 12px;
-      height: 12px;
-      // background: transparent;
-      cursor: pointer;
     }
 
     &::-moz-range-thumb {
-      width: 12px;
-      height: 12px;
-      // background: transparent;
-      cursor: pointer;
+      width: $unnnic-space-3;
+      height: $unnnic-space-3;
       border: none;
     }
 
@@ -206,10 +209,33 @@ onMounted(() => {
   }
 
   &__bar {
-    width: 1px;
+    width: 2px;
     height: 100%;
-    background: $unnnic-color-gray-200;
+    background-color: $unnnic-color-gray-200;
     border-radius: $unnnic-radius-2;
+
+    &--active {
+      background-color: $unnnic-color-gray-500;
+    }
+
+    $heights: (80%, 50%, 50%);
+
+    @for $i from 3 to 75 {
+      &:nth-of-type(#{$i}) {
+        $index: ($i - 3) % length($heights) + 1;
+        height: nth($heights, $index);
+      }
+    }
+
+    &:first-of-type,
+    &:last-of-type {
+      height: 20%;
+    }
+
+    &:nth-of-type(2),
+    &:nth-of-type(74) {
+      height: 50%;
+    }
   }
 }
 </style>
