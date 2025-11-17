@@ -61,41 +61,48 @@ import { useTuningsStore } from '@/store/Tunings';
 import LoadingFormElement from '@/components/LoadingFormElement.vue';
 import SettingsField from './SettingsField.vue';
 import AudioPlayerBar from '@/components/AudioPlayerBar.vue';
+
 import shimmerAudio from '@/assets/audio/agent_voice/shimmer.wav';
+import alloyAudio from '@/assets/audio/agent_voice/alloy.wav';
+import ashAudio from '@/assets/audio/agent_voice/ash.wav';
+import balladAudio from '@/assets/audio/agent_voice/ballad.wav';
+import coralAudio from '@/assets/audio/agent_voice/coral.wav';
+import echoAudio from '@/assets/audio/agent_voice/echo.wav';
+import fableAudio from '@/assets/audio/agent_voice/fable.wav';
+import onyxAudio from '@/assets/audio/agent_voice/onyx.wav';
+import novaAudio from '@/assets/audio/agent_voice/nova.wav';
+import sageAudio from '@/assets/audio/agent_voice/sage.wav';
+import verseAudio from '@/assets/audio/agent_voice/verse.wav';
 
 const tunings = useTuningsStore();
 
 const loading = computed(() => !tunings.settings.status);
 const useVoice = computed(() => tunings.settings.data.useVoice);
 
-const voiceOptions = computed(() => {
-  const voices = [
-    'Shimmer',
-    'Alloy',
-    'Ash',
-    'Ballad',
-    'Coral',
-    'Echo',
-    'Fable',
-    'Onyx',
-    'Nova',
-    'Sage',
-    'Verse',
-  ];
+const AUDIO_FILES = {
+  shimmer: shimmerAudio,
+  alloy: alloyAudio,
+  ash: ashAudio,
+  ballad: balladAudio,
+  coral: coralAudio,
+  echo: echoAudio,
+  fable: fableAudio,
+  onyx: onyxAudio,
+  nova: novaAudio,
+  sage: sageAudio,
+  verse: verseAudio,
+};
 
-  return voices.map((voice) => ({
-    value: voice.toLowerCase(),
-    label: voice,
-    audio: shimmerAudio,
-  }));
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+const createVoiceOption = (voiceName) => ({
+  value: voiceName,
+  label: capitalize(voiceName),
+  audio: AUDIO_FILES[voiceName],
 });
-const selectedVoice = ref([
-  {
-    value: 'shimmer',
-    label: 'Shimmer',
-    audio: shimmerAudio,
-  },
-]);
+
+const voiceOptions = Object.keys(AUDIO_FILES).map(createVoiceOption);
+const selectedVoice = ref([voiceOptions[0]]);
 </script>
 
 <style lang="scss" scoped>
