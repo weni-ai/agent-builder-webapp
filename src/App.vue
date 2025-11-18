@@ -19,13 +19,14 @@
       <RouterView />
     </main>
 
-    <UnnnicAlert
+    <UnnnicToast
       v-if="alertStore.data.text"
       :key="alertStore.id"
       data-testid="alert-pinia"
       class="app-alert"
-      v-bind="alertStore.data"
-      @close="alertStore.close"
+      :title="alertStore.data.text"
+      :type="alertStore.data.type"
+      @destroy="alertStore.close"
     />
   </div>
 </template>
