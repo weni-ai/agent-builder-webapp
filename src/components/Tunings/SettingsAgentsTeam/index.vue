@@ -5,7 +5,10 @@
   >
     <AgentsPreview data-testid="agents-preview" />
 
-    <VoiceSettings data-testid="voice-settings" />
+    <VoiceSettings
+      v-if="featureFlagsStore.flags.settingsAgentVoice"
+      data-testid="voice-settings"
+    />
 
     <HumanSupport data-testid="human-support" />
   </section>
@@ -15,6 +18,9 @@
 import AgentsPreview from './AgentsPreview.vue';
 import VoiceSettings from './VoiceSettings.vue';
 import HumanSupport from './HumanSupport.vue';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
+
+const featureFlagsStore = useFeatureFlagsStore();
 </script>
 
 <style lang="scss" scoped>
