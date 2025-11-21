@@ -361,6 +361,7 @@
       "save_success": "Configurações salvas com sucesso"
     },
     "preview": {
+      "trigger": "Teste seus agentes",
       "title": "Prévia do agente",
       "active": "Agent Builder ativo",
       "no_logs_registered": "Nenhum registro de logs",
