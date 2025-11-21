@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import { useTuningsStore } from '@/store/Tunings';
 
@@ -102,7 +102,13 @@ const createVoiceOption = (voiceName) => ({
 });
 
 const voiceOptions = Object.keys(AUDIO_FILES).map(createVoiceOption);
-const selectedVoice = ref([voiceOptions[0]]);
+const selectedVoice = ref([
+  createVoiceOption(tunings.settings.data.selectedVoice),
+]);
+
+watch(selectedVoice, (newSelectedVoice) => {
+  tunings.settings.data.selectedVoice = newSelectedVoice[0].value;
+});
 </script>
 
 <style lang="scss" scoped>

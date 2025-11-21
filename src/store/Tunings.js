@@ -33,6 +33,8 @@ export const useTuningsStore = defineStore('Tunings', () => {
       progressiveFeedback: false,
       humanSupport: false,
       humanSupportPrompt: '',
+      useVoice: false,
+      selectedVoice: 'shimmer',
     },
   });
 
@@ -192,11 +194,18 @@ export const useTuningsStore = defineStore('Tunings', () => {
             human_support_prompt: data.team?.human_support_prompt || '',
           }));
 
+      const { useVoice, selectedVoice } =
+        await nexusaiAPI.router.tunings.getVoiceSettings({
+          projectUuid: projectUuid.value,
+        });
+
       settings.data = {
         components,
         progressiveFeedback,
         humanSupport: human_support,
         humanSupportPrompt: human_support_prompt,
+        useVoice: useVoice || false,
+        selectedVoice: selectedVoice || 'shimmer',
       };
       initialSettings.value = cloneDeep(settings.data);
 
@@ -269,6 +278,23 @@ export const useTuningsStore = defineStore('Tunings', () => {
             '*',
           );
         }
+      }
+
+      const hasVoiceSettingsChanges =
+        initialSettings.value.useVoice !== settings.data.useVoice ||
+        initialSettings.value.selectedVoice !== settings.data.selectedVoice;
+
+      if (hasVoiceSettingsChanges) {
+        await nexusaiAPI.router.tunings.editVoiceSettings({
+          projectUuid: projectUuid.value,
+          data: {
+            useVoice: settings.data.useVoice,
+            selectedVoice: settings.data.selectedVoice,
+          },
+          requestOptions: {
+            hideGenericErrorAlert: true,
+          },
+        });
       }
 
       initialSettings.value = cloneDeep(settings.data);

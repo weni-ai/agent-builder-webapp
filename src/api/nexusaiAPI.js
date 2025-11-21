@@ -7,6 +7,8 @@ import { Knowledge } from './nexus/Knowledge';
 import { ProgressiveFeedbackAdapter } from './adapters/tunings/progressiveFeedback';
 import { ComponentsAdapter } from './adapters/tunings/components';
 import { ProjectDetailsAdapter } from './adapters/tunings/projectDetails';
+import { VoiceSettingsAdapter } from './adapters/tunings/voiceSettings';
+
 import i18n from '@/utils/plugins/i18n';
 
 export default {
@@ -139,6 +141,22 @@ export default {
           );
           return ProjectDetailsAdapter.fromApi(response.data);
         },
+      },
+
+      async getVoiceSettings({ projectUuid }) {
+        const response = await request.$http.get(
+          `api/project/${projectUuid}/multi-agents-audio`,
+        );
+
+        return VoiceSettingsAdapter.fromApi(response.data);
+      },
+
+      editVoiceSettings({ projectUuid, data, requestOptions = {} }) {
+        return request.$http.post(
+          `api/project/${projectUuid}/multi-agents-audio`,
+          VoiceSettingsAdapter.toApi(data),
+          requestOptions,
+        );
       },
     },
 
