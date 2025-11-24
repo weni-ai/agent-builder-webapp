@@ -2,6 +2,8 @@ import nexusRequest from '../nexusaiRequest';
 import { InstructionAdapter } from '../adapters/instructions/instruction';
 import { useInstructionsStore } from '@/store/Instructions';
 
+import i18n from '@/utils/plugins/i18n';
+
 const request = nexusRequest;
 
 export const Instructions = {
@@ -59,10 +61,18 @@ export const Instructions = {
   },
 
   async getSuggestionByAI({ projectUuid, instruction }) {
+    const languageMap = {
+      en: 'English',
+      'pt-br': 'Portuguese',
+      es: 'Spanish',
+    };
+    const language = languageMap[i18n.global.locale];
+
     const response = await request.$http.post(
       `api/${projectUuid}/instructions-classification/`,
       {
         instruction,
+        language,
       },
     );
     return response;
