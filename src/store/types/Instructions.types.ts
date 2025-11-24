@@ -8,7 +8,7 @@ export interface Classification {
   reason: string;
 }
 export interface InstructionSuggestedByAI {
-  suggestionApplied: boolean;
+  suggestionApplied: string;
   data: {
     instruction: string;
     classification: Classification[] | [];
