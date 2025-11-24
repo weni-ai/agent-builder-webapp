@@ -7,22 +7,22 @@ exports[`ModalRemoveInstruction.vue > Component rendering > should match snapsho
     <!---->
     <section data-v-a7e44667="" class="unnnic-modal-dialog__container__body">
       <header data-v-a7e44667="" class="unnnic-modal-dialog__container__header">
-        <section data-v-a7e44667="" class="unnnic-modal-dialog__container__title-container"><span data-v-62451e85="" data-v-a7e44667="" class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--aux-red-500 unnnic-icon-size--md unnnic-icon__size--md unnnic-modal-dialog__container__title-icon" data-testid="title-icon" translate="no">warning</span>
+        <section data-v-a7e44667="" class="unnnic-modal-dialog__container__title-container"><span data-v-69390f82="" data-v-a7e44667="" class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--aux-red-500 unnnic-icon-size--md unnnic-icon__size--md unnnic-modal-dialog__container__title-icon" data-testid="title-icon" translate="no">warning</span>
           <h1 data-v-a7e44667="" class="unnnic-modal-dialog__container__title-text" data-testid="title-text">Remove instruction</h1>
-        </section><span data-v-62451e85="" data-v-a7e44667="" class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--md unnnic-icon__size--md unnnic--clickable" data-testid="close-icon" translate="no">close</span>
+        </section><span data-v-69390f82="" data-v-a7e44667="" class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--md unnnic-icon__size--md unnnic--clickable" data-testid="close-icon" translate="no">close</span>
       </header>
       <section data-v-a7e44667="" class="unnnic-modal-dialog__container__content">
         <p data-v-25f17094="" class="modal-remove-instruction__description" data-testid="description">Are you sure you want to remove the instruction?</p>
       </section>
-      <section data-v-a7e44667="" data-testid="actions-section" class="unnnic-modal-dialog__container__actions"><button data-v-74c4eb1e="" data-v-a7e44667="" data-testid="secondary-button" class="unnnic-modal-dialog__container__actions__secondary-button unnnic-button unnnic-button--size-large unnnic-button--tertiary unnnic-modal-dialog__container__actions__secondary-button">
+      <section data-v-a7e44667="" data-testid="actions-section" class="unnnic-modal-dialog__container__actions"><button data-v-aadba593="" data-v-a7e44667="" data-testid="secondary-button" class="unnnic-modal-dialog__container__actions__secondary-button unnnic-button unnnic-button--size-large unnnic-button--tertiary unnnic-modal-dialog__container__actions__secondary-button">
           <!---->
           <!---->
-          <!----><span data-v-74c4eb1e="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Cancel</span>
+          <!----><span data-v-aadba593="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Cancel</span>
           <!---->
-        </button><button data-v-74c4eb1e="" data-v-a7e44667="" data-testid="primary-button" class="unnnic-modal-dialog__container__actions__primary-button unnnic-button unnnic-button--size-large unnnic-button--warning unnnic-modal-dialog__container__actions__primary-button">
+        </button><button data-v-aadba593="" data-v-a7e44667="" data-testid="primary-button" class="unnnic-modal-dialog__container__actions__primary-button unnnic-button unnnic-button--size-large unnnic-button--warning unnnic-modal-dialog__container__actions__primary-button">
           <!---->
           <!---->
-          <!----><span data-v-74c4eb1e="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Remove</span>
+          <!----><span data-v-aadba593="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Remove</span>
           <!---->
         </button></section>
     </section>
