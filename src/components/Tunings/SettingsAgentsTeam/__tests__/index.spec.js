@@ -3,6 +3,14 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import SettingsAgentsTeam from '../index.vue';
 
+vi.mock('@/store/FeatureFlags', () => ({
+  useFeatureFlagsStore: () => ({
+    flags: {
+      settingsAgentVoice: true,
+    },
+  }),
+}));
+
 describe('SettingsAgentsTeam/index.vue', () => {
   let wrapper;
 
