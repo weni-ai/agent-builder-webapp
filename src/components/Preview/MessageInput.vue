@@ -222,6 +222,8 @@ function emitSend() {
   }
 
   &__left-button {
+    display: flex;
+
     left: $unnnic-spacing-sm;
 
     :deep(.material-symbols-rounded) {

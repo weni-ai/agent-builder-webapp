@@ -3,21 +3,20 @@
 exports[`Instruction.vue > Component rendering > should match snapshot 1`] = `
 "<section data-v-ee639d0b="" data-testid="modal-validate-instruction" class="modal-validate-instruction">
   <section data-v-ee639d0b="" class="modal-validate-instruction__instruction">
-    <section data-v-bee89e89="" data-v-adccf3ee="" data-v-ee639d0b="" class="unnnic-form-element" data-testid="instruction-textarea">
-      <!----><textarea data-v-adccf3ee="" class="unnnic-text-area__textarea unnnic-text-area__textarea--size-md unnnic-text-area__textarea--type-normal" placeholder="You're funny, but don't make jokes" value="Initial text"></textarea>
-      <!---->
+    <section data-v-2d5913d6="" data-v-cb141102="" data-v-ee639d0b="" class="unnnic-form-element" data-testid="instruction-textarea">
+      <!----><textarea data-v-cb141102="" class="unnnic-text-area__textarea unnnic-text-area__textarea--size-md unnnic-text-area__textarea--type-normal" placeholder="You're funny, but don't make jokes" value="Initial text"></textarea>
       <!---->
     </section>
     <section data-v-ee639d0b="" class="instruction-ai-suggestion"><button data-v-77a38d34="" class="unnnic-popover-trigger instruction-ai-suggestion__trigger instruction-ai-suggestion__trigger--disabled" id="reka-popover-trigger-v-0" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="" data-state="closed">
-        <div data-v-8c61d974="" class="unnnic-tooltip" data-test="card-tooltip"><svg data-v-62451e85="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="unnnic-icon unnnic-icon-scheme--gray-300 unnnic-icon-size--sm" data-testid="iconify-icon"></svg> See AI suggestion<span data-v-8c61d974="" class="unnnic-tooltip-label unnnic-tooltip-label-top" style="max-width: 18rem; left: 0px; top: -8px;" data-testid="tooltip-label">No AI suggestion <br data-v-8c61d974=""><!----></span></div>
+        <div data-v-8c61d974="" class="unnnic-tooltip" data-test="card-tooltip"><svg data-v-69390f82="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="unnnic-icon unnnic-icon-scheme--gray-300 unnnic-icon-size--sm" data-testid="iconify-icon"></svg> See AI suggestion<span data-v-8c61d974="" class="unnnic-tooltip-label unnnic-tooltip-label-top" style="max-width: 18rem; left: 0px; top: -8px;" data-testid="tooltip-label">No AI suggestion <br data-v-8c61d974=""><!----></span></div>
       </button>
       <!--teleport start-->
       <!--teleport end-->
     </section>
-  </section><button data-v-74c4eb1e="" data-v-ee639d0b="" data-testid="revalidate-button" class="unnnic-button unnnic-button--size-large unnnic-button--primary">
+  </section><button data-v-aadba593="" data-v-ee639d0b="" data-testid="revalidate-button" class="unnnic-button unnnic-button--size-large unnnic-button--primary">
     <!---->
     <!---->
-    <!----><span data-v-74c4eb1e="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Re-validate</span>
+    <!----><span data-v-aadba593="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Re-validate</span>
     <!---->
   </button>
 </section>"
