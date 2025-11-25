@@ -48,11 +48,14 @@ const isSuggestionLoading = computed(() => {
 const revalidateButtonTextDisabled = computed(() => {
   const isInstructionEqualsToNewInstruction =
     modelValue.value?.trim() === instructionsStore.newInstruction.text?.trim();
+  const isInstructionsEqualsToSuggestion =
+    modelValue.value?.trim() ===
+    instructionsStore.instructionSuggestedByAI.suggestionApplied?.trim();
 
   return (
     !modelValue.value?.trim() ||
     isInstructionEqualsToNewInstruction ||
-    instructionsStore.instructionSuggestedByAI.suggestionApplied
+    isInstructionsEqualsToSuggestion
   );
 });
 
@@ -62,7 +65,7 @@ function revalidateInstructionByAI() {
 
 function applySuggestion(suggestion: string) {
   modelValue.value = suggestion;
-  instructionsStore.instructionSuggestedByAI.suggestionApplied = true;
+  instructionsStore.instructionSuggestedByAI.suggestionApplied = suggestion;
   instructionsStore.resetInstructionSuggestedByAI();
 }
 </script>

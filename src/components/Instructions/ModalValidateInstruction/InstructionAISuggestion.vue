@@ -100,7 +100,7 @@ const suggestionApplied = computed(() => {
 
 const triggerDisabled = computed(() => {
   return (
-    instructionsStore.instructionSuggestedByAI.data.classification.length === 0
+    instructionsStore.instructionSuggestedByAI.data.suggestion.trim() === ''
   );
 });
 
