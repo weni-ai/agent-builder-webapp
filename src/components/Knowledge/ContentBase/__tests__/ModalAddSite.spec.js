@@ -30,6 +30,9 @@ describe('ModalAddSite', () => {
     wrapper = mount(ModalAddSite, {
       global: {
         plugins: [pinia],
+        stubs: {
+          UnnnicModalDialog: false,
+        },
       },
     });
 

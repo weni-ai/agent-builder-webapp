@@ -1,7 +1,6 @@
 <template>
   <UnnnicDrawerNext
     v-model:open="drawerOpen"
-    data-testid="preview-drawer"
     class="preview-drawer"
   >
     <UnnnicDrawerContent size="extra-large">

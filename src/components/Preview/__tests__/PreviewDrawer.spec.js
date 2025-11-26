@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { nextTick } from 'vue';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
@@ -53,6 +54,7 @@ describe('PreviewDrawer.vue', () => {
         stubs: {
           PreviewDetails: true,
           Preview: true,
+          UnnnicDrawerNext: false,
         },
       },
     });
@@ -62,7 +64,8 @@ describe('PreviewDrawer.vue', () => {
     vi.clearAllMocks();
   });
 
-  const previewDrawer = () => wrapper.find('[data-testid="preview-drawer"]');
+  const previewDrawer = () =>
+    wrapper.findComponent({ name: 'UnnnicDrawerNext' });
   const previewDrawerHeader = () =>
     wrapper.find('[data-testid="preview-drawer-header"]');
   const previewDrawerTitle = () =>
@@ -92,9 +95,11 @@ describe('PreviewDrawer.vue', () => {
   });
 
   it('should emit update:modelValue when drawer is closed', async () => {
-    await wrapper.findComponent({ name: 'UnnnicDrawer' }).vm.$emit('close');
-    expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-    expect(wrapper.emitted('update:modelValue')[0]).toEqual([false]);
+    previewDrawer().vm.$emit('update:open', false);
+    await nextTick();
+    const modelValueUpdates = wrapper.emitted('update:modelValue');
+    expect(modelValueUpdates).toBeTruthy();
+    expect(modelValueUpdates[modelValueUpdates.length - 1]).toEqual([false]);
   });
 
   it('should connect websocket when drawer is opened', async () => {
