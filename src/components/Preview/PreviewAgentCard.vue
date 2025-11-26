@@ -118,7 +118,7 @@ defineProps({
 .preview-agent-card {
   position: relative;
   box-shadow: $unnnic-shadow-level-near;
-  border-radius: $unnnic-border-radius-md;
+  border-radius: $unnnic-radius-4;
   background-color: $unnnic-color-background-white;
   border: $unnnic-border-width-thinner solid transparent;
 
