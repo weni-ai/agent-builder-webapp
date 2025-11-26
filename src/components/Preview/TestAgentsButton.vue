@@ -44,7 +44,10 @@ onUnmounted(() => {
   bottom: $unnnic-space-4;
   right: $unnnic-space-4;
 
+  min-width: 160px;
+  width: calc(((100% - $unnnic-space-2) / 12) * 3);
+
   border-radius: $unnnic-radius-full;
-  box-shadow: $unnnic-shadow-level-near;
+  box-shadow: $unnnic-shadow-1;
 }
 </style>
