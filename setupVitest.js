@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { afterAll, vi } from 'vitest';
 
 import { config } from '@vue/test-utils';
 import i18n from '@/utils/plugins/i18n';
@@ -8,6 +8,7 @@ import UnnnicDivider from '@/components/Divider.vue';
 import UnnnicIntelligenceText from '@/components/unnnic-intelligence/Text.vue';
 import Unnnic from '@weni/unnnic-system';
 
+// Mock matchMedia
 vi.hoisted(() => {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -25,6 +26,7 @@ vi.hoisted(() => {
   });
 });
 
+// Mock IntersectionObserver
 class IntersectionObserverMock {
   observe() {}
 
@@ -32,9 +34,9 @@ class IntersectionObserverMock {
 
   disconnect() {}
 }
-
 global.IntersectionObserver = IntersectionObserverMock;
 
+// Mock Unnnic teleport components
 const unnnicDrawerStub = {
   name: 'UnnnicDrawerStub',
   inheritAttrs: false,
@@ -85,4 +87,11 @@ config.global.stubs = {
   Drawer: unnnicDrawerStub,
 };
 
+// Mock lodash.debounce
 vi.spyOn(lodash, 'debounce').mockImplementation((fn) => fn);
+
+// Mock Math.random to always return 1
+const mathRandomSpy = vi.spyOn(Math, 'random').mockReturnValue(1);
+afterAll(() => {
+  mathRandomSpy.mockRestore();
+});
