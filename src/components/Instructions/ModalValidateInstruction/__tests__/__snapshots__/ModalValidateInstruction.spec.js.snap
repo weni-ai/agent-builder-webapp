@@ -1,55 +1,34 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`ModalValidateInstruction.vue > Component rendering > should match snapshot 1`] = `
-"<section data-v-a7e44667="" class="unnnic-modal-dialog" data-testid="modal-validate-instruction-by-ai">
-  <section data-v-a7e44667="" class="unnnic-modal-dialog__overlay" data-testid="modal-overlay"></section>
-  <section data-v-a7e44667="" class="unnnic-modal-dialog__container unnnic-modal-dialog__container--lg" data-testid="modal-container">
-    <!---->
-    <section data-v-a7e44667="" class="unnnic-modal-dialog__container__body">
-      <header data-v-a7e44667="" class="unnnic-modal-dialog__container__header">
-        <section data-v-a7e44667="" class="unnnic-modal-dialog__container__title-container">
-          <!---->
-          <h1 data-v-a7e44667="" class="unnnic-modal-dialog__container__title-text" data-testid="title-text">Validate instruction</h1>
-        </section><span data-v-69390f82="" data-v-a7e44667="" class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--md unnnic-icon__size--md unnnic--clickable" data-testid="close-icon" translate="no">close</span>
-      </header>
-      <section data-v-a7e44667="" class="unnnic-modal-dialog__container__content">
-        <section data-v-ee639d0b="" data-testid="modal-validate-instruction" class="modal-validate-instruction">
-          <section data-v-ee639d0b="" class="modal-validate-instruction__instruction">
-            <section data-v-2d5913d6="" data-v-cb141102="" data-v-ee639d0b="" class="unnnic-form-element" data-testid="instruction-textarea">
-              <!----><textarea data-v-cb141102="" class="unnnic-text-area__textarea unnnic-text-area__textarea--size-md unnnic-text-area__textarea--type-normal" placeholder="You're funny, but don't make jokes" value="Test instruction text"></textarea>
-              <!---->
-            </section>
-            <section data-v-ee639d0b="" class="instruction-ai-suggestion"><button data-v-77a38d34="" class="unnnic-popover-trigger instruction-ai-suggestion__trigger instruction-ai-suggestion__trigger--disabled" id="reka-popover-trigger-v-0" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="" data-state="closed">
-                <div data-v-8c61d974="" class="unnnic-tooltip" data-test="card-tooltip"><svg data-v-69390f82="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="unnnic-icon unnnic-icon-scheme--gray-300 unnnic-icon-size--sm" data-testid="iconify-icon"></svg> See AI suggestion<span data-v-8c61d974="" class="unnnic-tooltip-label unnnic-tooltip-label-top" style="max-width: 18rem; left: 0px; top: -8px;" data-testid="tooltip-label">No AI suggestion <br data-v-8c61d974=""><!----></span></div>
-              </button>
-              <!--teleport start-->
-              <!--teleport end-->
-            </section>
-          </section><button data-v-aadba593="" data-v-ee639d0b="" data-testid="revalidate-button" disabled="" class="unnnic-button unnnic-button--size-large unnnic-button--primary">
-            <!---->
-            <!---->
-            <!----><span data-v-aadba593="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Re-validate</span>
-            <!---->
-          </button>
-        </section>
-        <hr data-v-f999d120="" class="divider divider--y-spacing-md divider--scheme-neutral-soft" data-testid="modal-validate-instruction-divider">
-        <section data-v-66a45c0f="" class="modal-validate-instruction__validation-results" data-testid="modal-validate-instruction-validation-results">
-          <h2 data-v-66a45c0f="" class="modal-validate-instruction__title" data-testid="modal-validate-instruction-validation-results-title">Validation results</h2>
-          <!--v-if-->
-        </section>
+"<div data-testid="modal-validate-instruction-by-ai">
+  <section data-v-ee639d0b="" data-testid="modal-validate-instruction" class="modal-validate-instruction">
+    <section data-v-ee639d0b="" class="modal-validate-instruction__instruction">
+      <section data-v-2d5913d6="" data-v-cb141102="" data-v-ee639d0b="" class="unnnic-form-element" data-testid="instruction-textarea">
+        <!----><textarea data-v-cb141102="" class="unnnic-text-area__textarea unnnic-text-area__textarea--size-md unnnic-text-area__textarea--type-normal" placeholder="You're funny, but don't make jokes" value="Test instruction text"></textarea>
+        <!---->
       </section>
-      <section data-v-a7e44667="" data-testid="actions-section" class="unnnic-modal-dialog__container__actions unnnic-modal-dialog__container__actions--divider"><button data-v-aadba593="" data-v-a7e44667="" data-testid="secondary-button" class="unnnic-modal-dialog__container__actions__secondary-button unnnic-button unnnic-button--size-large unnnic-button--tertiary unnnic-modal-dialog__container__actions__secondary-button">
+      <section data-v-ee639d0b="" class="instruction-ai-suggestion"><button data-v-77a38d34="" class="unnnic-popover-trigger instruction-ai-suggestion__trigger instruction-ai-suggestion__trigger--disabled" id="reka-popover-trigger-v-0" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="" data-state="closed">
+          <div data-v-e06fbb95="" class="unnnic-tooltip-trigger" data-testid="tooltip-trigger" data-state="closed" data-grace-area-trigger=""><svg data-v-69390f82="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="unnnic-icon unnnic-icon-scheme--gray-300 unnnic-icon-size--sm" data-testid="iconify-icon"></svg> See AI suggestion</div>
+          <div disabled="false" defer="false" forcemount="false">
+            <!---->
+          </div>
+        </button>
+        <div disabled="false" defer="false" forcemount="false">
           <!---->
-          <!---->
-          <!----><span data-v-aadba593="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Cancel</span>
-          <!---->
-        </button><button data-v-aadba593="" data-v-a7e44667="" data-testid="primary-button" class="unnnic-modal-dialog__container__actions__primary-button unnnic-button unnnic-button--size-large unnnic-button--primary unnnic-modal-dialog__container__actions__primary-button">
-          <!---->
-          <!---->
-          <!----><span data-v-aadba593="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Publish</span>
-          <!---->
-        </button></section>
-    </section>
+        </div>
+      </section>
+    </section><button data-v-aadba593="" data-v-ee639d0b="" data-testid="revalidate-button" disabled="" class="unnnic-button unnnic-button--size-large unnnic-button--primary">
+      <!---->
+      <!---->
+      <!----><span data-v-aadba593="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Re-validate</span>
+      <!---->
+    </button>
   </section>
-</section>"
+  <hr data-v-f999d120="" class="divider divider--y-spacing-md divider--scheme-neutral-soft" data-testid="modal-validate-instruction-divider">
+  <section data-v-66a45c0f="" class="modal-validate-instruction__validation-results" data-testid="modal-validate-instruction-validation-results">
+    <h2 data-v-66a45c0f="" class="modal-validate-instruction__title" data-testid="modal-validate-instruction-validation-results-title">Validation results</h2>
+    <!--v-if-->
+  </section>
+</div>"
 `;

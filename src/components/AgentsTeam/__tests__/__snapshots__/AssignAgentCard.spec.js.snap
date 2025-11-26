@@ -54,8 +54,50 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
               more_vert
             </span>
             
-            <!--teleport start-->
-            <!--teleport end-->
+            <div
+              to="body"
+            >
+              
+              
+              <section
+                class="options"
+                data-v-90d29858=""
+                horizontal="right-right"
+                popoverid="unnnic-popover-100000000"
+                style="min-width: auto;"
+                trigger="click"
+                vertical="top-bottom"
+              >
+                
+                <section
+                  class="options__option"
+                  data-test="Delete agent"
+                  data-v-90d29858=""
+                >
+                  <span
+                    class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--aux-red-500 unnnic-icon-size--sm unnnic-icon__size--sm"
+                    data-testid="material-icon"
+                    data-v-69390f82=""
+                    data-v-90d29858=""
+                    translate="no"
+                  >
+                    delete
+                  </span>
+                  <p
+                    class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-aux-red-500"
+                    data-v-90d29858=""
+                    data-v-ec8da4ad=""
+                  >
+                    
+                    Delete agent
+                    
+                  </p>
+                </section>
+                
+              </section>
+              
+              
+            </div>
             
           </section>
         </section>
@@ -155,7 +197,26 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
     isassigning="false"
     modelvalue="false"
   />
-  <!---->
+  <div
+    class="modal-delete-agent"
+    data-testid="modal"
+    data-v-783757c9=""
+    data-v-b58c7d6a=""
+  >
+    
+    
+    
+    <p
+      class="modal-delete-agent__description"
+      data-testid="description"
+      data-v-783757c9=""
+    >
+      Are you sure you want to delete the Test Title? This action cannot be reversed
+    </p>
+    
+    
+    
+  </div>
   
 </div>
 `;
