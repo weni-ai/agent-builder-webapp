@@ -77,13 +77,13 @@ watch(
   height: 100%;
 
   &__tabs {
-    margin: $unnnic-space-4 $unnnic-space-6;
+    margin: $unnnic-space-4 $unnnic-space-6 0;
   }
 
   &__content {
     overflow: hidden auto;
 
-    padding: 0 $unnnic-spacing-md;
+    padding: $unnnic-space-4 $unnnic-space-6 0;
 
     height: 100%;
   }
