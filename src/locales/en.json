@@ -380,7 +380,7 @@
       "manager_task": "Coordinating team tasks",
       "visual_flow": "Visual flow",
       "logs": "Logs",
-      "agents_preview": "Agent preview",
+      "test_your_agents": "Test your agents",
       "options": {
         "refresh": "Clear conversations",
         "export": "Export conversations"
