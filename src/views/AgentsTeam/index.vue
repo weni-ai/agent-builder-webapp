@@ -2,15 +2,14 @@
   <section class="agents-team">
     <AgentBuilderHeader
       withDivider
-      actionsSize="lg"
+      actionsSize="md"
       data-testid="agents-team-header"
     >
       <template #actions>
         <section class="agents-team__actions">
           <UnnnicButton
             data-testid="assign-agents-button"
-            type="secondary"
-            iconLeft="add"
+            type="primary"
             @click="handleAgentsGallery"
           >
             {{ $t('router.agents_team.assign_agents') }}
@@ -46,8 +45,6 @@ section.agents-team {
 
   .agents-team__actions {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: $unnnic-spacing-sm;
   }
 }
 </style>
