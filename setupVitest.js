@@ -6,6 +6,7 @@ import lodash from 'lodash';
 import UnnnicSystemPlugin from '@/utils/plugins/UnnnicSystem.ts';
 import UnnnicDivider from '@/components/Divider.vue';
 import UnnnicIntelligenceText from '@/components/unnnic-intelligence/Text.vue';
+import Unnnic from '@weni/unnnic-system';
 
 vi.hoisted(() => {
   Object.defineProperty(window, 'matchMedia', {
@@ -34,10 +35,29 @@ class IntersectionObserverMock {
 
 global.IntersectionObserver = IntersectionObserverMock;
 
+const unnnicModalDialogStub = {
+  name: 'UnnnicModalDialogStub',
+  inheritAttrs: false,
+  props: Unnnic?.unnnicModalDialog.props,
+  emits: Unnnic?.unnnicModalDialog.emits,
+  template: `
+    <div v-bind="$attrs">
+      <slot name="leftSidebar" />
+      <slot />
+      <slot name="footer" />
+    </div>
+  `,
+};
+
 config.global.plugins = [i18n, UnnnicSystemPlugin];
 config.global.components = {
   UnnnicDivider,
   UnnnicIntelligenceText,
+};
+config.global.stubs = {
+  ...(config.global.stubs || {}),
+  teleport: true,
+  UnnnicModalDialog: unnnicModalDialogStub,
 };
 
 vi.spyOn(lodash, 'debounce').mockImplementation((fn) => fn);
