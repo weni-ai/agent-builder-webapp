@@ -53,6 +53,7 @@ describe('PreviewDrawer.vue', () => {
         stubs: {
           PreviewDetails: true,
           Preview: true,
+          UnnnicDrawer: false,
         },
       },
     });
@@ -92,7 +93,9 @@ describe('PreviewDrawer.vue', () => {
   });
 
   it('should emit update:modelValue when drawer is closed', async () => {
-    await wrapper.findComponent({ name: 'UnnnicDrawer' }).vm.$emit('close');
+    await wrapper
+      .findComponent('[data-testid="preview-drawer"]')
+      .vm.$emit('close');
     expect(wrapper.emitted('update:modelValue')).toBeTruthy();
     expect(wrapper.emitted('update:modelValue')[0]).toEqual([false]);
   });

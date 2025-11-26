@@ -54,15 +54,16 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
               more_vert
             </span>
             
-            <teleport-stub
+            <div
               to="body"
             >
+              
               
               <section
                 class="options"
                 data-v-90d29858=""
                 horizontal="right-right"
-                popoverid="unnnic-popover-18217861"
+                popoverid="unnnic-popover-11959286"
                 style="min-width: auto;"
                 trigger="click"
                 vertical="top-bottom"
@@ -95,7 +96,8 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
                 
               </section>
               
-            </teleport-stub>
+              
+            </div>
             
           </section>
         </section>

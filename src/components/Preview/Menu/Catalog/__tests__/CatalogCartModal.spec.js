@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import CatalogCartModal from '../CatalogCartModal.vue';
@@ -37,7 +37,7 @@ describe('CatalogCartModal.vue', () => {
   ];
 
   const createWrapper = (props = {}) => {
-    return shallowMount(CatalogCartModal, {
+    return mount(CatalogCartModal, {
       props: {
         modelValue: true,
         products: mockProducts,

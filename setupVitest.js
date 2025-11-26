@@ -35,6 +35,19 @@ class IntersectionObserverMock {
 
 global.IntersectionObserver = IntersectionObserverMock;
 
+const unnnicDrawerStub = {
+  name: 'UnnnicDrawerStub',
+  inheritAttrs: false,
+  props: Unnnic?.unnnicDrawer.props,
+  emits: Unnnic?.unnnicDrawer.emits,
+  template: `
+    <div v-bind="$attrs">
+      <slot name="title" />
+      <slot name="content" />
+    </div>
+  `,
+};
+
 const unnnicModalDialogStub = {
   name: 'UnnnicModalDialogStub',
   inheritAttrs: false,
@@ -49,6 +62,14 @@ const unnnicModalDialogStub = {
   `,
 };
 
+const unnnicTooltipStub = {
+  name: 'UnnnicToolTipStub',
+  inheritAttrs: false,
+  props: Unnnic?.unnnicToolTip.props,
+  emits: Unnnic?.unnnicToolTip.emits,
+  template: `<div><slot /></div>`,
+};
+
 config.global.plugins = [i18n, UnnnicSystemPlugin];
 config.global.components = {
   UnnnicDivider,
@@ -56,8 +77,12 @@ config.global.components = {
 };
 config.global.stubs = {
   ...(config.global.stubs || {}),
-  teleport: true,
+  teleport: {
+    template: `<div><slot /></div>`,
+  },
   UnnnicModalDialog: unnnicModalDialogStub,
+  UnnnicToolTip: unnnicTooltipStub,
+  Drawer: unnnicDrawerStub,
 };
 
 vi.spyOn(lodash, 'debounce').mockImplementation((fn) => fn);
