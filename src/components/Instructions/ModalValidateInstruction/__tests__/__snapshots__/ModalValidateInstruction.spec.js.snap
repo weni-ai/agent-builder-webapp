@@ -4,7 +4,7 @@ exports[`ModalValidateInstruction.vue > Component rendering > should match snaps
 "<div data-testid="modal-validate-instruction-by-ai">
   <section data-v-ee639d0b="" data-testid="modal-validate-instruction" class="modal-validate-instruction">
     <section data-v-ee639d0b="" class="modal-validate-instruction__instruction">
-      <section data-v-2d5913d6="" data-v-cb141102="" data-v-ee639d0b="" class="unnnic-form-element" data-testid="instruction-textarea">
+      <section data-v-4569ccad="" data-v-cb141102="" data-v-ee639d0b="" class="unnnic-form-element" data-testid="instruction-textarea">
         <!----><textarea data-v-cb141102="" class="unnnic-text-area__textarea unnnic-text-area__textarea--size-md unnnic-text-area__textarea--type-normal" placeholder="You're funny, but don't make jokes" value="Test instruction text"></textarea>
         <!---->
       </section>
