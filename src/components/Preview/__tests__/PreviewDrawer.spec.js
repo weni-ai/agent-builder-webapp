@@ -90,7 +90,7 @@ describe('PreviewDrawer.vue', () => {
 
   it('should display correct title', () => {
     expect(previewDrawerTitle().text()).toBe(
-      i18n.global.t('router.preview.agents_preview'),
+      i18n.global.t('router.preview.test_your_agents'),
     );
   });
 

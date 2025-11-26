@@ -17,7 +17,7 @@
             weight="bold"
             color="neutral-darkest"
           >
-            {{ $t('router.preview.agents_preview') }}
+            {{ $t('router.preview.test_your_agents') }}
           </UnnnicIntelligenceText>
           <ContentItemActions
             data-testid="preview-drawer-actions"
