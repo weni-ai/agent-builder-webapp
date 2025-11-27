@@ -1,9 +1,11 @@
 <template>
   <section class="view-agents">
     <UnnnicPageHeader
+      data-testid="agents-header"
       :title="headerTitle"
       :description="headerDescription"
-      data-testid="agents-header"
+      :hasBackButton="route.name !== 'agents-team'"
+      @back="$router.push({ name: 'agents-team' })"
     >
       <template
         v-if="headerActions"
@@ -31,7 +33,7 @@ const { t } = i18n.global;
 const headerTitle = computed(() => {
   const titles: Record<string, string> = {
     'agents-team': t('agents.title'),
-    'agents-assign': t('agents.assign_agents'),
+    'agents-assign': t('agents.assign_agents.title'),
   };
 
   return titles[route.name as string] || titles['agents-team'];
@@ -40,7 +42,7 @@ const headerTitle = computed(() => {
 const headerDescription = computed(() => {
   const descriptions: Record<string, string> = {
     'agents-team': t('agents.description'),
-    'agents-assign': t('agents.assign_agents_description'),
+    'agents-assign': t('agents.assign_agents.description'),
   };
 
   return descriptions[route.name as string] || descriptions['agents-team'];
