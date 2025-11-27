@@ -6,7 +6,7 @@
     >
       <template v-if="isLoadingTeam">
         <AssignAgentCard
-          v-for="(_, index) in Array(3)"
+          v-for="(_, index) in Array(6)"
           :key="index"
           loading
           data-testid="loading-card"
@@ -128,7 +128,7 @@ function handleAgentsGallery() {
 
   &__cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: $unnnic-spacing-sm;
   }
 }
