@@ -251,9 +251,6 @@ async function toggleDrawerAssigning() {
 
   display: grid;
   gap: $unnnic-space-4;
-  align-content: space-between;
-
-  min-width: 300px;
 
   &__content {
     display: grid;
