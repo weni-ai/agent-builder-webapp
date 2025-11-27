@@ -1,7 +1,10 @@
 <template>
   <section
     data-testid="assign-agent-card"
-    class="assign-agent-card"
+    :class="[
+      'assign-agent-card',
+      { 'assign-agent-card--assignment': assignment && !loading },
+    ]"
   >
     <AssignAgentCardSkeleton
       v-if="loading"
@@ -250,8 +253,11 @@ async function toggleDrawerAssigning() {
   padding: $unnnic-spacing-sm;
 
   display: grid;
-  grid-template-rows: 1fr auto;
   gap: $unnnic-space-4;
+
+  &--assignment {
+    grid-template-rows: 1fr auto;
+  }
 
   &__content {
     display: grid;
