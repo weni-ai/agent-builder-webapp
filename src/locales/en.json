@@ -13,8 +13,8 @@
   "unexpected_error": "An unexpected error occurred",
   "agent_builder": {
     "tabs": {
-      "supervisor": {
-        "title": "Supervisor",
+      "conversations": {
+        "title": "Conversations",
         "description": "Review and analyze conversations between agents and customers."
       },
       "instructions": {
@@ -240,7 +240,18 @@
       "agents_backend": "Agents backends:",
       "agent_model": "{agent} model:",
       "characters_usage": "Characters usage:",
-      "characters_usage_description": "This is the average number of characters your agent is currently using in all areas: Instructions, Knowledge Base, and any other settings."
+      "characters_usage_description": "This is the average number of characters your agent is currently using in all areas: Instructions, Knowledge Base, and any other settings.",
+      "voice_settings": {
+        "title": "Voice settings",
+        "switch": {
+          "text": "Use voice",
+          "description": "With this function enabled, the agent can handle WhatsApp Calling."
+        },
+        "change_voice": {
+          "title": "Choose the voice for the agent’s responses",
+          "description": "Click to listen to the voices and select the one that best fits your agent"
+        }
+      }
     }
   },
   "agents": {
@@ -370,6 +381,7 @@
       "save_success": "Settings saved successfully"
     },
     "preview": {
+      "trigger": "Test your agents",
       "title": "Agent preview",
       "active": "Active Agent Builder",
       "no_logs_registered": "No log records",
@@ -377,7 +389,7 @@
       "manager_task": "Coordinating team tasks",
       "visual_flow": "Visual flow",
       "logs": "Logs",
-      "agents_preview": "Agent preview",
+      "test_your_agents": "Test your agents",
       "options": {
         "refresh": "Clear conversations",
         "export": "Export conversations"

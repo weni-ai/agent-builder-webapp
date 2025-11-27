@@ -198,7 +198,7 @@ function emitSend() {
   line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
   outline: none;
 
-  border-radius: $unnnic-border-radius-md;
+  border-radius: $unnnic-radius-2;
   border: $unnnic-border-width-thinner solid $unnnic-color-neutral-cleanest;
 
   &::placeholder {
@@ -222,6 +222,8 @@ function emitSend() {
   }
 
   &__left-button {
+    display: flex;
+
     left: $unnnic-spacing-sm;
 
     :deep(.material-symbols-rounded) {

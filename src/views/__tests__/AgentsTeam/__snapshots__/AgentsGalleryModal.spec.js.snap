@@ -1,182 +1,135 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`] = `
-<section
-  class="unnnic-modal-dialog agents-gallery-modal"
+<div
+  class="agents-gallery-modal"
   data-testid="agents-gallery-modal"
-  data-v-a7e44667=""
   data-v-e8ff269c=""
 >
+  
+  
+  
   <section
-    class="unnnic-modal-dialog__overlay"
-    data-testid="modal-overlay"
-    data-v-a7e44667=""
-  />
-  <section
-    class="unnnic-modal-dialog__container unnnic-modal-dialog__container--lg"
-    data-testid="modal-container"
-    data-v-a7e44667=""
+    class="agents-gallery"
+    data-testid="agents-gallery"
+    data-v-e8ff269c=""
   >
-    <!---->
-    <section
-      class="unnnic-modal-dialog__container__body"
-      data-v-a7e44667=""
+    <div
+      class="unnnic-side-bar-menu agents-gallery__sidebar"
+      data-testid="sidebar-menu"
+      data-v-e8ff269c=""
     >
-      <header
-        class="unnnic-modal-dialog__container__header"
-        data-v-a7e44667=""
-      >
-        <section
-          class="unnnic-modal-dialog__container__title-container"
-          data-v-a7e44667=""
-        >
-          <!---->
-          <h1
-            class="unnnic-modal-dialog__container__title-text"
-            data-testid="title-text"
-            data-v-a7e44667=""
-          >
-            Agent gallery
-          </h1>
-        </section>
-        <span
-          class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--md unnnic-icon__size--md unnnic--clickable"
-          data-testid="close-icon"
-          data-v-10e3a145=""
-          data-v-a7e44667=""
-          translate="no"
-        >
-          close
-        </span>
-      </header>
+      <p
+        class="unnnic-side-bar-menu__title"
+      />
+      
+      
       <section
-        class="unnnic-modal-dialog__container__content"
-        data-v-a7e44667=""
+        class="side-bar-item side-bar-item--active unnnic--clickable sidebar__item"
+        data-testid="sidebar-item"
+        data-v-e8ff269c=""
+      >
+        <!---->
+        <p
+          class="side-bar-item__label"
+        >
+          Official agents
+        </p>
+        <!--v-if-->
+      </section>
+      <section
+        class="side-bar-item unnnic--clickable sidebar__item"
+        data-testid="sidebar-item"
+        data-v-e8ff269c=""
+      >
+        <!---->
+        <p
+          class="side-bar-item__label"
+        >
+          Custom agents
+        </p>
+        <!--v-if-->
+      </section>
+      
+      
+    </div>
+    <section
+      class="agents-gallery__content"
+      data-v-e8ff269c=""
+    >
+      <section
+        class="unnnic-form-element unnnic-form md"
+        data-testid="search-input"
+        data-v-4569ccad=""
+        data-v-701fffae=""
+        data-v-e8ff269c=""
+      >
+        <!---->
+        
+        <div
+          class="text-input size--md unnnic-form-input"
+          data-testid="search-input"
+          data-v-701fffae=""
+          data-v-964b1ff1=""
+          hascloudycolor="false"
+          mask=""
+        >
+          <input
+            class="unnnic-form-input input-itself input size-md normal input--has-icon-left unnnic-form-input input-itself"
+            data-testid="search-input"
+            data-v-5c6d9ab7=""
+            data-v-964b1ff1=""
+            hascloudycolor="false"
+            iconleft="search"
+            iconleftclickable="false"
+            iconright=""
+            iconrightclickable="false"
+            placeholder="Search agent or skill"
+            type="text"
+            value=""
+          />
+          <span
+            class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--fg-base unnnic-icon-size--ant unnnic-icon__size--ant icon-left"
+            data-testid="material-icon"
+            data-v-69390f82=""
+            data-v-964b1ff1=""
+            translate="no"
+          >
+            search
+          </span>
+          <!---->
+        </div>
+        
+        <!---->
+      </section>
+      <!--v-if-->
+      <section
+        class="content__cards"
+        data-v-e8ff269c=""
       >
         
-        <section
-          class="agents-gallery"
-          data-testid="agents-gallery"
+        
+        <assign-agent-card-stub
+          agent="[object Object]"
+          assignment="true"
+          data-testid="agent-card"
           data-v-e8ff269c=""
-        >
-          <div
-            class="unnnic-side-bar-menu agents-gallery__sidebar"
-            data-testid="sidebar-menu"
-            data-v-e8ff269c=""
-          >
-            <p
-              class="unnnic-side-bar-menu__title"
-            />
-            
-            
-            <section
-              class="side-bar-item side-bar-item--active unnnic--clickable sidebar__item"
-              data-testid="sidebar-item"
-              data-v-e8ff269c=""
-            >
-              <!---->
-              <p
-                class="side-bar-item__label"
-              >
-                Official agents
-              </p>
-              <!--v-if-->
-            </section>
-            <section
-              class="side-bar-item unnnic--clickable sidebar__item"
-              data-testid="sidebar-item"
-              data-v-e8ff269c=""
-            >
-              <!---->
-              <p
-                class="side-bar-item__label"
-              >
-                Custom agents
-              </p>
-              <!--v-if-->
-            </section>
-            
-            
-          </div>
-          <section
-            class="agents-gallery__content"
-            data-v-e8ff269c=""
-          >
-            <section
-              class="unnnic-form-element unnnic-form md"
-              data-testid="search-input"
-              data-v-27c59990=""
-              data-v-363eb089=""
-              data-v-e8ff269c=""
-            >
-              <!---->
-              
-              <div
-                class="text-input size--md unnnic-form-input"
-                data-testid="search-input"
-                data-v-27c59990=""
-                data-v-964b1ff1=""
-                hascloudycolor="false"
-                mask=""
-              >
-                <input
-                  class="unnnic-form-input input-itself input size-md normal input--has-icon-left unnnic-form-input input-itself"
-                  data-testid="search-input"
-                  data-v-5c6d9ab7=""
-                  data-v-964b1ff1=""
-                  hascloudycolor="false"
-                  iconleft="search"
-                  iconleftclickable="false"
-                  iconright=""
-                  iconrightclickable="false"
-                  placeholder="Search agent or skill"
-                  type="text"
-                  value=""
-                />
-                <span
-                  class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--fg-base unnnic-icon-size--ant unnnic-icon__size--ant icon-left"
-                  data-testid="material-icon"
-                  data-v-10e3a145=""
-                  data-v-964b1ff1=""
-                  translate="no"
-                >
-                  search
-                </span>
-                <!---->
-              </div>
-              
-              <!---->
-            </section>
-            <!--v-if-->
-            <section
-              class="content__cards"
-              data-v-e8ff269c=""
-            >
-              
-              
-              <assign-agent-card-stub
-                agent="[object Object]"
-                assignment="true"
-                data-testid="agent-card"
-                data-v-e8ff269c=""
-                loading="false"
-              />
-              <assign-agent-card-stub
-                agent="[object Object]"
-                assignment="true"
-                data-testid="agent-card"
-                data-v-e8ff269c=""
-                loading="false"
-              />
-              
-              
-            </section>
-          </section>
-        </section>
+          loading="false"
+        />
+        <assign-agent-card-stub
+          agent="[object Object]"
+          assignment="true"
+          data-testid="agent-card"
+          data-v-e8ff269c=""
+          loading="false"
+        />
+        
         
       </section>
-      <!---->
     </section>
   </section>
-</section>
+  
+  
+  
+</div>
 `;

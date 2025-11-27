@@ -29,7 +29,7 @@ describe('SupervisorFilters.vue', () => {
       global: {
         plugins: [pinia],
         stubs: {
-          UnnnicDrawer: Unnnic.unnnicDrawer,
+          UnnnicDrawerNext: false,
         },
       },
     });
@@ -57,7 +57,7 @@ describe('SupervisorFilters.vue', () => {
     });
 
     it('renders drawer', () => {
-      expect(drawerFilter().exists()).toBe(false);
+      expect(drawerFilter().exists()).toBe(true);
     });
   });
 

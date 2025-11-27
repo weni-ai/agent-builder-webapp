@@ -1,9 +1,16 @@
 <template>
   <div
     id="app"
-    :class="`app-agent-builder app-agent-builder--${!isFederatedModule ? 'dev' : 'prod'}`"
+    :class="[
+      'app-agent-builder',
+      !isFederatedModule ? 'app-agent-builder--dev' : 'app-agent-builder--prod',
+      isBuildModule ? 'app-agent-builder--build' : '',
+    ]"
   >
-    <Sidebar data-testid="agent-builder-sidebar" />
+    <Sidebar
+      v-if="isBuildModule"
+      data-testid="build-sidebar"
+    />
 
     <main
       class="agent-builder__content"
@@ -12,21 +19,27 @@
       <RouterView />
     </main>
 
-    <UnnnicAlert
+    <TestAgentsButton
+      v-if="showTestAgentsButton"
+      data-testid="test-agents-button"
+    />
+
+    <UnnnicToast
       v-if="alertStore.data.text"
       :key="alertStore.id"
       data-testid="alert-pinia"
       class="app-alert"
-      v-bind="alertStore.data"
-      @close="alertStore.close"
+      :title="alertStore.data.text"
+      :type="alertStore.data.type"
+      @destroy="alertStore.close"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 
 import { useTuningsStore } from '@/store/Tunings';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
@@ -34,12 +47,17 @@ import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
 import { useProjectStore } from '@/store/Project';
 import { useUserStore } from '@/store/User';
+import { useCurrentModule } from '@/composables/useCurrentModule';
 import { isFederatedModule } from './utils/moduleFederation';
 
 import initHotjar from '@/utils/plugins/Hotjar.js';
 
 import Sidebar from '@/components/Sidebar/index.vue';
+import TestAgentsButton from '@/components/Preview/TestAgentsButton.vue';
 
+const { isBuildModule, isAgentsModule } = useCurrentModule();
+
+const route = useRoute();
 const agentsTeamStore = useAgentsTeamStore();
 const alertStore = useAlertStore();
 const projectStore = useProjectStore();
@@ -58,6 +76,13 @@ onMounted(() => {
   }
 });
 
+const showTestAgentsButton = computed(
+  () =>
+    isAgentsModule.value ||
+    (isBuildModule.value &&
+      ['instructions', 'knowledge'].includes(route.name as string)),
+);
+
 watch(
   () => userStore.user.email,
   (email) => {
@@ -71,7 +96,10 @@ watch(
   overflow: hidden;
 
   display: grid;
-  grid-template-columns: auto 1fr;
+
+  &--build {
+    grid-template-columns: auto 1fr;
+  }
 
   &--prod {
     height: 100%;

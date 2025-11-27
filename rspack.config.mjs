@@ -82,6 +82,13 @@ export default defineConfig({
           filename: 'assets/images/[name]-[hash][ext]',
         },
       },
+      {
+        test: /\.(wav|mp3|ogg|aac|flac|m4a)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/audio/[name]-[hash][ext]',
+        },
+      },
     ],
   },
   plugins: [

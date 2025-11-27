@@ -10,19 +10,11 @@
         #actions
       >
         <UnnnicButton
-          :text="$t('agents.assign_agents_button')"
-          type="secondary"
           data-testid="assign-agents-button"
-          @click="handleAgentsGallery"
-        />
-        <UnnnicButton
-          data-testid="preview-button"
           type="primary"
-          iconLeft="play_arrow"
-          iconsFilled
-          @click="handlePreview"
+          @click="handleAgentsGallery"
         >
-          {{ $t('router.agents_team.preview') }}
+          {{ $t('router.agents_team.assign_agents') }}
         </UnnnicButton>
       </template>
     </UnnnicPageHeader>
@@ -30,44 +22,20 @@
     <AssignedAgents data-testid="assigned-agents" />
 
     <AgentsGalleryModal data-testid="agents-gallery-modal" />
-
-    <PreviewDrawer
-      v-model="isPreviewOpen"
-      data-testid="preview-drawer"
-    />
   </section>
 </template>
 
 <script setup>
-import { ref, onUnmounted } from 'vue';
-
-import PreviewDrawer from '@/components/Preview/PreviewDrawer.vue';
-
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
-import { usePreviewStore } from '@/store/Preview';
 
 import AssignedAgents from './AssignedAgents.vue';
 import AgentsGalleryModal from './AgentsGalleryModal.vue';
 
-const isPreviewOpen = ref(false);
-
-const previewStore = usePreviewStore();
 const agentsTeamStore = useAgentsTeamStore();
 
 const handleAgentsGallery = () => {
   useAgentsTeamStore().isAgentsGalleryOpen = true;
 };
-
-const handlePreview = () => {
-  isPreviewOpen.value = true;
-};
-
-onUnmounted(() => {
-  if (previewStore.ws) {
-    previewStore.disconnectWS();
-    previewStore.clearLogs();
-  }
-});
 </script>
 
 <style lang="scss" scoped>

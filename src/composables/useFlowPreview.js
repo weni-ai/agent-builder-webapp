@@ -15,7 +15,7 @@ export default function useFlowPreview() {
 
   function previewInit({ contentBaseUuid }) {
     const numberBasedOnContentBaseUuid = contentBaseUuid
-      .slice(-12)
+      ?.slice(-12)
       .split('')
       .map((char) => char.charCodeAt().toString().slice(-2).padStart(2, '0'))
       .join('');

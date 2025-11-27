@@ -5,7 +5,11 @@ import {
 } from 'vue-router';
 import { isFederatedModule } from '@/utils/moduleFederation';
 import { RouteRecordRaw } from 'vue-router';
-import { useProjectStore } from '@/store/Project';
+import {
+  getCurrentModuleFromPath,
+  MODULE_PATHS,
+  type AgentBuilderModule,
+} from '@/composables/useCurrentModule';
 
 const parseNextPath = (nextPath, to) => {
   const [path, queryString] = nextPath.split('?');
@@ -24,26 +28,32 @@ const parseNextPath = (nextPath, to) => {
   return { path, query };
 };
 
-const routes = [
+const conversationsRoutes: RouteRecordRaw[] = [
   {
-    path: '/',
-    name: 'home',
-    redirect: { name: 'supervisor' },
+    path: MODULE_PATHS.conversations,
+    name: 'conversations',
+    component: () => import('@/views/Supervisor/index.vue'),
+  },
+];
+
+const agentsRoutes: RouteRecordRaw[] = [
+  {
+    path: MODULE_PATHS.agents,
+    name: 'agents',
+    component: () => import('@/views/AgentsTeam/index.vue'),
+  },
+];
+
+const buildRoutes: RouteRecordRaw[] = [
+  {
+    path: MODULE_PATHS.build,
+    name: 'build',
+    redirect: { name: 'instructions' },
     children: [
-      {
-        path: 'supervisor',
-        name: 'supervisor',
-        component: () => import('@/views/Supervisor/index.vue'),
-      },
       {
         path: 'instructions',
         name: 'instructions',
         component: () => import('@/views/Instructions/index.vue'),
-      },
-      {
-        path: 'agents',
-        name: 'agents',
-        component: () => import('@/views/AgentsTeam/index.vue'),
       },
       {
         path: 'knowledge',
@@ -57,12 +67,25 @@ const routes = [
       },
     ],
   },
+];
+
+const currentModule =
+  getCurrentModuleFromPath(window.location.pathname) || 'build';
+
+const moduleRoutesMap: Record<AgentBuilderModule, RouteRecordRaw[]> = {
+  conversations: conversationsRoutes,
+  agents: agentsRoutes,
+  build: buildRoutes,
+};
+
+const routes: RouteRecordRaw[] = [
+  ...moduleRoutesMap[currentModule],
   {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
-    redirect: { name: 'supervisor' },
+    redirect: { name: currentModule },
   },
-] as RouteRecordRaw[];
+];
 
 const history = isFederatedModule
   ? createMemoryHistory() // To isolate routing from parent app
@@ -83,11 +106,12 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-router.afterEach((to, from) => {
+router.afterEach((_to, _from) => {
   window.parent.postMessage(
     {
       event: 'changePathname',
       pathname: window.location.pathname,
+      module: currentModule,
     },
     '*',
   );
