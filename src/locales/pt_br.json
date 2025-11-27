@@ -268,6 +268,7 @@
   },
   "router": {
     "agents_team": {
+      "assign_agents": "Atribuir agentes",
       "card": {
         "assign": "Atribuir ao time",
         "assigned": "Atribuído",
