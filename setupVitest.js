@@ -50,6 +50,18 @@ const unnnicDrawerStub = {
   `,
 };
 
+const unnnicDrawerNextStub = {
+  name: 'UnnnicDrawerNextStub',
+  inheritAttrs: false,
+  props: Unnnic?.unnnicDrawerNext.props,
+  emits: Unnnic?.unnnicDrawerNext.emits,
+  template: `
+    <div v-bind="$attrs">
+      <slot />
+    </div>
+  `,
+};
+
 const unnnicModalDialogStub = {
   name: 'UnnnicModalDialogStub',
   inheritAttrs: false,
@@ -84,7 +96,8 @@ config.global.stubs = {
   },
   UnnnicModalDialog: unnnicModalDialogStub,
   UnnnicToolTip: unnnicTooltipStub,
-  Drawer: unnnicDrawerStub,
+  UnnnicDrawer: unnnicDrawerStub,
+  UnnnicDrawerNext: unnnicDrawerNextStub,
 };
 
 // Mock lodash.debounce

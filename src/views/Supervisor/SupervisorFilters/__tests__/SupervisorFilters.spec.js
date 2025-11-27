@@ -29,7 +29,7 @@ describe('SupervisorFilters.vue', () => {
       global: {
         plugins: [pinia],
         stubs: {
-          UnnnicDrawer: Unnnic.unnnicDrawer,
+          UnnnicDrawerNext: false,
         },
       },
     });

@@ -3,21 +3,21 @@
     data-testid="preview-details"
     class="preview-details"
   >
-    <UnnnicTab
+    <UnnnicSegmentedControl
+      v-model="selectedTab"
       data-testid="preview-details-tabs"
       class="preview-details__tabs"
-      :activeTab="selectedTab"
-      :tabs="detailTabs"
-      @change="selectedTab = $event"
     >
-      <template
-        v-for="tab in detailTabs"
-        :key="tab"
-        #[`tab-head-${tab}`]
-      >
-        {{ $t(`router.preview.${tab}`) }}
-      </template>
-    </UnnnicTab>
+      <UnnnicSegmentedControlList>
+        <UnnnicSegmentedControlTrigger
+          v-for="tab in detailTabs"
+          :key="tab"
+          :value="tab"
+        >
+          {{ $t(`router.preview.${tab}`) }}
+        </UnnnicSegmentedControlTrigger>
+      </UnnnicSegmentedControlList>
+    </UnnnicSegmentedControl>
 
     <section
       ref="contentRef"
@@ -77,13 +77,13 @@ watch(
   height: 100%;
 
   &__tabs {
-    padding: $unnnic-spacing-sm $unnnic-spacing-md 0;
+    margin: $unnnic-space-4 $unnnic-space-6 0;
   }
 
   &__content {
     overflow: hidden auto;
 
-    padding: 0 $unnnic-spacing-md;
+    padding: $unnnic-space-4 $unnnic-space-6 0;
 
     height: 100%;
   }

@@ -372,6 +372,7 @@
       "save_success": "Settings saved successfully"
     },
     "preview": {
+      "trigger": "Test your agents",
       "title": "Agent preview",
       "active": "Active Agent Builder",
       "no_logs_registered": "No log records",
@@ -379,7 +380,7 @@
       "manager_task": "Coordinating team tasks",
       "visual_flow": "Visual flow",
       "logs": "Logs",
-      "agents_preview": "Agent preview",
+      "test_your_agents": "Test your agents",
       "options": {
         "refresh": "Clear conversations",
         "export": "Export conversations"

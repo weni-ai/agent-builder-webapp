@@ -80,7 +80,7 @@ describe('PreviewDetails.vue', () => {
     wrapper.find('[data-testid="preview-details-logs"]');
 
   const switchToLogsTab = async () => {
-    await wrapper.findComponent(Unnnic.unnnicTab).vm.$emit('change', 'logs');
+    wrapper.vm.selectedTab = 'logs';
     await wrapper.vm.$nextTick();
   };
 
