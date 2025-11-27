@@ -17,7 +17,7 @@ describe('AgentCardSkeleton.vue', () => {
     const skeletonLoadings = wrapper.findAll(
       '[data-testid="skeleton-loading"]',
     );
-    expect(skeletonLoadings.length).toBe(3);
+    expect(skeletonLoadings.length).toBe(4);
   });
 
   it('renders skills section', () => {

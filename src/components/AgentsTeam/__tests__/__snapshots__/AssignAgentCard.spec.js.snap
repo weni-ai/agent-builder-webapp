@@ -6,7 +6,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
 >
   
   <section
-    class="assign-agent-card"
+    class="assign-agent-card assign-agent-card--assignment"
     data-testid="assign-agent-card"
     data-v-b58c7d6a=""
   >
@@ -16,7 +16,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
     >
       <!--v-if-->
       <header
-        class="content__header"
+        class="assign-agent-card__header"
         data-v-b58c7d6a=""
       >
         <p
@@ -30,15 +30,14 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
           
         </p>
         <section
-          class="header__actions"
+          class="assign-agent-card__actions"
           data-testid="assign-agent-card-actions"
           data-v-b58c7d6a=""
         >
           <!--v-if-->
-          <!--v-if-->
           <!-- v-show used instead of v-else to prevent ContentItemActions popover rendering error -->
           <section
-            class="actions__content"
+            class="assign-agent-card__action"
             data-testid="content-item-actions-content"
             data-v-b58c7d6a=""
           >
@@ -101,72 +100,71 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
             
           </section>
         </section>
-        <p
-          class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy header__description header__description"
-          data-testid="description"
-          data-v-b58c7d6a=""
-          data-v-ec8da4ad=""
-          title="Test Description"
-        >
-          
-          Test Description
-          
-        </p>
+        <!--v-if-->
       </header>
       <section
-        class="content__skills"
+        class="assign-agent-card__infos"
         data-v-b58c7d6a=""
       >
-        
-        <section
-          class="skill"
-          data-testid="skill"
+        <p
+          class="assign-agent-card__description"
+          data-testid="description"
           data-v-b58c7d6a=""
-          data-v-d187fcda=""
+          title="Test Description"
         >
-          <p
-            class="skill__icon"
-            data-testid="skill-icon"
-            data-v-d187fcda=""
-          >
-            icon-1
-          </p>
-          <p
-            class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy skill__title skill__title"
-            data-testid="skill-name"
-            data-v-d187fcda=""
-            data-v-ec8da4ad=""
-          >
-            
-            Skill 1
-            
-          </p>
-        </section>
+          Test Description
+        </p>
         <section
-          class="skill"
-          data-testid="skill"
+          class="assign-agent-card__skills"
           data-v-b58c7d6a=""
-          data-v-d187fcda=""
         >
-          <p
-            class="skill__icon"
-            data-testid="skill-icon"
+          
+          <section
+            class="skill"
+            data-testid="skill"
+            data-v-b58c7d6a=""
             data-v-d187fcda=""
           >
-            icon-2
-          </p>
-          <p
-            class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy skill__title skill__title"
-            data-testid="skill-name"
+            <p
+              class="skill__icon"
+              data-testid="skill-icon"
+              data-v-d187fcda=""
+            >
+              icon-1
+            </p>
+            <p
+              class="skill__title"
+              data-testid="skill-name"
+              data-v-d187fcda=""
+              tag="p"
+            >
+              Skill 1
+            </p>
+          </section>
+          <section
+            class="skill"
+            data-testid="skill"
+            data-v-b58c7d6a=""
             data-v-d187fcda=""
-            data-v-ec8da4ad=""
           >
-            
-            Skill 2
-            
-          </p>
+            <p
+              class="skill__icon"
+              data-testid="skill-icon"
+              data-v-d187fcda=""
+            >
+              icon-2
+            </p>
+            <p
+              class="skill__title"
+              data-testid="skill-name"
+              data-v-d187fcda=""
+              tag="p"
+            >
+              Skill 2
+            </p>
+          </section>
+          
         </section>
-        
       </section>
     </section>
     <button

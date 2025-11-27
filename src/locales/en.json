@@ -254,9 +254,21 @@
       }
     }
   },
+  "agents": {
+    "title": "Agents",
+    "description": "View and manage your assigned agents",
+    "assign_agents_button": "Assign agents",
+    "assigned_agents": {
+      "no_agents": {
+        "title": "No agents assigned yet",
+        "description": "Add your first agent to start handling product queries, orders, and more.",
+        "assign_agents_button": "Assign your first agent"
+      }
+    }
+  },
   "router": {
     "agents_team": {
-      "description": "Create the perfect team of agents",
+      "assign_agents": "Assign agents",
       "card": {
         "assign": "Assign to the team",
         "assigned": "Assigned",
@@ -292,8 +304,6 @@
         "weni_cli_documentation_description": "See the {weni_cli_documentation} for detailed instructions"
       },
       "create_agent": "Create agent",
-      "preview": "Preview",
-      "assign_agents": "Assign agents",
       "modal_delete_agent": {
         "title": "Delete {agent_name}",
         "description": "Are you sure you want to delete the {agent_name}? This action cannot be reversed",

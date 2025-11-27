@@ -1,20 +1,21 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ActiveTeam.vue > Component rendering > should match snapshot 1`] = `
+exports[`AssignedAgents.vue > Component rendering > should match snapshot 1`] = `
 <section
   class="assigned-agents"
-  data-v-b17fe699=""
+  data-v-29cec5a3=""
 >
   <!--v-if-->
   <section
     class="assigned-agents__empty"
     data-testid="empty-state"
-    data-v-b17fe699=""
+    data-v-29cec5a3=""
   >
     <unnnic-icon-stub
       class="assigned-agents__empty-icon"
       clickable="false"
-      data-v-b17fe699=""
+      data-testid="assigned-agents-icon"
+      data-v-29cec5a3=""
       filled="true"
       icon="workspaces"
       scheme="neutral-soft"
@@ -22,24 +23,27 @@ exports[`ActiveTeam.vue > Component rendering > should match snapshot 1`] = `
     />
     <section
       class="assigned-agents__empty-content"
-      data-v-b17fe699=""
+      data-v-29cec5a3=""
     >
       <h3
         class="assigned-agents__empty-title"
-        data-v-b17fe699=""
+        data-testid="assigned-agents-title"
+        data-v-29cec5a3=""
       >
         No agents assigned yet
       </h3>
       <p
         class="assigned-agents__empty-description"
-        data-v-b17fe699=""
+        data-testid="assigned-agents-description"
+        data-v-29cec5a3=""
       >
         Add your first agent to start handling product queries, orders, and more.
       </p>
     </section>
     <unnnic-button-stub
       class="assigned-agents__empty-button"
-      data-v-b17fe699=""
+      data-testid="assigned-agents-button"
+      data-v-29cec5a3=""
       disabled="false"
       float="false"
       iconcenter=""

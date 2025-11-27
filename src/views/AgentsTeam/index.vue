@@ -1,36 +1,37 @@
 <template>
-  <section class="agents-team">
-    <AgentBuilderHeader
-      withDivider
-      actionsSize="md"
-      data-testid="agents-team-header"
+  <section class="view-agents">
+    <UnnnicPageHeader
+      :title="$t('agents.title')"
+      :description="$t('agents.description')"
+      data-testid="agents-header"
     >
-      <template #actions>
-        <section class="agents-team__actions">
-          <UnnnicButton
-            data-testid="assign-agents-button"
-            type="primary"
-            @click="handleAgentsGallery"
-          >
-            {{ $t('router.agents_team.assign_agents') }}
-          </UnnnicButton>
-        </section>
+      <template
+        v-if="agentsTeamStore.activeTeam.data.agents.length > 0"
+        #actions
+      >
+        <UnnnicButton
+          data-testid="assign-agents-button"
+          type="primary"
+          @click="handleAgentsGallery"
+        >
+          {{ $t('router.agents_team.assign_agents') }}
+        </UnnnicButton>
       </template>
-    </AgentBuilderHeader>
+    </UnnnicPageHeader>
 
-    <ActiveTeam data-testid="active-team" />
+    <AssignedAgents data-testid="assigned-agents" />
 
     <AgentsGalleryModal data-testid="agents-gallery-modal" />
   </section>
 </template>
 
 <script setup>
-import AgentBuilderHeader from '@/components/Header.vue';
-
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
-import ActiveTeam from './ActiveTeam.vue';
+import AssignedAgents from './AssignedAgents.vue';
 import AgentsGalleryModal from './AgentsGalleryModal.vue';
+
+const agentsTeamStore = useAgentsTeamStore();
 
 const handleAgentsGallery = () => {
   useAgentsTeamStore().isAgentsGalleryOpen = true;
@@ -38,13 +39,10 @@ const handleAgentsGallery = () => {
 </script>
 
 <style lang="scss" scoped>
-section.agents-team {
+section.view-agents {
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto 1fr;
+  gap: $unnnic-space-4;
   height: 100%;
-
-  .agents-team__actions {
-    display: grid;
-  }
 }
 </style>

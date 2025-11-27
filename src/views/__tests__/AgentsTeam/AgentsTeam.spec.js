@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
@@ -9,9 +9,10 @@ describe('AgentsTeam.vue', () => {
   let wrapper;
   let agentsTeamStore;
 
-  const agentBuilderHeader = () =>
-    wrapper.findComponent('[data-testid="agents-team-header"]');
-  const activeTeam = () => wrapper.findComponent('[data-testid="active-team"]');
+  const agentsHeader = () =>
+    wrapper.findComponent('[data-testid="agents-header"]');
+  const assignedAgents = () =>
+    wrapper.findComponent('[data-testid="assigned-agents"]');
   const agentsGalleryModal = () =>
     wrapper.findComponent('[data-testid="agents-gallery-modal"]');
   const assignAgentsButton = () =>
@@ -20,15 +21,30 @@ describe('AgentsTeam.vue', () => {
   beforeEach(() => {
     const pinia = createTestingPinia({
       createSpy: vi.fn,
+      initialState: {
+        AgentsTeam: {
+          activeTeam: {
+            status: null,
+            data: {
+              manager: null,
+              agents: [
+                {
+                  uuid: 'uuid-1',
+                  name: 'Agent 1',
+                },
+              ],
+            },
+          },
+        },
+      },
     });
 
-    wrapper = shallowMount(AgentsTeam, {
+    wrapper = mount(AgentsTeam, {
       global: {
         plugins: [pinia],
         stubs: {
-          AgentBuilderHeader: {
-            template: '<div><slot name="actions"/></div>',
-          },
+          AssignedAgents: true,
+          AgentsGalleryModal: true,
         },
       },
     });
@@ -41,15 +57,9 @@ describe('AgentsTeam.vue', () => {
       expect(wrapper.exists()).toBe(true);
     });
 
-    it('renders the AgentBuilderHeader component', () => {
-      expect(agentBuilderHeader().exists()).toBe(true);
-    });
-
-    it('renders the ActiveTeam component', () => {
-      expect(activeTeam().exists()).toBe(true);
-    });
-
-    it('renders the AgentsGalleryModal component', () => {
+    it('renders the structure correctly', () => {
+      expect(agentsHeader().exists()).toBe(true);
+      expect(assignedAgents().exists()).toBe(true);
       expect(agentsGalleryModal().exists()).toBe(true);
     });
   });
