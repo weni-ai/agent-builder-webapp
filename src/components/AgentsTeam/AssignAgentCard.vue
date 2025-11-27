@@ -61,6 +61,7 @@
 
         <UnnnicTag
           v-if="isAgentInTeam"
+          class="assign-agent-card__tag"
           size="small"
           :text="
             agent.is_official
@@ -262,6 +263,7 @@ async function toggleDrawerAssigning() {
   &__content {
     display: grid;
     grid-template-columns: auto repeat(3, 1fr);
+    grid-template-rows: auto 1fr;
     gap: $unnnic-space-2;
 
     .assign-agent-card__icon {
@@ -283,6 +285,10 @@ async function toggleDrawerAssigning() {
 
       grid-column: 2 / 5;
       grid-row: 1 / 2;
+
+      .assign-agent-card__tag {
+        grid-row: 2 / 3;
+      }
 
       .assign-agent-card__actions {
         display: flex;
