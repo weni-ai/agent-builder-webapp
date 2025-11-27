@@ -250,6 +250,7 @@ async function toggleDrawerAssigning() {
   padding: $unnnic-spacing-sm;
 
   display: grid;
+  grid-template-rows: 1fr auto;
   gap: $unnnic-space-4;
 
   &__content {
