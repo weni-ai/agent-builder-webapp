@@ -1,27 +1,25 @@
 <template>
   <section class="skill">
     <p
+      v-if="icon"
       class="skill__icon"
       data-testid="skill-icon"
     >
       {{ icon }}
     </p>
 
-    <UnnnicIntelligenceText
+    <p
       class="skill__title"
       tag="p"
-      family="secondary"
-      size="body-md"
-      color="neutral-cloudy"
       data-testid="skill-name"
     >
       {{ title }}
-    </UnnnicIntelligenceText>
+    </p>
   </section>
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     required: true,
@@ -35,14 +33,14 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .skill {
-  border-radius: $unnnic-border-radius-sm;
-  border: $unnnic-border-width-thinner solid $unnnic-color-neutral-soft;
+  border-radius: $unnnic-radius-2;
+  background-color: $unnnic-color-bg-soft;
 
-  padding: $unnnic-spacing-nano $unnnic-spacing-xs;
+  padding: $unnnic-space-2 $unnnic-space-4;
 
   display: flex;
   align-items: center;
-  gap: $unnnic-spacing-nano;
+  gap: $unnnic-space-2;
 
   &__icon {
     font-size: $unnnic-icon-size-xs;
@@ -51,6 +49,8 @@ const props = defineProps({
 
   &__title {
     white-space: nowrap;
+    color: $unnnic-color-fg-base;
+    font: $unnnic-font-emphasis;
   }
 }
 </style>
