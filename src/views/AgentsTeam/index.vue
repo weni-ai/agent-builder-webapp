@@ -48,7 +48,7 @@ const headerDescription = computed(() => {
 
 const headerActions = computed(() => {
   const actionsMap: Record<string, Component | null> = {
-    'agents-home': HomeHeaderActions,
+    'agents-team': HomeHeaderActions,
     'agents-assign': null,
   };
 
