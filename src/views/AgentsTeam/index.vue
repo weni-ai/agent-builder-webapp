@@ -13,7 +13,7 @@
       </template>
     </UnnnicPageHeader>
 
-    <RouterView />
+    <RouterView data-testid="router-view" />
   </section>
 </template>
 
