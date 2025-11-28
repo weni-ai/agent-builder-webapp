@@ -101,12 +101,16 @@ function refreshPreview() {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .preview-drawer {
-  &:deep(.unnnic-drawer__container) .unnnic-drawer__content {
+  &.unnnic-drawer__container .unnnic-drawer__content {
     padding: 0;
   }
+}
+</style>
 
+<style lang="scss" scoped>
+.preview-drawer {
   &__header {
     display: flex;
     gap: $unnnic-spacing-xs;
