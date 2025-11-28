@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { mount, config } from '@vue/test-utils';
 import ContentItem from '@/components/Knowledge/ContentBase/ContentItem.vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { createTestingPinia } from '@pinia/testing';
@@ -69,10 +69,11 @@ describe('ContentItem.vue', () => {
           clickable: true,
           compressed: true,
         },
-
         global: {
           plugins: [pinia],
-          stubs: ['teleport'],
+          components: {
+            UnnnicToolTip: config.global.stubs.UnnnicToolTip,
+          },
         },
       });
     });
@@ -85,7 +86,10 @@ describe('ContentItem.vue', () => {
 
     describe('when user clicks inside the component', () => {
       it('emits click event', async () => {
-        await wrapper.element.firstElementChild.click();
+        const tooltip = wrapper.findComponent({ name: 'UnnnicToolTipStub' });
+
+        tooltip.vm.$emit('click');
+        await wrapper.vm.$nextTick();
 
         expect(wrapper.emitted('click')).toHaveLength(1);
       });

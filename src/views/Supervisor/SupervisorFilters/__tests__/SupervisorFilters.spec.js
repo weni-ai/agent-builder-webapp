@@ -57,7 +57,7 @@ describe('SupervisorFilters.vue', () => {
     });
 
     it('renders drawer', () => {
-      expect(drawerFilter().exists()).toBe(false);
+      expect(drawerFilter().exists()).toBe(true);
     });
   });
 

@@ -22,7 +22,7 @@ describe('PreviewLogsDetailsModal.vue', () => {
   });
 
   const modal = () =>
-    wrapper.find('[data-testid="preview-logs-details-modal"]');
+    wrapper.findComponent('[data-testid="preview-logs-details-modal"]');
   const modalTrace = () =>
     wrapper.find('[data-testid="preview-logs-details-trace"]');
 
@@ -34,7 +34,7 @@ describe('PreviewLogsDetailsModal.vue', () => {
   it('should display the correct title', () => {
     const title = 'Custom Title';
     wrapper = createWrapper({ title });
-    expect(modal().text()).toContain(title);
+    expect(modal().props('title')).toBe(title);
   });
 
   it('should format JSON trace correctly', () => {
@@ -46,7 +46,7 @@ describe('PreviewLogsDetailsModal.vue', () => {
 
   it('should emit update:modelValue when modal is closed', async () => {
     await wrapper
-      .findComponent({ name: 'UnnnicModalDialog' })
+      .findComponent('[data-testid="preview-logs-details-modal"]')
       .vm.$emit('update:model-value', false);
     expect(wrapper.emitted('update:modelValue')).toBeTruthy();
     expect(wrapper.emitted('update:modelValue')[0]).toEqual([false]);
