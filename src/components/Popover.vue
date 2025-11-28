@@ -1,3 +1,5 @@
+<!-- TODO: Replace this component with a Unnnic component -->
+
 <template>
   <slot
     :popoverId="popoverId"
@@ -5,7 +7,7 @@
     :isActivatedByHover="isHoverActive"
   />
 
-  <Teleport to="body">
+  <Teleport :to="resolvedTeleportTarget">
     <slot
       name="children"
       :popoverId="popoverId"
@@ -15,11 +17,13 @@
 
 <script setup>
 import {
+  computed,
   getCurrentInstance,
   onBeforeUnmount,
   onMounted,
   reactive,
   ref,
+  unref,
   watch,
 } from 'vue';
 
@@ -27,9 +31,16 @@ const instance = getCurrentInstance();
 
 const props = defineProps({
   isActivatedByClick: Boolean,
+  teleportTarget: {
+    type: [String, Object],
+    default: 'body',
+  },
 });
 
 const popoverId = ref('unnnic-popover-' + Math.floor(Math.random() * 1e8));
+const resolvedTeleportTarget = computed(
+  () => unref(props.teleportTarget) || 'body',
+);
 
 const target = ref();
 const targetDimensions = reactive({
@@ -116,6 +127,27 @@ onMounted(() => {
         const target = targetDimensions;
 
         const style = child.el.computedStyleMap();
+        const positionContext = getPositionContext(child.el);
+
+        const applyTop = (value) => {
+          child.el.style.top = `${
+            positionContext.isViewport
+              ? value
+              : value - positionContext.offsets.top
+          }px`;
+        };
+
+        const applyLeft = (value) => {
+          child.el.style.left = `${
+            positionContext.isViewport
+              ? value
+              : value - positionContext.offsets.left
+          }px`;
+        };
+
+        child.el.style.position = positionContext.isViewport
+          ? 'fixed'
+          : 'absolute';
 
         function topBottom() {
           return target.top + target.height + style.get('margin-top')?.value;
@@ -143,46 +175,50 @@ onMounted(() => {
         }
 
         if (child.vertical === 'center') {
-          child.el.style.top = `${target.top + target.height / 2 - child.dimensions.height / 2}px`;
+          applyTop(
+            target.top + target.height / 2 - child.dimensions.height / 2,
+          );
         } else if (child.vertical === 'top-top') {
-          child.el.style.top = `${target.top}px`;
+          applyTop(target.top);
         } else if (child.vertical === 'top-bottom') {
           if (topBottom() + child.dimensions.height > window.innerHeight) {
-            child.el.style.top = `${bottomTop() - (style.get('margin-top')?.value || 0)}px`;
+            applyTop(bottomTop() - (style.get('margin-top')?.value || 0));
           } else {
-            child.el.style.top = `${topBottom() - (style.get('margin-top')?.value || 0)}px`;
+            applyTop(topBottom() - (style.get('margin-top')?.value || 0));
           }
         } else if (child.vertical === 'bottom-top') {
           if (bottomTop() < 0) {
-            child.el.style.top = `${topBottom() - style.get('margin-top').value}px`;
+            applyTop(topBottom() - style.get('margin-top').value);
           } else {
-            child.el.style.top = `${bottomTop() - style.get('margin-top').value}px`;
+            applyTop(bottomTop() - style.get('margin-top').value);
           }
         } else if (child.vertical === 'bottom-bottom') {
-          child.el.style.top = `${target.top + target.height - child.dimensions.height}px`;
+          applyTop(target.top + target.height - child.dimensions.height);
         }
 
         if (child.horizontal === 'center') {
-          child.el.style.left = `${target.left + target.width / 2 - child.dimensions.width / 2}px`;
+          applyLeft(
+            target.left + target.width / 2 - child.dimensions.width / 2,
+          );
         } else if (child.horizontal === 'left-left') {
           if (
             leftLeft() + child.dimensions.width >=
             document.body.clientWidth
           ) {
-            child.el.style.left = `${rightRight() - style.get('margin-left').value}px`;
+            applyLeft(rightRight() - style.get('margin-left').value);
           } else {
-            child.el.style.left = `${leftLeft() - style.get('margin-left').value}px`;
+            applyLeft(leftLeft() - style.get('margin-left').value);
           }
         } else if (child.horizontal === 'right-right') {
           if (rightRight() < 0) {
-            child.el.style.left = `${leftLeft() - style.get('margin-left')?.value || 0}px`;
+            applyLeft(leftLeft() - (style.get('margin-left')?.value || 0));
           } else {
-            child.el.style.left = `${rightRight() - style.get('margin-left')?.value || 0}px`;
+            applyLeft(rightRight() - (style.get('margin-left')?.value || 0));
           }
         } else if (child.horizontal === 'right-left') {
-          child.el.style.left = `${target.left - child.dimensions.width}px`;
+          applyLeft(target.left - child.dimensions.width);
         } else if (child.horizontal === 'left-right') {
-          child.el.style.left = `${target.left + target.width}px`;
+          applyLeft(target.left + target.width);
         }
       };
 
@@ -198,8 +234,8 @@ onMounted(() => {
 
       child.show = () => {
         child.el.style.display = null;
-        child.el.style.position = 'fixed';
         child.el.style.zIndex = '10000';
+        child.reposition();
 
         watcher = watch(
           () => [targetDimensions, child.dimensions],
@@ -384,6 +420,32 @@ function calculate(element) {
   return { top, right, bottom, left, width, height };
 }
 
+function getPositionContext(element) {
+  const container = element?.parentElement;
+
+  const isViewportContainer =
+    !container ||
+    container === document.body ||
+    container === document.documentElement;
+
+  if (isViewportContainer) {
+    return {
+      isViewport: true,
+      offsets: {
+        top: 0,
+        left: 0,
+      },
+    };
+  }
+
+  const { top, left } = container.getBoundingClientRect();
+
+  return {
+    isViewport: false,
+    offsets: { top, left },
+  };
+}
+
 function onClickTarget() {
   isClickActive.value = !isClickActive.value;
 }
@@ -404,7 +466,7 @@ function onMouseEnter() {
   isHoverActive.value = true;
 }
 
-function onMouseLeave(event) {
+function onMouseLeave() {
   isHoverActive.value = false;
 }
 
