@@ -53,7 +53,6 @@ describe('PreviewDrawer.vue', () => {
         stubs: {
           PreviewDetails: true,
           Preview: true,
-          UnnnicDrawer: false,
         },
       },
     });

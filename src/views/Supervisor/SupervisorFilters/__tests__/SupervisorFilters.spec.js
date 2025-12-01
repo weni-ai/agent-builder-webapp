@@ -28,9 +28,6 @@ describe('SupervisorFilters.vue', () => {
     wrapper = shallowMount(SupervisorFilters, {
       global: {
         plugins: [pinia],
-        stubs: {
-          UnnnicDrawer: Unnnic.unnnicDrawer,
-        },
       },
     });
 

@@ -113,7 +113,8 @@ describe('AssignAgentDrawer.vue', () => {
       expect(wrapper.exists()).toBe(true);
     });
 
-    it('should render the drawer component', () => {
+    it.only('should render the drawer component', () => {
+      console.log('html', wrapper.html());
       expect(drawer().exists()).toBe(true);
     });
 
