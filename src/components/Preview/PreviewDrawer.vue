@@ -104,7 +104,7 @@ function refreshPreview() {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .preview-drawer {
   &__header {
     display: flex;
