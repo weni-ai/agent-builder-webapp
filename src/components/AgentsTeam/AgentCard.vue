@@ -135,7 +135,8 @@ const isAgentInTeam = computed(() => {
     display: grid;
     grid-template-columns: auto repeat(3, 1fr);
     grid-template-rows: auto 1fr;
-    gap: $unnnic-space-2;
+    column-gap: $unnnic-space-2;
+    row-gap: $unnnic-space-4;
 
     .agent-card__icon {
       width: $unnnic-icon-size-xl;
@@ -190,7 +191,7 @@ const isAgentInTeam = computed(() => {
 
       .agent-card__skills {
         display: flex;
-        gap: $unnnic-spacing-nano;
+        gap: $unnnic-space-2;
         flex-wrap: wrap;
       }
     }
