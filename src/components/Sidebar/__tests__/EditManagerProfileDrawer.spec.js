@@ -72,7 +72,7 @@ describe('EditManagerProfileDrawer.vue', () => {
   });
 
   describe('Props and data binding', () => {
-    it.only('passes modelValue prop to drawer', () => {
+    it('passes modelValue prop to drawer', () => {
       expect(drawer().props('modelValue')).toBe(true);
     });
 
