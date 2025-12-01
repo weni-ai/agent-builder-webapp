@@ -52,7 +52,7 @@ describe('AgentsTeam view', () => {
 
     expect(headerState.title).toBe('agents.title');
     expect(headerState.description).toBe('agents.description');
-    expect(headerState.actions).toBeNull();
+    expect(headerState.actions).toBe(HomeHeaderActions);
   });
 
   it('updates header copy for assign route', () => {
@@ -62,12 +62,13 @@ describe('AgentsTeam view', () => {
 
     const headerState = getHeaderState();
 
-    expect(headerState.title).toBe('agents.assign_agents');
-    expect(headerState.description).toBe('agents.assign_agents_description');
+    expect(headerState.title).toBe('agents.assign_agents.title');
+    expect(headerState.description).toBe('agents.assign_agents.description');
+    expect(headerState.actions).toBe(null);
   });
 
   it('injects header actions when they are available', () => {
-    mockRoute.name = 'agents-home';
+    mockRoute.name = 'agents-team';
 
     wrapper = mountView();
 
