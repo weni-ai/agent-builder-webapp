@@ -114,15 +114,17 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: 8fr 4fr;
   gap: $unnnic-spacing-sm;
+}
+</style>
 
-  &__drawer {
-    :deep(.unnnic-drawer__container .unnnic-drawer__content) {
-      overflow: visible;
+<style lang="scss">
+.supervisor-filters__drawer {
+  &.unnnic-drawer__container .unnnic-drawer__content {
+    overflow: visible;
 
-      display: flex;
-      flex-direction: column;
-      gap: $unnnic-spacing-sm;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-spacing-sm;
   }
 }
 </style>
