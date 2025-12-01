@@ -42,6 +42,18 @@ export const AgentsTeam = {
     };
   },
 
+  async listOfficialAgents2() {
+    const params = cleanParams({
+      project_uuid: projectUuid.value,
+    });
+
+    const { data } = await request.$http.get('/api/v1/official/agents', {
+      params,
+    });
+
+    return data;
+  },
+
   async listMyAgents({ search }) {
     const params = cleanParams({
       search,
