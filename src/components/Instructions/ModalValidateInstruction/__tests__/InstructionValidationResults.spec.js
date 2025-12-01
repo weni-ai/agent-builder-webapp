@@ -16,7 +16,7 @@ const SELECTORS = {
 
 const MOCK_CLASSIFICATIONS = {
   duplicate: { name: 'duplicate', reason: 'Duplicate reason' },
-  conflict: { name: 'conflict', reason: 'Conflicting instruction' },
+  conflicting: { name: 'conflict', reason: 'Conflicts' },
   ambiguity: { name: 'ambiguity', reason: 'Ambiguity detected' },
   lackOfClarity: { name: 'lack_of_clarity', reason: 'Too vague' },
 };
@@ -116,7 +116,7 @@ describe('InstructionValidationResults.vue', () => {
     it('renders one warning toast when classification contains items and the title is the formatted list of the classification names', async () => {
       const classifications = [
         MOCK_CLASSIFICATIONS.duplicate,
-        MOCK_CLASSIFICATIONS.conflict,
+        MOCK_CLASSIFICATIONS.conflicting,
         MOCK_CLASSIFICATIONS.ambiguity,
         MOCK_CLASSIFICATIONS.lackOfClarity,
       ];
@@ -169,7 +169,7 @@ describe('InstructionValidationResults.vue', () => {
       expect(findAllToasts()).toHaveLength(1);
       expect(findAllToasts()[0].props('type')).toBe('success');
 
-      await setStoreStatus('complete', [MOCK_CLASSIFICATIONS.conflict]);
+      await setStoreStatus('complete', [MOCK_CLASSIFICATIONS.conflicting]);
 
       const toasts = findAllToasts();
       expect(toasts).toHaveLength(1);

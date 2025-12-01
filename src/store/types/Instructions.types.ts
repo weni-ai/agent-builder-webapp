@@ -1,7 +1,7 @@
 export interface Classification {
   name:
     | 'duplicate'
-    | 'conflict'
+    | 'conflicting'
     | 'ambiguity'
     | 'lack_of_clarity'
     | 'incorrect';
