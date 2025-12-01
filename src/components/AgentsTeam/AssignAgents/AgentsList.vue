@@ -1,7 +1,7 @@
 <template>
   <section class="agents-list">
     <template v-if="isLoading">
-      <AssignAgentCard
+      <AgentCard
         v-for="n in 6"
         :key="n"
         loading
@@ -10,10 +10,11 @@
     </template>
 
     <template v-else>
-      <AssignAgentCard
+      <AgentCard
         v-for="agent in agents"
         :key="agent.uuid"
         :agent="agent"
+        :tags="agent.systems ? getSystemsObjects(agent.systems) : []"
         data-testid="agent-card"
       />
     </template>
@@ -21,7 +22,8 @@
 </template>
 
 <script setup>
-import AssignAgentCard from '@/components/AgentsTeam/AssignAgentCard.vue';
+import AgentCard from '@/components/AgentsTeam/AgentCard.vue';
+import useAgentSystems from '@/composables/useAgentSystems';
 
 defineProps({
   agents: {
@@ -33,6 +35,8 @@ defineProps({
     default: false,
   },
 });
+
+const { getSystemsObjects } = useAgentSystems();
 </script>
 
 <style lang="scss" scoped>
