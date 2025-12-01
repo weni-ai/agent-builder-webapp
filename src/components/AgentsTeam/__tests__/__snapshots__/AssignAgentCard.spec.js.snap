@@ -42,63 +42,70 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
             data-testid="content-item-actions-content"
             data-v-b58c7d6a=""
           >
-            
-            
-            <span
-              class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--avatar-nano unnnic-icon__size--avatar-nano button-menu"
+            <section
+              class="content-item-actions"
               data-testid="content-item-actions"
-              data-v-69390f82=""
               data-v-90d29858=""
-              translate="no"
-            >
-              more_vert
-            </span>
-            
-            <div
-              to="body"
+              data-v-b58c7d6a=""
             >
               
               
-              <section
-                class="options"
+              <span
+                class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--avatar-nano unnnic-icon__size--avatar-nano button-menu"
+                data-testid="content-item-actions"
+                data-v-69390f82=""
                 data-v-90d29858=""
-                horizontal="right-right"
-                popoverid="unnnic-popover-100000000"
-                style="min-width: auto;"
-                trigger="click"
-                vertical="top-bottom"
+                translate="no"
+              >
+                more_vert
+              </span>
+              
+              <div
+                to="[object HTMLElement]"
               >
                 
+                
                 <section
-                  class="options__option"
-                  data-test="Delete agent"
+                  class="options"
                   data-v-90d29858=""
+                  horizontal="right-right"
+                  popoverid="unnnic-popover-100000000"
+                  style="min-width: auto;"
+                  trigger="click"
+                  vertical="top-bottom"
                 >
-                  <span
-                    class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--aux-red-500 unnnic-icon-size--sm unnnic-icon__size--sm"
-                    data-testid="material-icon"
-                    data-v-69390f82=""
+                  
+                  <section
+                    class="options__option"
+                    data-test="Delete agent"
                     data-v-90d29858=""
-                    translate="no"
                   >
-                    delete
-                  </span>
-                  <p
-                    class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-aux-red-500"
-                    data-v-90d29858=""
-                    data-v-ec8da4ad=""
-                  >
-                    
-                    Delete agent
-                    
-                  </p>
+                    <span
+                      class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--aux-red-500 unnnic-icon-size--sm unnnic-icon__size--sm"
+                      data-testid="material-icon"
+                      data-v-69390f82=""
+                      data-v-90d29858=""
+                      translate="no"
+                    >
+                      delete
+                    </span>
+                    <p
+                      class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-aux-red-500 content-item-actions__option-text content-item-actions__option-text"
+                      data-v-90d29858=""
+                      data-v-ec8da4ad=""
+                    >
+                      
+                      Delete agent
+                      
+                    </p>
+                  </section>
+                  
                 </section>
                 
-              </section>
+                
+              </div>
               
-              
-            </div>
-            
+            </section>
           </section>
         </section>
         <p
