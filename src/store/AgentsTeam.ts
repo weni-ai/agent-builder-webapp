@@ -43,7 +43,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   const assignAgentsFilters = reactive<AssignAgentsFilters>({
     search: '',
     category: [],
-    system: null,
+    system: 'ALL_OFFICIAL',
   });
 
   const allAgents = computed(() => {
@@ -73,6 +73,20 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
   }
 
+  function setAssignAgentsFilters(filters: Partial<AssignAgentsFilters>) {
+    if (filters.search !== undefined) {
+      assignAgentsFilters.search = filters.search;
+    }
+
+    if (filters.category !== undefined) {
+      assignAgentsFilters.category = filters.category;
+    }
+
+    if (filters.system !== undefined) {
+      assignAgentsFilters.system = filters.system;
+    }
+  }
+
   async function loadOfficialAgents({
     search,
   }: {
@@ -84,10 +98,12 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       let response: AgentGroupOrAgent[] = [];
 
       if (assignAgentsView) {
+        const { system, search, category } = assignAgentsFilters;
+
         response = await nexusaiAPI.router.agents_team.listOfficialAgents2({
-          name: assignAgentsFilters.search,
-          category: assignAgentsFilters.category?.[0]?.value ?? '',
-          system: assignAgentsFilters.system?.value ?? '',
+          name: search,
+          category: category?.[0]?.value ?? '',
+          system: system === 'ALL_OFFICIAL' ? '' : system,
         });
       } else {
         const { data } = await nexusaiAPI.router.agents_team.listOfficialAgents(
@@ -237,5 +253,6 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     toggleAgentAssignment,
     deleteAgent,
     openAgentsGallery,
+    setAssignAgentsFilters,
   };
 });

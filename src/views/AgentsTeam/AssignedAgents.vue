@@ -91,6 +91,8 @@ const isLoadingTeam = computed(
   flex-direction: column;
   gap: $unnnic-spacing-sm;
 
+  margin-top: $unnnic-space-4;
+
   &__empty {
     height: 100%;
 

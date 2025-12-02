@@ -269,9 +269,16 @@
       "title": "Assign agents",
       "description": "Agents are specialists ready to provide personalized support and solve complex demands, they act as true consultants, ensuring a human and high-quality experience for your customers.",
       "header": {
-        "title": "All systems",
+        "all_systems": "All systems",
+        "all_custom_agents": "All custom agents",
         "system_title": "{system} agents",
         "agents_available": "No agents available | {count} agent available | {count} agents available"
+      },
+      "sidebar": {
+        "official_title": "Official agents",
+        "custom_title": "Custom agents",
+        "all_systems": "All systems",
+        "all_custom_agents": "All custom agents"
       },
       "assign_button": "Assign agent",
       "already_assigned": "Agent already assigned",
