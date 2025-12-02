@@ -1,6 +1,7 @@
 <template>
   <AgentCard
     class="assign-agent-card"
+    data-testid="agent-card"
     :agent="agent"
     :tags="agent.skills"
     :assignment="assignment"
