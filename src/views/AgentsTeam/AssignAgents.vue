@@ -18,7 +18,7 @@ import { computed } from 'vue';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
-import AgentsList from '@/components/AgentsTeam/AssignAgents/AgentsList.vue';
+import AgentsList from '@/components/AgentsTeam/AssignAgents/AgentsList/index.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const officialAgents = agentsTeamStore.officialAgents;
