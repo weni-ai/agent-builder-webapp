@@ -63,8 +63,6 @@ async function toggleDrawer() {
 async function assignAgent() {
   isAssigning.value = true;
 
-  console.log('assignAgent', props.agent);
-
   try {
     const { status } = await agentsTeamStore.toggleAgentAssignment({
       uuid: props.agent.uuid,
@@ -83,7 +81,6 @@ async function assignAgent() {
 }
 
 function handleAssignButton() {
-  console.log('handleAssignButton', props.agent);
   if (!props.agent.assigned && props.agent.credentials?.length > 0) {
     toggleDrawer();
   } else {
