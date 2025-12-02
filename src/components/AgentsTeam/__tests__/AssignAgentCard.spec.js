@@ -69,9 +69,7 @@ describe('AssignAgentCard.vue', () => {
     await wrapper.setProps({ loading: true });
 
     expect(
-      wrapper
-        .findComponent('[data-testid="assign-agent-card-skeleton"]')
-        .exists(),
+      wrapper.findComponent('[data-testid="agent-card"]').props('loading'),
     ).toBe(true);
   });
 
@@ -105,7 +103,7 @@ describe('AssignAgentCard.vue', () => {
         });
 
         expect(
-          wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
+          wrapper.find('[data-testid="content-item-actions-content"]').exists(),
         ).toBe(true);
       });
 
@@ -121,7 +119,7 @@ describe('AssignAgentCard.vue', () => {
         });
 
         expect(
-          wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
+          wrapper.find('[data-testid="content-item-actions-content"]').exists(),
         ).toBe(true);
       });
 
@@ -137,7 +135,7 @@ describe('AssignAgentCard.vue', () => {
         });
 
         expect(
-          wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
+          wrapper.find('[data-testid="content-item-actions-content"]').exists(),
         ).toBe(false);
       });
 
@@ -153,7 +151,7 @@ describe('AssignAgentCard.vue', () => {
         });
 
         expect(
-          wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
+          wrapper.find('[data-testid="content-item-actions-content"]').exists(),
         ).toBe(false);
       });
 
@@ -169,7 +167,7 @@ describe('AssignAgentCard.vue', () => {
         });
 
         expect(
-          wrapper.find('[data-testid="assign-agent-card-actions"]').exists(),
+          wrapper.find('[data-testid="content-item-actions-content"]').exists(),
         ).toBe(false);
       });
     });
