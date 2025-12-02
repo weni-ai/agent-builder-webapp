@@ -137,13 +137,13 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
             data-v-8d850a92=""
             data-v-d187fcda=""
           >
-            <p
+            <img
+              alt="Skill 1"
               class="skill__icon"
               data-testid="skill-icon"
               data-v-d187fcda=""
-            >
-              icon-1
-            </p>
+              src="icon-1"
+            />
             <p
               class="skill__title"
               data-testid="skill-name"
@@ -159,13 +159,13 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
             data-v-8d850a92=""
             data-v-d187fcda=""
           >
-            <p
+            <img
+              alt="Skill 2"
               class="skill__icon"
               data-testid="skill-icon"
               data-v-d187fcda=""
-            >
-              icon-2
-            </p>
+              src="icon-2"
+            />
             <p
               class="skill__title"
               data-testid="skill-name"
