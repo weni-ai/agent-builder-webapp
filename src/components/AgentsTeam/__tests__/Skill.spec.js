@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import Skill from '../Skill.vue';
+import mockIcon from '@/assets/images/systems/vtex.svg';
 
 describe('Skill.vue', () => {
   let wrapper;
@@ -8,7 +9,7 @@ describe('Skill.vue', () => {
     wrapper = mount(Skill, {
       props: {
         title: 'Test Title',
-        icon: 'icon-1',
+        icon: mockIcon,
       },
     });
   });
@@ -17,9 +18,9 @@ describe('Skill.vue', () => {
   });
 
   it('renders icon correctly', () => {
-    const icon = wrapper.find('[data-testid="skill-icon"]');
-    expect(icon.exists()).toBe(true);
-    expect(icon.text()).toBe('icon-1');
+    const iconElement = wrapper.find('[data-testid="skill-icon"]');
+    expect(iconElement.exists()).toBe(true);
+    expect(iconElement.attributes('src')).toBe(mockIcon);
   });
 
   it('renders title correctly', () => {
