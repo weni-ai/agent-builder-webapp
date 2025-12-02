@@ -13,8 +13,8 @@
   "unexpected_error": "Ocorreu um erro inesperado",
   "agent_builder": {
     "tabs": {
-      "supervisor": {
-        "title": "Supervisor",
+      "conversations": {
+        "title": "Conversas",
         "description": "Analise e revise conversas entre agentes e clientes."
       },
       "instructions": {
@@ -240,7 +240,18 @@
       "agents_backend": "Backend dos agentes:",
       "agent_model": "Modelo do {agent}:",
       "characters_usage": "Uso de caracteres:",
-      "characters_usage_description": "Este é o número médio de caracteres que seu agente está usando em todas as áreas: Instruções, Base de Conhecimento e quaisquer outras configurações."
+      "characters_usage_description": "Este é o número médio de caracteres que seu agente está usando em todas as áreas: Instruções, Base de Conhecimento e quaisquer outras configurações.",
+      "voice_settings": {
+        "title": "Configurações de voz",
+        "switch": {
+          "text": "Usar voz",
+          "description": "Com esta função habilitada, o agente pode lidar com chamadas do WhatsApp."
+        },
+        "change_voice": {
+          "title": "Escolha a voz para as respostas do agente",
+          "description": "Clique para ouvir as vozes e escolher a que melhor se adapta ao seu agente"
+        }
+      }
     }
   },
   "router": {
