@@ -3,7 +3,8 @@
     <aside>TODO: SIDEBAR</aside>
     <section class="assign-agents__content">
       <header>TODO: HEADER</header>
-      <section>TODO: FILTERS</section>
+
+      <AgentsListFilters />
 
       <AgentsList
         :agents="officialAgents.data"
@@ -19,6 +20,7 @@ import { computed } from 'vue';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
 import AgentsList from '@/components/AgentsTeam/AssignAgents/AgentsList/index.vue';
+import AgentsListFilters from '@/components/AgentsTeam/AssignAgents/AgentsList/Filters.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const officialAgents = agentsTeamStore.officialAgents;
