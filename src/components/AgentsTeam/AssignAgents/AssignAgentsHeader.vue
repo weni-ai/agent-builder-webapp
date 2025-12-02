@@ -4,34 +4,53 @@
       class="assign-agents-header__title"
       data-testid="assign-agents-header-title"
     >
-      {{ $t('agents.assign_agents.header.title') }}
+      {{ headerTitle }}
     </h2>
 
     <p
       class="assign-agents-header__subtitle"
       data-testid="assign-agents-header-subtitle"
     >
-      {{
-        $t(
-          'agents.assign_agents.header.agents_available',
-          availableAgentsCount,
-          {
-            count: availableAgentsCount,
-          },
-        )
-      }}
+      {{ availableAgentsText }}
     </p>
   </header>
 </template>
 
 <script setup>
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import i18n from '@/utils/plugins/i18n';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
 const agentsTeamStore = useAgentsTeamStore();
+const { officialAgents, assignAgentsFilters } = storeToRefs(agentsTeamStore);
+const { t } = i18n.global;
+
 const availableAgentsCount = computed(
-  () => agentsTeamStore.officialAgents.data?.length || 0,
+  () => officialAgents.value.data?.length || 0,
+);
+
+const headerTitle = computed(() => {
+  const systemLabel = assignAgentsFilters.value.system?.label;
+
+  if (!systemLabel) {
+    return t('agents.assign_agents.header.title');
+  }
+
+  return t('agents.assign_agents.header.system_title', {
+    system: systemLabel,
+  });
+});
+
+const availableAgentsText = computed(() =>
+  t(
+    'agents.assign_agents.header.agents_available',
+    availableAgentsCount.value,
+    {
+      count: availableAgentsCount.value,
+    },
+  ),
 );
 </script>
 
