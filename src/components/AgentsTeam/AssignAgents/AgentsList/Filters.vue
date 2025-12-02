@@ -4,6 +4,7 @@
       v-model="search"
       :placeholder="$t('agents.assign_agents.filters.search.placeholder')"
       iconLeft="search"
+      data-testid="search-input"
     />
 
     <UnnnicSelectSmart
@@ -11,6 +12,7 @@
       :options="categoryOptions"
       :placeholder="$t('agents.assign_agents.filters.category.placeholder')"
       orderedByIndex
+      data-testid="category-select"
     />
   </section>
 </template>
