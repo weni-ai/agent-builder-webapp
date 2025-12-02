@@ -6,23 +6,26 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
 >
   
   <section
-    class="assign-agent-card assign-agent-card--assignment"
-    data-testid="assign-agent-card"
+    assignment="true"
+    class="agent-card agent-card--with-footer assign-agent-card"
+    data-testid="agent-card"
+    data-v-8d850a92=""
     data-v-b58c7d6a=""
   >
+    
     <section
-      class="assign-agent-card__content"
-      data-v-b58c7d6a=""
+      class="agent-card__content"
+      data-v-8d850a92=""
     >
       <!--v-if-->
       <header
-        class="assign-agent-card__header"
-        data-v-b58c7d6a=""
+        class="agent-card__header"
+        data-v-8d850a92=""
       >
         <p
           class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-bold unnnic-text--color-neutral-darkest"
           data-testid="title"
-          data-v-b58c7d6a=""
+          data-v-8d850a92=""
           data-v-ec8da4ad=""
         >
           
@@ -30,14 +33,15 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
           
         </p>
         <section
-          class="assign-agent-card__actions"
-          data-testid="assign-agent-card-actions"
-          data-v-b58c7d6a=""
+          class="agent-card__actions"
+          data-testid="agent-card-actions"
+          data-v-8d850a92=""
         >
+          
           <!--v-if-->
           <!-- v-show used instead of v-else to prevent ContentItemActions popover rendering error -->
           <section
-            class="assign-agent-card__action"
+            class="agent-card__action"
             data-testid="content-item-actions-content"
             data-v-b58c7d6a=""
           >
@@ -106,39 +110,40 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
               
             </section>
           </section>
+          
         </section>
         <!--v-if-->
       </header>
       <section
-        class="assign-agent-card__infos"
-        data-v-b58c7d6a=""
+        class="agent-card__infos"
+        data-v-8d850a92=""
       >
         <p
-          class="assign-agent-card__description"
+          class="agent-card__description"
           data-testid="description"
-          data-v-b58c7d6a=""
+          data-v-8d850a92=""
           title="Test Description"
         >
           Test Description
         </p>
         <section
-          class="assign-agent-card__skills"
-          data-v-b58c7d6a=""
+          class="agent-card__skills"
+          data-v-8d850a92=""
         >
           
           <section
             class="skill"
             data-testid="skill"
-            data-v-b58c7d6a=""
+            data-v-8d850a92=""
             data-v-d187fcda=""
           >
-            <p
+            <img
+              alt="Skill 1"
               class="skill__icon"
               data-testid="skill-icon"
               data-v-d187fcda=""
-            >
-              icon-1
-            </p>
+              src="icon-1"
+            />
             <p
               class="skill__title"
               data-testid="skill-name"
@@ -151,16 +156,16 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
           <section
             class="skill"
             data-testid="skill"
-            data-v-b58c7d6a=""
+            data-v-8d850a92=""
             data-v-d187fcda=""
           >
-            <p
+            <img
+              alt="Skill 2"
               class="skill__icon"
               data-testid="skill-icon"
               data-v-d187fcda=""
-            >
-              icon-2
-            </p>
+              src="icon-2"
+            />
             <p
               class="skill__title"
               data-testid="skill-name"
@@ -174,6 +179,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
         </section>
       </section>
     </section>
+    
     <button
       class="assign-agent-card__button unnnic-button unnnic-button--size-small unnnic-button--primary assign-agent-card__button"
       data-testid="assign-button"
@@ -195,6 +201,8 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
       </span>
       <!---->
     </button>
+    
+    
   </section>
   <assign-agent-drawer-stub
     agent="[object Object]"
