@@ -273,6 +273,17 @@
       "filters": {
         "search": {
           "placeholder": "Buscar"
+        },
+        "category": {
+          "placeholder": "Categorías",
+          "product_discovery_and_recommendations": "Descubrimiento y recomendaciones de productos",
+          "orders_status_and_tracking": "Estado y seguimiento de pedidos",
+          "returns_exchanges_and_cancellations": "Devoluciones, trocas y cancelaciones",
+          "payments_and_checkout": "Pagos y finalización de compra",
+          "crm_and_lead_capture": "CRM y captura de leads",
+          "feedback_and_surveys": "Comentarios y encuestas",
+          "utilities_and_monitoring": "Utilidades y monitoreo",
+          "others": "Otros"
         }
       }
     }
