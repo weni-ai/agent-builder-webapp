@@ -10,12 +10,10 @@
     </template>
 
     <template v-else>
-      <AgentCard
+      <AssignAgentCard
         v-for="agent in agents"
         :key="agent.uuid"
         :agent="agent"
-        :tags="agent.systems ? getSystemsObjects(agent.systems) : []"
-        data-testid="agent-card"
       />
     </template>
   </section>
@@ -23,7 +21,7 @@
 
 <script setup>
 import AgentCard from '@/components/AgentsTeam/AgentCard.vue';
-import useAgentSystems from '@/composables/useAgentSystems';
+import AssignAgentCard from './AssignAgentCard.vue';
 
 defineProps({
   agents: {
@@ -35,8 +33,6 @@ defineProps({
     default: false,
   },
 });
-
-const { getSystemsObjects } = useAgentSystems();
 </script>
 
 <style lang="scss" scoped>
