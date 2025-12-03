@@ -1,6 +1,12 @@
 <template>
-  <section class="assign-agents-sidebar__section">
-    <p class="assign-agents-sidebar__section-title">
+  <section
+    class="assign-agents-sidebar__section"
+    data-testid="assign-agents-sidebar-section"
+  >
+    <p
+      class="assign-agents-sidebar__section-title"
+      data-testid="assign-agents-sidebar-section-title"
+    >
       {{ title }}
     </p>
 

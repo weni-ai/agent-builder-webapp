@@ -11,8 +11,9 @@
       :src="icon"
       :alt="name"
       class="assign-agents-sidebar__option-icon"
+      data-testid="sidebar-option-icon"
     />
-    <p>{{ name }}</p>
+    <p data-testid="sidebar-option-name">{{ name }}</p>
   </button>
 </template>
 
