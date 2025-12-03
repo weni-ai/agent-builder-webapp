@@ -1,61 +1,35 @@
 <template>
   <aside class="assign-agents-sidebar">
-    <section class="assign-agents-sidebar__section">
-      <p class="assign-agents-sidebar__section-title">
-        {{ $t('agents.assign_agents.sidebar.official_title') }}
-      </p>
-
-      <button
-        class="assign-agents-sidebar__option"
-        :class="{
-          'assign-agents-sidebar__option--active':
-            !assignAgentsFilters.system ||
-            assignAgentsFilters.system === 'ALL_OFFICIAL',
-        }"
+    <SidebarSection :title="$t('agents.assign_agents.sidebar.official_title')">
+      <SidebarOption
+        :isActive="
+          !assignAgentsFilters.system ||
+          assignAgentsFilters.system === 'ALL_OFFICIAL'
+        "
+        :name="$t('agents.assign_agents.sidebar.all_systems')"
         data-testid="sidebar-option-all-systems"
         @click="assignAgentsFilters.system = 'ALL_OFFICIAL'"
-      >
-        <p>{{ $t('agents.assign_agents.sidebar.all_systems') }}</p>
-      </button>
+      />
 
-      <button
+      <SidebarOption
         v-for="option in systems"
         :key="option.name"
-        class="assign-agents-sidebar__option"
-        :class="{
-          'assign-agents-sidebar__option--active':
-            assignAgentsFilters.system === option.name,
-        }"
+        :isActive="assignAgentsFilters.system === option.name"
+        :name="option.name"
+        :icon="option.icon"
         :data-testid="`sidebar-option-system-${option.name}`"
         @click="handleSystemSelect(option)"
-      >
-        <img
-          v-if="option.icon"
-          :src="option.icon"
-          :alt="option.name"
-          class="assign-agents-sidebar__option-icon"
-        />
-        <p>{{ option.name }}</p>
-      </button>
-    </section>
+      />
+    </SidebarSection>
 
-    <section class="assign-agents-sidebar__section">
-      <p class="assign-agents-sidebar__section-title">
-        {{ $t('agents.assign_agents.sidebar.custom_title') }}
-      </p>
-
-      <button
-        class="assign-agents-sidebar__option"
+    <SidebarSection :title="$t('agents.assign_agents.sidebar.custom_title')">
+      <SidebarOption
         data-testid="sidebar-option-custom"
-        :class="{
-          'assign-agents-sidebar__option--active':
-            assignAgentsFilters.system === 'ALL_CUSTOM',
-        }"
+        :isActive="assignAgentsFilters.system === 'ALL_CUSTOM'"
+        :name="$t('agents.assign_agents.sidebar.all_custom_agents')"
         @click="assignAgentsFilters.system = 'ALL_CUSTOM'"
-      >
-        <p>{{ $t('agents.assign_agents.sidebar.all_custom_agents') }}</p>
-      </button>
-    </section>
+      />
+    </SidebarSection>
   </aside>
 </template>
 
@@ -64,6 +38,9 @@ import { storeToRefs } from 'pinia';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import useAgentSystems from '@/composables/useAgentSystems';
+
+import SidebarSection from './Section.vue';
+import SidebarOption from './Option.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const { assignAgentsFilters } = storeToRefs(agentsTeamStore);
@@ -87,48 +64,5 @@ function handleSystemSelect(option) {
   display: flex;
   flex-direction: column;
   gap: $unnnic-space-4;
-
-  &__section {
-    display: flex;
-    flex-direction: column;
-    gap: $unnnic-space-2;
-  }
-
-  &__section-title {
-    color: $unnnic-color-fg-muted;
-    font: $unnnic-font-caption-2;
-    margin-left: $unnnic-space-3;
-  }
-
-  &__option {
-    border: none;
-
-    border-radius: $unnnic-radius-2;
-    padding: $unnnic-space-3 $unnnic-space-3;
-
-    display: flex;
-    align-items: center;
-    gap: $unnnic-space-2;
-
-    width: 100%;
-
-    color: $unnnic-color-fg-base;
-    font: $unnnic-font-emphasis;
-    text-align: left;
-
-    cursor: pointer;
-    transition: all;
-
-    &--active {
-      background: $unnnic-color-bg-soft;
-      color: $unnnic-color-fg-base;
-      font: $unnnic-font-action;
-    }
-
-    &-icon {
-      width: $unnnic-icon-size-4;
-      height: $unnnic-icon-size-4;
-    }
-  }
 }
 </style>
