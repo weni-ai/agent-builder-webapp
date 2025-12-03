@@ -52,7 +52,9 @@ const availableAgentsText = computed(() =>
     'agents.assign_agents.header.agents_available',
     availableAgentsCount.value,
     {
-      count: availableAgentsCount.value,
+      named: {
+        count: availableAgentsCount.value,
+      },
     },
   ),
 );
