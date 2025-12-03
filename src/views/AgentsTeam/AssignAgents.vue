@@ -23,7 +23,7 @@ import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import AgentsList from '@/components/AgentsTeam/AssignAgents/AgentsList/index.vue';
 import AgentsListFilters from '@/components/AgentsTeam/AssignAgents/AgentsList/Filters.vue';
 import AssignAgentsHeader from '@/components/AgentsTeam/AssignAgents/AssignAgentsHeader.vue';
-import AssignAgentsSidebar from '@/components/AgentsTeam/AssignAgents/AssignAgentsSidebar.vue';
+import AssignAgentsSidebar from '@/components/AgentsTeam/AssignAgents/Sidebar/index.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const officialAgents = agentsTeamStore.officialAgents;
