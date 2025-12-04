@@ -259,6 +259,7 @@
     "description": "Visualize e gerencie seus agentes atribuídos",
     "assign_agents_button": "Atribuir agentes",
     "assigned_agents": {
+      "new_agent": "Novo agente",
       "no_agents": {
         "title": "Nenhum agente atribuído ainda",
         "description": "Adicione seu primeiro agente para começar a lidar com consultas de produtos, pedidos e mais.",

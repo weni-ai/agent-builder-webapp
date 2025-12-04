@@ -259,6 +259,7 @@
     "description": "View and manage your assigned agents",
     "assign_agents_button": "Assign agents",
     "assigned_agents": {
+      "new_agent": "New agent",
       "no_agents": {
         "title": "No agents assigned yet",
         "description": "Add your first agent to start handling product queries, orders, and more.",

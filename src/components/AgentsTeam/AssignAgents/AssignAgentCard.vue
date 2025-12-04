@@ -2,6 +2,7 @@
   <AgentCard
     :agent="agent"
     :tags="agent.systems ? getSystemsObjects(agent.systems) : []"
+    :newAgentHighlight="agent.uuid === newAgentAssigned?.uuid"
     data-testid="agent-card"
   >
     <template #footer>
@@ -31,6 +32,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { useTuningsStore } from '@/store/Tunings';
@@ -51,7 +53,7 @@ const props = defineProps({
 
 const agentsTeamStore = useAgentsTeamStore();
 const tuningsStore = useTuningsStore();
-
+const router = useRouter();
 const isAssignDrawerOpen = ref(false);
 const isAssigning = ref(false);
 const isDrawerAssigning = ref(false);
@@ -72,6 +74,9 @@ async function assignAgent() {
     if (status === 'success') {
       if (props.agent.credentials?.length)
         await tuningsStore.fetchCredentials();
+
+      agentsTeamStore.newAgentAssigned = props.agent;
+      router.push({ name: 'agents-team' });
     }
   } catch (error) {
     console.error(error);

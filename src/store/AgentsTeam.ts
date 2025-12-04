@@ -55,6 +55,8 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
   const isAgentsGalleryOpen = ref(false);
 
+  const newAgentAssigned = ref<Agent | null>(null);
+
   async function loadActiveTeam() {
     try {
       activeTeam.status = 'loading';
@@ -240,6 +242,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   }
 
   return {
+    newAgentAssigned,
     linkToCreateAgent,
     activeTeam,
     officialAgents,

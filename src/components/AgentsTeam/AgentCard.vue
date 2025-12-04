@@ -4,6 +4,7 @@
     :class="[
       'agent-card',
       { 'agent-card--with-footer': $slots.footer && !loading },
+      { 'agent-card--new-agent': newAgentHighlight },
     ]"
   >
     <AssignAgentCardSkeleton
@@ -80,6 +81,13 @@
         v-if="$slots.footer"
         name="footer"
       />
+
+      <p
+        v-if="newAgentHighlight"
+        class="agent-card__new-agent-tag"
+      >
+        {{ $t('agents.assigned_agents.new_agent') }}
+      </p>
     </template>
   </section>
 </template>
@@ -106,6 +114,10 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  newAgentHighlight: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const agentsTeamStore = useAgentsTeamStore();
@@ -129,6 +141,12 @@ const isAgentInTeam = computed(() => {
 
   &--with-footer {
     grid-template-rows: 1fr auto;
+  }
+
+  &--new-agent {
+    position: relative;
+
+    border: 2px solid $unnnic-color-teal-600;
   }
 
   &__content {
@@ -195,6 +213,20 @@ const isAgentInTeam = computed(() => {
         flex-wrap: wrap;
       }
     }
+  }
+
+  &__new-agent-tag {
+    position: absolute;
+    left: $unnnic-space-4;
+    top: -50%;
+
+    border-radius: $unnnic-radius-2;
+
+    padding: $unnnic-space-05 $unnnic-space-1;
+
+    background-color: $unnnic-color-teal-300;
+    color: $unnnic-color-fg-emphasized;
+    font: $unnnic-font-caption-1;
   }
 }
 </style>
