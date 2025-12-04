@@ -1,12 +1,12 @@
 <template>
   <section class="skill">
-    <p
+    <img
       v-if="icon"
+      :src="icon"
+      :alt="title"
       class="skill__icon"
       data-testid="skill-icon"
-    >
-      {{ icon }}
-    </p>
+    />
 
     <p
       class="skill__title"
@@ -25,7 +25,7 @@ defineProps({
     required: true,
   },
   icon: {
-    type: String,
+    type: Object,
     required: true,
   },
 });
@@ -43,8 +43,8 @@ defineProps({
   gap: $unnnic-space-2;
 
   &__icon {
-    font-size: $unnnic-icon-size-xs;
-    line-height: 0;
+    width: $unnnic-icon-size-4;
+    height: $unnnic-icon-size-4;
   }
 
   &__title {
