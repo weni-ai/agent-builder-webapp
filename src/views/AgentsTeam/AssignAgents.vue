@@ -8,7 +8,7 @@
       <AgentsListFilters />
 
       <AgentsList
-        :agents="officialAgents.data"
+        :agents="agents?.data || []"
         :isLoading="isLoading"
       />
     </section>
@@ -26,10 +26,12 @@ import AssignAgentsHeader from '@/components/AgentsTeam/AssignAgents/AssignAgent
 import AssignAgentsSidebar from '@/components/AgentsTeam/AssignAgents/Sidebar/index.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
-const officialAgents = agentsTeamStore.officialAgents;
-const isLoading = computed(
-  () => agentsTeamStore.officialAgents.status === 'loading',
-);
+const agents = computed(() => {
+  return agentsTeamStore.assignAgentsFilters.system === 'ALL_CUSTOM'
+    ? agentsTeamStore.myAgents
+    : agentsTeamStore.officialAgents;
+});
+const isLoading = computed(() => agents.value.status === 'loading');
 </script>
 
 <style lang="scss" scoped>

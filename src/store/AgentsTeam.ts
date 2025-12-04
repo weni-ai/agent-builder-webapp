@@ -128,7 +128,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       myAgents.status = 'loading';
 
       const { data } = await nexusaiAPI.router.agents_team.listMyAgents({
-        search,
+        search: assignAgentsView ? assignAgentsFilters.search : search,
       });
 
       myAgents.data = agentIconService.applyIconsToAgents(data);

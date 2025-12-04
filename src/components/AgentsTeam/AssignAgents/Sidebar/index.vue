@@ -18,7 +18,7 @@
         :name="option.name"
         :icon="option.icon"
         :data-testid="`sidebar-option-system-${option.name}`"
-        @click="handleSystemSelect(option)"
+        @click="assignAgentsFilters.system = option.name"
       />
     </SidebarSection>
 
@@ -34,6 +34,7 @@
 </template>
 
 <script setup>
+import { watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
@@ -47,12 +48,16 @@ const { assignAgentsFilters } = storeToRefs(agentsTeamStore);
 
 const { systems } = useAgentSystems();
 
-function handleSystemSelect(option) {
-  if (agentsTeamStore.assignAgentsFilters.system === option.name) return;
-
-  agentsTeamStore.assignAgentsFilters.system = option.name;
-  agentsTeamStore.loadOfficialAgents();
-}
+watch(
+  () => agentsTeamStore.assignAgentsFilters.system,
+  (newSystem) => {
+    if (newSystem === 'ALL_CUSTOM') {
+      agentsTeamStore.loadMyAgents();
+    } else {
+      agentsTeamStore.loadOfficialAgents();
+    }
+  },
+);
 </script>
 
 <style scoped lang="scss">
