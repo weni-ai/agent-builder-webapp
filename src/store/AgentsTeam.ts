@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia';
 import { computed, reactive, ref } from 'vue';
+import router from '@/router';
 
 import nexusaiAPI from '@/api/nexusaiAPI.js';
 import { useAlertStore } from './Alert';
 import agentIconService from '@/utils/agentIconService';
 
 import i18n from '@/utils/plugins/i18n';
+
+import { useFeatureFlagsStore } from './FeatureFlags';
 
 interface Agent {
   uuid: string;
@@ -190,6 +193,15 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
   }
 
+  function openAgentsGallery() {
+    if (useFeatureFlagsStore().flags.assignAgentsView) {
+      router.push({ name: 'agents-assign' });
+      return;
+    }
+
+    isAgentsGalleryOpen.value = true;
+  }
+
   return {
     linkToCreateAgent,
     activeTeam,
@@ -202,5 +214,6 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     loadMyAgents,
     toggleAgentAssignment,
     deleteAgent,
+    openAgentsGallery,
   };
 });

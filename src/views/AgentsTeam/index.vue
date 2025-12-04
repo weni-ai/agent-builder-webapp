@@ -1,41 +1,61 @@
 <template>
   <section class="view-agents">
     <UnnnicPageHeader
-      :title="$t('agents.title')"
-      :description="$t('agents.description')"
       data-testid="agents-header"
+      :title="headerTitle"
+      :description="headerDescription"
+      :hasBackButton="route.name !== 'agents-team'"
+      @back="$router.push({ name: 'agents-team' })"
     >
       <template
-        v-if="agentsTeamStore.activeTeam.data.agents.length > 0"
+        v-if="headerActions"
         #actions
       >
-        <UnnnicButton
-          data-testid="assign-agents-button"
-          type="primary"
-          @click="handleAgentsGallery"
-        >
-          {{ $t('router.agents_team.assign_agents') }}
-        </UnnnicButton>
+        <component :is="headerActions" />
       </template>
     </UnnnicPageHeader>
 
-    <AssignedAgents data-testid="assigned-agents" />
-
-    <AgentsGalleryModal data-testid="agents-gallery-modal" />
+    <RouterView data-testid="router-view" />
   </section>
 </template>
 
-<script setup>
-import { useAgentsTeamStore } from '@/store/AgentsTeam';
+<script setup lang="ts">
+import { computed, type Component } from 'vue';
+import { useRoute } from 'vue-router';
 
-import AssignedAgents from './AssignedAgents.vue';
-import AgentsGalleryModal from './AgentsGalleryModal.vue';
+import i18n from '@/utils/plugins/i18n';
 
-const agentsTeamStore = useAgentsTeamStore();
+import HomeHeaderActions from '@/components/AgentsTeam/HomeHeaderActions.vue';
 
-const handleAgentsGallery = () => {
-  useAgentsTeamStore().isAgentsGalleryOpen = true;
-};
+const route = useRoute();
+const { t } = i18n.global;
+
+const headerTitle = computed(() => {
+  const titles: Record<string, string> = {
+    'agents-team': t('agents.title'),
+    'agents-assign': t('agents.assign_agents.title'),
+  };
+
+  return titles[route.name as string] || titles['agents-team'];
+});
+
+const headerDescription = computed(() => {
+  const descriptions: Record<string, string> = {
+    'agents-team': t('agents.description'),
+    'agents-assign': t('agents.assign_agents.description'),
+  };
+
+  return descriptions[route.name as string] || descriptions['agents-team'];
+});
+
+const headerActions = computed(() => {
+  const actionsMap: Record<string, Component | null> = {
+    'agents-team': HomeHeaderActions,
+    'agents-assign': null,
+  };
+
+  return actionsMap[route.name as string] || null;
+});
 </script>
 
 <style lang="scss" scoped>

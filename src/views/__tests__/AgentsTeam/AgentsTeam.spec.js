@@ -1,73 +1,85 @@
-import { mount } from '@vue/test-utils';
-import { createTestingPinia } from '@pinia/testing';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { shallowMount } from '@vue/test-utils';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
-import AgentsTeam from '@/views/AgentsTeam/index.vue';
-import { useAgentsTeamStore } from '@/store/AgentsTeam';
+import AgentsTeamView from '@/views/AgentsTeam/index.vue';
+import HomeHeaderActions from '@/components/AgentsTeam/HomeHeaderActions.vue';
+import i18n from '@/utils/plugins/i18n';
 
-describe('AgentsTeam.vue', () => {
+const mockRoute = {
+  name: 'agents-team',
+};
+
+vi.mock('vue-router', async () => {
+  const actual = await vi.importActual('vue-router');
+
+  return {
+    ...actual,
+    useRoute: vi.fn(() => mockRoute),
+  };
+});
+
+describe('AgentsTeam view', () => {
   let wrapper;
-  let agentsTeamStore;
+  let tSpy;
 
-  const agentsHeader = () =>
-    wrapper.findComponent('[data-testid="agents-header"]');
-  const assignedAgents = () =>
-    wrapper.findComponent('[data-testid="assigned-agents"]');
-  const agentsGalleryModal = () =>
-    wrapper.findComponent('[data-testid="agents-gallery-modal"]');
-  const assignAgentsButton = () =>
-    wrapper.findComponent('[data-testid="assign-agents-button"]');
+  const getHeaderState = () => ({
+    title: wrapper.vm.headerTitle?.value ?? wrapper.vm.headerTitle,
+    description:
+      wrapper.vm.headerDescription?.value ?? wrapper.vm.headerDescription,
+    actions: wrapper.vm.headerActions?.value ?? wrapper.vm.headerActions,
+  });
+
+  const mountView = () => shallowMount(AgentsTeamView);
 
   beforeEach(() => {
-    const pinia = createTestingPinia({
-      createSpy: vi.fn,
-      initialState: {
-        AgentsTeam: {
-          activeTeam: {
-            status: null,
-            data: {
-              manager: null,
-              agents: [
-                {
-                  uuid: 'uuid-1',
-                  name: 'Agent 1',
-                },
-              ],
-            },
-          },
-        },
-      },
-    });
-
-    wrapper = mount(AgentsTeam, {
-      global: {
-        plugins: [pinia],
-        stubs: {
-          AssignedAgents: true,
-          AgentsGalleryModal: true,
-        },
-      },
-    });
-
-    agentsTeamStore = useAgentsTeamStore();
+    mockRoute.name = 'agents-team';
+    tSpy = vi.spyOn(i18n.global, 't').mockImplementation((key) => key);
   });
 
-  describe('Component rendering', () => {
-    it('renders correctly', () => {
-      expect(wrapper.exists()).toBe(true);
-    });
-
-    it('renders the structure correctly', () => {
-      expect(agentsHeader().exists()).toBe(true);
-      expect(assignedAgents().exists()).toBe(true);
-      expect(agentsGalleryModal().exists()).toBe(true);
-    });
+  afterEach(() => {
+    wrapper?.unmount();
+    wrapper = null;
+    tSpy?.mockRestore();
+    vi.clearAllMocks();
   });
 
-  describe('User interactions', () => {
-    it('opens agents gallery modal when assign agents button is clicked', async () => {
-      await assignAgentsButton().trigger('click');
-      expect(agentsTeamStore.isAgentsGalleryOpen).toBe(true);
-    });
+  it('renders default header content for agents-team route', () => {
+    wrapper = mountView();
+
+    expect(wrapper.find('[data-testid="agents-header"]').exists()).toBe(true);
+
+    const headerState = getHeaderState();
+
+    expect(headerState.title).toBe('agents.title');
+    expect(headerState.description).toBe('agents.description');
+    expect(headerState.actions).toBe(HomeHeaderActions);
+  });
+
+  it('updates header copy for assign route', () => {
+    mockRoute.name = 'agents-assign';
+
+    wrapper = mountView();
+
+    const headerState = getHeaderState();
+
+    expect(headerState.title).toBe('agents.assign_agents.title');
+    expect(headerState.description).toBe('agents.assign_agents.description');
+    expect(headerState.actions).toBe(null);
+  });
+
+  it('injects header actions when they are available', () => {
+    mockRoute.name = 'agents-team';
+
+    wrapper = mountView();
+
+    const headerState = getHeaderState();
+
+    expect(headerState.actions).toBe(HomeHeaderActions);
+  });
+
+  it('always renders the nested router view outlet', () => {
+    wrapper = mountView();
+
+    expect(wrapper.find('[data-testid="router-view"]').exists()).toBe(true);
   });
 });
