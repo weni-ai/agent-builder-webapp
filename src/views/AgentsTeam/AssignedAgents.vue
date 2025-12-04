@@ -59,10 +59,12 @@
         :text="$t('agents.assigned_agents.no_agents.assign_agents_button')"
         type="primary"
         data-testid="assigned-agents-button"
-        @click="handleAgentsGallery"
+        @click="agentsTeamStore.openAgentsGallery"
       />
     </section>
   </section>
+
+  <AgentsGalleryModal data-testid="agents-gallery-modal" />
 </template>
 
 <script setup>
@@ -71,6 +73,7 @@ import { computed } from 'vue';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
 import AssignAgentCard from '@/components/AgentsTeam/AssignAgentCard.vue';
+import AgentsGalleryModal from './AgentsGalleryModal.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const activeTeam = computed(
@@ -80,10 +83,6 @@ const activeTeam = computed(
 const isLoadingTeam = computed(
   () => agentsTeamStore.activeTeam.status === 'loading',
 );
-
-function handleAgentsGallery() {
-  agentsTeamStore.isAgentsGalleryOpen = true;
-}
 </script>
 
 <style lang="scss" scoped>
