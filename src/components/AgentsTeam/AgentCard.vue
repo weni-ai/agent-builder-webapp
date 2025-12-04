@@ -156,6 +156,7 @@ const isAgentInTeam = computed(() => {
       linear-gradient(135deg, $unnnic-color-teal-400, $unnnic-color-teal-600)
         border-box;
     background-clip: padding-box, border-box;
+    animation: agent-card-highlight-appear 0.3s ease;
   }
 
   &__content {
@@ -238,6 +239,18 @@ const isAgentInTeam = computed(() => {
     background-color: $unnnic-color-teal-300;
     color: $unnnic-color-fg-emphasized;
     font: $unnnic-font-caption-1;
+
+    animation: agent-card-highlight-appear 0.3s ease;
+  }
+}
+
+@keyframes agent-card-highlight-appear {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 </style>
