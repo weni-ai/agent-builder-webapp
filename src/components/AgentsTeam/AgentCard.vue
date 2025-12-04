@@ -4,7 +4,7 @@
     :class="[
       'agent-card',
       { 'agent-card--with-footer': $slots.footer && !loading },
-      { 'agent-card--new-agent': newAgentHighlight },
+      { 'agent-card--new-agent': newAgentHighlight && !loading },
     ]"
   >
     <AssignAgentCardSkeleton
@@ -146,7 +146,16 @@ const isAgentInTeam = computed(() => {
   &--new-agent {
     position: relative;
 
-    border: 2px solid $unnnic-color-teal-600;
+    border: 2px solid transparent;
+    background:
+      linear-gradient(
+          $unnnic-color-background-snow,
+          $unnnic-color-background-snow
+        )
+        padding-box,
+      linear-gradient(135deg, $unnnic-color-teal-400, $unnnic-color-teal-600)
+        border-box;
+    background-clip: padding-box, border-box;
   }
 
   &__content {
@@ -216,13 +225,15 @@ const isAgentInTeam = computed(() => {
   }
 
   &__new-agent-tag {
+    $fontLineHeight: 18px;
+
     position: absolute;
     left: $unnnic-space-4;
-    top: -50%;
+    top: calc((($fontLineHeight / 2) + $unnnic-space-05) * -1);
 
-    border-radius: $unnnic-radius-2;
+    border-radius: $unnnic-radius-1;
 
-    padding: $unnnic-space-05 $unnnic-space-1;
+    padding: $unnnic-space-05 $unnnic-space-2;
 
     background-color: $unnnic-color-teal-300;
     color: $unnnic-color-fg-emphasized;

@@ -2,7 +2,6 @@
   <AgentCard
     :agent="agent"
     :tags="agent.systems ? getSystemsObjects(agent.systems) : []"
-    :newAgentHighlight="agent.uuid === newAgentAssigned?.uuid"
     data-testid="agent-card"
   >
     <template #footer>
@@ -74,9 +73,6 @@ async function assignAgent() {
     if (status === 'success') {
       if (props.agent.credentials?.length)
         await tuningsStore.fetchCredentials();
-
-      agentsTeamStore.newAgentAssigned = props.agent;
-      router.push({ name: 'agents-team' });
     }
   } catch (error) {
     console.error(error);
