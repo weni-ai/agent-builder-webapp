@@ -1,13 +1,14 @@
 <template>
   <section class="assign-agents">
-    <aside>TODO: SIDEBAR</aside>
+    <AssignAgentsSidebar />
+
     <section class="assign-agents__content">
-      <header>TODO: HEADER</header>
+      <AssignAgentsHeader />
 
       <AgentsListFilters />
 
       <AgentsList
-        :agents="officialAgents.data"
+        :agents="agents?.data || []"
         :isLoading="isLoading"
       />
     </section>
@@ -21,12 +22,16 @@ import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
 import AgentsList from '@/components/AgentsTeam/AssignAgents/AgentsList/index.vue';
 import AgentsListFilters from '@/components/AgentsTeam/AssignAgents/AgentsList/Filters.vue';
+import AssignAgentsHeader from '@/components/AgentsTeam/AssignAgents/AssignAgentsHeader.vue';
+import AssignAgentsSidebar from '@/components/AgentsTeam/AssignAgents/Sidebar/index.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
-const officialAgents = agentsTeamStore.officialAgents;
-const isLoading = computed(
-  () => agentsTeamStore.officialAgents.status === 'loading',
-);
+const agents = computed(() => {
+  return agentsTeamStore.assignAgentsFilters.system === 'ALL_CUSTOM'
+    ? agentsTeamStore.myAgents
+    : agentsTeamStore.officialAgents;
+});
+const isLoading = computed(() => agents.value.status === 'loading');
 </script>
 
 <style lang="scss" scoped>

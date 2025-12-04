@@ -42,3 +42,14 @@ export interface Agent {
 }
 
 export type AgentGroupOrAgent = AgentGroup | Agent;
+
+type SelectOption = {
+  label: string;
+  value: string;
+};
+
+export type AssignAgentsFilters = {
+  search: string;
+  category: SelectOption[] | [];
+  system: AgentSystem | 'ALL_OFFICIAL' | 'ALL_CUSTOM' | '';
+};

@@ -9,7 +9,11 @@ import agentIconService from '@/utils/agentIconService';
 import i18n from '@/utils/plugins/i18n';
 
 import { useFeatureFlagsStore } from './FeatureFlags';
-import { Agent, AgentGroupOrAgent } from './types/Agents.types';
+import {
+  Agent,
+  AgentGroupOrAgent,
+  AssignAgentsFilters,
+} from './types/Agents.types';
 
 export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   const linkToCreateAgent = 'https://github.com/weni-ai/weni-cli';
@@ -34,6 +38,12 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   const myAgents = reactive({
     status: null,
     data: [],
+  });
+
+  const assignAgentsFilters = reactive<AssignAgentsFilters>({
+    search: '',
+    category: [],
+    system: 'ALL_OFFICIAL',
   });
 
   const allAgents = computed(() => {
@@ -63,25 +73,37 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
   }
 
-  async function loadOfficialAgents(
-    { search, category, group, system } = {
-      search: '',
-      category: '',
-      group: '',
-      system: '',
-    },
-  ) {
+  function setAssignAgentsFilters(filters: Partial<AssignAgentsFilters>) {
+    if (filters.search !== undefined) {
+      assignAgentsFilters.search = filters.search;
+    }
+
+    if (filters.category !== undefined) {
+      assignAgentsFilters.category = filters.category;
+    }
+
+    if (filters.system !== undefined) {
+      assignAgentsFilters.system = filters.system;
+    }
+  }
+
+  async function loadOfficialAgents({
+    search,
+  }: {
+    search?: string;
+  } = {}) {
     try {
       officialAgents.status = 'loading';
 
       let response: AgentGroupOrAgent[] = [];
 
       if (assignAgentsView) {
+        const { system, search, category } = assignAgentsFilters;
+
         response = await nexusaiAPI.router.agents_team.listOfficialAgents2({
-          category,
-          group,
-          system,
           name: search,
+          category: category?.[0]?.value ?? '',
+          system: system === 'ALL_OFFICIAL' ? '' : system,
         });
       } else {
         const { data } = await nexusaiAPI.router.agents_team.listOfficialAgents(
@@ -106,7 +128,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       myAgents.status = 'loading';
 
       const { data } = await nexusaiAPI.router.agents_team.listMyAgents({
-        search,
+        search: assignAgentsView ? assignAgentsFilters.search : search,
       });
 
       myAgents.data = agentIconService.applyIconsToAgents(data);
@@ -222,6 +244,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     activeTeam,
     officialAgents,
     myAgents,
+    assignAgentsFilters,
     allAgents,
     isAgentsGalleryOpen,
     loadActiveTeam,
@@ -230,5 +253,6 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     toggleAgentAssignment,
     deleteAgent,
     openAgentsGallery,
+    setAssignAgentsFilters,
   };
 });

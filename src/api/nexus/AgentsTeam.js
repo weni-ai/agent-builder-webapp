@@ -42,11 +42,10 @@ export const AgentsTeam = {
     };
   },
 
-  async listOfficialAgents2({ category, group, system, name }) {
+  async listOfficialAgents2({ category, system, name }) {
     const params = cleanParams({
       project_uuid: projectUuid.value,
       category,
-      group,
       system,
       name,
     });

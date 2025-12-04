@@ -1,14 +1,20 @@
 <template>
-  <section class="agents-list-filters">
+  <section
+    :class="[
+      'agents-list-filters',
+      { 'agents-list-filters--custom': isSystemCustom },
+    ]"
+  >
     <UnnnicInput
-      v-model="search"
+      v-model="agentsTeamStore.assignAgentsFilters.search"
       :placeholder="$t('agents.assign_agents.filters.search.placeholder')"
       iconLeft="search"
       data-testid="search-input"
     />
 
     <UnnnicSelectSmart
-      v-model:modelValue="category"
+      v-if="!isSystemCustom"
+      v-model:modelValue="agentsTeamStore.assignAgentsFilters.category"
       :options="categoryOptions"
       :placeholder="$t('agents.assign_agents.filters.category.placeholder')"
       orderedByIndex
@@ -19,15 +25,13 @@
 
 <script setup>
 import { debounce } from 'lodash';
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 
-import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import i18n from '@/utils/plugins/i18n';
 
-const agentsTeamStore = useAgentsTeamStore();
+import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
-const search = ref('');
-const category = ref([]);
+const agentsTeamStore = useAgentsTeamStore();
 
 const categoryOptions = computed(() => {
   const createCategoryOption = (category) => ({
@@ -47,15 +51,25 @@ const categoryOptions = computed(() => {
   ];
 });
 
-const loadOfficialAgents = async () => {
-  await agentsTeamStore.loadOfficialAgents({
-    search: search.value,
-    category: category.value[0]?.value,
-  });
+const isSystemCustom = computed(() => {
+  return agentsTeamStore.assignAgentsFilters.system === 'ALL_CUSTOM';
+});
+
+const loadAgents = () => {
+  if (isSystemCustom.value) {
+    agentsTeamStore.loadMyAgents();
+  } else {
+    agentsTeamStore.loadOfficialAgents();
+  }
 };
 
-watch(() => search.value, debounce(loadOfficialAgents, 300));
-watch(() => category.value, loadOfficialAgents);
+watch(
+  () => agentsTeamStore.assignAgentsFilters.search,
+  debounce(loadAgents, 300),
+);
+watch(() => agentsTeamStore.assignAgentsFilters.category, loadAgents, {
+  deep: true,
+});
 </script>
 
 <style lang="scss" scoped>
@@ -63,5 +77,9 @@ watch(() => category.value, loadOfficialAgents);
   display: grid;
   grid-template-columns: 1fr calc((100vw / 12) * 3 - ($unnnic-space-4 * 2));
   gap: $unnnic-space-4;
+
+  &--custom {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
