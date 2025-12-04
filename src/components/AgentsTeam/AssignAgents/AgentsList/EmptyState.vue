@@ -63,7 +63,7 @@ const variant = computed(() => {
   const { system, search, category } = agentsTeamStore.assignAgentsFilters;
 
   if (system === 'ALL_CUSTOM' && !search) return 'custom';
-  if (category) return 'filters';
+  if (category.length > 0) return 'filters';
   if (search) return 'search';
 
   return 'filters';
