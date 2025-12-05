@@ -259,13 +259,13 @@ describe('AssignAgentCard.vue', () => {
           },
         });
 
+        const actionsContent = () =>
+          wrapper.findComponent('[data-testid="content-item-actions"]');
+
+        expect(actionsContent().exists()).toBe(true);
         wrapper.vm.isToggleAgentAssignmentLoading = true;
         await wrapper.vm.$nextTick();
-
-        const actionsContent = wrapper.find(
-          '[data-testid="content-item-actions-content"]',
-        );
-        expect(actionsContent.attributes('style')).toContain('display: none');
+        expect(actionsContent().exists()).toBe(false);
       });
 
       it('should show loading icon when toggle agent assignment is loading', async () => {

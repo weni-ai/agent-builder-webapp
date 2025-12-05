@@ -1,64 +1,37 @@
 <template>
-  <section
-    ref="teleportTarget"
+  <UnnnicPopover
+    v-model:open="isActivatedByClick"
     class="content-item-actions"
   >
-    <Popover
-      ref="popover"
-      v-model:isActivatedByClick="isActivatedByClick"
-      :teleportTarget="teleportTarget"
+    <UnnnicPopoverTrigger class="content-item-actions__trigger">
+      <UnnnicIcon
+        :icon="triggerIcon"
+        :scheme="isActivatedByClick ? 'neutral-darkest' : 'neutral-cloudy'"
+        :size="triggerSize"
+        class="button-menu"
+        v-bind="$attrs"
+      />
+    </UnnnicPopoverTrigger>
+
+    <UnnnicPopoverContent
+      :align="align"
+      :side="side"
+      size="small"
     >
-      <template #default>
-        <UnnnicIcon
-          ref="selector"
-          :icon="triggerIcon"
-          :scheme="isActivatedByClick ? 'neutral-darkest' : 'neutral-cloudy'"
-          :size="triggerSize"
-          class="button-menu"
-          v-bind="$attrs"
-        />
-      </template>
-
-      <template #children="{ popoverId }">
-        <section
-          :popoverId
-          trigger="click"
-          :horizontal="popoverPositionHorizontal"
-          :vertical="popoverPositionVertical"
-          class="options"
-          :style="{ minWidth }"
-        >
-          <section
-            v-for="(action, index) in actions"
-            :key="index"
-            class="options__option"
-            :data-test="action.text"
-            @click="onClick(action)"
-          >
-            <UnnnicIcon
-              :icon="action?.icon"
-              size="sm"
-              :scheme="action.scheme"
-            />
-
-            <UnnnicIntelligenceText
-              tag="p"
-              :color="action.scheme"
-              family="secondary"
-              size="body-md"
-              class="content-item-actions__option-text"
-            >
-              {{ action.text }}
-            </UnnnicIntelligenceText>
-          </section>
-        </section>
-      </template>
-    </Popover>
-  </section>
+      <UnnnicPopoverOption
+        v-for="(action, index) in actions"
+        :key="index"
+        :data-test="action.text"
+        :label="action.text"
+        :scheme="action.scheme"
+        :icon="action?.icon"
+        @click="onClick(action)"
+      />
+    </UnnnicPopoverContent>
+  </UnnnicPopover>
 </template>
 
 <script setup>
-import Popover from '@/components/Popover.vue';
 import { ref } from 'vue';
 
 defineProps({
@@ -76,13 +49,13 @@ defineProps({
     default: 'avatar-nano',
   },
 
-  popoverPositionHorizontal: {
+  align: {
     type: String,
-    default: 'right-right',
+    default: 'end',
   },
-  popoverPositionVertical: {
+  side: {
     type: String,
-    default: 'top-bottom',
+    default: 'bottom',
   },
 
   minWidth: {
@@ -90,8 +63,6 @@ defineProps({
     default: '170px',
   },
 });
-
-const teleportTarget = ref(null);
 
 const isActivatedByClick = ref(false);
 
@@ -102,50 +73,7 @@ function onClick(action) {
 </script>
 
 <style lang="scss" scoped>
-.content-item-actions {
-  position: relative;
-  display: inline-flex;
-}
-
-.dropdown :deep(.unnnic-dropdown__trigger) {
+.content-item-actions__trigger {
   display: flex;
-}
-
-.button-menu {
-  user-select: none;
-  cursor: pointer;
-}
-
-.options {
-  margin-block: $unnnic-spacing-nano;
-  border-radius: $unnnic-border-radius-sm;
-  background-color: $unnnic-color-background-snow;
-  box-shadow: $unnnic-shadow-level-near;
-
-  &__option {
-    user-select: none;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: $unnnic-spacing-sm;
-    column-gap: $unnnic-spacing-xs;
-    position: relative;
-  }
-
-  &__option + &__option::before {
-    pointer-events: none;
-    content: ' ';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    border-top: $unnnic-border-width-thinner solid
-      $unnnic-color-neutral-lightest;
-    margin-inline: $unnnic-spacing-sm;
-  }
-
-  &__option-text {
-    white-space: nowrap;
-  }
 }
 </style>
