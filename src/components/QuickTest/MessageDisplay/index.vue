@@ -138,7 +138,7 @@ const statusDescription = (message) => {
     max-width: 75%;
     color: $unnnic-color-neutral-dark;
 
-    border-radius: $unnnic-border-radius-md;
+    border-radius: $unnnic-radius-3;
     padding: $unnnic-spacing-ant;
 
     &.messages__is-media {

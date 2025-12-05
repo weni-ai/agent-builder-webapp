@@ -1,35 +1,32 @@
 <template>
-  <UnnnicDrawer
-    data-testid="preview-drawer"
-    :modelValue="modelValue"
-    :title="$t('router.preview.agents_preview')"
+  <UnnnicDrawerNext
+    v-model:open="drawerOpen"
     class="preview-drawer"
-    size="xl"
-    @close="$emit('update:modelValue', false)"
   >
-    <template #title>
-      <section
-        data-testid="preview-drawer-header"
-        class="preview-drawer__header"
-      >
-        <UnnnicIntelligenceText
-          data-testid="preview-drawer-title"
-          tag="h2"
-          family="secondary"
-          size="title-sm"
-          weight="bold"
-          color="neutral-darkest"
+    <UnnnicDrawerContent size="extra-large">
+      <UnnnicDrawerHeader>
+        <section
+          data-testid="preview-drawer-header"
+          class="preview-drawer__header"
         >
-          {{ $t('router.preview.agents_preview') }}
-        </UnnnicIntelligenceText>
-        <ContentItemActions
-          data-testid="preview-drawer-actions"
-          :actions="previewHeaderActions"
-          minWidth="175px"
-        />
-      </section>
-    </template>
-    <template #content>
+          <UnnnicIntelligenceText
+            data-testid="preview-drawer-title"
+            tag="h2"
+            family="secondary"
+            size="title-sm"
+            weight="bold"
+            color="neutral-darkest"
+          >
+            {{ $t('router.preview.test_your_agents') }}
+          </UnnnicIntelligenceText>
+          <ContentItemActions
+            data-testid="preview-drawer-actions"
+            :actions="previewHeaderActions"
+            minWidth="175px"
+          />
+        </section>
+      </UnnnicDrawerHeader>
+
       <section
         data-testid="preview-drawer-content"
         class="preview-drawer__content"
@@ -48,8 +45,8 @@
           <PreviewDetails />
         </section>
       </section>
-    </template>
-  </UnnnicDrawer>
+    </UnnnicDrawerContent>
+  </UnnnicDrawerNext>
 </template>
 
 <script setup>
@@ -71,13 +68,19 @@ const props = defineProps({
   },
 });
 
-defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue']);
 
 const previewStore = usePreviewStore();
 const flowPreviewStore = useFlowPreviewStore();
 const projectStore = useProjectStore();
+
+const drawerOpen = computed({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value),
+});
+
 watch(
-  () => props.modelValue,
+  () => drawerOpen.value,
   (isModalOpen) => {
     if (isModalOpen && !previewStore.ws) previewStore.connectWS();
   },
@@ -102,14 +105,6 @@ function refreshPreview() {
 </script>
 
 <style lang="scss">
-.preview-drawer {
-  &.unnnic-drawer__container .unnnic-drawer__content {
-    padding: 0;
-  }
-}
-</style>
-
-<style lang="scss" scoped>
 .preview-drawer {
   &__header {
     display: flex;
