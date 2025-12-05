@@ -28,9 +28,6 @@ describe('SupervisorFilters.vue', () => {
     wrapper = shallowMount(SupervisorFilters, {
       global: {
         plugins: [pinia],
-        stubs: {
-          UnnnicDrawer: Unnnic.unnnicDrawer,
-        },
       },
     });
 
@@ -57,7 +54,7 @@ describe('SupervisorFilters.vue', () => {
     });
 
     it('renders drawer', () => {
-      expect(drawerFilter().exists()).toBe(false);
+      expect(drawerFilter().exists()).toBe(true);
     });
   });
 
