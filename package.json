@@ -21,7 +21,7 @@
     "@tsparticles/slim": "^3.9.1",
     "@tsparticles/vue3": "^3.0.1",
     "@vueuse/core": "^10.11.0",
-    "@weni/unnnic-system": "3.11.3-alpha.2",
+    "@weni/unnnic-system": "3.12.3-alpha-teleports.1",
     "axios": "^1.7.2",
     "cross-env": "^7.0.3",
     "date-fns": "^4.1.0",
