@@ -14,7 +14,8 @@
       </template>
 
       <template v-else>
-        <AssignAgentCard
+        <component
+          :is="agentCard"
           v-for="agent in activeTeam"
           :key="agent.uuid"
           :agent="agent"
@@ -71,17 +72,24 @@
 import { computed } from 'vue';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 import AssignAgentCard from '@/components/AgentsTeam/AssignAgentCard.vue';
+import DetailAgentCard from '@/components/AgentsTeam/DetailAgentCard/index.vue';
 import AgentsGalleryModal from './AgentsGalleryModal.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const activeTeam = computed(
   () => agentsTeamStore.activeTeam.data?.agents || [],
 );
-
 const isLoadingTeam = computed(
   () => agentsTeamStore.activeTeam.status === 'loading',
+);
+
+const featureFlagsStore = useFeatureFlagsStore();
+
+const agentCard = computed(() =>
+  featureFlagsStore.flags.assignAgentsView ? DetailAgentCard : AssignAgentCard,
 );
 </script>
 
