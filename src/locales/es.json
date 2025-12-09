@@ -264,6 +264,9 @@
         "title": "No hay agentes asignados aún",
         "description": "Agrega tu primer agente para empezar a manejar consultas de productos, pedidos y más.",
         "assign_agents_button": "Asignar tu primer agente"
+      },
+      "agent_details": {
+        "about": "Sobre"
       }
     },
     "assign_agents": {

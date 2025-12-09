@@ -264,6 +264,9 @@
         "title": "Nenhum agente atribuído ainda",
         "description": "Adicione seu primeiro agente para começar a lidar com consultas de produtos, pedidos e mais.",
         "assign_agents_button": "Atribuir seu primeiro agente"
+      },
+      "agent_details": {
+        "about": "Sobre"
       }
     },
     "assign_agents": {

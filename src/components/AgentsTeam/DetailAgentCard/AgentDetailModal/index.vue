@@ -26,22 +26,27 @@
         />
       </UnnnicDialogHeader>
 
-      <section class="agent-detail-modal__details"></section>
+      <section class="agent-detail-modal__details">
+        <Section
+          :title="$t('agents.assigned_agents.agent_details.about')"
+          :description="agent.description"
+        />
+      </section>
     </UnnnicDialogContent>
   </UnnnicDialog>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AgentIcon from '@/components/AgentsTeam/AgentIcon.vue';
+import { AgentGroupOrAgent } from '@/store/types/Agents.types';
+
+import Section from './Section.vue';
 
 defineEmits(['update:open']);
 
-defineProps({
-  agent: {
-    type: Object,
-    required: true,
-  },
-});
+defineProps<{
+  agent: AgentGroupOrAgent;
+}>();
 
 defineModel('open', {
   type: Boolean,
@@ -53,6 +58,18 @@ defineModel('open', {
 .agent-detail-modal {
   &__header-icon {
     margin-right: $unnnic-space-2;
+
+    width: $unnnic-icon-size-xl;
+    height: auto;
+    aspect-ratio: 1/1;
+  }
+
+  &__details {
+    padding: $unnnic-space-6;
+
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-space-4;
   }
 }
 </style>

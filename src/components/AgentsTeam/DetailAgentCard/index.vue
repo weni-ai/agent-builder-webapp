@@ -2,7 +2,7 @@
   <AgentCard
     class="detail-agent-card"
     :agent="agent"
-    :tags="agent.systems ? getSystemsObjects(agent.systems) : []"
+    :tags="getSystemsObjects((agent as AgentGroup).systems || [])"
     :loading="loading"
     @click="openAgentDetailModal"
   />
@@ -13,26 +13,21 @@
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 
 import useAgentSystems from '@/composables/useAgentSystems';
 
 import AgentCard from '../AgentCard.vue';
 import AgentDetailModal from './AgentDetailModal/index.vue';
+import { AgentGroup, AgentGroupOrAgent } from '@/store/types/Agents.types';
 
 const { getSystemsObjects } = useAgentSystems();
 
-defineProps({
-  agent: {
-    type: Object,
-    required: true,
-  },
-  loading: {
-    type: Boolean,
-    default: false,
-  },
-});
+defineProps<{
+  agent: AgentGroupOrAgent;
+  loading: boolean;
+}>();
 
 const isAgentDetailModalOpen = ref(false);
 
