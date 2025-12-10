@@ -17,14 +17,8 @@
       />
     </Transition>
 
-    <AgentIcon
-      v-if="type === 'manager'"
-      class="preview-agent-card__agent-icon"
-      :data-testid="`preview-agent-card-icon-${type}`"
-    />
-
     <Transition
-      v-else
+      v-if="type === 'agent'"
       name="fade"
     >
       <AgentIcon
