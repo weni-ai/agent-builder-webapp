@@ -19,6 +19,11 @@
       <RouterView />
     </main>
 
+    <TestAgentsButton
+      v-if="showTestAgentsButton"
+      data-testid="test-agents-button"
+    />
+
     <UnnnicToast
       v-if="alertStore.data.text"
       :key="alertStore.id"
@@ -32,9 +37,9 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 
 import { useTuningsStore } from '@/store/Tunings';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
@@ -48,9 +53,11 @@ import { isFederatedModule } from './utils/moduleFederation';
 import initHotjar from '@/utils/plugins/Hotjar.js';
 
 import Sidebar from '@/components/Sidebar/index.vue';
+import TestAgentsButton from '@/components/Preview/TestAgentsButton.vue';
 
-const { isBuildModule } = useCurrentModule();
+const { isBuildModule, isAgentsModule } = useCurrentModule();
 
+const route = useRoute();
 const agentsTeamStore = useAgentsTeamStore();
 const alertStore = useAlertStore();
 const projectStore = useProjectStore();
@@ -68,6 +75,13 @@ onMounted(() => {
     projectStore.getRouterDetails();
   }
 });
+
+const showTestAgentsButton = computed(
+  () =>
+    isAgentsModule.value ||
+    (isBuildModule.value &&
+      ['instructions', 'knowledge'].includes(route.name as string)),
+);
 
 watch(
   () => userStore.user.email,

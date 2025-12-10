@@ -372,6 +372,7 @@
       "save_success": "Configuración guardada con éxito"
     },
     "preview": {
+      "trigger": "Prueba tus agentes",
       "title": "Vista previa del agente",
       "active": "Agent Builder activo",
       "no_logs_registered": "No hay logs",
@@ -379,7 +380,7 @@
       "manager_task": "Coordinando las tareas del equipo",
       "visual_flow": "Flujo visual",
       "logs": "Logs",
-      "agents_preview": "Vista previa de los agentes",
+      "test_your_agents": "Prueba tus agentes",
       "options": {
         "refresh": "Limpiar conversaciones",
         "export": "Exportar conversaciones"

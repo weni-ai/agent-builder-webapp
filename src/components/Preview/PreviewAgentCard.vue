@@ -17,15 +17,8 @@
       />
     </Transition>
 
-    <AgentIcon
-      v-if="type === 'manager'"
-      icon="Manager"
-      class="preview-agent-card__agent-icon"
-      :data-testid="`preview-agent-card-icon-${type}`"
-    />
-
     <Transition
-      v-else
+      v-if="type === 'agent'"
       name="fade"
     >
       <AgentIcon
@@ -117,9 +110,9 @@ defineProps({
 
 .preview-agent-card {
   position: relative;
-  box-shadow: $unnnic-shadow-level-near;
-  border-radius: $unnnic-border-radius-md;
-  background-color: $unnnic-color-background-white;
+  box-shadow: $unnnic-shadow-1;
+  border-radius: $unnnic-radius-4;
+  background-color: $unnnic-color-bg-base;
   border: $unnnic-border-width-thinner solid transparent;
 
   padding: $unnnic-spacing-sm;
