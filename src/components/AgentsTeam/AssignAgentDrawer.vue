@@ -203,16 +203,6 @@ const getCredentialValue = (credentialName) => {
 };
 </script>
 
-<style lang="scss">
-.assign-agent-drawer {
-  z-index: 1199 !important; // Above the modal
-}
-
-.unnnic-drawer__overlay {
-  z-index: 1198 !important; // Below the drawer and above the modal
-}
-</style>
-
 <style lang="scss" scoped>
 .assign-agent-drawer {
   &__content {
