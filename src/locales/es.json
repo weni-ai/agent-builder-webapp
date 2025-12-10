@@ -266,7 +266,9 @@
         "assign_agents_button": "Asignar tu primer agente"
       },
       "agent_details": {
-        "about": "Sobre"
+        "about": "Sobre",
+        "view_options": "Ver opciones",
+        "remove_agent": "Eliminar agente"
       }
     },
     "assign_agents": {

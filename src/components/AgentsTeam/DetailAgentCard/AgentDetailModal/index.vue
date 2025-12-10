@@ -31,6 +31,11 @@
           :title="$t('agents.assigned_agents.agent_details.about')"
           :description="agent.description"
         />
+
+        <ViewOptions
+          :agent="agent"
+          @agent-removed="handleAgentRemoved"
+        />
       </section>
     </UnnnicDialogContent>
   </UnnnicDialog>
@@ -41,8 +46,9 @@ import AgentIcon from '@/components/AgentsTeam/AgentIcon.vue';
 import { AgentGroupOrAgent } from '@/store/types/Agents.types';
 
 import Section from './Section.vue';
+import ViewOptions from './ViewOptions.vue';
 
-defineEmits(['update:open']);
+const emit = defineEmits(['update:open']);
 
 defineProps<{
   agent: AgentGroupOrAgent;
@@ -52,14 +58,19 @@ defineModel('open', {
   type: Boolean,
   required: true,
 });
+
+function handleAgentRemoved() {
+  emit('update:open', false);
+}
 </script>
 
 <style lang="scss" scoped>
 .agent-detail-modal {
   &__header-icon {
     margin-right: $unnnic-space-2;
+    padding: 6px;
 
-    width: $unnnic-icon-size-xl;
+    width: 48px;
     height: auto;
     aspect-ratio: 1/1;
   }
