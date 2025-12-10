@@ -13,14 +13,12 @@ exports[`Skill.vue > renders correctly 1`] = `
     icon-1
   </p>
   <p
-    class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-neutral-cloudy skill__title skill__title"
+    class="skill__title"
     data-testid="skill-name"
     data-v-d187fcda=""
-    data-v-ec8da4ad=""
+    tag="p"
   >
-    
     Test Title
-    
   </p>
 </section>
 `;

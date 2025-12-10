@@ -1,7 +1,10 @@
 <template>
   <section
     data-testid="assign-agent-card"
-    class="assign-agent-card"
+    :class="[
+      'assign-agent-card',
+      { 'assign-agent-card--assignment': assignment && !loading },
+    ]"
   >
     <AssignAgentCardSkeleton
       v-if="loading"
@@ -15,49 +18,33 @@
       <AgentIcon
         v-if="agent.icon"
         :icon="agent.icon"
-        class="content__icon"
+        class="assign-agent-card__icon"
         data-testid="agent-icon"
       />
 
-      <header class="content__header">
-        <UnnnicIntelligenceText
-          tag="p"
-          family="secondary"
-          size="body-gt"
-          color="neutral-darkest"
-          weight="bold"
+      <header class="assign-agent-card__header">
+        <p
+          class="assign-agent-card__title"
           data-testid="title"
         >
           {{ agent.name }}
-        </UnnnicIntelligenceText>
+        </p>
 
         <section
           v-if="shouldShowActions"
-          class="header__actions"
+          class="assign-agent-card__actions"
           data-testid="assign-agent-card-actions"
         >
-          <UnnnicTag
-            v-if="isAgentInTeam"
-            type="next"
-            :text="
-              agent.is_official
-                ? $t('router.agents_team.card.official')
-                : $t('router.agents_team.card.custom')
-            "
-            :scheme="agent.is_official ? 'weni' : 'aux-purple'"
-            data-testid="agent-tag"
-          />
-
           <UnnnicIconLoading
             v-if="isToggleAgentAssignmentLoading"
             size="avatar-nano"
-            class="actions__content"
+            class="assign-agent-card__action"
             data-testid="loading-icon"
           />
           <!-- v-show used instead of v-else to prevent ContentItemActions popover rendering error -->
           <section
             v-show="!isToggleAgentAssignmentLoading"
-            class="actions__content"
+            class="assign-agent-card__action"
             data-testid="content-item-actions-content"
           >
             <ContentItemActions
@@ -68,28 +55,39 @@
           </section>
         </section>
 
-        <UnnnicIntelligenceText
+        <UnnnicTag
+          v-if="isAgentInTeam"
+          class="assign-agent-card__tag"
+          size="small"
+          :text="
+            agent.is_official
+              ? $t('router.agents_team.card.official')
+              : $t('router.agents_team.card.custom')
+          "
+          :scheme="agent.is_official ? 'weni' : 'aux-purple'"
+          data-testid="agent-tag"
+        />
+      </header>
+
+      <section class="assign-agent-card__infos">
+        <p
           v-if="agent.description"
-          class="header__description"
-          tag="p"
-          family="secondary"
-          size="body-gt"
-          color="neutral-cloudy"
+          class="assign-agent-card__description"
           :title="agent.description"
           data-testid="description"
         >
           {{ agent.description }}
-        </UnnnicIntelligenceText>
-      </header>
+        </p>
 
-      <section class="content__skills">
-        <Skill
-          v-for="skill in agent.skills"
-          :key="skill.name"
-          :title="skill.name"
-          :icon="skill.icon"
-          data-testid="skill"
-        />
+        <section class="assign-agent-card__skills">
+          <Skill
+            v-for="skill in agent.skills"
+            :key="skill.name"
+            :title="skill.name"
+            :icon="skill.icon"
+            data-testid="skill"
+          />
+        </section>
       </section>
     </section>
 
@@ -246,23 +244,27 @@ async function toggleDrawerAssigning() {
 
 <style lang="scss" scoped>
 .assign-agent-card {
-  border-radius: $unnnic-border-radius-md;
-  border: $unnnic-border-width-thinner solid $unnnic-color-neutral-cleanest;
+  border-radius: $unnnic-radius-4;
+  border: $unnnic-border-width-thinner solid $unnnic-color-border-base;
 
   padding: $unnnic-spacing-sm;
 
   display: grid;
-  gap: $unnnic-spacing-ant;
-  align-content: space-between;
+  gap: $unnnic-space-4;
+
+  &--assignment {
+    grid-template-rows: 1fr auto;
+  }
 
   &__content {
     display: grid;
     grid-template-columns: auto repeat(3, 1fr);
-    grid-template-rows: auto auto;
-    gap: $unnnic-spacing-ant;
+    grid-template-rows: auto 1fr;
+    gap: $unnnic-space-2;
 
-    .content__icon {
-      width: $unnnic-icon-size-xl;
+    .assign-agent-card__icon {
+      padding: 6px;
+      width: 48px;
       height: auto;
       aspect-ratio: 1/1;
 
@@ -271,16 +273,26 @@ async function toggleDrawerAssigning() {
       align-self: center;
     }
 
-    .content__header {
+    .assign-agent-card__header {
       display: grid;
       grid-template-columns: auto 1fr;
       column-gap: $unnnic-spacing-xs;
+      row-gap: $unnnic-space-05;
       align-content: center;
 
       grid-column: 2 / 5;
       grid-row: 1 / 2;
 
-      .header__actions {
+      .assign-agent-card__title {
+        color: $unnnic-color-fg-emphasized;
+        font: $unnnic-font-display-3;
+      }
+
+      .assign-agent-card__tag {
+        grid-row: 2 / 3;
+      }
+
+      .assign-agent-card__actions {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -288,30 +300,35 @@ async function toggleDrawerAssigning() {
         grid-column: 2 / 3;
         grid-row: 1 / 2;
 
-        .actions__content {
+        .assign-agent-card__action {
           display: flex;
           margin-left: auto;
         }
       }
+    }
 
-      .header__description {
+    .assign-agent-card__infos {
+      display: flex;
+      flex-direction: column;
+      gap: $unnnic-space-2;
+
+      grid-column: 1 / 5;
+
+      .assign-agent-card__description {
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
 
-        grid-column: 1 / 3;
-        grid-row: 2 / 3;
+        color: $unnnic-color-fg-base;
+        font: $unnnic-font-body;
       }
-    }
 
-    .content__skills {
-      display: flex;
-      gap: $unnnic-spacing-nano;
-      flex-wrap: wrap;
-
-      grid-column: 1 / 5;
-      grid-row: 2 / 3;
+      .assign-agent-card__skills {
+        display: flex;
+        gap: $unnnic-spacing-nano;
+        flex-wrap: wrap;
+      }
     }
   }
 

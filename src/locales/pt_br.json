@@ -254,13 +254,26 @@
       }
     }
   },
+  "agents": {
+    "title": "Agentes",
+    "description": "Visualize e gerencie seus agentes atribuídos",
+    "assign_agents_button": "Atribuir agentes",
+    "assigned_agents": {
+      "no_agents": {
+        "title": "Nenhum agente atribuído ainda",
+        "description": "Adicione seu primeiro agente para começar a lidar com consultas de produtos, pedidos e mais.",
+        "assign_agents_button": "Atribuir seu primeiro agente"
+      }
+    }
+  },
   "router": {
     "agents_team": {
-      "description": "Crie a equipe de agentes perfeita",
+      "assign_agents": "Atribuir agentes",
       "card": {
         "assign": "Atribuir ao time",
         "assigned": "Atribuído",
-        "success_assign_alert": "{agent} atribuído ao time com sucesso",
+        "success_assign_alert": "{agent} atribuído",
+        "success_assign_alert_description": "O agente está pronto para usar",
         "success_unassign_alert": "{agent} removido do time com sucesso",
         "error_alert": "Erro ao atualizar time",
         "official": "Oficial",
@@ -292,8 +305,6 @@
         "weni_cli_documentation_description": "Consulte a {weni_cli_documentation} para ver instruções detalhadas"
       },
       "create_agent": "Criar agente",
-      "preview": "Prévia",
-      "assign_agents": "Atribuir agentes",
       "modal_delete_agent": {
         "title": "Excluir {agent_name}",
         "description": "Tem certeza de que deseja excluir o {agent_name}? Esta ação não pode ser revertida",

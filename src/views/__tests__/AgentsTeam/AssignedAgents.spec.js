@@ -5,7 +5,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
-import ActiveTeam from '@/views/AgentsTeam/ActiveTeam.vue';
+import AssignedAgents from '@/views/AgentsTeam/AssignedAgents.vue';
 
 const pinia = createTestingPinia({
   initialState: {
@@ -28,7 +28,7 @@ const pinia = createTestingPinia({
   },
 });
 
-describe('ActiveTeam.vue', () => {
+describe('AssignedAgents.vue', () => {
   let wrapper;
   const agentsTeamStore = useAgentsTeamStore();
 
@@ -37,8 +37,14 @@ describe('ActiveTeam.vue', () => {
   const teamCards = () =>
     wrapper.findAllComponents('[data-testid="team-card"]');
   const emptyState = () => wrapper.find('[data-testid="empty-state"]');
-  const assignAgentsLink = () =>
-    wrapper.find('[data-testid="assign-agents-link"]');
+  const assignedAgentsIcon = () =>
+    wrapper.find('[data-testid="assigned-agents-icon"]');
+  const assignedAgentsTitle = () =>
+    wrapper.find('[data-testid="assigned-agents-title"]');
+  const assignedAgentsDescription = () =>
+    wrapper.find('[data-testid="assigned-agents-description"]');
+  const assignedAgentsButton = () =>
+    wrapper.find('[data-testid="assigned-agents-button"]');
 
   const mockAgents = [
     {
@@ -56,14 +62,9 @@ describe('ActiveTeam.vue', () => {
   ];
 
   beforeEach(() => {
-    wrapper = shallowMount(ActiveTeam, {
+    wrapper = shallowMount(AssignedAgents, {
       global: {
         plugins: [pinia],
-        stubs: {
-          'i18n-t': {
-            template: '<div><slot name="assign_agents" /></div>',
-          },
-        },
       },
     });
   });
@@ -83,7 +84,7 @@ describe('ActiveTeam.vue', () => {
       agentsTeamStore.activeTeam.status = 'loading';
       await nextTick();
 
-      expect(loadingCards().length).toBe(3);
+      expect(loadingCards().length).toBe(6);
     });
 
     it('should not render empty state when loading', async () => {
@@ -114,21 +115,30 @@ describe('ActiveTeam.vue', () => {
   });
 
   describe('Empty state', () => {
-    it('should render empty state when there are no agents', async () => {
+    beforeEach(async () => {
       agentsTeamStore.activeTeam.status = 'complete';
       agentsTeamStore.activeTeam.data.agents = [];
       await nextTick();
+    });
 
+    it('should render empty state when there are no agents', () => {
       expect(emptyState().exists()).toBe(true);
     });
 
-    it('should open agents gallery when clicking on assign agents link', async () => {
-      agentsTeamStore.activeTeam.status = 'complete';
-      agentsTeamStore.activeTeam.data.agents = [];
-      await nextTick();
+    it('should render assigned agents icon when there are no agents', () => {
+      expect(assignedAgentsIcon().exists()).toBe(true);
+    });
 
-      await assignAgentsLink().trigger('click');
-      expect(agentsTeamStore.isAgentsGalleryOpen).toBe(true);
+    it('should render assigned agents title when there are no agents', () => {
+      expect(assignedAgentsTitle().exists()).toBe(true);
+    });
+
+    it('should render assigned agents description when there are no agents', () => {
+      expect(assignedAgentsDescription().exists()).toBe(true);
+    });
+
+    it('should render assigned agents button when there are no agents', () => {
+      expect(assignedAgentsButton().exists()).toBe(true);
     });
   });
 });
