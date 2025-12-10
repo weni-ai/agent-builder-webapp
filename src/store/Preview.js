@@ -18,16 +18,21 @@ export const usePreviewStore = defineStore('preview', () => {
   );
   const activeAgent = computed(() => {
     const agentsTeamStore = useAgentsTeamStore();
+    const { manager, agents } = agentsTeamStore.activeTeam.data;
     const lastLog = logs.value.at(-1);
 
-    const lastLogAgentId = lastLog?.config?.agentName || 'manager';
+    const lastLogAgentId = lastLog?.config?.agentName;
 
-    const agent = agentsTeamStore.activeTeam.data?.agents?.find(
-      (agent) => agent?.id && lastLogAgentId && agent?.id === lastLogAgentId,
-    );
+    const agent =
+      lastLogAgentId === 'manager'
+        ? manager
+        : agents?.find(
+            (agent) =>
+              agent?.id && lastLogAgentId && agent?.id === lastLogAgentId,
+          );
 
     return {
-      ...(agent || agentsTeamStore.activeTeam.data?.manager),
+      ...agent,
       currentTask: lastLog?.config?.summary,
     };
   });

@@ -8,8 +8,10 @@
       ref="managerRef"
       data-testid="visual-flow-manager"
       name="Manager"
-      :active="true"
-      :currentTask="isActiveAgent(manager) ? activeAgent?.currentTask : ''"
+      :active="isActiveAgent(manager)"
+      :currentTask="
+        isActiveAgent(manager) ? activeAgent?.currentTask : 'Standby'
+      "
       type="manager"
       bubbleDirection="bounce"
     />
