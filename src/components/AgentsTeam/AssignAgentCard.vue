@@ -23,16 +23,12 @@
       />
 
       <header class="assign-agent-card__header">
-        <UnnnicIntelligenceText
-          tag="p"
-          family="secondary"
-          size="body-gt"
-          color="neutral-darkest"
-          weight="bold"
+        <p
+          class="assign-agent-card__title"
           data-testid="title"
         >
           {{ agent.name }}
-        </UnnnicIntelligenceText>
+        </p>
 
         <section
           v-if="shouldShowActions"
@@ -286,6 +282,11 @@ async function toggleDrawerAssigning() {
 
       grid-column: 2 / 5;
       grid-row: 1 / 2;
+
+      .assign-agent-card__title {
+        color: $unnnic-color-fg-emphasized;
+        font: $unnnic-font-display-3;
+      }
 
       .assign-agent-card__tag {
         grid-row: 2 / 3;
