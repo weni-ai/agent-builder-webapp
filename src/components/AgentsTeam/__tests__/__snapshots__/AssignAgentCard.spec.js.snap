@@ -20,14 +20,11 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
         data-v-b58c7d6a=""
       >
         <p
-          class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-bold unnnic-text--color-neutral-darkest"
+          class="assign-agent-card__title"
           data-testid="title"
           data-v-b58c7d6a=""
-          data-v-ec8da4ad=""
         >
-          
           Test Title
-          
         </p>
         <section
           class="assign-agent-card__actions"
