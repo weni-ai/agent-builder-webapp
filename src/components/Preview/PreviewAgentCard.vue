@@ -19,7 +19,6 @@
 
     <AgentIcon
       v-if="type === 'manager'"
-      icon="Manager"
       class="preview-agent-card__agent-icon"
       :data-testid="`preview-agent-card-icon-${type}`"
     />
