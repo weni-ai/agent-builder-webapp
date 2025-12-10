@@ -2,23 +2,27 @@ import { shallowMount } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 import { useRouter } from 'vue-router';
-import { nextTick } from 'vue';
 
 import Supervisor from '@/views/Supervisor/index.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
-vi.mock('vue-router', () => ({
-  useRoute: vi.fn(() => ({
-    query: {
-      started_day: '2024-01-01',
-      ended_day: '2024-01-31',
-    },
-  })),
-  useRouter: vi.fn(() => ({
-    replace: vi.fn(),
-  })),
-}));
+vi.mock('vue-router', async () => {
+  const actual = await vi.importActual('vue-router');
+
+  return {
+    ...actual,
+    useRoute: vi.fn(() => ({
+      query: {
+        started_day: '2024-01-01',
+        ended_day: '2024-01-31',
+      },
+    })),
+    useRouter: vi.fn(() => ({
+      replace: vi.fn(),
+    })),
+  };
+});
 
 describe('Supervisor view', () => {
   let wrapper;

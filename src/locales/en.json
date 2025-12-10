@@ -264,6 +264,10 @@
         "description": "Add your first agent to start handling product queries, orders, and more.",
         "assign_agents_button": "Assign your first agent"
       }
+    },
+    "assign_agents": {
+      "title": "Assign agents",
+      "description": "Agents are specialists ready to provide personalized support and solve complex demands, they act as true consultants, ensuring a human and high-quality experience for your customers."
     }
   },
   "router": {
