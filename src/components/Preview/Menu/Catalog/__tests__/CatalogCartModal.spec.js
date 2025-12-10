@@ -1,6 +1,5 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import Unnnic from '@weni/unnnic-system';
 
 import CatalogCartModal from '../CatalogCartModal.vue';
 import Text from '@/components/unnnic-intelligence/Text.vue';
@@ -38,7 +37,7 @@ describe('CatalogCartModal.vue', () => {
   ];
 
   const createWrapper = (props = {}) => {
-    return shallowMount(CatalogCartModal, {
+    return mount(CatalogCartModal, {
       props: {
         modelValue: true,
         products: mockProducts,
@@ -48,7 +47,6 @@ describe('CatalogCartModal.vue', () => {
       },
       global: {
         stubs: {
-          UnnnicModalDialog: Unnnic.unnnicModalDialog,
           UnnnicIntelligenceText: Text,
         },
       },
