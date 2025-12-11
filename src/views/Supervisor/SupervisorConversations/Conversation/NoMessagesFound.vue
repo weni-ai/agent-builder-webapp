@@ -1,29 +1,22 @@
 <template>
   <section class="no-messages-found">
     <UnnnicIcon
-      icon="sms"
-      scheme="neutral-soft"
+      icon="chat_bubble"
+      scheme="gray-100"
       filled
       class="no-messages-found__icon"
       data-testid="no-messages-icon"
     />
 
-    <UnnnicIntelligenceText
-      tag="p"
-      color="neutral-cloudy"
-      family="secondary"
-      size="body-gt"
+    <p
       class="no-messages-found__title"
       data-testid="no-messages-title"
     >
       {{ $t('agent_builder.supervisor.no_messages_found.title') }}
-    </UnnnicIntelligenceText>
+    </p>
 
-    <UnnnicIntelligenceText
-      tag="p"
-      color="neutral-clean"
-      family="secondary"
-      size="body-md"
+    <p
+      class="no-messages-found__description"
       data-testid="no-messages-description"
     >
       <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
@@ -43,7 +36,7 @@
           </a>
         </template>
       </i18n-t>
-    </UnnnicIntelligenceText>
+    </p>
   </section>
 </template>
 
@@ -60,7 +53,7 @@ const projectStore = useProjectStore();
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: $unnnic-spacing-nano;
+  gap: $unnnic-space-1;
 
   height: 100%;
 
@@ -72,8 +65,18 @@ const projectStore = useProjectStore();
     font-size: $icon-size;
   }
 
+  &__title {
+    font: $unnnic-font-display-3;
+    color: $unnnic-color-gray-900;
+  }
+
+  &__description {
+    font: $unnnic-font-caption-2;
+    color: $unnnic-color-gray-300;
+  }
+
   &__link {
-    color: $unnnic-color-neutral-clean;
+    color: $unnnic-color-gray-300;
     text-decoration: underline;
     text-underline-offset: 3px;
     cursor: pointer;
