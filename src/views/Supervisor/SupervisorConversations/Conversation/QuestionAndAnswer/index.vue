@@ -246,6 +246,7 @@ watch(
       &-footer {
         display: flex;
         justify-content: space-between;
+        gap: $unnnic-space-2;
       }
     }
 
