@@ -1,4 +1,44 @@
 import { isArray } from 'lodash';
+import { Conversation } from '@/store/types/Conversations.types';
+
+interface ApiData {
+  results: {
+    urn: string;
+    uuid: string;
+    external_id: string | null;
+    csat: string | null;
+    nps: string | null;
+    topic: string | null;
+    start_date: string;
+    end_date: string;
+    resolution: string;
+    name: string;
+  }[];
+}
+
+interface ConversationResponse {
+  results: Conversation[];
+}
+
+interface FilterData {
+  page: number;
+  start: string;
+  end: string;
+  search: string;
+  status: string[];
+  csat: string[];
+  topics: string[];
+}
+
+interface ApiParams {
+  page: number;
+  start_date: string;
+  end_date: string;
+  search: string;
+  resolution: number[];
+  csat: number[];
+  topics: string[];
+}
 
 export const ConversationAdapter = {
   /**
@@ -6,7 +46,7 @@ export const ConversationAdapter = {
    * @param {Object} apiData - Raw API response data
    * @returns {Object} Transformed data for frontend use
    */
-  fromApi(apiData) {
+  fromApi(apiData: ApiData): ConversationResponse {
     const statusMap = {
       0: 'optimized_resolution',
       1: 'other_conclusion',
@@ -26,21 +66,27 @@ export const ConversationAdapter = {
     if (apiData.results) {
       return {
         ...apiData,
-        results: apiData.results.map((result) => ({
-          uuid: result.uuid,
-          id: result.external_id,
-          start: result.start_date,
-          end: result.end_date,
-          username: result.name,
-          urn: result.urn,
-          status: statusMap[result.resolution] || 'in_progress',
-          csat: csatMap[result.csat] || null,
-          topics: result.topic,
-        })),
+        results: apiData.results.map(
+          (result): Conversation => ({
+            uuid: result.uuid,
+            id: result.external_id,
+            start: result.start_date,
+            end: result.end_date,
+            username: result.name,
+            urn: result.urn,
+            status: statusMap[result.resolution] || 'in_progress',
+            csat:
+              result.csat !== null
+                ? {
+                    score: parseInt(result.csat),
+                    id: csatMap[result.csat],
+                  }
+                : null,
+            topics: result.topic,
+          }),
+        ),
       };
     }
-
-    return apiData;
   },
 
   /**
@@ -48,7 +94,7 @@ export const ConversationAdapter = {
    * @param {Object} filterData - Frontend filter parameters
    * @returns {Object} Transformed parameters for API request
    */
-  toApi(filterData) {
+  toApi(filterData: FilterData): ApiParams {
     const {
       page,
       start,
