@@ -3,45 +3,18 @@
     <section class="header__info">
       <SupervisorUsername
         :username="conversation?.username"
-        size="title-sm"
+        font="display-2"
       />
-
-      <UnnnicIntelligenceText
-        tag="h2"
-        color="neutral-cloudy"
-        family="secondary"
-        size="body-gt"
-        weight="regular"
-        data-testid="conversation-title"
-      >
-        {{ formattedUrn }}
-      </UnnnicIntelligenceText>
-
-      <section
-        v-if="topics.length > 0"
-        class="header__topics"
-      >
-        <UnnnicTag
-          v-for="topic in topics"
-          :key="topic"
-          scheme="neutral-light"
-          :text="topic"
-        />
-      </section>
     </section>
 
-    <button
+    <UnnnicButton
       class="header__close-button"
+      type="tertiary"
+      size="small"
+      iconCenter="close"
       data-testid="close-button"
       @click="supervisorStore.selectConversation(null)"
-    >
-      <UnnnicIcon
-        data-testid="close-button-icon"
-        icon="close"
-        size="md"
-        scheme="neutral-cloudy"
-      />
-    </button>
+    />
   </header>
 </template>
 
@@ -52,7 +25,6 @@ import { useSupervisorStore } from '@/store/Supervisor';
 import i18n from '@/utils/plugins/i18n';
 import { formatWhatsappUrn } from '@/utils/formatters';
 import SupervisorUsername from '@/components/Supervisor/SupervisorUsername.vue';
-
 const supervisorStore = useSupervisorStore();
 
 const conversation = computed(() => supervisorStore.selectedConversation);
@@ -75,43 +47,36 @@ const topics = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.conversation__header {
-  padding: $unnnic-spacing-sm;
-
-  display: flex;
-  justify-content: space-between;
-
-  border-bottom: $unnnic-border-width-thinner solid $unnnic-color-neutral-soft;
-
-  .header__info {
-    overflow: hidden;
+.conversation {
+  &__header {
+    padding: $unnnic-spacing-sm;
 
     display: flex;
-    flex-direction: column;
-    gap: $unnnic-spacing-xs;
-  }
+    justify-content: space-between;
 
-  .header__topics {
-    display: flex;
-    gap: $unnnic-spacing-xs;
-    flex-wrap: wrap;
+    border-bottom: $unnnic-border-width-thinner solid $unnnic-color-neutral-soft;
 
-    :deep(.unnnic-tag) {
-      background-color: $unnnic-color-neutral-light;
+    .header__info {
+      overflow: hidden;
+
+      display: flex;
+      flex-direction: column;
+      gap: $unnnic-spacing-xs;
     }
 
-    :deep(.unnnic-tag__label) {
-      color: $unnnic-color-neutral-cloudy;
+    .header__topics {
+      display: flex;
+      gap: $unnnic-spacing-xs;
+      flex-wrap: wrap;
+
+      :deep(.unnnic-tag) {
+        background-color: $unnnic-color-neutral-light;
+      }
+
+      :deep(.unnnic-tag__label) {
+        color: $unnnic-color-neutral-cloudy;
+      }
     }
-  }
-
-  .header__close-button {
-    background-color: transparent;
-    border: none;
-
-    display: flex;
-
-    cursor: pointer;
   }
 }
 </style>
