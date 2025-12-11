@@ -1,23 +1,23 @@
 <template>
-  <UnnnicIntelligenceText
+  <p
+    class="conversation-date"
     data-testid="conversation-date"
-    tag="p"
-    color="neutral-cloudy"
-    family="secondary"
-    size="body-gt"
   >
-    {{ formattedDate }}
-  </UnnnicIntelligenceText>
+    {{ formatTimestamp(date) }}
+  </p>
 </template>
 
-<script setup>
-import { format } from 'date-fns';
+<script setup lang="ts">
+import { formatTimestamp } from '@/utils/formatters';
 
-const props = defineProps({
-  date: {
-    type: String,
-    required: true,
-  },
-});
-const formattedDate = `${format(new Date(props.date), 'dd/MM/yyyy')} ${format(new Date(props.date), 'HH:mm')}`;
+defineProps<{
+  date: string;
+}>();
 </script>
+
+<style scoped lang="scss">
+.conversation-date {
+  font: $unnnic-font-body;
+  color: $unnnic-color-fg-base;
+}
+</style>
