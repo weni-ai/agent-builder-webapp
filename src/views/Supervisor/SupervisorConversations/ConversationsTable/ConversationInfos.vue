@@ -18,21 +18,20 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import SupervisorUsername from '@/components/Supervisor/SupervisorUsername.vue';
 import { formatWhatsappUrn } from '@/utils/formatters';
 
-const props = defineProps({
-  username: {
-    type: String,
-    required: true,
+const props = withDefaults(
+  defineProps<{
+    username?: string;
+    urn: string;
+  }>(),
+  {
+    username: '',
   },
-  urn: {
-    type: String,
-    required: true,
-  },
-});
+);
 
 const formattedUrn = computed(() => formatWhatsappUrn(props.urn));
 </script>

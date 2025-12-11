@@ -41,13 +41,10 @@
 
     <section class="conversation-row__secondary-infos">
       <td
-        v-if="csatProps"
+        v-if="csatText"
         class="secondary-infos__csat"
       >
-        <UnnnicTag
-          :scheme="csatProps.scheme"
-          :text="csatProps.text"
-        />
+        <UnnnicTag :text="csatText" />
       </td>
 
       <td class="secondary-infos__date">
@@ -57,7 +54,7 @@
   </tr>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 
 import i18n from '@/utils/plugins/i18n';
@@ -66,22 +63,22 @@ import ConversationDate from './ConversationDate.vue';
 import ConversationInfos from './ConversationInfos.vue';
 import AvatarLetter from '@/components/Supervisor/AvatarLetter.vue';
 
-const props = defineProps({
-  conversation: {
-    type: Object,
-    required: true,
-  },
-  isSelected: {
-    type: Boolean,
-    default: false,
-  },
-  isLoading: {
-    type: Boolean,
-    default: false,
-  },
-});
+import type { Conversation } from '@/store/types/Conversations.types';
 
-const t = (key) => i18n.global.t(key);
+const props = withDefaults(
+  defineProps<{
+    conversation?: Conversation;
+    isSelected?: boolean;
+    isLoading?: boolean;
+  }>(),
+  {
+    conversation: undefined,
+    isSelected: false,
+    isLoading: false,
+  },
+);
+
+const t = (key: string) => i18n.global.t(key);
 
 const statusProps = computed(() => {
   const status = props.conversation.status;
@@ -114,16 +111,15 @@ const statusProps = computed(() => {
   };
 });
 
-const csatProps = computed(() => {
-  const csat = props.conversation.csat;
+const csatText = computed(() => {
+  if (!props.conversation.csat) return '';
 
-  return csat
-    ? {
-        text: i18n.global.t(
-          `agent_builder.supervisor.filters.csat.${props.conversation.csat}`,
-        ),
-      }
-    : null;
+  const csat = props.conversation.csat;
+  const csatTranslation = i18n.global.t(
+    `agent_builder.supervisor.filters.csat.${csat.id}`,
+  );
+
+  return `${csatTranslation} | CSAT: ${csat.score}`;
 });
 </script>
 
