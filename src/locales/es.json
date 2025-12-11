@@ -63,6 +63,7 @@
       },
       "contact_urn": "URN del contacto",
       "topic": "Tópico",
+      "conversation_details_collapse": "Detalles de la conversación",
       "view_logs": "Mostrar logs",
       "hide_logs": "Ocultar logs",
       "search": "Buscar",

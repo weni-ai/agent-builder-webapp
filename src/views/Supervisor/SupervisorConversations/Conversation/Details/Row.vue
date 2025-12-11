@@ -21,6 +21,13 @@ defineProps<{
 .details__row {
   text-align: left;
 
+  &:not(:last-of-type) {
+    > th,
+    > td {
+      padding-bottom: $unnnic-space-2;
+    }
+  }
+
   &-label {
     padding-right: $unnnic-space-2;
 
