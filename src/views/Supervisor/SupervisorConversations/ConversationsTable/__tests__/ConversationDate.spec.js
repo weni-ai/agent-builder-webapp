@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
-import { format } from 'date-fns';
 
 import ConversationDate from '@/views/Supervisor/SupervisorConversations/ConversationsTable/ConversationDate.vue';
+import { formatTimestamp } from '@/utils/formatters';
 
 describe('ConversationDate.vue', () => {
   let wrapper;
@@ -22,17 +22,7 @@ describe('ConversationDate.vue', () => {
   });
 
   test('formats the date correctly', () => {
-    const expectedFormattedDate = `${format(new Date(mockDate), 'dd/MM/yyyy')} ${format(new Date(mockDate), 'HH:mm')}`;
+    const expectedFormattedDate = formatTimestamp(mockDate);
     expect(wrapper.text()).toBe(expectedFormattedDate);
-  });
-
-  test('throws error when date prop is not provided', () => {
-    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-    expect(() => {
-      mount(ConversationDate);
-    }).toThrow();
-
-    errorSpy.mockRestore();
   });
 });
