@@ -138,54 +138,54 @@ const treatedMessage = computed(() => {
 
 <style lang="scss" scoped>
 .question-and-answer__message {
-  border-radius: $unnnic-border-radius-md;
+  border-radius: $unnnic-radius-3;
 
-  padding: $unnnic-spacing-ant;
+  padding: $unnnic-space-3;
 
   height: fit-content;
   width: fit-content;
 
-  font-family: $unnnic-font-family-secondary;
-  font-size: $unnnic-font-size-body-gt;
+  font: $unnnic-font-body;
+  color: $unnnic-color-fg-emphasized;
 
   display: flex;
   flex-direction: column;
-  gap: $unnnic-spacing-xs;
+  gap: $unnnic-space-2;
 
   &--neutral {
-    background-color: $unnnic-color-background-solo;
-    color: $unnnic-color-neutral-dark;
+    background-color: $unnnic-color-bg-soft;
+    color: $unnnic-color-fg-emphasized;
   }
 
   &--success {
-    background-color: $unnnic-color-weni-600;
-    color: $unnnic-color-neutral-white;
+    background-color: $unnnic-color-fg-active;
+    color: $unnnic-color-fg-inverted;
   }
 
   .message__image {
     max-width: 100%;
     height: auto;
     max-height: 400px;
-    border-radius: $unnnic-border-radius-md;
+    border-radius: $unnnic-radius-2;
     object-fit: cover;
   }
 
   .message__component {
-    margin-bottom: $unnnic-spacing-nano;
+    margin-bottom: $unnnic-space-1;
     cursor: not-allowed;
 
     &.quick-replies,
     &.list-message,
     &.catalog {
       :deep(button) {
-        background-color: $unnnic-color-neutral-soft;
-        color: $unnnic-color-neutral-clean;
+        background-color: $unnnic-color-gray-100;
+        color: $unnnic-color-gray-300;
         cursor: not-allowed;
         pointer-events: none;
 
         &:hover {
-          background-color: $unnnic-color-neutral-soft;
-          color: $unnnic-color-neutral-clean;
+          background-color: $unnnic-color-gray-100;
+          color: $unnnic-color-gray-300;
         }
       }
     }

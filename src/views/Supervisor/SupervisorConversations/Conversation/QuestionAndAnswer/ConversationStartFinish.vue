@@ -1,13 +1,8 @@
 <template>
   <section class="conversation-start-finish">
-    <UnnnicIntelligenceText
-      color="neutral-clean"
-      family="secondary"
-      size="body-md"
-      tag="p"
-    >
+    <p class="conversation-start-finish__text">
       {{ text }}
-    </UnnnicIntelligenceText>
+    </p>
   </section>
 </template>
 
@@ -44,6 +39,11 @@ const text = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: $unnnic-spacing-nano;
+  gap: $unnnic-space-1;
+
+  &__text {
+    font: $unnnic-font-caption-2;
+    color: $unnnic-color-fg-base;
+  }
 }
 </style>

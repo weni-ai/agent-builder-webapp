@@ -48,19 +48,15 @@
       class="conversations-table__empty"
     >
       <UnnnicIcon
-        icon="sms"
+        icon="chat_bubble"
         size="avatar-sm"
-        scheme="neutral-soft"
+        scheme="gray-100"
         filled
       />
 
-      <UnnnicIntelligenceText
-        color="neutral-cloudy"
-        family="secondary"
-        size="body-gt"
-      >
+      <p class="conversations-table__empty-title">
         {{ $t('agent_builder.supervisor.conversations_empty') }}
-      </UnnnicIntelligenceText>
+      </p>
     </section>
   </table>
 </template>
@@ -142,6 +138,11 @@ defineExpose({
     align-items: center;
 
     gap: $unnnic-spacing-nano;
+
+    &-title {
+      font: $unnnic-font-display-3;
+      color: $unnnic-color-gray-900;
+    }
   }
 }
 </style>

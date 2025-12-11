@@ -19,10 +19,9 @@ describe('NoMessagesFound.vue', () => {
   const pinia = createTestingPinia({ stubActions: false });
 
   const icon = () => wrapper.findComponent('[data-testid="no-messages-icon"]');
-  const title = () =>
-    wrapper.findComponent('[data-testid="no-messages-title"]');
+  const title = () => wrapper.find('[data-testid="no-messages-title"]');
   const description = () =>
-    wrapper.findComponent('[data-testid="no-messages-description"]');
+    wrapper.find('[data-testid="no-messages-description"]');
   const descriptionI18n = () =>
     wrapper.findComponent('[data-testid="no-messages-description-i18n"]');
   const studioLink = () => wrapper.find('[data-testid="studio-link"]');
@@ -56,17 +55,12 @@ describe('NoMessagesFound.vue', () => {
 
     it('renders the search_off icon with correct scheme', () => {
       expect(icon().exists()).toBe(true);
-      expect(icon().props('icon')).toBe('sms');
-      expect(icon().props('scheme')).toBe('neutral-soft');
+      expect(icon().props('icon')).toBe('chat_bubble');
+      expect(icon().props('scheme')).toBe('gray-100');
       expect(icon().classes()).toContain('no-messages-found__icon');
     });
 
     it('renders the title with correct translation key', () => {
-      expect(title().props('tag')).toBe('p');
-      expect(title().props('color')).toBe('neutral-cloudy');
-      expect(title().props('family')).toBe('secondary');
-      expect(title().props('size')).toBe('body-gt');
-      expect(title().props('weight')).toBe('regular');
       expect(title().classes()).toContain('no-messages-found__title');
     });
 
