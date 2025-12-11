@@ -7,9 +7,14 @@ import QuestionAndAnswer from '../index.vue';
 import Message from '../Message.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { processLog } from '@/utils/previewLogs';
+import { formatTimestamp } from '@/utils/formatters';
 
 vi.mock('@/utils/previewLogs', () => ({
   processLog: vi.fn(),
+}));
+
+vi.mock('@/utils/formatters', () => ({
+  formatTimestamp: vi.fn().mockReturnValue('00/00/00 00:00'),
 }));
 
 const mockProcessLog = vi.mocked(processLog);
@@ -42,11 +47,13 @@ describe('QuestionAndAnswer index.vue', () => {
     wrapper.find('[data-testid="forwarded-human-support"]');
   const questionMessage = () =>
     wrapper.findComponent('[data-testid="question"]');
+  const questionDate = () => wrapper.find('[data-testid="question-date"]');
   const answerSection = () => wrapper.find('[data-testid="answer"]');
   const answerMessages = () =>
     wrapper.findAllComponents('[data-testid="answer-text"]');
   const previewLogs = () =>
     wrapper.findComponent('[data-testid="preview-logs"]');
+  const answerDate = () => wrapper.find('[data-testid="answer-date"]');
   const viewLogsButton = () =>
     wrapper.findComponent('[data-testid="view-logs-button"]');
 
@@ -456,6 +463,34 @@ describe('QuestionAndAnswer index.vue', () => {
 
         resolveLoadLogs([]);
         await nextTick();
+      });
+    });
+
+    describe('Message date formatting', () => {
+      it('formats the question date correctly', () => {
+        const mockDate = '2021-01-01T00:00:00Z';
+        createWrapper({
+          data: {
+            source_type: 'user',
+            text: 'User question',
+            created_at: mockDate,
+          },
+        });
+
+        expect(questionDate().text()).toBe(formatTimestamp(mockDate));
+      });
+
+      it('formats the answer date correctly', () => {
+        const mockDate = '2021-01-01T00:00:00Z';
+        createWrapper({
+          data: {
+            source_type: 'agent',
+            text: 'Agent response',
+            created_at: mockDate,
+          },
+        });
+
+        expect(answerDate().text()).toBe(formatTimestamp(mockDate));
       });
     });
   });

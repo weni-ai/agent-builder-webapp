@@ -3,6 +3,10 @@ import { mount } from '@vue/test-utils';
 import ConversationDate from '@/views/Supervisor/SupervisorConversations/ConversationsTable/ConversationDate.vue';
 import { formatTimestamp } from '@/utils/formatters';
 
+vi.mock('@/utils/formatters', () => ({
+  formatTimestamp: vi.fn().mockReturnValue('00/00/00 00:00'),
+}));
+
 describe('ConversationDate.vue', () => {
   let wrapper;
   const mockDate = '2023-05-15T14:30:00Z';

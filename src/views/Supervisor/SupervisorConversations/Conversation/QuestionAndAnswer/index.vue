@@ -32,7 +32,14 @@
         <Message
           data-testid="question"
           :content="data"
-        />
+        >
+          <p
+            class="question-and-answer__question-date"
+            data-testid="question-date"
+          >
+            {{ formatTimestamp(data.created_at) }}
+          </p>
+        </Message>
       </section>
 
       <section
@@ -55,13 +62,22 @@
           :content="content"
           scheme="success"
         >
-          <ViewLogsButton
-            :disabled="loadingLogs"
-            :loading="loadingLogs"
-            :active="showLogs"
-            data-testid="view-logs-button"
-            @click="handleShowLogs"
-          />
+          <footer class="question-and-answer__answer-text-footer">
+            <p
+              class="question-and-answer__answer-date"
+              data-testid="answer-date"
+            >
+              {{ formatTimestamp(content?.created_at) }}
+            </p>
+
+            <ViewLogsButton
+              :disabled="loadingLogs"
+              :loading="loadingLogs"
+              :active="showLogs"
+              data-testid="view-logs-button"
+              @click="handleShowLogs"
+            />
+          </footer>
         </Message>
       </section>
     </template>
@@ -73,12 +89,13 @@ import { computed, ref, watch } from 'vue';
 
 import { useSupervisorStore } from '@/store/Supervisor';
 
+import { formatTimestamp } from '@/utils/formatters';
+
 import Message from './Message.vue';
 import PreviewLogs from '@/components/Preview/PreviewLogs.vue';
 import ForwardedHumanSupport from './ConversationStartFinish.vue';
 import AvatarLetter from '@/components/Supervisor/AvatarLetter.vue';
 import ViewLogsButton from './ViewLogsButton.vue';
-
 import { processLog } from '@/utils/previewLogs';
 
 const props = defineProps({
@@ -203,6 +220,12 @@ watch(
   &__question {
     display: flex;
     gap: $unnnic-spacing-xs;
+
+    &-date {
+      margin-top: calc(($unnnic-space-1 + $unnnic-space-05) * -1);
+      font: $unnnic-font-caption-1;
+      color: $unnnic-color-gray-500;
+    }
   }
 
   &__answer {
@@ -219,6 +242,16 @@ watch(
       padding: $unnnic-spacing-ant;
       background-color: $unnnic-color-weni-600;
       color: $unnnic-color-neutral-white;
+
+      &-footer {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+
+    &-date {
+      font: $unnnic-font-caption-1;
+      color: $unnnic-color-gray-100;
     }
 
     .answer__inspect-response {
