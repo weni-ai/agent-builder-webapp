@@ -12,7 +12,7 @@
   </UnnnicFormElement>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch, computed } from 'vue';
 import i18n from '@/utils/plugins/i18n';
 
@@ -20,32 +20,41 @@ import { useSupervisorStore } from '@/store/Supervisor';
 
 const supervisorStore = useSupervisorStore();
 
-const getCsatTranslation = (filter) =>
+const CSAT_SCALE = [
+  { value: 'very_satisfied', score: 5 },
+  { value: 'satisfied', score: 4 },
+  { value: 'neutral', score: 3 },
+  { value: 'dissatisfied', score: 2 },
+  { value: 'very_dissatisfied', score: 1 },
+] as const;
+
+type CsatScaleValue = (typeof CSAT_SCALE)[number]['value'];
+type CsatFilterValue = '' | CsatScaleValue;
+type SelectOption = {
+  label: string;
+  value: CsatFilterValue;
+};
+
+const translateCsat = (filter: string) =>
   i18n.global.t(`agent_builder.supervisor.filters.csat.${filter}`);
 
-const csatOptions = computed(() => [
-  { label: getCsatTranslation('csat'), value: '' },
-  ...[
-    'very_satisfied',
-    'satisfied',
-    'neutral',
-    'dissatisfied',
-    'very_dissatisfied',
-  ].map((value) => ({
-    label: getCsatTranslation(value),
+const csatOptions = computed<SelectOption[]>(() => [
+  { label: translateCsat('csat'), value: '' },
+  ...CSAT_SCALE.map(({ value, score }) => ({
+    label: `${translateCsat(value)} | CSAT: ${score}`,
     value,
   })),
 ]);
 
-const csatFilter = ref(
+const csatFilter = ref<SelectOption[]>(
   supervisorStore.getInitialSelectFilter('csat', csatOptions),
 );
 
 watch(
-  () => csatFilter.value,
-  () => {
-    supervisorStore.temporaryFilters.csat = csatFilter.value.map(
-      (csat) => csat?.value || '',
+  csatFilter,
+  (selected) => {
+    supervisorStore.temporaryFilters.csat = selected.map(
+      (option) => option?.value ?? '',
     );
   },
   { immediate: true, deep: true },

@@ -112,7 +112,7 @@ describe('PreviewStore', () => {
       });
     });
 
-    it('should return the manager when agent not found', () => {
+    it('should return only the task info when agent not found', () => {
       store.logs = [
         {
           type: 'trace_update',
@@ -124,7 +124,6 @@ describe('PreviewStore', () => {
         },
       ];
       expect(store.activeAgent).toEqual({
-        ...mockAgentsTeamStore.activeTeam.data.manager,
         currentTask: 'Task X',
       });
     });

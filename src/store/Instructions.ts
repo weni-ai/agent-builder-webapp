@@ -42,7 +42,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       classification: [],
       suggestion: '',
     },
-    suggestionApplied: false,
+    suggestionApplied: '',
     status: null,
   });
 
@@ -152,7 +152,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
         instruction,
         ...data,
       };
-      instructionSuggestedByAI.suggestionApplied = false;
+      instructionSuggestedByAI.suggestionApplied = '';
       instructionSuggestedByAI.status = 'complete';
     } catch (error) {
       instructionSuggestedByAI.status = 'error';
