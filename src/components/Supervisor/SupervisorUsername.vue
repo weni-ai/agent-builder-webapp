@@ -1,36 +1,30 @@
 <template>
-  <UnnnicIntelligenceText
+  <h3
     data-testid="supervisor-username"
     class="supervisor-username"
-    tag="h3"
-    color="neutral-darkest"
-    family="secondary"
-    :size="size"
-    weight="bold"
+    :class="`supervisor-username--${font}`"
   >
     {{ displayName }}
-  </UnnnicIntelligenceText>
+  </h3>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 
 import i18n from '@/utils/plugins/i18n';
 
-const props = defineProps({
-  username: {
-    type: String,
-    default: '',
+const props = withDefaults(
+  defineProps<{
+    username?: string;
+    fallbackKey?: string;
+    font?: 'action' | 'display-2';
+  }>(),
+  {
+    username: '',
+    fallbackKey: 'agent_builder.supervisor.unnamed_contact',
+    font: 'action',
   },
-  fallbackKey: {
-    type: String,
-    default: 'agent_builder.supervisor.unnamed_contact',
-  },
-  size: {
-    type: String,
-    default: 'body-gt',
-  },
-});
+);
 
 const displayName = computed(() => {
   return props.username || `[${i18n.global.t(props.fallbackKey)}]`;
@@ -42,5 +36,15 @@ const displayName = computed(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  color: $unnnic-color-fg-emphasized;
+
+  &--action {
+    font: $unnnic-font-action;
+  }
+
+  &--display-2 {
+    font: $unnnic-font-display-2;
+  }
 }
 </style>
