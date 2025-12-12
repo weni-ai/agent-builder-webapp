@@ -24,10 +24,8 @@
     </button>
 
     <section
-      :class="[
-        'agent-detail-modal__view-options-actions',
-        { 'agent-detail-modal__view-options-actions--expanded': isExpanded },
-      ]"
+      v-if="isExpanded"
+      :class="['agent-detail-modal__view-options-actions']"
       data-testid="agent-view-options-actions"
     >
       <UnnnicButton
@@ -86,9 +84,8 @@ async function handleRemoveAgent() {
 
 <style scoped lang="scss">
 .agent-detail-modal__view-options {
-  margin-top: $unnnic-space-6;
   padding-top: $unnnic-space-4;
-  border-top: $unnnic-border-width-thinner solid $unnnic-color-border-base;
+  border-top: 1px solid $unnnic-color-border-soft;
 
   display: flex;
   flex-direction: column;
@@ -103,9 +100,10 @@ async function handleRemoveAgent() {
   }
 
   &-icon {
+    margin: $unnnic-space-2;
+
     &--expanded {
       transform: rotate(90deg);
-      transition: transform 0.2s ease;
     }
   }
 
@@ -116,17 +114,6 @@ async function handleRemoveAgent() {
 
   &-actions {
     display: flex;
-
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.15s ease-out;
-
-    &--expanded {
-      max-height: 500px;
-      opacity: 1;
-      transition: max-height 0.25s ease-in;
-    }
   }
 
   &-action {
