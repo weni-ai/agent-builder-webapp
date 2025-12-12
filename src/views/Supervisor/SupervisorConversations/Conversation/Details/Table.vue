@@ -43,7 +43,7 @@ const formattedUrn = computed(() => formatWhatsappUrn(conversation.value?.urn));
 const formattedTopics = computed(() => {
   const { topics } = conversation.value || '';
 
-  if (topics.length === 0) return '-';
+  if (!topics || topics.length === 0) return '-';
   if (Array.isArray(topics)) return formatListToReadable(topics);
   return topics;
 });

@@ -2,6 +2,13 @@
   <section class="conversation-details">
     <DetailsTable :isCollapsed="isCollapsed" />
 
+    <UnnnicButton
+      type="secondary"
+      @click="goToStudio"
+    >
+      {{ $t('agent_builder.supervisor.view_full_history') }}
+    </UnnnicButton>
+
     <button
       class="conversation-details__collapse-button"
       @click="isCollapsed = !isCollapsed"
@@ -24,10 +31,22 @@
 </template>
 
 <script setup lang="ts">
-import DetailsTable from './Table.vue';
 import { ref } from 'vue';
 
+import { useProjectStore } from '@/store/Project';
+
+import env from '@/utils/env';
+
+import DetailsTable from './Table.vue';
+
 const isCollapsed = ref(true);
+
+function goToStudio() {
+  window.open(
+    `${env('CONNECT_URL')}/projects/${useProjectStore().uuid}/studio/contact`,
+    '_blank',
+  );
+}
 </script>
 
 <style scoped lang="scss">
