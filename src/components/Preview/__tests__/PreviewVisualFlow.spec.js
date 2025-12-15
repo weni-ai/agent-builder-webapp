@@ -80,8 +80,8 @@ describe('PreviewVisualFlow.vue', () => {
     const manager = managerCard();
     expect(manager.props()).toEqual({
       name: 'Manager',
-      active: true,
-      currentTask: undefined,
+      active: false,
+      currentTask: 'Standby',
       icon: undefined,
       bubbleDirection: 'bounce',
       type: 'manager',

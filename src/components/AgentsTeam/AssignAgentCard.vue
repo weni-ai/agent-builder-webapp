@@ -23,16 +23,12 @@
       />
 
       <header class="assign-agent-card__header">
-        <UnnnicIntelligenceText
-          tag="p"
-          family="secondary"
-          size="body-gt"
-          color="neutral-darkest"
-          weight="bold"
+        <p
+          class="assign-agent-card__title"
           data-testid="title"
         >
           {{ agent.name }}
-        </UnnnicIntelligenceText>
+        </p>
 
         <section
           v-if="shouldShowActions"
@@ -45,9 +41,9 @@
             class="assign-agent-card__action"
             data-testid="loading-icon"
           />
-          <!-- v-show used instead of v-else to prevent ContentItemActions popover rendering error -->
+
           <section
-            v-show="!isToggleAgentAssignmentLoading"
+            v-if="!isToggleAgentAssignmentLoading"
             class="assign-agent-card__action"
             data-testid="content-item-actions-content"
           >
@@ -267,7 +263,8 @@ async function toggleDrawerAssigning() {
     gap: $unnnic-space-2;
 
     .assign-agent-card__icon {
-      width: $unnnic-icon-size-xl;
+      padding: 6px;
+      width: 48px;
       height: auto;
       aspect-ratio: 1/1;
 
@@ -285,6 +282,11 @@ async function toggleDrawerAssigning() {
 
       grid-column: 2 / 5;
       grid-row: 1 / 2;
+
+      .assign-agent-card__title {
+        color: $unnnic-color-fg-emphasized;
+        font: $unnnic-font-display-3;
+      }
 
       .assign-agent-card__tag {
         grid-row: 2 / 3;
