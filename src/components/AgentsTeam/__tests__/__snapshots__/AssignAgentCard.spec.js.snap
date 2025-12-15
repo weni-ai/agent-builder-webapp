@@ -202,6 +202,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
       <!---->
     </button>
     
+    <!--v-if-->
     
   </section>
   <assign-agent-drawer-stub
