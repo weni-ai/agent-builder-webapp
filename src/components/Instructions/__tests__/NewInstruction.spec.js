@@ -6,14 +6,6 @@ import i18n from '@/utils/plugins/i18n';
 import { createTestingPinia } from '@pinia/testing';
 import { useInstructionsStore } from '@/store/Instructions';
 
-vi.mock('@/store/FeatureFlags', () => ({
-  useFeatureFlagsStore: () => ({
-    flags: {
-      instructionsValidatedByAI: true,
-    },
-  }),
-}));
-
 describe('NewInstruction.vue', () => {
   let wrapper;
   let instructionsStore;
