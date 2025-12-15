@@ -59,10 +59,10 @@ describe('PreviewAgentCard.vue', () => {
   });
 
   describe('icon rendering', () => {
-    it('should render manager icon when type is manager', () => {
+    it('should not render any icon when type is manager', () => {
       wrapper = createWrapper({ type: 'manager' });
 
-      expect(managerCardIcon().exists()).toBe(true);
+      expect(managerCardIcon().exists()).toBe(false);
       expect(agentCardIcon().exists()).toBe(false);
     });
 
