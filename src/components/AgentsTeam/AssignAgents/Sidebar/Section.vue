@@ -24,12 +24,13 @@ defineProps<{
 .assign-agents-sidebar__section {
   display: flex;
   flex-direction: column;
-  gap: $unnnic-space-2;
+  gap: $unnnic-space-05;
 
   &-title {
     color: $unnnic-color-fg-muted;
     font: $unnnic-font-caption-2;
     margin-left: $unnnic-space-3;
+    margin-bottom: calc($unnnic-space-2 - $unnnic-space-05);
   }
 }
 </style>
