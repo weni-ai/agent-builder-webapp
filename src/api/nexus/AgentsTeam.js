@@ -42,9 +42,13 @@ export const AgentsTeam = {
     };
   },
 
-  async listOfficialAgents2() {
+  async listOfficialAgents2({ category, group, system, name }) {
     const params = cleanParams({
       project_uuid: projectUuid.value,
+      category,
+      group,
+      system,
+      name,
     });
 
     const { data } = await request.$http.get('/api/v1/official/agents', {

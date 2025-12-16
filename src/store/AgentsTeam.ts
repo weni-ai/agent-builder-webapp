@@ -66,14 +66,26 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
   }
 
-  async function loadOfficialAgents({ search = '' } = {}) {
+  async function loadOfficialAgents(
+    { search, category, group, system } = {
+      search: '',
+      category: '',
+      group: '',
+      system: '',
+    },
+  ) {
     try {
       officialAgents.status = 'loading';
 
       let response: AgentGroupOrAgent[] = [];
 
       if (assignAgentsView) {
-        response = await nexusaiAPI.router.agents_team.listOfficialAgents2();
+        response = await nexusaiAPI.router.agents_team.listOfficialAgents2({
+          category,
+          group,
+          system,
+          name: search,
+        });
       } else {
         const { data } = await nexusaiAPI.router.agents_team.listOfficialAgents(
           {

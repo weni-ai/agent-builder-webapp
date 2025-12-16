@@ -21,7 +21,7 @@
 
 <script setup>
 import AgentCard from '@/components/AgentsTeam/AgentCard.vue';
-import AssignAgentCard from './AssignAgentCard.vue';
+import AssignAgentCard from '../AssignAgentCard.vue';
 
 defineProps({
   agents: {

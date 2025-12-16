@@ -269,7 +269,23 @@
       "title": "Atribuir agentes",
       "description": "Agentes são especialistas prontos para fornecer suporte personalizado e resolver demandas complexas, atuando como consultores verdadeiros, garantindo uma experiência humana e de alta qualidade para seus clientes.",
       "assign_button": "Atribuir agente",
-      "already_assigned": "Agente já atribuído"
+      "already_assigned": "Agente já atribuído",
+      "filters": {
+        "search": {
+          "placeholder": "Buscar"
+        },
+        "category": {
+          "placeholder": "Categorias",
+          "product_discovery_and_recommendations": "Descoberta e recomendações de produtos",
+          "orders_status_and_tracking": "Status e rastreamento de pedidos",
+          "returns_exchanges_and_cancellations": "Devoluções, trocas e cancelamentos",
+          "payments_and_checkout": "Pagamentos e finalização de compra",
+          "crm_and_lead_capture": "CRM e captura de leads",
+          "feedback_and_surveys": "Comentários e enquetes",
+          "utilities_and_monitoring": "Utilitários e monitoramento",
+          "others": "Outros"
+        }
+      }
     }
   },
   "router": {
