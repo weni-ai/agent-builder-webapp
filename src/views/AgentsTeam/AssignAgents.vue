@@ -1,8 +1,9 @@
 <template>
   <section class="assign-agents">
     <aside>TODO: SIDEBAR</aside>
+
     <section class="assign-agents__content">
-      <header>TODO: HEADER</header>
+      <AssignAgentsHeader />
 
       <AgentsListFilters />
 
@@ -21,6 +22,7 @@ import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
 import AgentsList from '@/components/AgentsTeam/AssignAgents/AgentsList/index.vue';
 import AgentsListFilters from '@/components/AgentsTeam/AssignAgents/AgentsList/Filters.vue';
+import AssignAgentsHeader from '@/components/AgentsTeam/AssignAgents/AssignAgentsHeader.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const officialAgents = agentsTeamStore.officialAgents;

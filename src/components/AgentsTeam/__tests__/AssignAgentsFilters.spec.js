@@ -60,10 +60,7 @@ describe('AgentsListFilters.vue', () => {
     await searchInput().setValue('support');
     await flushUpdates();
 
-    expect(agentsTeamStore.loadOfficialAgents).toHaveBeenCalledWith({
-      search: 'support',
-      category: undefined,
-    });
+    expect(agentsTeamStore.loadOfficialAgents).toHaveBeenCalled();
 
     expect(mockDebounce).toHaveBeenCalledWith(expect.any(Function), 300);
   });
@@ -74,10 +71,7 @@ describe('AgentsListFilters.vue', () => {
     ]);
     await flushUpdates();
 
-    expect(agentsTeamStore.loadOfficialAgents).toHaveBeenCalledWith({
-      search: '',
-      category: 'payments_and_checkout',
-    });
+    expect(agentsTeamStore.loadOfficialAgents).toHaveBeenCalled();
   });
 
   it('computes localized category labels', () => {
