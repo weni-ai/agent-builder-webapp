@@ -3,6 +3,8 @@ export type AgentGroupID = 'CONCIERGE';
 export type AgentCategory = 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS';
 export type AgentSystem = 'VTEX' | 'SYNERISE';
 
+export type ConciergeVariant = 'DEFAULT' | 'TRADE_POLICY' | 'META_CATALOG';
+
 export interface AgentSkill {
   icon?: string;
   name: string;
@@ -24,6 +26,8 @@ export interface AgentGroup {
   type: AgentGroupType;
   id: AgentGroupID;
   category: AgentCategory;
+  group: AgentGroupID;
+  variant: ConciergeVariant | string;
   systems: AgentSystem[];
   assigned: boolean;
   icon: string;
