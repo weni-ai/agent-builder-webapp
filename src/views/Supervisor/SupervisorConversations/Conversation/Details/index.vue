@@ -3,6 +3,7 @@
     <DetailsTable :isCollapsed="isCollapsed" />
 
     <UnnnicButton
+      v-if="!isCollapsed"
       type="secondary"
       @click="goToStudio"
     >
