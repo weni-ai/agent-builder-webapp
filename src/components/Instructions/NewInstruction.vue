@@ -14,7 +14,6 @@
         {{ $t('agent_builder.instructions.new_instruction.title') }}
       </h2>
       <UnnnicSwitch
-        v-if="featureFlagsStore.flags.instructionsValidatedByAI"
         data-testid="new-instruction-switch-validate-instruction-by-ai"
         :modelValue="instructionsStore.validateInstructionByAI"
         :textRight="
@@ -60,12 +59,10 @@ import { computed, ref } from 'vue';
 import i18n from '@/utils/plugins/i18n';
 
 import { useInstructionsStore } from '@/store/Instructions';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 import ModalValidateInstruction from './ModalValidateInstruction/index.vue';
 
 const instructionsStore = useInstructionsStore();
-const featureFlagsStore = useFeatureFlagsStore();
 
 const showValidateInstructionByAIModal = ref(false);
 

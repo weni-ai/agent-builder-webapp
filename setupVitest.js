@@ -84,6 +84,29 @@ const unnnicTooltipStub = {
   template: `<div><slot /></div>`,
 };
 
+const ContentItemActionsStub = {
+  name: 'ContentItemActionsStub',
+  props: {
+    actions: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  template: `
+    <div v-bind="$attrs">
+      <button
+        v-for="(action, index) in actions"
+        :key="index"
+        type="button"
+        :data-test="action.text"
+        @click="action.onClick()"
+      >
+        {{ action.text }}
+      </button>
+    </div>
+  `,
+};
+
 config.global.plugins = [i18n, UnnnicSystemPlugin];
 config.global.components = {
   UnnnicDivider,
@@ -98,6 +121,7 @@ config.global.stubs = {
   UnnnicToolTip: unnnicTooltipStub,
   UnnnicDrawer: unnnicDrawerStub,
   UnnnicDrawerNext: unnnicDrawerNextStub,
+  ContentItemActions: ContentItemActionsStub,
 };
 
 // Mock lodash.debounce
