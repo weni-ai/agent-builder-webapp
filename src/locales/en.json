@@ -297,6 +297,22 @@
           "utilities_and_monitoring": "Utilities and monitoring",
           "others": "Others"
         }
+      },
+      "empty_states": {
+        "search": {
+          "title": "No results found",
+          "description": "Your search didn’t return any results."
+        },
+        "filters": {
+          "title": "No results found",
+          "description": "Your filters didn’t return any results."
+        },
+        "custom": {
+          "title": "No custom agents found",
+          "description": "Custom agents are created using the Weni CLI.",
+          "see_documentation": "See the {weni_cli_documentation} for detailed instructions",
+          "weni_cli_documentation": "Weni CLI documentation"
+        }
       }
     }
   },
