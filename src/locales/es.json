@@ -306,7 +306,8 @@
       "card": {
         "assign": "Asignar al equipo",
         "assigned": "Asignado",
-        "success_assign_alert": "{agent} asignado al equipo con éxito",
+        "success_assign_alert": "{agent} asignado",
+        "success_assign_alert_description": "El agente está listo para usar",
         "success_unassign_alert": "{agent} removido del equipo con éxito",
         "error_alert": "Error al actualizar equipo",
         "official": "Oficial",

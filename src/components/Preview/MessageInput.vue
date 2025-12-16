@@ -8,7 +8,8 @@
         data-test="content-item-actions"
         triggerIcon="add"
         triggerSize="md"
-        popoverPositionHorizontal="left-left"
+        align="start"
+        side="top"
         :actions="attachActions"
       />
 
