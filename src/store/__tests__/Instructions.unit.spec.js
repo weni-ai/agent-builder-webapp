@@ -23,14 +23,6 @@ vi.mock('@/store/Project', () => ({
   useProjectStore: () => ({ uuid: 'test-project-uuid' }),
 }));
 
-vi.mock('@/store/FeatureFlags', () => ({
-  useFeatureFlagsStore: () => ({
-    flags: {
-      instructionsValidatedByAI: true,
-    },
-  }),
-}));
-
 vi.mock('@/utils/storage', () => ({
   moduleStorage: {
     getItem: vi.fn(),

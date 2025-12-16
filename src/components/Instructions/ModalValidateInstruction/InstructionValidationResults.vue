@@ -58,7 +58,7 @@ const classification = computed<{
 
   const titleMappings = {
     duplicate: getTranslation('duplicate'),
-    conflict: getTranslation('conflicts'),
+    conflicting: getTranslation('conflicts'),
     ambiguity: getTranslation('ambiguity'),
     lack_of_clarity: getTranslation('lack_of_clarity'),
   };
