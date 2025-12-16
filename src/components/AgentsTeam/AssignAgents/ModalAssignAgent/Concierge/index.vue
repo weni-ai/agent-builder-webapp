@@ -9,6 +9,11 @@
     />
   </UnnnicDialogHeader>
 
+  <component
+    :is="stepComponents[step]"
+    v-bind="currentStepProps"
+  />
+
   <UnnnicDialogFooter>
     <UnnnicButton
       :text="step === 1 ? 'Cancel' : 'Back'"
@@ -26,13 +31,20 @@
 </template>
 
 <script setup lang="ts">
-import { AgentGroupOrAgent } from '@/store/types/Agents.types';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+
+import FirstStepContent from './FirstStepContent.vue';
+
+import {
+  AgentGroup,
+  AgentSystem,
+  ConciergeVariant,
+} from '@/store/types/Agents.types';
 
 const emit = defineEmits(['update:open']);
 
-defineProps<{
-  agent: AgentGroupOrAgent;
+const props = defineProps<{
+  agent: AgentGroup;
 }>();
 
 defineModel('open', {
@@ -42,6 +54,40 @@ defineModel('open', {
 
 const step = ref<number>(1);
 const TOTAL_STEPS = 3;
+
+const config = ref<{
+  system: AgentSystem;
+  variant: {
+    type: ConciergeVariant | '';
+    config: null;
+  };
+  credentials: string[];
+}>({
+  system: 'VTEX',
+  variant: {
+    type: '',
+    config: null,
+  },
+  credentials: [],
+});
+
+const stepComponents = {
+  1: FirstStepContent,
+  // 2: SecondStepContent,
+  // 3: ThirdStepContent,
+};
+
+const currentStepProps = computed(() => {
+  if (step.value !== 1) return {};
+
+  return {
+    systems: props.agent.systems,
+    selectedSystem: config.value.system,
+    'onUpdate:selectedSystem': (nextSystem: AgentSystem) => {
+      config.value.system = nextSystem;
+    },
+  };
+});
 
 function closeModal() {
   emit('update:open', false);

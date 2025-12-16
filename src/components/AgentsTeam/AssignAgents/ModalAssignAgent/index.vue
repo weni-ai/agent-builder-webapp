@@ -33,7 +33,7 @@ import { Component, ref } from 'vue';
 import { AgentGroup } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
-import ModalAssignConciergeContent from './Concierge.vue';
+import ModalAssignConciergeContent from './Concierge/index.vue';
 
 const emit = defineEmits(['update:open']);
 
