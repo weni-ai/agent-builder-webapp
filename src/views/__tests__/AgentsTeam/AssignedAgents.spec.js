@@ -79,12 +79,12 @@ describe('AssignedAgents.vue', () => {
     });
   });
 
-  describe.skip('Loading state', () => {
+  describe('Loading state', () => {
     it('should render loading cards when team is loading', async () => {
       agentsTeamStore.activeTeam.status = 'loading';
       await nextTick();
 
-      expect(loadingCards().length).toBe(3);
+      expect(loadingCards().length).toBe(6);
     });
 
     it('should not render empty state when loading', async () => {
