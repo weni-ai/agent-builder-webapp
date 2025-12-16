@@ -6,6 +6,9 @@ import nexusaiAPI from '@/api/nexusaiAPI.js';
 import { useAlertStore } from './Alert';
 import agentIconService from '@/utils/agentIconService';
 
+// @ts-expect-error - unnnicToastManager is not typed
+import { unnnicToastManager } from '@weni/unnnic-system';
+
 import i18n from '@/utils/plugins/i18n';
 
 import { useFeatureFlagsStore } from './FeatureFlags';
@@ -148,17 +151,18 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
         );
       }
 
-      alertStore.add({
-        text: i18n.global.t(
-          is_assigned
-            ? 'router.agents_team.card.success_assign_alert'
-            : 'router.agents_team.card.success_unassign_alert',
+      const cardText = (key: string, options?: Record<string, string>) =>
+        i18n.global.t(`router.agents_team.card.${key}`, options);
+
+      unnnicToastManager.success(
+        cardText(
+          is_assigned ? 'success_assign_alert' : 'success_unassign_alert',
           {
             agent: agent.name,
           },
         ),
-        type: 'success',
-      });
+        is_assigned ? cardText('success_assign_alert_description') : undefined,
+      );
 
       return {
         status: 'success',
