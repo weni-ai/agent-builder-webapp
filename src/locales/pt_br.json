@@ -328,7 +328,8 @@
       "card": {
         "assign": "Atribuir ao time",
         "assigned": "Atribuído",
-        "success_assign_alert": "{agent} atribuído ao time com sucesso",
+        "success_assign_alert": "{agent} atribuído",
+        "success_assign_alert_description": "O agente está pronto para usar",
         "success_unassign_alert": "{agent} removido do time com sucesso",
         "error_alert": "Erro ao atualizar time",
         "official": "Oficial",

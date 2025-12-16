@@ -3,7 +3,8 @@
     class="test-agents-button"
     data-testid="test-agents-button"
     type="primary"
-    iconLeft="chat"
+    iconLeft="play_arrow"
+    iconsFilled
     @click="handleTestAgents"
   >
     {{ $t('router.preview.trigger') }}

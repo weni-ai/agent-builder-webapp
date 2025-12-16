@@ -136,7 +136,7 @@ const statusDescription = (message) => {
   &__answer,
   &__order {
     max-width: 75%;
-    color: $unnnic-color-neutral-dark;
+    color: $unnnic-color-fg-emphasized;
 
     border-radius: $unnnic-radius-3;
     padding: $unnnic-spacing-ant;
@@ -147,10 +147,7 @@ const statusDescription = (message) => {
     }
 
     &__content {
-      font-family: $unnnic-font-family-secondary;
-      font-size: $unnnic-font-size-body-gt;
-      line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
-      font-weight: $unnnic-font-weight-regular;
+      font: $unnnic-font-body;
     }
 
     :deep(p) {
@@ -162,14 +159,14 @@ const statusDescription = (message) => {
   &__question,
   &__order {
     align-self: self-end;
-    color: $unnnic-color-neutral-white;
-    background-color: $unnnic-color-weni-600;
+    color: $unnnic-color-fg-inverted;
+    background-color: $unnnic-color-bg-active;
     margin-left: 1.875 * $unnnic-font-size;
   }
 
   &__answer {
     align-self: self-start;
-    background-color: $unnnic-color-background-solo;
+    background-color: $unnnic-color-bg-soft;
     margin-right: 1.875 * $unnnic-font-size;
   }
 

@@ -23,14 +23,11 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
         data-v-8d850a92=""
       >
         <p
-          class="unnnic-text unnnic-text--size-body-gt unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-bold unnnic-text--color-neutral-darkest"
+          class="agent-card__title"
           data-testid="title"
           data-v-8d850a92=""
-          data-v-ec8da4ad=""
         >
-          
           Test Title
-          
         </p>
         <section
           class="agent-card__actions"
@@ -39,76 +36,25 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
         >
           
           <!--v-if-->
-          <!-- v-show used instead of v-else to prevent ContentItemActions popover rendering error -->
           <section
-            class="agent-card__action"
+            class="assign-agent-card__action"
             data-testid="content-item-actions-content"
             data-v-b58c7d6a=""
           >
-            <section
-              class="content-item-actions"
+            <div
               data-testid="content-item-actions"
-              data-v-90d29858=""
               data-v-b58c7d6a=""
+              minwidth="auto"
             >
               
-              
-              <span
-                class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--neutral-cloudy unnnic-icon-size--avatar-nano unnnic-icon__size--avatar-nano button-menu"
-                data-testid="content-item-actions"
-                data-v-69390f82=""
-                data-v-90d29858=""
-                translate="no"
+              <button
+                data-test="Delete agent"
+                type="button"
               >
-                more_vert
-              </span>
+                Delete agent
+              </button>
               
-              <div
-                to="[object HTMLElement]"
-              >
-                
-                
-                <section
-                  class="options"
-                  data-v-90d29858=""
-                  horizontal="right-right"
-                  popoverid="unnnic-popover-100000000"
-                  style="min-width: auto;"
-                  trigger="click"
-                  vertical="top-bottom"
-                >
-                  
-                  <section
-                    class="options__option"
-                    data-test="Delete agent"
-                    data-v-90d29858=""
-                  >
-                    <span
-                      class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--aux-red-500 unnnic-icon-size--sm unnnic-icon__size--sm"
-                      data-testid="material-icon"
-                      data-v-69390f82=""
-                      data-v-90d29858=""
-                      translate="no"
-                    >
-                      delete
-                    </span>
-                    <p
-                      class="unnnic-text unnnic-text--size-body-md unnnic-text--line-height-md unnnic-text--family-secondary unnnic-text--weight-regular unnnic-text--color-aux-red-500 content-item-actions__option-text content-item-actions__option-text"
-                      data-v-90d29858=""
-                      data-v-ec8da4ad=""
-                    >
-                      
-                      Delete agent
-                      
-                    </p>
-                  </section>
-                  
-                </section>
-                
-                
-              </div>
-              
-            </section>
+            </div>
           </section>
           
         </section>
