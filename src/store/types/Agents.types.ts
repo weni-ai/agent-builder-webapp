@@ -51,5 +51,5 @@ type SelectOption = {
 export type AssignAgentsFilters = {
   search: string;
   category: SelectOption[] | [];
-  system: SelectOption | null;
+  system: AgentSystem | 'ALL_OFFICIAL' | 'ALL_CUSTOM' | '';
 };

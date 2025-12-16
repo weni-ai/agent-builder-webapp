@@ -16,7 +16,7 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import i18n from '@/utils/plugins/i18n';
@@ -32,10 +32,14 @@ const availableAgentsCount = computed(
 );
 
 const headerTitle = computed(() => {
-  const systemLabel = assignAgentsFilters.value.system?.label;
+  const systemLabel = assignAgentsFilters.value.system;
 
-  if (!systemLabel) {
-    return t('agents.assign_agents.header.title');
+  if (systemLabel === 'ALL_OFFICIAL') {
+    return t('agents.assign_agents.header.all_systems');
+  }
+
+  if (systemLabel === 'ALL_CUSTOM') {
+    return t('agents.assign_agents.header.all_custom_agents');
   }
 
   return t('agents.assign_agents.header.system_title', {
@@ -61,6 +65,8 @@ const availableAgentsText = computed(() =>
   display: flex;
   flex-direction: column;
   gap: $unnnic-space-1;
+
+  margin-top: $unnnic-space-6;
 
   &__title {
     color: $unnnic-color-fg-emphasized;

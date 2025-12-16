@@ -20,7 +20,7 @@ const mountHeader = (stateOverrides = {}) => {
         assignAgentsFilters: {
           search: '',
           category: [],
-          system: null,
+          system: 'ALL_OFFICIAL',
         },
         ...stateOverrides,
       },
@@ -44,7 +44,7 @@ describe('AssignAgentsHeader', () => {
 
     expect(
       wrapper.find('[data-testid="assign-agents-header-title"]').text(),
-    ).toBe(i18n.global.t('agents.assign_agents.header.title'));
+    ).toBe(i18n.global.t('agents.assign_agents.header.all_systems'));
   });
 
   it('renders the system specific title when a system label is provided', () => {
@@ -53,9 +53,7 @@ describe('AssignAgentsHeader', () => {
       assignAgentsFilters: {
         search: '',
         category: [],
-        system: {
-          label: systemLabel,
-        },
+        system: systemLabel,
       },
     });
 

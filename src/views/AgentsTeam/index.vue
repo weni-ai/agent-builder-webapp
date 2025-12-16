@@ -62,7 +62,6 @@ const headerActions = computed(() => {
 section.view-agents {
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: $unnnic-space-4;
   height: 100%;
 }
 </style>
