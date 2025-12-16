@@ -21,10 +21,10 @@
         class="agent-card__action"
         data-testid="loading-icon"
       />
-      <!-- v-show used instead of v-else to prevent ContentItemActions popover rendering error -->
+
       <section
-        v-show="!isToggleAgentAssignmentLoading"
-        class="agent-card__action"
+        v-if="!isToggleAgentAssignmentLoading"
+        class="assign-agent-card__action"
         data-testid="content-item-actions-content"
       >
         <ContentItemActions

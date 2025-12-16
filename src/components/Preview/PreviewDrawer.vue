@@ -117,6 +117,8 @@ function refreshPreview() {
     display: grid;
     grid-template-columns: 1fr 1fr;
 
+    overflow: hidden;
+
     .content__preview {
       overflow: hidden;
 
