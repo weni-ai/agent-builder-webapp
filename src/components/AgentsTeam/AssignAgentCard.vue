@@ -5,6 +5,9 @@
     :agent="agent"
     :tags="agent.skills"
     :assignment="assignment"
+    :newAgentHighlight="
+      agent.uuid === agentsTeamStore.newAgentAssigned?.uuid && !assignment
+    "
     :loading="loading"
     @agent-assigned="emit('agent-assigned')"
   >

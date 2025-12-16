@@ -58,6 +58,8 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
   const isAgentsGalleryOpen = ref(false);
 
+  const newAgentAssigned = ref<Agent | null>(null);
+
   async function loadActiveTeam() {
     try {
       activeTeam.status = 'loading';
@@ -166,7 +168,11 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       agent.assigned = data.assigned;
 
       if (is_assigned) {
+        newAgentAssigned.value = agent;
         activeTeam.data.agents.push(agent);
+        if (router.currentRoute.value.name !== 'agents-team') {
+          router.push({ name: 'agents-team' });
+        }
       } else {
         activeTeam.data.agents = activeTeam.data.agents.filter(
           (agent) => agent.uuid !== uuid,
@@ -244,6 +250,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   }
 
   return {
+    newAgentAssigned,
     linkToCreateAgent,
     activeTeam,
     officialAgents,
