@@ -21,9 +21,10 @@
         class="agent-card__action"
         data-testid="loading-icon"
       />
+
       <section
         v-if="!isToggleAgentAssignmentLoading"
-        class="agent-card__action"
+        class="assign-agent-card__action"
         data-testid="content-item-actions-content"
       >
         <ContentItemActions

@@ -23,10 +23,9 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
         data-v-8d850a92=""
       >
         <p
-          class="assign-agent-card__title"
+          class="agent-card__title"
           data-testid="title"
           data-v-8d850a92=""
-          data-v-ec8da4ad=""
         >
           Test Title
         </p>
@@ -38,7 +37,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
           
           <!--v-if-->
           <section
-            class="agent-card__action"
+            class="assign-agent-card__action"
             data-testid="content-item-actions-content"
             data-v-b58c7d6a=""
           >
@@ -149,6 +148,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
       <!---->
     </button>
     
+    <!--v-if-->
     
   </section>
   <assign-agent-drawer-stub
