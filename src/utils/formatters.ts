@@ -75,8 +75,8 @@ export function formatTimestamp(timestamp: string) {
 
   if (Number.isNaN(parsedDate.getTime())) return '';
 
-  const dateLocale = DATE_LOCALE_MAP[locale];
-  const displayPattern = DATE_PATTERN_MAP[locale];
+  const dateLocale = DATE_LOCALE_MAP[locale] || enUS;
+  const displayPattern = DATE_PATTERN_MAP[locale] || FALLBACK_PATTERN;
 
   return format(parsedDate, displayPattern, { locale: dateLocale });
 }
