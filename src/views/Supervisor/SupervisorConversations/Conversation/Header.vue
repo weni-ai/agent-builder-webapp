@@ -15,7 +15,8 @@
         @click="supervisorStore.selectConversation(null)"
       />
     </section>
-    <DetailsTable />
+
+    <Details />
   </header>
 </template>
 
@@ -25,7 +26,7 @@ import { computed } from 'vue';
 import { useSupervisorStore } from '@/store/Supervisor';
 
 import SupervisorUsername from '@/components/Supervisor/SupervisorUsername.vue';
-import DetailsTable from './Details/Table.vue';
+import Details from './Details/index.vue';
 
 const supervisorStore = useSupervisorStore();
 const conversation = computed(() => supervisorStore.selectedConversation);
