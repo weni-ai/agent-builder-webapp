@@ -61,7 +61,8 @@
         "start": "Conversación iniciada: {datetime}",
         "finish": "Conversación finalizada: {datetime}"
       },
-      "contact_urn": "URN del contacto: {urn}",
+      "contact_urn": "URN del contacto",
+      "topic": "Tópico",
       "view_logs": "Mostrar logs",
       "hide_logs": "Ocultar logs",
       "search": "Buscar",
