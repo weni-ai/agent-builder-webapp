@@ -28,12 +28,13 @@
 </template>
 
 <script setup lang="ts">
-import { Component, ref } from 'vue';
+import { Component, onMounted, ref, watch } from 'vue';
 
 import { AgentGroup } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import ModalAssignConciergeContent from './Concierge/index.vue';
+import nexusaiAPI from '@/api/nexusaiAPI';
 
 const emit = defineEmits(['update:open']);
 
@@ -62,4 +63,15 @@ function closeAgentModal() {
     groupModalComponent.value = null;
   }, 100);
 }
+
+watch(
+  () => props.agent,
+  async () => {
+    console.log('props.agent', props.agent);
+    const { data } = await nexusaiAPI.router.agents_team.getAgentDetails(
+      props.agent.uuid,
+    );
+    console.log(data);
+  },
+);
 </script>
