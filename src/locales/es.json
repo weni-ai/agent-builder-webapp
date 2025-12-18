@@ -267,6 +267,10 @@
         "description": "Agrega tu primer agente para empezar a manejar consultas de productos, pedidos y más.",
         "assign_agents_button": "Asignar tu primer agente"
       }
+    },
+    "assign_agents": {
+      "title": "Asignar agentes",
+      "description": "Los agentes son especialistas listos para proporcionar soporte personalizado y resolver demandas complejas, actúan como consultores verdaderos, garantizando una experiencia humana y de alta calidad para sus clientes."
     }
   },
   "router": {
