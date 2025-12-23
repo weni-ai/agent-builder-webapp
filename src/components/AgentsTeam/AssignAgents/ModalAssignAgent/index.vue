@@ -4,7 +4,7 @@
     :open="open"
     @update:open="closeAgentModal"
   >
-    <UnnnicDialogContent>
+    <UnnnicDialogContent size="large">
       <template v-if="groupModalComponent">
         <component
           :is="groupModalComponent"

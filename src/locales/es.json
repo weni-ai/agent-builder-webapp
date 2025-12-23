@@ -321,7 +321,28 @@
         }
       },
       "setup": {
-        "about": "Sobre"
+        "about": "Sobre",
+        "mcps_available": {
+          "title": "MCPs disponibles",
+          "concierge_mcps": [
+            {
+              "name": "Default",
+              "description": "Catálogo/Búsqueda + Precio base + Inventario"
+            },
+            {
+              "name": "Marketplace",
+              "description": "Consulta de vendedores y reglas de puja"
+            },
+            {
+              "name": "Regionalization",
+              "description": "Búsqueda de productos por región y ubicación"
+            },
+            {
+              "name": "Trade Policy",
+              "description": "Soporte para múltiples políticas comerciales B2B"
+            }
+          ]
+        }
       }
     }
   },
