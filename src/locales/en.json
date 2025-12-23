@@ -338,7 +338,8 @@
               "description": "Support for multiple B2B commercial policies"
             }
           ]
-        }
+        },
+        "start_button": "Start setup"
       }
     }
   },

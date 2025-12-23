@@ -22,7 +22,7 @@
 
         <UnnnicDialogFooter>
           <UnnnicButton
-            text="Start Setup"
+            :text="$t('agents.assign_agents.setup.start_button')"
             data-testid="next-button"
             @click="openAgentModal"
           />

@@ -342,7 +342,8 @@
               "description": "Suporte a múltiplas políticas comerciais B2B"
             }
           ]
-        }
+        },
+        "start_button": "Iniciar configuração"
       }
     }
   },
