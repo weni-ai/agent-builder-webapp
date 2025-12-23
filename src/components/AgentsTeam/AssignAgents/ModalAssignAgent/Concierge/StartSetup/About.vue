@@ -55,6 +55,9 @@ const systemBadges = computed<SystemBadge[]>(() => {
 
 <style lang="scss" scoped>
 .start-setup-about {
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+
   display: flex;
   flex-direction: column;
   gap: $unnnic-space-2;

@@ -42,6 +42,9 @@ defineProps<{
 
 <style scoped lang="scss">
 .start-setup-mcps {
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
+
   display: flex;
   flex-direction: column;
   gap: $unnnic-space-2;
