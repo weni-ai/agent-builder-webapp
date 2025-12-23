@@ -54,7 +54,7 @@ export const AgentsTeam = {
       params,
     });
 
-    return data;
+    return [...data.new, ...data.legacy];
   },
 
   async listMyAgents({ search }) {
