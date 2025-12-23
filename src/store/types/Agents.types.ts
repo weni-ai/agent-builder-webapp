@@ -3,7 +3,14 @@ export type AgentGroupID = 'CONCIERGE';
 export type AgentCategory = 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS';
 export type AgentSystem = 'VTEX' | 'SYNERISE';
 
-export type ConciergeVariant = 'DEFAULT' | 'TRADE_POLICY' | 'META_CATALOG';
+export type ConciergeVariant = {
+  uuid: string;
+  name: string;
+  slug: string;
+  variant: 'DEFAULT' | 'TRADE_POLICY' | 'META_CATALOG';
+  assigned: boolean;
+  systems: AgentSystem[];
+};
 
 export interface AgentSkill {
   icon?: string;
@@ -19,6 +26,21 @@ export interface AgentCredential {
   is_confidential: boolean;
 }
 
+export interface AgentMCP {
+  name: string;
+  description: string;
+  config:
+    | {
+        name: string;
+        label: string;
+        type: 'SELECT' | 'INPUT' | 'CHECKBOX' | 'RADIO';
+        options: {
+          name: string;
+          value: string;
+        }[];
+      }[]
+    | [];
+}
 export interface AgentGroup {
   uuid: string;
   name: string;
@@ -27,8 +49,10 @@ export interface AgentGroup {
   id: AgentGroupID;
   category: AgentCategory;
   group: AgentGroupID;
-  variant: ConciergeVariant | string;
+  variants: ConciergeVariant[];
+  MCPs: AgentMCP[];
   systems: AgentSystem[];
+  credentials?: AgentCredential[];
   assigned: boolean;
   icon: string;
   is_official: true;

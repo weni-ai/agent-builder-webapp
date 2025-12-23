@@ -54,7 +54,9 @@ export const AgentsTeam = {
       params,
     });
 
-    return data;
+    console.log('data', { ...data.legacy, ...data.new });
+
+    return [...data.new, ...data.legacy];
   },
 
   async getAgentDetails(uuid) {
@@ -139,6 +141,20 @@ export const AgentsTeam = {
           }),
         ),
       },
+    };
+  },
+
+  async assignOfficialAgent(payload) {
+    const { data } = await request.$http.post(
+      '/api/v1/official/agents',
+      payload,
+      {
+        hideGenericErrorAlert: true,
+      },
+    );
+
+    return {
+      data,
     };
   },
 
