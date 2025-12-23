@@ -339,6 +339,13 @@
             }
           ]
         },
+        "conversation_example": {
+          "title": "Conversation example",
+          "customer_label": "Customer",
+          "customer_message": "Do you have the Nike Air Zoom Pegasus 40 in size 41?",
+          "concierge_label": "Product Concierge",
+          "concierge_message": "I found the Nike Air Zoom Pegasus 40 — Black/White. It costs R$ 129.90 and size 41 is in stock. Want to check delivery times or similar models?"
+        },
         "start_button": "Start setup"
       }
     }

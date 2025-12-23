@@ -4,7 +4,7 @@
 
     <MCPs :mcps="mockedMCPS" />
 
-    <p>Conversation</p>
+    <ConversationExample />
   </section>
 </template>
 
@@ -13,6 +13,7 @@ import type { AgentGroup, AgentMCP } from '@/store/types/Agents.types';
 
 import About from './About.vue';
 import MCPs from './MCPs.vue';
+import ConversationExample from './ConversationExample.vue';
 
 import { useI18n } from 'vue-i18n';
 const { tm } = useI18n();
