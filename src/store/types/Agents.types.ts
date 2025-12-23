@@ -24,6 +24,7 @@ export interface AgentGroup {
   type: AgentGroupType;
   id: AgentGroupID;
   category: AgentCategory;
+  group: AgentGroupID;
   systems: AgentSystem[];
   assigned: boolean;
   icon: string;

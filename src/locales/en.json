@@ -319,6 +319,9 @@
           "see_documentation": "See the {weni_cli_documentation} for detailed instructions",
           "weni_cli_documentation": "Weni CLI documentation"
         }
+      },
+      "setup": {
+        "about": "About"
       }
     }
   },
