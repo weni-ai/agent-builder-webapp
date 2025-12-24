@@ -330,12 +330,12 @@
               "description": "Catalog/Search + Base price + Inventory"
             },
             {
-              "name": "Marketplace",
-              "description": "Seller consultation and bidding rules"
-            },
-            {
               "name": "Trade Policy",
               "description": "Support for multiple B2B commercial policies"
+            },
+            {
+              "name": "Meta Catalog",
+              "description": "Product catalog with meta information"
             }
           ]
         },

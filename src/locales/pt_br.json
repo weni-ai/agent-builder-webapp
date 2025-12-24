@@ -330,16 +330,12 @@
               "description": "Catálogo/Busca + Preço base + Inventário"
             },
             {
-              "name": "Marketplace",
-              "description": "Consulta de sellers e regras de lance"
-            },
-            {
-              "name": "Regionalization",
-              "description": "Busca por produtos por região e localização"
-            },
-            {
               "name": "Trade Policy",
               "description": "Suporte a múltiplas políticas comerciais B2B"
+            },
+            {
+              "name": "Meta Catalog",
+              "description": "Catálogo de produtos com informações meta"
             }
           ]
         },
