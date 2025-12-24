@@ -28,29 +28,25 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
   const agentsTeamStore = useAgentsTeamStore();
 
   const config = ref<ConciergeAssignmentConfig>(
-    createInitialConfig(agent.value) as ConciergeAssignmentConfig,
+    createInitialConfig() as ConciergeAssignmentConfig,
   );
   const isSubmitting = ref(false);
 
   watch(
     () => agent.value?.uuid,
     () => {
-      config.value = createInitialConfig(
-        agent.value,
-      ) as ConciergeAssignmentConfig;
+      config.value = createInitialConfig() as ConciergeAssignmentConfig;
     },
   );
 
   function resetAssignment() {
-    config.value = createInitialConfig(
-      agent.value,
-    ) as ConciergeAssignmentConfig;
+    config.value = createInitialConfig() as ConciergeAssignmentConfig;
     isSubmitting.value = false;
   }
 
-  function createInitialConfig(currentAgent?: AgentGroup | null) {
+  function createInitialConfig() {
     return {
-      system: (currentAgent?.systems?.[0] || 'VTEX') as AgentSystem,
+      system: 'VTEX' as AgentSystem,
       variant: {
         type: '',
         config: null,
