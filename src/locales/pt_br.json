@@ -351,6 +351,10 @@
           "description": "Selecione o sistema de origem dos dados",
           "mcp_count": "{count} MCPs disponíveis"
         },
+        "mcp_selection": {
+          "title": "Seleção de MCP",
+          "description": "MCP é um conjunto de ferramentas que habilita as capacidades do agente"
+        },
         "start_button": "Iniciar configuração",
         "step": {
           "title": "Atribuir {agent}",

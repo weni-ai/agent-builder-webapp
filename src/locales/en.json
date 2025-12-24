@@ -351,6 +351,10 @@
           "description": "Select the data source system",
           "mcp_count": "{count} MCPs available"
         },
+        "mcp_selection": {
+          "title": "MCP selection",
+          "description": "MCP is a preset of tools that enable agent capabilities"
+        },
         "start_button": "Start setup",
         "step": {
           "title": "Assign {agent}",
