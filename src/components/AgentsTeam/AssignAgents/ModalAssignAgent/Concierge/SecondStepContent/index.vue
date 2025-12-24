@@ -10,7 +10,22 @@
     />
 
     <section
-      v-if="selectedMCP && selectedMCPConfig.length"
+      v-if="!selectedMCP"
+      class="modal-assign-agent__config-placeholder"
+    >
+      <p class="modal-assign-agent__config-placeholder-title">
+        {{ $t('agents.assign_agents.setup.mcp_config.placeholder_title') }}
+      </p>
+
+      <p class="modal-assign-agent__config-placeholder-description">
+        {{
+          $t('agents.assign_agents.setup.mcp_config.placeholder_description')
+        }}
+      </p>
+    </section>
+
+    <section
+      v-else-if="selectedMCPConfig.length"
       class="modal-assign-agent__form"
     >
       <template
@@ -64,6 +79,23 @@
           </UnnnicRadio>
         </UnnnicRadioGroup>
       </template>
+    </section>
+
+    <section
+      v-else
+      class="modal-assign-agent__no-config"
+    >
+      <p class="modal-assign-agent__no-config-title">
+        {{
+          $t('agents.assign_agents.setup.mcp_config.no_config_title', {
+            mcp: selectedMCP?.name,
+          })
+        }}
+      </p>
+
+      <p class="modal-assign-agent__no-config-description">
+        {{ $t('agents.assign_agents.setup.mcp_config.no_config_description') }}
+      </p>
     </section>
   </section>
 </template>
@@ -169,7 +201,6 @@ function toggleCheckboxValue(fieldName: string, optionValue: string) {
 .modal-assign-agent__content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: $unnnic-space-4;
 
   width: 100%;
 
@@ -184,5 +215,53 @@ function toggleCheckboxValue(fieldName: string, optionValue: string) {
   gap: $unnnic-space-4;
 
   width: 100%;
+}
+
+.modal-assign-agent__config-placeholder,
+.modal-assign-agent__no-config {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-height: 100%;
+  padding: $unnnic-space-6;
+}
+
+.modal-assign-agent__config-placeholder {
+  align-items: center;
+  justify-content: center;
+  gap: $unnnic-space-1;
+
+  text-align: center;
+
+  &-title {
+    color: $unnnic-color-fg-base;
+    font: $unnnic-font-display-3;
+  }
+
+  &-description {
+    margin: 0 $unnnic-space-8;
+
+    color: $unnnic-color-fg-muted;
+    font: $unnnic-font-body;
+  }
+}
+
+.modal-assign-agent__no-config {
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: $unnnic-space-4;
+
+  text-align: left;
+
+  &-title {
+    color: $unnnic-color-fg-emphasized;
+    font: $unnnic-font-display-3;
+  }
+
+  &-description {
+    color: $unnnic-color-fg-base;
+    font: $unnnic-font-body;
+  }
 }
 </style>

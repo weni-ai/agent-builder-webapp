@@ -355,6 +355,12 @@
           "title": "Selección de MCP",
           "description": "MCP es un conjunto de herramientas que habilita las capacidades del agente"
         },
+        "mcp_config": {
+          "placeholder_title": "Selecciona un MCP en la lista al lado",
+          "placeholder_description": "Selecciona el MCP que mejor se adapte a tu escenario y configúralo",
+          "no_config_title": "Configurar MCP {mcp}",
+          "no_config_description": "Este MCP no requiere configuración"
+        },
         "start_button": "Iniciar configuración",
         "step": {
           "title": "Asignar {agent}",
