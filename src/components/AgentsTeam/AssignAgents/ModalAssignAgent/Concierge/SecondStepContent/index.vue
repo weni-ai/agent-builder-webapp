@@ -10,7 +10,33 @@
     />
 
     <section
-      v-if="!selectedMCP"
+      v-if="selectedMCP"
+      class="modal-assign-agent__config"
+    >
+      <p class="modal-assign-agent__config-title">
+        {{
+          $t('agents.assign_agents.setup.mcp_config.title', {
+            mcp: selectedMCP?.name,
+          })
+        }}
+      </p>
+
+      <MCPConfigForm
+        v-if="selectedMCPConfig.length"
+        v-model:configValues="selectedMCPConfigValues"
+        :config="selectedMCPConfig"
+      />
+
+      <p
+        v-else
+        class="modal-assign-agent__config-description"
+      >
+        {{ $t('agents.assign_agents.setup.mcp_config.description') }}
+      </p>
+    </section>
+
+    <section
+      v-else
       class="modal-assign-agent__config-placeholder"
     >
       <p class="modal-assign-agent__config-placeholder-title">
@@ -23,86 +49,13 @@
         }}
       </p>
     </section>
-
-    <section
-      v-else-if="selectedMCPConfig.length"
-      class="modal-assign-agent__form"
-    >
-      <template
-        v-for="element in selectedMCPConfig"
-        :key="element.name"
-      >
-        <UnnnicSelectSmart
-          v-if="element.type === 'SELECT'"
-          :label="element.label"
-          :options="formatOptions(element.options)"
-          :modelValue="getSelectModelValue(element)"
-          orderedByIndex
-          @update:model-value="handleSelectChange(element.name, $event)"
-        />
-
-        <UnnnicInput
-          v-else-if="element.type === 'INPUT'"
-          :label="element.label"
-          :modelValue="selectedMCPConfigValues[element.name] ?? ''"
-          @update:model-value="updateFieldValue(element.name, $event)"
-        />
-
-        <UnnnicCheckboxGroup
-          v-else-if="element.type === 'CHECKBOX'"
-          :label="element.label"
-        >
-          <UnnnicCheckbox
-            v-for="option in element.options"
-            :key="option.value || option.name"
-            :label="option.name"
-            :modelValue="isCheckboxChecked(element.name, option.value)"
-            @update:model-value="
-              () => toggleCheckboxValue(element.name, option.value)
-            "
-          />
-        </UnnnicCheckboxGroup>
-
-        <UnnnicRadioGroup
-          v-else-if="element.type === 'RADIO'"
-          :label="element.label"
-          :modelValue="selectedMCPConfigValues[element.name]"
-          @update:model-value="updateFieldValue(element.name, $event)"
-        >
-          <UnnnicRadio
-            v-for="option in element.options"
-            :key="option.value || option.name"
-            :label="option.name"
-            :value="option.value || option.name"
-          >
-            {{ option.name }}
-          </UnnnicRadio>
-        </UnnnicRadioGroup>
-      </template>
-    </section>
-
-    <section
-      v-else
-      class="modal-assign-agent__no-config"
-    >
-      <p class="modal-assign-agent__no-config-title">
-        {{
-          $t('agents.assign_agents.setup.mcp_config.no_config_title', {
-            mcp: selectedMCP?.name,
-          })
-        }}
-      </p>
-
-      <p class="modal-assign-agent__no-config-description">
-        {{ $t('agents.assign_agents.setup.mcp_config.no_config_description') }}
-      </p>
-    </section>
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import MCPSelection from './MCPSelection.vue';
+import MCPConfigForm from './MCPConfigForm.vue';
 import { AgentMCP } from '@/store/types/Agents.types';
 type MCPConfigField = AgentMCP['config'] extends (infer U)[] ? U : never;
 type MCPConfigValue = string | string[] | boolean;
@@ -156,45 +109,6 @@ function buildInitialValues(config: AgentMCP['config'] = []) {
     {},
   );
 }
-function updateFieldValue(name: string, value: MCPConfigValue) {
-  selectedMCPConfigValues.value = {
-    ...selectedMCPConfigValues.value,
-    [name]: value,
-  };
-}
-function formatOptions(options: MCPConfigField['options'] = []) {
-  return options.map((option) => ({
-    label: option.name,
-    value: option.value || option.name,
-  }));
-}
-function getSelectModelValue(field: MCPConfigField) {
-  const value = selectedMCPConfigValues.value[field.name];
-  if (!value) return [];
-  const option = formatOptions(field.options).find(
-    (option) => option.value === value,
-  );
-  return option ? [option] : [];
-}
-function handleSelectChange(name: string, selectedOptions) {
-  const [option] = selectedOptions || [];
-  updateFieldValue(name, option?.value ?? '');
-}
-function isCheckboxChecked(fieldName: string, optionValue: string) {
-  const value = selectedMCPConfigValues.value[fieldName];
-  if (!Array.isArray(value)) return false;
-  return value.includes(optionValue);
-}
-function toggleCheckboxValue(fieldName: string, optionValue: string) {
-  const value = selectedMCPConfigValues.value[fieldName];
-  const nextValue = new Set(Array.isArray(value) ? value : []);
-  if (nextValue.has(optionValue)) {
-    nextValue.delete(optionValue);
-  } else {
-    nextValue.add(optionValue);
-  }
-  updateFieldValue(fieldName, Array.from(nextValue));
-}
 </script>
 
 <style scoped lang="scss">
@@ -218,7 +132,7 @@ function toggleCheckboxValue(fieldName: string, optionValue: string) {
 }
 
 .modal-assign-agent__config-placeholder,
-.modal-assign-agent__no-config {
+.modal-assign-agent__config {
   display: flex;
   flex-direction: column;
 
@@ -247,7 +161,7 @@ function toggleCheckboxValue(fieldName: string, optionValue: string) {
   }
 }
 
-.modal-assign-agent__no-config {
+.modal-assign-agent__config {
   align-items: flex-start;
   justify-content: flex-start;
   gap: $unnnic-space-4;

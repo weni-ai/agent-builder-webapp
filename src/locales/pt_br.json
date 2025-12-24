@@ -358,8 +358,8 @@
         "mcp_config": {
           "placeholder_title": "Selecione o MCP na lista ao lado",
           "placeholder_description": "Selecione o MCP que melhor se encaixa no seu cenário e configure-o",
-          "no_config_title": "Configurar MCP {mcp}",
-          "no_config_description": "Este MCP não requer configuração"
+          "title": "Configurar MCP {mcp}",
+          "description": "Este MCP não requer configuração"
         },
         "start_button": "Iniciar configuração",
         "step": {
