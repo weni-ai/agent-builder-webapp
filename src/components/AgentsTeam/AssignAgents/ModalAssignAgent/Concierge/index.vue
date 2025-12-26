@@ -40,6 +40,7 @@ import { useI18n } from 'vue-i18n';
 import { AgentGroup, AgentMCP, AgentSystem } from '@/store/types/Agents.types';
 
 import useOfficialAgentAssignment, {
+  findAgentVariantUuid,
   type MCPConfigValues,
 } from '@/composables/useOfficialAgentAssignment';
 
@@ -139,11 +140,8 @@ function closeModal() {
   resetFlow();
 }
 async function getAgentDetails() {
-  const agentUuid = props.agent.variants.find(
-    (v) =>
-      v.variant.toUpperCase() === 'DEFAULT' &&
-      config.value.system.toLowerCase() === v.systems[0].toLowerCase(),
-  )?.uuid;
+  const agentUuid = findAgentVariantUuid(props.agent, config.value.system);
+
   if (!agentUuid) return;
 
   const agentDetailsData =
@@ -153,6 +151,7 @@ async function getAgentDetails() {
     );
   agentDetails.value = { ...props.agent, ...agentDetailsData };
 }
+
 async function handleNext() {
   if (isSubmitting.value) return;
   if (step.value < TOTAL_STEPS) {

@@ -44,7 +44,6 @@ export interface AgentMCP {
 }
 
 export interface AgentGroup {
-  uuid: string;
   name: string;
   description: string;
   type: AgentGroupType;

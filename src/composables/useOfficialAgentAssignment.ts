@@ -33,7 +33,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
   const isSubmitting = ref(false);
 
   watch(
-    () => agent.value?.uuid,
+    () => agent.value?.variants?.map((variant) => variant.uuid).join(','),
     () => {
       config.value = createInitialConfig() as ConciergeAssignmentConfig;
     },
@@ -64,9 +64,14 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
     isSubmitting.value = true;
 
     try {
+      const agentUuid = findAgentVariantUuid(agent.value, config.value.system);
+      if (!agentUuid) {
+        isSubmitting.value = false;
+        return false;
+      }
       const payload = {
         project_uuid: projectStore.uuid,
-        agent_uuid: agent.value.uuid,
+        agent_uuid: agentUuid,
         assigned: true,
         system: config.value.system,
       };
@@ -96,4 +101,19 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
     resetAssignment,
     submitAssignment,
   };
+}
+
+export function findAgentVariantUuid(
+  agent: AgentGroup | null,
+  system: AgentSystem,
+): string | null {
+  if (!agent) return null;
+
+  const variant = agent.variants.find(
+    (currentVariant) =>
+      currentVariant.variant.toUpperCase() === 'DEFAULT' &&
+      system.toLowerCase() === currentVariant.systems[0]?.toLowerCase(),
+  );
+
+  return variant?.uuid ?? null;
 }
