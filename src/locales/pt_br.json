@@ -361,6 +361,12 @@
           "title": "Configurar MCP {mcp}",
           "description": "Este MCP não requer configuração"
         },
+        "third_step": {
+          "title": "Revise a configuração e insira as credenciais",
+          "description": "Revise a configuração e insira suas credenciais para finalizar o setup do agente",
+          "system_card_title": "Sistema selecionado",
+          "mcp_card_title": "MCP selecionado"
+        },
         "start_button": "Iniciar configuração",
         "step": {
           "title": "Atribuir {agent}",

@@ -45,6 +45,7 @@ import useOfficialAgentAssignment, {
 
 import FirstStepContent from './FirstStepContent.vue';
 import SecondStepContent from './SecondStepContent/index.vue';
+import ThirdStepContent from './ThirdStepContent/index.vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
 
 const emit = defineEmits(['update:open']);
@@ -84,6 +85,7 @@ const rightButtonText = computed(() => {
 const stepComponents = {
   1: FirstStepContent,
   2: SecondStepContent,
+  3: ThirdStepContent,
 };
 
 const agentDetails = ref<AgentGroup | null>(props.agent);
@@ -113,6 +115,8 @@ const currentStepProps = computed(() => {
   if (step.value === 3) {
     return {
       credentials: props.agent.credentials || [],
+      selectedSystem: config.value.system,
+      selectedMCP: config.value.MCP,
     };
   }
   return {};

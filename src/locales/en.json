@@ -361,6 +361,12 @@
           "title": "Configure {mcp} MCP",
           "description": "This MCP does not require configuration"
         },
+        "third_step": {
+          "title": "Review the setup and enter credentials",
+          "description": "Review the setup and enter your credentials to finish the agent setup",
+          "system_card_title": "Selected system",
+          "mcp_card_title": "Selected MCP"
+        },
         "start_button": "Start setup",
         "step": {
           "title": "Assign {agent}",
