@@ -29,6 +29,7 @@ export interface AgentCredential {
 export interface AgentMCP {
   name: string;
   description: string;
+  credentials?: AgentCredential[];
   config:
     | {
         name: string;

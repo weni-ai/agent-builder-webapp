@@ -147,7 +147,10 @@ async function getAgentDetails() {
   if (!agentUuid) return;
 
   const agentDetailsData =
-    await nexusaiAPI.router.agents_team.getOfficialAgentDetails(agentUuid);
+    await nexusaiAPI.router.agents_team.getOfficialAgentDetails(
+      agentUuid,
+      config.value.system.toLowerCase(),
+    );
   agentDetails.value = { ...props.agent, ...agentDetailsData };
 }
 async function handleNext() {

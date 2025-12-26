@@ -365,7 +365,11 @@
           "title": "Revisa la configuración e ingresa las credenciales",
           "description": "Revisa la configuración e ingresa tus credenciales para finalizar la configuración del agente",
           "system_card_title": "Sistema seleccionado",
-          "mcp_card_title": "MCP seleccionado"
+          "mcp_card_title": "MCP seleccionado",
+          "credentials": {
+            "disclaimer_title": "Este agente usa credenciais já inseridas neste projeto",
+            "not_required": "Este agente no requiere credenciales"
+          }
         },
         "start_button": "Iniciar configuración",
         "step": {

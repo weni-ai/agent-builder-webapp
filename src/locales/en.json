@@ -365,7 +365,11 @@
           "title": "Review the setup and enter credentials",
           "description": "Review the setup and enter your credentials to finish the agent setup",
           "system_card_title": "Selected system",
-          "mcp_card_title": "Selected MCP"
+          "mcp_card_title": "Selected MCP",
+          "credentials": {
+            "disclaimer_title": "This agent uses credentials already entered in this project",
+            "not_required": "This agent does not require enter credentials"
+          }
         },
         "start_button": "Start setup",
         "step": {

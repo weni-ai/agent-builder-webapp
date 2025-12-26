@@ -14,22 +14,20 @@
       :selectedSystem="selectedSystem"
       :selectedMCP="selectedMCP"
     />
+
+    <Credentials :credentials="selectedMCP?.credentials" />
   </section>
 </template>
 
 <script setup lang="ts">
 import Summary from './Summary.vue';
+import Credentials from './Credentials.vue';
 
-import {
-  AgentCredential,
-  AgentMCP,
-  AgentSystem,
-} from '@/store/types/Agents.types';
+import { AgentMCP, AgentSystem } from '@/store/types/Agents.types';
 
 defineProps<{
   selectedSystem?: AgentSystem | '';
   selectedMCP: AgentMCP | null;
-  credentials: AgentCredential[];
 }>();
 </script>
 
