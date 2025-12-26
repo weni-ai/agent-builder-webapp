@@ -322,6 +322,57 @@
           "see_documentation": "Veja a {weni_cli_documentation} para instruções detalhadas",
           "weni_cli_documentation": "Documentação do Weni CLI"
         }
+      },
+      "setup": {
+        "about": "Sobre",
+        "mcps_available": {
+          "title": "MCPs disponíveis",
+          "concierge_mcps": [
+            {
+              "name": "Default",
+              "description": "Catálogo/Busca + Preço base + Inventário"
+            },
+            {
+              "name": "Trade Policy",
+              "description": "Suporte a múltiplas políticas comerciais B2B"
+            },
+            {
+              "name": "Meta Catalog",
+              "description": "Catálogo de produtos com informações meta"
+            }
+          ]
+        },
+        "conversation_example": {
+          "title": "Exemplo de conversa",
+          "customer_label": "Cliente",
+          "customer_message": "Tem o Nike Air Zoom Pegasus 40 no tamanho 41?",
+          "concierge_label": "Product Concierge",
+          "concierge_message": "Encontrei o Nike Air Zoom Pegasus 40 — Preto/Branco. O preço é R$ 129,90 e o tamanho 41 está em estoque. Quer ver o prazo de entrega ou modelos semelhantes?"
+        },
+        "system_selection": {
+          "title": "Seleção de sistema",
+          "description": "Selecione o sistema de origem dos dados",
+          "mcp_count": "{count} MCPs disponíveis"
+        },
+        "mcp_selection": {
+          "title": "Seleção de MCP",
+          "description": "MCP é um conjunto de ferramentas que habilita as capacidades do agente"
+        },
+        "mcp_config": {
+          "placeholder_title": "Selecione o MCP na lista ao lado",
+          "placeholder_description": "Selecione o MCP que melhor se encaixa no seu cenário e configure-o",
+          "title": "Configurar MCP {mcp}",
+          "description": "Este MCP não requer configuração"
+        },
+        "start_button": "Iniciar configuração",
+        "step": {
+          "title": "Atribuir {agent}",
+          "tag": "Passo {step} de {total}"
+        },
+        "cancel_button": "Cancelar",
+        "back_button": "Voltar",
+        "next_button": "Avançar",
+        "finish_button": "Concluir"
       }
     }
   },

@@ -54,6 +54,20 @@ export const AgentsTeam = {
       params,
     });
 
+    return [...data.new, ...data.legacy];
+  },
+
+  async getOfficialAgentDetails(uuid) {
+    const params = {
+      project_uuid: projectUuid.value,
+    };
+
+    const { data } = await request.$http.get(
+      `/api/v1/official/agents/${uuid}`,
+      {
+        params,
+      },
+    );
     return data;
   },
 
