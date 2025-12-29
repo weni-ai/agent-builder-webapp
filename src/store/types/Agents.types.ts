@@ -34,11 +34,21 @@ export interface AgentMCP {
     | {
         name: string;
         label: string;
-        type: 'SELECT' | 'INPUT' | 'CHECKBOX' | 'RADIO' | 'SWITCH';
-        options: {
-          name: string;
-          value: string;
-        }[];
+        default_value: string | boolean | number;
+        type:
+          | 'SELECT'
+          | 'INPUT'
+          | 'CHECKBOX'
+          | 'RADIO'
+          | 'SWITCH'
+          | 'NUMBER'
+          | 'TEXT';
+        options:
+          | {
+              name: string;
+              value: string;
+            }[]
+          | [];
       }[]
     | [];
 }
