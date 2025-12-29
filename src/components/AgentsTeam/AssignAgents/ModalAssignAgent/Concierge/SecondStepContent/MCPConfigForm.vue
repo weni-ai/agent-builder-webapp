@@ -4,8 +4,15 @@
       v-for="element in config"
       :key="element.name"
     >
+      <UnnnicSwitch
+        v-if="element.type === 'SWITCH'"
+        :option="element.label"
+        :modelValue="configValues[element.name] ?? false"
+        @update:model-value="updateFieldValue(element.name, $event)"
+      />
+
       <UnnnicSelectSmart
-        v-if="element.type === 'SELECT'"
+        v-else-if="element.type === 'SELECT'"
         :label="element.label"
         :options="formatOptions(element.options)"
         :modelValue="getSelectModelValue(element)"
@@ -14,9 +21,10 @@
       />
 
       <UnnnicInput
-        v-else-if="element.type === 'INPUT'"
+        v-else-if="['NUMBER', 'TEXT', 'INPUT'].includes(element.type)"
         :label="element.label"
-        :modelValue="configValues[element.name] ?? ''"
+        :modelValue="String(configValues[element.name] ?? '')"
+        :nativeType="element.type === 'NUMBER' ? 'number' : 'text'"
         @update:model-value="updateFieldValue(element.name, $event)"
       />
 
@@ -37,6 +45,7 @@
 
       <UnnnicRadioGroup
         v-else-if="element.type === 'RADIO'"
+        state="vertical"
         :label="element.label"
         :modelValue="configValues[element.name]"
         @update:model-value="updateFieldValue(element.name, $event)"
@@ -56,11 +65,12 @@
 
 <script setup lang="ts">
 import { AgentMCP } from '@/store/types/Agents.types';
+import { watch } from 'vue';
 
 type MCPConfigField = AgentMCP['config'] extends (infer U)[] ? U : never;
 type MCPConfigValue = string | string[] | boolean;
 
-defineProps<{
+const props = defineProps<{
   config: MCPConfigField[];
 }>();
 
@@ -69,6 +79,23 @@ const configValues = defineModel<Record<string, MCPConfigValue>>(
   {
     required: true,
   },
+);
+
+function buildInitialValues(config: MCPConfigField[]) {
+  config.forEach((element) => {
+    if (element.default_value !== undefined) {
+      configValues.value[element.name] =
+        element.default_value as MCPConfigValue;
+    }
+  });
+}
+
+watch(
+  () => props.config,
+  (newValue) => {
+    buildInitialValues(newValue);
+  },
+  { immediate: true },
 );
 
 function updateFieldValue(name: string, value: MCPConfigValue) {

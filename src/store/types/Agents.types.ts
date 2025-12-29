@@ -29,21 +29,31 @@ export interface AgentCredential {
 export interface AgentMCP {
   name: string;
   description: string;
+  credentials?: AgentCredential[];
   config:
     | {
         name: string;
         label: string;
-        type: 'SELECT' | 'INPUT' | 'CHECKBOX' | 'RADIO' | 'SWITCH';
-        options: {
-          name: string;
-          value: string;
-        }[];
+        default_value: string | boolean | number;
+        type:
+          | 'SELECT'
+          | 'INPUT'
+          | 'CHECKBOX'
+          | 'RADIO'
+          | 'SWITCH'
+          | 'NUMBER'
+          | 'TEXT';
+        options:
+          | {
+              name: string;
+              value: string;
+            }[]
+          | [];
       }[]
     | [];
 }
 
 export interface AgentGroup {
-  uuid: string;
   name: string;
   description: string;
   type: AgentGroupType;
