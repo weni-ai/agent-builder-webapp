@@ -119,7 +119,11 @@ const currentStepProps = computed(() => {
 });
 const isNextDisabled = computed(() => {
   if (step.value === 2) {
-    return !config.value.MCP;
+    const isSomeValueMissing = Object.values(config.value.mcp_config).some(
+      (value) => value === '' || value === undefined,
+    );
+
+    return isSomeValueMissing;
   }
   if (step.value === TOTAL_STEPS) {
     return isSubmitting.value;
