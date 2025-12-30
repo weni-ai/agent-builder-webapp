@@ -72,9 +72,9 @@ export const AgentsTeam = {
     return data;
   },
 
-  async assignOfficialAgent(payload) {
+  async toggleOfficialAgentAssignment(payload) {
     const { data } = await request.$http.post(
-      `/api/v1/official/agents/?project_uuid=${projectUuid.value}&agent_uuid=${payload.agent_uuid}`,
+      `/api/v1/official/agents?project_uuid=${projectUuid.value}&agent_uuid=${payload.agent_uuid}`,
       payload,
       {
         hideGenericErrorAlert: true,

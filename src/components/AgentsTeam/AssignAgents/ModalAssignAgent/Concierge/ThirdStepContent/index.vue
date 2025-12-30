@@ -15,7 +15,10 @@
       :selectedMCP="selectedMCP"
     />
 
-    <Credentials :credentials="selectedMCP?.credentials" />
+    <Credentials
+      v-model:credentialValues="credentialValues"
+      :credentials="selectedMCP?.credentials || []"
+    />
   </section>
 </template>
 
@@ -29,6 +32,14 @@ defineProps<{
   selectedSystem?: AgentSystem | '';
   selectedMCP: AgentMCP | null;
 }>();
+
+const credentialValues = defineModel<Record<string, string>>(
+  'credentialValues',
+  {
+    required: true,
+    default: () => ({}),
+  },
+);
 </script>
 
 <style scoped lang="scss">

@@ -115,9 +115,12 @@ const currentStepProps = computed(() => {
   }
   if (step.value === 3) {
     return {
-      credentials: props.agent.credentials || [],
       selectedSystem: config.value.system,
       selectedMCP: config.value.MCP,
+      credentialValues: config.value.credentials,
+      'onUpdate:credentialValues': (nextValues: Record<string, string>) => {
+        config.value.credentials = nextValues;
+      },
     };
   }
   return {};
