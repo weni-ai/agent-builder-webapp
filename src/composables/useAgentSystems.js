@@ -14,15 +14,20 @@ export default function useAgentSystems() {
     },
   };
 
-  const getSystemsObjects = (systemsNames) => {
+  function getSystemObject(systemName) {
+    return systems[systemName?.toUpperCase() || ''];
+  }
+
+  function getSystemsObjects(systemsNames) {
     return systemsNames
-      .map((systemName) => systems[systemName.toUpperCase()])
+      .map((systemName) => getSystemObject(systemName))
       .filter(Boolean);
-  };
+  }
 
   return {
     acceptedSystems,
     systems,
+    getSystemObject,
     getSystemsObjects,
   };
 }

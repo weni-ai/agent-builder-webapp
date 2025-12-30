@@ -6,6 +6,7 @@ import OrdersIcon4 from '@/assets/images/icons/agents/OrdersIcon4.svg';
 import OrdersIcon5 from '@/assets/images/icons/agents/OrdersIcon5.svg';
 import ExchangeIcon1 from '@/assets/images/icons/agents/ExchangeIcon1.svg';
 import OrderCancelation from '@/assets/images/icons/agents/OrderCancelation.svg';
+import Concierge from '@/assets/images/icons/agents/Concierge.svg';
 import CustomIcon1 from '@/assets/images/icons/agents/CustomIcon1.svg';
 import CustomIcon2 from '@/assets/images/icons/agents/CustomIcon2.svg';
 import CustomIcon3 from '@/assets/images/icons/agents/CustomIcon3.svg';
@@ -40,6 +41,7 @@ export const agentIcons = {
   OrdersIcon5,
   ExchangeIcon1,
   OrderCancelation,
+  Concierge,
   CustomIcon1,
   CustomIcon2,
   CustomIcon3,
@@ -72,6 +74,7 @@ const categories = {
   CANCELLATION: 'cancellation',
   ORDERS: 'orders',
   CUSTOM: 'custom',
+  CONCIERGE: 'concierge',
 };
 
 const categoryMatchers = {
@@ -80,12 +83,14 @@ const categoryMatchers = {
   [categories.CANCELLATION]: (agent) =>
     agent.name?.includes('Order Cancellation'),
   [categories.ORDERS]: (agent) => agent.name?.includes('Order'),
+  [categories.CONCIERGE]: (agent) => agent.name?.includes('Concierge'),
 };
 
 const categoryIconMap = {
   [categories.MANAGER]: 'Manager',
   [categories.EXCHANGE]: 'ExchangeIcon1',
   [categories.CANCELLATION]: 'OrderCancelation',
+  [categories.CONCIERGE]: 'Concierge',
 };
 
 const agentIconService = {
