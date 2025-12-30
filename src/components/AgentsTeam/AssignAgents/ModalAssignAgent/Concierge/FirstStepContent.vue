@@ -16,7 +16,6 @@
         :key="system"
         :selected="system.toLowerCase() === selectedSystem.toLowerCase()"
         :label="getSystemObject(system).name"
-        :description="mcpLabel"
         :system="system"
         @update:selected="() => handleSelectSystem(system)"
       />
@@ -25,10 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-
-import i18n from '@/utils/plugins/i18n';
-
 import useAgentSystems from '@/composables/useAgentSystems';
 
 import { AgentSystem } from '@/store/types/Agents.types';
@@ -44,15 +39,6 @@ const selectedSystem = defineModel<AgentSystem>('selectedSystem', {
 });
 
 const { getSystemObject } = useAgentSystems();
-
-const mcpLabel = computed(() => {
-  return i18n.global.t(
-    'agents.assign_agents.setup.system_selection.mcp_count',
-    {
-      count: 0, // TODO: Add MCP count when endpoint returns it
-    },
-  );
-});
 
 function handleSelectSystem(system: AgentSystem) {
   if (selectedSystem.value === system) return;
