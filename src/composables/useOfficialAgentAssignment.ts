@@ -118,6 +118,11 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
         router.push({ name: 'agents-team' });
       }
 
+      const assignedAgent = agentsTeamStore.officialAgents.data.find((agent) =>
+        agent.variants.some((variant) => variant.uuid === data.agent.uuid),
+      );
+      assignedAgent.assigned = true;
+
       return true;
     } catch (error) {
       console.error('Failed to assign official agent', error);

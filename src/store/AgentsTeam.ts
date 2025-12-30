@@ -154,10 +154,12 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
 
     try {
-      const agent = is_group
-        ? activeTeam.data.agents.find((agent) => agent.uuid === uuid)
-        : officialAgents.data.find((agent) => agent.uuid === uuid) ||
-          myAgents.data.find((agent) => agent.uuid === uuid);
+      const agent =
+        officialAgents.data.find(
+          (agent) =>
+            agent.uuid === uuid ||
+            agent.variants.some((variant) => variant.uuid === uuid),
+        ) || myAgents.data.find((agent) => agent.uuid === uuid);
 
       if (!agent) {
         throw new Error('Agent not found');
@@ -174,6 +176,8 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
           is_assigned,
         });
       }
+
+      agent.assigned = is_assigned;
 
       if (is_assigned) {
         newAgentAssigned.value = agent as Agent;
