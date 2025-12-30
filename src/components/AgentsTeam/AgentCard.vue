@@ -38,7 +38,7 @@
           </section>
 
           <UnnnicTag
-            v-if="isAgentInTeam"
+            v-if="isAgentInTeam || featureFlagsStore.flags.assignAgentsView"
             class="agent-card__tag"
             size="small"
             :text="
@@ -92,6 +92,7 @@
 import { computed } from 'vue';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 import AssignAgentCardSkeleton from './AssignAgentCardSkeleton.vue';
 import Skill from './Skill.vue';
@@ -117,6 +118,7 @@ const props = defineProps({
 });
 
 const agentsTeamStore = useAgentsTeamStore();
+const featureFlagsStore = useFeatureFlagsStore();
 
 const isAgentInTeam = computed(() => {
   return agentsTeamStore.activeTeam.data.agents.some(

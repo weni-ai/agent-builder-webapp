@@ -4,6 +4,9 @@
     :agent="agent"
     :tags="getSystemsObjects((agent as AgentGroup).systems || [])"
     :loading="loading"
+    :newAgentHighlight="
+      (agent as Agent).uuid === agentsTeamStore.newAgentAssigned?.uuid
+    "
     @click="openAgentDetailModal"
   />
 
@@ -20,9 +23,16 @@ import useAgentSystems from '@/composables/useAgentSystems';
 
 import AgentCard from '../AgentCard.vue';
 import AgentDetailModal from './AgentDetailModal/index.vue';
-import { AgentGroup, AgentGroupOrAgent } from '@/store/types/Agents.types';
+import {
+  Agent,
+  AgentGroup,
+  AgentGroupOrAgent,
+} from '@/store/types/Agents.types';
+import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
 const { getSystemsObjects } = useAgentSystems();
+
+const agentsTeamStore = useAgentsTeamStore();
 
 defineProps<{
   agent: AgentGroupOrAgent;
