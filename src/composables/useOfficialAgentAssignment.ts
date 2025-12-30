@@ -1,15 +1,16 @@
 import { ref, watch, type Ref } from 'vue';
 
 import {
+  AgentCredential,
   AgentGroup,
   AgentMCP,
   AgentSystem,
   ConciergeVariant,
 } from '@/store/types/Agents.types';
 
-import { useAgentsTeamStore } from '@/store/AgentsTeam';
-import { useProjectStore } from '@/store/Project';
 import nexusaiAPI from '@/api/nexusaiAPI';
+import { unnnicToastManager } from '@weni/unnnic-system';
+import i18n from '@/utils/plugins/i18n';
 
 export type MCPConfigValues = Record<string, string | string[] | boolean>;
 
@@ -21,12 +22,10 @@ export type ConciergeAssignmentConfig = {
   };
   mcp_config: MCPConfigValues;
   MCP: AgentMCP | null;
+  credentials: Record<string, string>;
 };
 
 export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
-  const projectStore = useProjectStore();
-  const agentsTeamStore = useAgentsTeamStore();
-
   const config = ref<ConciergeAssignmentConfig>(
     createInitialConfig() as ConciergeAssignmentConfig,
   );
@@ -53,8 +52,31 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
       },
       mcp_config: {},
       MCP: null,
+      credentials: {},
     };
   }
+
+  watch(
+    () => config.value.MCP,
+    (nextMCP) => {
+      if (!nextMCP?.credentials?.length) {
+        config.value.credentials = {};
+        return;
+      }
+
+      const previousValues = { ...config.value.credentials };
+      const nextValues = nextMCP.credentials.reduce<Record<string, string>>(
+        (acc, credential) => {
+          acc[credential.name] = previousValues[credential.name] ?? '';
+          return acc;
+        },
+        {},
+      );
+
+      config.value.credentials = nextValues;
+    },
+    { immediate: true },
+  );
 
   async function submitAssignment() {
     if (!agent.value || !config.value.MCP) {
@@ -69,26 +91,26 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
         isSubmitting.value = false;
         return false;
       }
+
       const payload = {
-        project_uuid: projectStore.uuid,
         agent_uuid: agentUuid,
         assigned: true,
         system: config.value.system,
+        mcp: config.value.MCP.name,
+        mcp_config: config.value.mcp_config,
+        credentials: buildCredentialsPayload(),
       };
 
-      await nexusaiAPI.router.agents_team.assignOfficialAgent(payload);
-
-      await Promise.all([
-        agentsTeamStore.loadActiveTeam(),
-        agentsTeamStore.loadOfficialAgents(),
-      ]);
-
-      // TODO: Add success toast
+      await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment(
+        payload,
+      );
 
       return true;
     } catch (error) {
       console.error('Failed to assign official agent', error);
-      // TODO: Add error toast
+      unnnicToastManager.error(
+        i18n.global.t('router.agents_team.card.error_alert'),
+      );
       return false;
     } finally {
       isSubmitting.value = false;
@@ -101,7 +123,22 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
     resetAssignment,
     submitAssignment,
   };
+
+  function buildCredentialsPayload(): CredentialPayload[] {
+    if (!config.value.MCP?.credentials?.length) {
+      return [];
+    }
+
+    return config.value.MCP.credentials.map((credential) => ({
+      ...credential,
+      value: config.value.credentials[credential.name] ?? '',
+    }));
+  }
 }
+
+type CredentialPayload = AgentCredential & {
+  value: string;
+};
 
 export function findAgentVariantUuid(
   agent: AgentGroup | null,

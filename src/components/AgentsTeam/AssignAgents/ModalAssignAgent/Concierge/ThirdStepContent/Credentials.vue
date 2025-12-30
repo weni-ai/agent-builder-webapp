@@ -48,6 +48,14 @@ const props = defineProps<{
   credentials: AgentCredential[];
 }>();
 
+const credentialValues = defineModel<Record<string, string>>(
+  'credentialValues',
+  {
+    required: true,
+    default: () => ({}),
+  },
+);
+
 const tuningsStore = useTuningsStore();
 
 onMounted(() => {
@@ -64,8 +72,8 @@ const hasCredentials = computed(() => Boolean(props.credentials?.length));
 const credentialsWithoutValue = computed(() => {
   return (
     props.credentials?.filter((credential) => {
-      const value = getInitialCredentialValue(credential.name);
-      return !value?.trim();
+      const storedValue = getStoredCredentialValue(credential.name);
+      return !storedValue?.trim();
     }) || []
   );
 });
@@ -73,8 +81,8 @@ const credentialsWithoutValue = computed(() => {
 const credentialsWithValue = computed(() => {
   return (
     props.credentials?.filter((credential) => {
-      const value = getInitialCredentialValue(credential.name);
-      return Boolean(value?.trim());
+      const storedValue = getStoredCredentialValue(credential.name);
+      return Boolean(storedValue?.trim());
     }) || []
   );
 });
@@ -86,14 +94,10 @@ const formattedUsedCredentials = computed(() => {
 });
 
 function getCredentialValue(credentialName: string) {
-  const [index, type] = tuningsStore.getCredentialIndex(credentialName);
-
-  if (index === -1) return '';
-
-  return tuningsStore.credentials.data?.[type]?.[index]?.value || '';
+  return credentialValues.value?.[credentialName] ?? '';
 }
 
-function getInitialCredentialValue(credentialName: string) {
+function getStoredCredentialValue(credentialName: string) {
   const [index, type] = tuningsStore.getCredentialIndex(credentialName);
 
   if (index === -1) return '';
@@ -102,10 +106,10 @@ function getInitialCredentialValue(credentialName: string) {
 }
 
 function handleInputChange(credential: AgentCredential, value: string) {
-  tuningsStore.updateCredential({
-    ...credential,
-    value,
-  });
+  credentialValues.value = {
+    ...credentialValues.value,
+    [credential.name]: value,
+  };
 }
 </script>
 

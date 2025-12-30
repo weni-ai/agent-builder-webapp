@@ -392,6 +392,7 @@
         "success_assign_alert": "{agent} asignado",
         "success_assign_alert_description": "El agente está listo para usar",
         "success_unassign_alert": "{agent} removido del equipo con éxito",
+        "info_unassign_alert": "{agent} removido",
         "error_alert": "Error al actualizar equipo",
         "official": "Oficial",
         "custom": "Personalizado",

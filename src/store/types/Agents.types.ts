@@ -57,7 +57,6 @@ export interface AgentGroup {
   name: string;
   description: string;
   type: AgentGroupType;
-  id: AgentGroupID;
   category: AgentCategory;
   group: AgentGroupID;
   variants: ConciergeVariant[];
@@ -81,6 +80,7 @@ export interface Agent {
   project: string;
   credentials: AgentCredential[] | [];
   icon: string;
+  group: null;
 }
 
 export type AgentGroupOrAgent = AgentGroup | Agent;
