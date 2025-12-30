@@ -4,7 +4,7 @@
     :open="open"
     @update:open="$emit('update:open', $event)"
   >
-    <UnnnicDialogContent>
+    <UnnnicDialogContent size="large">
       <AgentModalHeader :agent="agent" />
 
       <section class="agent-detail-modal__details">
