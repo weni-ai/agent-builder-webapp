@@ -1,0 +1,37 @@
+<template>
+  <section class="agent-detail-modal__section">
+    <h3 class="agent-detail-modal__section-title">{{ title }}</h3>
+    <p
+      v-if="description"
+      class="agent-detail-modal__section-description"
+    >
+      {{ description }}
+    </p>
+    <slot />
+  </section>
+</template>
+
+<script setup lang="ts">
+defineProps<{
+  title: string;
+  description?: string;
+}>();
+</script>
+
+<style scoped lang="scss">
+.agent-detail-modal__section {
+  display: flex;
+  flex-direction: column;
+  gap: $unnnic-space-2;
+
+  &-title {
+    color: $unnnic-color-fg-emphasized;
+    font: $unnnic-font-display-3;
+  }
+
+  &-description {
+    color: $unnnic-color-fg-base;
+    font: $unnnic-font-body;
+  }
+}
+</style>

@@ -26,6 +26,8 @@ export interface AgentGroup {
   category: AgentCategory;
   systems: AgentSystem[];
   assigned: boolean;
+  icon: string;
+  is_official: true;
 }
 
 export interface Agent {
@@ -39,6 +41,7 @@ export interface Agent {
   is_official: boolean;
   project: string;
   credentials: AgentCredential[] | [];
+  icon: string;
 }
 
 export type AgentGroupOrAgent = AgentGroup | Agent;
