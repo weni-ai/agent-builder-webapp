@@ -11,6 +11,9 @@ import {
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { unnnicToastManager } from '@weni/unnnic-system';
 import i18n from '@/utils/plugins/i18n';
+import { useAgentsTeamStore } from '@/store/AgentsTeam';
+import router from '@/router';
+import agentIconService from '@/utils/agentIconService';
 
 export type MCPConfigValues = Record<string, string | string[] | boolean>;
 
@@ -29,6 +32,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
   const config = ref<ConciergeAssignmentConfig>(
     createInitialConfig() as ConciergeAssignmentConfig,
   );
+  const agentsTeamStore = useAgentsTeamStore();
   const isSubmitting = ref(false);
 
   watch(
@@ -101,9 +105,18 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
         credentials: buildCredentialsPayload(),
       };
 
-      await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment(
-        payload,
+      const { data } =
+        await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment(
+          payload,
+        );
+
+      agentsTeamStore.newAgentAssigned = data.agent;
+      agentsTeamStore.activeTeam.data.agents.push(
+        agentIconService.applyIconToAgent(data.agent),
       );
+      if (router.currentRoute.value.name !== 'agents-team') {
+        router.push({ name: 'agents-team' });
+      }
 
       return true;
     } catch (error) {
