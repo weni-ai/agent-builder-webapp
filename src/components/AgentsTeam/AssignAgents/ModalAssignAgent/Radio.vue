@@ -34,7 +34,7 @@
 
       <p
         v-if="description"
-        class="modal-assign-agent__radio-description"
+        :class="descriptionClasses"
       >
         {{ description }}
       </p>
@@ -54,6 +54,7 @@ const props = defineProps<{
   label: string;
   description?: string;
   system?: string;
+  descriptionVariant?: 'caption' | 'body';
 }>();
 
 const { getSystemObject } = useAgentSystems();
@@ -69,6 +70,11 @@ const systemIconAlt = computed(() => {
   if (!hasSystemIcon.value) return '';
   return `${systemInfo.value?.name || props.label} logo`;
 });
+const descriptionClasses = computed(() => ({
+  'modal-assign-agent__radio-description': true,
+  'modal-assign-agent__radio-description--body':
+    props.descriptionVariant === 'body',
+}));
 
 function handleChange() {
   if (props.selected) return;
@@ -147,6 +153,10 @@ function handleChange() {
   &-description {
     color: $unnnic-color-fg-base;
     font: $unnnic-font-caption-1;
+
+    &--body {
+      font: $unnnic-font-body;
+    }
   }
 }
 </style>
