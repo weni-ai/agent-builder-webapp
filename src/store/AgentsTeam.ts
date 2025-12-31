@@ -6,7 +6,6 @@ import nexusaiAPI from '@/api/nexusaiAPI.js';
 import { useAlertStore } from './Alert';
 import agentIconService from '@/utils/agentIconService';
 
-// @ts-expect-error - unnnicToastManager is not typed
 import { unnnicToastManager } from '@weni/unnnic-system';
 
 import i18n from '@/utils/plugins/i18n';
@@ -145,30 +144,43 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
   }
 
-  async function toggleAgentAssignment({ uuid, is_assigned }) {
+  async function toggleAgentAssignment({
+    uuid,
+    is_assigned,
+    is_group = false,
+  }) {
     if (!uuid || typeof is_assigned !== 'boolean') {
       throw new Error('uuid and is_assigned are required');
     }
 
     try {
       const agent =
-        officialAgents.data.find((agent) => agent.uuid === uuid) ||
-        myAgents.data.find((agent) => agent.uuid === uuid);
+        officialAgents.data.find(
+          (agent) =>
+            agent.uuid === uuid ||
+            agent.variants?.some((variant) => variant.uuid === uuid),
+        ) || myAgents.data.find((agent) => agent.uuid === uuid);
 
       if (!agent) {
         throw new Error('Agent not found');
       }
 
-      const { data } =
+      if (is_group) {
+        await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment({
+          agent_uuid: uuid,
+          assigned: is_assigned,
+        });
+      } else {
         await nexusaiAPI.router.agents_team.toggleAgentAssignment({
-          agentUuid: agent?.uuid,
+          agentUuid: (agent as Agent)?.uuid,
           is_assigned,
         });
+      }
 
-      agent.assigned = data.assigned;
+      agent.assigned = is_assigned;
 
       if (is_assigned) {
-        newAgentAssigned.value = agent;
+        newAgentAssigned.value = agent as Agent;
         activeTeam.data.agents.push(agent);
         if (router.currentRoute.value.name !== 'agents-team') {
           router.push({ name: 'agents-team' });
@@ -182,15 +194,16 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       const cardText = (key: string, options?: Record<string, string>) =>
         i18n.global.t(`router.agents_team.card.${key}`, options);
 
-      unnnicToastManager.success(
-        cardText(
-          is_assigned ? 'success_assign_alert' : 'success_unassign_alert',
-          {
-            agent: agent.name,
-          },
-        ),
-        is_assigned ? cardText('success_assign_alert_description') : undefined,
-      );
+      if (is_assigned) {
+        unnnicToastManager.success(
+          cardText('success_assign_alert', { agent: agent.name }),
+          cardText('success_assign_alert_description'),
+        );
+      } else {
+        unnnicToastManager.info(
+          cardText('info_unassign_alert', { agent: agent.name }),
+        );
+      }
 
       return {
         status: 'success',

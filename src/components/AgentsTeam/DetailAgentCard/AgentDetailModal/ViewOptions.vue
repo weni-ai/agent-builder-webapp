@@ -43,7 +43,7 @@
 import { ref } from 'vue';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
-import type { AgentGroupOrAgent } from '@/store/types/Agents.types';
+import type { Agent, AgentGroupOrAgent } from '@/store/types/Agents.types';
 
 const props = defineProps<{
   agent: AgentGroupOrAgent;
@@ -63,14 +63,17 @@ function toggleExpanded() {
 }
 
 async function handleRemoveAgent() {
-  if (isRemovingAgent.value || !props.agent?.uuid) return;
+  const isAgentGroup = props.agent.group !== null;
+  if (isRemovingAgent.value || (!isAgentGroup && !(props.agent as Agent)?.uuid))
+    return;
 
   isRemovingAgent.value = true;
 
   try {
     const { status } = await agentsTeamStore.toggleAgentAssignment({
-      uuid: props.agent.uuid,
+      uuid: (props.agent as Agent)?.uuid,
       is_assigned: false,
+      is_group: isAgentGroup,
     });
 
     if (status === 'success') {
