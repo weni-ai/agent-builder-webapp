@@ -133,6 +133,11 @@ const isNextDisabled = computed(() => {
 
     return isSomeValueMissing;
   }
+  if (step.value === 3) {
+    return Object.values(config.value.credentials).some(
+      (value) => value === '' || value === undefined,
+    );
+  }
   if (step.value === TOTAL_STEPS) {
     return isSubmitting.value;
   }

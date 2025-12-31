@@ -87,6 +87,16 @@ const credentialsWithValue = computed(() => {
   );
 });
 
+onMounted(() => {
+  if (credentialsWithValue.value.length) {
+    credentialsWithValue.value.forEach((credential) => {
+      credentialValues.value[credential.name] = getStoredCredentialValue(
+        credential.name,
+      );
+    });
+  }
+});
+
 const formattedUsedCredentials = computed(() => {
   return formatListToReadable(
     credentialsWithValue.value.map((credential) => credential.label),
