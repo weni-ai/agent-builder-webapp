@@ -131,7 +131,12 @@ const isNextDisabled = computed(() => {
       (value) => value === '' || value === undefined,
     );
 
-    return isSomeValueMissing;
+    return !config.value.MCP || isSomeValueMissing;
+  }
+  if (step.value === 3) {
+    return Object.values(config.value.credentials).some(
+      (value) => value === '' || value === undefined,
+    );
   }
   if (step.value === TOTAL_STEPS) {
     return isSubmitting.value;

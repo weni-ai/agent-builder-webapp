@@ -48,6 +48,8 @@ function handleSelectSystem(system: AgentSystem) {
 
 <style scoped lang="scss">
 .modal-assign-agent__content {
+  overflow: auto;
+
   display: flex;
   flex-direction: column;
   gap: $unnnic-space-4;
