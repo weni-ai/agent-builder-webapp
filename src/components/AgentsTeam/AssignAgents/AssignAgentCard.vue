@@ -31,7 +31,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { useTuningsStore } from '@/store/Tunings';
@@ -52,7 +51,6 @@ const props = defineProps({
 
 const agentsTeamStore = useAgentsTeamStore();
 const tuningsStore = useTuningsStore();
-const router = useRouter();
 const isAssignDrawerOpen = ref(false);
 const isAssigning = ref(false);
 const isDrawerAssigning = ref(false);
