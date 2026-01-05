@@ -74,8 +74,12 @@ watch(() => agentsTeamStore.assignAgentsFilters.category, loadAgents, {
 
 <style lang="scss" scoped>
 .agents-list-filters {
+  $select-width: calc(
+    (100vw / 12) * 3 - ($unnnic-space-4 * 2)
+  ); // 3fr of 12 columns based on the screen width minus the main container padding
+
   display: grid;
-  grid-template-columns: 1fr calc((100vw / 12) * 3 - ($unnnic-space-4 * 2)); // 3 columns based on the width of the screen minus the main container padding
+  grid-template-columns: 1fr $select-width;
   gap: $unnnic-space-4;
 
   &--custom {
