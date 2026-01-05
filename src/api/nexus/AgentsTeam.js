@@ -54,7 +54,10 @@ export const AgentsTeam = {
       params,
     });
 
-    return [...data.new, ...data.legacy];
+    return [...data.new, ...data.legacy].map((agent) => ({
+      ...agent,
+      id: agent.slug,
+    }));
   },
 
   async getOfficialAgentDetails(uuid, system) {
