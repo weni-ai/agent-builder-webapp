@@ -113,6 +113,8 @@ function buildInitialValues(config: AgentMCP['config'] = []) {
 
 <style scoped lang="scss">
 .modal-assign-agent__content {
+  overflow: auto;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
 

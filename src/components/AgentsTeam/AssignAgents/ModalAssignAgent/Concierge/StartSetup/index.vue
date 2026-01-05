@@ -45,6 +45,8 @@ const mockedMCPS = buildMockedMCPs();
 
 <style lang="scss" scoped>
 .modal-assign-agent__start-setup {
+  overflow: auto;
+
   padding: $unnnic-space-6;
 
   display: grid;
