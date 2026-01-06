@@ -21,6 +21,7 @@
     <UnnnicButton
       :text="leftButtonText"
       type="secondary"
+      data-testid="modal-concierge-left-button"
       @click="handleBack"
     />
 
@@ -28,6 +29,7 @@
       :text="rightButtonText"
       :loading="isNextLoading || (isSubmitting && step === TOTAL_STEPS)"
       :disabled="isNextDisabled"
+      data-testid="modal-concierge-right-button"
       @click="handleNext"
     />
   </UnnnicDialogFooter>
