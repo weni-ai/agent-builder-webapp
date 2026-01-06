@@ -146,11 +146,12 @@ export const AgentsTeam = {
             description,
             credentials,
             is_official,
+            slug,
           }) => ({
             uuid,
             name,
             skills,
-            id,
+            id: id || slug,
             description,
             credentials,
             is_official,
