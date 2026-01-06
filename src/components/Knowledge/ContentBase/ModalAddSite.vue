@@ -1,5 +1,6 @@
 <template>
   <UnnnicModalDialog
+    data-testid="modal-add-site"
     :modelValue="true"
     showCloseIcon
     size="md"
