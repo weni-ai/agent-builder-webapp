@@ -30,6 +30,10 @@ import { AgentSystem } from '@/store/types/Agents.types';
 
 import ModalAssignAgentRadio from '../Radio.vue';
 
+defineOptions({
+  name: 'FirstStepContent',
+});
+
 defineProps<{
   systems: AgentSystem[];
 }>();

@@ -28,6 +28,10 @@ import Credentials from './Credentials.vue';
 
 import { AgentMCP, AgentSystem } from '@/store/types/Agents.types';
 
+defineOptions({
+  name: 'ThirdStepContent',
+});
+
 defineProps<{
   selectedSystem?: AgentSystem | '';
   selectedMCP: AgentMCP | null;
