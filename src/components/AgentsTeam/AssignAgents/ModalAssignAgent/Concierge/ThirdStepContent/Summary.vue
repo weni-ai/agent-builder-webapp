@@ -1,6 +1,12 @@
 <template>
-  <section class="modal-assign-agent__third-step-summary">
-    <article class="modal-assign-agent__summary-card">
+  <section
+    class="modal-assign-agent__third-step-summary"
+    data-testid="concierge-summary"
+  >
+    <article
+      class="modal-assign-agent__summary-card"
+      data-testid="concierge-summary-system-card"
+    >
       <p class="modal-assign-agent__summary-card-title">
         {{ $t('agents.assign_agents.setup.third_step.system_card_title') }}
       </p>
@@ -9,20 +15,30 @@
         class="modal-assign-agent__summary-card-skill"
         :title="systemName"
         :icon="systemIcon"
+        data-testid="concierge-summary-system-skill"
       />
     </article>
 
-    <article class="modal-assign-agent__summary-card">
+    <article
+      class="modal-assign-agent__summary-card"
+      data-testid="concierge-summary-mcp-card"
+    >
       <p class="modal-assign-agent__summary-card-title">
         {{ $t('agents.assign_agents.setup.third_step.mcp_card_title') }}
       </p>
 
       <section class="modal-assign-agent__summary-mcp-details">
-        <p class="modal-assign-agent__summary-mcp-name">
+        <p
+          class="modal-assign-agent__summary-mcp-name"
+          data-testid="concierge-summary-mcp-name"
+        >
           {{ selectedMCP.name }}
         </p>
 
-        <p class="modal-assign-agent__summary-mcp-description">
+        <p
+          class="modal-assign-agent__summary-mcp-description"
+          data-testid="concierge-summary-mcp-description"
+        >
           {{ selectedMCP.description }}
         </p>
       </section>
