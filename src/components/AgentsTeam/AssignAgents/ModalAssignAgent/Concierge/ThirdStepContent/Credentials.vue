@@ -2,6 +2,7 @@
   <section
     v-if="hasCredentials"
     class="modal-assign-agent__credentials"
+    data-testid="concierge-credentials"
   >
     <UnnnicDisclaimer
       v-if="credentialsWithValue.length"
@@ -10,6 +11,7 @@
         $t('agents.assign_agents.setup.third_step.credentials.disclaimer_title')
       "
       :description="formattedUsedCredentials"
+      data-testid="concierge-credentials-disclaimer"
     />
 
     <template v-if="credentialsWithoutValue.length">
@@ -18,11 +20,13 @@
         :key="credential.name"
         :label="credential.label"
         class="modal-assign-agent__credentials-field"
+        data-testid="concierge-credentials-field"
       >
         <UnnnicInput
           :modelValue="getCredentialValue(credential.name)"
           :placeholder="credential.placeholder || credential.label"
           :nativeType="credential.is_confidential ? 'password' : 'text'"
+          data-testid="concierge-credentials-input"
           @update:model-value="(value) => handleInputChange(credential, value)"
         />
       </UnnnicFormElement>
@@ -32,6 +36,7 @@
   <p
     v-else
     class="modal-assign-agent__credentials-not-required"
+    data-testid="concierge-credentials-empty"
   >
     {{ $t('agents.assign_agents.setup.third_step.credentials.not_required') }}
   </p>
