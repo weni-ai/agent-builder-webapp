@@ -1,10 +1,19 @@
 <template>
-  <section class="start-setup-about">
-    <p class="start-setup-about__title">
+  <section
+    class="start-setup-about"
+    data-testid="start-setup-about"
+  >
+    <p
+      class="start-setup-about__title"
+      data-testid="start-setup-about-title"
+    >
       {{ $t('agents.assign_agents.setup.about') }}
     </p>
 
-    <p class="start-setup-about__description">
+    <p
+      class="start-setup-about__description"
+      data-testid="start-setup-about-description"
+    >
       {{ agent.description }}
     </p>
 
@@ -19,6 +28,7 @@
         :title="system.name"
         :icon="system?.icon"
         class="start-setup-about__skill"
+        data-testid="start-setup-about-skill"
       />
     </section>
   </section>
