@@ -1,5 +1,8 @@
 <template>
-  <section class="modal-assign-agent__third-step">
+  <section
+    class="modal-assign-agent__third-step"
+    data-testid="concierge-third-step"
+  >
     <header class="modal-assign-agent__third-step-header">
       <p class="modal-assign-agent__third-step-title">
         {{ $t('agents.assign_agents.setup.third_step.title') }}
@@ -13,11 +16,13 @@
     <Summary
       :selectedSystem="selectedSystem"
       :selectedMCP="selectedMCP"
+      data-testid="concierge-third-step-summary"
     />
 
     <Credentials
       v-model:credentialValues="credentialValues"
       :credentials="selectedMCP?.credentials || []"
+      data-testid="concierge-third-step-credentials"
     />
   </section>
 </template>
