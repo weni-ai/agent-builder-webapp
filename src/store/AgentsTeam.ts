@@ -12,7 +12,11 @@ import { unnnicToastManager } from '@weni/unnnic-system';
 import i18n from '@/utils/plugins/i18n';
 
 import { useFeatureFlagsStore } from './FeatureFlags';
-import { Agent, AgentGroupOrAgent } from './types/Agents.types';
+import {
+  Agent,
+  AgentGroupOrAgent,
+  AssignAgentsFilters,
+} from './types/Agents.types';
 
 export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   const linkToCreateAgent = 'https://github.com/weni-ai/weni-cli';
@@ -37,6 +41,12 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   const myAgents = reactive({
     status: null,
     data: [],
+  });
+
+  const assignAgentsFilters = reactive<AssignAgentsFilters>({
+    search: '',
+    category: [],
+    system: null,
   });
 
   const allAgents = computed(() => {
@@ -66,14 +76,11 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
   }
 
-  async function loadOfficialAgents(
-    { search, category, group, system } = {
-      search: '',
-      category: '',
-      group: '',
-      system: '',
-    },
-  ) {
+  async function loadOfficialAgents({
+    search,
+  }: {
+    search?: string;
+  } = {}) {
     try {
       officialAgents.status = 'loading';
 
@@ -81,10 +88,9 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
       if (assignAgentsView) {
         response = await nexusaiAPI.router.agents_team.listOfficialAgents2({
-          category,
-          group,
-          system,
-          name: search,
+          name: assignAgentsFilters.search,
+          category: assignAgentsFilters.category?.[0]?.value ?? '',
+          system: assignAgentsFilters.system?.value ?? '',
         });
       } else {
         const { data } = await nexusaiAPI.router.agents_team.listOfficialAgents(
@@ -226,6 +232,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     activeTeam,
     officialAgents,
     myAgents,
+    assignAgentsFilters,
     allAgents,
     isAgentsGalleryOpen,
     loadActiveTeam,
