@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   disabled: {
     type: Boolean,
     default: false,
@@ -76,9 +76,9 @@ function handleClick() {
 
   position: relative;
 
-  border-radius: calc($unnnic-border-radius-sm / 2);
+  border-radius: $unnnic-radius-1;
 
-  padding: 0 $unnnic-spacing-xs;
+  padding: 0 $unnnic-space-2;
 
   width: fit-content;
 
@@ -86,12 +86,12 @@ function handleClick() {
   align-items: center;
   justify-content: center;
 
-  background: $unnnic-color-weni-700;
+  background: $unnnic-color-teal-700;
 
   cursor: pointer;
 
   &--active {
-    background: $unnnic-color-weni-800;
+    background: $unnnic-color-teal-800;
   }
 
   .view-logs-button__icon-loading {
@@ -106,7 +106,7 @@ function handleClick() {
   }
 
   .view-logs-button__icon-visibility {
-    margin-right: $unnnic-spacing-nano;
+    margin-right: $unnnic-space-1;
   }
 
   .view-logs-button__content {

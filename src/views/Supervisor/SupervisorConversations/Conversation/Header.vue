@@ -1,47 +1,22 @@
 <template>
   <header class="conversation__header">
-    <section class="header__info">
+    <section class="header__top">
       <SupervisorUsername
         :username="conversation?.username"
-        size="title-sm"
+        font="display-2"
       />
 
-      <UnnnicIntelligenceText
-        tag="h2"
-        color="neutral-cloudy"
-        family="secondary"
-        size="body-gt"
-        weight="regular"
-        data-testid="conversation-title"
-      >
-        {{ formattedUrn }}
-      </UnnnicIntelligenceText>
-
-      <section
-        v-if="topics.length > 0"
-        class="header__topics"
-      >
-        <UnnnicTag
-          v-for="topic in topics"
-          :key="topic"
-          scheme="neutral-light"
-          :text="topic"
-        />
-      </section>
+      <UnnnicButton
+        class="header__close-button"
+        type="tertiary"
+        size="small"
+        iconCenter="close"
+        data-testid="close-button"
+        @click="supervisorStore.selectConversation(null)"
+      />
     </section>
 
-    <button
-      class="header__close-button"
-      data-testid="close-button"
-      @click="supervisorStore.selectConversation(null)"
-    >
-      <UnnnicIcon
-        data-testid="close-button-icon"
-        icon="close"
-        size="md"
-        scheme="neutral-cloudy"
-      />
-    </button>
+    <Details />
   </header>
 </template>
 
@@ -49,69 +24,33 @@
 import { computed } from 'vue';
 
 import { useSupervisorStore } from '@/store/Supervisor';
-import i18n from '@/utils/plugins/i18n';
-import { formatWhatsappUrn } from '@/utils/formatters';
+
 import SupervisorUsername from '@/components/Supervisor/SupervisorUsername.vue';
+import Details from './Details/index.vue';
 
 const supervisorStore = useSupervisorStore();
-
 const conversation = computed(() => supervisorStore.selectedConversation);
-const formattedUrn = computed(() =>
-  i18n.global.t('agent_builder.supervisor.contact_urn', {
-    urn: formatWhatsappUrn(conversation.value?.urn),
-  }),
-);
-const topics = computed(() => {
-  if (typeof conversation.value?.topics === 'string') {
-    return [conversation.value?.topics];
-  }
-
-  if (conversation.value?.topics?.length === 0) {
-    return conversation.value?.topics;
-  }
-
-  return [];
-});
 </script>
 
 <style lang="scss" scoped>
-.conversation__header {
-  padding: $unnnic-spacing-sm;
-
-  display: flex;
-  justify-content: space-between;
-
-  border-bottom: $unnnic-border-width-thinner solid $unnnic-color-neutral-soft;
-
-  .header__info {
-    overflow: hidden;
+.conversation {
+  &__header {
+    padding: $unnnic-spacing-sm;
 
     display: flex;
     flex-direction: column;
-    gap: $unnnic-spacing-xs;
-  }
+    gap: $unnnic-space-2;
 
-  .header__topics {
-    display: flex;
-    gap: $unnnic-spacing-xs;
-    flex-wrap: wrap;
+    border-bottom: $unnnic-border-width-thinner solid $unnnic-color-neutral-soft;
 
-    :deep(.unnnic-tag) {
-      background-color: $unnnic-color-neutral-light;
+    .header__top {
+      overflow: hidden;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: $unnnic-space-2;
     }
-
-    :deep(.unnnic-tag__label) {
-      color: $unnnic-color-neutral-cloudy;
-    }
-  }
-
-  .header__close-button {
-    background-color: transparent;
-    border: none;
-
-    display: flex;
-
-    cursor: pointer;
   }
 }
 </style>
