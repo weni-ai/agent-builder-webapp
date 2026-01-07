@@ -1,60 +1,70 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AssignedAgents.vue > Component rendering > should match snapshot 1`] = `
-<section
-  class="assigned-agents"
-  data-v-29cec5a3=""
+<div
+  data-v-app=""
 >
-  <!--v-if-->
+  
   <section
-    class="assigned-agents__empty"
-    data-testid="empty-state"
+    class="assigned-agents"
     data-v-29cec5a3=""
   >
-    <unnnic-icon-stub
-      class="assigned-agents__empty-icon"
-      clickable="false"
-      data-testid="assigned-agents-icon"
-      data-v-29cec5a3=""
-      filled="true"
-      icon="workspaces"
-      scheme="neutral-soft"
-      size="xl"
-    />
+    <!--v-if-->
     <section
-      class="assigned-agents__empty-content"
+      class="assigned-agents__empty"
+      data-testid="empty-state"
       data-v-29cec5a3=""
     >
-      <h3
-        class="assigned-agents__empty-title"
-        data-testid="assigned-agents-title"
+      <unnnic-icon-stub
+        class="assigned-agents__empty-icon"
+        clickable="false"
+        data-testid="assigned-agents-icon"
+        data-v-29cec5a3=""
+        filled="true"
+        icon="workspaces"
+        scheme="neutral-soft"
+        size="xl"
+      />
+      <section
+        class="assigned-agents__empty-content"
         data-v-29cec5a3=""
       >
-        No agents assigned yet
-      </h3>
-      <p
-        class="assigned-agents__empty-description"
-        data-testid="assigned-agents-description"
+        <h3
+          class="assigned-agents__empty-title"
+          data-testid="assigned-agents-title"
+          data-v-29cec5a3=""
+        >
+          No agents assigned yet
+        </h3>
+        <p
+          class="assigned-agents__empty-description"
+          data-testid="assigned-agents-description"
+          data-v-29cec5a3=""
+        >
+          Add your first agent to start handling product queries, orders, and more.
+        </p>
+      </section>
+      <unnnic-button-stub
+        class="assigned-agents__empty-button"
+        data-testid="assigned-agents-button"
         data-v-29cec5a3=""
-      >
-        Add your first agent to start handling product queries, orders, and more.
-      </p>
+        disabled="false"
+        float="false"
+        iconcenter=""
+        iconleft=""
+        iconright=""
+        iconsfilled="false"
+        loading="false"
+        size="large"
+        text="Assign your first agent"
+        type="primary"
+      />
     </section>
-    <unnnic-button-stub
-      class="assigned-agents__empty-button"
-      data-testid="assigned-agents-button"
-      data-v-29cec5a3=""
-      disabled="false"
-      float="false"
-      iconcenter=""
-      iconleft=""
-      iconright=""
-      iconsfilled="false"
-      loading="false"
-      size="large"
-      text="Assign your first agent"
-      type="primary"
-    />
   </section>
-</section>
+  <agents-gallery-modal-stub
+    data-testid="agents-gallery-modal"
+    data-v-29cec5a3=""
+  />
+  
+</div>
 `;
