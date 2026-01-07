@@ -270,7 +270,9 @@
     },
     "assign_agents": {
       "title": "Asignar agentes",
-      "description": "Los agentes son especialistas listos para proporcionar soporte personalizado y resolver demandas complejas, actúan como consultores verdaderos, garantizando una experiencia humana y de alta calidad para sus clientes."
+      "description": "Los agentes son especialistas listos para proporcionar soporte personalizado y resolver demandas complejas, actúan como consultores verdaderos, garantizando una experiencia humana y de alta calidad para sus clientes.",
+      "assign_button": "Asignar agente",
+      "already_assigned": "Agente ya asignado"
     }
   },
   "router": {

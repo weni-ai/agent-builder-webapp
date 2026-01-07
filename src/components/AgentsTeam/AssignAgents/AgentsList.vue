@@ -1,7 +1,7 @@
 <template>
   <section class="agents-list">
     <template v-if="isLoading">
-      <AssignAgentCard
+      <AgentCard
         v-for="n in 6"
         :key="n"
         loading
@@ -14,14 +14,14 @@
         v-for="agent in agents"
         :key="agent.uuid"
         :agent="agent"
-        data-testid="agent-card"
       />
     </template>
   </section>
 </template>
 
 <script setup>
-import AssignAgentCard from '@/components/AgentsTeam/AssignAgentCard.vue';
+import AgentCard from '@/components/AgentsTeam/AgentCard.vue';
+import AssignAgentCard from './AssignAgentCard.vue';
 
 defineProps({
   agents: {
