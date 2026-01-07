@@ -12,18 +12,12 @@ import { unnnicToastManager } from '@weni/unnnic-system';
 import i18n from '@/utils/plugins/i18n';
 
 import { useFeatureFlagsStore } from './FeatureFlags';
-
-interface Agent {
-  uuid: string;
-  name: string;
-  assigned: boolean;
-  is_official: boolean;
-  id: string;
-  description: string;
-}
+import { Agent, AgentGroupOrAgent } from './types/Agents.types';
 
 export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   const linkToCreateAgent = 'https://github.com/weni-ai/weni-cli';
+
+  const assignAgentsView = useFeatureFlagsStore().flags.assignAgentsView;
 
   const alertStore = useAlertStore();
 
@@ -76,11 +70,20 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     try {
       officialAgents.status = 'loading';
 
-      const { data } = await nexusaiAPI.router.agents_team.listOfficialAgents({
-        search,
-      });
+      let response: AgentGroupOrAgent[] = [];
 
-      officialAgents.data = agentIconService.applyIconsToAgents(data);
+      if (assignAgentsView) {
+        response = await nexusaiAPI.router.agents_team.listOfficialAgents2();
+      } else {
+        const { data } = await nexusaiAPI.router.agents_team.listOfficialAgents(
+          {
+            search,
+          },
+        );
+        response = data;
+      }
+
+      officialAgents.data = agentIconService.applyIconsToAgents(response);
       officialAgents.status = 'complete';
     } catch (error) {
       console.error('error', error);
