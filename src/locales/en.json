@@ -272,7 +272,23 @@
       "title": "Assign agents",
       "description": "Agents are specialists ready to provide personalized support and solve complex demands, they act as true consultants, ensuring a human and high-quality experience for your customers.",
       "assign_button": "Assign agent",
-      "already_assigned": "Agent already assigned"
+      "already_assigned": "Agent already assigned",
+      "filters": {
+        "search": {
+          "placeholder": "Search"
+        },
+        "category": {
+          "placeholder": "Categories",
+          "product_discovery_and_recommendations": "Product discovery and recommendations",
+          "orders_status_and_tracking": "Orders status and tracking",
+          "returns_exchanges_and_cancellations": "Returns, exchanges and cancellations",
+          "payments_and_checkout": "Payments and checkout",
+          "crm_and_lead_capture": "CRM and lead capture",
+          "feedback_and_surveys": "Feedback and surveys",
+          "utilities_and_monitoring": "Utilities and monitoring",
+          "others": "Others"
+        }
+      }
     }
   },
   "router": {
