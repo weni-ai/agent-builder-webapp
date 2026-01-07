@@ -1,5 +1,5 @@
 <template>
-  <section class="agents-list">
+  <section :class="['agents-list', { 'agents-list--empty': isEmpty }]">
     <template v-if="isLoading">
       <AgentCard
         v-for="n in 6"
@@ -8,6 +8,8 @@
         data-testid="agent-card-loading"
       />
     </template>
+
+    <AgentsListEmptyState v-else-if="isEmpty" />
 
     <template v-else>
       <AssignAgentCard
@@ -20,10 +22,13 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 import AgentCard from '@/components/AgentsTeam/AgentCard.vue';
 import AssignAgentCard from '../AssignAgentCard.vue';
+import AgentsListEmptyState from './EmptyState.vue';
 
-defineProps({
+const props = defineProps({
   agents: {
     type: Array,
     required: true,
@@ -33,6 +38,8 @@ defineProps({
     default: false,
   },
 });
+
+const isEmpty = computed(() => props.agents.length === 0 && !props.isLoading);
 </script>
 
 <style lang="scss" scoped>
@@ -40,5 +47,12 @@ defineProps({
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: $unnnic-space-4;
+
+  &--empty {
+    height: 100%;
+
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
 }
 </style>
