@@ -44,6 +44,8 @@ const credentialValues = defineModel<Record<string, string>>(
 
 <style scoped lang="scss">
 .modal-assign-agent__third-step {
+  overflow: auto;
+
   display: flex;
   flex-direction: column;
   gap: $unnnic-space-4;

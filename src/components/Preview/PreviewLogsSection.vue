@@ -23,6 +23,7 @@
       v-else
       data-testid="preview-logs"
       :logs="filteredLogs"
+      :agents="agentsTeamStore.activeTeam.data"
       @scroll-to-bottom="$emit('scroll-to-bottom')"
     />
   </section>
@@ -34,11 +35,14 @@ import { ref, onMounted, watch, computed } from 'vue';
 import PreviewLogs from '@/components/Preview/PreviewLogs.vue';
 import PreviewLogsFilters from '@/components/Preview/PreviewLogsFilters.vue';
 import { usePreviewStore } from '@/store/Preview';
+import { useAgentsTeamStore } from '@/store/AgentsTeam';
+
+const agentsTeamStore = useAgentsTeamStore();
 
 const previewStore = usePreviewStore();
 const logs = computed(() => previewStore.collaboratorsLogs);
 
-const emit = defineEmits(['scroll-to-bottom']);
+defineEmits(['scroll-to-bottom']);
 
 const searchTerm = ref('');
 const selectedCategories = ref([]);
