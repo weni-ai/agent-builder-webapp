@@ -39,6 +39,7 @@ import { AgentGroup } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import ModalAssignConciergeStartSetup from './Concierge/StartSetup/index.vue';
+import ModalAssignConcierge from './Concierge/index.vue';
 
 const emit = defineEmits(['update:open']);
 
@@ -54,7 +55,7 @@ defineModel('open', {
 const groupModalComponent = ref<Component | null>(null);
 
 const MODAL_GROUPS_MAP = {
-  CONCIERGE: null,
+  CONCIERGE: ModalAssignConcierge,
 };
 const MODAL_START_SETUP_MAP = {
   CONCIERGE: ModalAssignConciergeStartSetup,

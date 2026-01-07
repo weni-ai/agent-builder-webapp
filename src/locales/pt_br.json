@@ -349,7 +349,20 @@
           "concierge_label": "Product Concierge",
           "concierge_message": "Encontrei o Nike Air Zoom Pegasus 40 — Preto/Branco. O preço é R$ 129,90 e o tamanho 41 está em estoque. Quer ver o prazo de entrega ou modelos semelhantes?"
         },
-        "start_button": "Iniciar configuração"
+        "system_selection": {
+          "title": "Seleção de sistema",
+          "description": "Selecione o sistema de origem dos dados",
+          "mcp_count": "{count} MCPs disponíveis"
+        },
+        "start_button": "Iniciar configuração",
+        "step": {
+          "title": "Atribuir {agent}",
+          "tag": "Passo {step} de {total}"
+        },
+        "cancel_button": "Cancelar",
+        "back_button": "Voltar",
+        "next_button": "Avançar",
+        "finish_button": "Concluir"
       }
     }
   },

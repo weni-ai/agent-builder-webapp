@@ -349,7 +349,20 @@
           "concierge_label": "Product Concierge",
           "concierge_message": "I found the Nike Air Zoom Pegasus 40 — Black/White. It costs R$ 129.90 and size 41 is in stock. Want to check delivery times or similar models?"
         },
-        "start_button": "Start setup"
+        "system_selection": {
+          "title": "System selection",
+          "description": "Select the data source system",
+          "mcp_count": "{count} MCPs available"
+        },
+        "start_button": "Start setup",
+        "step": {
+          "title": "Assign {agent}",
+          "tag": "Step {step} of {total}"
+        },
+        "cancel_button": "Cancel",
+        "back_button": "Back",
+        "next_button": "Next",
+        "finish_button": "Finish"
       }
     }
   },
