@@ -76,6 +76,41 @@ const unnnicModalDialogStub = {
   `,
 };
 
+const unnnicDialogStub = {
+  name: 'UnnnicDialogStub',
+  inheritAttrs: false,
+  props: Unnnic?.unnnicDialog.props,
+  emits: Unnnic?.unnnicDialog.emits,
+  template: `
+    <div v-bind="$attrs">
+      <slot />
+    </div>
+  `,
+};
+
+const unnnicDialogContentStub = {
+  name: 'UnnnicDialogContentStub',
+  inheritAttrs: false,
+  props: Unnnic?.unnnicDialogContent.props,
+  emits: Unnnic?.unnnicDialogContent.emits,
+  template: `
+    <div v-bind="$attrs">
+      <slot />
+    </div>
+  `,
+};
+
+const unnnicDialogFooterStub = {
+  name: 'UnnnicDialogFooterStub',
+  inheritAttrs: false,
+  props: Unnnic?.unnnicDialogFooter.props,
+  emits: Unnnic?.unnnicDialogFooter.emits,
+  template: `
+    <div v-bind="$attrs">
+      <slot />
+    </div>
+  `,
+};
 const unnnicTooltipStub = {
   name: 'UnnnicToolTipStub',
   inheritAttrs: false,
@@ -118,6 +153,9 @@ config.global.stubs = {
     template: `<div><slot /></div>`,
   },
   UnnnicModalDialog: unnnicModalDialogStub,
+  UnnnicDialog: unnnicDialogStub,
+  UnnnicDialogContent: unnnicDialogContentStub,
+  UnnnicDialogFooter: unnnicDialogFooterStub,
   UnnnicToolTip: unnnicTooltipStub,
   UnnnicDrawer: unnnicDrawerStub,
   UnnnicDrawerNext: unnnicDrawerNextStub,

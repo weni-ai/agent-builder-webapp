@@ -1,6 +1,7 @@
 <template>
   <section
     class="modal-assign-agent__radio"
+    data-testid="modal-assign-agent-radio"
     :class="{
       'modal-assign-agent__radio--selected': selected,
       'modal-assign-agent__radio--with-icon': hasSystemIcon,
@@ -18,6 +19,7 @@
       :checked="selected"
       tabindex="-1"
       @change.stop
+      data-testid="modal-assign-agent-radio-input"
     />
 
     <img
@@ -25,16 +27,21 @@
       class="modal-assign-agent__radio-icon"
       :src="systemIcon"
       :alt="systemIconAlt"
+      data-testid="modal-assign-agent-radio-icon"
     />
 
     <section class="modal-assign-agent__radio-infos">
-      <p class="modal-assign-agent__radio-title">
+      <p
+        class="modal-assign-agent__radio-title"
+        data-testid="modal-assign-agent-radio-title"
+      >
         {{ label }}
       </p>
 
       <p
         v-if="description"
         :class="descriptionClasses"
+        data-testid="modal-assign-agent-radio-description"
       >
         {{ description }}
       </p>
