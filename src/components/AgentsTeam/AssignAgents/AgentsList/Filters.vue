@@ -1,5 +1,10 @@
 <template>
-  <section class="agents-list-filters">
+  <section
+    :class="[
+      'agents-list-filters',
+      { 'agents-list-filters--custom': isSystemCustom },
+    ]"
+  >
     <UnnnicInput
       v-model="agentsTeamStore.assignAgentsFilters.search"
       :placeholder="$t('agents.assign_agents.filters.search.placeholder')"
@@ -8,6 +13,7 @@
     />
 
     <UnnnicSelectSmart
+      v-if="!isSystemCustom"
       v-model:modelValue="agentsTeamStore.assignAgentsFilters.category"
       :options="categoryOptions"
       :placeholder="$t('agents.assign_agents.filters.category.placeholder')"
@@ -45,23 +51,39 @@ const categoryOptions = computed(() => {
   ];
 });
 
+const isSystemCustom = computed(() => {
+  return agentsTeamStore.assignAgentsFilters.system === 'ALL_CUSTOM';
+});
+
+const loadAgents = () => {
+  if (isSystemCustom.value) {
+    agentsTeamStore.loadMyAgents();
+  } else {
+    agentsTeamStore.loadOfficialAgents();
+  }
+};
+
 watch(
   () => agentsTeamStore.assignAgentsFilters.search,
-  debounce(agentsTeamStore.loadOfficialAgents, 300),
+  debounce(loadAgents, 300),
 );
-watch(
-  () => agentsTeamStore.assignAgentsFilters.category,
-  agentsTeamStore.loadOfficialAgents,
-  {
-    deep: true,
-  },
-);
+watch(() => agentsTeamStore.assignAgentsFilters.category, loadAgents, {
+  deep: true,
+});
 </script>
 
 <style lang="scss" scoped>
 .agents-list-filters {
+  $select-width: calc(
+    (100vw / 12) * 3 - ($unnnic-space-4 * 2)
+  ); // 3fr of 12 columns based on the screen width minus the main container padding
+
   display: grid;
-  grid-template-columns: 1fr calc((100vw / 12) * 3 - ($unnnic-space-4 * 2));
+  grid-template-columns: 1fr $select-width;
   gap: $unnnic-space-4;
+
+  &--custom {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

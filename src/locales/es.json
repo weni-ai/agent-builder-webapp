@@ -272,9 +272,16 @@
       "title": "Asignar agentes",
       "description": "Los agentes son especialistas listos para proporcionar soporte personalizado y resolver demandas complejas, actúan como consultores verdaderos, garantizando una experiencia humana y de alta calidad para sus clientes.",
       "header": {
-        "title": "Todos los sistemas",
+        "all_systems": "Todos los sistemas",
+        "all_custom_agents": "Todos los agentes personalizados",
         "system_title": "Agentes {system}",
         "agents_available": "No hay agentes disponibles | {count} agente disponible | {count} agentes disponibles"
+      },
+      "sidebar": {
+        "official_title": "Agentes oficiales",
+        "custom_title": "Agentes personalizados",
+        "all_systems": "Todos los sistemas",
+        "all_custom_agents": "Todos los agentes personalizados"
       },
       "assign_button": "Asignar agente",
       "already_assigned": "Agente ya asignado",
