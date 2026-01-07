@@ -322,6 +322,34 @@
           "see_documentation": "Vea la {weni_cli_documentation} para instrucciones detalladas",
           "weni_cli_documentation": "Documentación de Weni CLI"
         }
+      },
+      "setup": {
+        "about": "Sobre",
+        "mcps_available": {
+          "title": "MCPs disponibles",
+          "concierge_mcps": [
+            {
+              "name": "Default",
+              "description": "Catálogo/Búsqueda + Precio base + Inventario"
+            },
+            {
+              "name": "Trade Policy",
+              "description": "Soporte para múltiples políticas comerciales B2B"
+            },
+            {
+              "name": "Meta Catalog",
+              "description": "Catálogo de productos con información meta"
+            }
+          ]
+        },
+        "conversation_example": {
+          "title": "Ejemplo de conversación",
+          "customer_label": "Cliente",
+          "customer_message": "¿Tienen el Nike Air Zoom Pegasus 40 en la talla 41?",
+          "concierge_label": "Product Concierge",
+          "concierge_message": "Encontré el Nike Air Zoom Pegasus 40 — Negro/Blanco. Cuesta R$ 129,90 y la talla 41 está disponible. ¿Quieres ver el plazo de entrega o modelos similares?"
+        },
+        "start_button": "Iniciar configuración"
       }
     }
   },

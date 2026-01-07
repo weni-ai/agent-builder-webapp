@@ -27,6 +27,11 @@
     :isAssigning="isDrawerAssigning"
     @assign="toggleDrawerAssigning"
   />
+
+  <ModalAssignAgent
+    v-model:open="isModalAssignAgentOpen"
+    :agent="agent"
+  />
 </template>
 
 <script setup>
@@ -39,6 +44,7 @@ import useAgentSystems from '@/composables/useAgentSystems';
 
 import AgentCard from '../AgentCard.vue';
 import AssignAgentDrawer from '../AssignAgentDrawer.vue';
+import ModalAssignAgent from './ModalAssignAgent/index.vue';
 
 const { getSystemsObjects } = useAgentSystems();
 
@@ -51,9 +57,11 @@ const props = defineProps({
 
 const agentsTeamStore = useAgentsTeamStore();
 const tuningsStore = useTuningsStore();
+
 const isAssignDrawerOpen = ref(false);
 const isAssigning = ref(false);
 const isDrawerAssigning = ref(false);
+const isModalAssignAgentOpen = ref(false);
 
 async function toggleDrawer() {
   isAssignDrawerOpen.value = !isAssignDrawerOpen.value;
@@ -80,11 +88,19 @@ async function assignAgent() {
 }
 
 function handleAssignButton() {
-  if (!props.agent.assigned && props.agent.credentials?.length > 0) {
-    toggleDrawer();
-  } else {
-    assignAgent();
+  if (!props.agent.assigned) {
+    if (props.agent.credentials?.length > 0) {
+      toggleDrawer();
+      return;
+    }
+
+    if (props.agent.group) {
+      isModalAssignAgentOpen.value = true;
+      return;
+    }
   }
+
+  assignAgent();
 }
 
 async function toggleDrawerAssigning() {
