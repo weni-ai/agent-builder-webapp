@@ -51,7 +51,6 @@ const props = defineProps({
 
 const agentsTeamStore = useAgentsTeamStore();
 const tuningsStore = useTuningsStore();
-
 const isAssignDrawerOpen = ref(false);
 const isAssigning = ref(false);
 const isDrawerAssigning = ref(false);
