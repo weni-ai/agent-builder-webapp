@@ -267,6 +267,11 @@
         "title": "No agents assigned yet",
         "description": "Add your first agent to start handling product queries, orders, and more.",
         "assign_agents_button": "Assign your first agent"
+      },
+      "agent_details": {
+        "about": "About",
+        "view_options": "View options",
+        "remove_agent": "Remove agent"
       }
     },
     "assign_agents": {
