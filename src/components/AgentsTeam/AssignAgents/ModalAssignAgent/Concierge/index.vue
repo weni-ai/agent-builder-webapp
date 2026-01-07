@@ -40,11 +40,13 @@ import { useI18n } from 'vue-i18n';
 import { AgentGroup, AgentMCP, AgentSystem } from '@/store/types/Agents.types';
 
 import useOfficialAgentAssignment, {
+  findAgentVariantUuid,
   type MCPConfigValues,
 } from '@/composables/useOfficialAgentAssignment';
 
 import FirstStepContent from './FirstStepContent.vue';
 import SecondStepContent from './SecondStepContent/index.vue';
+import ThirdStepContent from './ThirdStepContent/index.vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
 
 const emit = defineEmits(['update:open']);
@@ -84,6 +86,7 @@ const rightButtonText = computed(() => {
 const stepComponents = {
   1: FirstStepContent,
   2: SecondStepContent,
+  3: ThirdStepContent,
 };
 
 const agentDetails = ref<AgentGroup | null>(props.agent);
@@ -112,7 +115,12 @@ const currentStepProps = computed(() => {
   }
   if (step.value === 3) {
     return {
-      credentials: props.agent.credentials || [],
+      selectedSystem: config.value.system,
+      selectedMCP: config.value.MCP,
+      credentialValues: config.value.credentials,
+      'onUpdate:credentialValues': (nextValues: Record<string, string>) => {
+        config.value.credentials = nextValues;
+      },
     };
   }
   return {};
@@ -124,6 +132,11 @@ const isNextDisabled = computed(() => {
     );
 
     return !config.value.MCP || isSomeValueMissing;
+  }
+  if (step.value === 3) {
+    return Object.values(config.value.credentials).some(
+      (value) => value === '' || value === undefined,
+    );
   }
   if (step.value === TOTAL_STEPS) {
     return isSubmitting.value;
@@ -139,17 +152,18 @@ function closeModal() {
   resetFlow();
 }
 async function getAgentDetails() {
-  const agentUuid = props.agent.variants.find(
-    (v) =>
-      v.variant.toUpperCase() === 'DEFAULT' &&
-      config.value.system.toLowerCase() === v.systems[0].toLowerCase(),
-  )?.uuid;
+  const agentUuid = findAgentVariantUuid(props.agent, config.value.system);
+
   if (!agentUuid) return;
 
   const agentDetailsData =
-    await nexusaiAPI.router.agents_team.getOfficialAgentDetails(agentUuid);
+    await nexusaiAPI.router.agents_team.getOfficialAgentDetails(
+      agentUuid,
+      config.value.system.toLowerCase(),
+    );
   agentDetails.value = { ...props.agent, ...agentDetailsData };
 }
+
 async function handleNext() {
   if (isSubmitting.value) return;
   if (step.value < TOTAL_STEPS) {

@@ -57,9 +57,10 @@ export const AgentsTeam = {
     return [...data.new, ...data.legacy];
   },
 
-  async getOfficialAgentDetails(uuid) {
+  async getOfficialAgentDetails(uuid, system) {
     const params = {
       project_uuid: projectUuid.value,
+      system,
     };
 
     const { data } = await request.$http.get(
@@ -69,6 +70,20 @@ export const AgentsTeam = {
       },
     );
     return data;
+  },
+
+  async toggleOfficialAgentAssignment(payload) {
+    const { data } = await request.$http.post(
+      `/api/v1/official/agents?project_uuid=${projectUuid.value}&agent_uuid=${payload.agent_uuid}`,
+      payload,
+      {
+        hideGenericErrorAlert: true,
+      },
+    );
+
+    return {
+      data,
+    };
   },
 
   async listMyAgents({ search }) {

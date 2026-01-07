@@ -364,6 +364,16 @@
           "title": "Configurar MCP {mcp}",
           "description": "Este MCP não requer configuração"
         },
+        "third_step": {
+          "title": "Revise a configuração e insira as credenciais",
+          "description": "Revise a configuração e insira suas credenciais para finalizar o setup do agente",
+          "system_card_title": "Sistema selecionado",
+          "mcp_card_title": "MCP selecionado",
+          "credentials": {
+            "disclaimer_title": "Este agente usa credenciais já inseridas neste projeto",
+            "not_required": "Este agente não precisa de credenciais"
+          }
+        },
         "start_button": "Iniciar configuração",
         "step": {
           "title": "Atribuir {agent}",
@@ -385,6 +395,7 @@
         "success_assign_alert": "{agent} atribuído",
         "success_assign_alert_description": "O agente está pronto para usar",
         "success_unassign_alert": "{agent} removido do time com sucesso",
+        "info_unassign_alert": "{agent} removido",
         "error_alert": "Erro ao atualizar time",
         "official": "Oficial",
         "custom": "Personalizado",

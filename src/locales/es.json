@@ -364,6 +364,16 @@
           "title": "Configurar MCP {mcp}",
           "description": "Este MCP no requiere configuración"
         },
+        "third_step": {
+          "title": "Revisa la configuración e ingresa las credenciales",
+          "description": "Revisa la configuración e ingresa tus credenciales para finalizar la configuración del agente",
+          "system_card_title": "Sistema seleccionado",
+          "mcp_card_title": "MCP seleccionado",
+          "credentials": {
+            "disclaimer_title": "Este agente usa credenciais já inseridas neste projeto",
+            "not_required": "Este agente no requiere credenciales"
+          }
+        },
         "start_button": "Iniciar configuración",
         "step": {
           "title": "Asignar {agent}",
@@ -385,6 +395,7 @@
         "success_assign_alert": "{agent} asignado",
         "success_assign_alert_description": "El agente está listo para usar",
         "success_unassign_alert": "{agent} removido del equipo con éxito",
+        "info_unassign_alert": "{agent} removido",
         "error_alert": "Error al actualizar equipo",
         "official": "Oficial",
         "custom": "Personalizado",
