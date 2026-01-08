@@ -11,7 +11,7 @@
       state="vertical"
       :modelValue="selectedManager"
       data-testid="manager-selector-radio-group"
-      @update:model-value="selectedManager = $event"
+      @update:model-value="updateSelectedManager"
     >
       <section class="manager-selector__new-manager">
         <UnnnicRadio
@@ -40,20 +40,19 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 
-const selectedManager = ref('manager-2.5');
-const managers = ref({
-  new: {
-    id: 'manager-2.6',
-    label: 'Manager 2.6',
-  },
-  legacy: {
-    id: 'manager-2.5',
-    label: 'Manager 2.5',
-    deprecation: '2026-04-15',
-  },
-});
+import { useManagerSelectorStore } from '@/store/ManagerSelector';
+
+const managerSelectorStore = useManagerSelectorStore();
+const { options, selectedManager } = storeToRefs(managerSelectorStore);
+
+const managers = computed(() => options.value?.managers);
+
+const updateSelectedManager = (managerId) => {
+  managerSelectorStore.setSelectedManager(managerId);
+};
 </script>
 
 <style lang="scss" scoped>

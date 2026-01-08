@@ -259,7 +259,8 @@
         "title": "Manager",
         "new": "New",
         "recommended": "Recommended",
-        "legacy_model": "Legacy model"
+        "legacy_model": "Legacy model",
+        "load_error": "Unable to load managers"
       }
     }
   },
