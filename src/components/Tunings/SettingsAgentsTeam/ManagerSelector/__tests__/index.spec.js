@@ -20,7 +20,7 @@ describe('ManagerSelector.vue', () => {
   const radioLegacy = () =>
     wrapper.findComponent('[data-testid="manager-selector-radio-legacy"]');
   const upgradeBanner = () =>
-    wrapper.find('[data-testid="manager-upgrade-card"]');
+    wrapper.findComponent('[data-testid="manager-upgrade-card"]');
 
   const managerMock = {
     currentManager: 'manager-2.5',
@@ -109,18 +109,16 @@ describe('ManagerSelector.vue', () => {
     );
   });
 
-  it('renders the upgrade marketing banner when copy is available', () => {
-    expect(upgradeBanner().exists()).toBe(true);
-    expect(upgradeBanner().text()).toContain('Manager 2.6 is now available');
-    expect(upgradeBanner().text()).toContain(
-      'Better performance in complex conversations',
-    );
-  });
-
-  it('hides the marketing banner when the manager is private', async () => {
-    managerSelectorStore.options.managers.new.id = 'manager-private';
+  it('only renders the upgrade banner when the selected manager differs from the new manager', async () => {
+    managerSelectorStore.options.currentManager = managerMock.managers.new.id;
     await nextTick();
 
     expect(upgradeBanner().exists()).toBe(false);
+
+    managerSelectorStore.options.currentManager =
+      managerMock.managers.legacy.id;
+    await nextTick();
+
+    expect(upgradeBanner().exists()).toBe(true);
   });
 });
