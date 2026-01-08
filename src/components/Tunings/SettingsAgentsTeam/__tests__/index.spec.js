@@ -16,6 +16,8 @@ describe('SettingsAgentsTeam/index.vue', () => {
 
   const agentsPreviewComponent = () =>
     wrapper.findComponent('[data-testid="agents-preview"]');
+  const managerSelectorComponent = () =>
+    wrapper.findComponent('[data-testid="manager-selector"]');
   const humanSupportComponent = () =>
     wrapper.findComponent('[data-testid="human-support"]');
   const mainContainer = () =>
@@ -31,6 +33,10 @@ describe('SettingsAgentsTeam/index.vue', () => {
   });
 
   describe('Component rendering', () => {
+    it('renders the ManagerSelector component', () => {
+      expect(managerSelectorComponent().exists()).toBe(true);
+    });
+
     it('renders the AgentsPreview component', () => {
       expect(agentsPreviewComponent().exists()).toBe(true);
     });
