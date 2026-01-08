@@ -256,7 +256,10 @@
         }
       },
       "manager": {
-        "title": "Manager"
+        "title": "Manager",
+        "new": "New",
+        "recommended": "Recommended",
+        "legacy_model": "Legacy model"
       }
     }
   },
