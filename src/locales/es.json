@@ -254,6 +254,9 @@
           "title": "Elige la voz para las respuestas del agente",
           "description": "Haz clic para escuchar las voces y elegir la que mejor se adapte a tu agente"
         }
+      },
+      "manager": {
+        "title": "Manager"
       }
     }
   },
