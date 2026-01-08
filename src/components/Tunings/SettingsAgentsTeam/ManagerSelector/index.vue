@@ -6,10 +6,55 @@
     >
       {{ $t('agent_builder.tunings.manager.title') }}
     </h2>
+
+    <UnnnicRadioGroup
+      state="vertical"
+      :modelValue="selectedManager"
+      data-testid="manager-selector-radio-group"
+      @update:model-value="selectedManager = $event"
+    >
+      <section class="manager-selector__new-manager">
+        <UnnnicRadio
+          data-testid="manager-selector-radio-new"
+          :label="managers.new.label"
+          :value="managers.new.id"
+          :helper="$t('agent_builder.tunings.manager.recommended')"
+        />
+
+        <p
+          class="manager-selector__new-tag"
+          data-testid="manager-selector-radio-new-tag"
+        >
+          {{ $t('agent_builder.tunings.manager.new') }}
+        </p>
+      </section>
+
+      <UnnnicRadio
+        data-testid="manager-selector-radio-legacy"
+        :label="managers.legacy.label"
+        :value="managers.legacy.id"
+        :helper="$t('agent_builder.tunings.manager.legacy_model')"
+      />
+    </UnnnicRadioGroup>
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+
+const selectedManager = ref('manager-2.5');
+const managers = ref({
+  new: {
+    id: 'manager-2.6',
+    label: 'Manager 2.6',
+  },
+  legacy: {
+    id: 'manager-2.5',
+    label: 'Manager 2.5',
+    deprecation: '2026-04-15',
+  },
+});
+</script>
 
 <style lang="scss" scoped>
 .manager-selector {
@@ -20,6 +65,22 @@
   &__title {
     font: $unnnic-font-display-3;
     color: $unnnic-color-neutral-darkest;
+  }
+
+  &__new-manager {
+    display: flex;
+    align-items: flex-start;
+    gap: $unnnic-space-2;
+  }
+
+  &__new-tag {
+    border-radius: $unnnic-radius-1;
+
+    padding: $unnnic-space-05 $unnnic-space-1;
+
+    background-color: $unnnic-color-teal-100;
+    color: $unnnic-color-fg-active;
+    font: $unnnic-font-caption-1;
   }
 }
 </style>
