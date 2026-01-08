@@ -47,6 +47,7 @@ import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
 import { useProjectStore } from '@/store/Project';
 import { useUserStore } from '@/store/User';
+import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { useCurrentModule } from '@/composables/useCurrentModule';
 import { isFederatedModule } from './utils/moduleFederation';
 
@@ -62,6 +63,7 @@ const agentsTeamStore = useAgentsTeamStore();
 const alertStore = useAlertStore();
 const projectStore = useProjectStore();
 const userStore = useUserStore();
+const managerSelectorStore = useManagerSelectorStore();
 
 onMounted(() => {
   useTuningsStore().fetchCredentials();
@@ -87,6 +89,18 @@ watch(
   () => userStore.user.email,
   (email) => {
     if (email) initHotjar(email);
+  },
+);
+
+watch(
+  () => isBuildModule.value,
+  (isBuildModuleActive) => {
+    if (isBuildModuleActive) {
+      managerSelectorStore.loadManagerData();
+    }
+  },
+  {
+    immediate: true,
   },
 );
 </script>
