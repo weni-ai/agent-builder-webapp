@@ -1,6 +1,9 @@
 <template>
   <section class="manager-selector">
-    <ManagerUpgradeCard v-if="shouldUpgradeManager" />
+    <ManagerUpgradeCard
+      v-if="shouldUpgradeManager"
+      data-testid="manager-upgrade-card"
+    />
 
     <h2
       class="manager-selector__title"
