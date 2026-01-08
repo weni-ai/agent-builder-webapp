@@ -259,7 +259,8 @@
         "title": "Manager",
         "new": "Novo",
         "recommended": "Recomendado",
-        "legacy_model": "Modelo legado"
+        "legacy_model": "Modelo legado",
+        "load_error": "Não foi possível carregar os managers"
       }
     }
   },
