@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { nextTick } from 'vue';
 import { createTestingPinia } from '@pinia/testing';
 
 import ManagerSelector from '../index.vue';
@@ -18,6 +19,8 @@ describe('ManagerSelector.vue', () => {
     wrapper.findComponent('[data-testid="manager-selector-radio-new"]');
   const radioLegacy = () =>
     wrapper.findComponent('[data-testid="manager-selector-radio-legacy"]');
+  const upgradeBanner = () =>
+    wrapper.find('[data-testid="manager-upgrade-card"]');
 
   const managerMock = {
     currentManager: 'manager-2.5',
@@ -104,5 +107,20 @@ describe('ManagerSelector.vue', () => {
     expect(newTag.text()).toBe(
       i18n.global.t('agent_builder.tunings.manager.new'),
     );
+  });
+
+  it('renders the upgrade marketing banner when copy is available', () => {
+    expect(upgradeBanner().exists()).toBe(true);
+    expect(upgradeBanner().text()).toContain('Manager 2.6 is now available');
+    expect(upgradeBanner().text()).toContain(
+      'Better performance in complex conversations',
+    );
+  });
+
+  it('hides the marketing banner when the manager is private', async () => {
+    managerSelectorStore.options.managers.new.id = 'manager-private';
+    await nextTick();
+
+    expect(upgradeBanner().exists()).toBe(false);
   });
 });

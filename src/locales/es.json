@@ -260,7 +260,15 @@
         "new": "Nuevo",
         "recommended": "Recomendado",
         "legacy_model": "Modelo legado",
-        "load_error": "No fue posible cargar los managers"
+        "load_error": "No fue posible cargar los managers",
+        "upgrade_banner": {
+          "title": "💡 {manager_name} ya está disponible",
+          "manager_2.6_description": "Actualiza para obtener respuestas más rápidas y confiables mientras el Manager coordina a tus agentes.",
+          "manager_2.6_highlights": [
+            "Mejor rendimiento en conversaciones complejas",
+            "Orquestación más estable entre los agentes"
+          ]
+        }
       }
     }
   },
