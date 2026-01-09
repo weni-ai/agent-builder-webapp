@@ -120,7 +120,7 @@ export default {
               legacy: {
                 id: 'manager-2.5',
                 label: 'Manager 2.5',
-                deprecation: '2026-04-15',
+                deprecation: '2026-01-15',
               },
             },
             serverTime: '2026-01-08T13:00:00Z',
