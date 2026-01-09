@@ -263,11 +263,14 @@
         "load_error": "Não foi possível carregar os managers",
         "upgrade_banner": {
           "title": "💡 {manager_name} já está disponível",
+          "disclaimer_title": "Atualize para {manager_name}",
+          "disclaimer_title_with_date": "Atualize para {manager_name} até {date}",
           "manager_2.6_description": "Atualize para obter respostas mais rápidas e confiáveis enquanto o Manager coordena seus agentes.",
           "manager_2.6_highlights": [
             "Melhor desempenho em conversas complexas",
             "Orquestração mais estável entre os agentes"
-          ]
+          ],
+          "manager_2_dot_6_disclaimer_description": "Manager 2.5 será descontinuado em breve. Atualize para Manager 2.6 para respostas mais rápidas e confiáveis enquanto o Manager coordena seus agentes."
         }
       }
     }
