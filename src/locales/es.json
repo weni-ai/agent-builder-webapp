@@ -263,6 +263,8 @@
         "load_error": "No fue posible cargar los managers",
         "upgrade_banner": {
           "title": "💡 {manager_name} ya está disponible",
+          "disclaimer_title": "Actualiza para {manager_name}",
+          "disclaimer_title_with_date": "Actualiza para {manager_name} até {date}",
           "manager_2.6_description": "Actualiza para obtener respuestas más rápidas y confiables mientras el Manager coordina a tus agentes.",
           "manager_2.6_highlights": [
             "Mejor rendimiento en conversaciones complejas",
