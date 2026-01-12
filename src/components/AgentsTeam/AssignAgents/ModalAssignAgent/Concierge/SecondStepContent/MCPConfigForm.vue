@@ -11,13 +11,12 @@
         @update:model-value="updateFieldValue(element.name, $event)"
       />
 
-      <UnnnicSelectSmart
+      <UnnnicSelect
         v-else-if="element.type === 'SELECT'"
         :label="element.label"
         :options="formatOptions(element.options)"
         :modelValue="getSelectModelValue(element)"
-        orderedByIndex
-        @update:model-value="handleSelectChange(element.name, $event)"
+        @update:model-value="updateFieldValue(element.name, $event)"
       />
 
       <UnnnicInput
@@ -114,16 +113,11 @@ function formatOptions(options: MCPConfigField['options'] = []) {
 
 function getSelectModelValue(field: MCPConfigField) {
   const value = configValues.value[field.name];
-  if (!value) return [];
+  if (typeof value === 'string') return value;
   const option = formatOptions(field.options).find(
     (option) => option.value === value,
   );
-  return option ? [option] : [];
-}
-
-function handleSelectChange(name: string, selectedOptions) {
-  const [option] = selectedOptions || [];
-  updateFieldValue(name, option?.value ?? '');
+  return option?.value ?? '';
 }
 
 function isCheckboxChecked(fieldName: string, optionValue: string) {

@@ -93,17 +93,15 @@ const stepComponents = {
 
 const agentDetails = ref<AgentGroup | null>(props.agent);
 const currentStepProps = computed(() => {
-  if (step.value === 1) {
-    return {
+  const stepProps = {
+    1: {
       systems: props.agent.systems,
       selectedSystem: config.value.system,
       'onUpdate:selectedSystem': (nextSystem: AgentSystem) => {
         config.value.system = nextSystem;
       },
-    };
-  }
-  if (step.value === 2) {
-    return {
+    },
+    2: {
       MCPs: agentDetails.value?.MCPs || [],
       selectedMCP: config.value.MCP,
       selectedMCPConfigValues: config.value.mcp_config,
@@ -113,37 +111,38 @@ const currentStepProps = computed(() => {
       'onUpdate:selectedMCPConfigValues': (nextValues: MCPConfigValues) => {
         config.value.mcp_config = nextValues;
       },
-    };
-  }
-  if (step.value === 3) {
-    return {
+    },
+    3: {
       selectedSystem: config.value.system,
       selectedMCP: config.value.MCP,
       credentialValues: config.value.credentials,
       'onUpdate:credentialValues': (nextValues: Record<string, string>) => {
         config.value.credentials = nextValues;
       },
-    };
-  }
-  return {};
+    },
+  };
+
+  return stepProps[step.value];
 });
 const isNextDisabled = computed(() => {
-  if (step.value === 2) {
-    const isSomeValueMissing = Object.values(config.value.mcp_config).some(
+  const isSomeValueMissing = (
+    values: Record<string, string | string[] | boolean>,
+  ) => {
+    return Object.values(values).some(
       (value) => value === '' || value === undefined,
     );
+  };
 
-    return !config.value.MCP || isSomeValueMissing;
-  }
-  if (step.value === 3) {
-    return Object.values(config.value.credentials).some(
-      (value) => value === '' || value === undefined,
-    );
-  }
-  if (step.value === TOTAL_STEPS) {
-    return isSubmitting.value;
-  }
-  return false;
+  const stepDisabled = {
+    2: () => {
+      return !config.value.MCP || isSomeValueMissing(config.value.mcp_config);
+    },
+    3: () => {
+      return isSomeValueMissing(config.value.credentials) || isSubmitting.value;
+    },
+  };
+
+  return stepDisabled[step.value]?.();
 });
 function resetFlow() {
   step.value = 1;
@@ -182,8 +181,23 @@ async function handleNext() {
     closeModal();
   }
 }
+
+const stepCleanupHandlers: Record<number, () => void> = {
+  2: () => {
+    config.value.mcp_config = {};
+    config.value.MCP = null;
+  },
+  3: () => {
+    config.value.credentials = {};
+    config.value.MCP = null;
+  },
+};
+
 function handleBack() {
   if (isSubmitting.value) return;
+
+  stepCleanupHandlers[step.value]?.();
+
   if (step.value > 1) {
     step.value--;
   } else {
