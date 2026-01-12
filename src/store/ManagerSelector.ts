@@ -41,8 +41,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
   });
   const status = ref<ManagerSelector['status']>('idle');
   const selectedManager = ref<ManagerSelector['selectedManager']>('');
-  const shouldDisplayPostUpgradeDisclaimer = ref(false);
-  const isPostUpgradeDisclaimerActive = ref(false);
+  const postUpgradeDisclaimerVisible = ref(false);
 
   const shouldUpgradeManager = computed(() => {
     const { currentManager, managers } = options.value;
@@ -71,50 +70,52 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     return currentManager === managers.new.id && isLegacyDeprecated.value;
   });
 
-  const syncPostUpgradeDisclaimerFromStorage = () => {
+  const writePostUpgradeDisclaimerFlag = (value: boolean) =>
+    moduleStorage.setItem(POST_UPGRADE_DISCLAIMER_STORAGE_KEY, value);
+
+  const ensurePostUpgradeDisclaimerFlag = () => {
     const storedValue = moduleStorage.getItem(
       POST_UPGRADE_DISCLAIMER_STORAGE_KEY,
     );
 
     if (storedValue === null && isPostUpgradeScenario.value) {
-      moduleStorage.setItem(POST_UPGRADE_DISCLAIMER_STORAGE_KEY, true);
-      shouldDisplayPostUpgradeDisclaimer.value = true;
+      writePostUpgradeDisclaimerFlag(true);
+      return true;
+    }
+
+    return storedValue === true;
+  };
+
+  const activatePostUpgradeDisclaimerIfNeeded = () => {
+    if (!isPostUpgradeScenario.value || postUpgradeDisclaimerVisible.value) {
       return;
     }
 
-    shouldDisplayPostUpgradeDisclaimer.value = storedValue === true;
-  };
-
-  const consumePostUpgradeDisclaimer = () => {
-    moduleStorage.setItem(POST_UPGRADE_DISCLAIMER_STORAGE_KEY, false);
-    shouldDisplayPostUpgradeDisclaimer.value = false;
+    if (ensurePostUpgradeDisclaimerFlag()) {
+      postUpgradeDisclaimerVisible.value = true;
+      writePostUpgradeDisclaimerFlag(false);
+    }
   };
 
   const resetPostUpgradeDisclaimerSession = () => {
-    isPostUpgradeDisclaimerActive.value = false;
+    postUpgradeDisclaimerVisible.value = false;
   };
 
   watch(
-    () => [
-      isPostUpgradeScenario.value,
-      shouldDisplayPostUpgradeDisclaimer.value,
-    ],
-    ([isScenario, shouldDisplay]) => {
-      if (isScenario && shouldDisplay) {
-        isPostUpgradeDisclaimerActive.value = true;
-        consumePostUpgradeDisclaimer();
+    isPostUpgradeScenario,
+    (isScenario) => {
+      if (!isScenario) {
+        resetPostUpgradeDisclaimerSession();
+        return;
       }
+
+      activatePostUpgradeDisclaimerIfNeeded();
     },
     { immediate: true },
   );
 
-  watch(isPostUpgradeScenario, (isScenario) => {
-    if (!isScenario) {
-      isPostUpgradeDisclaimerActive.value = false;
-    }
-  });
   const shouldShowPostUpgradeDisclaimer = computed(
-    () => isPostUpgradeScenario.value && isPostUpgradeDisclaimerActive.value,
+    () => postUpgradeDisclaimerVisible.value,
   );
 
   const shouldShowUpgradeDisclaimer = computed(() => {
@@ -148,7 +149,6 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
       options.value = data;
       selectedManager.value = data.currentManager;
       status.value = 'success';
-      syncPostUpgradeDisclaimerFromStorage();
     } catch {
       status.value = 'error';
       alertStore.add({
