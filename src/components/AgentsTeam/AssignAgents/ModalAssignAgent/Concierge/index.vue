@@ -123,22 +123,24 @@ const currentStepProps = computed(() => {
   return stepProps[step.value];
 });
 const isNextDisabled = computed(() => {
-  if (step.value === 2) {
-    const isSomeValueMissing = Object.values(config.value.mcp_config).some(
+  const isSomeValueMissing = (
+    values: Record<string, string | string[] | boolean>,
+  ) => {
+    return Object.values(values).some(
       (value) => value === '' || value === undefined,
     );
+  };
 
-    return !config.value.MCP || isSomeValueMissing;
-  }
-  if (step.value === 3) {
-    return Object.values(config.value.credentials).some(
-      (value) => value === '' || value === undefined,
-    );
-  }
-  if (step.value === TOTAL_STEPS) {
-    return isSubmitting.value;
-  }
-  return false;
+  const stepDisabled = {
+    2: () => {
+      return !config.value.MCP || isSomeValueMissing(config.value.mcp_config);
+    },
+    3: () => {
+      return isSomeValueMissing(config.value.credentials) || isSubmitting.value;
+    },
+  };
+
+  return stepDisabled[step.value]?.();
 });
 function resetFlow() {
   step.value = 1;
