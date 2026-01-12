@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onUnmounted } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
@@ -58,6 +58,7 @@ import ManagerUpgradeCard from './ManagerUpgradeCard.vue';
 import UpgradeDisclaimer from './UpgradeDisclaimer.vue';
 
 const managerSelectorStore = useManagerSelectorStore();
+const { resetPostUpgradeDisclaimerSession } = managerSelectorStore;
 const {
   options,
   selectedManager,
@@ -70,6 +71,10 @@ const managers = computed(() => options.value?.managers);
 const updateSelectedManager = (managerId) => {
   managerSelectorStore.setSelectedManager(managerId);
 };
+
+onUnmounted(() => {
+  resetPostUpgradeDisclaimerSession();
+});
 </script>
 
 <style lang="scss" scoped>
