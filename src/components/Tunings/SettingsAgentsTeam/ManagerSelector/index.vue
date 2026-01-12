@@ -1,7 +1,26 @@
 <template>
   <section class="manager-selector">
     <UnnnicDisclaimer
-      v-if="shouldShowUpgradeDisclaimer"
+      v-if="shouldShowPostUpgradeDisclaimer"
+      type="success"
+      :title="
+        $t(
+          'agent_builder.tunings.manager.upgrade_banner.auto_upgrade_success_title',
+          {
+            manager_name: managers.new.label,
+          },
+        )
+      "
+      :description="
+        $t(
+          'agent_builder.tunings.manager.upgrade_banner.auto_upgrade_success_description',
+        )
+      "
+      data-testid="manager-upgrade-banner-success"
+    />
+
+    <UnnnicDisclaimer
+      v-else-if="shouldShowUpgradeDisclaimer"
       type="attention"
       :title="
         $t(
@@ -64,7 +83,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onUnmounted } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import ManagerUpgradeCard from './ManagerUpgradeCard.vue';
@@ -74,11 +93,13 @@ import { enUS, es as esLocale, ptBR } from 'date-fns/locale';
 import i18n from '@/utils/plugins/i18n';
 
 const managerSelectorStore = useManagerSelectorStore();
+const { resetPostUpgradeDisclaimerSession } = managerSelectorStore;
 const {
   options,
   selectedManager,
   shouldUpgradeManager,
   shouldShowUpgradeDisclaimer,
+  shouldShowPostUpgradeDisclaimer,
   legacyDeprecationDate,
 } = storeToRefs(managerSelectorStore);
 
@@ -105,6 +126,10 @@ const formattedLegacyDeprecation = computed(() => {
 const updateSelectedManager = (managerId) => {
   managerSelectorStore.setSelectedManager(managerId);
 };
+
+onUnmounted(() => {
+  resetPostUpgradeDisclaimerSession();
+});
 </script>
 
 <style lang="scss" scoped>
