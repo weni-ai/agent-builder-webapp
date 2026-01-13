@@ -1,6 +1,9 @@
 <template>
   <section class="manager-selector">
-    <UpgradeDisclaimer v-if="shouldShowUpgradeDisclaimer" />
+    <UpgradeDisclaimer
+      v-if="shouldShowUpgradeDisclaimer"
+      data-testid="upgrade-disclaimer"
+    />
 
     <ManagerUpgradeCard
       v-else-if="shouldUpgradeManager"
