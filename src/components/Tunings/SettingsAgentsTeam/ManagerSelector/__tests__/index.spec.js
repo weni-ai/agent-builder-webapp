@@ -28,6 +28,8 @@ describe('ManagerSelector.vue', () => {
     wrapper.findComponent('[data-testid="upgrade-disclaimer"]');
   const postUpgradeDisclaimer = () =>
     wrapper.findComponent('[data-testid="post-upgrade-disclaimer"]');
+  const radiosSkeleton = () =>
+    wrapper.findComponent('[data-testid="manager-selector-radios-skeleton"]');
 
   const managerMock = {
     currentManager: 'manager-2.5',
@@ -116,6 +118,25 @@ describe('ManagerSelector.vue', () => {
     expect(newTag.text()).toBe(
       i18n.global.t('agent_builder.tunings.manager.new'),
     );
+  });
+
+  it('shows the skeleton while manager options are loading', async () => {
+    managerSelectorStore.status = 'loading';
+    await nextTick();
+
+    expect(radiosSkeleton().exists()).toBe(true);
+    expect(radioGroup().exists()).toBe(false);
+  });
+
+  it('renders the radio group once the manager options are loaded', async () => {
+    managerSelectorStore.status = 'loading';
+    await nextTick();
+
+    managerSelectorStore.status = 'success';
+    await nextTick();
+
+    expect(radiosSkeleton().exists()).toBe(false);
+    expect(radioGroup().exists()).toBe(true);
   });
 
   it('only renders the upgrade banner when the selected manager differs from the new manager', async () => {
