@@ -1,6 +1,9 @@
 <template>
   <section class="manager-selector">
-    <PostUpgradeDisclaimer v-if="shouldShowPostUpgradeDisclaimer" />
+    <PostUpgradeDisclaimer
+      v-if="shouldShowPostUpgradeDisclaimer"
+      data-testid="post-upgrade-disclaimer"
+    />
 
     <UpgradeDisclaimer
       v-if="shouldShowUpgradeDisclaimer"
