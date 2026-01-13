@@ -1,5 +1,10 @@
 <template>
   <section class="manager-selector">
+    <PostUpgradeDisclaimer
+      v-if="shouldShowPostUpgradeDisclaimer"
+      data-testid="post-upgrade-disclaimer"
+    />
+
     <UpgradeDisclaimer
       v-if="shouldShowUpgradeDisclaimer"
       data-testid="upgrade-disclaimer"
@@ -55,6 +60,7 @@ import { storeToRefs } from 'pinia';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 
 import ManagerUpgradeCard from './ManagerUpgradeCard.vue';
+import PostUpgradeDisclaimer from './PostUpgradeDisclaimer.vue';
 import UpgradeDisclaimer from './UpgradeDisclaimer.vue';
 
 const managerSelectorStore = useManagerSelectorStore();
