@@ -13,7 +13,10 @@
       @click="handleButtonClick"
     />
 
-    <section v-if="isSideBarVisible">
+    <section
+      v-if="isSideBarVisible"
+      class="sidebar__content"
+    >
       <SidebarHeader class="sidebar__header" />
 
       <SidebarMenu
@@ -32,6 +35,20 @@
           @click="onNavChange(nav.page)"
         />
       </SidebarMenu>
+
+      <UnnnicDisclaimer
+        v-if="managerSelectorStore.shouldShowUpgradeDisclaimer"
+        class="sidebar__manager-upgrade-banner"
+        type="attention"
+        title=""
+        :description="
+          $t('agent_builder.tunings.manager.upgrade_banner.disclaimer_title', {
+            manager_name: managerSelectorStore.options.managers.new.label,
+          })
+        "
+        data-testid="manager-upgrade-banner"
+        @click="onManagerUpgradeBannerClick"
+      />
     </section>
   </nav>
 </template>
@@ -39,6 +56,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useManagerSelectorStore } from '@/store/ManagerSelector';
 
 import useBuildViews from '@/composables/useBuildViews';
 import SidebarHeader from './SidebarHeader.vue';
@@ -48,6 +66,7 @@ import SidebarMenu from '@/components/Sidebar/SidebarMenu.vue';
 const route = useRoute();
 const router = useRouter();
 const views = useBuildViews();
+const managerSelectorStore = useManagerSelectorStore();
 
 const activeNav = computed(() => {
   return views.value.find((e) => e.page === route.name)?.page;
@@ -85,6 +104,14 @@ const handleMouseOver = () => {
 const handleMouseLeave = () => {
   isHoveringSidebar.value = false;
 };
+
+const onManagerUpgradeBannerClick = () => {
+  const tuningsRouteName = 'tunings';
+
+  if (router.currentRoute.value.name !== tuningsRouteName) {
+    router.push({ name: tuningsRouteName });
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -108,6 +135,12 @@ const handleMouseLeave = () => {
   &__header,
   &__menu {
     padding: $unnnic-spacing-sm;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   .floating-button {
@@ -181,6 +214,15 @@ const handleMouseLeave = () => {
 
   :deep(.unnnic-icon-size--sm) {
     font-size: $unnnic-font-size-title-sm;
+  }
+
+  &__manager-upgrade-banner {
+    margin: $unnnic-space-4;
+    margin-top: auto;
+
+    max-width: fit-content;
+
+    cursor: pointer;
   }
 }
 </style>
