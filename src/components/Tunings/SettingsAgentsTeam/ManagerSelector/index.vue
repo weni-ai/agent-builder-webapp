@@ -1,23 +1,6 @@
 <template>
   <section class="manager-selector">
-    <UnnnicDisclaimer
-      v-if="shouldShowPostUpgradeDisclaimer"
-      type="success"
-      :title="
-        $t(
-          'agent_builder.tunings.manager.upgrade_banner.auto_upgrade_success_title',
-          {
-            manager_name: managers.new.label,
-          },
-        )
-      "
-      :description="
-        $t(
-          'agent_builder.tunings.manager.upgrade_banner.auto_upgrade_success_description',
-        )
-      "
-      data-testid="manager-upgrade-banner-success"
-    />
+    <PostUpgradeDisclaimer v-if="shouldShowPostUpgradeDisclaimer" />
 
     <UpgradeDisclaimer v-else-if="shouldShowUpgradeDisclaimer" />
 
@@ -71,6 +54,7 @@ import { storeToRefs } from 'pinia';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 
 import ManagerUpgradeCard from './ManagerUpgradeCard.vue';
+import PostUpgradeDisclaimer from './PostUpgradeDisclaimer.vue';
 import UpgradeDisclaimer from './UpgradeDisclaimer.vue';
 
 const managerSelectorStore = useManagerSelectorStore();
