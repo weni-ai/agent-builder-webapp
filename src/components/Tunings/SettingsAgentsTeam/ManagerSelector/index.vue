@@ -2,7 +2,10 @@
   <section class="manager-selector">
     <PostUpgradeDisclaimer v-if="shouldShowPostUpgradeDisclaimer" />
 
-    <UpgradeDisclaimer v-else-if="shouldShowUpgradeDisclaimer" />
+    <UpgradeDisclaimer
+      v-if="shouldShowUpgradeDisclaimer"
+      data-testid="upgrade-disclaimer"
+    />
 
     <ManagerUpgradeCard
       v-else-if="shouldUpgradeManager"
