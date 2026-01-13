@@ -254,6 +254,26 @@
           "title": "Choose the voice for the agent’s responses",
           "description": "Click to listen to the voices and select the one that best fits your agent"
         }
+      },
+      "manager": {
+        "title": "Manager",
+        "new": "New",
+        "recommended": "Recommended",
+        "legacy_model": "Legacy model",
+        "load_error": "Unable to load managers",
+        "upgrade_banner": {
+          "title": "💡 {manager_name} is now available",
+          "disclaimer_title": "Upgrade to {manager_name}",
+          "disclaimer_title_with_date": "Upgrade to {manager_name} by {date}",
+          "auto_upgrade_success_title": "{manager_name} is now active",
+          "auto_upgrade_success_description": "This project has been upgraded to {manager_name} for improved orchestration and more consistent answers.",
+          "manager_2_dot_6_description": "Upgrade to get faster, more reliable answers while the Manager coordinates your agents.",
+          "manager_2_dot_6_highlights": [
+            "Better performance in complex conversations",
+            "More stable orchestration across agents"
+          ],
+          "manager_2_dot_6_disclaimer_description": "Manager 2.5 will be deprecated soon. Upgrade to Manager 2.6 for faster, more reliable answers while the Manager coordinates your agents."
+        }
       }
     }
   },

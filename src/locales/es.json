@@ -254,6 +254,25 @@
           "title": "Elige la voz para las respuestas del agente",
           "description": "Haz clic para escuchar las voces y elegir la que mejor se adapte a tu agente"
         }
+      },
+      "manager": {
+        "title": "Manager",
+        "new": "Nuevo",
+        "recommended": "Recomendado",
+        "legacy_model": "Modelo legado",
+        "load_error": "No fue posible cargar los managers",
+        "upgrade_banner": {
+          "title": "💡 {manager_name} ya está disponible",
+          "disclaimer_title": "Actualiza para {manager_name}",
+          "disclaimer_title_with_date": "Actualiza para {manager_name} até {date}",
+          "auto_upgrade_success_title": "{manager_name} ya está activo",
+          "auto_upgrade_success_description": "Este proyecto ha sido actualizado para el {manager_name} para mejor coordinación y respuestas más consistentes.",
+          "manager_2.6_description": "Actualiza para obtener respuestas más rápidas y confiables mientras el Manager coordina a tus agentes.",
+          "manager_2.6_highlights": [
+            "Mejor rendimiento en conversaciones complejas",
+            "Orquestación más estable entre los agentes"
+          ]
+        }
       }
     }
   },
