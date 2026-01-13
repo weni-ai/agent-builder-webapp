@@ -14,7 +14,7 @@
         'agent_builder.tunings.manager.upgrade_banner.auto_upgrade_success_description',
       )
     "
-    data-testid="manager-upgrade-banner-success"
+    data-testid="post-upgrade-disclaimer"
   />
 </template>
 
