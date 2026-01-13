@@ -50,7 +50,7 @@ describe('PostUpgradeDisclaimer.vue', () => {
 
   it('renders the post-upgrade disclaimer with the correct translations', () => {
     const disclaimer = wrapper.findComponent(
-      '[data-testid="manager-upgrade-banner-success"]',
+      '[data-testid="post-upgrade-disclaimer"]',
     );
 
     expect(disclaimer.exists()).toBe(true);
@@ -70,4 +70,3 @@ describe('PostUpgradeDisclaimer.vue', () => {
     );
   });
 });
-
