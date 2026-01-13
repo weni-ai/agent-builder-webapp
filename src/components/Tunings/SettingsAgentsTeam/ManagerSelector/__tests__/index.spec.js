@@ -21,6 +21,8 @@ describe('ManagerSelector.vue', () => {
     wrapper.findComponent('[data-testid="manager-selector-radio-legacy"]');
   const upgradeBanner = () =>
     wrapper.findComponent('[data-testid="manager-upgrade-card"]');
+  const upgradeDisclaimer = () =>
+    wrapper.findComponent('[data-testid="upgrade-disclaimer"]');
 
   const managerMock = {
     currentManager: 'manager-2.5',
@@ -119,6 +121,22 @@ describe('ManagerSelector.vue', () => {
       managerMock.managers.legacy.id;
     await nextTick();
 
+    expect(upgradeBanner().exists()).toBe(true);
+  });
+
+  it('shows the upgrade disclaimer when the deprecation window is near', async () => {
+    managerSelectorStore.options.serverTime = '2026-04-10T13:00:00Z';
+    await nextTick();
+
+    expect(upgradeDisclaimer().exists()).toBe(true);
+    expect(upgradeBanner().exists()).toBe(false);
+  });
+
+  it('hides the upgrade disclaimer when deprecation is not imminent', async () => {
+    managerSelectorStore.options.serverTime = '2026-03-01T13:00:00Z';
+    await nextTick();
+
+    expect(upgradeDisclaimer().exists()).toBe(false);
     expect(upgradeBanner().exists()).toBe(true);
   });
 });
