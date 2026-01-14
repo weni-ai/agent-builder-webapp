@@ -1,10 +1,19 @@
 <template>
-  <section class="modal-assign-agent__start-setup">
-    <About :agent="agent" />
+  <section
+    class="modal-assign-agent__start-setup"
+    data-testid="start-setup"
+  >
+    <About
+      :agent="agent"
+      data-testid="start-setup-about-section"
+    />
 
-    <MCPs :mcps="mockedMCPS" />
+    <MCPs
+      :mcps="mockedMCPS"
+      data-testid="start-setup-mcps-section"
+    />
 
-    <ConversationExample />
+    <ConversationExample data-testid="start-setup-conversation-section" />
   </section>
 </template>
 

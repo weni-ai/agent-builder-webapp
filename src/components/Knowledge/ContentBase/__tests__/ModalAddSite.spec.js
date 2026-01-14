@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { mount, flushPromises } from '@vue/test-utils';
 import ModalAddSite from '@/components/Knowledge/ContentBase/ModalAddSite.vue';
 import nexusaiAPI from '@/api/nexusaiAPI.js';
 import { createTestingPinia } from '@pinia/testing';
@@ -30,9 +30,6 @@ describe('ModalAddSite', () => {
     wrapper = mount(ModalAddSite, {
       global: {
         plugins: [pinia],
-        stubs: {
-          UnnnicModalDialog: false,
-        },
       },
     });
 
@@ -41,9 +38,9 @@ describe('ModalAddSite', () => {
 
   it('should render modal with the correct title', () => {
     expect(wrapper.find('[data-test="site-input"]').exists()).toBe(true);
-    expect(wrapper.text()).toContain(
-      i18n.global.t('content_bases.sites.add_site'),
-    );
+    expect(
+      wrapper.findComponent('[data-testid="modal-add-site"]').props('title'),
+    ).toBe(i18n.global.t('content_bases.sites.add_site'));
   });
 
   describe('when the user enters an invalid URL', () => {
@@ -79,9 +76,10 @@ describe('ModalAddSite', () => {
       const input = wrapper.findComponent('[data-test="site-input"]');
       await input.setValue('www.valid-url.com');
 
-      const finishButton = wrapper.find('[data-test="finish-button"]');
+      const modal = wrapper.findComponent('[data-testid="modal-add-site"]');
 
-      await finishButton.trigger('click');
+      await modal.vm.$emit('primary-button-click');
+      await flushPromises();
 
       expect(nexusaiAPI.knowledge.sites.create).toHaveBeenCalledWith({
         link: 'https://www.valid-url.com',
@@ -117,8 +115,9 @@ describe('ModalAddSite', () => {
       const input = wrapper.findComponent('[data-test="site-input"]');
       await input.setValue('www.valid-url.com');
 
-      const finishButton = wrapper.findComponent('[data-test="finish-button"]');
-      await finishButton.trigger('click');
+      const modal = wrapper.findComponent('[data-testid="modal-add-site"]');
+      await modal.vm.$emit('primary-button-click');
+      await flushPromises();
 
       expect(wrapper.emitted('addedSite')).toBeTruthy();
       expect(wrapper.emitted('addedSite')[0][0].status).toBe('fail');
@@ -127,8 +126,8 @@ describe('ModalAddSite', () => {
 
   describe('when the cancel button is clicked', () => {
     it('should emit close event', async () => {
-      const cancelButton = wrapper.find('[data-test="cancel-button"]');
-      await cancelButton.trigger('click');
+      const modal = wrapper.findComponent('[data-testid="modal-add-site"]');
+      await modal.vm.$emit('secondary-button-click');
 
       expect(wrapper.emitted('close')).toBeTruthy();
     });
