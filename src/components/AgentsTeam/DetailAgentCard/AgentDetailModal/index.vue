@@ -1,11 +1,18 @@
 <template>
   <UnnnicDialog
     class="agent-detail-modal"
+    data-testid="agent-detail-dialog"
     :open="open"
     @update:open="$emit('update:open', $event)"
   >
-    <UnnnicDialogContent size="large">
-      <AgentModalHeader :agent="agent" />
+    <UnnnicDialogContent
+      data-testid="agent-detail-content"
+      size="large"
+    >
+      <AgentModalHeader
+        data-testid="agent-detail-header"
+        :agent="agent"
+      />
 
       <section class="agent-detail-modal__details">
         <section class="agent-detail-modal__summary">
@@ -26,6 +33,7 @@
         />
 
         <ViewOptions
+          data-testid="agent-detail-view-options"
           :agent="agent"
           @agent-removed="handleAgentRemoved"
         />
