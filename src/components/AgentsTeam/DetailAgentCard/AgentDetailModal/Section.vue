@@ -1,9 +1,18 @@
 <template>
-  <section class="agent-detail-modal__section">
-    <h3 class="agent-detail-modal__section-title">{{ title }}</h3>
+  <section
+    class="agent-detail-modal__section"
+    data-testid="agent-detail-section"
+  >
+    <h3
+      class="agent-detail-modal__section-title"
+      data-testid="agent-detail-section-title"
+    >
+      {{ title }}
+    </h3>
     <p
       v-if="description"
       class="agent-detail-modal__section-description"
+      data-testid="agent-detail-section-description"
     >
       {{ description }}
     </p>
