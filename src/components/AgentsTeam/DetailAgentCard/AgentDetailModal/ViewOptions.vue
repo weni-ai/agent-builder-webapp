@@ -5,6 +5,7 @@
   >
     <button
       class="agent-detail-modal__view-options-trigger"
+      data-testid="agent-view-options-trigger"
       :aria-expanded="isExpanded"
       @click="toggleExpanded"
     >
@@ -13,6 +14,7 @@
           'agent-detail-modal__view-options-icon',
           { 'agent-detail-modal__view-options-icon--expanded': isExpanded },
         ]"
+        data-testid="agent-view-options-icon"
         icon="keyboard_arrow_right"
         size="ant"
         scheme="fg-emphasized"
@@ -30,6 +32,7 @@
     >
       <UnnnicButton
         class="agent-detail-modal__view-options-action"
+        data-testid="agent-view-options-remove"
         :text="$t('agents.assigned_agents.agent_details.remove_agent')"
         type="warning"
         :loading="isRemovingAgent"
