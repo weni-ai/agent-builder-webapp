@@ -2,8 +2,10 @@
   <section
     v-if="MCPs.length"
     class="modal-assign-agent__content"
+    data-testid="concierge-second-step"
   >
     <MCPSelection
+      data-testid="concierge-second-step-mcp-selection"
       :MCPs="MCPs"
       :selectedMCP="selectedMCP"
       @select="handleSelectMCP"
@@ -25,11 +27,13 @@
         v-if="selectedMCPConfig.length"
         v-model:configValues="selectedMCPConfigValues"
         :config="selectedMCPConfig"
+        data-testid="concierge-second-step-config-form"
       />
 
       <p
         v-else
         class="modal-assign-agent__config-description"
+        data-testid="concierge-second-step-config-description"
       >
         {{ $t('agents.assign_agents.setup.mcp_config.description') }}
       </p>
@@ -38,6 +42,7 @@
     <section
       v-else
       class="modal-assign-agent__config-placeholder"
+      data-testid="concierge-second-step-placeholder"
     >
       <p class="modal-assign-agent__config-placeholder-title">
         {{ $t('agents.assign_agents.setup.mcp_config.placeholder_title') }}
