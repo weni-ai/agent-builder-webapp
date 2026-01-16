@@ -26,6 +26,23 @@ export interface AgentCredential {
   is_confidential: boolean;
 }
 
+export type AgentAssignedMCPConfigValue =
+  | string
+  | boolean
+  | number
+  | string[]
+  | null;
+
+export interface AgentAssignedMCP {
+  name: string;
+  description?: string;
+  config?: Record<string, AgentAssignedMCPConfigValue>;
+  system?: {
+    name: string;
+    slug: string;
+  };
+}
+
 export interface AgentMCP {
   name: string;
   description: string;
@@ -80,7 +97,8 @@ export interface Agent {
   project: string;
   credentials: AgentCredential[] | [];
   icon: string;
-  group: null;
+  group?: AgentGroup | null;
+  mcp?: AgentAssignedMCP | null;
 }
 
 export type AgentGroupOrAgent = AgentGroup | Agent;
