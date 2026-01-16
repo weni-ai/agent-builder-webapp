@@ -270,6 +270,7 @@
       },
       "agent_details": {
         "about": "About",
+        "mcp": "MCP",
         "view_options": "View options",
         "remove_agent": "Remove agent"
       }
