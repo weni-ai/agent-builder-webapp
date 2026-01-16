@@ -2,6 +2,7 @@
   <UnnnicDialog
     class="modal-assign-agent"
     :open="open"
+    data-testid="modal-assign-agent"
     @update:open="closeAgentModal"
   >
     <UnnnicDialogContent size="large">
@@ -9,15 +10,20 @@
         <component
           :is="groupModalComponent"
           :agent="agent"
+          data-testid="modal-group-component"
           @update:open="closeAgentModal"
         />
       </template>
       <template v-else>
-        <AgentModalHeader :agent="agent" />
+        <AgentModalHeader
+          :agent="agent"
+          data-testid="modal-header"
+        />
 
         <component
           :is="startSetupModalComponent"
           :agent="agent"
+          data-testid="modal-start-component"
         />
 
         <UnnnicDialogFooter>
