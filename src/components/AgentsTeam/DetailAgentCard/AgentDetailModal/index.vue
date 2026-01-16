@@ -14,7 +14,7 @@
         />
 
         <McpSection
-          v-if="agentMcp"
+          v-if="(props.agent as Agent).mcp"
           :mcp="agentMcp"
         />
 
@@ -52,12 +52,9 @@ defineModel('open', {
   required: true,
 });
 
-const agentMcp = computed<AgentAssignedMCP | null>(() => {
-  if ('mcp' in props.agent) {
-    return (props.agent as Agent).mcp || null;
-  }
-  return null;
-});
+const agentMcp = computed<AgentAssignedMCP | null>(
+  () => (props.agent as Agent)?.mcp,
+);
 
 function handleAgentRemoved() {
   emit('update:open', false);

@@ -97,7 +97,7 @@ export interface Agent {
   project: string;
   credentials: AgentCredential[] | [];
   icon: string;
-  group: null;
+  group?: AgentGroup | null;
   mcp?: AgentAssignedMCP | null;
 }
 
