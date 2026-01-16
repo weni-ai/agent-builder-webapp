@@ -105,8 +105,8 @@ export interface Agent {
   project: string;
   credentials: AgentCredential[] | [];
   icon: string;
-  group: null;
-  mcp: AgentAssignedMCP | null;
+  group?: AgentGroup | null;
+  mcp?: AgentAssignedMCP | null;
 }
 
 export type AgentGroupOrAgent = AgentGroup | Agent;

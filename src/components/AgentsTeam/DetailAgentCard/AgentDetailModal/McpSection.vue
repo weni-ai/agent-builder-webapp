@@ -1,6 +1,6 @@
 <template>
   <Section :title="$t('agents.assigned_agents.agent_details.mcp')">
-    <article class="agent-detail-modal__mcp-card">
+    <section class="agent-detail-modal__mcp-card">
       <header
         v-if="mcpTitle || mcpDescription"
         class="agent-detail-modal__mcp-header"
@@ -36,7 +36,7 @@
           </span>
         </p>
       </section>
-    </article>
+    </section>
   </Section>
 </template>
 
@@ -44,6 +44,8 @@
 import { computed } from 'vue';
 
 import Section from './Section.vue';
+import { formatListToReadable } from '@/utils/formatters';
+
 import type {
   AgentAssignedMCP,
   AgentAssignedMCPConfigValue,
@@ -72,7 +74,7 @@ function isValueEmpty(value: AgentAssignedMCPConfigValue) {
 
 function formatValue(value: AgentAssignedMCPConfigValue) {
   if (Array.isArray(value)) {
-    return value.join(', ');
+    return formatListToReadable(value);
   }
   if (typeof value === 'boolean') {
     return value ? 'true' : 'false';
@@ -88,48 +90,50 @@ function formatValue(value: AgentAssignedMCPConfigValue) {
 </script>
 
 <style scoped lang="scss">
-.agent-detail-modal__mcp-card {
-  border: 1px solid $unnnic-color-border-soft;
-  border-radius: $unnnic-radius-4;
-  padding: $unnnic-space-3 $unnnic-space-4;
+.agent-detail-modal__mcp {
+  &-card {
+    border: 1px solid $unnnic-color-border-soft;
+    border-radius: $unnnic-radius-4;
+    padding: $unnnic-space-3 $unnnic-space-4;
 
-  display: flex;
-  flex-direction: column;
-  gap: $unnnic-space-3;
-}
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-space-3;
+  }
 
-.agent-detail-modal__mcp-header {
-  padding-bottom: $unnnic-space-3;
-  border-bottom: 1px solid $unnnic-color-border-soft;
+  &-header {
+    padding-bottom: $unnnic-space-3;
+    border-bottom: 1px solid $unnnic-color-border-soft;
 
-  display: flex;
-  flex-direction: column;
-  gap: $unnnic-space-1;
-}
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-space-1;
+  }
 
-.agent-detail-modal__mcp-title {
-  color: $unnnic-color-fg-emphasized;
-  font: $unnnic-font-action;
-}
+  &-title {
+    color: $unnnic-color-fg-emphasized;
+    font: $unnnic-font-action;
+  }
 
-.agent-detail-modal__mcp-description {
-  color: $unnnic-color-fg-base;
-  font: $unnnic-font-body;
-}
+  &-description {
+    color: $unnnic-color-fg-base;
+    font: $unnnic-font-body;
+  }
 
-.agent-detail-modal__mcp-arguments {
-  display: flex;
-  flex-direction: column;
-  gap: $unnnic-space-1;
-}
+  &-arguments {
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-space-1;
+  }
 
-.agent-detail-modal__mcp-argument {
-  color: $unnnic-color-fg-base;
-  font: $unnnic-font-body;
-}
+  &-argument {
+    color: $unnnic-color-fg-base;
+    font: $unnnic-font-body;
+  }
 
-.agent-detail-modal__mcp-argument-label {
-  color: $unnnic-color-fg-base;
-  font: $unnnic-font-action;
+  &-argument-label {
+    color: $unnnic-color-fg-base;
+    font: $unnnic-font-action;
+  }
 }
 </style>

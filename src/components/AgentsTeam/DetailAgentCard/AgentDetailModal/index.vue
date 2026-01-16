@@ -14,8 +14,8 @@
         />
 
         <McpSection
-          v-if="agentMcp"
-          :mcp="agentMcp"
+          v-if="agent.mcp"
+          :mcp="agent.mcp"
         />
 
         <ViewOptions
@@ -28,16 +28,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-
-import { ActiveTeamAgent, AgentAssignedMCP } from '@/store/types/Agents.types';
+import { ActiveTeamAgent } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import McpSection from './McpSection.vue';
 import Section from './Section.vue';
 import ViewOptions from './ViewOptions.vue';
 
-const props = defineProps<{
+defineProps<{
   agent: ActiveTeamAgent;
 }>();
 
@@ -46,13 +44,6 @@ const emit = defineEmits(['update:open']);
 defineModel('open', {
   type: Boolean,
   required: true,
-});
-
-const agentMcp = computed<AgentAssignedMCP | null>(() => {
-  if ('mcp' in props.agent) {
-    return props.agent.mcp || null;
-  }
-  return null;
 });
 
 function handleAgentRemoved() {
