@@ -1,5 +1,8 @@
 <template>
-  <section class="modal-assign-agent__content">
+  <section
+    class="modal-assign-agent__content"
+    data-testid="concierge-first-step"
+  >
     <header class="modal-assign-agent__content-header">
       <p class="modal-assign-agent__content-title">
         {{ $t('agents.assign_agents.setup.system_selection.title') }}
@@ -10,10 +13,14 @@
       </p>
     </header>
 
-    <section class="modal-assign-agent__content-systems">
+    <section
+      class="modal-assign-agent__content-systems"
+      data-testid="concierge-first-step-systems"
+    >
       <ModalAssignAgentRadio
         v-for="system in systems"
         :key="system"
+        data-testid="concierge-first-step-radio"
         :selected="system.toLowerCase() === selectedSystem.toLowerCase()"
         :label="getSystemObject(system).name"
         :system="system"
