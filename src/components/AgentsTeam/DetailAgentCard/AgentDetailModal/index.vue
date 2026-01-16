@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { AgentGroupOrAgent } from '@/store/types/Agents.types';
+import { ActiveTeamAgent } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import Section from './Section.vue';
@@ -32,7 +32,7 @@ import ViewOptions from './ViewOptions.vue';
 const emit = defineEmits(['update:open']);
 
 defineProps<{
-  agent: AgentGroupOrAgent;
+  agent: ActiveTeamAgent;
 }>();
 
 defineModel('open', {
