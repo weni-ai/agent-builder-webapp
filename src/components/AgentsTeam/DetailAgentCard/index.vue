@@ -2,11 +2,9 @@
   <AgentCard
     class="detail-agent-card"
     :agent="agent"
-    :tags="getSystemsObjects((agent as AgentGroup).systems || [])"
+    :tags="agent.mcp?.system ? [agent.mcp.system] : []"
     :loading="loading"
-    :newAgentHighlight="
-      (agent as Agent).uuid === agentsTeamStore.newAgentAssigned?.uuid
-    "
+    :newAgentHighlight="agent.uuid === agentsTeamStore.newAgentAssigned?.uuid"
     @click="openAgentDetailModal"
   />
 
@@ -19,23 +17,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import useAgentSystems from '@/composables/useAgentSystems';
-
 import AgentCard from '../AgentCard.vue';
 import AgentDetailModal from './AgentDetailModal/index.vue';
-import {
-  Agent,
-  AgentGroup,
-  AgentGroupOrAgent,
-} from '@/store/types/Agents.types';
+import { ActiveTeamAgent } from '@/store/types/Agents.types';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
-
-const { getSystemsObjects } = useAgentSystems();
 
 const agentsTeamStore = useAgentsTeamStore();
 
 defineProps<{
-  agent: AgentGroupOrAgent;
+  agent: ActiveTeamAgent;
   loading: boolean;
 }>();
 

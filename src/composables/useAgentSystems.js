@@ -6,10 +6,12 @@ export default function useAgentSystems() {
   const systems = {
     VTEX: {
       name: 'VTEX',
+      slug: 'vtex',
       icon: VTEXIcon,
     },
     SYNERISE: {
       name: 'Synerise',
+      slug: 'synerise',
       icon: SYNERISEIcon,
     },
   };
