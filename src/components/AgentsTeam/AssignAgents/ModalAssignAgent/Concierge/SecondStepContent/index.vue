@@ -59,6 +59,11 @@ import MCPConfigForm from './MCPConfigForm.vue';
 import { AgentMCP } from '@/store/types/Agents.types';
 type MCPConfigField = AgentMCP['config'] extends (infer U)[] ? U : never;
 type MCPConfigValue = string | string[] | boolean;
+
+defineOptions({
+  name: 'SecondStepContent',
+});
+
 defineProps<{
   // eslint-disable-next-line vue/prop-name-casing
   MCPs: AgentMCP[];
