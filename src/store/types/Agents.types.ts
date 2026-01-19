@@ -26,31 +26,59 @@ export interface AgentCredential {
   is_confidential: boolean;
 }
 
+export type AgentAssignedMCPConfigValue =
+  | string
+  | boolean
+  | number
+  | string[]
+  | null;
+
+export interface AgentAssignedSystem {
+  name: string;
+  slug: string;
+  icon: string;
+}
+
+export interface AgentAssignedMCP {
+  name: string;
+  description?: string;
+  config?: Record<string, AgentAssignedMCPConfigValue>;
+  system?: AgentAssignedSystem;
+}
+
+export interface ActiveTeamAgent {
+  uuid: string;
+  id: string;
+  name: string;
+  is_official: boolean;
+  description: string;
+  mcp: AgentAssignedMCP | null;
+  icon: string;
+}
+
 export interface AgentMCP {
   name: string;
   description: string;
   credentials?: AgentCredential[];
-  config:
-    | {
-        name: string;
-        label: string;
-        default_value: string | boolean | number;
-        type:
-          | 'SELECT'
-          | 'INPUT'
-          | 'CHECKBOX'
-          | 'RADIO'
-          | 'SWITCH'
-          | 'NUMBER'
-          | 'TEXT';
-        options:
-          | {
-              name: string;
-              value: string;
-            }[]
-          | [];
-      }[]
-    | [];
+  config: {
+    name: string;
+    label: string;
+    default_value: string | boolean | number;
+    type:
+      | 'SELECT'
+      | 'INPUT'
+      | 'CHECKBOX'
+      | 'RADIO'
+      | 'SWITCH'
+      | 'NUMBER'
+      | 'TEXT';
+    options:
+      | {
+          name: string;
+          value: string;
+        }[]
+      | [];
+  }[];
 }
 
 export interface AgentGroup {
@@ -80,7 +108,8 @@ export interface Agent {
   project: string;
   credentials: AgentCredential[] | [];
   icon: string;
-  group: null;
+  group?: AgentGroup | null;
+  mcp?: AgentAssignedMCP | null;
 }
 
 export type AgentGroupOrAgent = AgentGroup | Agent;

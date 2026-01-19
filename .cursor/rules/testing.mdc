@@ -1,0 +1,253 @@
+---
+description: Testing standards for this Vue 3 + TypeScript frontend using Vitest, @vue/test-utils, and Pinia
+globs:
+  - src/**/__tests__/**/*.{js,ts}
+  - src/**/*.{spec,test}.{js,ts}
+alwaysApply: false
+---
+
+# Testing
+
+This rule defines how tests must be written in this project (unit tests for Vue components, composables, and Pinia stores) using Vitest, `@vue/test-utils`, and `@pinia/testing`.
+
+## Core Principles
+
+- Tests must validate **observable behavior** (rendered output, emitted events, store state changes, API calls), not implementation details.
+- Tests must be **deterministic** and isolated: no shared state between tests, no real network, no real timers, no reliance on random values.
+- Tests must be **readable first**: small helpers, clear `describe`/`it` names, and consistent selection via `data-testid`.
+- Prefer **unit scope** by default: stub/mocks for external dependencies (API, router, Growthbook) and only `mount()` when integration is required.
+- Avoid overengineering in tests: introduce helpers only when they remove repetition or significantly clarify intent.
+
+## Mandatory Rules
+
+### Test structure and naming
+
+- Test files must be placed under `__tests__` near the subject or use `*.spec.{js,ts}` / `*.unit.spec.{js,ts}` naming.
+- Every file must have a top-level `describe()` matching the unit under test (component/composable/store).
+- Use a **wrapper factory** for components (e.g. `createWrapper()`), and helper getters for selectors (e.g. `findTitle()`).
+- Create helper functions/fixtures only when they are reused or meaningfully improve readability (rule of thumb: used 2+ times).
+  - If a factory is used once, prefer inlining the object literal in that test.
+
+### Test planning (100% coverage mindset)
+
+- Before writing tests for a component/composable/store, **analyze the unit** and list the ideal use cases to cover.
+  - Include: inputs (props/params), states, branches/guards, emitted events, and user interactions.
+  - Convert that list into a **test checklist**, then implement tests that cover every item (aim for **100% behavioral coverage** of the unit).
+  - Avoid overengineering: keep the checklist short and focused on real states/branches, but do not skip branches.
+
+### Selecting elements (UI tests)
+
+- Components must expose stable selectors using `data-testid` and tests must query by those selectors.
+- Tests must centralize selectors in an `elements` map or getter functions.
+- Do not couple tests to CSS classes unless the class is the behavior being validated (e.g. a loading modifier class).
+- When a component renders UI, tests must validate the UI whenever feasible:
+  - Assert that **key UI elements render** (e.g. icon, label, primary action) using `data-testid`.
+  - Assert **key UI configuration** that affects what the user sees (props/attrs like `icon="..."`, and state classes like `--expanded`).
+  - Prefer stable props/attrs and state classes over asserting tag names or DOM structure.
+  - Use `find()` when asserting **rendered UI** (text, DOM attributes, presence in the DOM), even if the target is a stubbed child component.
+  - Use `findComponent()` when asserting **component-level behavior** (props via `.props()`, emitted events, or interacting with a specific component instance).
+
+### Mounting strategy
+
+- Use `shallowMount()` for unit tests to avoid deep rendering and to keep tests stable.
+- Use `mount()` only when the behavior depends on child components, slots, or real DOM rendering.
+- Prefer project-wide global configuration from `setupVitest.js` (global plugins, stubs, and Unnnic teleports).
+- When additional plugins are required per-test (e.g. Pinia instance), pass them via `global.plugins`.
+
+### Pinia testing
+
+- Component tests that depend on stores must use `createTestingPinia()` and must provide `initialState` when the component expects preloaded store state.
+- Store tests must call `setActivePinia(createPinia())` in `beforeEach()` and instantiate the store there.
+- Do not rely on state created by previous tests. Always reset state by creating a fresh Pinia/store instance per test.
+
+### Mocking (API, router, composables, globals)
+
+- Any network/API access must be mocked. Never allow Axios requests during unit tests.
+- Prefer `vi.mock()` at module scope for stable mocking.
+- When a test needs custom behavior, configure mocks with `mockResolvedValue`, `mockRejectedValue`, or `mockImplementation` within the test.
+- When spying on globals or console output, always restore or reset spies during teardown.
+
+### Translations and global test setup (i18n)
+
+- `setupVitest.js` already installs the i18n plugin globally via Vue Test Utils config, so `$t` should work without per-test mocks.
+- Tests must **not** add `global.mocks: { $t: ... }` to “fix” missing translations.
+- If a test needs extra plugins (e.g. Pinia), it must add them **without dropping** the default global plugins from `setupVitest.js`.
+  - If adding `global.plugins`, explicitly include i18n (or merge with the global defaults) so translations continue to work.
+
+### Cleanup and isolation
+
+- Component wrappers must be unmounted in `afterEach()` when they are stored in a shared variable.
+- `vi.clearAllMocks()` must be called in `beforeEach()` or `afterEach()` to avoid leaking calls between tests.
+- If fake timers are used, tests must call `vi.useRealTimers()` before finishing.
+
+### Async behavior
+
+- After triggering DOM events, always `await` the trigger.
+- Use `await nextTick()` for Vue reactive updates.
+- Use `flushPromises()` when waiting for promise chains (e.g. API calls, async Pinia actions) to settle.
+
+### Running tests (no broken specs)
+
+- After creating or modifying any test, you must run the relevant Vitest test(s) and ensure they pass locally.
+  - Use `npm test -- <path/to/spec>` to run a specific file.
+  - Use `npm test -- -t "<test name substring>"` to run a focused subset.
+
+## Forbidden Patterns
+
+- Do not snapshot-test large Vue trees. Prefer explicit assertions on behavior.
+- Do not select elements by tag order, brittle selectors, or internal component structure (e.g. `.find('div > span:nth-child(2)')`).
+- Do not share wrapper/store instances across tests.
+- Do not stub everything “just in case”. Mock only what the unit depends on.
+- Do not mix real timers with fake timers in the same test without explicitly restoring timers.
+- Do not add ad-hoc `$t` mocks in a test. Use the i18n setup from `setupVitest.js` unless you have a specific, documented reason to override it.
+- Do not add one-off helper functions that are only used once (overengineering). Inline the data or use a constant unless reuse is expected.
+- Do not test internal private methods directly unless they are part of a public API (e.g. composables returned values, store actions/getters).
+
+## Examples
+
+### Component test: stable selectors + Pinia initial state + plugin injection
+
+Good:
+
+```js
+import { mount } from '@vue/test-utils';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { createTestingPinia } from '@pinia/testing';
+
+import ExampleHeader from '@/components/ExampleHeader.vue';
+
+const pinia = createTestingPinia({
+  initialState: {
+    example: {
+      name: { old: 'Example Name' },
+    },
+  },
+});
+
+describe('ExampleHeader.vue', () => {
+  let wrapper;
+
+  const findTitle = () => wrapper.find('[data-testid="example-header-title"]');
+
+  beforeEach(() => {
+    wrapper = mount(ExampleHeader, {
+      global: {
+        plugins: [pinia],
+      },
+    });
+  });
+
+  it('renders the title', () => {
+    expect(findTitle().text()).toBe('Example Name');
+  });
+});
+```
+
+Bad (brittle selectors + no isolation):
+
+```js
+it('renders title', () => {
+  const wrapper = mount(ExampleHeader);
+  expect(wrapper.find('section h1').text()).toBe('Example Name');
+});
+```
+
+### Component test: wrapper factory + cleanup + fake timers
+
+Good:
+
+```js
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { shallowMount } from '@vue/test-utils';
+import { nextTick } from 'vue';
+
+import ExampleModal from '@/components/ExampleModal.vue';
+
+describe('ExampleModal', () => {
+  let wrapper;
+
+  const createWrapper = (props = {}) => {
+    wrapper = shallowMount(ExampleModal, {
+      props: { open: true, ...props },
+    });
+  };
+
+  afterEach(() => {
+    wrapper?.unmount();
+    vi.clearAllMocks();
+  });
+
+  it('emits close and resets step', async () => {
+    vi.useFakeTimers();
+    createWrapper();
+
+    wrapper.vm.close();
+    expect(wrapper.emitted('update:open')).toEqual([[false]]);
+
+    vi.runAllTimers();
+    await nextTick();
+    vi.useRealTimers();
+  });
+});
+```
+
+Bad (leaks timers + wrapper not unmounted):
+
+```js
+it('closes', () => {
+  vi.useFakeTimers();
+  const wrapper = shallowMount(ExampleModal);
+  wrapper.vm.close();
+});
+```
+
+### Store test: fresh Pinia per test + mocked API module
+
+Good:
+
+```js
+import { setActivePinia, createPinia } from 'pinia';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { useExampleStore } from '@/store/ExampleStore';
+import apiClient from '@/api/apiClient';
+
+vi.mock('@/api/apiClient');
+
+describe('ExampleStore', () => {
+  let store;
+
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    store = useExampleStore();
+  });
+
+  it('loads data', async () => {
+    apiClient.get.mockResolvedValue({ data: {} });
+
+    await store.load();
+
+    expect(store.status).toBe('success');
+  });
+});
+```
+
+### Composable test: pure output assertions
+
+Good:
+
+```js
+import { describe, expect, it } from 'vitest';
+import useExample from '@/composables/useExample';
+
+describe('useExample', () => {
+  it('returns examples in the expected order', () => {
+    const result = useExample();
+    expect(result.value.map((v) => v.page)).toEqual([
+      'first',
+      'second',
+      'third',
+    ]);
+  });
+});
+```

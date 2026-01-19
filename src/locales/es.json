@@ -289,6 +289,8 @@
       },
       "agent_details": {
         "about": "Sobre",
+        "mcp": "MCP",
+        "system": "Sistema",
         "view_options": "Ver opciones",
         "remove_agent": "Eliminar agente"
       }

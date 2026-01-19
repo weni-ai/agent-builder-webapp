@@ -1,0 +1,195 @@
+---
+description: Meta rule that defines how all Cursor rules must be created and organized in this project
+---
+
+# Cursor Rules Authoring Standard
+
+This file defines how **all Cursor rules (.mdc)** must be created, structured and maintained in this project.
+
+Cursor must follow this rule when generating, updating or extending any rule file.
+
+---
+
+## 1. Rule location
+
+All rules must be created inside:
+
+```
+
+.cursor/rules/
+
+```
+
+Rules must never be created:
+- In the project root
+- In subfolders outside `.cursor/rules`
+- Inside `src/`, `docs/` or any application folder
+
+---
+
+## 2. File naming
+
+All rule files must:
+
+- Use **kebab-case**
+- Be **descriptive**
+- End with **.mdc**
+
+Examples:
+```
+
+ui-design-system.mdc
+state-and-data.mdc
+routing-and-pages.mdc
+testing-strategy.mdc
+performance-guidelines.mdc
+
+```
+
+Bad examples:
+```
+
+rules.mdc
+config.mdc
+stuff.mdc
+uiRules.txt
+
+```
+
+---
+
+## 3. One responsibility per rule
+
+Each rule file must cover **only one domain**.
+
+Allowed domains:
+- Project identity
+- Stack & tooling
+- Architecture
+- UI & design system
+- State & data
+- Routing & pages
+- Testing
+- Performance
+- Security
+- Code style & quality
+
+A rule must **never** mix multiple domains.
+
+Example:
+- UI rules must not include API rules
+- State rules must not include router rules
+
+---
+
+## 4. Rule header (YAML frontmatter)
+
+Every rule file must start with:
+
+```
+
+---
+
+description: Short, clear explanation of what this rule controls
+globs: optional/path/pattern/**/*
+alwaysApply: false
+---
+
+```
+
+Rules:
+- `description` is mandatory
+- `globs` is optional and only used when the rule targets specific files
+- `alwaysApply` must be `false` unless the rule is truly global
+
+Only meta-rules (like this one) may use `alwaysApply: true`.
+
+---
+
+## 5. Rule structure
+
+Every rule must follow this structure:
+
+```
+
+---
+
+description: ...
+globs: ...
+alwaysApply: false
+------------------
+
+# Rule Title
+
+Short explanation of the domain this rule controls.
+
+## Core Principles
+
+High-level non-negotiable rules.
+
+## Mandatory Rules
+
+Things Cursor must always follow.
+
+## Forbidden Patterns
+
+Things Cursor must never do.
+
+## Examples
+
+Good and bad examples when relevant.
+
+```
+
+---
+
+## 6. Writing style
+
+All rules must be written in:
+- **Clear, direct, imperative language**
+- No vague suggestions
+- No “try to”, “should if possible”, or “it might be good”
+
+Use:
+- “Must”
+- “Must not”
+- “Always”
+- “Never”
+
+---
+
+## 7. How Cursor must generate new rules
+
+When creating a new rule, Cursor must:
+
+1. Identify the domain (UI, state, routing, etc)
+2. Create a new `.mdc` file in `.cursor/rules/`
+3. Use the naming rules
+4. Use the required frontmatter
+5. Follow the standard structure
+6. Keep the scope strictly limited to that domain
+
+Cursor must never:
+- Add rules to an existing file if the domain is different
+- Merge multiple domains into one file
+- Create a generic “misc” rule
+
+---
+
+## 8. Rule conflicts
+
+If two rules conflict:
+- The **more specific rule wins**
+- The rule with **globs** wins over a generic one
+- Domain rules override global rules
+
+Cursor must respect this hierarchy when applying rules.
+
+---
+
+## 9. This rule is authoritative
+
+This file is the **source of truth** for how Cursor rules are written in this project.
+
+Any rule that violates this standard must be rewritten to conform to it.
+```
