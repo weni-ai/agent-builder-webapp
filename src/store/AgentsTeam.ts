@@ -13,9 +13,11 @@ import i18n from '@/utils/plugins/i18n';
 import { useFeatureFlagsStore } from './FeatureFlags';
 import {
   Agent,
+  ActiveTeamAgent,
   AgentGroupOrAgent,
   AssignAgentsFilters,
 } from './types/Agents.types';
+import useAgent from '@/composables/useAgent';
 
 export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   const linkToCreateAgent = 'https://github.com/weni-ai/weni-cli';
@@ -23,6 +25,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   const assignAgentsView = useFeatureFlagsStore().flags.assignAgentsView;
 
   const alertStore = useAlertStore();
+  const { normalizeActiveAgent } = useAgent();
 
   const activeTeam = reactive({
     status: null,
@@ -57,7 +60,27 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
   const isAgentsGalleryOpen = ref(false);
 
-  const newAgentAssigned = ref<Agent | null>(null);
+  const newAgentAssigned = ref<ActiveTeamAgent | null>(null);
+
+  function addAgentToTeam(agent: AgentGroupOrAgent) {
+    const normalizedAgent = normalizeActiveAgent(agent);
+
+    activeTeam.data.agents.push(normalizedAgent);
+    newAgentAssigned.value = normalizedAgent;
+
+    if (router.currentRoute.value.name !== 'agents-team') {
+      router.push({ name: 'agents-team' });
+    }
+
+    const assignedAgent = officialAgents.data.find(
+      (agent) =>
+        agent.uuid === normalizedAgent.uuid ||
+        agent.variants?.some(
+          (variant) => variant.uuid === normalizedAgent.uuid,
+        ),
+    );
+    assignedAgent.assigned = true;
+  }
 
   async function loadActiveTeam() {
     try {
@@ -67,7 +90,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
       activeTeam.data = {
         manager: data.manager,
-        agents: agentIconService.applyIconsToAgents(data.agents),
+        agents: data.agents.map(normalizeActiveAgent),
       };
       activeTeam.status = 'complete';
     } catch (error) {
@@ -144,11 +167,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
   }
 
-  async function toggleAgentAssignment({
-    uuid,
-    is_assigned,
-    is_group = false,
-  }) {
+  async function toggleAgentAssignment({ uuid, is_assigned }) {
     if (!uuid || typeof is_assigned !== 'boolean') {
       throw new Error('uuid and is_assigned are required');
     }
@@ -165,7 +184,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
         throw new Error('Agent not found');
       }
 
-      if (is_group) {
+      if (assignAgentsView && agent.is_official) {
         await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment({
           agent_uuid: uuid,
           assigned: is_assigned,
@@ -180,11 +199,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       agent.assigned = is_assigned;
 
       if (is_assigned) {
-        newAgentAssigned.value = agent as Agent;
-        activeTeam.data.agents.push(agent);
-        if (router.currentRoute.value.name !== 'agents-team') {
-          router.push({ name: 'agents-team' });
-        }
+        addAgentToTeam(agent);
       } else {
         activeTeam.data.agents = activeTeam.data.agents.filter(
           (agent) => agent.uuid !== uuid,
@@ -254,7 +269,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   }
 
   function openAgentsGallery() {
-    if (useFeatureFlagsStore().flags.assignAgentsView) {
+    if (assignAgentsView) {
       router.push({ name: 'agents-assign' });
       return;
     }
@@ -271,6 +286,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     assignAgentsFilters,
     allAgents,
     isAgentsGalleryOpen,
+    addAgentToTeam,
     loadActiveTeam,
     loadOfficialAgents,
     loadMyAgents,
