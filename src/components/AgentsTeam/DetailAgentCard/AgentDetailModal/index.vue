@@ -8,10 +8,17 @@
       <AgentModalHeader :agent="agent" />
 
       <section class="agent-detail-modal__details">
-        <Section
-          :title="$t('agents.assigned_agents.agent_details.about')"
-          :description="agent.description"
-        />
+        <section class="agent-detail-modal__summary">
+          <Section
+            :title="$t('agents.assigned_agents.agent_details.about')"
+            :description="agent.description"
+          />
+
+          <SystemSection
+            v-if="agent.mcp?.system"
+            :system="agent.mcp.system"
+          />
+        </section>
 
         <McpSection
           v-if="agent.mcp"
@@ -32,6 +39,7 @@ import { ActiveTeamAgent } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import McpSection from './McpSection.vue';
+import SystemSection from './SystemSection.vue';
 import Section from './Section.vue';
 import ViewOptions from './ViewOptions.vue';
 
@@ -59,6 +67,19 @@ function handleAgentRemoved() {
     display: flex;
     flex-direction: column;
     gap: $unnnic-space-4;
+  }
+
+  &__summary {
+    display: flex;
+    gap: $unnnic-space-4;
+
+    > * {
+      max-width: 50%;
+    }
+
+    > *:only-child {
+      max-width: 100%;
+    }
   }
 }
 </style>

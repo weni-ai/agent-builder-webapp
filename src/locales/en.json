@@ -271,6 +271,7 @@
       "agent_details": {
         "about": "About",
         "mcp": "MCP",
+        "system": "System",
         "view_options": "View options",
         "remove_agent": "Remove agent"
       }
