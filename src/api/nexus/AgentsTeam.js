@@ -54,7 +54,7 @@ export const AgentsTeam = {
       params,
     });
 
-    return [...data.new, ...data.legacy].map((agent) => ({
+    return [...data.new.agents, ...data.legacy].map((agent) => ({
       ...agent,
       id: agent.slug,
     }));
