@@ -1,12 +1,19 @@
 <template>
-  <section class="conversation-example">
-    <p class="conversation-example__title">
+  <section
+    class="conversation-example"
+    data-testid="conversation-example"
+  >
+    <p
+      class="conversation-example__title"
+      data-testid="conversation-example-title"
+    >
       {{ conversationExample.title }}
     </p>
 
     <div class="conversation-example__content">
       <article
         class="conversation-example__bubble conversation-example__bubble--customer"
+        data-testid="conversation-example-bubble-customer"
       >
         <p class="conversation-example__bubble-author">
           {{ conversationExample.customerLabel }}
@@ -19,6 +26,7 @@
 
       <article
         class="conversation-example__bubble conversation-example__bubble--concierge"
+        data-testid="conversation-example-bubble-concierge"
       >
         <p class="conversation-example__bubble-author">
           {{ conversationExample.conciergeLabel }}

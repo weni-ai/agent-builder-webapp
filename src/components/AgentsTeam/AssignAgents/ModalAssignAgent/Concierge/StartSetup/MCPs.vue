@@ -1,6 +1,12 @@
 <template>
-  <section class="start-setup-mcps">
-    <p class="start-setup-mcps__title">
+  <section
+    class="start-setup-mcps"
+    data-testid="start-setup-mcps"
+  >
+    <p
+      class="start-setup-mcps__title"
+      data-testid="start-setup-mcps-title"
+    >
       {{ $t('agents.assign_agents.setup.mcps_available.title') }}
     </p>
 
@@ -20,11 +26,17 @@
           class="start-setup-mcps__item-icon"
         />
 
-        <p class="start-setup-mcps__item-title">
+        <p
+          class="start-setup-mcps__item-title"
+          data-testid="start-setup-mcps-item-title"
+        >
           {{ mcp.name }}
         </p>
 
-        <p class="start-setup-mcps__item-description">
+        <p
+          class="start-setup-mcps__item-description"
+          data-testid="start-setup-mcps-item-description"
+        >
           {{ mcp.description }}
         </p>
       </li>
