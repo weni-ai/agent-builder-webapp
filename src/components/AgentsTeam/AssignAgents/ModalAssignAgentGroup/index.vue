@@ -9,19 +9,20 @@
       <template v-if="isConfiguringAgentGroup">
         <ModalAssignAgentGroupFlow
           :open="isConfiguringAgentGroup"
-          :agent="agent"
+          :agent="resolvedAgentDetails"
+          :agentDetails="agentDetails"
           data-testid="modal-group-component"
           @update:open="closeAgentModal"
         />
       </template>
       <template v-else>
         <AgentModalHeader
-          :agent="agent"
+          :agent="resolvedAgentDetails"
           data-testid="modal-header"
         />
 
         <ModalAssignAgentGroupStartSetup
-          :agent="agent"
+          :agent="resolvedAgentDetails"
           data-testid="modal-start-component"
         />
 
@@ -38,26 +39,50 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import { AgentGroup } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import ModalAssignAgentGroupStartSetup from './Group/StartSetup/index.vue';
 import ModalAssignAgentGroupFlow from './Group/index.vue';
+import nexusaiAPI from '@/api/nexusaiAPI';
+import { findAgentVariantUuid } from '@/composables/useOfficialAgentAssignment';
 
 const emit = defineEmits(['update:open']);
 
-defineProps<{
+const props = defineProps<{
   agent: AgentGroup;
 }>();
 
-defineModel('open', {
+const open = defineModel('open', {
   type: Boolean,
   required: true,
 });
 
 const isConfiguringAgentGroup = ref<boolean>(false);
+const agentDetails = ref<AgentGroup | null>(null);
+const isLoadingAgentDetails = ref(false);
+const resolvedAgentDetails = computed(() => agentDetails.value ?? props.agent);
+
+async function fetchAgentDetails() {
+  if (isLoadingAgentDetails.value || agentDetails.value) return;
+
+  const system = props.agent.systems?.[0];
+  if (!system) return;
+
+  const agentUuid = findAgentVariantUuid(props.agent, system);
+  if (!agentUuid) return;
+
+  try {
+    isLoadingAgentDetails.value = true;
+    const agentDetailsData =
+      await nexusaiAPI.router.agents_team.getOfficialAgentDetails(agentUuid);
+    agentDetails.value = { ...props.agent, ...agentDetailsData };
+  } finally {
+    isLoadingAgentDetails.value = false;
+  }
+}
 
 function openAgentModal() {
   isConfiguringAgentGroup.value = true;
@@ -67,6 +92,17 @@ function closeAgentModal() {
   emit('update:open', false);
   setTimeout(() => {
     isConfiguringAgentGroup.value = false;
+    agentDetails.value = null;
   }, 100);
 }
+
+watch(
+  () => open.value,
+  (isOpen) => {
+    if (isOpen) {
+      fetchAgentDetails();
+    }
+  },
+  { immediate: true },
+);
 </script>
