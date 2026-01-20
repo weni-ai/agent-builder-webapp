@@ -6,6 +6,7 @@
     >
       <UnnnicSwitch
         v-if="element.type === 'SWITCH'"
+        data-testid="concierge-second-step-switch"
         :option="element.label"
         :modelValue="configValues[element.name] ?? false"
         @update:model-value="updateFieldValue(element.name, $event)"
@@ -13,6 +14,7 @@
 
       <UnnnicSelect
         v-else-if="element.type === 'SELECT'"
+        data-testid="concierge-second-step-select"
         :label="element.label"
         :options="formatOptions(element.options)"
         :modelValue="getSelectModelValue(element)"
@@ -21,6 +23,7 @@
 
       <UnnnicInput
         v-else-if="['NUMBER', 'TEXT', 'INPUT'].includes(element.type)"
+        data-testid="concierge-second-step-input"
         :label="element.label"
         :modelValue="String(configValues[element.name] ?? '')"
         :nativeType="element.type === 'NUMBER' ? 'number' : 'text'"
@@ -29,11 +32,13 @@
 
       <UnnnicCheckboxGroup
         v-else-if="element.type === 'CHECKBOX'"
+        data-testid="concierge-second-step-checkbox-group"
         :label="element.label"
       >
         <UnnnicCheckbox
           v-for="option in element.options"
           :key="option.value || option.name"
+          data-testid="concierge-second-step-checkbox"
           :label="option.name"
           :modelValue="isCheckboxChecked(element.name, option.value)"
           @update:model-value="
@@ -45,6 +50,7 @@
       <UnnnicRadioGroup
         v-else-if="element.type === 'RADIO'"
         state="vertical"
+        data-testid="concierge-second-step-radio-group"
         :label="element.label"
         :modelValue="configValues[element.name]"
         @update:model-value="updateFieldValue(element.name, $event)"
@@ -52,6 +58,7 @@
         <UnnnicRadio
           v-for="option in element.options"
           :key="option.value || option.name"
+          data-testid="concierge-second-step-radio"
           :label="option.name"
           :value="option.value || option.name"
         >
