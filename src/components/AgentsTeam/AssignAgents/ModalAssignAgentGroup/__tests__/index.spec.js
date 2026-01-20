@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 
-import ModalAssignAgent from '../index.vue';
+import ModalAssignAgentGroup from '../index.vue';
 
 const conciergeAgent = {
   name: 'Concierge',
@@ -18,11 +18,11 @@ const conciergeAgent = {
   is_official: true,
 };
 
-describe('ModalAssignAgent', () => {
+describe('ModalAssignAgentGroup', () => {
   let wrapper;
 
   const createWrapper = (props = {}) => {
-    wrapper = shallowMount(ModalAssignAgent, {
+    wrapper = shallowMount(ModalAssignAgentGroup, {
       props: {
         open: true,
         agent: conciergeAgent,

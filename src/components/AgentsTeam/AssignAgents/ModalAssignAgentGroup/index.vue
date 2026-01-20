@@ -6,9 +6,9 @@
     @update:open="closeAgentModal"
   >
     <UnnnicDialogContent size="large">
-      <template v-if="groupModalComponent">
-        <component
-          :is="groupModalComponent"
+      <template v-if="isConfiguringAgentGroup">
+        <ModalAssignAgentGroupFlow
+          :open="isConfiguringAgentGroup"
           :agent="agent"
           data-testid="modal-group-component"
           @update:open="closeAgentModal"
@@ -20,8 +20,7 @@
           data-testid="modal-header"
         />
 
-        <component
-          :is="startSetupModalComponent"
+        <ModalAssignAgentGroupStartSetup
           :agent="agent"
           data-testid="modal-start-component"
         />
@@ -39,17 +38,17 @@
 </template>
 
 <script setup lang="ts">
-import { Component, computed, ref } from 'vue';
+import { ref } from 'vue';
 
 import { AgentGroup } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
-import ModalAssignConciergeStartSetup from './Concierge/StartSetup/index.vue';
-import ModalAssignConcierge from './Concierge/index.vue';
+import ModalAssignAgentGroupStartSetup from './Group/StartSetup/index.vue';
+import ModalAssignAgentGroupFlow from './Group/index.vue';
 
 const emit = defineEmits(['update:open']);
 
-const props = defineProps<{
+defineProps<{
   agent: AgentGroup;
 }>();
 
@@ -58,27 +57,16 @@ defineModel('open', {
   required: true,
 });
 
-const groupModalComponent = ref<Component | null>(null);
-
-const MODAL_GROUPS_MAP = {
-  CONCIERGE: ModalAssignConcierge,
-};
-const MODAL_START_SETUP_MAP = {
-  CONCIERGE: ModalAssignConciergeStartSetup,
-};
-
-const startSetupModalComponent = computed(() => {
-  return MODAL_START_SETUP_MAP[props.agent.group?.toUpperCase() || ''];
-});
+const isConfiguringAgentGroup = ref<boolean>(false);
 
 function openAgentModal() {
-  groupModalComponent.value = MODAL_GROUPS_MAP[props.agent.group.toUpperCase()];
+  isConfiguringAgentGroup.value = true;
 }
 
 function closeAgentModal() {
   emit('update:open', false);
   setTimeout(() => {
-    groupModalComponent.value = null;
+    isConfiguringAgentGroup.value = false;
   }, 100);
 }
 </script>
