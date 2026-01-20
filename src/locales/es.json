@@ -330,10 +330,7 @@
         },
         "conversation_example": {
           "title": "Ejemplo de conversación",
-          "customer_label": "Cliente",
-          "customer_message": "¿Tienen el Nike Air Zoom Pegasus 40 en la talla 41?",
-          "concierge_label": "Product Concierge",
-          "concierge_message": "Encontré el Nike Air Zoom Pegasus 40 — Negro/Blanco. Cuesta R$ 129,90 y la talla 41 está disponible. ¿Quieres ver el plazo de entrega o modelos similares?"
+          "customer_label": "Cliente"
         },
         "system_selection": {
           "title": "Selección de sistema",

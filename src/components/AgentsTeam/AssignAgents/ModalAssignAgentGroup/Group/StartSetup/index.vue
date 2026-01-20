@@ -13,7 +13,11 @@
       data-testid="start-setup-mcps-section"
     />
 
-    <ConversationExample data-testid="start-setup-conversation-section" />
+    <ConversationExample
+      :conversationExample="agent.presentation?.conversation_example || []"
+      :agentName="agent.name"
+      data-testid="start-setup-conversation-section"
+    />
   </section>
 </template>
 
