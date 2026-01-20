@@ -1,8 +1,26 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 
 import ModalAssignAgentGroup from '../index.vue';
+
+const getOfficialAgentDetailsMock = vi.hoisted(() => vi.fn());
+
+vi.mock('@/api/nexusaiAPI', () => ({
+  default: {
+    router: {
+      agents_team: {
+        getOfficialAgentDetails: getOfficialAgentDetailsMock,
+      },
+    },
+  },
+}));
+
+const findAgentVariantUuidMock = vi.hoisted(() => vi.fn());
+
+vi.mock('@/composables/useOfficialAgentAssignment', () => ({
+  findAgentVariantUuid: (...args) => findAgentVariantUuidMock(...args),
+}));
 
 const conciergeAgent = {
   name: 'Concierge',
@@ -42,6 +60,11 @@ describe('ModalAssignAgentGroup', () => {
     await nextButton().trigger('click');
     await nextTick();
   };
+
+  beforeEach(() => {
+    getOfficialAgentDetailsMock.mockResolvedValue({ MCPs: [] });
+    findAgentVariantUuidMock.mockReturnValue('variant-vtex');
+  });
 
   afterEach(() => {
     wrapper?.unmount();

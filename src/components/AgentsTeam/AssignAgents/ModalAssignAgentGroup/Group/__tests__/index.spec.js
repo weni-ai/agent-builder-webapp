@@ -10,24 +10,10 @@ vi.mock('vue-i18n', () => ({
   }),
 }));
 
-const getOfficialAgentDetailsMock = vi.hoisted(() => vi.fn());
-
-vi.mock('@/api/nexusaiAPI', () => ({
-  default: {
-    router: {
-      agents_team: {
-        getOfficialAgentDetails: getOfficialAgentDetailsMock,
-      },
-    },
-  },
-}));
-
 const useOfficialAgentAssignmentMock = vi.hoisted(() => vi.fn());
-const findAgentVariantUuidMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/composables/useOfficialAgentAssignment', () => ({
   default: (...args) => useOfficialAgentAssignmentMock(...args),
-  findAgentVariantUuid: (...args) => findAgentVariantUuidMock(...args),
 }));
 
 const agentFixture = {
@@ -97,11 +83,6 @@ describe('ModalAssignAgentGroupFlow', () => {
   };
 
   beforeEach(() => {
-    getOfficialAgentDetailsMock.mockResolvedValue({
-      MCPs: [],
-    });
-    findAgentVariantUuidMock.mockReturnValue('variant-vtex');
-
     createWrapper();
   });
 
@@ -126,19 +107,6 @@ describe('ModalAssignAgentGroupFlow', () => {
       await advanceToStepThree();
 
       expect(thirdStepContent().exists()).toBe(true);
-    });
-  });
-
-  describe('Fetch agent details', () => {
-    it('fetches agent details and advances to the second step', async () => {
-      await findNextButton().trigger('click');
-      await flushPromises();
-
-      expect(getOfficialAgentDetailsMock).toHaveBeenCalledWith(
-        'variant-vtex',
-        'vtex',
-      );
-      expect(secondStepContent().exists()).toBe(true);
     });
   });
 

@@ -6,17 +6,10 @@ import StartSetup from '../index.vue';
 const mockAgent = {
   description: 'Handles concierge flows',
   systems: ['VTEX'],
+  MCPs: [
+    { name: 'Concierge MCP', description: 'Assists customers' },
+  ],
 };
-
-const mockTM = vi.fn(() => [
-  { name: 'Concierge MCP', description: 'Assists customers' },
-]);
-
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({
-    tm: mockTM,
-  }),
-}));
 
 describe('StartSetup index', () => {
   let wrapper;
@@ -49,17 +42,14 @@ describe('StartSetup index', () => {
     ).toBe(true);
   });
 
-  it('builds mocked MCPs list using translations', () => {
+  it('passes the agent MCPs to the MCPs section', () => {
     wrapper = createWrapper();
 
-    expect(mockTM).toHaveBeenCalledWith(
-      'agents.assign_agents.setup.mcps_available.concierge_mcps',
-    );
     const mcpsComponent = wrapper.findComponent({
       name: 'MCPs',
     });
     expect(mcpsComponent.props('mcps')).toEqual([
-      { name: 'Concierge MCP', description: 'Assists customers', config: [] },
+      { name: 'Concierge MCP', description: 'Assists customers' },
     ]);
   });
 });

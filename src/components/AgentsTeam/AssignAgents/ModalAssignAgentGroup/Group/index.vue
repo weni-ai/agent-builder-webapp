@@ -42,19 +42,18 @@ import { useI18n } from 'vue-i18n';
 import { AgentGroup, AgentMCP, AgentSystem } from '@/store/types/Agents.types';
 
 import useOfficialAgentAssignment, {
-  findAgentVariantUuid,
   type MCPConfigValues,
 } from '@/composables/useOfficialAgentAssignment';
 
 import FirstStepContent from './FirstStepContent.vue';
 import SecondStepContent from './SecondStepContent/index.vue';
 import ThirdStepContent from './ThirdStepContent/index.vue';
-import nexusaiAPI from '@/api/nexusaiAPI';
 
 const emit = defineEmits(['update:open']);
 
 const props = defineProps<{
   agent: AgentGroup;
+  agentDetails?: AgentGroup | null;
 }>();
 
 defineModel('open', {
@@ -91,7 +90,7 @@ const stepComponents = {
   3: ThirdStepContent,
 };
 
-const agentDetails = ref<AgentGroup | null>(props.agent);
+const resolvedAgentDetails = computed(() => props.agentDetails ?? props.agent);
 const currentStepProps = computed(() => {
   const stepProps = {
     1: {
@@ -102,7 +101,7 @@ const currentStepProps = computed(() => {
       },
     },
     2: {
-      MCPs: agentDetails.value?.MCPs || [],
+      MCPs: resolvedAgentDetails.value?.MCPs || [],
       selectedMCP: config.value.MCP,
       selectedMCPConfigValues: config.value.mcp_config,
       'onUpdate:selectedMCP': (nextMCP: AgentMCP | null) => {
@@ -152,27 +151,9 @@ function closeModal() {
   emit('update:open', false);
   resetFlow();
 }
-async function getAgentDetails() {
-  const agentUuid = findAgentVariantUuid(props.agent, config.value.system);
-
-  if (!agentUuid) return;
-
-  const agentDetailsData =
-    await nexusaiAPI.router.agents_team.getOfficialAgentDetails(
-      agentUuid,
-      config.value.system.toLowerCase(),
-    );
-  agentDetails.value = { ...props.agent, ...agentDetailsData };
-}
-
 async function handleNext() {
   if (isSubmitting.value) return;
   if (step.value < TOTAL_STEPS) {
-    if (step.value === 1) {
-      isNextLoading.value = true;
-      await getAgentDetails();
-      isNextLoading.value = false;
-    }
     step.value++;
     return;
   }

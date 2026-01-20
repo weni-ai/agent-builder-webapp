@@ -54,16 +54,15 @@ export const AgentsTeam = {
       params,
     });
 
-    return [...data.new, ...data.legacy].map((agent) => ({
+    return [...data.new.agents, ...data.legacy].map((agent) => ({
       ...agent,
       id: agent.slug,
     }));
   },
 
-  async getOfficialAgentDetails(uuid, system) {
+  async getOfficialAgentDetails(uuid) {
     const params = {
       project_uuid: projectUuid.value,
-      system,
     };
 
     const { data } = await request.$http.get(
