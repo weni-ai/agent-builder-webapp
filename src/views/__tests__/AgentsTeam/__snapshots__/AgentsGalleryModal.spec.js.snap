@@ -60,8 +60,8 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
       <section
         class="unnnic-form-element unnnic-form md"
         data-testid="search-input"
+        data-v-25ad98eb=""
         data-v-4569ccad=""
-        data-v-701fffae=""
         data-v-e8ff269c=""
       >
         <!---->
@@ -69,35 +69,42 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
         <div
           class="text-input size--md unnnic-form-input"
           data-testid="search-input"
-          data-v-701fffae=""
-          data-v-964b1ff1=""
+          data-v-1a46ed8b=""
+          data-v-25ad98eb=""
           hascloudycolor="false"
           mask=""
         >
           <input
             class="unnnic-form-input input-itself input size-md normal input--has-icon-left unnnic-form-input input-itself"
             data-testid="search-input"
-            data-v-5c6d9ab7=""
-            data-v-964b1ff1=""
+            data-v-1a46ed8b=""
+            data-v-21958693=""
             hascloudycolor="false"
             iconleft="search"
             iconleftclickable="false"
             iconright=""
             iconrightclickable="false"
             placeholder="Search agent or skill"
+            showclear="false"
             type="text"
             value=""
           />
           <span
             class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--fg-base unnnic-icon-size--ant unnnic-icon__size--ant icon-left"
             data-testid="material-icon"
+            data-v-1a46ed8b=""
             data-v-69390f82=""
-            data-v-964b1ff1=""
             translate="no"
           >
             search
           </span>
-          <!---->
+          <section
+            class="icon-right-container"
+            data-v-1a46ed8b=""
+          >
+            <!---->
+            <!---->
+          </section>
         </div>
         
         <!---->

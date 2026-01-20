@@ -1,34 +1,34 @@
 <template>
-  <section class="conversation-example">
-    <p class="conversation-example__title">
-      {{ conversationExample.title }}
+  <section
+    class="conversation-example"
+    data-testid="conversation-example"
+  >
+    <p
+      class="conversation-example__title"
+      data-testid="conversation-example-title"
+    >
+      {{ conversationMeta.title }}
     </p>
 
-    <div class="conversation-example__content">
-      <article
-        class="conversation-example__bubble conversation-example__bubble--customer"
+    <article class="conversation-example__content">
+      <section
+        v-for="(message, index) in messages"
+        :key="`${message.direction}-${index}`"
+        :class="[
+          'conversation-example__bubble',
+          `conversation-example__bubble--${message.direction}`,
+        ]"
+        :data-testid="`conversation-example-bubble-${message.direction}`"
       >
         <p class="conversation-example__bubble-author">
-          {{ conversationExample.customerLabel }}
+          {{ message.label }}
         </p>
 
         <p class="conversation-example__bubble-message">
-          {{ conversationExample.customerMessage }}
+          {{ message.text }}
         </p>
-      </article>
-
-      <article
-        class="conversation-example__bubble conversation-example__bubble--concierge"
-      >
-        <p class="conversation-example__bubble-author">
-          {{ conversationExample.conciergeLabel }}
-        </p>
-
-        <p class="conversation-example__bubble-message">
-          {{ conversationExample.conciergeMessage }}
-        </p>
-      </article>
-    </div>
+      </section>
+    </article>
   </section>
 </template>
 
@@ -38,21 +38,28 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const conversationExample = computed(() => ({
+const props = defineProps<{
+  agentName: string;
+  conversationExample: {
+    direction: 'incoming' | 'outgoing';
+    text: string;
+  }[];
+}>();
+
+const conversationMeta = computed(() => ({
   title: t('agents.assign_agents.setup.conversation_example.title'),
-  customerLabel: t(
-    'agents.assign_agents.setup.conversation_example.customer_label',
-  ),
-  customerMessage: t(
-    'agents.assign_agents.setup.conversation_example.customer_message',
-  ),
-  conciergeLabel: t(
-    'agents.assign_agents.setup.conversation_example.concierge_label',
-  ),
-  conciergeMessage: t(
-    'agents.assign_agents.setup.conversation_example.concierge_message',
-  ),
 }));
+
+const messages = computed(() =>
+  (props.conversationExample || []).map((message) => ({
+    direction: message.direction ?? 'outgoing',
+    text: message.text,
+    label:
+      message.direction === 'incoming'
+        ? t('agents.assign_agents.setup.conversation_example.customer_label')
+        : props.agentName,
+  })),
+);
 </script>
 
 <style scoped lang="scss">
@@ -95,7 +102,7 @@ const conversationExample = computed(() => ({
     gap: $unnnic-space-1;
   }
 
-  &__bubble--customer {
+  &__bubble--incoming {
     border-top-left-radius: 0;
 
     align-self: flex-start;
@@ -103,7 +110,7 @@ const conversationExample = computed(() => ({
     background-color: $unnnic-color-bg-base;
   }
 
-  &__bubble--concierge {
+  &__bubble--outgoing {
     border-top-right-radius: 0;
 
     align-self: flex-end;

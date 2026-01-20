@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, shallowMount } from '@vue/test-utils';
 import { nextTick, ref } from 'vue';
 
-import ConciergeModal from '../index.vue';
+import ModalAssignAgentGroupFlow from '../index.vue';
 
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({
@@ -10,24 +10,10 @@ vi.mock('vue-i18n', () => ({
   }),
 }));
 
-const getOfficialAgentDetailsMock = vi.hoisted(() => vi.fn());
-
-vi.mock('@/api/nexusaiAPI', () => ({
-  default: {
-    router: {
-      agents_team: {
-        getOfficialAgentDetails: getOfficialAgentDetailsMock,
-      },
-    },
-  },
-}));
-
 const useOfficialAgentAssignmentMock = vi.hoisted(() => vi.fn());
-const findAgentVariantUuidMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/composables/useOfficialAgentAssignment', () => ({
   default: (...args) => useOfficialAgentAssignmentMock(...args),
-  findAgentVariantUuid: (...args) => findAgentVariantUuidMock(...args),
 }));
 
 const agentFixture = {
@@ -55,7 +41,7 @@ const createAssignmentState = () => ({
   submitAssignment: vi.fn().mockResolvedValue(true),
 });
 
-describe('Concierge modal', () => {
+describe('ModalAssignAgentGroupFlow', () => {
   let wrapper;
   let assignmentState;
 
@@ -63,7 +49,7 @@ describe('Concierge modal', () => {
     assignmentState = createAssignmentState();
     useOfficialAgentAssignmentMock.mockReturnValue(assignmentState);
 
-    wrapper = shallowMount(ConciergeModal, {
+    wrapper = shallowMount(ModalAssignAgentGroupFlow, {
       props: {
         agent: agentFixture,
         open: true,
@@ -97,11 +83,6 @@ describe('Concierge modal', () => {
   };
 
   beforeEach(() => {
-    getOfficialAgentDetailsMock.mockResolvedValue({
-      MCPs: [],
-    });
-    findAgentVariantUuidMock.mockReturnValue('variant-vtex');
-
     createWrapper();
   });
 
@@ -126,19 +107,6 @@ describe('Concierge modal', () => {
       await advanceToStepThree();
 
       expect(thirdStepContent().exists()).toBe(true);
-    });
-  });
-
-  describe('Fetch agent details', () => {
-    it('fetches agent details and advances to the second step', async () => {
-      await findNextButton().trigger('click');
-      await flushPromises();
-
-      expect(getOfficialAgentDetailsMock).toHaveBeenCalledWith(
-        'variant-vtex',
-        'vtex',
-      );
-      expect(secondStepContent().exists()).toBe(true);
     });
   });
 

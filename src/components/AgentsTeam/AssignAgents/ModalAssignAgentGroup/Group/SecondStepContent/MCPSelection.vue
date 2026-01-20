@@ -1,5 +1,8 @@
 <template>
-  <section class="modal-assign-agent__mcp-selection">
+  <section
+    class="modal-assign-agent__mcp-selection"
+    data-testid="concierge-second-step-mcp-selection"
+  >
     <header class="modal-assign-agent__content-header">
       <p class="modal-assign-agent__content-title">
         {{ t('agents.assign_agents.setup.mcp_selection.title') }}
@@ -10,10 +13,14 @@
       </p>
     </header>
 
-    <section class="modal-assign-agent__content-mcp-list">
+    <section
+      class="modal-assign-agent__content-mcp-list"
+      data-testid="concierge-second-step-mcp-list"
+    >
       <ModalAssignAgentRadio
         v-for="MCP in MCPs"
         :key="MCP.name"
+        data-testid="concierge-second-step-mcp-radio"
         :selected="selectedMCP?.name === MCP.name"
         :label="MCP.name"
         :description="MCP.description"
@@ -27,7 +34,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 
-import ModalAssignAgentRadio from '@/components/AgentsTeam/AssignAgents/ModalAssignAgent/Radio.vue';
+import ModalAssignAgentRadio from '@/components/AgentsTeam/AssignAgents/ModalAssignAgentGroup/Radio.vue';
 
 import { AgentMCP } from '@/store/types/Agents.types';
 
