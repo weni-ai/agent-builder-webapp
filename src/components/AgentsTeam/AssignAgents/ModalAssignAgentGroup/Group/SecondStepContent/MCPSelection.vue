@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 
-import ModalAssignAgentRadio from '@/components/AgentsTeam/AssignAgents/ModalAssignAgent/Radio.vue';
+import ModalAssignAgentRadio from '@/components/AgentsTeam/AssignAgents/ModalAssignAgentGroup/Radio.vue';
 
 import { AgentMCP } from '@/store/types/Agents.types';
 
