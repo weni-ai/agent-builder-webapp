@@ -1,8 +1,10 @@
 import { setActivePinia, createPinia } from 'pinia';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { nextTick } from 'vue';
 import { cloneDeep } from 'lodash';
 
 import { useTuningsStore } from '@/store/Tunings';
+import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { useAlertStore } from '@/store/Alert';
 import nexusaiAPI from '@/api/nexusaiAPI';
 
@@ -17,6 +19,9 @@ vi.mock('@/api/nexusaiAPI', () => ({
         editProgressiveFeedback: vi.fn(),
         editComponents: vi.fn(),
         createCredentials: vi.fn(),
+        manager: {
+          edit: vi.fn(),
+        },
       },
       profile: {
         read: vi.fn(),
@@ -41,6 +46,7 @@ vi.mock('@/utils/plugins/i18n', () => ({
 describe('Tunings Store', () => {
   let store;
   let alertStore;
+  let managerSelectorStore;
 
   const mockCredentialsData = {
     my_agents_credentials: [
@@ -64,6 +70,7 @@ describe('Tunings Store', () => {
     setActivePinia(createPinia());
     store = useTuningsStore();
     alertStore = useAlertStore();
+    managerSelectorStore = useManagerSelectorStore();
 
     vi.spyOn(alertStore, 'add').mockImplementation(() => {});
 
@@ -83,6 +90,7 @@ describe('Tunings Store', () => {
           progressiveFeedback: false,
           humanSupport: false,
           humanSupportPrompt: '',
+          manager: '',
         },
       });
       expect(store.initialCredentials).toBeNull();
@@ -108,6 +116,13 @@ describe('Tunings Store', () => {
         store.credentials.status = 'success';
         store.settings.status = 'success';
         expect(store.isLoadingTunings).toBe(false);
+      });
+
+      it('should return true when manager selector is loading', () => {
+        store.credentials.status = 'success';
+        store.settings.status = 'success';
+        managerSelectorStore.status = 'loading';
+        expect(store.isLoadingTunings).toBe(true);
       });
     });
 
@@ -162,12 +177,14 @@ describe('Tunings Store', () => {
           progressiveFeedback: false,
           humanSupport: true,
           humanSupportPrompt: 'New prompt',
+          manager: 'manager-2.6',
         };
         store.initialSettings = {
           components: false,
           progressiveFeedback: false,
           humanSupport: false,
           humanSupportPrompt: '',
+          manager: 'manager-2.5',
         };
       });
 
@@ -361,6 +378,7 @@ describe('Tunings Store', () => {
           progressiveFeedback: true,
           humanSupport: true,
           humanSupportPrompt: 'Test prompt',
+          manager: '',
         });
         expect(store.initialSettings).toEqual(store.settings.data);
       });
@@ -400,12 +418,14 @@ describe('Tunings Store', () => {
           progressiveFeedback: true,
           humanSupport: true,
           humanSupportPrompt: 'New prompt',
+          manager: 'manager-2.6',
         };
         store.initialSettings = {
           components: false,
           progressiveFeedback: false,
           humanSupport: false,
           humanSupportPrompt: '',
+          manager: 'manager-2.5',
         };
       });
 
@@ -413,6 +433,9 @@ describe('Tunings Store', () => {
         nexusaiAPI.router.tunings.editProgressiveFeedback.mockResolvedValue();
         nexusaiAPI.router.tunings.editComponents.mockResolvedValue();
         nexusaiAPI.router.profile.edit.mockResolvedValue();
+        const saveManagerSpy = vi
+          .spyOn(managerSelectorStore, 'saveManager')
+          .mockResolvedValue(true);
 
         const result = await store.saveSettings();
 
@@ -440,13 +463,18 @@ describe('Tunings Store', () => {
         });
         expect(store.settings.status).toBe('success');
         expect(result).toBe(true);
+        expect(saveManagerSpy).toHaveBeenCalled();
       });
 
       it('should only save changed settings', async () => {
         store.settings.data.progressiveFeedback = false; // Same as initial
         store.settings.data.components = false; // Same as initial
+        store.settings.data.manager = store.initialSettings.manager;
 
         nexusaiAPI.router.profile.edit.mockResolvedValue();
+        const saveManagerSpy = vi
+          .spyOn(managerSelectorStore, 'saveManager')
+          .mockResolvedValue(true);
 
         await store.saveSettings();
 
@@ -455,6 +483,7 @@ describe('Tunings Store', () => {
         ).not.toHaveBeenCalled();
         expect(nexusaiAPI.router.tunings.editComponents).not.toHaveBeenCalled();
         expect(nexusaiAPI.router.profile.edit).toHaveBeenCalled();
+        expect(saveManagerSpy).not.toHaveBeenCalled();
       });
 
       it('should handle save settings error', async () => {
@@ -488,6 +517,14 @@ describe('Tunings Store', () => {
           },
           '*',
         );
+      });
+
+      it('should sync manager from selector changes', async () => {
+        managerSelectorStore.selectedManager = 'manager-2.7';
+
+        await nextTick();
+
+        expect(store.settings.data.manager).toBe('manager-2.7');
       });
     });
 
@@ -535,13 +572,17 @@ describe('Tunings Store', () => {
           progressiveFeedback: false,
           humanSupport: false,
           humanSupportPrompt: '',
+          manager: 'manager-2.5',
         };
         store.initialSettings = {
           components: false,
           progressiveFeedback: false,
           humanSupport: false,
           humanSupportPrompt: '',
+          manager: 'manager-2.5',
         };
+        managerSelectorStore.options.currentManager = 'manager-2.5';
+        managerSelectorStore.selectedManager = 'manager-2.5';
       });
 
       it('should save both credentials and settings successfully', async () => {
@@ -579,6 +620,48 @@ describe('Tunings Store', () => {
         nexusaiAPI.router.tunings.editComponents.mockRejectedValue(
           new Error('Error'),
         );
+
+        await store.saveTunings();
+
+        expect(alertStore.add).toHaveBeenCalledWith({
+          text: 'router.tunings.settings.save_error',
+          type: 'error',
+        });
+        expect(alertStore.add).not.toHaveBeenCalledWith({
+          text: 'router.tunings.save_success',
+          type: 'success',
+        });
+      });
+
+      it('should save manager when it has changed', async () => {
+        nexusaiAPI.router.tunings.editCredentials.mockResolvedValue();
+        nexusaiAPI.router.tunings.editComponents.mockResolvedValue();
+        managerSelectorStore.selectedManager = 'manager-2.6';
+        store.settings.data.manager = 'manager-2.6';
+        store.initialSettings.manager = 'manager-2.5';
+
+        const saveManagerSpy = vi
+          .spyOn(managerSelectorStore, 'saveManager')
+          .mockImplementation(async () => {
+            managerSelectorStore.options.currentManager =
+              managerSelectorStore.selectedManager;
+            return true;
+          });
+
+        await store.saveTunings();
+
+        expect(saveManagerSpy).toHaveBeenCalled();
+        expect(managerSelectorStore.options.currentManager).toBe('manager-2.6');
+      });
+
+      it('should show error for manager failure', async () => {
+        nexusaiAPI.router.tunings.editCredentials.mockResolvedValue();
+        nexusaiAPI.router.tunings.editComponents.mockResolvedValue();
+        vi.spyOn(managerSelectorStore, 'saveManager').mockResolvedValue(false);
+
+        managerSelectorStore.selectedManager = 'manager-2.6';
+        store.settings.data.manager = 'manager-2.6';
+        store.initialSettings.manager = 'manager-2.5';
 
         await store.saveTunings();
 
