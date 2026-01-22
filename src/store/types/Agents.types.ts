@@ -41,7 +41,7 @@ export interface AgentAssignedSystem {
 
 export interface AgentAssignedMCP {
   name: string;
-  description?: string;
+  description: string;
   config?: Record<string, AgentAssignedMCPConfigValue>;
   system?: AgentAssignedSystem;
 }
