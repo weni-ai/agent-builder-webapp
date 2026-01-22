@@ -13,7 +13,7 @@ import { unnnicToastManager } from '@weni/unnnic-system';
 import i18n from '@/utils/plugins/i18n';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import router from '@/router';
-import agentIconService from '@/utils/agentIconService';
+import useAgent from './useAgent';
 
 export type MCPConfigValues = Record<string, string | string[] | boolean>;
 
@@ -33,8 +33,8 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
     createInitialConfig() as ConciergeAssignmentConfig,
   );
   const agentsTeamStore = useAgentsTeamStore();
-  const isSubmitting = ref(false);
 
+  const isSubmitting = ref(false);
   watch(
     () => agent.value?.variants?.map((variant) => variant.uuid).join(','),
     () => {
@@ -110,18 +110,25 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
           payload,
         );
 
-      agentsTeamStore.newAgentAssigned = data.agent;
-      agentsTeamStore.activeTeam.data.agents.push(
-        agentIconService.applyIconToAgent(data.agent),
+      const mcpConfigWithLabels = Object.fromEntries(
+        Object.entries(config.value.mcp_config).map(([key, value]) => {
+          const label =
+            config.value.MCP?.config.find((config) => config.name === key)
+              ?.label || key;
+          return [label, value];
+        }),
       );
-      if (router.currentRoute.value.name !== 'agents-team') {
-        router.push({ name: 'agents-team' });
-      }
 
-      const assignedAgent = agentsTeamStore.officialAgents.data.find((agent) =>
-        agent.variants.some((variant) => variant.uuid === data.agent.uuid),
-      );
-      assignedAgent.assigned = true;
+      const normalizedAgent = {
+        ...data.agent,
+        mcp: {
+          name: config.value.MCP?.name || '',
+          description: config.value.MCP?.description || '',
+          config: mcpConfigWithLabels,
+        },
+      };
+
+      agentsTeamStore.addAgentToTeam(normalizedAgent);
 
       return true;
     } catch (error) {
