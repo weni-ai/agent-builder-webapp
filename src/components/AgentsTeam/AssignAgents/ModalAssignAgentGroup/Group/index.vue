@@ -92,6 +92,11 @@ const stepComponents = {
 
 const resolvedAgentDetails = computed(() => props.agentDetails ?? props.agent);
 const currentStepProps = computed(() => {
+  const selectedSystemMCPs =
+    resolvedAgentDetails.value?.MCPs.filter(
+      (mcp) => mcp.system === config.value.system,
+    ) || [];
+
   const stepProps = {
     1: {
       systems: props.agent.systems,
@@ -101,7 +106,7 @@ const currentStepProps = computed(() => {
       },
     },
     2: {
-      MCPs: resolvedAgentDetails.value?.MCPs || [],
+      MCPs: selectedSystemMCPs,
       selectedMCP: config.value.MCP,
       selectedMCPConfigValues: config.value.mcp_config,
       'onUpdate:selectedMCP': (nextMCP: AgentMCP | null) => {
