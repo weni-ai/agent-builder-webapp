@@ -158,7 +158,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
         officialAgents.data.find(
           (agent) =>
             agent.uuid === uuid ||
-            agent.variants?.some((variant) => variant.uuid === uuid),
+            agent.agents?.some((variant) => variant.uuid === uuid),
         ) || myAgents.data.find((agent) => agent.uuid === uuid);
 
       if (!agent) {
