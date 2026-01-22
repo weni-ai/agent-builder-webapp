@@ -18,7 +18,7 @@ export default function useAgent() {
       is_official: agent.is_official || false,
       description: agent.description || '',
       mcp:
-        'mcp' in agent
+        'mcp' in agent && agent.mcp
           ? {
               name: agent.mcp?.name || '',
               config: agent.mcp?.config || {},
