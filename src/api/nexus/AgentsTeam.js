@@ -147,6 +147,7 @@ export const AgentsTeam = {
             credentials,
             is_official,
             slug,
+            mcp,
           }) => ({
             uuid,
             name,
@@ -155,6 +156,7 @@ export const AgentsTeam = {
             description,
             credentials,
             is_official,
+            mcp,
           }),
         ),
       },

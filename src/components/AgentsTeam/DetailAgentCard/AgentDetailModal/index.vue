@@ -13,6 +13,11 @@
           :description="agent.description"
         />
 
+        <McpSection
+          v-if="agent.mcp"
+          :mcp="agent.mcp"
+        />
+
         <ViewOptions
           :agent="agent"
           @agent-removed="handleAgentRemoved"
@@ -26,14 +31,15 @@
 import { ActiveTeamAgent } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
+import McpSection from './McpSection.vue';
 import Section from './Section.vue';
 import ViewOptions from './ViewOptions.vue';
-
-const emit = defineEmits(['update:open']);
 
 defineProps<{
   agent: ActiveTeamAgent;
 }>();
+
+const emit = defineEmits(['update:open']);
 
 defineModel('open', {
   type: Boolean,
