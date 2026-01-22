@@ -49,7 +49,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
 
   function createInitialConfig() {
     return {
-      system: 'VTEX' as AgentSystem,
+      system: 'vtex' as AgentSystem,
       variant: {
         type: '',
         config: null,

@@ -59,6 +59,7 @@ export interface ActiveTeamAgent {
 export interface AgentMCP {
   name: string;
   description: string;
+  system: AgentSystem;
   credentials?: AgentCredential[];
   config: {
     name: string;

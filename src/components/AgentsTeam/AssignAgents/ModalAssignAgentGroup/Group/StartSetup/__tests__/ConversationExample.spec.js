@@ -55,7 +55,9 @@ describe('ConversationExample', () => {
   it('displays conversation messages with customer and agent labels', () => {
     wrapper = createWrapper();
 
-    expect(findIncomingBubble().text()).toContain('Customer');
+    expect(findIncomingBubble().text()).toContain(
+      'agents.assign_agents.setup.conversation_example.customer_label',
+    );
     expect(findIncomingBubble().text()).toContain('Text of the customer');
 
     const outgoingBubbles = findOutgoingBubbles();
