@@ -81,7 +81,7 @@
 
 .start-setup-skeleton__systems {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 120px 120px;
   gap: $unnnic-space-2;
 }
 
@@ -101,7 +101,7 @@
 
 .start-setup-skeleton__conversation {
   display: grid;
-  grid-template-rows: 1fr 100%;
+  grid-template-rows: auto 1fr;
   gap: $unnnic-space-2;
 
   grid-column: 2 / 3;
