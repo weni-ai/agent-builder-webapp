@@ -4,11 +4,16 @@ import { shallowMount } from '@vue/test-utils';
 import StartSetup from '../index.vue';
 
 const mockAgent = {
+  name: 'Product Concierge',
   description: 'Handles concierge flows',
   systems: ['VTEX'],
-  MCPs: [
-    { name: 'Concierge MCP', description: 'Assists customers' },
-  ],
+  MCPs: [{ name: 'Concierge MCP', description: 'Assists customers' }],
+  presentation: {
+    conversation_example: [
+      { direction: 'incoming', text: 'Text of the customer' },
+      { direction: 'outgoing', text: 'Text of the agent' },
+    ],
+  },
 };
 
 describe('StartSetup index', () => {
@@ -50,6 +55,19 @@ describe('StartSetup index', () => {
     });
     expect(mcpsComponent.props('mcps')).toEqual([
       { name: 'Concierge MCP', description: 'Assists customers' },
+    ]);
+  });
+
+  it('passes the agent conversation example to the conversation section', () => {
+    wrapper = createWrapper();
+
+    const conversationComponent = wrapper.findComponent({
+      name: 'ConversationExample',
+    });
+    expect(conversationComponent.props('agentName')).toBe('Product Concierge');
+    expect(conversationComponent.props('conversationExample')).toEqual([
+      { direction: 'incoming', text: 'Text of the customer' },
+      { direction: 'outgoing', text: 'Text of the agent' },
     ]);
   });
 });
