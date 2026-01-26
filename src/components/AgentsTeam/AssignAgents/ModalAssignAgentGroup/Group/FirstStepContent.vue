@@ -24,6 +24,15 @@
         :selected="system.toLowerCase() === selectedSystem.toLowerCase()"
         :label="getSystemObject(system).name"
         :system="system"
+        :description="
+          $t(
+            'agents.assign_agents.setup.system_selection.mcp_count',
+            {
+              count: getMCPCount(system),
+            },
+            getMCPCount(system),
+          )
+        "
         @update:selected="() => handleSelectSystem(system)"
       />
     </section>
@@ -33,7 +42,7 @@
 <script setup lang="ts">
 import useAgentSystems from '@/composables/useAgentSystems';
 
-import { AgentSystem } from '@/store/types/Agents.types';
+import { AgentMCP, AgentSystem } from '@/store/types/Agents.types';
 
 import ModalAssignAgentRadio from '../Radio.vue';
 
@@ -41,8 +50,9 @@ defineOptions({
   name: 'FirstStepContent',
 });
 
-defineProps<{
+const props = defineProps<{
   systems: AgentSystem[];
+  MCPs: AgentMCP[];
 }>();
 
 const selectedSystem = defineModel<AgentSystem>('selectedSystem', {
@@ -54,6 +64,10 @@ const { getSystemObject } = useAgentSystems();
 function handleSelectSystem(system: AgentSystem) {
   if (selectedSystem.value === system) return;
   selectedSystem.value = system;
+}
+
+function getMCPCount(system: AgentSystem) {
+  return props.MCPs.filter((mcp) => mcp.system === system).length;
 }
 </script>
 

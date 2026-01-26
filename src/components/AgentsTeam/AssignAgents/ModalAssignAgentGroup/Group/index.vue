@@ -100,6 +100,7 @@ const currentStepProps = computed(() => {
   const stepProps = {
     1: {
       systems: props.agent.systems,
+      MCPs: resolvedAgentDetails.value?.MCPs,
       selectedSystem: config.value.system,
       'onUpdate:selectedSystem': (nextSystem: AgentSystem) => {
         config.value.system = nextSystem;
