@@ -48,7 +48,6 @@ import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import ModalAssignAgentGroupStartSetup from './Group/StartSetup/index.vue';
 import ModalAssignAgentGroupFlow from './Group/index.vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
-import { findAgentVariantUuid } from '@/composables/useOfficialAgentAssignment';
 
 const emit = defineEmits(['update:open']);
 
@@ -68,12 +67,7 @@ const resolvedAgentDetails = computed(() => agentDetails.value ?? props.agent);
 
 async function fetchAgentDetails() {
   if (isLoadingAgentDetails.value || agentDetails.value) return;
-
-  const system = props.agent.systems?.[0];
-  if (!system) return;
-
-  const agentUuid = findAgentVariantUuid(props.agent, system);
-  if (!agentUuid) return;
+  const agentUuid = props.agent.agents[0].uuid;
 
   try {
     isLoadingAgentDetails.value = true;
