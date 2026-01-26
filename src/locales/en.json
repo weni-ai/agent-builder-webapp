@@ -357,7 +357,7 @@
         "system_selection": {
           "title": "System selection",
           "description": "Select the data source system",
-          "mcp_count": "{count} MCPs available"
+          "mcp_count": "{count} MCP available | {count} MCPs available"
         },
         "mcp_selection": {
           "title": "MCP selection",
