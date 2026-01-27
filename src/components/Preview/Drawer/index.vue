@@ -57,7 +57,7 @@ import { useFlowPreviewStore } from '@/store/FlowPreview';
 import { useProjectStore } from '@/store/Project';
 
 import Preview from '@/components/Preview/Preview.vue';
-import PreviewDetails from './PreviewDetails.vue';
+import PreviewDetails from '../PreviewDetails.vue';
 import ContentItemActions from '@/components/ContentItemActions.vue';
 import i18n from '@/utils/plugins/i18n';
 

@@ -8,7 +8,7 @@ import { useFlowPreviewStore } from '@/store/FlowPreview';
 import WS from '@/websocket/setup';
 import i18n from '@/utils/plugins/i18n';
 
-import PreviewDrawer from '../PreviewDrawer.vue';
+import PreviewDrawer from '../Drawer/index.vue';
 
 const pinia = createTestingPinia({
   createSpy: vi.fn,
