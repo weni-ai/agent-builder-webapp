@@ -1,5 +1,5 @@
 <template>
-  <Section :title="$t('agents.assigned_agents.agent_details.mcp')">
+  <AgentDetailSection :title="$t('agents.assigned_agents.agent_details.mcp')">
     <section class="agent-detail-modal__mcp-card">
       <header
         v-if="mcpTitle || mcpDescription"
@@ -37,13 +37,13 @@
         </p>
       </section>
     </section>
-  </Section>
+  </AgentDetailSection>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import Section from './Section.vue';
+import AgentDetailSection from './AgentDetailSection.vue';
 import { formatListToReadable } from '@/utils/formatters';
 
 import type {
