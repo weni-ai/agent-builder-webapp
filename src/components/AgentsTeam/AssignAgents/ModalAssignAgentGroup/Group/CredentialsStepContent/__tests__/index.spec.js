@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
 
-import ThirdStepContent from '../index.vue';
+import CredentialsStepContent from '../index.vue';
 
 const buildAgentMCP = (overrides = {}) => ({
   name: 'Concierge MCP',
@@ -14,7 +14,7 @@ const buildAgentMCP = (overrides = {}) => ({
 });
 
 function createWrapper(props = {}) {
-  return shallowMount(ThirdStepContent, {
+  return shallowMount(CredentialsStepContent, {
     props: {
       selectedSystem: 'VTEX',
       selectedMCP: buildAgentMCP(),
@@ -24,7 +24,7 @@ function createWrapper(props = {}) {
   });
 }
 
-describe('ThirdStepContent', () => {
+describe('CredentialsStepContent', () => {
   let wrapper;
 
   afterEach(() => {

@@ -59,11 +59,11 @@ describe('ModalAssignAgentGroupFlow', () => {
   };
 
   const firstStepContent = () =>
-    wrapper.findComponent({ name: 'FirstStepContent' });
+    wrapper.findComponent({ name: 'SystemStepContent' });
   const secondStepContent = () =>
-    wrapper.findComponent({ name: 'SecondStepContent' });
+    wrapper.findComponent({ name: 'MCPStepContent' });
   const thirdStepContent = () =>
-    wrapper.findComponent({ name: 'ThirdStepContent' });
+    wrapper.findComponent({ name: 'CredentialsStepContent' });
   const findNextButton = () =>
     wrapper.find('[data-testid="modal-concierge-right-button"]');
   const findBackButton = () =>
@@ -184,12 +184,12 @@ describe('ModalAssignAgentGroupFlow', () => {
     });
 
     it('counts the steps correctly', async () => {
-      expect(wrapper.vm.step).toBe(1);
+      expect(wrapper.vm.stepIndex).toBe(1);
 
       await findNextButton().trigger('click');
       await flushPromises();
 
-      expect(wrapper.vm.step).toBe(2);
+      expect(wrapper.vm.stepIndex).toBe(2);
 
       assignmentState.config.value.MCP = { name: 'Mock MCP' };
       assignmentState.config.value.mcp_config = { apiKey: 'value' };
@@ -198,7 +198,7 @@ describe('ModalAssignAgentGroupFlow', () => {
       await findNextButton().trigger('click');
       await flushPromises();
 
-      expect(wrapper.vm.step).toBe(3);
+      expect(wrapper.vm.stepIndex).toBe(3);
     });
 
     it('do not increment step if total steps is reached', async () => {
@@ -206,7 +206,7 @@ describe('ModalAssignAgentGroupFlow', () => {
       await findNextButton().trigger('click');
       await flushPromises();
 
-      expect(wrapper.vm.step).toBe(1);
+      expect(wrapper.vm.stepIndex).toBe(1);
     });
   });
 
