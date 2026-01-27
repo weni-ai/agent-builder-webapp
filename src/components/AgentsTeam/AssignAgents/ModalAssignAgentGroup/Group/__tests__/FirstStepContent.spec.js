@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
+import i18n from '@/utils/plugins/i18n';
 
 import FirstStepContent from '../FirstStepContent.vue';
 
@@ -79,10 +80,18 @@ describe('FirstStepContent', () => {
     );
 
     expect(firstRadioDescription.exists()).toBe(true);
-    expect(firstRadioDescription.text()).toBe(i18n.t('agents.assign.mcps_available', { count: 2 }));
+    expect(firstRadioDescription.text()).toBe(
+      i18n.global.t('agents.assign_agents.setup.system_selection.mcp_count', {
+        count: 2,
+      }),
+    );
 
     expect(secondRadioDescription.exists()).toBe(true);
-    expect(secondRadioDescription.text()).toBe(i18n.t('agents.assign.mcps_available', { count: 1 }));
+    expect(secondRadioDescription.text()).toBe(
+      i18n.global.t('agents.assign_agents.setup.system_selection.mcp_count', {
+        count: 1,
+      }),
+    );
   });
 
   it('emits update when selecting a different system', async () => {
