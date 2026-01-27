@@ -4,6 +4,7 @@
     data-testid="concierge-summary"
   >
     <article
+      v-if="selectedSystem"
       class="modal-assign-agent__summary-card"
       data-testid="concierge-summary-system-card"
     >
@@ -50,12 +51,12 @@
 import { computed } from 'vue';
 
 import useAgentSystems from '@/composables/useAgentSystems';
-import { AgentMCP, AgentSystem } from '@/store/types/Agents.types';
+import { AgentMCP } from '@/store/types/Agents.types';
 
 import Skill from '@/components/AgentsTeam/Skill.vue';
 
 const props = defineProps<{
-  selectedSystem?: AgentSystem | '';
+  selectedSystem?: string;
   selectedMCP: AgentMCP | null;
 }>();
 
