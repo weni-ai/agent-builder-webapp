@@ -19,7 +19,7 @@
 <script setup>
 import { ref, onUnmounted } from 'vue';
 
-import PreviewDrawer from './PreviewDrawer.vue';
+import PreviewDrawer from './Drawer/index.vue';
 
 import { usePreviewStore } from '@/store/Preview';
 
