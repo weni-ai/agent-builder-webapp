@@ -9,7 +9,7 @@
 
       <section class="agent-detail-modal__details">
         <section class="agent-detail-modal__summary">
-          <Section
+          <AgentDetailSection
             :title="$t('agents.assigned_agents.agent_details.about')"
             :description="agent.description"
           />
@@ -40,7 +40,7 @@ import { ActiveTeamAgent } from '@/store/types/Agents.types';
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import McpSection from './McpSection.vue';
 import SystemSection from './SystemSection.vue';
-import Section from './Section.vue';
+import AgentDetailSection from './AgentDetailSection.vue';
 import ViewOptions from './ViewOptions.vue';
 
 defineProps<{
