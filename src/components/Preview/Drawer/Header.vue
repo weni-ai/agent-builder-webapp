@@ -15,6 +15,14 @@
         :actions="previewHeaderActions"
         minWidth="175px"
       />
+
+      <UnnnicSelect
+        v-model:modelValue="managerSelectorStore.selectedPreviewManager"
+        class="preview-drawer__manager-select"
+        itemValue="id"
+        :options="previewManagerOptions"
+        size="sm"
+      />
     </section>
   </UnnnicDrawerHeader>
 </template>
@@ -24,6 +32,7 @@ import { computed } from 'vue';
 
 import { useFlowPreviewStore } from '@/store/FlowPreview';
 import { useProjectStore } from '@/store/Project';
+import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { usePreviewStore } from '@/store/Preview';
 
 import i18n from '@/utils/plugins/i18n';
@@ -32,6 +41,7 @@ import ContentItemActions from '@/components/ContentItemActions.vue';
 
 const flowPreviewStore = useFlowPreviewStore();
 const projectStore = useProjectStore();
+const managerSelectorStore = useManagerSelectorStore();
 const previewStore = usePreviewStore();
 
 const previewHeaderActions = computed(() => [
@@ -50,6 +60,12 @@ function refreshPreview() {
     contentBaseUuid: projectStore.details.contentBaseUuid,
   });
 }
+
+const previewManagerOptions = computed(() => {
+  const { new: newManager, legacy: legacyManager } =
+    managerSelectorStore.options.managers;
+  return [newManager, legacyManager];
+});
 </script>
 
 <style lang="scss" scoped>
@@ -62,5 +78,9 @@ function refreshPreview() {
 .preview-drawer__title {
   color: $unnnic-color-fg-emphasized;
   font: $unnnic-font-display-2;
+}
+
+.preview-drawer__manager-select {
+  margin-left: auto;
 }
 </style>

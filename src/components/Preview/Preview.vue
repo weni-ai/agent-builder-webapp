@@ -65,6 +65,7 @@ import PreviewMenu from '@/components/Preview/Menu/index.vue';
 
 import { useFlowPreviewStore } from '@/store/FlowPreview';
 import { useProjectStore } from '@/store/Project';
+import { useManagerSelectorStore } from '@/store/ManagerSelector';
 
 import { getFileType } from '@/utils/medias';
 
@@ -76,6 +77,7 @@ const emit = defineEmits(['messages']);
 
 const projectStore = useProjectStore();
 const flowPreviewStore = useFlowPreviewStore();
+const managerSelectorStore = useManagerSelectorStore();
 
 const message = ref('');
 const messages = computed(() => flowPreviewStore.messages);
@@ -292,6 +294,7 @@ async function answer(question) {
       text: isQuestionMedia ? '' : question,
       attachments: questionMediaUrl ? [questionMediaUrl] : [],
       contact_urn: flowPreviewStore.preview.contact.urns[0],
+      manager_uuid: managerSelectorStore.selectedPreviewManager,
     });
 
     flowPreviewStore.treatAnswerResponse(answer, data, {
