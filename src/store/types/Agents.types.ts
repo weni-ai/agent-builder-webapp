@@ -1,14 +1,13 @@
 export type AgentGroupType = 'CUSTOMIZABLE' | 'PLUG_IN_PLAY';
 export type AgentGroupID = 'CONCIERGE';
 export type AgentCategory = 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS';
-export type AgentSystem = 'VTEX' | 'SYNERISE';
 
 export type GroupVariant = {
   uuid: string;
   name: string;
   slug: string;
   assigned: boolean;
-  systems: AgentSystem[];
+  systems: string[];
 };
 
 export interface AgentSkill {
@@ -28,7 +27,7 @@ export interface AgentCredential {
 export interface AgentMCP {
   name: string;
   description: string;
-  system: AgentSystem;
+  system: string;
   credentials?: AgentCredential[];
   config:
     | {
@@ -61,7 +60,7 @@ export interface AgentGroup {
   group: AgentGroupID;
   agents: GroupVariant[];
   MCPs: AgentMCP[];
-  systems: AgentSystem[];
+  systems: string[];
   credentials?: AgentCredential[];
   presentation?: {
     conversation_example?: {
@@ -99,5 +98,5 @@ type SelectOption = {
 export type AssignAgentsFilters = {
   search: string;
   category: SelectOption[] | [];
-  system: AgentSystem | 'ALL_OFFICIAL' | 'ALL_CUSTOM' | '';
+  system: string | 'ALL_OFFICIAL' | 'ALL_CUSTOM' | '';
 };

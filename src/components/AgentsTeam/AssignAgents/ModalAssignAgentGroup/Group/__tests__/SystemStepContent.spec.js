@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import i18n from '@/utils/plugins/i18n';
 
-import FirstStepContent from '../FirstStepContent.vue';
+import SystemStepContent from '../SystemStepContent.vue';
 
 const getSystemObjectMock = vi.fn((system) => ({
   name: `${system} name`,
@@ -15,7 +15,7 @@ vi.mock('@/composables/useAgentSystems', () => ({
   }),
 }));
 
-describe('FirstStepContent', () => {
+describe('SystemStepContent', () => {
   const systems = ['VTEX', 'SYNERISE'];
   let wrapper;
   let updateSelectedSystem;
@@ -23,7 +23,7 @@ describe('FirstStepContent', () => {
   const createWrapper = (overrideProps = {}) => {
     updateSelectedSystem = vi.fn();
 
-    wrapper = mount(FirstStepContent, {
+    wrapper = mount(SystemStepContent, {
       props: {
         systems,
         MCPs: [],

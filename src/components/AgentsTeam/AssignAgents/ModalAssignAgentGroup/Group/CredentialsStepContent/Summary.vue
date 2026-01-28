@@ -1,9 +1,13 @@
 <template>
   <section
-    class="modal-assign-agent__third-step-summary"
+    :class="[
+      'modal-assign-agent__third-step-summary',
+      { 'modal-assign-agent__third-step-summary--no-system': !selectedSystem },
+    ]"
     data-testid="concierge-summary"
   >
     <article
+      v-if="selectedSystem"
       class="modal-assign-agent__summary-card"
       data-testid="concierge-summary-system-card"
     >
@@ -50,12 +54,12 @@
 import { computed } from 'vue';
 
 import useAgentSystems from '@/composables/useAgentSystems';
-import { AgentMCP, AgentSystem } from '@/store/types/Agents.types';
+import { AgentMCP } from '@/store/types/Agents.types';
 
 import Skill from '@/components/AgentsTeam/Skill.vue';
 
 const props = defineProps<{
-  selectedSystem?: AgentSystem | '';
+  selectedSystem?: string;
   selectedMCP: AgentMCP | null;
 }>();
 
@@ -77,7 +81,10 @@ const systemIcon = computed(() => systemInfo.value?.icon || '');
 .modal-assign-agent__third-step-summary {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: $unnnic-space-0;
+
+  &--no-system {
+    grid-template-columns: 1fr;
+  }
 }
 
 .modal-assign-agent__summary {

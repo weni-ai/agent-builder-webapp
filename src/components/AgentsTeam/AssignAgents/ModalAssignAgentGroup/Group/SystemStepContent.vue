@@ -22,7 +22,7 @@
         :key="system"
         data-testid="concierge-first-step-radio"
         :selected="system.toLowerCase() === selectedSystem.toLowerCase()"
-        :label="getSystemObject(system).name"
+        :label="getSystemObject(system)?.name ?? system"
         :system="system"
         :description="getMCPCountDescription(system)"
         @update:selected="() => handleSelectSystem(system)"
@@ -35,32 +35,32 @@
 import useAgentSystems from '@/composables/useAgentSystems';
 import i18n from '@/utils/plugins/i18n';
 
-import { AgentMCP, AgentSystem } from '@/store/types/Agents.types';
+import { AgentMCP } from '@/store/types/Agents.types';
 
 import ModalAssignAgentRadio from '../Radio.vue';
 
 defineOptions({
-  name: 'FirstStepContent',
+  name: 'SystemStepContent',
 });
 
 const props = defineProps<{
-  systems: AgentSystem[];
+  systems: string[];
   MCPs: AgentMCP[];
 }>();
 
-const selectedSystem = defineModel<AgentSystem>('selectedSystem', {
+const selectedSystem = defineModel<string>('selectedSystem', {
   required: true,
 });
 
 const { getSystemObject } = useAgentSystems();
 const { t } = i18n.global;
 
-function handleSelectSystem(system: AgentSystem) {
+function handleSelectSystem(system: string) {
   if (selectedSystem.value === system) return;
   selectedSystem.value = system;
 }
 
-function getMCPCountDescription(system: AgentSystem) {
+function getMCPCountDescription(system: string) {
   const count = props.MCPs.filter((mcp) => mcp.system === system).length;
 
   return t(
