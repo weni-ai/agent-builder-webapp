@@ -60,11 +60,16 @@ export const AgentsTeam = {
       params,
     });
 
-    return [...data.new.agents, ...data.legacy].map((agent) => ({
+    const agents = [...data.new.agents, ...data.legacy].map((agent) => ({
       ...agent,
       id: agent.slug,
       systems: filterSystems(agent.systems),
     }));
+
+    return {
+      agents,
+      availableSystems: data?.new?.available_systems,
+    };
   },
 
   async getOfficialAgentDetails(group) {
