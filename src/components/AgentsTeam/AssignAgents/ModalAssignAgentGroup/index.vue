@@ -67,12 +67,13 @@ const resolvedAgentDetails = computed(() => agentDetails.value ?? props.agent);
 
 async function fetchAgentDetails() {
   if (isLoadingAgentDetails.value || agentDetails.value) return;
-  const agentUuid = props.agent.agents[0].uuid;
 
   try {
     isLoadingAgentDetails.value = true;
     const agentDetailsData =
-      await nexusaiAPI.router.agents_team.getOfficialAgentDetails(agentUuid);
+      await nexusaiAPI.router.agents_team.getOfficialAgentDetails(
+        props.agent.group,
+      );
     agentDetails.value = { ...props.agent, ...agentDetailsData };
   } finally {
     isLoadingAgentDetails.value = false;

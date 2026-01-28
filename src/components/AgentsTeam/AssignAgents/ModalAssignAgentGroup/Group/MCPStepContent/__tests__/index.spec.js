@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { nextTick, ref } from 'vue';
 import { shallowMount } from '@vue/test-utils';
 
-import SecondStepContent from '../index.vue';
+import MCPStepContent from '../index.vue';
 
 const mcpWithConfig = {
   name: 'Search',
@@ -76,7 +76,7 @@ function createWrapper(overrides = {}) {
   };
 
   const mountComponent = () => {
-    wrapper = shallowMount(SecondStepContent, {
+    wrapper = shallowMount(MCPStepContent, {
       props: {
         MCPs,
         selectedMCP: selectedMCP.value,
@@ -104,7 +104,7 @@ function createWrapper(overrides = {}) {
   };
 }
 
-describe('SecondStepContent', () => {
+describe('MCPStepContent', () => {
   let wrapper;
   let getSelectedMCP;
   let getConfigValues;
