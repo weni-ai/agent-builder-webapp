@@ -335,7 +335,7 @@
         "system_selection": {
           "title": "Selección de sistema",
           "description": "Seleccione el sistema de origen de los datos",
-          "mcp_count": "{count} MCP disponibles"
+          "mcp_count": "{count} MCP disponible | {count} MCPs disponibles"
         },
         "mcp_selection": {
           "title": "Selección de MCP",

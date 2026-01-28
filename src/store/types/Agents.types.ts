@@ -3,11 +3,10 @@ export type AgentGroupID = 'CONCIERGE';
 export type AgentCategory = 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS';
 export type AgentSystem = 'VTEX' | 'SYNERISE';
 
-export type ConciergeVariant = {
+export type GroupVariant = {
   uuid: string;
   name: string;
   slug: string;
-  variant: 'DEFAULT' | 'TRADE_POLICY' | 'META_CATALOG';
   assigned: boolean;
   systems: AgentSystem[];
 };
@@ -29,6 +28,7 @@ export interface AgentCredential {
 export interface AgentMCP {
   name: string;
   description: string;
+  system: AgentSystem;
   credentials?: AgentCredential[];
   config:
     | {
@@ -59,7 +59,7 @@ export interface AgentGroup {
   type: AgentGroupType;
   category: AgentCategory;
   group: AgentGroupID;
-  variants: ConciergeVariant[];
+  agents: GroupVariant[];
   MCPs: AgentMCP[];
   systems: AgentSystem[];
   credentials?: AgentCredential[];

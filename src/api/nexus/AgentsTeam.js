@@ -60,13 +60,13 @@ export const AgentsTeam = {
     }));
   },
 
-  async getOfficialAgentDetails(uuid) {
+  async getOfficialAgentDetails(group) {
     const params = {
       project_uuid: projectUuid.value,
     };
 
     const { data } = await request.$http.get(
-      `/api/v1/official/agents/${uuid}`,
+      `/api/v1/official/agents/${group}`,
       {
         params,
       },

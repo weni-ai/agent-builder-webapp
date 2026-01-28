@@ -20,7 +20,7 @@ const agentFixture = {
   name: 'Concierge',
   systems: ['VTEX', 'SYNERISE'],
   MCPs: [],
-  variants: [
+  agents: [
     {
       uuid: 'variant-vtex',
       variant: 'DEFAULT',
