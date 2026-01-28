@@ -23,25 +23,28 @@ import i18n from '@/utils/plugins/i18n';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
+import useAgentSystems from '@/composables/useAgentSystems';
 const agentsTeamStore = useAgentsTeamStore();
 const { officialAgents, assignAgentsFilters } = storeToRefs(agentsTeamStore);
 const { t } = i18n.global;
+const { getSystemObject } = useAgentSystems();
 
 const availableAgentsCount = computed(
   () => officialAgents.value.data?.length || 0,
 );
 
 const headerTitle = computed(() => {
-  const systemLabel = assignAgentsFilters.value.system;
+  const filteredSystem = assignAgentsFilters.value.system;
 
-  if (systemLabel === 'ALL_OFFICIAL') {
+  if (filteredSystem === 'ALL_OFFICIAL') {
     return t('agents.assign_agents.header.all_systems');
   }
 
-  if (systemLabel === 'ALL_CUSTOM') {
+  if (filteredSystem === 'ALL_CUSTOM') {
     return t('agents.assign_agents.header.all_custom_agents');
   }
 
+  const systemLabel = getSystemObject(filteredSystem)?.name;
   return t('agents.assign_agents.header.system_title', {
     system: systemLabel,
   });

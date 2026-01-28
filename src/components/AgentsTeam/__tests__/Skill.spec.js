@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import Skill from '../Skill.vue';
-import mockIcon from '@/assets/images/systems/vtex.svg';
+
+const mockIcon = 'https://example.com/system-icon.svg';
 
 describe('Skill.vue', () => {
   let wrapper;

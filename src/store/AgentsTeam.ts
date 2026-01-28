@@ -15,6 +15,7 @@ import {
   Agent,
   ActiveTeamAgent,
   AgentGroupOrAgent,
+  AgentSystem,
   AssignAgentsFilters,
 } from './types/Agents.types';
 import useAgent from '@/composables/useAgent';
@@ -39,6 +40,8 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     status: null,
     data: [],
   });
+
+  const availableSystems = ref<AgentSystem[]>([]);
 
   const myAgents = reactive({
     status: null,
@@ -123,15 +126,20 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       officialAgents.status = 'loading';
 
       let response: AgentGroupOrAgent[] = [];
+      let availableSystemsResponse: AgentSystem[] = [];
 
       if (assignAgentsView) {
         const { system, search, category } = assignAgentsFilters;
 
-        response = await nexusaiAPI.router.agents_team.listOfficialAgents2({
-          name: search,
-          category: category?.[0]?.value ?? '',
-          system: system === 'ALL_OFFICIAL' ? '' : system,
-        });
+        const { agents, availableSystems } =
+          await nexusaiAPI.router.agents_team.listOfficialAgents2({
+            name: search,
+            category: category?.[0]?.value ?? '',
+            system: system === 'ALL_OFFICIAL' ? '' : system,
+          });
+
+        response = agents;
+        availableSystemsResponse = availableSystems ?? [];
       } else {
         const { data } = await nexusaiAPI.router.agents_team.listOfficialAgents(
           {
@@ -139,14 +147,17 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
           },
         );
         response = data;
+        availableSystemsResponse = [];
       }
 
       officialAgents.data = agentIconService.applyIconsToAgents(response);
+      availableSystems.value = availableSystemsResponse;
       officialAgents.status = 'complete';
     } catch (error) {
       console.error('error', error);
 
       officialAgents.status = 'error';
+      availableSystems.value = [];
     }
   }
 
@@ -282,6 +293,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     linkToCreateAgent,
     activeTeam,
     officialAgents,
+    availableSystems,
     myAgents,
     assignAgentsFilters,
     allAgents,

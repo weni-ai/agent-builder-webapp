@@ -2,9 +2,8 @@ import { Agent, AgentGroup, ActiveTeamAgent } from '@/store/types/Agents.types';
 import agentIconService from '@/utils/agentIconService';
 import useAgentSystems from './useAgentSystems';
 
-const { getSystemObject } = useAgentSystems();
-
 export default function useAgent() {
+  const { getSystemObject } = useAgentSystems();
   function normalizeActiveAgent(agent: AgentGroup | Agent): ActiveTeamAgent {
     const systemName =
       'systems' in agent
