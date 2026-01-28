@@ -1,6 +1,9 @@
 <template>
   <section
-    class="modal-assign-agent__third-step-summary"
+    :class="[
+      'modal-assign-agent__third-step-summary',
+      { 'modal-assign-agent__third-step-summary--no-system': !selectedSystem },
+    ]"
     data-testid="concierge-summary"
   >
     <article
@@ -78,7 +81,10 @@ const systemIcon = computed(() => systemInfo.value?.icon || '');
 .modal-assign-agent__third-step-summary {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: $unnnic-space-0;
+
+  &--no-system {
+    grid-template-columns: 1fr;
+  }
 }
 
 .modal-assign-agent__summary {
