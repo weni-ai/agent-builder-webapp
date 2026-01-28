@@ -66,7 +66,6 @@ function getMCPCountDescription(system: AgentSystem) {
   return t(
     'agents.assign_agents.setup.system_selection.mcp_count',
     { count },
-    count,
   );
 }
 </script>
