@@ -13,12 +13,12 @@
 
       <SidebarOption
         v-for="option in systems"
-        :key="option.name"
-        :isActive="assignAgentsFilters.system === option.name"
+        :key="option.slug"
+        :isActive="assignAgentsFilters.system === option.slug"
         :name="option.name"
         :icon="option.icon"
-        :data-testid="`sidebar-option-system-${option.name}`"
-        @click="assignAgentsFilters.system = option.name"
+        :data-testid="`sidebar-option-system-${option.slug}`"
+        @click="assignAgentsFilters.system = option.slug"
       />
     </SidebarSection>
 

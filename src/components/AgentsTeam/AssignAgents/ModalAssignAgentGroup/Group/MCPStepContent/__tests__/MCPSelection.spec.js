@@ -9,6 +9,12 @@ vi.mock('vue-i18n', () => ({
   }),
 }));
 
+vi.mock('@/composables/useAgentSystems', () => ({
+  default: () => ({
+    getSystemObject: vi.fn(),
+  }),
+}));
+
 describe('MCPSelection', () => {
   const MCPs = [
     {

@@ -22,6 +22,7 @@ const mountHeader = (stateOverrides = {}) => {
           category: [],
           system: 'ALL_OFFICIAL',
         },
+        availableSystems: [],
         ...stateOverrides,
       },
     },
@@ -53,8 +54,15 @@ describe('AssignAgentsHeader', () => {
       assignAgentsFilters: {
         search: '',
         category: [],
-        system: systemLabel,
+        system: 'vtex',
       },
+      availableSystems: [
+        {
+          slug: 'vtex',
+          name: systemLabel,
+          logo: 'vtex.svg',
+        },
+      ],
     });
 
     expect(
