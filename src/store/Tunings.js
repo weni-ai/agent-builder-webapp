@@ -1,21 +1,25 @@
 import { defineStore } from 'pinia';
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { cloneDeep } from 'lodash';
 
 import { useAlertStore } from './Alert';
 import { useProjectStore } from './Project';
+import { useManagerSelectorStore } from './ManagerSelector';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
 
 export const useTuningsStore = defineStore('Tunings', () => {
   const alertStore = useAlertStore();
+  const managerSelectorStore = useManagerSelectorStore();
 
   const projectUuid = computed(() => useProjectStore().uuid);
 
   const isLoadingTunings = computed(() => {
     return (
-      credentials.value.status === 'loading' || settings.status === 'loading'
+      credentials.value.status === 'loading' ||
+      settings.status === 'loading' ||
+      managerSelectorStore.status === 'loading'
     );
   });
 
@@ -33,8 +37,14 @@ export const useTuningsStore = defineStore('Tunings', () => {
       progressiveFeedback: false,
       humanSupport: false,
       humanSupportPrompt: '',
+      manager: '',
     },
   });
+
+  watch(
+    () => managerSelectorStore.selectedManager,
+    (newManager) => (settings.data.manager = newManager),
+  );
 
   function formatCredentials(credentials) {
     return credentials.reduce((acc, { name, value }) => {
@@ -193,6 +203,7 @@ export const useTuningsStore = defineStore('Tunings', () => {
           }));
 
       settings.data = {
+        ...settings.data,
         components,
         progressiveFeedback,
         humanSupport: human_support,
@@ -268,6 +279,16 @@ export const useTuningsStore = defineStore('Tunings', () => {
             },
             '*',
           );
+        }
+      }
+
+      const hasManagerChanges =
+        initialSettings.value.manager !== settings.data.manager;
+
+      if (hasManagerChanges) {
+        const managerSaved = await managerSelectorStore.saveManager();
+        if (!managerSaved) {
+          throw new Error('Manager save failed');
         }
       }
 
