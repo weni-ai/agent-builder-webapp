@@ -91,6 +91,12 @@ export interface AgentGroup {
   MCPs: AgentMCP[];
   systems: AgentSystem[];
   credentials?: AgentCredential[];
+  presentation?: {
+    conversation_example?: {
+      direction: 'incoming' | 'outgoing';
+      text: string;
+    }[];
+  };
   assigned: boolean;
   icon: string;
   is_official: true;

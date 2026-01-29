@@ -11,8 +11,18 @@ vi.mock('vue-i18n', () => ({
   }),
 }));
 
-function createWrapper() {
-  return shallowMount(ConversationExample);
+function createWrapper(props = {}) {
+  return shallowMount(ConversationExample, {
+    props: {
+      agentName: 'Product Concierge',
+      conversationExample: [
+        { direction: 'incoming', text: 'Text of the customer' },
+        { direction: 'outgoing', text: 'Text of the agent' },
+        { direction: 'outgoing', text: 'Text 2' },
+      ],
+      ...props,
+    },
+  });
 }
 
 describe('ConversationExample', () => {
@@ -26,10 +36,10 @@ describe('ConversationExample', () => {
   const findRoot = () => wrapper.find('[data-testid="conversation-example"]');
   const findTitle = () =>
     wrapper.find('[data-testid="conversation-example-title"]');
-  const findCustomerBubble = () =>
-    wrapper.find('[data-testid="conversation-example-bubble-customer"]');
-  const findConciergeBubble = () =>
-    wrapper.find('[data-testid="conversation-example-bubble-concierge"]');
+  const findIncomingBubble = () =>
+    wrapper.find('[data-testid="conversation-example-bubble-incoming"]');
+  const findOutgoingBubbles = () =>
+    wrapper.findAll('[data-testid="conversation-example-bubble-outgoing"]');
 
   it('renders the conversation title and bubbles', () => {
     wrapper = createWrapper();
@@ -38,25 +48,22 @@ describe('ConversationExample', () => {
     expect(findTitle().text()).toBe(
       'agents.assign_agents.setup.conversation_example.title',
     );
-    expect(findCustomerBubble().exists()).toBe(true);
-    expect(findConciergeBubble().exists()).toBe(true);
+    expect(findIncomingBubble().exists()).toBe(true);
+    expect(findOutgoingBubbles()).toHaveLength(2);
   });
 
-  it('displays conversation messages and labels from translations', () => {
+  it('displays conversation messages with customer and agent labels', () => {
     wrapper = createWrapper();
 
-    expect(findCustomerBubble().text()).toContain(
+    expect(findIncomingBubble().text()).toContain(
       'agents.assign_agents.setup.conversation_example.customer_label',
     );
-    expect(findCustomerBubble().text()).toContain(
-      'agents.assign_agents.setup.conversation_example.customer_message',
-    );
+    expect(findIncomingBubble().text()).toContain('Text of the customer');
 
-    expect(findConciergeBubble().text()).toContain(
-      'agents.assign_agents.setup.conversation_example.concierge_label',
-    );
-    expect(findConciergeBubble().text()).toContain(
-      'agents.assign_agents.setup.conversation_example.concierge_message',
-    );
+    const outgoingBubbles = findOutgoingBubbles();
+    expect(outgoingBubbles[0].text()).toContain('Product Concierge');
+    expect(outgoingBubbles[0].text()).toContain('Text of the agent');
+    expect(outgoingBubbles[1].text()).toContain('Product Concierge');
+    expect(outgoingBubbles[1].text()).toContain('Text 2');
   });
 });
