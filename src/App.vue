@@ -63,11 +63,17 @@ const alertStore = useAlertStore();
 const projectStore = useProjectStore();
 const userStore = useUserStore();
 
-onMounted(() => {
-  useTuningsStore().fetchCredentials();
+async function loadAgentsData() {
   agentsTeamStore.loadActiveTeam();
-  agentsTeamStore.loadOfficialAgents();
+  // The official agents need to be loaded first to get the available systems to active team
+  await agentsTeamStore.loadOfficialAgents();
   agentsTeamStore.loadMyAgents();
+}
+
+onMounted(() => {
+  loadAgentsData();
+
+  useTuningsStore().fetchCredentials();
   useProfileStore().load();
   userStore.getUserDetails();
 

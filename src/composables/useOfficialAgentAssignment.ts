@@ -32,20 +32,13 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
   const agentsTeamStore = useAgentsTeamStore();
 
   const isSubmitting = ref(false);
-  watch(
-    () => agent.value?.agents?.map((variant) => variant.uuid).join(','),
-    () => {
-      const newConfig = createInitialConfig() as ConciergeAssignmentConfig;
-      const hasVTEXSystem = agent.value?.systems.some(
-        (system) => system.toLowerCase() === 'vtex',
-      );
-
-      if (hasVTEXSystem) {
-        newConfig.system = 'vtex';
-      }
-      config.value = newConfig;
-    },
+  const hasVTEXSystem = agent.value?.systems.some(
+    (system) => system.toLowerCase() === 'vtex',
   );
+
+  if (hasVTEXSystem) {
+    config.value.system = 'vtex';
+  }
 
   function resetAssignment() {
     config.value = createInitialConfig() as ConciergeAssignmentConfig;
@@ -55,10 +48,6 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
   function createInitialConfig() {
     return {
       system: '',
-      variant: {
-        type: '',
-        config: null,
-      },
       mcp_config: {},
       MCP: null,
       credentials: {},

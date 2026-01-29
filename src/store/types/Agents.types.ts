@@ -2,6 +2,12 @@ export type AgentGroupType = 'CUSTOMIZABLE' | 'PLUG_IN_PLAY';
 export type AgentGroupID = 'CONCIERGE';
 export type AgentCategory = 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS';
 
+export type AgentSystem = {
+  slug: string;
+  name: string;
+  logo: string | null;
+};
+
 export type GroupVariant = {
   uuid: string;
   name: string;

@@ -30,6 +30,7 @@
         <UnnnicDialogFooter>
           <UnnnicButton
             :text="$t('agents.assign_agents.setup.start_button')"
+            :disabled="isLoadingAgentDetails"
             data-testid="next-button"
             @click="openAgentModal"
           />
@@ -74,6 +75,7 @@ async function fetchAgentDetails() {
       await nexusaiAPI.router.agents_team.getOfficialAgentDetails(
         props.agent.group,
       );
+
     agentDetails.value = { ...props.agent, ...agentDetailsData };
   } finally {
     isLoadingAgentDetails.value = false;
