@@ -5,6 +5,12 @@ import { cleanParams } from '@/utils/http';
 
 const projectUuid = computed(() => useProjectStore().uuid);
 
+function filterSystems(systems) {
+  return systems.filter(
+    (system) => system !== 'no_system' && system !== 'custom',
+  );
+}
+
 export const AgentsTeam = {
   async listOfficialAgents({ search }) {
     const params = cleanParams({
@@ -57,6 +63,7 @@ export const AgentsTeam = {
     return [...data.new.agents, ...data.legacy].map((agent) => ({
       ...agent,
       id: agent.slug,
+      systems: filterSystems(agent.systems),
     }));
   },
 
@@ -71,7 +78,11 @@ export const AgentsTeam = {
         params,
       },
     );
-    return data;
+
+    return {
+      ...data,
+      systems: filterSystems(data.systems),
+    };
   },
 
   async toggleOfficialAgentAssignment(payload) {

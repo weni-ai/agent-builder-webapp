@@ -6,14 +6,17 @@
 
     <UnnnicTag
       :text="
-        $t('agents.assign_agents.setup.step.tag', { step, total: TOTAL_STEPS })
+        $t('agents.assign_agents.setup.step.tag', {
+          step: stepIndex,
+          total: totalSteps,
+        })
       "
       scheme="gray"
     />
   </UnnnicDialogHeader>
 
   <component
-    :is="stepComponents[step]"
+    :is="stepComponents[currentStepKey]"
     v-bind="currentStepProps"
   />
 
@@ -27,7 +30,7 @@
 
     <UnnnicButton
       :text="rightButtonText"
-      :loading="isNextLoading || (isSubmitting && step === TOTAL_STEPS)"
+      :loading="isNextLoading || (isSubmitting && stepIndex === totalSteps)"
       :disabled="isNextDisabled"
       data-testid="modal-concierge-right-button"
       @click="handleNext"
@@ -36,18 +39,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRef } from 'vue';
+import { computed, ref, toRef, type Component } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { AgentGroup, AgentMCP, AgentSystem } from '@/store/types/Agents.types';
+import { AgentGroup, AgentMCP } from '@/store/types/Agents.types';
 
 import useOfficialAgentAssignment, {
   type MCPConfigValues,
 } from '@/composables/useOfficialAgentAssignment';
 
-import FirstStepContent from './FirstStepContent.vue';
-import SecondStepContent from './SecondStepContent/index.vue';
-import ThirdStepContent from './ThirdStepContent/index.vue';
+import SystemStepContent from './SystemStepContent.vue';
+import MCPStepContent from './MCPStepContent/index.vue';
+import CredentialsStepContent from './CredentialsStepContent/index.vue';
 
 const emit = defineEmits(['update:open']);
 
@@ -61,8 +64,25 @@ defineModel('open', {
   required: true,
 });
 
-const step = ref<number>(1);
-const TOTAL_STEPS = 3;
+const Step = {
+  System: 'system',
+  MCP: 'mcp',
+  Credentials: 'credentials',
+} as const;
+type StepKey = (typeof Step)[keyof typeof Step];
+
+const stepIndex = ref<number>(1);
+const resolvedAgentDetails = computed(() => props.agentDetails ?? props.agent);
+const hasSystems = computed(() => {
+  const systems = resolvedAgentDetails.value?.systems ?? props.agent.systems;
+  return Array.isArray(systems) && systems.length > 0;
+});
+const stepSequence = computed<StepKey[]>(() =>
+  hasSystems.value
+    ? [Step.System, Step.MCP, Step.Credentials]
+    : [Step.MCP, Step.Credentials],
+);
+const totalSteps = computed(() => stepSequence.value.length);
 const agentRef = toRef(props, 'agent');
 const isNextLoading = ref(false);
 
@@ -74,40 +94,44 @@ const setupTranslations = (key: string) =>
   t(`agents.assign_agents.setup.${key}`);
 
 const leftButtonText = computed(() => {
-  return step.value === 1
+  return stepIndex.value === 1
     ? setupTranslations('cancel_button')
     : setupTranslations('back_button');
 });
 const rightButtonText = computed(() => {
-  return step.value === TOTAL_STEPS
+  return stepIndex.value === totalSteps.value
     ? setupTranslations('finish_button')
     : setupTranslations('next_button');
 });
 
-const stepComponents = {
-  1: FirstStepContent,
-  2: SecondStepContent,
-  3: ThirdStepContent,
+const stepComponents: Record<StepKey, Component> = {
+  [Step.System]: SystemStepContent,
+  [Step.MCP]: MCPStepContent,
+  [Step.Credentials]: CredentialsStepContent,
 };
 
-const resolvedAgentDetails = computed(() => props.agentDetails ?? props.agent);
+const currentStepKey = computed<StepKey>(
+  () => stepSequence.value[stepIndex.value - 1],
+);
 const currentStepProps = computed(() => {
   const selectedSystemMCPs =
     resolvedAgentDetails.value?.MCPs.filter(
       (mcp) => mcp.system === config.value.system,
     ) || [];
 
-  const stepProps = {
-    1: {
+  const stepProps: Record<StepKey, Record<string, unknown>> = {
+    [Step.System]: {
       systems: props.agent.systems,
       MCPs: resolvedAgentDetails.value?.MCPs,
       selectedSystem: config.value.system,
-      'onUpdate:selectedSystem': (nextSystem: AgentSystem) => {
+      'onUpdate:selectedSystem': (nextSystem: string) => {
         config.value.system = nextSystem;
       },
     },
-    2: {
-      MCPs: selectedSystemMCPs,
+    [Step.MCP]: {
+      MCPs: hasSystems.value
+        ? selectedSystemMCPs
+        : resolvedAgentDetails.value?.MCPs,
       selectedMCP: config.value.MCP,
       selectedMCPConfigValues: config.value.mcp_config,
       'onUpdate:selectedMCP': (nextMCP: AgentMCP | null) => {
@@ -117,7 +141,7 @@ const currentStepProps = computed(() => {
         config.value.mcp_config = nextValues;
       },
     },
-    3: {
+    [Step.Credentials]: {
       selectedSystem: config.value.system,
       selectedMCP: config.value.MCP,
       credentialValues: config.value.credentials,
@@ -127,7 +151,7 @@ const currentStepProps = computed(() => {
     },
   };
 
-  return stepProps[step.value];
+  return stepProps[currentStepKey.value] ?? {};
 });
 const isNextDisabled = computed(() => {
   const isSomeValueMissing = (
@@ -138,19 +162,19 @@ const isNextDisabled = computed(() => {
     );
   };
 
-  const stepDisabled = {
-    2: () => {
+  const stepDisabled: Partial<Record<StepKey, () => boolean>> = {
+    [Step.MCP]: () => {
       return !config.value.MCP || isSomeValueMissing(config.value.mcp_config);
     },
-    3: () => {
+    [Step.Credentials]: () => {
       return isSomeValueMissing(config.value.credentials) || isSubmitting.value;
     },
   };
 
-  return stepDisabled[step.value]?.();
+  return stepDisabled[currentStepKey.value]?.();
 });
 function resetFlow() {
-  step.value = 1;
+  stepIndex.value = 1;
   resetAssignment();
 }
 function closeModal() {
@@ -159,8 +183,8 @@ function closeModal() {
 }
 async function handleNext() {
   if (isSubmitting.value) return;
-  if (step.value < TOTAL_STEPS) {
-    step.value++;
+  if (stepIndex.value < totalSteps.value) {
+    stepIndex.value++;
     return;
   }
   const hasFinished = await submitAssignment();
@@ -169,12 +193,12 @@ async function handleNext() {
   }
 }
 
-const stepCleanupHandlers: Record<number, () => void> = {
-  2: () => {
+const stepCleanupHandlers: Partial<Record<StepKey, () => void>> = {
+  [Step.MCP]: () => {
     config.value.mcp_config = {};
     config.value.MCP = null;
   },
-  3: () => {
+  [Step.Credentials]: () => {
     config.value.credentials = {};
     config.value.MCP = null;
   },
@@ -183,10 +207,10 @@ const stepCleanupHandlers: Record<number, () => void> = {
 function handleBack() {
   if (isSubmitting.value) return;
 
-  stepCleanupHandlers[step.value]?.();
+  stepCleanupHandlers[currentStepKey.value]?.();
 
-  if (step.value > 1) {
-    step.value--;
+  if (stepIndex.value > 1) {
+    stepIndex.value--;
   } else {
     closeModal();
   }
