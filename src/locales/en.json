@@ -328,21 +328,7 @@
       "setup": {
         "about": "About",
         "mcps_available": {
-          "title": "MCPs available",
-          "concierge_mcps": [
-            {
-              "name": "Default",
-              "description": "Catalog/Search + Base price + Inventory"
-            },
-            {
-              "name": "Trade Policy",
-              "description": "Support for multiple B2B commercial policies"
-            },
-            {
-              "name": "Meta Catalog",
-              "description": "Product catalog with meta information"
-            }
-          ]
+          "title": "MCPs available"
         },
         "conversation_example": {
           "title": "Conversation example",
