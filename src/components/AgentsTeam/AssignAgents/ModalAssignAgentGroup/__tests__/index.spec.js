@@ -28,7 +28,7 @@ const conciergeAgent = {
   type: 'PLUG_IN_PLAY',
   category: 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS',
   group: 'CONCIERGE',
-  variants: [],
+  agents: [],
   MCPs: [],
   systems: ['VTEX'],
   assigned: false,

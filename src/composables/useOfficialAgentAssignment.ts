@@ -5,22 +5,20 @@ import {
   AgentGroup,
   AgentMCP,
   AgentSystem,
-  ConciergeVariant,
+  GroupVariant,
 } from '@/store/types/Agents.types';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { unnnicToastManager } from '@weni/unnnic-system';
 import i18n from '@/utils/plugins/i18n';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
-import router from '@/router';
-import useAgent from './useAgent';
 
 export type MCPConfigValues = Record<string, string | string[] | boolean>;
 
 export type ConciergeAssignmentConfig = {
   system: AgentSystem;
   variant: {
-    type: ConciergeVariant | '';
+    type: GroupVariant | '';
     config: null;
   };
   mcp_config: MCPConfigValues;
@@ -36,7 +34,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
 
   const isSubmitting = ref(false);
   watch(
-    () => agent.value?.variants?.map((variant) => variant.uuid).join(','),
+    () => agent.value?.agents?.map((variant) => variant.uuid).join(','),
     () => {
       config.value = createInitialConfig() as ConciergeAssignmentConfig;
     },
@@ -49,7 +47,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
 
   function createInitialConfig() {
     return {
-      system: 'VTEX' as AgentSystem,
+      system: 'vtex' as AgentSystem,
       variant: {
         type: '',
         config: null,
@@ -90,7 +88,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
     isSubmitting.value = true;
 
     try {
-      const agentUuid = findAgentVariantUuid(agent.value, config.value.system);
+      const agentUuid = agent.value.agents[0].uuid;
       if (!agentUuid) {
         isSubmitting.value = false;
         return false;
@@ -164,18 +162,3 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
 type CredentialPayload = AgentCredential & {
   value: string;
 };
-
-export function findAgentVariantUuid(
-  agent: AgentGroup | null,
-  system: AgentSystem,
-): string | null {
-  if (!agent) return null;
-
-  const variant = agent.variants.find(
-    (currentVariant) =>
-      currentVariant.variant.toUpperCase() === 'DEFAULT' &&
-      system.toLowerCase() === currentVariant.systems[0]?.toLowerCase(),
-  );
-
-  return variant?.uuid ?? null;
-}
