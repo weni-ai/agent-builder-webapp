@@ -23,6 +23,7 @@
 
         <ModalAssignAgentGroupStartSetup
           :agent="resolvedAgentDetails"
+          :isLoading="isLoadingAgentDetails"
           data-testid="modal-start-component"
         />
 
