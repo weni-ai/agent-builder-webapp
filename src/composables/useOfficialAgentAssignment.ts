@@ -4,7 +4,6 @@ import {
   AgentCredential,
   AgentGroup,
   AgentMCP,
-  AgentSystem,
   GroupVariant,
 } from '@/store/types/Agents.types';
 
@@ -16,7 +15,7 @@ import { useAgentsTeamStore } from '@/store/AgentsTeam';
 export type MCPConfigValues = Record<string, string | string[] | boolean>;
 
 export type ConciergeAssignmentConfig = {
-  system: AgentSystem;
+  system: string;
   variant: {
     type: GroupVariant | '';
     config: null;
@@ -36,7 +35,15 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
   watch(
     () => agent.value?.agents?.map((variant) => variant.uuid).join(','),
     () => {
-      config.value = createInitialConfig() as ConciergeAssignmentConfig;
+      const newConfig = createInitialConfig() as ConciergeAssignmentConfig;
+      const hasVTEXSystem = agent.value?.systems.some(
+        (system) => system.toLowerCase() === 'vtex',
+      );
+
+      if (hasVTEXSystem) {
+        newConfig.system = 'vtex';
+      }
+      config.value = newConfig;
     },
   );
 
@@ -47,7 +54,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
 
   function createInitialConfig() {
     return {
-      system: 'vtex' as AgentSystem,
+      system: '',
       variant: {
         type: '',
         config: null,

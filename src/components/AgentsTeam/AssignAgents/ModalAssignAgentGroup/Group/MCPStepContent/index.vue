@@ -66,7 +66,7 @@ type MCPConfigField = AgentMCP['config'] extends (infer U)[] ? U : never;
 type MCPConfigValue = string | string[] | boolean;
 
 defineOptions({
-  name: 'SecondStepContent',
+  name: 'MCPStepContent',
 });
 
 defineProps<{
