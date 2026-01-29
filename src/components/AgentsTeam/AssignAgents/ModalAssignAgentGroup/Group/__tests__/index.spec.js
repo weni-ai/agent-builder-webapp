@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, shallowMount } from '@vue/test-utils';
 import { nextTick, ref } from 'vue';
 
-import ConciergeModal from '../index.vue';
+import ModalAssignAgentGroupFlow from '../index.vue';
 
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({
@@ -55,7 +55,7 @@ const createAssignmentState = () => ({
   submitAssignment: vi.fn().mockResolvedValue(true),
 });
 
-describe('Concierge modal', () => {
+describe('ModalAssignAgentGroupFlow', () => {
   let wrapper;
   let assignmentState;
 
@@ -63,7 +63,7 @@ describe('Concierge modal', () => {
     assignmentState = createAssignmentState();
     useOfficialAgentAssignmentMock.mockReturnValue(assignmentState);
 
-    wrapper = shallowMount(ConciergeModal, {
+    wrapper = shallowMount(ModalAssignAgentGroupFlow, {
       props: {
         agent: agentFixture,
         open: true,

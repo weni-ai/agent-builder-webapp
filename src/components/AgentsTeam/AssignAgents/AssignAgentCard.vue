@@ -28,7 +28,7 @@
     @assign="toggleDrawerAssigning"
   />
 
-  <ModalAssignAgent
+  <ModalAssignAgentGroup
     v-model:open="isModalAssignAgentOpen"
     :agent="agent"
   />
@@ -44,7 +44,7 @@ import useAgentSystems from '@/composables/useAgentSystems';
 
 import AgentCard from '../AgentCard.vue';
 import AssignAgentDrawer from '../AssignAgentDrawer.vue';
-import ModalAssignAgent from './ModalAssignAgent/index.vue';
+import ModalAssignAgentGroup from './ModalAssignAgentGroup/index.vue';
 
 const { getSystemsObjects } = useAgentSystems();
 
