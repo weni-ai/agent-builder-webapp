@@ -33,14 +33,17 @@ export type AgentAssignedMCPConfigValue =
   | string[]
   | null;
 
+export interface AgentAssignedSystem {
+  name: string;
+  slug: string;
+  icon: string;
+}
+
 export interface AgentAssignedMCP {
   name: string;
   description: string;
   config?: Record<string, AgentAssignedMCPConfigValue>;
-  system?: {
-    name: string;
-    slug: string;
-  };
+  system?: AgentAssignedSystem;
 }
 
 export interface ActiveTeamAgent {
