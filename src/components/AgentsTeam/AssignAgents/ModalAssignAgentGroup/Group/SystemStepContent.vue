@@ -22,7 +22,7 @@
         :key="system"
         data-testid="concierge-first-step-radio"
         :selected="system.toLowerCase() === selectedSystem.toLowerCase()"
-        :label="getSystemObject(system)?.name ?? system"
+        :label="getSystemLabel(system)"
         :system="system"
         :description="getMCPCountDescription(system)"
         @update:selected="() => handleSelectSystem(system)"
@@ -55,6 +55,10 @@ const selectedSystem = defineModel<string>('selectedSystem', {
 const { getSystemObject } = useAgentSystems();
 const { t } = i18n.global;
 
+function getSystemLabel(system: string) {
+  return getSystemObject(system)?.name ?? system;
+}
+
 function handleSelectSystem(system: string) {
   if (selectedSystem.value === system) return;
   selectedSystem.value = system;
@@ -63,11 +67,7 @@ function handleSelectSystem(system: string) {
 function getMCPCountDescription(system: string) {
   const count = props.MCPs.filter((mcp) => mcp.system === system).length;
 
-  return t(
-    'agents.assign_agents.setup.system_selection.mcp_count',
-    { count },
-    count,
-  );
+  return t('agents.assign_agents.setup.system_selection.mcp_count', { count });
 }
 </script>
 

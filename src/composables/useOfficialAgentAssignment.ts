@@ -11,8 +11,6 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 import { unnnicToastManager } from '@weni/unnnic-system';
 import i18n from '@/utils/plugins/i18n';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
-import router from '@/router';
-import useAgent from './useAgent';
 
 export type MCPConfigValues = Record<string, string | string[] | boolean>;
 
@@ -34,20 +32,13 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
   const agentsTeamStore = useAgentsTeamStore();
 
   const isSubmitting = ref(false);
-  watch(
-    () => agent.value?.agents?.map((variant) => variant.uuid).join(','),
-    () => {
-      const newConfig = createInitialConfig() as ConciergeAssignmentConfig;
-      const hasVTEXSystem = agent.value?.systems.some(
-        (system) => system.toLowerCase() === 'vtex',
-      );
-
-      if (hasVTEXSystem) {
-        newConfig.system = 'vtex';
-      }
-      config.value = newConfig;
-    },
+  const hasVTEXSystem = agent.value?.systems.some(
+    (system) => system.toLowerCase() === 'vtex',
   );
+
+  if (hasVTEXSystem) {
+    config.value.system = 'vtex';
+  }
 
   function resetAssignment() {
     config.value = createInitialConfig() as ConciergeAssignmentConfig;
@@ -57,10 +48,6 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
   function createInitialConfig() {
     return {
       system: '',
-      variant: {
-        type: '',
-        config: null,
-      },
       mcp_config: {},
       MCP: null,
       credentials: {},

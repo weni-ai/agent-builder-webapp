@@ -78,9 +78,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     const assignedAgent = officialAgents.data.find(
       (agent) =>
         agent.uuid === normalizedAgent.uuid ||
-        agent.variants?.some(
-          (variant) => variant.uuid === normalizedAgent.uuid,
-        ),
+        agent.agents?.some((variant) => variant.uuid === normalizedAgent.uuid),
     );
     assignedAgent.assigned = true;
   }

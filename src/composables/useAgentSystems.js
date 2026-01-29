@@ -1,14 +1,12 @@
 import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
 export default function useAgentSystems() {
   const agentsTeamStore = useAgentsTeamStore();
-  const { availableSystems } = storeToRefs(agentsTeamStore);
 
   const systems = computed(() =>
-    availableSystems.value.map((system) => ({
+    agentsTeamStore.availableSystems.map((system) => ({
       slug: system.slug,
       name: system.name,
       icon: system.logo || '',

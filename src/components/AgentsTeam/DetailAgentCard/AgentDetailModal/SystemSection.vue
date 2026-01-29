@@ -1,5 +1,7 @@
 <template>
-  <Section :title="$t('agents.assigned_agents.agent_details.system')">
+  <AgentDetailSection
+    :title="$t('agents.assigned_agents.agent_details.system')"
+  >
     <section class="agent-detail-modal__system-items">
       <Skill
         :title="system.name"
@@ -7,12 +9,12 @@
         class="agent-detail-modal__system-skill"
       />
     </section>
-  </Section>
+  </AgentDetailSection>
 </template>
 
 <script setup lang="ts">
 import Skill from '@/components/AgentsTeam/Skill.vue';
-import Section from './Section.vue';
+import AgentDetailSection from './AgentDetailSection.vue';
 import type { AgentAssignedSystem } from '@/store/types/Agents.types';
 
 defineProps<{

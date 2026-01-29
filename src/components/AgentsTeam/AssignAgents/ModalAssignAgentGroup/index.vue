@@ -30,6 +30,7 @@
         <UnnnicDialogFooter>
           <UnnnicButton
             :text="$t('agents.assign_agents.setup.start_button')"
+            :disabled="isLoadingAgentDetails"
             data-testid="next-button"
             @click="openAgentModal"
           />
