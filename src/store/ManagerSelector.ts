@@ -155,6 +155,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
 
       options.value = data;
       selectedManager.value = data.currentManager;
+      selectedPreviewManager.value = data.currentManager;
       status.value = 'success';
     } catch {
       status.value = 'error';
