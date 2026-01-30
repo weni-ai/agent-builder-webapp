@@ -24,7 +24,7 @@
 
     <RadiosSkeletonLoading v-if="isLoadingManagers" />
     <OnlyNewManager
-      v-else-if="shouldShowOnlyNewManager"
+      v-else-if="hasOnlyNewManager"
       :manager="managers.new"
     />
     <UnnnicRadioGroup
@@ -81,16 +81,11 @@ const {
   shouldUpgradeManager,
   shouldShowUpgradeDisclaimer,
   shouldShowPostUpgradeDisclaimer,
+  hasOnlyNewManager,
 } = storeToRefs(managerSelectorStore);
 
 const managers = computed(() => options.value?.managers);
 const isLoadingManagers = computed(() => status.value === 'loading');
-const shouldShowOnlyNewManager = computed(() => {
-  const newManagerId = managers.value?.new?.id;
-  const legacyManagerId = managers.value?.legacy?.id;
-
-  return !!newManagerId && !legacyManagerId;
-});
 
 const updateSelectedManager = (managerId) => {
   managerSelectorStore.setSelectedManager(managerId);
