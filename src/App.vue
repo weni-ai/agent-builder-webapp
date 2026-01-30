@@ -78,6 +78,7 @@ onMounted(() => {
   useTuningsStore().fetchCredentials();
   useProfileStore().load();
   userStore.getUserDetails();
+  managerSelectorStore.loadManagerData();
 
   if (!projectStore.details.contentBaseUuid) {
     projectStore.getRouterDetails();
@@ -95,18 +96,6 @@ watch(
   () => userStore.user.email,
   (email) => {
     if (email) initHotjar(email);
-  },
-);
-
-watch(
-  () => isBuildModule.value,
-  (isBuildModuleActive) => {
-    if (isBuildModuleActive) {
-      managerSelectorStore.loadManagerData();
-    }
-  },
-  {
-    immediate: true,
   },
 );
 </script>
