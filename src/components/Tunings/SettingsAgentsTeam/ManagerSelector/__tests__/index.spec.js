@@ -12,6 +12,9 @@ describe('ManagerSelector.vue', () => {
   let managerSelectorStore;
   let pinia;
 
+  const POST_UPGRADE_DISCLAIMER_STORAGE_KEY =
+    'agentBuilder_manager-selector-post-upgrade-disclaimer';
+
   const title = () => wrapper.find('[data-testid="manager-selector-title"]');
   const radioGroup = () =>
     wrapper.findComponent('[data-testid="manager-selector-radio-group"]');
@@ -23,6 +26,10 @@ describe('ManagerSelector.vue', () => {
     wrapper.findComponent('[data-testid="manager-upgrade-card"]');
   const upgradeDisclaimer = () =>
     wrapper.findComponent('[data-testid="upgrade-disclaimer"]');
+  const postUpgradeDisclaimer = () =>
+    wrapper.findComponent('[data-testid="post-upgrade-disclaimer"]');
+  const radiosSkeleton = () =>
+    wrapper.findComponent('[data-testid="manager-selector-radios-skeleton"]');
 
   const managerMock = {
     currentManager: 'manager-2.5',
@@ -46,8 +53,9 @@ describe('ManagerSelector.vue', () => {
     });
 
     managerSelectorStore = useManagerSelectorStore();
-    managerSelectorStore.options = managerMock;
-    managerSelectorStore.selectedManager = managerMock.currentManager;
+    managerSelectorStore.options = { ...managerMock };
+    managerSelectorStore.selectedManager =
+      managerSelectorStore.options.currentManager;
     managerSelectorStore.status = 'success';
 
     wrapper = mount(ManagerSelector, {
@@ -58,6 +66,7 @@ describe('ManagerSelector.vue', () => {
   };
 
   beforeEach(() => {
+    window.localStorage.removeItem(POST_UPGRADE_DISCLAIMER_STORAGE_KEY);
     mountComponent();
   });
 
@@ -111,6 +120,25 @@ describe('ManagerSelector.vue', () => {
     );
   });
 
+  it('shows the skeleton while manager options are loading', async () => {
+    managerSelectorStore.status = 'loading';
+    await nextTick();
+
+    expect(radiosSkeleton().exists()).toBe(true);
+    expect(radioGroup().exists()).toBe(false);
+  });
+
+  it('renders the radio group once the manager options are loaded', async () => {
+    managerSelectorStore.status = 'loading';
+    await nextTick();
+
+    managerSelectorStore.status = 'success';
+    await nextTick();
+
+    expect(radiosSkeleton().exists()).toBe(false);
+    expect(radioGroup().exists()).toBe(true);
+  });
+
   it('only renders the upgrade banner when the selected manager differs from the new manager', async () => {
     managerSelectorStore.options.currentManager = managerMock.managers.new.id;
     await nextTick();
@@ -137,6 +165,26 @@ describe('ManagerSelector.vue', () => {
     await nextTick();
 
     expect(upgradeDisclaimer().exists()).toBe(false);
+    expect(upgradeBanner().exists()).toBe(true);
+  });
+
+  it('shows the post-upgrade disclaimer once the legacy model is deprecated', async () => {
+    managerSelectorStore.options.currentManager = managerMock.managers.new.id;
+    managerSelectorStore.options.serverTime = '2026-04-20T13:00:00Z';
+    await nextTick();
+
+    expect(postUpgradeDisclaimer().exists()).toBe(true);
+    expect(upgradeDisclaimer().exists()).toBe(false);
+    expect(upgradeBanner().exists()).toBe(false);
+  });
+
+  it('does not show the post-upgrade disclaimer while using the legacy manager', async () => {
+    managerSelectorStore.options.currentManager =
+      managerMock.managers.legacy.id;
+    managerSelectorStore.options.serverTime = '2026-04-20T13:00:00Z';
+    await nextTick();
+
+    expect(postUpgradeDisclaimer().exists()).toBe(false);
     expect(upgradeBanner().exists()).toBe(true);
   });
 });

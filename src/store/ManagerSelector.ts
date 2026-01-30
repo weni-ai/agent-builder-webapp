@@ -1,11 +1,16 @@
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { useAlertStore } from './Alert';
 import i18n from '@/utils/plugins/i18n';
+import { moduleStorage } from '@/utils/storage';
 
 import type { ManagerSelector } from './types/ManagerSelector.type';
+
+const WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000;
+const POST_UPGRADE_DISCLAIMER_STORAGE_KEY =
+  'manager-selector-post-upgrade-disclaimer';
 
 const parseDate = (dateString?: string | null): Date | null => {
   if (!dateString) {
@@ -36,6 +41,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
   });
   const status = ref<ManagerSelector['status']>('idle');
   const selectedManager = ref<ManagerSelector['selectedManager']>('');
+  const postUpgradeDisclaimerVisible = ref(false);
 
   const shouldUpgradeManager = computed(() => {
     const { currentManager, managers } = options.value;
@@ -59,6 +65,59 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     return serverDate >= legacyDeprecationDate.value;
   });
 
+  const isPostUpgradeScenario = computed(() => {
+    const { currentManager, managers } = options.value;
+    return currentManager === managers.new.id && isLegacyDeprecated.value;
+  });
+
+  const writePostUpgradeDisclaimerFlag = (value: boolean) =>
+    moduleStorage.setItem(POST_UPGRADE_DISCLAIMER_STORAGE_KEY, value);
+
+  const ensurePostUpgradeDisclaimerFlag = () => {
+    const storedValue = moduleStorage.getItem(
+      POST_UPGRADE_DISCLAIMER_STORAGE_KEY,
+    );
+
+    if (storedValue === null && isPostUpgradeScenario.value) {
+      writePostUpgradeDisclaimerFlag(true);
+      return true;
+    }
+
+    return storedValue === true;
+  };
+
+  const activatePostUpgradeDisclaimerIfNeeded = () => {
+    if (!isPostUpgradeScenario.value || postUpgradeDisclaimerVisible.value) {
+      return;
+    }
+
+    if (ensurePostUpgradeDisclaimerFlag()) {
+      postUpgradeDisclaimerVisible.value = true;
+      writePostUpgradeDisclaimerFlag(false);
+    }
+  };
+
+  const resetPostUpgradeDisclaimerSession = () => {
+    postUpgradeDisclaimerVisible.value = false;
+  };
+
+  watch(
+    isPostUpgradeScenario,
+    (isScenario) => {
+      if (!isScenario) {
+        resetPostUpgradeDisclaimerSession();
+        return;
+      }
+
+      activatePostUpgradeDisclaimerIfNeeded();
+    },
+    { immediate: true },
+  );
+
+  const shouldShowPostUpgradeDisclaimer = computed(
+    () => postUpgradeDisclaimerVisible.value,
+  );
+
   const shouldShowUpgradeDisclaimer = computed(() => {
     const serverDate = parseDate(options.value.serverTime);
     const legacyDate = legacyDeprecationDate.value;
@@ -66,8 +125,6 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     if (!serverDate || !legacyDate) {
       return false;
     }
-
-    const WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000;
 
     const weekFromServerTime = new Date(serverDate.getTime() + WEEK_IN_MS);
     const isWithinDeprecationWindow = weekFromServerTime >= legacyDate;
@@ -113,7 +170,9 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     legacyDeprecationDate,
     isLegacyDeprecated,
     shouldShowUpgradeDisclaimer,
+    shouldShowPostUpgradeDisclaimer,
     loadManagerData,
     setSelectedManager,
+    resetPostUpgradeDisclaimerSession,
   };
 });

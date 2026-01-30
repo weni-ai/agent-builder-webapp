@@ -265,6 +265,8 @@
           "title": "💡 {manager_name} já está disponível",
           "disclaimer_title": "Atualize para {manager_name}",
           "disclaimer_title_with_date": "Atualize para {manager_name} até {date}",
+          "auto_upgrade_success_title": "{manager_name} já está ativo",
+          "auto_upgrade_success_description": "Este projeto foi atualizado para o {manager_name} para melhor coordenação e respostas mais consistentes.",
           "manager_2.6_description": "Atualize para obter respostas mais rápidas e confiáveis enquanto o Manager coordena seus agentes.",
           "manager_2.6_highlights": [
             "Melhor desempenho em conversas complexas",
