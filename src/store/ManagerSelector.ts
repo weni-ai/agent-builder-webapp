@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 
+import { useProjectStore } from './Project';
+
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { useAlertStore } from './Alert';
 import i18n from '@/utils/plugins/i18n';
@@ -23,6 +25,7 @@ const parseDate = (dateString?: string | null): Date | null => {
 
 export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
   const alertStore = useAlertStore();
+  const projectUuid = useProjectStore().uuid;
 
   const options = ref<ManagerSelector['options']>({
     currentManager: '',
@@ -40,6 +43,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     },
   });
   const status = ref<ManagerSelector['status']>('idle');
+  const saveStatus = ref<ManagerSelector['status']>('idle');
   const selectedManager = ref<ManagerSelector['selectedManager']>('');
   const postUpgradeDisclaimerVisible = ref(false);
 
@@ -144,7 +148,9 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     try {
       status.value = 'loading';
 
-      const { data } = await nexusaiAPI.router.tunings.manager.read();
+      const { data } = await nexusaiAPI.router.tunings.manager.read({
+        projectUuid,
+      });
 
       options.value = data;
       selectedManager.value = data.currentManager;
@@ -158,6 +164,25 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     }
   }
 
+  async function saveManager() {
+    try {
+      saveStatus.value = 'loading';
+
+      await nexusaiAPI.router.tunings.manager.edit({
+        projectUuid,
+        manager: selectedManager.value,
+      });
+
+      options.value.currentManager = selectedManager.value;
+      saveStatus.value = 'success';
+
+      return true;
+    } catch {
+      saveStatus.value = 'error';
+      return false;
+    }
+  }
+
   function setSelectedManager(managerId: string) {
     selectedManager.value = managerId;
   }
@@ -166,12 +191,14 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     options,
     selectedManager,
     status,
+    saveStatus,
     shouldUpgradeManager,
     legacyDeprecationDate,
     isLegacyDeprecated,
     shouldShowUpgradeDisclaimer,
     shouldShowPostUpgradeDisclaimer,
     loadManagerData,
+    saveManager,
     setSelectedManager,
     resetPostUpgradeDisclaimerSession,
   };
