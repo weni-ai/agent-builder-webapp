@@ -65,6 +65,7 @@ import PreviewMenu from '@/components/Preview/Menu/index.vue';
 
 import { useFlowPreviewStore } from '@/store/FlowPreview';
 import { useProjectStore } from '@/store/Project';
+import { useManagerSelectorStore } from '@/store/ManagerSelector';
 
 import { getFileType } from '@/utils/medias';
 
@@ -76,6 +77,7 @@ const emit = defineEmits(['messages']);
 
 const projectStore = useProjectStore();
 const flowPreviewStore = useFlowPreviewStore();
+const managerSelectorStore = useManagerSelectorStore();
 
 const message = ref('');
 const messages = computed(() => flowPreviewStore.messages);
@@ -87,6 +89,18 @@ const previewMenuMessage = ref(null);
 const shouldShowPreviewPlaceholder = computed(
   () => messages.value.length === 0,
 );
+
+function getPreviewManagerLabel(managerId) {
+  const { managers } = managerSelectorStore.options;
+  const managerOptions = [managers.new, managers.legacy].filter(
+    (manager) => manager?.id,
+  );
+  const matchedManager = managerOptions.find(
+    (manager) => manager.id === managerId,
+  );
+
+  return matchedManager?.label || managerId;
+}
 
 function messageHasDeprecatedQuickReplies(message) {
   const isTheLastMessage =
@@ -187,6 +201,27 @@ watch(
         answer(lastQuestion);
       }
     }
+  },
+);
+
+watch(
+  () => managerSelectorStore.selectedPreviewManager,
+  (managerId, previousManagerId) => {
+    if (!managerId || managerId === previousManagerId) {
+      return;
+    }
+
+    flowPreviewStore.addMessage({
+      type: 'manager_selected',
+      name: getPreviewManagerLabel(managerId),
+      question_uuid: null,
+      feedback: {
+        value: null,
+        reason: null,
+      },
+    });
+
+    scrollToLastMessage();
   },
 );
 
@@ -292,6 +327,7 @@ async function answer(question) {
       text: isQuestionMedia ? '' : question,
       attachments: questionMediaUrl ? [questionMediaUrl] : [],
       contact_urn: flowPreviewStore.preview.contact.urns[0],
+      manager_uuid: managerSelectorStore.selectedPreviewManager,
     });
 
     flowPreviewStore.treatAnswerResponse(answer, data, {

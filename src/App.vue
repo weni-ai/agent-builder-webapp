@@ -78,6 +78,7 @@ onMounted(() => {
   useTuningsStore().fetchCredentials();
   useProfileStore().load();
   userStore.getUserDetails();
+  managerSelectorStore.loadManagerData();
 
   if (!projectStore.details.contentBaseUuid) {
     projectStore.getRouterDetails();
