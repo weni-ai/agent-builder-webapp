@@ -22,6 +22,7 @@
         itemValue="id"
         :options="previewManagerOptions"
         size="sm"
+        :optionsLines="2"
       />
     </section>
   </UnnnicDrawerHeader>
