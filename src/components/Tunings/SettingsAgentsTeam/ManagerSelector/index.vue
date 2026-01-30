@@ -1,12 +1,16 @@
 <template>
   <section class="manager-selector">
+    <ManagerUpgradeCard
+      v-if="shouldUpgradeManager"
+      data-testid="manager-upgrade-card"
+    />
+
     <h2
       class="manager-selector__title"
       data-testid="manager-selector-title"
     >
       {{ $t('agent_builder.tunings.manager.title') }}
     </h2>
-
     <UnnnicRadioGroup
       state="vertical"
       :modelValue="selectedManager"
@@ -43,10 +47,12 @@
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 
+import ManagerUpgradeCard from './ManagerUpgradeCard.vue';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 
 const managerSelectorStore = useManagerSelectorStore();
-const { options, selectedManager } = storeToRefs(managerSelectorStore);
+const { options, selectedManager, shouldUpgradeManager } =
+  storeToRefs(managerSelectorStore);
 
 const managers = computed(() => options.value?.managers);
 

@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { nextTick } from 'vue';
 import { createTestingPinia } from '@pinia/testing';
 
 import ManagerSelector from '../index.vue';
@@ -18,6 +19,8 @@ describe('ManagerSelector.vue', () => {
     wrapper.findComponent('[data-testid="manager-selector-radio-new"]');
   const radioLegacy = () =>
     wrapper.findComponent('[data-testid="manager-selector-radio-legacy"]');
+  const upgradeBanner = () =>
+    wrapper.findComponent('[data-testid="manager-upgrade-card"]');
 
   const managerMock = {
     currentManager: 'manager-2.5',
@@ -104,5 +107,18 @@ describe('ManagerSelector.vue', () => {
     expect(newTag.text()).toBe(
       i18n.global.t('agent_builder.tunings.manager.new'),
     );
+  });
+
+  it('only renders the upgrade banner when the selected manager differs from the new manager', async () => {
+    managerSelectorStore.options.currentManager = managerMock.managers.new.id;
+    await nextTick();
+
+    expect(upgradeBanner().exists()).toBe(false);
+
+    managerSelectorStore.options.currentManager =
+      managerMock.managers.legacy.id;
+    await nextTick();
+
+    expect(upgradeBanner().exists()).toBe(true);
   });
 });
