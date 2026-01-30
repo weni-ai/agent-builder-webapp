@@ -71,6 +71,11 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     return currentManager === managers.new.id && isLegacyDeprecated.value;
   });
 
+  const hasOnlyNewManager = computed(() => {
+    const { managers } = options.value;
+    return !!managers.new?.id && !managers.legacy?.id;
+  });
+
   const writePostUpgradeDisclaimerFlag = (value: boolean) =>
     moduleStorage.setItem(POST_UPGRADE_DISCLAIMER_STORAGE_KEY, value);
 
@@ -196,6 +201,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     shouldShowUpgradeDisclaimer,
     shouldShowPostUpgradeDisclaimer,
     selectedPreviewManager,
+    hasOnlyNewManager,
     loadManagerData,
     saveManager,
     setSelectedManager,
