@@ -35,11 +35,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
         id: '',
         label: '',
       },
-      legacy: {
-        id: '',
-        label: '',
-        deprecation: '',
-      },
+      legacy: null,
     },
   });
   const status = ref<ManagerSelector['status']>('idle');
@@ -58,7 +54,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
   });
 
   const legacyDeprecationDate = computed(() =>
-    parseDate(options.value.managers.legacy.deprecation),
+    parseDate(options.value.managers.legacy?.deprecation),
   );
 
   const isLegacyDeprecated = computed(() => {
@@ -73,6 +69,11 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
   const isPostUpgradeScenario = computed(() => {
     const { currentManager, managers } = options.value;
     return currentManager === managers.new.id && isLegacyDeprecated.value;
+  });
+
+  const hasOnlyNewManager = computed(() => {
+    const { managers } = options.value;
+    return !!managers.new?.id && !managers.legacy?.id;
   });
 
   const writePostUpgradeDisclaimerFlag = (value: boolean) =>
@@ -200,6 +201,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     shouldShowUpgradeDisclaimer,
     shouldShowPostUpgradeDisclaimer,
     selectedPreviewManager,
+    hasOnlyNewManager,
     loadManagerData,
     saveManager,
     setSelectedManager,

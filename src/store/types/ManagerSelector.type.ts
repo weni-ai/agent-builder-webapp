@@ -10,7 +10,7 @@ interface ManagerSelectorOptions {
       id: string;
       label: string;
       deprecation: string;
-    };
+    } | null;
   };
 }
 

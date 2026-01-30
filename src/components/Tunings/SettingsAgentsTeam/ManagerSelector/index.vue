@@ -23,6 +23,10 @@
     </h2>
 
     <RadiosSkeletonLoading v-if="isLoadingManagers" />
+    <OnlyNewManager
+      v-else-if="hasOnlyNewManager"
+      :manager="managers.new"
+    />
     <UnnnicRadioGroup
       v-else
       state="vertical"
@@ -63,6 +67,7 @@ import { storeToRefs } from 'pinia';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 
 import ManagerUpgradeCard from './ManagerUpgradeCard.vue';
+import OnlyNewManager from './OnlyNewManager.vue';
 import PostUpgradeDisclaimer from './PostUpgradeDisclaimer.vue';
 import RadiosSkeletonLoading from './RadiosSkeletonLoading.vue';
 import UpgradeDisclaimer from './UpgradeDisclaimer.vue';
@@ -75,6 +80,8 @@ const {
   status,
   shouldUpgradeManager,
   shouldShowUpgradeDisclaimer,
+  shouldShowPostUpgradeDisclaimer,
+  hasOnlyNewManager,
 } = storeToRefs(managerSelectorStore);
 
 const managers = computed(() => options.value?.managers);

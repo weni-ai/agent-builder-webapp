@@ -17,6 +17,7 @@
       />
 
       <UnnnicSelect
+        v-if="!managerSelectorStore.hasOnlyNewManager"
         v-model:modelValue="managerSelectorStore.selectedPreviewManager"
         class="preview-drawer__manager-select"
         itemValue="id"

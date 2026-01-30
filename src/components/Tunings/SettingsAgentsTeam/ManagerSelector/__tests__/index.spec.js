@@ -22,6 +22,12 @@ describe('ManagerSelector.vue', () => {
     wrapper.findComponent('[data-testid="manager-selector-radio-new"]');
   const radioLegacy = () =>
     wrapper.findComponent('[data-testid="manager-selector-radio-legacy"]');
+  const onlyNewManager = () =>
+    wrapper.find('[data-testid="manager-selector-only-new"]');
+  const onlyNewTitle = () =>
+    wrapper.find('[data-testid="manager-selector-only-new-title"]');
+  const onlyNewDescription = () =>
+    wrapper.find('[data-testid="manager-selector-only-new-description"]');
   const upgradeBanner = () =>
     wrapper.findComponent('[data-testid="manager-upgrade-card"]');
   const upgradeDisclaimer = () =>
@@ -53,7 +59,7 @@ describe('ManagerSelector.vue', () => {
     });
 
     managerSelectorStore = useManagerSelectorStore();
-    managerSelectorStore.options = { ...managerMock };
+    managerSelectorStore.options = JSON.parse(JSON.stringify(managerMock));
     managerSelectorStore.selectedManager =
       managerSelectorStore.options.currentManager;
     managerSelectorStore.status = 'success';
@@ -137,6 +143,23 @@ describe('ManagerSelector.vue', () => {
 
     expect(radiosSkeleton().exists()).toBe(false);
     expect(radioGroup().exists()).toBe(true);
+  });
+
+  it('renders only the new manager when legacy is missing', async () => {
+    managerSelectorStore.options.managers.legacy = null;
+    await nextTick();
+
+    expect(onlyNewManager().exists()).toBe(true);
+    expect(radioGroup().exists()).toBe(false);
+    expect(onlyNewTitle().text()).toBe(managerMock.managers.new.label);
+    expect(onlyNewDescription().text()).toBe(
+      i18n.global.t(
+        'agent_builder.tunings.manager.only_new_manager_description',
+        {
+          manager_name: managerMock.managers.new.label,
+        },
+      ),
+    );
   });
 
   it('only renders the upgrade banner when the selected manager differs from the new manager', async () => {

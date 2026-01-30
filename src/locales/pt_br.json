@@ -261,6 +261,7 @@
         "recommended": "Recomendado",
         "legacy_model": "Modelo legado",
         "load_error": "Não foi possível carregar os managers",
+        "only_new_manager_description": "Este projeto usa {manager_name}. Versões mais antigas do Manager não estão mais disponíveis.",
         "upgrade_banner": {
           "title": "💡 {manager_name} já está disponível",
           "disclaimer_title": "Atualize para {manager_name}",
