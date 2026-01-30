@@ -35,11 +35,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
         id: '',
         label: '',
       },
-      legacy: {
-        id: '',
-        label: '',
-        deprecation: '',
-      },
+      legacy: null,
     },
   });
   const status = ref<ManagerSelector['status']>('idle');
@@ -58,7 +54,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
   });
 
   const legacyDeprecationDate = computed(() =>
-    parseDate(options.value.managers.legacy.deprecation),
+    parseDate(options.value.managers.legacy?.deprecation),
   );
 
   const isLegacyDeprecated = computed(() => {
