@@ -90,6 +90,18 @@ const shouldShowPreviewPlaceholder = computed(
   () => messages.value.length === 0,
 );
 
+function getPreviewManagerLabel(managerId) {
+  const { managers } = managerSelectorStore.options;
+  const managerOptions = [managers.new, managers.legacy].filter(
+    (manager) => manager?.id,
+  );
+  const matchedManager = managerOptions.find(
+    (manager) => manager.id === managerId,
+  );
+
+  return matchedManager?.label || managerId;
+}
+
 function messageHasDeprecatedQuickReplies(message) {
   const isTheLastMessage =
     messages.value
@@ -189,6 +201,27 @@ watch(
         answer(lastQuestion);
       }
     }
+  },
+);
+
+watch(
+  () => managerSelectorStore.selectedPreviewManager,
+  (managerId, previousManagerId) => {
+    if (!managerId || managerId === previousManagerId) {
+      return;
+    }
+
+    flowPreviewStore.addMessage({
+      type: 'manager_selected',
+      name: getPreviewManagerLabel(managerId),
+      question_uuid: null,
+      feedback: {
+        value: null,
+        reason: null,
+      },
+    });
+
+    scrollToLastMessage();
   },
 );
 
