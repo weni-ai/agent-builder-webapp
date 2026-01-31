@@ -1,0 +1,46 @@
+---
+description: Architecture boundaries and module responsibilities for the frontend
+alwaysApply: false
+---
+
+# Architecture
+
+Define clear boundaries between pages, UI components, state, and IO layers.
+
+## Core Principles
+
+- Keep page composition in `views` and reusable UI in `components`
+- Centralize side effects in `api` and `websocket` modules
+- Keep shared logic in `composables` and shared utilities in `utils`
+- Keep global state in `store` modules only
+
+## Mandatory Rules
+
+- Page-level components must live in `src/views` and be the only targets of the router
+- Reusable UI components must live in `src/components`
+- Feature-specific UI must live under a feature folder inside `components` or `views`
+- Composition logic must live in `src/composables` and be exported as `useX`
+- Global state must live in `src/store` and must not import from `views`
+- HTTP requests must be implemented in `src/api` modules
+- WebSocket setup and listeners must be implemented in `src/websocket` modules
+- Utilities must be pure and must not access Vue instances, DOM, or global store state
+
+## Forbidden Patterns
+
+- Mixing page composition, data fetching, and shared UI in the same module
+- Importing `views` from `components`, `store`, `composables`, `api`, or `utils`
+- Direct HTTP requests from `views` or `components`
+- Placing shared UI inside `views`
+- Creating global mutable state outside `src/store`
+
+## Examples
+
+Good:
+- `src/views/AgentsTeam/AgentsTeam.vue` composes `src/components/AgentsTeam/*`
+- `src/composables/usePagination.js` orchestrates `src/api/*` and `src/store/*`
+- `src/api/nexusaiRequest.js` encapsulates a request used by multiple features
+
+Bad:
+- `src/components/Sidebar/Sidebar.vue` calling `fetch` directly
+- `src/views/Knowledge.vue` exporting a shared button used across features
+- `src/utils/date.js` importing from `src/store/User.js`
