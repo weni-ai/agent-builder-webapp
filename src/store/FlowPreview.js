@@ -22,17 +22,6 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
     messageInput.value = text;
   }
 
-  function replaceMessage(toReplace, newMessages) {
-    const index = messages.value.indexOf(toReplace);
-    if (index !== -1) {
-      messages.value.splice(
-        index,
-        1,
-        ...(Array.isArray(newMessages) ? newMessages : [newMessages]),
-      );
-    }
-  }
-
   function removeMessage(message) {
     const index = messages.value.indexOf(message);
     if (index !== -1) {
@@ -106,7 +95,6 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
     addMessage,
     clearMessages,
     setMessageInput,
-    replaceMessage,
     removeMessage,
     treatAnswerResponse,
   };
