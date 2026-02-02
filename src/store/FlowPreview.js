@@ -32,28 +32,10 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
   function treatAnswerResponse(
     answer,
     data,
-    { onBroadcast, onMediaUnavailable, onCancelled, fallbackMessage = '' },
+    { onBroadcast, fallbackMessage = '' },
   ) {
     if (data.type === 'broadcast') {
       handleBroadcastResponse(answer, data, fallbackMessage, onBroadcast);
-    } else if (data.type === 'flowstart') {
-      // Insert a flowstart message before the answer
-      const answerIndex = messages.value.indexOf(answer);
-      messages.value.splice(answerIndex, 0, {
-        type: 'flowstart',
-        name: data.name,
-        question_uuid: null,
-      });
-    } else if (data.type === 'media_and_location_unavailable') {
-      answer.status = 'loaded';
-      answer.type = data.type;
-
-      if (onMediaUnavailable) onMediaUnavailable(answer);
-    } else if (data.type === 'cancelled') {
-      answer.status = 'loaded';
-      removeMessage(answer);
-
-      if (onCancelled) onCancelled();
     }
   }
 

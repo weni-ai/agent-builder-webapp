@@ -9,12 +9,6 @@
     <DotTyping v-if="message.status === 'loading'" />
 
     <template v-else-if="isStatus(message)">
-      <UnnnicIcon
-        v-if="message.type === 'media_and_location_unavailable'"
-        icon="warning"
-        scheme="neutral-cloudy"
-        size="sm"
-      />
       <UnnnicIntelligenceText
         class="messages__status"
         color="neutral-cloudy"
@@ -49,7 +43,6 @@
 <script setup>
 import { computed, useSlots } from 'vue';
 
-import { lowerFirstCapitalLetter } from '@/utils/handleLetters';
 import { getFileType } from '@/utils/medias';
 import i18n from '@/utils/plugins/i18n';
 
@@ -78,52 +71,18 @@ const hasRenderedComponent = computed(
 );
 
 const isStatus = (message) => {
-  return [
-    'change',
-    'flowstart',
-    'flowsend',
-    'message_forwarded_to_brain',
-    'manager_selected',
-    'media_and_location_unavailable',
-  ].includes(message.type);
+  return ['manager_selected'].includes(message.type);
 };
 
 const isMedia = (message) => {
   return !!getFileType(message);
 };
 
-const handleLetter = (message) => {
-  return lowerFirstCapitalLetter(message);
-};
-
 const statusDescription = (message) => {
-  if (message.type === 'change') {
-    return i18n.global.t('router.preview.field_changed_to_value', {
-      field: handleLetter(i18n.global.t(message.name)),
-      value: message.value,
-    });
-  }
-
-  if (message.type === 'flowstart') {
-    return i18n.global.t('router.preview.flow_started', { name: message.name });
-  }
-
-  if (message.type === 'flowsend') {
-    return i18n.global.t('router.preview.flow_finished');
-  }
-
-  if (message.type === 'message_forwarded_to_brain') {
-    return i18n.global.t('router.preview.message_forwarded_to_brain');
-  }
-
   if (message.type === 'manager_selected') {
     return i18n.global.t('router.preview.manager_selected', {
       name: message.name,
     });
-  }
-
-  if (message.type === 'media_and_location_unavailable') {
-    return i18n.global.t('router.preview.media_and_location_unavailable');
   }
 };
 </script>
@@ -172,12 +131,7 @@ const statusDescription = (message) => {
     margin-right: 1.875 * $unnnic-font-size;
   }
 
-  &__change,
-  &__flowstart,
-  &__flowsend,
-  &__message_forwarded_to_brain,
-  &__manager_selected,
-  &__media_and_location_unavailable {
+  &__manager_selected {
     display: flex;
     align-items: center;
     justify-content: center;

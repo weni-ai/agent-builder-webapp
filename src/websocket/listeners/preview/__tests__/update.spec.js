@@ -72,7 +72,6 @@ describe('src/websocket/listeners/preview/update.js', () => {
 
       mockFlowPreviewStore.messages = [
         { type: 'question', text: 'Question 1' },
-        { type: 'flowstart', name: 'Flow started' },
         { type: 'answer', status: 'loaded', text: 'Previous answer' },
         answerMessage,
         { type: 'other', data: 'Other message' },
@@ -134,7 +133,6 @@ describe('src/websocket/listeners/preview/update.js', () => {
     it('creates new answer when no answer messages exist at all', () => {
       mockFlowPreviewStore.messages = [
         { type: 'question', text: 'Test question' },
-        { type: 'flowstart', name: 'Flow started' },
       ];
 
       const testMessage = {
@@ -172,7 +170,7 @@ describe('src/websocket/listeners/preview/update.js', () => {
 
       const testMessage = {
         content: {
-          type: 'flowstart',
+          type: 'broadcast',
           name: 'Test Flow',
           uuid: 'flow-uuid-123',
         },
@@ -217,24 +215,6 @@ describe('src/websocket/listeners/preview/update.js', () => {
           type: 'broadcast',
           message: 'Broadcast message',
           fonts: ['source1.pdf', 'source2.txt'],
-        },
-      };
-
-      update(testMessage);
-
-      expect(mockFlowPreviewStore.treatAnswerResponse).toHaveBeenCalledWith(
-        expect.any(Object),
-        testMessage.content,
-        expect.any(Object),
-      );
-    });
-
-    it('handles cancelled message content', () => {
-      mockFlowPreviewStore.messages = [{ type: 'answer', status: 'loading' }];
-
-      const testMessage = {
-        content: {
-          type: 'cancelled',
         },
       };
 
