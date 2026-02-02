@@ -75,6 +75,7 @@ const {
   status,
   shouldUpgradeManager,
   shouldShowUpgradeDisclaimer,
+  shouldShowPostUpgradeDisclaimer,
 } = storeToRefs(managerSelectorStore);
 
 const managers = computed(() => options.value?.managers);
