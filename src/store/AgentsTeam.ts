@@ -75,11 +75,21 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       router.push({ name: 'agents-team' });
     }
 
-    const assignedAgent = officialAgents.data.find(
+    const officialAssignedAgent = officialAgents.data.find(
       (agent) =>
         agent.uuid === normalizedAgent.uuid ||
         agent.agents?.some((variant) => variant.uuid === normalizedAgent.uuid),
     );
+    const customAssignedAgent = myAgents.data.find(
+      (agent) => agent.uuid === normalizedAgent.uuid,
+    );
+
+    const assignedAgent = officialAssignedAgent || customAssignedAgent;
+
+    if (!assignedAgent) {
+      return;
+    }
+
     assignedAgent.assigned = true;
   }
 
