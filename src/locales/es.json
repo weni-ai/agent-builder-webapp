@@ -531,9 +531,7 @@
         "location": "Ubicación"
       },
       "placeholder": "Inicia una conversación con el agente para probarlo",
-      "save_changes_to_test_the_agent": "Guarda los cambios para probar el agente",
       "manager_selected": "Ahora usando {name} para esta conversación",
-      "media_and_location_unavailable": "No hay acciones de multimedia y ubicación registradas",
       "standby": "Modo de espera",
       "catalog": {
         "title": "Catálogo de productos",
