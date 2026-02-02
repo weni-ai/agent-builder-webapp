@@ -54,10 +54,6 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
         type: 'flowstart',
         name: data.name,
         question_uuid: null,
-        feedback: {
-          value: null,
-          reason: null,
-        },
       });
     } else if (data.type === 'media_and_location_unavailable') {
       answer.status = 'loaded';
@@ -99,10 +95,6 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
         response: item,
         question_uuid: questionUuid,
         sources,
-        feedback: {
-          value: null,
-          reason: null,
-        },
       };
       addMessage(additionalMessage);
     });

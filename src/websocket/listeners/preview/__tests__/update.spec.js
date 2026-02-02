@@ -37,7 +37,6 @@ describe('src/websocket/listeners/preview/update.js', () => {
         text: '',
         status: 'loading',
         question_uuid: null,
-        feedback: { value: null, reason: null },
       };
 
       mockFlowPreviewStore.messages = [
@@ -118,10 +117,6 @@ describe('src/websocket/listeners/preview/update.js', () => {
         text: '',
         status: 'loading',
         question_uuid: null,
-        feedback: {
-          value: null,
-          reason: null,
-        },
       };
 
       expect(mockFlowPreviewStore.addMessage).toHaveBeenCalledWith(

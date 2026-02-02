@@ -157,10 +157,6 @@ watch(
       type: 'manager_selected',
       name: getPreviewManagerLabel(managerId),
       question_uuid: null,
-      feedback: {
-        value: null,
-        reason: null,
-      },
     });
 
     scrollToLastMessage();
@@ -186,10 +182,6 @@ function sendOrder(order) {
     text: JSON.stringify(order),
     status: 'loaded',
     question_uuid: null,
-    feedback: {
-      value: null,
-      reason: null,
-    },
   });
 
   scrollToLastMessage();
@@ -228,10 +220,6 @@ async function answer(question) {
     text: '',
     status: 'loading',
     question_uuid: null,
-    feedback: {
-      value: null,
-      reason: null,
-    },
   });
 
   flowPreviewStore.addMessage(answer);

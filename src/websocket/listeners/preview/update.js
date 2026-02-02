@@ -16,10 +16,6 @@ export default (message) => {
       text: '',
       status: 'loading',
       question_uuid: null,
-      feedback: {
-        value: null,
-        reason: null,
-      },
     };
     flowPreviewStore.addMessage(answer);
     answerToTreat = answer;
