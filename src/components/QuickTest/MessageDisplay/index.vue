@@ -63,11 +63,6 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  shouldShowSources: {
-    type: Boolean,
-    required: false,
-    default: false,
-  },
 });
 
 const text = computed(() => {

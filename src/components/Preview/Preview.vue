@@ -29,7 +29,6 @@
         v-for="(message, index) in messages"
         :key="`message-${index}`"
         :message="message"
-        :shouldShowSources="true"
         data-testid="message-display"
       >
         <template #components>

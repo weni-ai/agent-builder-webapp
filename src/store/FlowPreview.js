@@ -72,29 +72,25 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
     answer.status = 'loaded';
 
     const message = get(data, 'message', fallbackMessage);
-    const sources = get(data, 'fonts', []);
 
     if (Array.isArray(message) && message.length > 0) {
       answer.response = message[0];
-      answer.sources = sources;
 
-      createAdditionalMessages(message.slice(1), answer.question_uuid, sources);
+      createAdditionalMessages(message.slice(1), answer.question_uuid);
     } else {
       answer.response = message;
-      answer.sources = sources;
     }
 
     if (onBroadcast) onBroadcast(answer);
   }
 
-  function createAdditionalMessages(items, questionUuid, sources) {
+  function createAdditionalMessages(items, questionUuid) {
     items.forEach((item) => {
       const additionalMessage = {
         type: 'answer',
         status: 'loaded',
         response: item,
         question_uuid: questionUuid,
-        sources,
       };
       addMessage(additionalMessage);
     });
