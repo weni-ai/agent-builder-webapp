@@ -5,8 +5,14 @@ vi.mock('uuid', () => ({
   v4: vi.fn(() => 'mock-uuid'),
 }));
 
+vi.mock('@/store/Project', () => ({
+  useProjectStore: vi.fn(() => ({
+    uuid: 'test-project-uuid',
+  })),
+}));
+
 const mockAuthToken = 'mockAuthToken';
-const mockContact = { urns: ['tel:1234567890'], uuid: 'mock-uuid' };
+const mockContact = { urn: 'tel:1234567890', uuid: 'mock-uuid' };
 
 describe('useFlowPreview', () => {
   let flowPreview;
@@ -21,11 +27,10 @@ describe('useFlowPreview', () => {
 
   describe('previewInit', () => {
     it('should initialize preview contact correctly', () => {
-      const contentBaseUuid = 'test-content-base-uuid';
-      flowPreview.previewInit({ contentBaseUuid });
+      flowPreview.previewInit();
 
       expect(flowPreview.preview.value.contact.uuid).toBe('mock-uuid');
-      expect(flowPreview.preview.value.contact.urns[0]).toMatch(/^tel:/);
+      expect(flowPreview.preview.value.contact.urn).toMatch(/^tel:/);
     });
   });
 });

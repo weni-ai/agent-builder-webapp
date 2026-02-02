@@ -2,22 +2,30 @@
 
 import { ref } from 'vue';
 import { v4 as createUUID } from 'uuid';
+import { useProjectStore } from '@/store/Project';
+
+interface PreviewContact {
+  uuid: string;
+  urn: string;
+}
 
 export default function useFlowPreview() {
-  const preview = ref({
+  const projectStore = useProjectStore();
+
+  const preview = ref<{ contact: PreviewContact }>({
     contact: {
-      fields: {},
-      groups: [],
-      urns: [],
       uuid: '',
+      urn: '',
     },
   });
 
-  function previewInit({ contentBaseUuid }) {
-    const numberBasedOnContentBaseUuid = contentBaseUuid
+  function previewInit() {
+    const numberBasedOnProjectUuid = projectStore.uuid
       ?.slice(-12)
       .split('')
-      .map((char) => char.charCodeAt().toString().slice(-2).padStart(2, '0'))
+      .map((char: string) =>
+        char.charCodeAt(0).toString().slice(-2).padStart(2, '0'),
+      )
       .join('');
 
     const threeRandomDigits = String(Math.floor(Math.random() * 1000)).padStart(
@@ -25,14 +33,11 @@ export default function useFlowPreview() {
       '0',
     );
 
-    const urn = `tel:${numberBasedOnContentBaseUuid}${threeRandomDigits}`;
+    const urn = `tel:${numberBasedOnProjectUuid}${threeRandomDigits}`;
 
     preview.value.contact = {
       uuid: createUUID(),
-      urns: [urn],
-      fields: {},
-      groups: [],
-      created_on: new Date().toISOString(),
+      urn: urn,
     };
   }
 

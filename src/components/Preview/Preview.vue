@@ -326,7 +326,7 @@ async function answer(question) {
       projectUuid: projectStore.uuid,
       text: isQuestionMedia ? '' : question,
       attachments: questionMediaUrl ? [questionMediaUrl] : [],
-      contact_urn: flowPreviewStore.preview.contact.urns[0],
+      contact_urn: flowPreviewStore.preview.contact.urn,
       manager_uuid: managerSelectorStore.selectedPreviewManager,
     });
 
@@ -350,9 +350,7 @@ function scrollToLastMessage() {
 function initPreview() {
   if (flowPreviewStore.preview.contact.uuid) return;
 
-  flowPreviewStore.previewInit({
-    contentBaseUuid: projectStore.details.contentBaseUuid,
-  });
+  flowPreviewStore.previewInit();
 
   window.brainPreviewAddMessage = (messageData) => {
     flowPreviewStore.addMessage(messageData);
