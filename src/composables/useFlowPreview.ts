@@ -1,5 +1,3 @@
-// Based on https://github.com/weni-ai/floweditor/blob/main/src/components/simulator/Simulator.tsx
-
 import { ref } from 'vue';
 import { v4 as createUUID } from 'uuid';
 import { useProjectStore } from '@/store/Project';

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import useFlowPreview from '../useFlowPreview';
 
 vi.mock('uuid', () => ({
@@ -11,18 +11,19 @@ vi.mock('@/store/Project', () => ({
   })),
 }));
 
-const mockAuthToken = 'mockAuthToken';
-const mockContact = { urn: 'tel:1234567890', uuid: 'mock-uuid' };
-
 describe('useFlowPreview', () => {
   let flowPreview;
+  let mathRandomSpy;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    localStorage.setItem('authToken', mockAuthToken);
+    mathRandomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.123);
 
     flowPreview = useFlowPreview();
-    flowPreview.preview.value.contact = mockContact;
+  });
+
+  afterEach(() => {
+    mathRandomSpy?.mockRestore();
   });
 
   describe('previewInit', () => {

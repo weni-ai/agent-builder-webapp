@@ -43,7 +43,7 @@
 
     <footer class="preview__footer">
       <MessageInput
-        v-model="message"
+        v-model="messageInput"
         class="footer__message-input"
         :placeholder="$t('router.preview.preview_tests_placeholder')"
         data-testid="message-input"
@@ -55,6 +55,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch, nextTick, reactive } from 'vue';
+import { storeToRefs } from 'pinia';
 
 import MessageDisplay from '@/components/QuickTest/MessageDisplay/index.vue';
 import PreviewPlaceholder from '@/components/Preview/Placeholder.vue';
@@ -77,8 +78,8 @@ const projectStore = useProjectStore();
 const flowPreviewStore = useFlowPreviewStore();
 const managerSelectorStore = useManagerSelectorStore();
 
-const message = ref('');
-const messages = computed(() => flowPreviewStore.messages);
+const messageInput = ref('');
+const { messages } = storeToRefs(flowPreviewStore);
 const messagesRef = ref(null);
 
 const showPreviewMenu = ref(false);
@@ -100,24 +101,7 @@ function getPreviewManagerLabel(managerId) {
   return matchedManager?.label || managerId;
 }
 
-function messageHasDeprecatedQuickReplies(message) {
-  const isTheLastMessage =
-    messages.value
-      .filter((msg) => ['answer', 'question'].includes(msg.type))
-      .at(-1) === message;
-
-  return (
-    message.type === 'answer' &&
-    isTheLastMessage &&
-    flowPreviewStore.preview.quickReplies?.length > 0
-  );
-}
-
 function treatMessageToComponents(message) {
-  if (!messageHasDeprecatedQuickReplies(message)) {
-    return message?.response?.msg;
-  }
-
   const treatedMessage = { ...(message?.response?.msg || {}) };
 
   if (Object.keys(treatedMessage).length === 0 && message.text) {
@@ -137,7 +121,7 @@ function openPreviewMenu(message) {
 }
 
 watch(
-  () => flowPreviewStore.messages,
+  messages,
   (newMessages) => {
     emit('messages', newMessages);
     scrollToLastMessage();
@@ -157,8 +141,6 @@ watch(
       name: getPreviewManagerLabel(managerId),
       question_uuid: null,
     });
-
-    scrollToLastMessage();
   },
 );
 
@@ -182,18 +164,15 @@ function sendOrder(order) {
     status: 'loaded',
     question_uuid: null,
   });
-
-  scrollToLastMessage();
 }
 
 function sendMessage(messageContent) {
-  let messageText;
-
-  if (messageContent) {
-    messageText = messageContent;
-  } else {
-    const isFileMessage = typeof message.value !== 'string';
-    messageText = isFileMessage ? message.value : message.value.trim();
+  let messageText = messageContent;
+  if (!messageText) {
+    const isFileMessage = typeof messageInput.value !== 'string';
+    messageText = isFileMessage
+      ? messageInput.value
+      : messageInput.value.trim();
   }
 
   if (!messageText) {
@@ -206,26 +185,24 @@ function sendMessage(messageContent) {
   });
 
   if (!messageContent) {
-    message.value = '';
+    messageInput.value = '';
   }
 
-  scrollToLastMessage();
   setTimeout(() => answer(messageText), 400);
 }
 
 async function answer(question) {
-  const answer = reactive({
+  const answerMessage = reactive({
     type: 'answer',
     text: '',
     status: 'loading',
     question_uuid: null,
   });
 
-  flowPreviewStore.addMessage(answer);
-  scrollToLastMessage();
+  flowPreviewStore.addMessage(answerMessage);
 
   const handleError = () => {
-    flowPreviewStore.removeMessage(answer);
+    flowPreviewStore.removeMessage(answerMessage);
   };
 
   let questionMediaUrl;
@@ -259,8 +236,7 @@ async function answer(question) {
       manager_uuid: managerSelectorStore.selectedPreviewManager,
     });
 
-    flowPreviewStore.treatAnswerResponse(answer, data, {
-      onBroadcast: () => scrollToLastMessage(),
+    flowPreviewStore.treatAnswerResponse(answerMessage, data, {
       fallbackMessage: i18n.global.t('quick_test.unable_to_find_an_answer'),
     });
   } catch {
@@ -280,10 +256,6 @@ function initPreview() {
   if (flowPreviewStore.preview.contact.uuid) return;
 
   flowPreviewStore.previewInit();
-
-  window.brainPreviewAddMessage = (messageData) => {
-    flowPreviewStore.addMessage(messageData);
-  };
 }
 
 onMounted(() => {
