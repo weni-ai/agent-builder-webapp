@@ -98,18 +98,6 @@ watch(
     if (email) initHotjar(email);
   },
 );
-
-watch(
-  () => isBuildModule.value,
-  (isBuildModuleActive) => {
-    if (isBuildModuleActive) {
-      managerSelectorStore.loadManagerData();
-    }
-  },
-  {
-    immediate: true,
-  },
-);
 </script>
 
 <style lang="scss" scoped>

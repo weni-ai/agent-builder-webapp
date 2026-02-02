@@ -17,11 +17,13 @@
       />
 
       <UnnnicSelect
+        v-if="!managerSelectorStore.hasOnlyNewManager"
         v-model:modelValue="managerSelectorStore.selectedPreviewManager"
         class="preview-drawer__manager-select"
         itemValue="id"
         :options="previewManagerOptions"
         size="sm"
+        :optionsLines="2"
       />
     </section>
   </UnnnicDrawerHeader>
