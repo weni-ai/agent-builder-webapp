@@ -71,7 +71,6 @@ import { getFileType } from '@/utils/medias';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
-import env from '@/utils/env';
 
 const emit = defineEmits(['messages']);
 
@@ -138,21 +137,6 @@ function openPreviewMenu(message) {
   previewMenuMessage.value = message;
 }
 
-function isEventCardBrain(event) {
-  if (event.type !== 'webhook_called' || !event.url) {
-    return false;
-  }
-
-  const url = new URL(event.url);
-  const apiBaseUrl = new URL(env('NEXUS_API_BASE_URL')).origin;
-
-  return (
-    url.origin === apiBaseUrl &&
-    url.pathname === '/messages' &&
-    url.searchParams.has('token')
-  );
-}
-
 watch(
   () => flowPreviewStore.messages,
   (newMessages) => {
@@ -160,48 +144,6 @@ watch(
     scrollToLastMessage();
   },
   { deep: true },
-);
-
-watch(
-  () => flowPreviewStore.preview.session?.status,
-  (value, previous) => {
-    if (previous === 'waiting' && value === 'completed') {
-      flowPreviewStore.addMessage({
-        type: 'flowsend',
-        name: '',
-        question_uuid: null,
-        feedback: {
-          value: null,
-          reason: null,
-        },
-      });
-
-      const lastEvent =
-        flowPreviewStore.preview.events
-          .filter(({ type }) => !['info'].includes(type))
-          .at(-1) || {};
-
-      const shouldForwardToBrain = isEventCardBrain(lastEvent);
-
-      if (shouldForwardToBrain) {
-        flowPreviewStore.addMessage({
-          type: 'message_forwarded_to_brain',
-          name: '',
-          question_uuid: null,
-          feedback: {
-            value: null,
-            reason: null,
-          },
-        });
-
-        const { text: lastQuestion } = flowPreviewStore.messages.findLast(
-          ({ type }) => type === 'question',
-        );
-
-        answer(lastQuestion);
-      }
-    }
-  },
 );
 
 watch(
