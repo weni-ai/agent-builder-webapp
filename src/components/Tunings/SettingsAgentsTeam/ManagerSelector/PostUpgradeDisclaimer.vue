@@ -12,6 +12,9 @@
     :description="
       $t(
         'agent_builder.tunings.manager.upgrade_banner.auto_upgrade_success_description',
+        {
+          manager_name: managers.new.label,
+        },
       )
     "
     data-testid="post-upgrade-disclaimer"
