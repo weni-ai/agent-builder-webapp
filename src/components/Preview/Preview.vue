@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick, reactive } from 'vue';
+import { ref, computed, onMounted, watch, nextTick } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import MessageDisplay from '@/components/QuickTest/MessageDisplay/index.vue';
@@ -64,17 +64,10 @@ import MessageComponentResolver from '@/components/MessageComponents/MessageComp
 import PreviewMenu from '@/components/Preview/Menu/index.vue';
 
 import { useFlowPreviewStore } from '@/store/FlowPreview';
-import { useProjectStore } from '@/store/Project';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
-
-import { getFileType } from '@/utils/medias';
-
-import nexusaiAPI from '@/api/nexusaiAPI';
-import i18n from '@/utils/plugins/i18n';
 
 const emit = defineEmits(['messages']);
 
-const projectStore = useProjectStore();
 const flowPreviewStore = useFlowPreviewStore();
 const managerSelectorStore = useManagerSelectorStore();
 
@@ -89,30 +82,8 @@ const shouldShowPreviewPlaceholder = computed(
   () => messages.value.length === 0,
 );
 
-function getPreviewManagerLabel(managerId) {
-  const { managers } = managerSelectorStore.options;
-  const managerOptions = [managers.new, managers.legacy].filter(
-    (manager) => manager?.id,
-  );
-  const matchedManager = managerOptions.find(
-    (manager) => manager.id === managerId,
-  );
-
-  return matchedManager?.label || managerId;
-}
-
 function treatMessageToComponents(message) {
-  const treatedMessage = { ...(message?.response?.msg || {}) };
-
-  if (Object.keys(treatedMessage).length === 0 && message.text) {
-    treatedMessage.text = message.text;
-  }
-
-  if (flowPreviewStore.preview.quickReplies?.length) {
-    treatedMessage.quick_replies = flowPreviewStore.preview.quickReplies;
-  }
-
-  return treatedMessage;
+  return flowPreviewStore.treatMessageToComponents(message);
 }
 
 function openPreviewMenu(message) {
@@ -135,18 +106,9 @@ watch(
     if (!managerId || managerId === previousManagerId) {
       return;
     }
-
-    flowPreviewStore.addMessage({
-      type: 'manager_selected',
-      name: getPreviewManagerLabel(managerId),
-      question_uuid: null,
-    });
+    flowPreviewStore.addManagerSelectedMessage(managerId);
   },
 );
-
-function isMedia(message) {
-  return !!getFileType(message);
-}
 
 function sendMenuMessage(messageContent) {
   previewMenuMessage.value = null;
@@ -157,13 +119,7 @@ function sendMenuMessage(messageContent) {
 
 function sendOrder(order) {
   showPreviewMenu.value = false;
-
-  flowPreviewStore.addMessage({
-    type: 'order',
-    text: JSON.stringify(order),
-    status: 'loaded',
-    question_uuid: null,
-  });
+  flowPreviewStore.sendOrder(order);
 }
 
 function sendMessage(messageContent) {
@@ -179,68 +135,10 @@ function sendMessage(messageContent) {
     return;
   }
 
-  flowPreviewStore.addMessage({
-    type: 'question',
-    text: messageText,
-  });
+  flowPreviewStore.sendMessage(messageText);
 
   if (!messageContent) {
     messageInput.value = '';
-  }
-
-  setTimeout(() => answer(messageText), 400);
-}
-
-async function answer(question) {
-  const answerMessage = reactive({
-    type: 'answer',
-    text: '',
-    status: 'loading',
-    question_uuid: null,
-  });
-
-  flowPreviewStore.addMessage(answerMessage);
-
-  const handleError = () => {
-    flowPreviewStore.removeMessage(answerMessage);
-  };
-
-  let questionMediaUrl;
-  const isQuestionMedia = isMedia(question);
-  if (isQuestionMedia) {
-    try {
-      const isGeolocationMedia = typeof question === 'string';
-      if (isGeolocationMedia) {
-        questionMediaUrl = `geo:${question}`;
-      } else {
-        const {
-          data: { file_url },
-        } = await nexusaiAPI.router.preview.uploadFile({
-          projectUuid: projectStore.uuid,
-          file: question,
-        });
-        questionMediaUrl = file_url;
-      }
-    } catch {
-      handleError();
-      return;
-    }
-  }
-
-  try {
-    const { data } = await nexusaiAPI.router.preview.create({
-      projectUuid: projectStore.uuid,
-      text: isQuestionMedia ? '' : question,
-      attachments: questionMediaUrl ? [questionMediaUrl] : [],
-      contact_urn: flowPreviewStore.preview.contact.urn,
-      manager_uuid: managerSelectorStore.selectedPreviewManager,
-    });
-
-    flowPreviewStore.treatAnswerResponse(answerMessage, data, {
-      fallbackMessage: i18n.global.t('quick_test.unable_to_find_an_answer'),
-    });
-  } catch {
-    handleError();
   }
 }
 
@@ -253,9 +151,7 @@ function scrollToLastMessage() {
 }
 
 function initPreview() {
-  if (flowPreviewStore.preview.contact.uuid) return;
-
-  flowPreviewStore.previewInit();
+  flowPreviewStore.ensurePreviewInitialized();
 }
 
 onMounted(() => {
