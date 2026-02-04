@@ -30,5 +30,5 @@ import { useManagerSelectorStore } from '@/store/ManagerSelector';
 const managerSelectorStore = useManagerSelectorStore();
 const { options } = storeToRefs(managerSelectorStore);
 
-const managers = computed(() => options.value?.managers);
+const managers = computed(() => options.value.managers);
 </script>
