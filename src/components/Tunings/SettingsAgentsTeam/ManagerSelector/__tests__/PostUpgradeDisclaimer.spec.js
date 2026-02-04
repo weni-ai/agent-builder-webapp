@@ -66,6 +66,9 @@ describe('PostUpgradeDisclaimer.vue', () => {
     expect(disclaimer.props('description')).toBe(
       i18n.global.t(
         'agent_builder.tunings.manager.upgrade_banner.auto_upgrade_success_description',
+        {
+          manager_name: 'Manager 2.6',
+        },
       ),
     );
   });
