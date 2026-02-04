@@ -264,7 +264,7 @@
         "upgrade_banner": {
           "title": "💡 {manager_name} ya está disponible",
           "disclaimer_title": "Actualiza para {manager_name}",
-          "disclaimer_title_with_date": "Actualiza para {manager_name} até {date}",
+          "disclaimer_title_with_date": "Actualiza para {manager_name} hasta {date}",
           "manager_2_dot_6_description": "Actualiza para obtener respuestas más confiables mientras el Manager coordina a tus agentes.",
           "manager_2_dot_6_highlights": [
             "Mejor rendimiento en conversaciones complejas",
