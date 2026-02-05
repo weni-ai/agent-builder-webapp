@@ -263,7 +263,7 @@
         "load_error": "Não foi possível carregar os managers",
         "upgrade_banner": {
           "title": "💡 {manager_name} já está disponível",
-          "manager_2_dot_6_description": "Atualize para obter respostas mais rápidas e confiáveis enquanto o Manager coordena seus agentes.",
+          "manager_2_dot_6_description": "Atualize para obter respostas mais confiáveis enquanto o Manager coordena seus agentes.",
           "manager_2_dot_6_highlights": [
             "Melhor desempenho em conversas complexas",
             "Orquestração mais estável entre os agentes"
