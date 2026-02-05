@@ -1,5 +1,20 @@
 <template>
   <section class="manager-selector">
+    <PostUpgradeDisclaimer
+      v-if="shouldShowPostUpgradeDisclaimer"
+      data-testid="post-upgrade-disclaimer"
+    />
+
+    <UpgradeDisclaimer
+      v-if="shouldShowUpgradeDisclaimer"
+      data-testid="upgrade-disclaimer"
+    />
+
+    <ManagerUpgradeCard
+      v-else-if="shouldUpgradeManager"
+      data-testid="manager-upgrade-card"
+    />
+
     <h2
       class="manager-selector__title"
       data-testid="manager-selector-title"
@@ -7,7 +22,13 @@
       {{ $t('agent_builder.tunings.manager.title') }}
     </h2>
 
+    <RadiosSkeletonLoading v-if="isLoadingManagers" />
+    <OnlyNewManager
+      v-else-if="hasOnlyNewManager"
+      :manager="managers.new"
+    />
     <UnnnicRadioGroup
+      v-else
       state="vertical"
       :modelValue="selectedManager"
       data-testid="manager-selector-radio-group"
@@ -40,19 +61,39 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onUnmounted } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 
+import ManagerUpgradeCard from './ManagerUpgradeCard.vue';
+import OnlyNewManager from './OnlyNewManager.vue';
+import PostUpgradeDisclaimer from './PostUpgradeDisclaimer.vue';
+import RadiosSkeletonLoading from './RadiosSkeletonLoading.vue';
+import UpgradeDisclaimer from './UpgradeDisclaimer.vue';
+
 const managerSelectorStore = useManagerSelectorStore();
-const { options, selectedManager } = storeToRefs(managerSelectorStore);
+const { resetPostUpgradeDisclaimerSession } = managerSelectorStore;
+const {
+  options,
+  selectedManager,
+  status,
+  shouldUpgradeManager,
+  shouldShowUpgradeDisclaimer,
+  shouldShowPostUpgradeDisclaimer,
+  hasOnlyNewManager,
+} = storeToRefs(managerSelectorStore);
 
 const managers = computed(() => options.value?.managers);
+const isLoadingManagers = computed(() => status.value === 'loading');
 
 const updateSelectedManager = (managerId) => {
   managerSelectorStore.setSelectedManager(managerId);
 };
+
+onUnmounted(() => {
+  resetPostUpgradeDisclaimerSession();
+});
 </script>
 
 <style lang="scss" scoped>

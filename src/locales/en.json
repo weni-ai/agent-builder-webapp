@@ -260,7 +260,21 @@
         "new": "New",
         "recommended": "Recommended",
         "legacy_model": "Legacy model",
-        "load_error": "Unable to load managers"
+        "load_error": "Unable to load managers",
+        "only_new_manager_description": "This project uses {manager_name}. Older Manager versions are no longer available.",
+        "upgrade_banner": {
+          "title": "💡 {manager_name} is now available",
+          "disclaimer_title": "Upgrade to {manager_name}",
+          "disclaimer_title_with_date": "Upgrade to {manager_name} by {date}",
+          "auto_upgrade_success_title": "{manager_name} is now active",
+          "auto_upgrade_success_description": "This project has been upgraded to {manager_name} for improved orchestration and more consistent answers.",
+          "manager_2_dot_6_description": "Upgrade to get more reliable answers while the Manager coordinates your agents.",
+          "manager_2_dot_6_highlights": [
+            "Better performance in complex conversations",
+            "More stable orchestration across agents"
+          ],
+          "manager_2_dot_6_disclaimer_description": "Manager 2.5 will be deprecated soon. Upgrade to Manager 2.6 for more reliable answers while the Manager coordinates your agents."
+        }
       }
     }
   },
@@ -517,12 +531,7 @@
         "location": "Location"
       },
       "placeholder": "Start a conversation with your agent to test it",
-      "save_changes_to_test_the_agent": "Save changes to test the agent",
-      "field_changed_to_value": "Parameter {field} changed to {value}",
-      "flow_started": "Flow {name} started",
-      "flow_finished": "Flow completed",
-      "message_forwarded_to_brain": "Message forwarded to Agent Builder",
-      "media_and_location_unavailable": "No media and location actions added",
+      "manager_selected": "Now using {name} for this conversation",
       "standby": "Standby mode",
       "catalog": {
         "title": "Product catalog",

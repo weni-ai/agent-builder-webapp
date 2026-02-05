@@ -260,7 +260,21 @@
         "new": "Nuevo",
         "recommended": "Recomendado",
         "legacy_model": "Modelo legado",
-        "load_error": "No fue posible cargar los managers"
+        "load_error": "No fue posible cargar los managers",
+        "only_new_manager_description": "Este proyecto usa {manager_name}. Versiones más antiguas del Manager no están disponibles.",
+        "upgrade_banner": {
+          "title": "💡 {manager_name} ya está disponible",
+          "disclaimer_title": "Actualiza para {manager_name}",
+          "disclaimer_title_with_date": "Actualiza para {manager_name} hasta {date}",
+          "auto_upgrade_success_title": "{manager_name} ya está activo",
+          "auto_upgrade_success_description": "Este proyecto ha sido actualizado para el {manager_name} para mejor coordinación y respuestas más consistentes.",
+          "manager_2_dot_6_description": "Actualiza para obtener respuestas más confiables mientras el Manager coordina a tus agentes.",
+          "manager_2_dot_6_highlights": [
+            "Mejor rendimiento en conversaciones complejas",
+            "Orquestación más estable entre los agentes"
+          ],
+          "manager_2_dot_6_disclaimer_description": "Manager 2.5 será descontinuado por breve tiempo. Actualizar Manager 2.6 para respuestas más confiáveis ​​enquanto o Manager coordina sus agentes."
+        }
       }
     }
   },
@@ -517,12 +531,7 @@
         "location": "Ubicación"
       },
       "placeholder": "Inicia una conversación con el agente para probarlo",
-      "save_changes_to_test_the_agent": "Guarda los cambios para probar el agente",
-      "field_changed_to_value": "Parámetro {field} cambiado a {value}",
-      "flow_started": "Flujo {name} iniciado",
-      "flow_finished": "Flujo finalizado",
-      "message_forwarded_to_brain": "Mensaje redirigido a Agent Builder",
-      "media_and_location_unavailable": "No hay acciones de multimedia y ubicación registradas",
+      "manager_selected": "Ahora usando {name} para esta conversación",
       "standby": "Modo de espera",
       "catalog": {
         "title": "Catálogo de productos",

@@ -45,7 +45,6 @@ import { useTuningsStore } from '@/store/Tunings';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
-import { useProjectStore } from '@/store/Project';
 import { useUserStore } from '@/store/User';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { useCurrentModule } from '@/composables/useCurrentModule';
@@ -61,7 +60,6 @@ const { isBuildModule, isAgentsModule } = useCurrentModule();
 const route = useRoute();
 const agentsTeamStore = useAgentsTeamStore();
 const alertStore = useAlertStore();
-const projectStore = useProjectStore();
 const userStore = useUserStore();
 const managerSelectorStore = useManagerSelectorStore();
 
@@ -78,10 +76,7 @@ onMounted(() => {
   useTuningsStore().fetchCredentials();
   useProfileStore().load();
   userStore.getUserDetails();
-
-  if (!projectStore.details.contentBaseUuid) {
-    projectStore.getRouterDetails();
-  }
+  managerSelectorStore.loadManagerData();
 });
 
 const showTestAgentsButton = computed(
@@ -95,18 +90,6 @@ watch(
   () => userStore.user.email,
   (email) => {
     if (email) initHotjar(email);
-  },
-);
-
-watch(
-  () => isBuildModule.value,
-  (isBuildModuleActive) => {
-    if (isBuildModuleActive) {
-      managerSelectorStore.loadManagerData();
-    }
-  },
-  {
-    immediate: true,
   },
 );
 </script>

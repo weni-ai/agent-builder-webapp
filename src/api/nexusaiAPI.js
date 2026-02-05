@@ -108,30 +108,23 @@ export default {
       },
 
       manager: {
-        read() {
-          // TODO: Remove this mock response when the API is implemented
-          const managerSelectorMockResponse = {
-            currentManager: 'manager-2.5',
-            managers: {
-              new: {
-                id: 'manager-2.6',
-                label: 'Manager 2.6',
-              },
-              legacy: {
-                id: 'manager-2.5',
-                label: 'Manager 2.5',
-                deprecation: '2026-04-15',
-              },
-            },
-            serverTime: '2026-01-08T13:00:00Z',
-          };
+        async read({ projectUuid }) {
+          const { data } = await request.$http.get(
+            `api/project/${projectUuid}/managers`,
+          );
 
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              resolve({
-                data: JSON.parse(JSON.stringify(managerSelectorMockResponse)),
-              });
-            }, 1000);
+          return {
+            data: {
+              serverTime: data.serverTime,
+              managers: { new: data.new, legacy: data.legacy },
+              currentManager: data.currentManager,
+            },
+          };
+        },
+
+        edit({ projectUuid, manager }) {
+          return request.$http.post(`api/project/${projectUuid}/managers`, {
+            currentManager: manager,
           });
         },
       },
@@ -191,12 +184,19 @@ export default {
     },
 
     preview: {
-      create({ projectUuid, text, attachments, contact_urn }) {
+      create({
+        projectUuid,
+        text,
+        attachments,
+        contact_urn,
+        manager_uuid = '',
+      }) {
         return request.$http.post(`api/${projectUuid}/preview/`, {
           text,
           attachments,
           contact_urn,
           language: i18n.global.locale,
+          manager_agent_uuid: manager_uuid,
         });
       },
       uploadFile({ projectUuid, file }) {

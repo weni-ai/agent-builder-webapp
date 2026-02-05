@@ -287,14 +287,18 @@ describe('nexusaiAPI.js', () => {
     const result = await nexusaiAPI.router.preview.create({
       projectUuid: 'project1',
       text: 'Sample text',
+      attachments: ['attachment1'],
       contact_urn: 'contact1',
       language: 'en',
+      manager_uuid: 'manager1',
     });
 
     expect(request.$http.post).toHaveBeenCalledWith('api/project1/preview/', {
       text: 'Sample text',
       contact_urn: 'contact1',
       language: 'en',
+      attachments: ['attachment1'],
+      manager_agent_uuid: 'manager1',
     });
     expect(result).toEqual(mockResponse);
   });
