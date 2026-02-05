@@ -12,7 +12,7 @@ export default function useAgent() {
 
     return {
       uuid: (agent as Agent).uuid || '',
-      id: (agent as Agent).slug || '',
+      id: (agent as Agent).id || (agent as Agent).slug || '',
       name: agent.name || '',
       is_official: agent.is_official || false,
       description: agent.description || '',
