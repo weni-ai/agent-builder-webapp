@@ -7,6 +7,15 @@ import i18n from '@/utils/plugins/i18n';
 
 import type { ManagerSelector } from './types/ManagerSelector.type';
 
+const parseDate = (dateString?: string | null): Date | null => {
+  if (!dateString) {
+    return null;
+  }
+
+  const parsedDate = new Date(dateString);
+  return Number.isNaN(parsedDate.getTime()) ? null : parsedDate;
+};
+
 export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
   const alertStore = useAlertStore();
 
@@ -37,17 +46,37 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     return currentManager !== managers.new.id;
   });
 
-  const legacyDeprecationDate = computed(
-    () => options.value.managers.legacy.deprecation || null,
+  const legacyDeprecationDate = computed(() =>
+    parseDate(options.value.managers.legacy.deprecation),
   );
 
   const isLegacyDeprecated = computed(() => {
-    const { serverTime } = options.value;
-    if (!legacyDeprecationDate.value || !serverTime) {
+    const serverDate = parseDate(options.value.serverTime);
+    if (!legacyDeprecationDate.value || !serverDate) {
       return false;
     }
 
-    return new Date(serverTime) >= new Date(legacyDeprecationDate.value);
+    return serverDate >= legacyDeprecationDate.value;
+  });
+
+  const shouldShowUpgradeDisclaimer = computed(() => {
+    const serverDate = parseDate(options.value.serverTime);
+    const legacyDate = legacyDeprecationDate.value;
+
+    if (!serverDate || !legacyDate) {
+      return false;
+    }
+
+    const WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000;
+
+    const weekFromServerTime = new Date(serverDate.getTime() + WEEK_IN_MS);
+    const isWithinDeprecationWindow = weekFromServerTime >= legacyDate;
+
+    return (
+      shouldUpgradeManager.value &&
+      !isLegacyDeprecated.value &&
+      isWithinDeprecationWindow
+    );
   });
 
   async function loadManagerData() {
@@ -83,6 +112,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     shouldUpgradeManager,
     legacyDeprecationDate,
     isLegacyDeprecated,
+    shouldShowUpgradeDisclaimer,
     loadManagerData,
     setSelectedManager,
   };

@@ -1,7 +1,12 @@
 <template>
   <section class="manager-selector">
+    <UpgradeDisclaimer
+      v-if="shouldShowUpgradeDisclaimer"
+      data-testid="upgrade-disclaimer"
+    />
+
     <ManagerUpgradeCard
-      v-if="shouldUpgradeManager"
+      v-else-if="shouldUpgradeManager"
       data-testid="manager-upgrade-card"
     />
 
@@ -47,12 +52,18 @@
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 
-import ManagerUpgradeCard from './ManagerUpgradeCard.vue';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 
+import ManagerUpgradeCard from './ManagerUpgradeCard.vue';
+import UpgradeDisclaimer from './UpgradeDisclaimer.vue';
+
 const managerSelectorStore = useManagerSelectorStore();
-const { options, selectedManager, shouldUpgradeManager } =
-  storeToRefs(managerSelectorStore);
+const {
+  options,
+  selectedManager,
+  shouldUpgradeManager,
+  shouldShowUpgradeDisclaimer,
+} = storeToRefs(managerSelectorStore);
 
 const managers = computed(() => options.value?.managers);
 
