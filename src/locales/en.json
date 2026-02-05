@@ -260,7 +260,15 @@
         "new": "New",
         "recommended": "Recommended",
         "legacy_model": "Legacy model",
-        "load_error": "Unable to load managers"
+        "load_error": "Unable to load managers",
+        "upgrade_banner": {
+          "title": "💡 {manager_name} is now available",
+          "manager_2_dot_6_description": "Upgrade to get more reliable answers while the Manager coordinates your agents.",
+          "manager_2_dot_6_highlights": [
+            "Better performance in complex conversations",
+            "More stable orchestration across agents"
+          ]
+        }
       }
     }
   },
