@@ -107,6 +107,35 @@ export default {
         );
       },
 
+      manager: {
+        read() {
+          // TODO: Remove this mock response when the API is implemented
+          const managerSelectorMockResponse = {
+            currentManager: 'manager-2.5',
+            managers: {
+              new: {
+                id: 'manager-2.6',
+                label: 'Manager 2.6',
+              },
+              legacy: {
+                id: 'manager-2.5',
+                label: 'Manager 2.5',
+                deprecation: '2026-04-15',
+              },
+            },
+            serverTime: '2026-01-08T13:00:00Z',
+          };
+
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve({
+                data: JSON.parse(JSON.stringify(managerSelectorMockResponse)),
+              });
+            }, 1000);
+          });
+        },
+      },
+
       historyChanges: {
         read({ projectUuid, pageSize = 10, page = 1, filter = '' }) {
           let url = `api/${projectUuid}/activities/?page=${page}&page_size=${pageSize}`;

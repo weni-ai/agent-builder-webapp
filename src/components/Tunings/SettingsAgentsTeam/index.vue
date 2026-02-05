@@ -3,6 +3,8 @@
     class="settings-agents-team"
     data-testid="settings-agents-team"
   >
+    <ManagerSelector data-testid="manager-selector" />
+
     <AgentsPreview data-testid="agents-preview" />
 
     <VoiceSettings
@@ -18,6 +20,8 @@
 import AgentsPreview from './AgentsPreview.vue';
 import VoiceSettings from './VoiceSettings.vue';
 import HumanSupport from './HumanSupport.vue';
+import ManagerSelector from './ManagerSelector/index.vue';
+
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 const featureFlagsStore = useFeatureFlagsStore();
