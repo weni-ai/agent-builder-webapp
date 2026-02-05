@@ -61,6 +61,21 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
 
   const queryConversationUuid = ref(query?.uuid || '');
 
+  const normalizeConversationsBySource = (results) => {
+    const newResults = [];
+    const legacyResults = [];
+
+    results.forEach((conversation) => {
+      if (conversation?.source === 'v2') {
+        newResults.push(conversation);
+      } else {
+        legacyResults.push(conversation);
+      }
+    });
+
+    return [...newResults, ...legacyResults];
+  };
+
   function resetFilters() {
     const { start, end, status, csat, topics } = defaultFilters;
 
@@ -102,7 +117,8 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     conversations.status = 'loading';
     if (page === 1) conversations.data.results = [];
 
-    const formatDateParam = (date) => format(parseISO(date), 'dd-MM-yyyy');
+    const formatDateParam = (date) =>
+      date ? format(parseISO(date), 'dd-MM-yyyy') : '';
 
     try {
       const response = await supervisorApi.conversations.list({
@@ -120,10 +136,21 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         },
       });
 
+      const responseData =
+        response && !Array.isArray(response) ? response : { results: response };
+      const responseResults = Array.isArray(responseData?.results)
+        ? responseData.results
+        : [];
+
+      const mergedResults = [...conversations.data.results, ...responseResults];
+      const normalizedResults = normalizeConversationsBySource(mergedResults);
+      const count = responseData.count;
+
       conversations.status = 'complete';
       conversations.data = {
-        ...response,
-        results: [...conversations.data.results, ...response.results],
+        ...responseData,
+        count,
+        results: normalizedResults,
       };
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
@@ -242,7 +269,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         type: 'success',
         text: i18n.global.t('agent_builder.supervisor.export.success'),
       });
-    } catch (error) {
+    } catch {
       alertStore.add({
         type: 'error',
         text: i18n.global.t('agent_builder.supervisor.export.error'),
