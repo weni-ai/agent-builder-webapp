@@ -1,5 +1,10 @@
 <template>
   <section class="manager-selector">
+    <PostUpgradeDisclaimer
+      v-if="shouldShowPostUpgradeDisclaimer"
+      data-testid="post-upgrade-disclaimer"
+    />
+
     <UpgradeDisclaimer
       v-if="shouldShowUpgradeDisclaimer"
       data-testid="upgrade-disclaimer"
@@ -16,7 +21,10 @@
     >
       {{ $t('agent_builder.tunings.manager.title') }}
     </h2>
+
+    <RadiosSkeletonLoading v-if="isLoadingManagers" />
     <UnnnicRadioGroup
+      v-else
       state="vertical"
       :modelValue="selectedManager"
       data-testid="manager-selector-radio-group"
@@ -49,27 +57,37 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onUnmounted } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 
 import ManagerUpgradeCard from './ManagerUpgradeCard.vue';
+import PostUpgradeDisclaimer from './PostUpgradeDisclaimer.vue';
+import RadiosSkeletonLoading from './RadiosSkeletonLoading.vue';
 import UpgradeDisclaimer from './UpgradeDisclaimer.vue';
 
 const managerSelectorStore = useManagerSelectorStore();
+const { resetPostUpgradeDisclaimerSession } = managerSelectorStore;
 const {
   options,
   selectedManager,
+  status,
   shouldUpgradeManager,
   shouldShowUpgradeDisclaimer,
+  shouldShowPostUpgradeDisclaimer,
 } = storeToRefs(managerSelectorStore);
 
 const managers = computed(() => options.value?.managers);
+const isLoadingManagers = computed(() => status.value === 'loading');
 
 const updateSelectedManager = (managerId) => {
   managerSelectorStore.setSelectedManager(managerId);
 };
+
+onUnmounted(() => {
+  resetPostUpgradeDisclaimerSession();
+});
 </script>
 
 <style lang="scss" scoped>
