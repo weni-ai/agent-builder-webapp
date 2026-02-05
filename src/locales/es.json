@@ -269,7 +269,8 @@
           "manager_2_dot_6_highlights": [
             "Mejor rendimiento en conversaciones complejas",
             "Orquestación más estable entre los agentes"
-          ]
+          ],
+          "manager_2_dot_6_disclaimer_description": "Manager 2.5 será descontinuado por breve tiempo. Actualizar Manager 2.6 para respuestas más confiáveis ​​enquanto o Manager coordina sus agentes."
         }
       }
     }

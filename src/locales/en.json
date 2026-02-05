@@ -270,7 +270,7 @@
             "Better performance in complex conversations",
             "More stable orchestration across agents"
           ],
-          "manager_2_dot_6_disclaimer_description": "Manager 2.5 will be deprecated soon. Upgrade to Manager 2.6 for faster, more reliable answers while the Manager coordinates your agents."
+          "manager_2_dot_6_disclaimer_description": "Manager 2.5 will be deprecated soon. Upgrade to Manager 2.6 for more reliable answers while the Manager coordinates your agents."
         }
       }
     }
