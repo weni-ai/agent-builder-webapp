@@ -45,6 +45,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
   const status = ref<ManagerSelector['status']>('idle');
   const saveStatus = ref<ManagerSelector['status']>('idle');
   const selectedManager = ref<ManagerSelector['selectedManager']>('');
+  const selectedPreviewManager = ref<ManagerSelector['selectedManager']>('');
   const postUpgradeDisclaimerVisible = ref(false);
 
   const shouldUpgradeManager = computed(() => {
@@ -154,6 +155,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
 
       options.value = data;
       selectedManager.value = data.currentManager;
+      selectedPreviewManager.value = data.currentManager;
       status.value = 'success';
     } catch {
       status.value = 'error';
@@ -197,6 +199,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     isLegacyDeprecated,
     shouldShowUpgradeDisclaimer,
     shouldShowPostUpgradeDisclaimer,
+    selectedPreviewManager,
     loadManagerData,
     saveManager,
     setSelectedManager,
