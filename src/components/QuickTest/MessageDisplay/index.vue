@@ -88,6 +88,7 @@ const isStatus = (message) => {
     'flowstart',
     'flowsend',
     'message_forwarded_to_brain',
+    'manager_selected',
     'media_and_location_unavailable',
   ].includes(message.type);
 };
@@ -118,6 +119,12 @@ const statusDescription = (message) => {
 
   if (message.type === 'message_forwarded_to_brain') {
     return i18n.global.t('router.preview.message_forwarded_to_brain');
+  }
+
+  if (message.type === 'manager_selected') {
+    return i18n.global.t('router.preview.manager_selected', {
+      name: message.name,
+    });
   }
 
   if (message.type === 'media_and_location_unavailable') {
@@ -174,6 +181,7 @@ const statusDescription = (message) => {
   &__flowstart,
   &__flowsend,
   &__message_forwarded_to_brain,
+  &__manager_selected,
   &__media_and_location_unavailable {
     display: flex;
     align-items: center;

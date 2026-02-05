@@ -535,6 +535,7 @@
       "flow_started": "Flujo {name} iniciado",
       "flow_finished": "Flujo finalizado",
       "message_forwarded_to_brain": "Mensaje redirigido a Agent Builder",
+      "manager_selected": "Ahora usando {name} para esta conversación",
       "media_and_location_unavailable": "No hay acciones de multimedia y ubicación registradas",
       "standby": "Modo de espera",
       "catalog": {
