@@ -109,6 +109,7 @@ export interface AgentGroup {
 
 export interface Agent {
   uuid: string;
+  id: string;
   name: string;
   description: string;
   skills: AgentSkill[];
