@@ -184,12 +184,19 @@ export default {
     },
 
     preview: {
-      create({ projectUuid, text, attachments, contact_urn }) {
+      create({
+        projectUuid,
+        text,
+        attachments,
+        contact_urn,
+        manager_uuid = '',
+      }) {
         return request.$http.post(`api/${projectUuid}/preview/`, {
           text,
           attachments,
           contact_urn,
           language: i18n.global.locale,
+          manager_agent_uuid: manager_uuid,
         });
       },
       uploadFile({ projectUuid, file }) {
