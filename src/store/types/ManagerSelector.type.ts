@@ -17,5 +17,6 @@ interface ManagerSelectorOptions {
 export interface ManagerSelector {
   options: ManagerSelectorOptions;
   status: 'idle' | 'loading' | 'success' | 'error';
+  saveStatus: 'idle' | 'loading' | 'success' | 'error';
   selectedManager: string;
 }
