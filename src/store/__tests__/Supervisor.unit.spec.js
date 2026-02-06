@@ -131,7 +131,11 @@ describe('Supervisor Store', () => {
         });
 
         expect(store.conversations.status).toBe('complete');
-        expect(store.conversations.data).toEqual(mockApiResponse);
+        expect(store.conversations.data).toEqual({
+          ...mockApiResponse,
+          count: 2,
+          results: mockApiResponse.results,
+        });
       });
 
       it('fetches conversations with custom page number', async () => {
