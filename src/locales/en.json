@@ -69,6 +69,7 @@
       "hide_logs": "Hide logs",
       "search": "Search",
       "conversations_empty": "No conversations found",
+      "conversations_separator": "Conversations below were classified using the legacy system",
       "no_messages_found": {
         "title": "No messages found in this conversation",
         "description": "If the message was sent by human support or triggered an automatic action, you can find it in {studio_link}.",
