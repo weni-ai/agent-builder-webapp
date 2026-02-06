@@ -4,23 +4,6 @@
     data-testid="conversations-table"
   >
     <template v-if="hasConversations || conversations.status === 'loading'">
-      <!-- Temporaly disabled while we're waiting for the endpoint is optimized -->
-      <!-- <UnnnicIntelligenceText
-        v-if="conversations.status !== 'loading'"
-        data-testid="conversations-count"
-        class="conversations-table__count"
-        tag="p"
-        color="neutral-clean"
-        family="secondary"
-        size="body-gt"
-      >
-        {{
-          $t('agent_builder.supervisor.conversations_count', {
-            count: conversations.data.count,
-          })
-        }}
-      </UnnnicIntelligenceText> -->
-
       <tbody class="conversations-table__rows">
         <template
           v-for="(conversation, index) in conversationResults"
