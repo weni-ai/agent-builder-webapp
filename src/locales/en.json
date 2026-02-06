@@ -69,6 +69,8 @@
       "hide_logs": "Hide logs",
       "search": "Search",
       "conversations_empty": "No conversations found",
+      "conversations_separator": "Conversations below were classified using the legacy system",
+      "conversations_v2_disclaimer": "Starting on Day {day}, conversations will be classified using our new classification system",
       "no_messages_found": {
         "title": "No messages found in this conversation",
         "description": "If the message was sent by human support or triggered an automatic action, you can find it in {studio_link}.",
@@ -268,12 +270,12 @@
           "disclaimer_title_with_date": "Upgrade to {manager_name} by {date}",
           "auto_upgrade_success_title": "{manager_name} is now active",
           "auto_upgrade_success_description": "This project has been upgraded to {manager_name} for improved orchestration and more consistent answers.",
-          "manager_2_dot_6_description": "Upgrade to get faster, more reliable answers while the Manager coordinates your agents.",
+          "manager_2_dot_6_description": "Upgrade to get more reliable answers while the Manager coordinates your agents.",
           "manager_2_dot_6_highlights": [
             "Better performance in complex conversations",
             "More stable orchestration across agents"
           ],
-          "manager_2_dot_6_disclaimer_description": "Manager 2.5 will be deprecated soon. Upgrade to Manager 2.6 for faster, more reliable answers while the Manager coordinates your agents."
+          "manager_2_dot_6_disclaimer_description": "Manager 2.5 will be deprecated soon. Upgrade to Manager 2.6 for more reliable answers while the Manager coordinates your agents."
         }
       }
     }

@@ -69,6 +69,8 @@
       "hide_logs": "Ocultar logs",
       "search": "Buscar",
       "conversations_empty": "No se encontraron conversaciones",
+      "conversations_separator": "Las conversaciones a continuación se clasificaron utilizando el sistema heredado",
+      "conversations_v2_disclaimer": "A partir del día {day}, las conversas serán clasificadas usando nuestro nuevo sistema de clasificación",
       "no_messages_found": {
         "title": "No se encontraron mensajes en esta conversación",
         "description": "Si el soporte humano envió el mensaje o activó una acción automática, lo puedes ver en {studio_link}.",
@@ -265,14 +267,15 @@
         "upgrade_banner": {
           "title": "💡 {manager_name} ya está disponible",
           "disclaimer_title": "Actualiza para {manager_name}",
-          "disclaimer_title_with_date": "Actualiza para {manager_name} até {date}",
+          "disclaimer_title_with_date": "Actualiza para {manager_name} hasta {date}",
           "auto_upgrade_success_title": "{manager_name} ya está activo",
           "auto_upgrade_success_description": "Este proyecto ha sido actualizado para el {manager_name} para mejor coordinación y respuestas más consistentes.",
-          "manager_2.6_description": "Actualiza para obtener respuestas más rápidas y confiables mientras el Manager coordina a tus agentes.",
-          "manager_2.6_highlights": [
+          "manager_2_dot_6_description": "Actualiza para obtener respuestas más confiables mientras el Manager coordina a tus agentes.",
+          "manager_2_dot_6_highlights": [
             "Mejor rendimiento en conversaciones complejas",
             "Orquestación más estable entre los agentes"
-          ]
+          ],
+          "manager_2_dot_6_disclaimer_description": "Manager 2.5 será descontinuado por breve tiempo. Actualizar Manager 2.6 para respuestas más confiáveis ​​enquanto o Manager coordina sus agentes."
         }
       }
     }
