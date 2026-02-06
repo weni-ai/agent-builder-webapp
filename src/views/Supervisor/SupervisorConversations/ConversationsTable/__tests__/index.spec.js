@@ -89,11 +89,6 @@ describe('ConversationsTable.vue', () => {
     wrapper = shallowMount(ConversationsTable, {
       global: {
         plugins: [pinia],
-        stubs: {
-          UnnnicIntelligenceText: {
-            template: '<div><slot /></div>',
-          },
-        },
       },
     });
   });
@@ -103,22 +98,11 @@ describe('ConversationsTable.vue', () => {
     console.log(wrapper.vm.supervisorStore.conversations);
 
     expect(table().exists()).toBe(true);
-    // Temporaly disabled
-    // expect(conversationsCount().exists()).toBe(true);
     expect(conversationRows().length).toBe(2);
   });
 
   it('loads conversations on mount', () => {
     expect(wrapper.vm.supervisorStore.loadConversations).toHaveBeenCalled();
-  });
-
-  // Temporaly disabled
-  it.skip('correctly displays the conversations count', () => {
-    expect(conversationsCount().text()).toBe(
-      i18n.global.t('agent_builder.supervisor.conversations_count', {
-        count: 2,
-      }),
-    );
   });
 
   it('passes correct props to ConversationRow component', () => {
