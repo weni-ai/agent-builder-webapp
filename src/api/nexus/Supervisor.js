@@ -1,7 +1,7 @@
 import nexusRequest from '../nexusaiRequest';
 import { ConversationAdapter } from '../adapters/supervisor/conversation';
 
-const CONVERSATIONS_SWITCH_DATE = new Date(Date.UTC(2026, 1, 4));
+export const CONVERSATIONS_SWITCH_DATE = new Date(Date.UTC(2026, 1, 4));
 const LEGACY_SOURCE = 'legacy';
 const NEW_SOURCE = 'v2';
 
