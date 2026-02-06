@@ -144,7 +144,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
 
       const mergedResults = [...conversations.data.results, ...responseResults];
       const normalizedResults = normalizeConversationsBySource(mergedResults);
-      const count = responseData.count;
+      const count = responseData?.count ?? normalizedResults.length;
 
       conversations.status = 'complete';
       conversations.data = {
