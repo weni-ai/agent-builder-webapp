@@ -69,6 +69,7 @@
       "hide_logs": "Ocultar logs",
       "search": "Buscar",
       "conversations_empty": "Nenhuma conversa encontrada",
+      "conversations_separator": "As conversas abaixo foram classificadas usando o sistema legado",
       "no_messages_found": {
         "title": "Nenhuma mensagem encontrada nesta conversa",
         "description": "Se a mensagem foi enviada pelo suporte humano ou ativou uma ação automática, você pode encontrá-la no {studio_link}.",
