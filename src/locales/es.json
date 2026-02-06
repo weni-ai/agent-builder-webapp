@@ -70,6 +70,7 @@
       "search": "Buscar",
       "conversations_empty": "No se encontraron conversaciones",
       "conversations_separator": "Las conversaciones a continuación se clasificaron utilizando el sistema heredado",
+      "conversations_v2_disclaimer": "A partir del día {day}, las conversas serán clasificadas usando nuestro nuevo sistema de clasificación",
       "no_messages_found": {
         "title": "No se encontraron mensajes en esta conversación",
         "description": "Si el soporte humano envió el mensaje o activó una acción automática, lo puedes ver en {studio_link}.",
