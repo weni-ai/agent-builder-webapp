@@ -140,4 +140,40 @@ describe('ConversationsTable.vue', () => {
       uuid: '1',
     });
   });
+
+  describe('showDivider', () => {
+    const setConversations = async (results) => {
+      supervisorStore.conversations.status = 'complete';
+      supervisorStore.conversations.data.results = results;
+      supervisorStore.conversations.data.count = results.length;
+      await nextTick();
+    };
+
+    it('sets showDivider for all but the last row when there is no separator', async () => {
+      await setConversations([
+        { uuid: '1', source: 'v2' },
+        { uuid: '2', source: 'v2' },
+        { uuid: '3', source: 'v2' },
+      ]);
+
+      const rows = conversationRows();
+      const showDividerValues = rows.map((row) => row.props('showDivider'));
+
+      expect(showDividerValues).toEqual([true, true, false]);
+    });
+
+    it('skips the divider on the row before the separator', async () => {
+      await setConversations([
+        { uuid: '1', source: 'v2' },
+        { uuid: '2', source: 'v2' },
+        { uuid: '3', source: 'legacy' },
+        { uuid: '4', source: 'legacy' },
+      ]);
+
+      const rows = conversationRows();
+      const showDividerValues = rows.map((row) => row.props('showDivider'));
+
+      expect(showDividerValues).toEqual([true, false, true, false]);
+    });
+  });
 });
