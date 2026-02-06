@@ -8,6 +8,7 @@
 
   <tr
     v-else
+    data-testid="conversation-row"
     class="conversation-row"
     :class="{
       'conversation-row--selected': isSelected,
