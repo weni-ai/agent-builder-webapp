@@ -47,7 +47,7 @@ defineExpose({
 <style scoped lang="scss">
 .conversations {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto 1fr;
   gap: $unnnic-spacing-sm;
   align-items: start;
 
