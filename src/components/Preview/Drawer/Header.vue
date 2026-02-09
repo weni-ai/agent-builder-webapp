@@ -15,16 +15,24 @@
         :actions="previewHeaderActions"
         minWidth="175px"
       />
-
-      <UnnnicSelect
-        v-if="!managerSelectorStore.hasOnlyNewManager"
-        v-model:modelValue="managerSelectorStore.selectedPreviewManager"
+      <UnnnicFormElement
         class="preview-drawer__manager-select"
-        itemValue="id"
-        :options="previewManagerOptions"
-        size="sm"
-        :optionsLines="2"
-      />
+        :label="$t('router.preview.manager_version')"
+        :tooltip="{
+          text: $t('router.preview.manager_version_tooltip'),
+          side: 'bottom',
+          maxWidth: '180px',
+        }"
+      >
+        <UnnnicSelect
+          v-if="!managerSelectorStore.hasOnlyNewManager"
+          v-model:modelValue="managerSelectorStore.selectedPreviewManager"
+          itemValue="id"
+          :options="previewManagerOptions"
+          size="sm"
+          :optionsLines="2"
+        />
+      </UnnnicFormElement>
     </section>
   </UnnnicDrawerHeader>
 </template>
