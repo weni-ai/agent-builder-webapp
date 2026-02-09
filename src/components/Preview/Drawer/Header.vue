@@ -80,9 +80,12 @@ const previewManagerOptions = computed(() => {
 
 <style lang="scss" scoped>
 .preview-drawer__header {
+  $dialog-gap: $unnnic-space-1;
+
   display: flex;
   gap: $unnnic-space-2;
   align-items: center;
+  margin-right: calc($unnnic-space-2 - $dialog-gap);
 }
 
 .preview-drawer__title {
