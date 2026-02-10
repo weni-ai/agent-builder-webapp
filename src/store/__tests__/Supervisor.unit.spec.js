@@ -67,6 +67,9 @@ describe('Supervisor Store', () => {
         status: null,
         data: {
           results: [],
+          next: null,
+          newNext: null,
+          legacyNext: null,
         },
       });
     });
@@ -208,6 +211,9 @@ describe('Supervisor Store', () => {
         expect(store.conversations.status).toBe('error');
         expect(store.conversations.data).toEqual({
           results: [],
+          next: null,
+          newNext: null,
+          legacyNext: null,
         });
       });
     });
