@@ -7,6 +7,12 @@ import { useProjectStore } from './Project';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 
+import {
+  getPaginationPayload,
+  getPaginationStateFromResponse,
+  normalizeConversationsBySource,
+} from '@/api/adapters/supervisor/conversationSources';
+
 import i18n from '@/utils/plugins/i18n';
 
 export const useSupervisorStore = defineStore('Supervisor', () => {
@@ -22,6 +28,9 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     status: null,
     data: {
       results: [],
+      next: null,
+      newNext: null,
+      legacyNext: null,
     },
   });
 
@@ -60,21 +69,6 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
   const topics = ref([]);
 
   const queryConversationUuid = ref(query?.uuid || '');
-
-  const normalizeConversationsBySource = (results) => {
-    const newResults = [];
-    const legacyResults = [];
-
-    results.forEach((conversation) => {
-      if (conversation?.source === 'v2') {
-        newResults.push(conversation);
-      } else {
-        legacyResults.push(conversation);
-      }
-    });
-
-    return [...newResults, ...legacyResults];
-  };
 
   function resetFilters() {
     const { start, end, status, csat, topics } = defaultFilters;
@@ -115,26 +109,45 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     conversationsAbortController = new AbortController();
 
     conversations.status = 'loading';
-    if (page === 1) conversations.data.results = [];
+    if (page === 1) {
+      conversations.data.results = [];
+      conversations.data.next = null;
+      conversations.data.newNext = null;
+      conversations.data.legacyNext = null;
+    }
 
     const formatDateParam = (date) =>
       date ? format(parseISO(date), 'dd-MM-yyyy') : '';
 
+    const baseFilters = {
+      page,
+      start: formatDateParam(filters.start),
+      end: formatDateParam(filters.end),
+      search: filters.search,
+      status: filters.status,
+      csat: filters.csat,
+      topics: filters.topics,
+    };
+
+    const paginationPayload = getPaginationPayload(
+      page,
+      conversations.data,
+      conversations.data.results,
+    );
+
     try {
-      const response = await supervisorApi.conversations.list({
+      const requestPayload = {
         projectUuid: projectUuid.value,
         signal: conversationsAbortController.signal,
         hideGenericErrorAlert: true,
-        filters: {
-          page,
-          start: formatDateParam(filters.start),
-          end: formatDateParam(filters.end),
-          search: filters.search,
-          status: filters.status,
-          csat: filters.csat,
-          topics: filters.topics,
-        },
-      });
+        filters: paginationPayload ? { ...baseFilters, page: 1 } : baseFilters,
+        ...(paginationPayload?.pagination
+          ? { pagination: paginationPayload.pagination }
+          : {}),
+        ...(paginationPayload?.onlyLegacy ? { onlyLegacy: true } : {}),
+      };
+
+      const response = await supervisorApi.conversations.list(requestPayload);
 
       const responseData =
         response && !Array.isArray(response) ? response : { results: response };
@@ -152,6 +165,16 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         count,
         results: normalizedResults,
       };
+
+      const paginationState = getPaginationStateFromResponse(
+        responseData,
+        conversations.data,
+      );
+      if (paginationState) {
+        conversations.data.next = paginationState.next;
+        conversations.data.newNext = paginationState.newNext;
+        conversations.data.legacyNext = paginationState.legacyNext;
+      }
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
 
