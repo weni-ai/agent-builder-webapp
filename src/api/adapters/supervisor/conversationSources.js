@@ -4,6 +4,8 @@
  * When the range crosses the date, both are used with independent pagination.
  */
 
+import { endOfDay, format, startOfDay } from 'date-fns';
+
 import nexusRequest from '@/api/nexusaiRequest';
 import { ConversationAdapter } from './conversation';
 
@@ -41,6 +43,44 @@ export function formatDateParam(date) {
   const year = date.getUTCFullYear();
 
   return `${day}-${month}-${year}`;
+}
+
+/**
+ * Formats date to ISO with user timezone.
+ * Ex: "10-02-2026" → "2026-02-10T00:00:00-03:00" ou "2026-02-10T23:59:59-03:00"
+ * @param {string} dateStr - Date in format dd-mm-yyyy
+ * @param {boolean} [isEndOfDay=false]
+ * @returns {string}
+ */
+function formatDateWithTimezone(dateStr, isEndOfDay = false) {
+  if (!dateStr) return dateStr;
+
+  const [day, month, year] = dateStr.split('-').map(Number);
+  if (!day || !month || !year) return dateStr;
+
+  const date = new Date(year, month - 1, day);
+  const targetDate = isEndOfDay ? endOfDay(date) : startOfDay(date);
+
+  return format(targetDate, "yyyy-MM-dd'T'HH:mm:ssXXX");
+}
+
+/**
+ * Converts params to the expected format for the new endpoint (start_date/end_date in ISO with user timezone)
+ * @param {Object} params - { start_date?, end_date?, ... }
+ * @returns {Object}
+ */
+function buildNewEndpointParams(params) {
+  const { start_date, end_date, ...rest } = params;
+
+  return {
+    ...rest,
+    ...(start_date && {
+      start_date: formatDateWithTimezone(start_date, false),
+    }),
+    ...(end_date && {
+      end_date: formatDateWithTimezone(end_date, true),
+    }),
+  };
 }
 
 /**
@@ -312,7 +352,7 @@ export async function fetchConversationList(filterData) {
   const mode = getConversationMode(startDate, endDate);
 
   if (mode === 'legacy') return fetchLegacy(params);
-  if (mode === 'new') return fetchNew(params);
+  if (mode === 'new') return fetchNew(buildNewEndpointParams(params));
 
   if (onlyLegacy) {
     const legacyEndDate = getLegacyEndDate();
@@ -324,10 +364,10 @@ export async function fetchConversationList(filterData) {
     return { ...result, _paginationSource: LEGACY_SOURCE };
   }
 
-  const newParams = {
+  const newParams = buildNewEndpointParams({
     ...params,
     start_date: formatDateParam(CONVERSATIONS_SWITCH_DATE),
-  };
+  });
   const result = await fetchNew(newParams);
   return { ...result, _paginationSource: NEW_SOURCE };
 }
