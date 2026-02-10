@@ -4,7 +4,7 @@
  * When the range crosses the date, both are used with independent pagination.
  */
 
-import { endOfDay, format, startOfDay } from 'date-fns';
+import { endOfDay, startOfDay } from 'date-fns';
 
 import nexusRequest from '@/api/nexusaiRequest';
 import { ConversationAdapter } from './conversation';
@@ -46,8 +46,8 @@ export function formatDateParam(date) {
 }
 
 /**
- * Formats date to ISO with user timezone.
- * Ex: "10-02-2026" → "2026-02-10T00:00:00-03:00" ou "2026-02-10T23:59:59-03:00"
+ * Converts date (dd-mm-yyyy) to ISO UTC (Z), representing start/end of day
+ * in user timezone.
  * @param {string} dateStr - Date in format dd-mm-yyyy
  * @param {boolean} [isEndOfDay=false]
  * @returns {string}
@@ -61,7 +61,7 @@ function formatDateWithTimezone(dateStr, isEndOfDay = false) {
   const date = new Date(year, month - 1, day);
   const targetDate = isEndOfDay ? endOfDay(date) : startOfDay(date);
 
-  return format(targetDate, "yyyy-MM-dd'T'HH:mm:ssXXX");
+  return targetDate.toISOString();
 }
 
 /**
