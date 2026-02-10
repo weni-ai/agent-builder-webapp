@@ -61,6 +61,7 @@
 import { computed, ref, watch, defineExpose } from 'vue';
 import { isEqual } from 'lodash';
 
+import { NEW_SOURCE } from '@/api/adapters/supervisor/conversationSources';
 import { useSupervisorStore } from '@/store/Supervisor';
 
 import ConversationRow from './ConversationRow.vue';
@@ -80,9 +81,11 @@ const separatorIndex = computed(() => {
   if (!results.length) return -1;
 
   const firstLegacyIndex = results.findIndex(
-    (conversation) => conversation.source !== 'v2',
+    (conversation) => conversation.source !== NEW_SOURCE,
   );
-  const hasNew = results.some((conversation) => conversation.source === 'v2');
+  const hasNew = results.some(
+    (conversation) => conversation.source === NEW_SOURCE,
+  );
 
   if (!hasNew || firstLegacyIndex <= 0) return -1;
 
