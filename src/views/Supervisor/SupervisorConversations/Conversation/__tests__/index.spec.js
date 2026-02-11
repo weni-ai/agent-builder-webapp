@@ -16,9 +16,9 @@ const mockConversationData = {
     data: {
       status: 'complete',
       results: [
-        { id: 1, text: 'Hello', source_type: 'user' },
-        { id: 2, text: 'Hi there!', source_type: 'agent' },
-        { id: 3, text: 'How are you?', source_type: 'user' },
+        { id: 1, text: 'Hello', type: 'user' },
+        { id: 2, text: 'Hi there!', type: 'agent' },
+        { id: 3, text: 'How are you?', type: 'user' },
       ],
     },
   },
