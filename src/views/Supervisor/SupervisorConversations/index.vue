@@ -29,7 +29,7 @@ import { format } from 'date-fns';
 import SupervisorFilters from '../SupervisorFilters/index.vue';
 import ConversationsTable from './ConversationsTable/index.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
-import { CONVERSATIONS_SWITCH_DATE } from '@/api/nexus/Supervisor';
+import { CONVERSATIONS_SWITCH_DATE } from '@/api/adapters/supervisor/conversationSources';
 
 const supervisorStore = useSupervisorStore();
 
