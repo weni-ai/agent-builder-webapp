@@ -55,7 +55,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 import { useSupervisorStore } from '@/store/Supervisor';
 
@@ -75,9 +75,30 @@ const messagesContainer = ref(null);
 async function loadConversationData() {
   await supervisorStore.loadSelectedConversationData();
 
-  messagesContainer.value.scrollTo({
-    top: messagesContainer.value.scrollHeight,
-  });
+  await nextTick();
+  if (messagesContainer.value) {
+    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
+  }
+}
+
+async function handleScroll(event) {
+  const el = event.target;
+
+  // Load more only when user scrolled to top, not already loading, and there is a next page
+  if (el.scrollTop !== 0) return;
+  if (supervisorStore.selectedConversation?.data?.status === 'loading') return;
+  if (!supervisorStore.selectedConversation?.data?.next) return;
+
+  const scrollHeightBefore = el.scrollHeight;
+  await supervisorStore.loadSelectedConversationData({ next: true });
+
+  await nextTick();
+  // Compensate scroll so the list doesn't jump: new messages are prepended above, set scrollTop to the added height
+  if (messagesContainer.value) {
+    const scrollHeightAfter = messagesContainer.value.scrollHeight;
+    const heightAdded = scrollHeightAfter - scrollHeightBefore;
+    messagesContainer.value.scrollTop = heightAdded;
+  }
 }
 
 watch(
@@ -92,12 +113,6 @@ watch(
 onMounted(() => {
   loadConversationData();
 });
-
-function handleScroll(event) {
-  if (event.target.scrollTop === 0) {
-    supervisorStore.loadSelectedConversationData({ next: true });
-  }
-}
 </script>
 
 <style lang="scss" scoped>
