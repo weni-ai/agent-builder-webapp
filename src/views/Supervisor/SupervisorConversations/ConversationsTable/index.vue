@@ -4,34 +4,30 @@
     data-testid="conversations-table"
   >
     <template v-if="hasConversations || conversations.status === 'loading'">
-      <!-- Temporaly disabled while we're waiting for the endpoint is optimized -->
-      <!-- <UnnnicIntelligenceText
-        v-if="conversations.status !== 'loading'"
-        data-testid="conversations-count"
-        class="conversations-table__count"
-        tag="p"
-        color="neutral-clean"
-        family="secondary"
-        size="body-gt"
-      >
-        {{
-          $t('agent_builder.supervisor.conversations_count', {
-            count: conversations.data.count,
-          })
-        }}
-      </UnnnicIntelligenceText> -->
-
       <tbody class="conversations-table__rows">
-        <ConversationRow
-          v-for="conversation in conversations.data.results"
+        <template
+          v-for="(conversation, index) in conversationResults"
           :key="conversation.uuid"
-          data-testid="conversation-row"
-          :conversation="conversation"
-          :isSelected="
-            conversation.uuid === supervisorStore.selectedConversation?.uuid
-          "
-          @click="handleRowClick(conversation)"
-        />
+        >
+          <tr
+            v-if="separatorIndex === index"
+            class="conversations-table__separator"
+            data-testid="conversations-separator"
+          >
+            <td class="conversations-table__separator-text">
+              {{ $t('agent_builder.supervisor.conversations_separator') }}
+            </td>
+          </tr>
+          <ConversationRow
+            data-testid="conversation-row"
+            :conversation="conversation"
+            :showDivider="shouldShowDivider(index)"
+            :isSelected="
+              conversation.uuid === supervisorStore.selectedConversation?.uuid
+            "
+            @click="handleRowClick(conversation)"
+          />
+        </template>
 
         <template v-if="conversations.status === 'loading'">
           <ConversationRow
@@ -65,6 +61,7 @@
 import { computed, ref, watch, defineExpose } from 'vue';
 import { isEqual } from 'lodash';
 
+import { NEW_SOURCE } from '@/api/adapters/supervisor/conversationSources';
 import { useSupervisorStore } from '@/store/Supervisor';
 
 import ConversationRow from './ConversationRow.vue';
@@ -75,6 +72,25 @@ const conversations = computed(() => supervisorStore.conversations);
 const hasConversations = computed(
   () => conversations.value.data.results.length > 0,
 );
+const conversationResults = computed(
+  () => conversations.value.data.results || [],
+);
+const separatorIndex = computed(() => {
+  const results = conversationResults.value;
+
+  if (!results.length) return -1;
+
+  const firstLegacyIndex = results.findIndex(
+    (conversation) => conversation.source !== NEW_SOURCE,
+  );
+  const hasNew = results.some(
+    (conversation) => conversation.source === NEW_SOURCE,
+  );
+
+  if (!hasNew || firstLegacyIndex <= 0) return -1;
+
+  return firstLegacyIndex;
+});
 
 const pagination = ref({
   page: 1,
@@ -83,6 +99,18 @@ const pagination = ref({
 
 function handleRowClick(row) {
   supervisorStore.selectConversation(row.uuid);
+}
+
+function shouldShowDivider(index) {
+  const lastIndex = conversationResults.value.length - 1;
+
+  if (index >= lastIndex) return false;
+
+  if (separatorIndex.value !== -1 && index === separatorIndex.value - 1) {
+    return false;
+  }
+
+  return true;
 }
 
 function loadMoreConversations() {
@@ -144,6 +172,28 @@ defineExpose({
     &-title {
       font: $unnnic-font-display-3;
       color: $unnnic-color-gray-900;
+    }
+  }
+
+  &__separator {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: $unnnic-space-2;
+
+    td {
+      text-align: center;
+      font: $unnnic-font-body;
+      color: $unnnic-color-fg-base;
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      background-color: $unnnic-color-gray-200;
+      width: 100%;
+      height: 1px;
     }
   }
 }
