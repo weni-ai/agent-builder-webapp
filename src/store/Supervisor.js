@@ -204,6 +204,8 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         start: selectedConversation.value.start,
         end: selectedConversation.value.end,
         urn: selectedConversation.value.urn,
+        source: selectedConversation.value.source,
+        uuid: selectedConversation.value.uuid,
         next: next ? selectedConversation.value.data.next : null,
       };
 
