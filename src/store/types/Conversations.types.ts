@@ -13,4 +13,5 @@ export interface Conversation {
   status: string;
   csat: Csat | null;
   topics: string;
+  source?: 'legacy' | 'v2';
 }

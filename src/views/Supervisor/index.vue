@@ -39,6 +39,7 @@ import SupervisorConversations from './SupervisorConversations/index.vue';
 import Conversation from './SupervisorConversations/Conversation/index.vue';
 import OldSupervisor from '@/views/OldSupervisor/index.vue';
 
+import { hasMoreToLoad } from '@/api/adapters/supervisor/conversationSources';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { cleanParams } from '@/utils/http';
@@ -68,11 +69,11 @@ function updateQuery(filters = supervisorStore.filters) {
 }
 
 function hasMoreConversationsToLoad() {
-  const { next } = supervisorStore.conversations.data;
-  const isLoading = supervisorStore.conversations.status === 'loading';
-  const hasError = supervisorStore.conversations.status === 'error';
-
-  return next && !isLoading && !hasError;
+  return hasMoreToLoad(
+    supervisorStore.conversations.data,
+    supervisorStore.conversations.status,
+    supervisorStore.conversations.data.results,
+  );
 }
 
 function isScrollReachedBottom() {
