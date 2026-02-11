@@ -2,6 +2,16 @@
   <section
     :class="['conversations', { 'conversations--empty': !hasConversations }]"
   >
+    <UnnnicDisclaimer
+      type="informational"
+      :description="
+        $t('agent_builder.supervisor.conversations_v2_disclaimer', {
+          day: format(CONVERSATIONS_SWITCH_DATE, 'd'),
+        })
+      "
+      data-testid="supervisor-conversations-v2-disclaimer"
+    />
+
     <SupervisorFilters data-testid="supervisor-filters" />
 
     <ConversationsTable
@@ -14,9 +24,12 @@
 <script setup>
 import { ref, defineExpose, computed } from 'vue';
 
+import { format } from 'date-fns';
+
 import SupervisorFilters from '../SupervisorFilters/index.vue';
 import ConversationsTable from './ConversationsTable/index.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
+import { CONVERSATIONS_SWITCH_DATE } from '@/api/adapters/supervisor/conversationSources';
 
 const supervisorStore = useSupervisorStore();
 
@@ -34,7 +47,7 @@ defineExpose({
 <style scoped lang="scss">
 .conversations {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto 1fr;
   gap: $unnnic-spacing-sm;
   align-items: start;
 

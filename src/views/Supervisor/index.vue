@@ -190,11 +190,7 @@ onBeforeMount(async () => {
   }
 
   &__conversations {
-    padding-left: $unnnic-spacing-sm;
-
-    & > * {
-      margin-right: $unnnic-spacing-sm;
-    }
+    padding: 0 $unnnic-space-4;
   }
 }
 </style>
