@@ -69,7 +69,9 @@ import ConversationRow from './ConversationRow.vue';
 const supervisorStore = useSupervisorStore();
 
 const conversations = computed(() => supervisorStore.conversations);
-const hasConversations = computed(() => conversations.value.data.count > 0);
+const hasConversations = computed(
+  () => conversations.value.data.results.length > 0,
+);
 const conversationResults = computed(
   () => conversations.value.data.results || [],
 );
