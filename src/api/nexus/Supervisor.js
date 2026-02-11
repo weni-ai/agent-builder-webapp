@@ -1,5 +1,6 @@
 import nexusRequest from '../nexusaiRequest';
 import { fetchConversationList } from '../adapters/supervisor/conversationSources';
+import { ConversationMessageAdapter } from '../adapters/supervisor/conversationMessage';
 
 export const Supervisor = {
   conversations: {
@@ -7,14 +8,17 @@ export const Supervisor = {
       return fetchConversationList(filterData);
     },
 
-    async getById({ projectUuid, start, end, urn, next }) {
-      const params = {
+    async getById({ projectUuid, start, end, urn, next, source, uuid }) {
+      const legacyParams = ConversationMessageAdapter.toApiLegacy({
         start,
         end,
-        contact_urn: urn,
-      };
+        urn,
+      });
 
-      let url = `/api/${projectUuid}/conversations/?${new URLSearchParams(params)}`;
+      let url =
+        source === 'legacy'
+          ? `/api/${projectUuid}/conversations/?${new URLSearchParams(legacyParams)}`
+          : `/api/v2/${projectUuid}/conversations/${uuid}`;
 
       if (next) {
         url = next.slice(next.indexOf('/api'));
@@ -22,7 +26,7 @@ export const Supervisor = {
 
       const { data } = await nexusRequest.$http.get(url);
 
-      return data;
+      return ConversationMessageAdapter.fromApi(data);
     },
 
     async getLogs({ projectUuid, messageId }) {
