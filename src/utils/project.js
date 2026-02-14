@@ -1,10 +1,10 @@
-import { moduleStorage } from '@/utils/storage';
+import { moduleLocalStorage } from '@/utils/storage';
 
 export async function getProjectUuid() {
   return new Promise((resolve) => {
     const eventHandler = (event) => {
       if (event.data.event === 'updateProjectUuid') {
-        moduleStorage.setItem('projectUuid', event.data.projectUuid);
+        moduleLocalStorage.setItem('projectUuid', event.data.projectUuid);
         window.removeEventListener('message', eventHandler);
         return resolve();
       }

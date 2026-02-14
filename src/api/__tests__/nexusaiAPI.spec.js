@@ -19,7 +19,7 @@ vi.mock('@/api/utils/forceHttps', () => ({
 }));
 
 vi.mock('@/utils/storage', () => ({
-  moduleStorage: {
+  moduleLocalStorage: {
     getItem: vi.fn(() => 'project1'),
   },
 }));
