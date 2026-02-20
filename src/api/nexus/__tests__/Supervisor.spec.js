@@ -16,117 +16,151 @@ describe('Supervisor.js', () => {
   });
 
   describe('conversations.getById', () => {
-    const mockConversationResponse = {
+    const mockV2Response = {
       data: {
-        count: 1,
+        messages: {
+          results: [
+            {
+              id: 1,
+              uuid: 'msg-1',
+              text: 'Hello',
+              source: 'incoming',
+              created_at: '2023-01-15T12:30:00Z',
+            },
+            {
+              id: 2,
+              uuid: 'msg-2',
+              text: 'Hi there!',
+              source: 'outgoing',
+              created_at: '2023-01-15T12:31:00Z',
+            },
+          ],
+          next: null,
+        },
+      },
+    };
+
+    const mockV2ResponseWithNext = {
+      data: {
+        messages: {
+          results: [
+            {
+              id: 1,
+              uuid: 'msg-1',
+              text: 'Hello',
+              source: 'incoming',
+              created_at: '2023-01-15T12:30:00Z',
+            },
+          ],
+          next: 'https://api.example.com/api/v2/project-123/conversations/conv-123/?page=2',
+        },
+      },
+    };
+
+    /** Legacy API shape: results + next (ConversationMessageAdapter.fromApi) */
+    const mockLegacyResponse = {
+      data: {
+        results: [
+          {
+            id: 1,
+            uuid: 'msg-1',
+            text: 'Hello',
+            source_type: 'user',
+            created_at: '2023-01-15T12:30:00Z',
+          },
+        ],
         next: null,
         previous: null,
-        results: [
-          {
-            id: 'conv-123',
-            created_on: '2023-01-15T12:30:00Z',
-            contact: {
-              name: 'John Doe',
-              urn: 'tel:+123456789',
-            },
-            messages: [
-              {
-                id: 'msg-1',
-                text: 'Hello',
-                created_on: '2023-01-15T12:30:00Z',
-                direction: 'in',
-              },
-              {
-                id: 'msg-2',
-                text: 'Hi there!',
-                created_on: '2023-01-15T12:31:00Z',
-                direction: 'out',
-              },
-            ],
-            events: [
-              {
-                id: 'evt-1',
-                type: 'forwarded',
-                created_on: '2023-01-15T12:32:00Z',
-              },
-            ],
-          },
-        ],
       },
     };
 
-    const mockConversationWithNextResponse = {
-      data: {
-        count: 1,
-        next: 'https://api.example.com/api/project-123/supervisor/?page=2',
-        previous: null,
-        results: [
-          {
-            id: 'conv-123',
-            created_on: '2023-01-15T12:30:00Z',
-            contact: {
-              name: 'John Doe',
-              urn: 'tel:+123456789',
-            },
-            messages: [
-              {
-                id: 'msg-1',
-                text: 'Hello',
-                created_on: '2023-01-15T12:30:00Z',
-                direction: 'in',
-              },
-            ],
-          },
-        ],
-      },
-    };
-
-    it('should get conversation by id without next param', async () => {
-      nexusRequest.$http.get.mockResolvedValue(mockConversationResponse);
+    it('should get conversation by id (v2) without next param', async () => {
+      nexusRequest.$http.get.mockResolvedValue(mockV2Response);
 
       const projectUuid = 'project-123';
-      const start = '2023-01-01';
-      const end = '2023-01-31';
+      const uuid = 'conv-123';
+
+      const result = await Supervisor.conversations.getById({
+        projectUuid,
+        uuid,
+      });
+
+      expect(nexusRequest.$http.get).toHaveBeenCalledWith(
+        `/api/v2/${projectUuid}/conversations/${uuid}`,
+      );
+      expect(result.results).toHaveLength(2);
+      expect(result.results[0]).toMatchObject({
+        id: 1,
+        uuid: 'msg-1',
+        text: 'Hello',
+        type: 'user',
+        created_at: '2023-01-15T12:30:00Z',
+      });
+      expect(result.results[1]).toMatchObject({
+        id: 2,
+        uuid: 'msg-2',
+        text: 'Hi there!',
+        type: 'agent',
+        created_at: '2023-01-15T12:31:00Z',
+      });
+      expect(result.next).toBeNull();
+    });
+
+    it('should get conversation by id with next param', async () => {
+      nexusRequest.$http.get.mockResolvedValue(mockV2ResponseWithNext);
+
+      const projectUuid = 'project-123';
+      const uuid = 'conv-123';
+      const next = `https://api.example.com/api/v2/${projectUuid}/conversations/${uuid}/?page=1`;
+
+      const result = await Supervisor.conversations.getById({
+        projectUuid,
+        next,
+        uuid,
+      });
+
+      expect(nexusRequest.$http.get).toHaveBeenCalledWith(
+        next.slice(next.indexOf('/api')),
+      );
+      expect(result.results).toHaveLength(1);
+      expect(result.next).toBe(
+        'https://api.example.com/api/v2/project-123/conversations/conv-123/?page=2',
+      );
+    });
+
+    it('should get conversation by id with source legacy', async () => {
+      nexusRequest.$http.get.mockResolvedValue(mockLegacyResponse);
+
+      const projectUuid = 'project-123';
+      const start = '01-01-2023';
+      const end = '15-01-2023';
       const urn = 'tel:+123456789';
 
       const result = await Supervisor.conversations.getById({
         projectUuid,
+        source: 'legacy',
         start,
         end,
         urn,
       });
 
+      const expectedPath = `/api/${projectUuid}/conversations/`;
       expect(nexusRequest.$http.get).toHaveBeenCalledWith(
-        `/api/${projectUuid}/conversations/?start=2023-01-01&end=2023-01-31&contact_urn=tel%3A%2B123456789`,
+        expect.stringContaining(expectedPath),
       );
-      expect(result).toEqual(mockConversationResponse.data);
-      expect(result.results[0].contact.urn).toBe('tel:+123456789');
-      expect(result.results[0].messages.length).toBe(2);
-    });
-
-    it('should get conversation by id with next param', async () => {
-      nexusRequest.$http.get.mockResolvedValue(
-        mockConversationWithNextResponse,
-      );
-
-      const projectUuid = 'project-123';
-      const start = '2023-01-01';
-      const urn = 'tel:+123456789';
-      const next =
-        'https://api.example.com/api/project-123/conversations/?page=1';
-
-      const result = await Supervisor.conversations.getById({
-        projectUuid,
-        start,
-        urn,
-        next,
+      const callUrl = nexusRequest.$http.get.mock.calls[0][0];
+      expect(callUrl).toContain('contact_urn=tel%3A%2B123456789');
+      expect(callUrl).toContain('start=01-01-2023');
+      expect(callUrl).toContain('end=15-01-2023');
+      expect(result.results).toHaveLength(1);
+      expect(result.results[0]).toMatchObject({
+        id: 1,
+        uuid: 'msg-1',
+        text: 'Hello',
+        type: 'user',
+        created_at: '2023-01-15T12:30:00Z',
       });
-
-      expect(nexusRequest.$http.get).toHaveBeenCalledWith(
-        '/api.example.com/api/project-123/conversations/?page=1',
-      );
-      expect(result).toEqual(mockConversationWithNextResponse.data);
-      expect(result.next).toBeTruthy();
+      expect(result.next).toBeNull();
     });
 
     it('should handle error when getting conversation by id', async () => {
@@ -134,14 +168,12 @@ describe('Supervisor.js', () => {
       nexusRequest.$http.get.mockRejectedValue(error);
 
       const projectUuid = 'project-123';
-      const start = '2023-01-01';
-      const urn = 'tel:+123456789';
+      const uuid = 'conv-123';
 
       await expect(
         Supervisor.conversations.getById({
           projectUuid,
-          start,
-          urn,
+          uuid,
         }),
       ).rejects.toThrow('API Error');
     });
