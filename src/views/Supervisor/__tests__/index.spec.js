@@ -5,7 +5,6 @@ import { useRouter } from 'vue-router';
 
 import Supervisor from '@/views/Supervisor/index.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 vi.mock('vue-router', async () => {
   const actual = await vi.importActual('vue-router');
@@ -27,18 +26,11 @@ vi.mock('vue-router', async () => {
 describe('Supervisor view', () => {
   let wrapper;
   let supervisorStore;
-  let featureFlagsStore;
 
   beforeEach(() => {
     const pinia = createTestingPinia();
 
     supervisorStore = useSupervisorStore();
-    featureFlagsStore = useFeatureFlagsStore();
-
-    vi.spyOn(featureFlagsStore, 'flags', 'get').mockReturnValue({
-      supervisorExport: false,
-      newSupervisor: true,
-    });
 
     useRouter();
 
