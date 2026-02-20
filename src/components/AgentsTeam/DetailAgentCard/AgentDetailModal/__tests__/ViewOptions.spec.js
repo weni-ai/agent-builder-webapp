@@ -91,7 +91,6 @@ describe('ViewOptions', () => {
     expect(agentsTeamStore.toggleAgentAssignment).toHaveBeenCalledWith({
       uuid: 'agent-uuid',
       is_assigned: false,
-      is_group: false,
     });
     expect(wrapper.emitted('agent-removed')).toHaveLength(1);
   });
@@ -106,7 +105,6 @@ describe('ViewOptions', () => {
     expect(agentsTeamStore.toggleAgentAssignment).toHaveBeenCalledWith({
       uuid: 'group-uuid',
       is_assigned: false,
-      is_group: true,
     });
   });
 

@@ -67,6 +67,7 @@ function toggleExpanded() {
 
 async function handleRemoveAgent() {
   if (isRemovingAgent.value) return;
+  if (!props.agent?.uuid) return;
 
   isRemovingAgent.value = true;
 

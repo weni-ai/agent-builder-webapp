@@ -19,6 +19,7 @@
           <AgentDetailSection
             :title="$t('agents.assigned_agents.agent_details.about')"
             :description="agent.description"
+            data-testid="agent-detail-about-section"
           />
 
           <SystemSection

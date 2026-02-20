@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
 
-import Section from '../Section.vue';
+import AgentDetailSection from '../AgentDetailSection.vue';
 
 describe('AgentDetailModal Section', () => {
   const mountSection = (props = {}, slots = {}) =>
-    shallowMount(Section, {
+    shallowMount(AgentDetailSection, {
       props: {
         title: 'Section title',
         ...props,
