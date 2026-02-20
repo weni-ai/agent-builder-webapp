@@ -1,6 +1,5 @@
 <template>
   <section
-    v-if="featureFlagsStore.flags.newSupervisor"
     :class="[
       'supervisor',
       { 'supervisor--with-conversation': selectedConversation },
@@ -27,7 +26,6 @@
       data-testid="supervisor-conversation"
     />
   </section>
-  <OldSupervisor v-else />
 </template>
 
 <script setup>
@@ -37,15 +35,12 @@ import { useRouter, useRoute } from 'vue-router';
 import SupervisorHeader from './SupervisorHeader.vue';
 import SupervisorConversations from './SupervisorConversations/index.vue';
 import Conversation from './SupervisorConversations/Conversation/index.vue';
-import OldSupervisor from '@/views/OldSupervisor/index.vue';
 
 import { hasMoreToLoad } from '@/api/adapters/supervisor/conversationSources';
 import { useSupervisorStore } from '@/store/Supervisor';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { cleanParams } from '@/utils/http';
 
 const supervisorStore = useSupervisorStore();
-const featureFlagsStore = useFeatureFlagsStore();
 const router = useRouter();
 const route = useRoute();
 
