@@ -274,7 +274,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
           'router.agents_team.modal_delete_agent.success_alert',
           { agent_name: agent.name },
         ),
-        type: 'success',
+        type: 'informational',
       });
     } catch (error) {
       console.error('error', error);
