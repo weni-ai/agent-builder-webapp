@@ -205,6 +205,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
       if (assignAgentsView && agent.is_official) {
         await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment({
+          group: agent.group,
           agent_uuid: uuid,
           assigned: is_assigned,
         });
