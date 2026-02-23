@@ -84,14 +84,14 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
     isSubmitting.value = true;
 
     try {
-      const agentUuid = agent.value.agents[0].uuid;
-      if (!agentUuid) {
+      const group = agent.value.group;
+      if (!group) {
         isSubmitting.value = false;
         return false;
       }
 
       const payload = {
-        agent_uuid: agentUuid,
+        group,
         assigned: true,
         system: config.value.system,
         mcp: config.value.MCP.name,

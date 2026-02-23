@@ -532,6 +532,8 @@
       },
       "placeholder": "Inicia una conversación con el agente para probarlo",
       "manager_selected": "Ahora usando {name} para esta conversación",
+      "manager_version": "Versión del Manager",
+      "manager_version_tooltip": "Selecciona qué versión del Manager coordena esta conversación",
       "standby": "Modo de espera",
       "catalog": {
         "title": "Catálogo de productos",

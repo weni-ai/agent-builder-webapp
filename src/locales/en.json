@@ -532,6 +532,8 @@
       },
       "placeholder": "Start a conversation with your agent to test it",
       "manager_selected": "Now using {name} for this conversation",
+      "manager_version": "Manager version",
+      "manager_version_tooltip": "Select which Manager version orchestrates this conversation",
       "standby": "Standby mode",
       "catalog": {
         "title": "Product catalog",
