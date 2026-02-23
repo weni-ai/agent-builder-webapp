@@ -41,6 +41,7 @@ describe('AssignAgentCard.vue', () => {
         plugins: [pinia],
         stubs: {
           AssignAgentDrawer: true,
+          DeleteAgentModal: true,
         },
       },
       props: {
