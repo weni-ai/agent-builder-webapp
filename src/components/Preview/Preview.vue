@@ -33,7 +33,7 @@
       >
         <template #components>
           <MessageComponentResolver
-            :message="treatMessageToComponents(message)"
+            :message="message?.response?.msg"
             @send-message="sendMessage"
             @open-preview-menu="openPreviewMenu(message?.response?.msg)"
           />
@@ -81,10 +81,6 @@ const previewMenuMessage = ref(null);
 const shouldShowPreviewPlaceholder = computed(
   () => messages.value.length === 0,
 );
-
-function treatMessageToComponents(message) {
-  return flowPreviewStore.treatMessageToComponents(message);
-}
 
 function openPreviewMenu(message) {
   showPreviewMenu.value = true;

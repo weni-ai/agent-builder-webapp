@@ -41,20 +41,6 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
     return !!getFileType(content);
   }
 
-  function treatMessageToComponents(message) {
-    const treatedMessage = { ...(message?.response?.msg || {}) };
-
-    if (Object.keys(treatedMessage).length === 0 && message?.text) {
-      treatedMessage.text = message.text;
-    }
-
-    if (preview.value?.quickReplies?.length) {
-      treatedMessage.quick_replies = preview.value.quickReplies;
-    }
-
-    return treatedMessage;
-  }
-
   function getPreviewManagerLabel(managerId) {
     const { managers } = managerSelectorStore.options;
     const managerOptions = [managers.new, managers.legacy].filter(
@@ -205,7 +191,6 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
     removeMessage,
     addManagerSelectedMessage,
     treatAnswerResponse,
-    treatMessageToComponents,
     isMedia,
     sendMessage,
     sendOrder,
