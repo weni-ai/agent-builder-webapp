@@ -41,7 +41,6 @@
 import { computed } from 'vue';
 
 import { useFlowPreviewStore } from '@/store/FlowPreview';
-import { useProjectStore } from '@/store/Project';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { usePreviewStore } from '@/store/Preview';
 
@@ -50,7 +49,6 @@ import i18n from '@/utils/plugins/i18n';
 import ContentItemActions from '@/components/ContentItemActions.vue';
 
 const flowPreviewStore = useFlowPreviewStore();
-const projectStore = useProjectStore();
 const managerSelectorStore = useManagerSelectorStore();
 const previewStore = usePreviewStore();
 
@@ -66,9 +64,7 @@ const previewHeaderActions = computed(() => [
 function refreshPreview() {
   previewStore.clearLogs();
   flowPreviewStore.clearMessages();
-  flowPreviewStore.previewInit({
-    contentBaseUuid: projectStore.details.contentBaseUuid,
-  });
+  flowPreviewStore.previewInit();
 }
 
 const previewManagerOptions = computed(() => {

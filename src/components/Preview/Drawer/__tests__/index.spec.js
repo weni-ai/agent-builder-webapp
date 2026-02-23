@@ -15,9 +15,7 @@ const pinia = createTestingPinia({
       ws: null,
     },
     Project: {
-      details: {
-        contentBaseUuid: '123',
-      },
+      uuid: '123',
     },
   },
 });

@@ -10,9 +10,7 @@ const pinia = createTestingPinia({
   createSpy: vi.fn,
   initialState: {
     Project: {
-      details: {
-        contentBaseUuid: '123',
-      },
+      uuid: '123',
     },
   },
 });

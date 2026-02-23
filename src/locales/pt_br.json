@@ -531,15 +531,9 @@
         "location": "Localização"
       },
       "placeholder": "Inicie uma conversa com seu agente para testá-lo",
-      "save_changes_to_test_the_agent": "Salve as alterações para testar o agente",
-      "field_changed_to_value": "Parâmetro {field} alterado para {value}",
-      "flow_started": "Fluxo {name} iniciado",
-      "flow_finished": "Fluxo finalizado",
-      "message_forwarded_to_brain": "Mensagem redirecionada para o Agent Builder",
       "manager_selected": "Agora usando {name} para esta conversa",
       "manager_version": "Versão do Manager",
       "manager_version_tooltip": "Selecione qual versão do Manager coordena esta conversa",
-      "media_and_location_unavailable": "Nenhuma ação de mídias e localização cadastrada",
       "standby": "Modo de espera",
       "catalog": {
         "title": "Catálogo de produtos",
