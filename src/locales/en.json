@@ -434,7 +434,7 @@
       "create_agent": "Create agent",
       "modal_delete_agent": {
         "title": "Delete {agent_name}",
-        "description": "Are you sure you want to delete the {agent_name}? This action cannot be reversed",
+        "description": "Are you sure you want to delete the {agent_name} agent? This action cannot be undone.",
         "delete": "Delete",
         "cancel": "Cancel",
         "success_alert": "Agent {agent_name} deleted",
@@ -537,6 +537,8 @@
       "flow_finished": "Flow completed",
       "message_forwarded_to_brain": "Message forwarded to Agent Builder",
       "manager_selected": "Now using {name} for this conversation",
+      "manager_version": "Manager version",
+      "manager_version_tooltip": "Select which Manager version orchestrates this conversation",
       "media_and_location_unavailable": "No media and location actions added",
       "standby": "Standby mode",
       "catalog": {
