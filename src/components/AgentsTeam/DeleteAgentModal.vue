@@ -1,6 +1,6 @@
 <template>
   <UnnnicModalDialog
-    :modelValue="props.modelValue"
+    :modelValue="modelValue"
     data-testid="modal"
     class="modal-delete-agent"
     showCloseIcon
@@ -50,12 +50,9 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  modelValue: {
-    type: Boolean,
-    default: false,
-  },
 });
 
+const modelValue = ref(false);
 const isDeletingAgent = ref(false);
 
 function close() {
