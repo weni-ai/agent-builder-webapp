@@ -283,7 +283,7 @@
       "new_agent": "New agent",
       "manager": {
         "name": "Manager",
-        "edit_manager": "Edit manager",
+        "edit_manager": "Edit Manager",
         "edit_instructions": "Edit instructions"
       },
       "no_agents": {
