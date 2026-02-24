@@ -6,7 +6,9 @@
       data-testid="agent-icon"
     />
 
-    <UnnnicDialogTitle>{{ agent.name }}</UnnnicDialogTitle>
+    <UnnnicDialogTitle data-testid="agent-modal-header-title">
+      {{ agent.name }}
+    </UnnnicDialogTitle>
 
     <UnnnicTag
       class="agent-card__tag"

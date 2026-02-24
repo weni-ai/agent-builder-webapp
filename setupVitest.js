@@ -37,6 +37,12 @@ class IntersectionObserverMock {
 global.IntersectionObserver = IntersectionObserverMock;
 
 // Mock Unnnic teleport components
+const genericStub = `
+  <div v-bind="$attrs">
+    <slot />
+  </div>
+`;
+
 const unnnicDrawerStub = {
   name: 'UnnnicDrawerStub',
   inheritAttrs: false,
@@ -55,11 +61,7 @@ const unnnicDrawerNextStub = {
   inheritAttrs: false,
   props: Unnnic?.unnnicDrawerNext.props,
   emits: Unnnic?.unnnicDrawerNext.emits,
-  template: `
-    <div v-bind="$attrs">
-      <slot />
-    </div>
-  `,
+  template: genericStub,
 };
 
 const unnnicModalDialogStub = {
@@ -81,11 +83,7 @@ const unnnicDialogStub = {
   inheritAttrs: false,
   props: Unnnic?.unnnicDialog.props,
   emits: Unnnic?.unnnicDialog.emits,
-  template: `
-    <div v-bind="$attrs">
-      <slot />
-    </div>
-  `,
+  template: genericStub,
 };
 
 const unnnicDialogContentStub = {
@@ -93,11 +91,7 @@ const unnnicDialogContentStub = {
   inheritAttrs: false,
   props: Unnnic?.unnnicDialogContent.props,
   emits: Unnnic?.unnnicDialogContent.emits,
-  template: `
-    <div v-bind="$attrs">
-      <slot />
-    </div>
-  `,
+  template: genericStub,
 };
 
 const unnnicDialogFooterStub = {
@@ -105,18 +99,25 @@ const unnnicDialogFooterStub = {
   inheritAttrs: false,
   props: Unnnic?.unnnicDialogFooter.props,
   emits: Unnnic?.unnnicDialogFooter.emits,
-  template: `
-    <div v-bind="$attrs">
-      <slot />
-    </div>
-  `,
+  template: genericStub,
 };
+
+const unnnicDialogHeaderStub = {
+  name: 'UnnnicDialogHeaderStub',
+  template: genericStub,
+};
+
+const unnnicDialogTitleStub = {
+  name: 'UnnnicDialogTitleStub',
+  template: genericStub,
+};
+
 const unnnicTooltipStub = {
   name: 'UnnnicToolTipStub',
   inheritAttrs: false,
   props: Unnnic?.unnnicToolTip.props,
   emits: Unnnic?.unnnicToolTip.emits,
-  template: `<div><slot /></div>`,
+  template: genericStub,
 };
 
 const ContentItemActionsStub = {
@@ -156,6 +157,8 @@ config.global.stubs = {
   UnnnicDialog: unnnicDialogStub,
   UnnnicDialogContent: unnnicDialogContentStub,
   UnnnicDialogFooter: unnnicDialogFooterStub,
+  UnnnicDialogHeader: unnnicDialogHeaderStub,
+  UnnnicDialogTitle: unnnicDialogTitleStub,
   UnnnicToolTip: unnnicTooltipStub,
   UnnnicDrawer: unnnicDrawerStub,
   UnnnicDrawerNext: unnnicDrawerNextStub,
