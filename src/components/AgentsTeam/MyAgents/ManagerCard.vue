@@ -70,7 +70,7 @@ import { computed, ref } from 'vue';
 
 import AgentIcon from '../AgentIcon.vue';
 import AssignAgentCardSkeleton from '../AssignAgentCardSkeleton.vue';
-import EditManagerProfileDrawer from '@/components/Sidebar/EditManagerProfileDrawer.vue';
+import EditManagerProfileDrawer from '@/components/AgentsTeam/MyAgents/EditManagerProfileDrawer.vue';
 
 import { useProfileStore } from '@/store/Profile';
 import { useRouter } from 'vue-router';
