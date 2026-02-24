@@ -13,17 +13,9 @@
   "unexpected_error": "Ocorreu um erro inesperado",
   "agent_builder": {
     "tabs": {
-      "conversations": {
-        "title": "Conversas",
-        "description": "Analise e revise conversas entre agentes e clientes."
-      },
       "instructions": {
         "title": "Instruções",
         "description": "Escreva regras rápidas para moldar o comportamento do agente"
-      },
-      "agents": {
-        "title": "Agentes",
-        "description": "Crie a equipe de agentes perfeita"
       },
       "knowledge": {
         "title": "Conhecimento",
@@ -279,9 +271,9 @@
     }
   },
   "agents": {
-    "title": "Agentes",
-    "description": "Visualize e gerencie seus agentes atribuídos",
-    "assign_agents_button": "Atribuir agentes",
+    "title": "Meus Agentes",
+    "description": "Gerencie seu time digital, instruções e comportamentos",
+    "assign_agents_button": "Atribuir novos agentes",
     "assigned_agents": {
       "new_agent": "Novo agente",
       "no_agents": {
@@ -394,7 +386,6 @@
   },
   "router": {
     "agents_team": {
-      "assign_agents": "Atribuir agentes",
       "card": {
         "assign": "Atribuir ao time",
         "assigned": "Atribuído",

@@ -13,17 +13,9 @@
   "unexpected_error": "Se produjo un error inesperado",
   "agent_builder": {
     "tabs": {
-      "conversations": {
-        "title": "Conversaciones",
-        "description": "Analiza y revisa conversaciones entre agentes y clientes."
-      },
       "instructions": {
         "title": "Instrucciones",
         "description": "Escribe reglas rápidas para moldear el comportamiento del agente"
-      },
-      "agents": {
-        "title": "Agentes",
-        "description": "Crea el equipo de agentes perfecto"
       },
       "knowledge": {
         "title": "Conocimientos",
@@ -279,9 +271,9 @@
     }
   },
   "agents": {
-    "title": "Agentes",
-    "description": "Visualice y gestione sus agentes asignados",
-    "assign_agents_button": "Asignar agentes",
+    "title": "Mis Agentes",
+    "description": "Gestiona tu equipo digital, instrucciones y comportamientos",
+    "assign_agents_button": "Asignar nuevos agentes",
     "assigned_agents": {
       "new_agent": "Nuevo agente",
       "no_agents": {
@@ -394,7 +386,6 @@
   },
   "router": {
     "agents_team": {
-      "assign_agents": "Asignar agentes",
       "card": {
         "assign": "Asignar al equipo",
         "assigned": "Asignado",

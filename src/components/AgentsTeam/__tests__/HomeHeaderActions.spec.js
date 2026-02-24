@@ -126,8 +126,9 @@ describe('HomeHeaderActions.vue', () => {
       '[data-testid="assign-agents-button"]',
     );
     expect(button.props('type')).toBe('primary');
+    expect(button.props('iconLeft')).toBe('add');
     expect(button.props('text')).toBe(
-      i18n.global.t('router.agents_team.assign_agents'),
+      i18n.global.t('agents.assign_agents_button'),
     );
   });
 });
