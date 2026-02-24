@@ -76,7 +76,7 @@ import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 import AssignAgentCard from '@/components/AgentsTeam/AssignAgentCard.vue';
 import DetailAgentCard from '@/components/AgentsTeam/DetailAgentCard/index.vue';
-import AgentsGalleryModal from './AgentsGalleryModal.vue';
+import AgentsGalleryModal from '@/views/AgentsTeam/AgentsGalleryModal.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const activeTeam = computed(
@@ -95,16 +95,10 @@ const agentCard = computed(() =>
 
 <style lang="scss" scoped>
 .assigned-agents {
-  display: flex;
-  flex-direction: column;
-  gap: $unnnic-spacing-sm;
-
-  margin-top: $unnnic-space-4;
-
   &__empty {
     height: 100%;
 
-    padding: $unnnic-spacing-xl $unnnic-spacing-sm;
+    padding: $unnnic-space-6 $unnnic-space-4;
 
     display: flex;
     flex-direction: column;
@@ -138,7 +132,7 @@ const agentCard = computed(() =>
   &__cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: $unnnic-spacing-sm;
+    gap: $unnnic-space-4;
   }
 }
 </style>

@@ -5,7 +5,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
-import AssignedAgents from '@/views/AgentsTeam/AssignedAgents.vue';
+import AssignedAgents from '../AssignedAgents.vue';
 
 const pinia = createTestingPinia({
   initialState: {
