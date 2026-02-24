@@ -6,14 +6,14 @@
     size="lg"
     :primaryButtonText="$t('profile.save_btn')"
     :secondaryButtonText="$t('cancel')"
-    :disabledPrimaryButton="profileStore.isSaveButtonDisabled"
-    :loadingPrimaryButton="profileStore.isSaving"
+    :disabledPrimaryButton="isSaveDisabled"
+    :loadingPrimaryButton="isSavingDrawer"
     @close="closeWithReset"
     @primary-button-click="save"
     @secondary-button-click="closeWithReset"
   >
     <template #content>
-      <div class="edit-manager-profile-drawer">
+      <section class="edit-manager-profile-drawer">
         <UnnnicSegmentedControl
           v-model="selectedTab"
           data-testid="edit-manager-profile-drawer-tabs"
@@ -43,16 +43,17 @@
             data-testid="settings-agents-team"
           />
         </section>
-      </div>
+      </section>
     </template>
   </UnnnicDrawer>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 import i18n from '@/utils/plugins/i18n';
 
 import { useProfileStore } from '@/store/Profile';
+import { useTuningsStore } from '@/store/Tunings';
 import { useAlertStore } from '@/store/Alert';
 
 import RouterProfileGeneralInfo from '@/components/Profile/RouterProfileGeneralInfo.vue';
@@ -67,21 +68,50 @@ const modelValue = defineModel({
 });
 
 const profileStore = useProfileStore();
+const tuningsStore = useTuningsStore();
 const alertStore = useAlertStore();
 
-async function save() {
-  const result = await profileStore.save();
+const hasProfileChanges = computed(() => !profileStore.isSaveButtonDisabled);
+const hasSettingsChanges = computed(() => tuningsStore.isSettingsValid);
 
-  if (result.status === 'success') {
+const isSaveDisabled = computed(
+  () => !hasProfileChanges.value && !hasSettingsChanges.value,
+);
+
+const isSavingDrawer = computed(
+  () => profileStore.isSaving || tuningsStore.settings.status === 'loading',
+);
+
+async function save() {
+  let hasError = false;
+
+  if (hasProfileChanges.value) {
+    const profileResult = await profileStore.save();
+    if (profileResult?.status !== 'success') {
+      hasError = true;
+      alertStore.add({
+        text: i18n.global.t('profile.save_error'),
+        type: 'error',
+      });
+    }
+  }
+
+  if (!hasError && hasSettingsChanges.value) {
+    const settingsSaved = await tuningsStore.saveSettings();
+    if (!settingsSaved) {
+      hasError = true;
+      alertStore.add({
+        text: i18n.global.t('router.tunings.settings.save_error'),
+        type: 'error',
+      });
+    }
+  }
+
+  if (!hasError) {
     close();
     alertStore.add({
       text: i18n.global.t('profile.save_success'),
       type: 'success',
-    });
-  } else {
-    alertStore.add({
-      text: i18n.global.t('profile.save_error'),
-      type: 'error',
     });
   }
 }
@@ -96,8 +126,21 @@ function closeWithReset() {
   profileStore.goal.current = profileStore.goal.old;
   profileStore.name.current = profileStore.name.old;
 
+  if (tuningsStore.initialSettings) {
+    tuningsStore.settings.data = { ...tuningsStore.initialSettings };
+  }
+
   close();
 }
+
+watch(
+  () => selectedTab.value,
+  (newTab) => {
+    if (newTab === 'settings' && tuningsStore.settings.status !== 'success') {
+      tuningsStore.fetchSettings();
+    }
+  },
+);
 </script>
 
 <style lang="scss" scoped>
