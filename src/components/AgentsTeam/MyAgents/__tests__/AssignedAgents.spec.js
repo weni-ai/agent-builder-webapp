@@ -6,6 +6,7 @@ import { createTestingPinia } from '@pinia/testing';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
 import AssignedAgents from '../AssignedAgents.vue';
+import i18n from '@/utils/plugins/i18n';
 
 const pinia = createTestingPinia({
   initialState: {
@@ -41,10 +42,12 @@ describe('AssignedAgents.vue', () => {
     wrapper.find('[data-testid="assigned-agents-icon"]');
   const assignedAgentsTitle = () =>
     wrapper.find('[data-testid="assigned-agents-title"]');
-  const assignedAgentsDescription = () =>
-    wrapper.find('[data-testid="assigned-agents-description"]');
-  const assignedAgentsButton = () =>
-    wrapper.find('[data-testid="assigned-agents-button"]');
+  const assignedAgentsEmptyTitle = () =>
+    wrapper.find('[data-testid="assigned-agents-empty-title"]');
+  const assignedAgentsEmptyDescription = () =>
+    wrapper.find('[data-testid="assigned-agents-empty-description"]');
+  const assignedAgentsEmptyButton = () =>
+    wrapper.find('[data-testid="assigned-agents-empty-button"]');
 
   const mockAgents = [
     {
@@ -76,6 +79,15 @@ describe('AssignedAgents.vue', () => {
   describe('Component rendering', () => {
     it('should match snapshot', () => {
       expect(wrapper.element).toMatchSnapshot();
+    });
+  });
+
+  describe('Title', () => {
+    it('should render title', () => {
+      expect(assignedAgentsTitle().exists()).toBe(true);
+      expect(assignedAgentsTitle().text()).toBe(
+        i18n.global.t('agents.assigned_agents.title'),
+      );
     });
   });
 
@@ -130,15 +142,15 @@ describe('AssignedAgents.vue', () => {
     });
 
     it('should render assigned agents title when there are no agents', () => {
-      expect(assignedAgentsTitle().exists()).toBe(true);
+      expect(assignedAgentsEmptyTitle().exists()).toBe(true);
     });
 
     it('should render assigned agents description when there are no agents', () => {
-      expect(assignedAgentsDescription().exists()).toBe(true);
+      expect(assignedAgentsEmptyDescription().exists()).toBe(true);
     });
 
     it('should render assigned agents button when there are no agents', () => {
-      expect(assignedAgentsButton().exists()).toBe(true);
+      expect(assignedAgentsEmptyButton().exists()).toBe(true);
     });
   });
 });

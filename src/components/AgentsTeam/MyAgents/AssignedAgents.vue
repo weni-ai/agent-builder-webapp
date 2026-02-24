@@ -1,5 +1,12 @@
 <template>
   <section class="assigned-agents">
+    <h2
+      class="assigned-agents__title"
+      data-testid="assigned-agents-title"
+    >
+      {{ $t('agents.assigned_agents.title') }}
+    </h2>
+
     <section
       v-if="isLoadingTeam || activeTeam.length"
       class="assigned-agents__cards"
@@ -42,14 +49,14 @@
       <section class="assigned-agents__empty-content">
         <h3
           class="assigned-agents__empty-title"
-          data-testid="assigned-agents-title"
+          data-testid="assigned-agents-empty-title"
         >
           {{ $t('agents.assigned_agents.no_agents.title') }}
         </h3>
 
         <p
           class="assigned-agents__empty-description"
-          data-testid="assigned-agents-description"
+          data-testid="assigned-agents-empty-description"
         >
           {{ $t('agents.assigned_agents.no_agents.description') }}
         </p>
@@ -59,7 +66,7 @@
         class="assigned-agents__empty-button"
         :text="$t('agents.assigned_agents.no_agents.assign_agents_button')"
         type="primary"
-        data-testid="assigned-agents-button"
+        data-testid="assigned-agents-empty-button"
         @click="agentsTeamStore.openAgentsGallery"
       />
     </section>
@@ -95,6 +102,15 @@ const agentCard = computed(() =>
 
 <style lang="scss" scoped>
 .assigned-agents {
+  display: flex;
+  flex-direction: column;
+  gap: $unnnic-space-4;
+
+  &__title {
+    color: $unnnic-color-fg-emphasized;
+    font: $unnnic-font-display-3;
+  }
+
   &__empty {
     height: 100%;
 

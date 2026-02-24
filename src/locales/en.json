@@ -279,6 +279,7 @@
     "description": "Manage your digital workforce, instructions, and behaviors",
     "assign_agents_button": "Assign new agents",
     "assigned_agents": {
+      "title": "Assigned agents",
       "new_agent": "New agent",
       "no_agents": {
         "title": "No agents assigned yet",

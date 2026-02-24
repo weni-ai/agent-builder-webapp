@@ -279,6 +279,7 @@
     "description": "Gestiona tu equipo digital, instrucciones y comportamientos",
     "assign_agents_button": "Asignar nuevos agentes",
     "assigned_agents": {
+      "title": "Agentes asignados",
       "new_agent": "Nuevo agente",
       "no_agents": {
         "title": "No hay agentes asignados aún",

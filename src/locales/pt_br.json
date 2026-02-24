@@ -279,6 +279,7 @@
     "description": "Gerencie seu time digital, instruções e comportamentos",
     "assign_agents_button": "Atribuir novos agentes",
     "assigned_agents": {
+      "title": "Agentes atribuídos",
       "new_agent": "Novo agente",
       "no_agents": {
         "title": "Nenhum agente atribuído ainda",
