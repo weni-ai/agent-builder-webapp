@@ -1,5 +1,8 @@
 <template>
-  <section :class="['manager-card', { 'manager-card--loading': isLoading }]">
+  <section
+    :class="['manager-card', { 'manager-card--loading': isLoading }]"
+    data-testid="manager-card"
+  >
     <AssignAgentCardSkeleton
       v-if="isLoading"
       data-testid="manager-card-skeleton"
