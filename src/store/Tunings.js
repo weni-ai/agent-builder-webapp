@@ -35,8 +35,6 @@ export const useTuningsStore = defineStore('Tunings', () => {
     data: {
       components: false,
       progressiveFeedback: false,
-      humanSupport: false,
-      humanSupportPrompt: '',
       manager: '',
     },
   });
@@ -82,13 +80,8 @@ export const useTuningsStore = defineStore('Tunings', () => {
   const isSettingsValid = computed(() => {
     if (!settings.data || !initialSettings.value) return false;
 
-    const isHumanSupportValid = settings.data.humanSupport
-      ? settings.data.humanSupportPrompt
-      : true;
-
     return (
-      JSON.stringify(settings.data) !== JSON.stringify(initialSettings.value) &&
-      Boolean(isHumanSupportValid)
+      JSON.stringify(settings.data) !== JSON.stringify(initialSettings.value)
     );
   });
 
@@ -192,22 +185,10 @@ export const useTuningsStore = defineStore('Tunings', () => {
         projectUuid: projectUuid.value,
       });
 
-      const { human_support, human_support_prompt } =
-        await nexusaiAPI.router.profile
-          .read({
-            projectUuid: projectUuid.value,
-          })
-          .then(({ data }) => ({
-            human_support: data.team?.human_support || false,
-            human_support_prompt: data.team?.human_support_prompt || '',
-          }));
-
       settings.data = {
         ...settings.data,
         components,
         progressiveFeedback,
-        humanSupport: human_support,
-        humanSupportPrompt: human_support_prompt,
       };
       initialSettings.value = cloneDeep(settings.data);
 
@@ -250,36 +231,6 @@ export const useTuningsStore = defineStore('Tunings', () => {
             hideGenericErrorAlert: true,
           },
         });
-      }
-
-      const hasHumanSupportChanges =
-        initialSettings.value.humanSupport !== settings.data.humanSupport ||
-        initialSettings.value.humanSupportPrompt !==
-          settings.data.humanSupportPrompt;
-
-      if (hasHumanSupportChanges) {
-        await nexusaiAPI.router.profile.edit({
-          projectUuid: projectUuid.value,
-          data: {
-            team: {
-              human_support: settings.data.humanSupport,
-              human_support_prompt: settings.data.humanSupportPrompt,
-            },
-          },
-          requestOptions: {
-            hideGenericErrorAlert: true,
-          },
-        });
-
-        if (initialSettings.value.humanSupport !== settings.data.humanSupport) {
-          window.parent.postMessage(
-            {
-              event: 'change-human-service-status',
-              value: JSON.stringify(settings.data.humanSupport),
-            },
-            '*',
-          );
-        }
       }
 
       const hasManagerChanges =
