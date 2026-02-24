@@ -283,8 +283,8 @@
       "new_agent": "New agent",
       "no_agents": {
         "title": "No agents assigned yet",
-        "description": "Add your first agent to start handling product queries, orders, and more.",
-        "assign_agents_button": "Assign your first agent"
+        "description": "Click {assign_new_agents} and add your first agent",
+        "assign_new_agents": "assign new agents"
       },
       "agent_details": {
         "about": "About",

@@ -46,8 +46,6 @@ describe('AssignedAgents.vue', () => {
     wrapper.find('[data-testid="assigned-agents-empty-title"]');
   const assignedAgentsEmptyDescription = () =>
     wrapper.find('[data-testid="assigned-agents-empty-description"]');
-  const assignedAgentsEmptyButton = () =>
-    wrapper.find('[data-testid="assigned-agents-empty-button"]');
 
   const mockAgents = [
     {
@@ -68,6 +66,11 @@ describe('AssignedAgents.vue', () => {
     wrapper = shallowMount(AssignedAgents, {
       global: {
         plugins: [pinia],
+        stubs: {
+          'i18n-t': {
+            template: '<p><slot name="assign_new_agents" /></p>',
+          },
+        },
       },
     });
   });
@@ -145,12 +148,11 @@ describe('AssignedAgents.vue', () => {
       expect(assignedAgentsEmptyTitle().exists()).toBe(true);
     });
 
-    it('should render assigned agents description when there are no agents', () => {
+    it('should render assigned agents description with strong text when there are no agents', () => {
       expect(assignedAgentsEmptyDescription().exists()).toBe(true);
-    });
-
-    it('should render assigned agents button when there are no agents', () => {
-      expect(assignedAgentsEmptyButton().exists()).toBe(true);
+      expect(assignedAgentsEmptyDescription().text()).toContain(
+        i18n.global.t('agents.assigned_agents.no_agents.assign_new_agents'),
+      );
     });
   });
 });

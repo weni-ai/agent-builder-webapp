@@ -40,7 +40,7 @@
       <UnnnicIcon
         class="assigned-agents__empty-icon"
         size="xl"
-        scheme="neutral-soft"
+        scheme="gray-200"
         icon="workspaces"
         filled
         data-testid="assigned-agents-icon"
@@ -54,21 +54,20 @@
           {{ $t('agents.assigned_agents.no_agents.title') }}
         </h3>
 
-        <p
+        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+        <i18n-t
+          tag="p"
           class="assigned-agents__empty-description"
+          keypath="agents.assigned_agents.no_agents.description"
           data-testid="assigned-agents-empty-description"
         >
-          {{ $t('agents.assigned_agents.no_agents.description') }}
-        </p>
+          <template #assign_new_agents>
+            <p class="assigned-agents__empty-description-strong">
+              {{ $t('agents.assigned_agents.no_agents.assign_new_agents') }}
+            </p>
+          </template>
+        </i18n-t>
       </section>
-
-      <UnnnicButton
-        class="assigned-agents__empty-button"
-        :text="$t('agents.assigned_agents.no_agents.assign_agents_button')"
-        type="primary"
-        data-testid="assigned-agents-empty-button"
-        @click="agentsTeamStore.openAgentsGallery"
-      />
     </section>
   </section>
 
@@ -136,12 +135,16 @@ const agentCard = computed(() =>
     }
 
     &-description {
+      display: flex;
+      align-items: center;
+      gap: $unnnic-space-1;
+
       color: $unnnic-color-fg-base;
       font: $unnnic-font-body;
     }
 
-    &-button {
-      width: 250px;
+    &-description-strong {
+      font-weight: $unnnic-font-weight-bold;
     }
   }
 

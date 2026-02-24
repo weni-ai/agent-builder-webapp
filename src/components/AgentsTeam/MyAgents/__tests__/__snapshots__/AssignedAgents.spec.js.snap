@@ -29,7 +29,7 @@ exports[`AssignedAgents.vue > Component rendering > should match snapshot 1`] = 
         data-v-6b0b7f6d=""
         filled="true"
         icon="workspaces"
-        scheme="neutral-soft"
+        scheme="gray-200"
         size="xl"
       />
       <section
@@ -43,29 +43,24 @@ exports[`AssignedAgents.vue > Component rendering > should match snapshot 1`] = 
         >
           No agents assigned yet
         </h3>
+        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
         <p
           class="assigned-agents__empty-description"
           data-testid="assigned-agents-empty-description"
           data-v-6b0b7f6d=""
+          keypath="agents.assigned_agents.no_agents.description"
+          tag="p"
         >
-          Add your first agent to start handling product queries, orders, and more.
+          
+          <p
+            class="assigned-agents__empty-description-strong"
+            data-v-6b0b7f6d=""
+          >
+            assign new agents
+          </p>
+          
         </p>
       </section>
-      <unnnic-button-stub
-        class="assigned-agents__empty-button"
-        data-testid="assigned-agents-empty-button"
-        data-v-6b0b7f6d=""
-        disabled="false"
-        float="false"
-        iconcenter=""
-        iconleft=""
-        iconright=""
-        iconsfilled="false"
-        loading="false"
-        size="large"
-        text="Assign your first agent"
-        type="primary"
-      />
     </section>
   </section>
   <agents-gallery-modal-stub
