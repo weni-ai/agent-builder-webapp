@@ -44,34 +44,50 @@
           :text="$t('agents.assigned_agents.manager.edit_manager')"
           type="secondary"
           data-testid="edit-manager-button"
+          @click="isOpenEditManagerProfileDrawer = true"
         />
         <UnnnicButton
           :text="$t('agents.assigned_agents.manager.edit_instructions')"
           type="secondary"
           data-testid="edit-instructions-button"
+          @click="redirectToInstructionsView"
         />
       </footer>
     </template>
   </section>
+
+  <EditManagerProfileDrawer
+    v-model="isOpenEditManagerProfileDrawer"
+    data-testid="edit-manager-profile-drawer"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 import AgentIcon from '../AgentIcon.vue';
 import AssignAgentCardSkeleton from '../AssignAgentCardSkeleton.vue';
+import EditManagerProfileDrawer from '@/components/Sidebar/EditManagerProfileDrawer.vue';
 
 import { useProfileStore } from '@/store/Profile';
+import { useRouter } from 'vue-router';
 
-const isLoading = computed(() => profileStore.status === 'loading');
+const router = useRouter();
 
 const profileStore = useProfileStore();
 
+const isOpenEditManagerProfileDrawer = ref(false);
+
+const isLoading = computed(() => profileStore.status === 'loading');
 const manager = computed(() => ({
   name: profileStore.name.old,
   description: profileStore.goal.old,
   icon: 'Manager',
 }));
+
+function redirectToInstructionsView() {
+  router.push({ name: 'instructions' });
+}
 </script>
 
 <style lang="scss" scoped>
