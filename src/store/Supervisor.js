@@ -141,10 +141,8 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         signal: conversationsAbortController.signal,
         hideGenericErrorAlert: true,
         filters: paginationPayload ? { ...baseFilters, page: 1 } : baseFilters,
-        ...(paginationPayload?.pagination
-          ? { pagination: paginationPayload.pagination }
-          : {}),
-        ...(paginationPayload?.onlyLegacy ? { onlyLegacy: true } : {}),
+        pagination: paginationPayload?.pagination,
+        onlyLegacy: paginationPayload?.onlyLegacy,
       };
 
       const response = await supervisorApi.conversations.list(requestPayload);
