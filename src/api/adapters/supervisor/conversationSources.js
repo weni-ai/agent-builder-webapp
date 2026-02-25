@@ -130,6 +130,16 @@ export function normalizeConversationsBySource(results) {
 }
 
 /**
+ * Checks if there is an actual next-page URL.
+ * @param {Object} data - { next?, newNext?, legacyNext? }
+ * @returns {boolean}
+ */
+export function hasNextPageUrl(data) {
+  const { next, newNext, legacyNext } = data || {};
+  return !!(next || newNext || legacyNext);
+}
+
+/**
  * Checks if there are more pages to load (any endpoint).
  * In combined mode: considers "legacy initial" when new is exhausted and legacy hasn't been loaded yet.
  * @param {Object} data - { next?, newNext?, legacyNext? }
@@ -360,8 +370,14 @@ export async function fetchConversationList(filterData) {
   const endDate = parseDateParam(params.end_date);
   const mode = getConversationMode(startDate, endDate);
 
-  if (mode === 'legacy') return fetchLegacy(params);
-  if (mode === 'new') return fetchNew(buildNewEndpointParams(params));
+  if (mode === 'legacy') {
+    const result = await fetchLegacy(params);
+    return { ...result, _paginationSource: LEGACY_SOURCE };
+  }
+  if (mode === 'new') {
+    const result = await fetchNew(buildNewEndpointParams(params));
+    return { ...result, _paginationSource: NEW_SOURCE };
+  }
 
   if (onlyLegacy) {
     const result = await fetchLegacyWithParams();
