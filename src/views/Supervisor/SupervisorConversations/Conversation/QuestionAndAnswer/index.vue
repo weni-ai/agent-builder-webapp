@@ -129,7 +129,8 @@ const extractedComponents = computed(() => {
         return null;
       }
     })
-    .filter((component) => component !== null);
+    .filter((component) => component !== null)
+    .flatMap((item) => (Array.isArray(item) ? item : [item]));
 });
 
 const treatedData = computed(() => {
