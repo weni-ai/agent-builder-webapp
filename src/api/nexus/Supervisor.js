@@ -15,13 +15,21 @@ export const Supervisor = {
         urn,
       });
 
-      let url =
-        source === 'legacy'
-          ? `/api/${projectUuid}/conversations/?${new URLSearchParams(legacyParams)}`
-          : `/api/v2/${projectUuid}/conversations/${uuid}`;
+      const timezone = Intl?.DateTimeFormat?.().resolvedOptions?.()?.timeZone;
+      const isLegacy = source === 'legacy';
+
+      let url = isLegacy
+        ? `/api/${projectUuid}/conversations/?${new URLSearchParams(legacyParams)}`
+        : `/api/v2/${projectUuid}/conversations/${uuid}`;
 
       if (next) {
         url = next.slice(next.indexOf('/api'));
+      }
+
+      if (!isLegacy && !url.includes('timezone')) {
+        // Add timezone to url
+        const separator = url.includes('?') ? '&' : '?';
+        url += `${separator}${new URLSearchParams({ timezone }).toString()}`;
       }
 
       const { data } = await nexusRequest.$http.get(url);

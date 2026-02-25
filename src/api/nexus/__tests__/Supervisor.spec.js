@@ -128,6 +128,25 @@ describe('Supervisor.js', () => {
       );
     });
 
+    it('should send timezone as query param for v2 endpoint', async () => {
+      nexusRequest.$http.get.mockResolvedValue(mockV2Response);
+
+      const projectUuid = 'project-123';
+      const uuid = 'conv-123';
+      const timezone = 'America/Sao_Paulo';
+
+      await Supervisor.conversations.getById({
+        projectUuid,
+        uuid,
+        source: 'v2',
+        timezone,
+      });
+
+      const callUrl = nexusRequest.$http.get.mock.calls[0][0];
+      expect(callUrl).toContain(`/api/v2/${projectUuid}/conversations/${uuid}`);
+      expect(callUrl).toContain(new URLSearchParams({ timezone }).toString());
+    });
+
     it('should get conversation by id with source legacy', async () => {
       nexusRequest.$http.get.mockResolvedValue(mockLegacyResponse);
 
