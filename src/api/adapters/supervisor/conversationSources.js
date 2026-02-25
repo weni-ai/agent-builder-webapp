@@ -9,8 +9,8 @@ import { endOfDay, startOfDay } from 'date-fns';
 import nexusRequest from '@/api/nexusaiRequest';
 import { ConversationAdapter } from './conversation';
 
-/** Data from which conversations come from the v2 endpoint (06/02/2026) */
-export const CONVERSATIONS_SWITCH_DATE = new Date(Date.UTC(2026, 1, 6));
+/** Data from which conversations come from the v2 endpoint (25/02/2026) */
+export const CONVERSATIONS_SWITCH_DATE = new Date(Date.UTC(2026, 1, 25));
 
 export const LEGACY_SOURCE = 'legacy';
 export const NEW_SOURCE = 'v2';
