@@ -36,7 +36,10 @@ import SupervisorHeader from './SupervisorHeader.vue';
 import SupervisorConversations from './SupervisorConversations/index.vue';
 import Conversation from './SupervisorConversations/Conversation/index.vue';
 
-import { hasMoreToLoad } from '@/api/adapters/supervisor/conversationSources';
+import {
+  hasMoreToLoad,
+  hasNextPageUrl,
+} from '@/api/adapters/supervisor/conversationSources';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { cleanParams } from '@/utils/http';
 
@@ -98,7 +101,7 @@ async function checkAndLoadMoreIfNeeded() {
 
     if (!hasMoreConversationsToLoad()) return;
 
-    if (!hasScrollbar()) {
+    if (!hasScrollbar() && hasNextPageUrl(supervisorStore.conversations.data)) {
       supervisorConversations.value?.loadMoreConversations();
     }
   } finally {
