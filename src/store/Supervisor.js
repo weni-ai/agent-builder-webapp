@@ -6,6 +6,7 @@ import { useRoute } from 'vue-router';
 import { useProjectStore } from './Project';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
+import { useFeatureFlagsStore } from './FeatureFlags';
 
 import {
   getPaginationPayload,
@@ -102,13 +103,16 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
   }
 
   async function loadConversations(page = 1) {
+    conversations.status = 'loading';
+
+    const featureFlagsStore = useFeatureFlagsStore();
+    await featureFlagsStore.whenUserAttributed();
+
     if (conversationsAbortController) {
       await conversationsAbortController.abort();
     }
 
     conversationsAbortController = new AbortController();
-
-    conversations.status = 'loading';
     if (page === 1) {
       conversations.data.results = [];
       conversations.data.next = null;

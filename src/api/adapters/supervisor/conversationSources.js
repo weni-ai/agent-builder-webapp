@@ -90,6 +90,9 @@ function buildNewEndpointParams(params) {
  * @returns {ConversationMode}
  */
 export function getConversationMode(startDate, endDate) {
+  const featureFlagsStore = useFeatureFlagsStore();
+
+  if (!featureFlagsStore.flags.conversationsV2) return 'legacy';
   if (!startDate || !endDate) return 'legacy';
   if (endDate < CONVERSATIONS_SWITCH_DATE) return 'legacy';
   if (startDate >= CONVERSATIONS_SWITCH_DATE) return 'new';
