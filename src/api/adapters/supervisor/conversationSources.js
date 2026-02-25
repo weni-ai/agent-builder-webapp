@@ -339,6 +339,15 @@ export async function fetchConversationList(filterData) {
       source: LEGACY_SOURCE,
     });
 
+  const fetchLegacyWithParams = async () => {
+    const legacyEndDate = getLegacyEndDate();
+    const legacyParams = {
+      ...params,
+      end_date: formatDateParam(legacyEndDate),
+    };
+    return fetchLegacy(legacyParams);
+  };
+
   const fetchNew = (paramsToUse) =>
     fetchConversations({
       url: newEndpoint,
@@ -355,12 +364,7 @@ export async function fetchConversationList(filterData) {
   if (mode === 'new') return fetchNew(buildNewEndpointParams(params));
 
   if (onlyLegacy) {
-    const legacyEndDate = getLegacyEndDate();
-    const legacyParams = {
-      ...params,
-      end_date: formatDateParam(legacyEndDate),
-    };
-    const result = await fetchLegacy(legacyParams);
+    const result = await fetchLegacyWithParams();
     return { ...result, _paginationSource: LEGACY_SOURCE };
   }
 
@@ -369,5 +373,18 @@ export async function fetchConversationList(filterData) {
     start_date: formatDateParam(CONVERSATIONS_SWITCH_DATE),
   });
   const result = await fetchNew(newParams);
+
+  const isNewResponseEmpty =
+    result.results?.length === 0 && result.next === null;
+
+  if (isNewResponseEmpty) {
+    const legacyResult = await fetchLegacyWithParams();
+    return {
+      ...legacyResult,
+      newNext: null,
+      legacyNext: legacyResult.next ?? null,
+    };
+  }
+
   return { ...result, _paginationSource: NEW_SOURCE };
 }
