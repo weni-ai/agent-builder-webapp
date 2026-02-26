@@ -32,6 +32,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
       next: null,
       newNext: null,
       legacyNext: null,
+      legacyInitialAttempted: false,
     },
   });
 
@@ -118,6 +119,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
       conversations.data.next = null;
       conversations.data.newNext = null;
       conversations.data.legacyNext = null;
+      conversations.data.legacyInitialAttempted = false;
     }
 
     const formatDateParam = (date) =>
@@ -140,6 +142,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     );
 
     try {
+      const currentConversationsData = { ...conversations.data };
       const requestPayload = {
         projectUuid: projectUuid.value,
         signal: conversationsAbortController.signal,
@@ -166,16 +169,21 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         ...responseData,
         count,
         results: normalizedResults,
+        legacyInitialAttempted: currentConversationsData.legacyInitialAttempted,
       };
 
       const paginationState = getPaginationStateFromResponse(
         responseData,
-        conversations.data,
+        currentConversationsData,
       );
       if (paginationState) {
         conversations.data.next = paginationState.next;
         conversations.data.newNext = paginationState.newNext;
         conversations.data.legacyNext = paginationState.legacyNext;
+      }
+
+      if (paginationPayload?.onlyLegacy) {
+        conversations.data.legacyInitialAttempted = true;
       }
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;

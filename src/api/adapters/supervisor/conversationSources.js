@@ -164,18 +164,24 @@ export function hasMoreToLoad(data, status, results = []) {
 
 /**
  * In combined mode: new is exhausted (newNext null) and legacy hasn't been loaded yet
- * @param {Object} data - { newNext?, legacyNext? }
+ * @param {Object} data - { newNext?, legacyNext?, legacyInitialAttempted? }
  * @param {Array} results
  * @returns {boolean}
  */
 export function needsLegacyInitialLoad(data, results = []) {
-  const { newNext, legacyNext } = data || {};
+  const { newNext, legacyNext, legacyInitialAttempted = false } = data || {};
   const hasNewResults = (results || []).some((r) => r?.source === NEW_SOURCE);
   const hasLegacyResults = (results || []).some(
     (r) => r?.source === LEGACY_SOURCE,
   );
 
-  return !newNext && !legacyNext && hasNewResults && !hasLegacyResults;
+  return (
+    !newNext &&
+    !legacyNext &&
+    !legacyInitialAttempted &&
+    hasNewResults &&
+    !hasLegacyResults
+  );
 }
 
 /**

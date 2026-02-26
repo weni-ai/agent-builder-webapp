@@ -41,7 +41,6 @@ import OldSupervisor from '@/views/OldSupervisor/index.vue';
 
 import {
   hasMoreToLoad,
-  hasNextPageUrl,
 } from '@/api/adapters/supervisor/conversationSources';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
@@ -106,7 +105,7 @@ async function checkAndLoadMoreIfNeeded() {
 
     if (!hasMoreConversationsToLoad()) return;
 
-    if (!hasScrollbar() && hasNextPageUrl(supervisorStore.conversations.data)) {
+    if (!hasScrollbar()) {
       supervisorConversations.value?.loadMoreConversations();
     }
   } finally {
