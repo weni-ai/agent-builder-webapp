@@ -1,26 +1,10 @@
 import nexusRequest from '../nexusaiRequest';
-import { ConversationAdapter } from '../adapters/supervisor/conversation';
+import { fetchConversationList } from '../adapters/supervisor/conversationSources';
 
 export const Supervisor = {
   conversations: {
     async list(filterData) {
-      const {
-        projectUuid,
-        signal,
-        hideGenericErrorAlert = false,
-        filters = {},
-      } = filterData;
-
-      const params = ConversationAdapter.toApi({ ...filters });
-
-      const config = { signal, hideGenericErrorAlert };
-
-      const { data } = await nexusRequest.$http.get(
-        `/api/${projectUuid}/supervisor/?${new URLSearchParams(params)}`,
-        config,
-      );
-
-      return ConversationAdapter.fromApi(data);
+      return fetchConversationList(filterData);
     },
 
     async getById({ projectUuid, start, end, urn, next }) {

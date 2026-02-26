@@ -7,6 +7,12 @@ import { useProjectStore } from './Project';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 
+import {
+  getPaginationPayload,
+  getPaginationStateFromResponse,
+  normalizeConversationsBySource,
+} from '@/api/adapters/supervisor/conversationSources';
+
 import i18n from '@/utils/plugins/i18n';
 
 export const useSupervisorStore = defineStore('Supervisor', () => {
@@ -22,6 +28,9 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     status: null,
     data: {
       results: [],
+      next: null,
+      newNext: null,
+      legacyNext: null,
     },
   });
 
@@ -100,31 +109,70 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     conversationsAbortController = new AbortController();
 
     conversations.status = 'loading';
-    if (page === 1) conversations.data.results = [];
+    if (page === 1) {
+      conversations.data.results = [];
+      conversations.data.next = null;
+      conversations.data.newNext = null;
+      conversations.data.legacyNext = null;
+    }
 
-    const formatDateParam = (date) => format(parseISO(date), 'dd-MM-yyyy');
+    const formatDateParam = (date) =>
+      date ? format(parseISO(date), 'dd-MM-yyyy') : '';
+
+    const baseFilters = {
+      page,
+      start: formatDateParam(filters.start),
+      end: formatDateParam(filters.end),
+      search: filters.search,
+      status: filters.status,
+      csat: filters.csat,
+      topics: filters.topics,
+    };
+
+    const paginationPayload = getPaginationPayload(
+      page,
+      conversations.data,
+      conversations.data.results,
+    );
 
     try {
-      const response = await supervisorApi.conversations.list({
+      const requestPayload = {
         projectUuid: projectUuid.value,
         signal: conversationsAbortController.signal,
         hideGenericErrorAlert: true,
-        filters: {
-          page,
-          start: formatDateParam(filters.start),
-          end: formatDateParam(filters.end),
-          search: filters.search,
-          status: filters.status,
-          csat: filters.csat,
-          topics: filters.topics,
-        },
-      });
+        filters: paginationPayload ? { ...baseFilters, page: 1 } : baseFilters,
+        pagination: paginationPayload?.pagination,
+        onlyLegacy: paginationPayload?.onlyLegacy,
+      };
+
+      const response = await supervisorApi.conversations.list(requestPayload);
+
+      const responseData =
+        response && !Array.isArray(response) ? response : { results: response };
+      const responseResults = Array.isArray(responseData?.results)
+        ? responseData.results
+        : [];
+
+      const mergedResults = [...conversations.data.results, ...responseResults];
+      const normalizedResults = normalizeConversationsBySource(mergedResults);
+      const count = responseData?.count ?? normalizedResults.length;
 
       conversations.status = 'complete';
       conversations.data = {
-        ...response,
-        results: [...conversations.data.results, ...response.results],
+        ...responseData,
+        count,
+        results: normalizedResults,
       };
+
+      const paginationState = getPaginationStateFromResponse(
+        responseData,
+        conversations.data,
+      );
+      if (paginationState) {
+        conversations.data.next = paginationState.next;
+        conversations.data.newNext = paginationState.newNext;
+        conversations.data.legacyNext = paginationState.legacyNext;
+      }
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
 
@@ -242,7 +290,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         type: 'success',
         text: i18n.global.t('agent_builder.supervisor.export.success'),
       });
-    } catch (error) {
+    } catch {
       alertStore.add({
         type: 'error',
         text: i18n.global.t('agent_builder.supervisor.export.error'),
