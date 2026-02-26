@@ -1,10 +1,12 @@
 import { shallowMount } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
+import { nextTick } from 'vue';
+
+const flushPromises = () => new Promise((r) => setTimeout(r, 0));
 
 import Conversation from '../index.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
-import { nextTick } from 'vue';
 
 const mockConversationData = {
   basic: {
@@ -39,6 +41,17 @@ const mockConversationData = {
     data: {
       status: 'complete',
       results: [{ id: 1, text: 'Hello' }],
+    },
+  },
+  withMessagesAndNext: {
+    urn: 'conversation-with-next',
+    data: {
+      status: 'complete',
+      next: 'https://api.example.com/api/project/conversations/123/?page=2',
+      results: [
+        { id: 1, text: 'Hello', type: 'user' },
+        { id: 2, text: 'Hi', type: 'agent' },
+      ],
     },
   },
 };
@@ -186,9 +199,15 @@ describe('Conversation.vue', () => {
 
   describe('User interactions', () => {
     it('loads more data when scrolled to top of messages container', async () => {
+      supervisorStore.selectedConversation =
+        mockConversationData.withMessagesAndNext;
+      await nextTick();
+      vi.clearAllMocks();
+
       messagesContainer().element.scrollTop = 0;
 
       await messagesContainer().trigger('scroll');
+      await flushPromises();
 
       expect(supervisorStore.loadSelectedConversationData).toHaveBeenCalledWith(
         { next: true },
@@ -196,6 +215,9 @@ describe('Conversation.vue', () => {
     });
 
     it('does not load more data when scrolled but not at top', async () => {
+      supervisorStore.selectedConversation =
+        mockConversationData.withMessagesAndNext;
+      await nextTick();
       vi.clearAllMocks();
 
       messagesContainer().element.scrollTop = 100;
@@ -205,6 +227,58 @@ describe('Conversation.vue', () => {
       expect(
         supervisorStore.loadSelectedConversationData,
       ).not.toHaveBeenCalled();
+    });
+
+    it('does not load more when at top if status is loading', async () => {
+      supervisorStore.selectedConversation =
+        mockConversationData.loadingWithResults;
+      supervisorStore.selectedConversation.data.next =
+        'https://api.example.com/next';
+      await nextTick();
+      vi.clearAllMocks();
+
+      messagesContainer().element.scrollTop = 0;
+
+      await messagesContainer().trigger('scroll');
+
+      expect(
+        supervisorStore.loadSelectedConversationData,
+      ).not.toHaveBeenCalled();
+    });
+
+    it('does not load more when at top if there is no next page', async () => {
+      supervisorStore.selectedConversation = mockConversationData.withMessages;
+      await nextTick();
+      vi.clearAllMocks();
+
+      messagesContainer().element.scrollTop = 0;
+
+      await messagesContainer().trigger('scroll');
+
+      expect(
+        supervisorStore.loadSelectedConversationData,
+      ).not.toHaveBeenCalled();
+    });
+
+    it('sets scrollTop to heightAdded after loading more so view stays stable', async () => {
+      supervisorStore.selectedConversation =
+        mockConversationData.withMessagesAndNext;
+      await nextTick();
+      vi.clearAllMocks();
+
+      const el = messagesContainer().element;
+      let scrollHeightReads = 0;
+      Object.defineProperty(el, 'scrollHeight', {
+        get: () => (scrollHeightReads++ === 0 ? 1000 : 1500),
+        configurable: true,
+      });
+      el.scrollTop = 0;
+
+      await messagesContainer().trigger('scroll');
+      await flushPromises();
+      await nextTick();
+
+      expect(el.scrollTop).toBe(500);
     });
   });
 
