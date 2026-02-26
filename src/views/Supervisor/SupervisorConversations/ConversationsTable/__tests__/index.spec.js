@@ -89,11 +89,6 @@ describe('ConversationsTable.vue', () => {
     wrapper = shallowMount(ConversationsTable, {
       global: {
         plugins: [pinia],
-        stubs: {
-          UnnnicIntelligenceText: {
-            template: '<div><slot /></div>',
-          },
-        },
       },
     });
   });
@@ -103,22 +98,11 @@ describe('ConversationsTable.vue', () => {
     console.log(wrapper.vm.supervisorStore.conversations);
 
     expect(table().exists()).toBe(true);
-    // Temporaly disabled
-    // expect(conversationsCount().exists()).toBe(true);
     expect(conversationRows().length).toBe(2);
   });
 
   it('loads conversations on mount', () => {
     expect(wrapper.vm.supervisorStore.loadConversations).toHaveBeenCalled();
-  });
-
-  // Temporaly disabled
-  it.skip('correctly displays the conversations count', () => {
-    expect(conversationsCount().text()).toBe(
-      i18n.global.t('agent_builder.supervisor.conversations_count', {
-        count: 2,
-      }),
-    );
   });
 
   it('passes correct props to ConversationRow component', () => {
@@ -138,6 +122,42 @@ describe('ConversationsTable.vue', () => {
 
     expect(wrapper.vm.supervisorStore.selectedConversation).toMatchObject({
       uuid: '1',
+    });
+  });
+
+  describe('showDivider', () => {
+    const setConversations = async (results) => {
+      supervisorStore.conversations.status = 'complete';
+      supervisorStore.conversations.data.results = results;
+      supervisorStore.conversations.data.count = results.length;
+      await nextTick();
+    };
+
+    it('sets showDivider for all but the last row when there is no separator', async () => {
+      await setConversations([
+        { uuid: '1', source: 'v2' },
+        { uuid: '2', source: 'v2' },
+        { uuid: '3', source: 'v2' },
+      ]);
+
+      const rows = conversationRows();
+      const showDividerValues = rows.map((row) => row.props('showDivider'));
+
+      expect(showDividerValues).toEqual([true, true, false]);
+    });
+
+    it('skips the divider on the row before the separator', async () => {
+      await setConversations([
+        { uuid: '1', source: 'v2' },
+        { uuid: '2', source: 'v2' },
+        { uuid: '3', source: 'legacy' },
+        { uuid: '4', source: 'legacy' },
+      ]);
+
+      const rows = conversationRows();
+      const showDividerValues = rows.map((row) => row.props('showDivider'));
+
+      expect(showDividerValues).toEqual([true, false, true, false]);
     });
   });
 });
