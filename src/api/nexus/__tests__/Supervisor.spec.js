@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import nexusRequest from '@/api/nexusaiRequest';
 import { Supervisor } from '@/api/nexus/Supervisor';
 
@@ -10,17 +10,21 @@ vi.mock('@/api/nexusaiRequest', () => ({
   },
 }));
 
-vi.mock('Intl', () => ({
-  DateTimeFormat: vi.fn().mockReturnValue({
-    resolvedOptions: vi.fn().mockReturnValue({
-      timeZone: 'America/Sao_Paulo',
-    }),
-  }),
-}));
-
 describe('Supervisor.js', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
+    vi.stubGlobal('Intl', {
+      DateTimeFormat: vi.fn().mockReturnValue({
+        resolvedOptions: vi.fn().mockReturnValue({
+          timeZone: 'America/Sao_Paulo',
+        }),
+      }),
+    });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   describe('conversations.getById', () => {
