@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import nexusRequest from '@/api/nexusaiRequest';
 import { Supervisor } from '@/api/nexus/Supervisor';
 
@@ -13,6 +13,18 @@ vi.mock('@/api/nexusaiRequest', () => ({
 describe('Supervisor.js', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
+    vi.stubGlobal('Intl', {
+      DateTimeFormat: vi.fn().mockReturnValue({
+        resolvedOptions: vi.fn().mockReturnValue({
+          timeZone: 'America/Sao_Paulo',
+        }),
+      }),
+    });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   describe('conversations.getById', () => {
@@ -86,7 +98,7 @@ describe('Supervisor.js', () => {
       });
 
       expect(nexusRequest.$http.get).toHaveBeenCalledWith(
-        `/api/v2/${projectUuid}/conversations/${uuid}`,
+        `/api/v2/${projectUuid}/conversations/${uuid}?timezone=America%2FSao_Paulo`,
       );
       expect(result.results).toHaveLength(2);
       expect(result.results[0]).toMatchObject({
@@ -111,7 +123,7 @@ describe('Supervisor.js', () => {
 
       const projectUuid = 'project-123';
       const uuid = 'conv-123';
-      const next = `https://api.example.com/api/v2/${projectUuid}/conversations/${uuid}/?page=1`;
+      const next = `https://api.example.com/api/v2/${projectUuid}/conversations/${uuid}/?page=1&timezone=America%2FSao_Paulo`;
 
       const result = await Supervisor.conversations.getById({
         projectUuid,
