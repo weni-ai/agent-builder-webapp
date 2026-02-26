@@ -392,6 +392,33 @@
     "instructions": {
       "title": "Instruções",
       "description": "Escreva regras rápidas para moldar o comportamento do agente"
+    },
+    "profile": {
+      "tone_of_voice": {
+        "tones": {
+          "friendly": {
+            "name": "Amigável",
+            "tooltip": "Amigável e empático, focado em parceria e ajuda"
+          },
+          "systematic": {
+            "name": "Sistemático",
+            "tooltip": "Direto, bem organizado, focado em processos claros e lógica"
+          },
+          "analytical": {
+            "name": "Analítico",
+            "tooltip": "Lógico, metodológico, e objetivo, usando linguagem precisa e evitando suposições"
+          },
+          "creative": {
+            "name": "Criativo",
+            "tooltip": "Pensamento avançado e imaginativo, priorizando soluções originais"
+          },
+          "casual": {
+            "name": "Informal",
+            "tooltip": "Leve, energético, e informal para um tom mais acessível e humano"
+          }
+
+        }
+      }
     }
   },
   "router": {
@@ -700,18 +727,6 @@
       "personality": {
         "title": "Qual é o tom de voz do agente?",
         "description": "Escolha a forma como o agente se comunica com os usuários"
-      },
-      "personalities": {
-        "friendly": "Amigável",
-        "extrovert": "Extrovertido",
-        "cooperative": "Cooperativo",
-        "generous": "Generoso",
-        "relaxed": "Relaxado",
-        "organized": "Organizado",
-        "systematic": "Sistemático",
-        "innovative": "Inovador",
-        "creative": "Criativo",
-        "intellectual": "Intelectual"
       }
     },
     "instructions": {
