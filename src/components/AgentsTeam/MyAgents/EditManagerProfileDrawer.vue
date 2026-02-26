@@ -1,18 +1,22 @@
 <template>
-  <UnnnicDrawer
-    data-testid="edit-manager-profile-drawer"
-    :modelValue="modelValue"
-    :title="$t('profile.edit_manager_profile')"
-    size="lg"
-    :primaryButtonText="$t('profile.save_btn')"
-    :secondaryButtonText="$t('cancel')"
-    :disabledPrimaryButton="isSaveDisabled"
-    :loadingPrimaryButton="isSavingDrawer"
-    @close="closeWithReset"
-    @primary-button-click="save"
-    @secondary-button-click="closeWithReset"
+  <UnnnicDrawerNext
+    v-model:open="modelValue"
+    @update:open="
+      (open) => {
+        if (!open) closeWithReset();
+      }
+    "
   >
-    <template #content>
+    <UnnnicDrawerContent
+      size="large"
+      data-testid="edit-manager-profile-drawer-content"
+    >
+      <UnnnicDrawerHeader>
+        <UnnnicDrawerTitle data-testid="edit-manager-profile-drawer-title">{{
+          $t('profile.edit_manager_profile')
+        }}</UnnnicDrawerTitle>
+      </UnnnicDrawerHeader>
+
       <section class="edit-manager-profile-drawer">
         <UnnnicSegmentedControl
           v-model="selectedTab"
@@ -44,8 +48,27 @@
           />
         </section>
       </section>
-    </template>
-  </UnnnicDrawer>
+
+      <UnnnicDrawerFooter>
+        <UnnnicDrawerClose>
+          <UnnnicButton
+            data-testid="edit-manager-profile-drawer-close-button"
+            :text="$t('cancel')"
+            type="tertiary"
+            @click="closeWithReset"
+          />
+        </UnnnicDrawerClose>
+        <UnnnicButton
+          data-testid="edit-manager-profile-drawer-save-button"
+          :text="$t('profile.save_btn')"
+          :disabled="isSaveDisabled"
+          :loading="isSavingDrawer"
+          type="primary"
+          @click="save"
+        />
+      </UnnnicDrawerFooter>
+    </UnnnicDrawerContent>
+  </UnnnicDrawerNext>
 </template>
 
 <script setup>
@@ -145,6 +168,8 @@ watch(
 
 <style lang="scss" scoped>
 .edit-manager-profile-drawer {
+  padding: $unnnic-space-6;
+
   height: 100%;
 
   display: flex;
