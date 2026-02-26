@@ -21,7 +21,7 @@ describe('useBuildViews', () => {
     it('should return an array of view objects', () => {
       const result = useBuildViews();
 
-      expect(result.value).toHaveLength(3);
+      expect(result.value).toHaveLength(2);
       result.value.forEach((view) => {
         expect(view).toHaveProperty('title');
         expect(view).toHaveProperty('description');
@@ -37,22 +37,6 @@ describe('useBuildViews', () => {
     beforeEach(() => {
       const result = useBuildViews();
       views = result.value;
-    });
-
-    it('should have instructions view with correct properties', () => {
-      const instructionsView = views.find(
-        (view) => view.page === 'instructions',
-      );
-
-      expect(instructionsView).toBeDefined();
-      expect(instructionsView.title).toBe(
-        t('agent_builder.tabs.instructions.title'),
-      );
-      expect(instructionsView.description).toBe(
-        t('agent_builder.tabs.instructions.description'),
-      );
-      expect(instructionsView.page).toBe('instructions');
-      expect(instructionsView.icon).toBe('format_list_bulleted');
     });
 
     it('should have knowledge view with correct properties', () => {
@@ -85,7 +69,7 @@ describe('useBuildViews', () => {
       const result = useBuildViews();
       const views = result.value;
 
-      const expectedOrder = ['instructions', 'knowledge', 'tunings'];
+      const expectedOrder = ['knowledge', 'tunings'];
       const actualOrder = views.map((view) => view.page);
 
       expect(actualOrder).toEqual(expectedOrder);

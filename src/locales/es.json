@@ -17,10 +17,6 @@
         "title": "Conversaciones",
         "description": "Analiza y revisa conversaciones entre agentes y clientes."
       },
-      "instructions": {
-        "title": "Instrucciones",
-        "description": "Escribe reglas rápidas para moldear el comportamiento del agente"
-      },
       "knowledge": {
         "title": "Conocimientos",
         "description": "Agrega conocimiento mediante archivos, links o texto para que el agente pueda responder con precisión"
@@ -392,6 +388,10 @@
         "next_button": "Siguiente",
         "finish_button": "Finalizar"
       }
+    },
+    "instructions": {
+      "title": "Instrucciones",
+      "description": "Escribe reglas rápidas para moldear el comportamiento del agente"
     }
   },
   "router": {

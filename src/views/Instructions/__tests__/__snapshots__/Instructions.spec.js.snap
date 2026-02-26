@@ -2,7 +2,6 @@
 
 exports[`Instructions.vue > Component rendering > should match snapshot 1`] = `
 "<section data-v-e9634d10="" class="instructions">
-  <agent-builder-header-stub data-v-e9634d10="" class="" withdivider="false" actionssize="none" data-testid="instructions-header"></agent-builder-header-stub>
   <new-instruction-stub data-v-e9634d10="" data-testid="new-instruction"></new-instruction-stub>
   <instructions-section-stub data-v-e9634d10="" data-testid="instructions-section"></instructions-section-stub>
 </section>"

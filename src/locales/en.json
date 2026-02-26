@@ -17,10 +17,6 @@
         "title": "Conversations",
         "description": "Review and analyze conversations between agents and customers."
       },
-      "instructions": {
-        "title": "Instructions",
-        "description": "Write quick rules to shape the agent’s behavior"
-      },
       "knowledge": {
         "title": "Knowledge",
         "description": "Add knowledge through files, links, or text so the agent can reply accurately"
@@ -392,6 +388,10 @@
         "next_button": "Next",
         "finish_button": "Finish"
       }
+    },
+    "instructions": {
+      "title": "Instructions",
+      "description": "Write quick rules to shape the agent’s behavior"
     }
   },
   "router": {
