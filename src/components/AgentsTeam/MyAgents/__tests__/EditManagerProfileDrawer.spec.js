@@ -1,12 +1,20 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
+import { nextTick } from 'vue';
 
 import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
+import { useTuningsStore } from '@/store/Tunings';
 import i18n from '@/utils/plugins/i18n';
 
 import EditManagerProfileDrawer from '../EditManagerProfileDrawer.vue';
+
+const defaultSettingsData = {
+  components: false,
+  progressiveFeedback: false,
+  manager: '',
+};
 
 const pinia = createTestingPinia({
   initialState: {
@@ -34,6 +42,13 @@ const pinia = createTestingPinia({
     alert: {
       data: {},
     },
+    Tunings: {
+      settings: {
+        status: null,
+        data: { ...defaultSettingsData },
+      },
+      initialSettings: null,
+    },
   },
 });
 
@@ -41,6 +56,7 @@ describe('EditManagerProfileDrawer.vue', () => {
   let wrapper;
   let profileStore;
   let alertStore;
+  let tuningsStore;
 
   const drawer = () => wrapper.findComponent({ name: 'UnnnicDrawerNext' });
   const drawerContent = () =>
@@ -48,7 +64,7 @@ describe('EditManagerProfileDrawer.vue', () => {
       '[data-testid="edit-manager-profile-drawer-content"]',
     );
   const drawerTitle = () =>
-    wrapper.findComponent('[data-testid="edit-manager-profile-drawer-title"]');
+    wrapper.find('[data-testid="edit-manager-profile-drawer-title"]');
   const drawerCloseButton = () =>
     wrapper.findComponent(
       '[data-testid="edit-manager-profile-drawer-close-button"]',
@@ -57,11 +73,15 @@ describe('EditManagerProfileDrawer.vue', () => {
     wrapper.findComponent(
       '[data-testid="edit-manager-profile-drawer-save-button"]',
     );
-
+  const tabs = () =>
+    wrapper.find('[data-testid="edit-manager-profile-drawer-tabs"]');
   const generalInfo = () =>
     wrapper.findComponent('[data-testid="general-info"]');
+  const settingsAgentsTeam = () =>
+    wrapper.findComponent('[data-testid="settings-agents-team"]');
 
   beforeEach(() => {
+    vi.clearAllMocks();
     wrapper = mount(EditManagerProfileDrawer, {
       props: {
         modelValue: true,
@@ -70,17 +90,27 @@ describe('EditManagerProfileDrawer.vue', () => {
         plugins: [i18n, pinia],
         stubs: {
           UnnnicDrawerNext: false,
+          SettingsAgentsTeam: true,
         },
       },
     });
 
     profileStore = useProfileStore();
     alertStore = useAlertStore();
+    tuningsStore = useTuningsStore();
+  });
+
+  afterEach(() => {
+    wrapper?.unmount();
   });
 
   describe('Component structure', () => {
     it('renders the general info component', () => {
       expect(generalInfo().exists()).toBe(true);
+    });
+
+    it('renders the tabs control', () => {
+      expect(tabs().exists()).toBe(true);
     });
   });
 
@@ -91,6 +121,17 @@ describe('EditManagerProfileDrawer.vue', () => {
 
     it('passes modelValue prop to drawer', () => {
       expect(drawer().props('open')).toBe(true);
+    });
+
+    it('passes open false to drawer when modelValue is false', () => {
+      wrapper = mount(EditManagerProfileDrawer, {
+        props: { modelValue: false },
+        global: {
+          plugins: [i18n, pinia],
+          stubs: { UnnnicDrawerNext: false },
+        },
+      });
+      expect(drawer().props('open')).toBe(false);
     });
 
     it('passes correct title to drawer', () => {
@@ -113,6 +154,53 @@ describe('EditManagerProfileDrawer.vue', () => {
         profileStore.isSaveButtonDisabled,
       );
       expect(drawerSaveButton().props('loading')).toBe(profileStore.isSaving);
+    });
+
+    it('save button disabled prop reflects isSaveDisabled computed (no profile and no settings changes)', async () => {
+      profileStore.name.current = profileStore.name.old;
+      profileStore.role.current = profileStore.role.old;
+      profileStore.personality.current = profileStore.personality.old;
+      profileStore.goal.current = profileStore.goal.old;
+      tuningsStore.initialSettings = null;
+      tuningsStore.settings.data = { ...defaultSettingsData };
+      await nextTick();
+      const expectedDisabled =
+        profileStore.isSaveButtonDisabled && !tuningsStore.isSettingsValid;
+      expect(drawerSaveButton().props('disabled')).toBe(expectedDisabled);
+    });
+
+    it('save button is not disabled when tuningsStore has settings changes', async () => {
+      tuningsStore.initialSettings = { ...defaultSettingsData };
+      tuningsStore.settings.data = { ...defaultSettingsData, manager: 'other' };
+      await nextTick();
+      expect(drawerSaveButton().props('disabled')).toBe(false);
+    });
+
+    it('save button shows loading when tuningsStore.settings.status is loading', async () => {
+      tuningsStore.settings.status = 'loading';
+      await nextTick();
+      expect(drawerSaveButton().props('loading')).toBe(true);
+    });
+  });
+
+  describe('Tab content', () => {
+    it('shows general-info when tab is profile and does not show settings-agents-team', () => {
+      expect(generalInfo().exists()).toBe(true);
+      expect(settingsAgentsTeam().exists()).toBe(false);
+    });
+
+    it('shows settings-agents-team when tab is settings', async () => {
+      wrapper.vm.selectedTab = 'settings';
+      await nextTick();
+      expect(settingsAgentsTeam().exists()).toBe(true);
+      expect(generalInfo().exists()).toBe(false);
+    });
+
+    it('calls tuningsStore.fetchSettings when switching to settings tab and settings.status is not success', async () => {
+      tuningsStore.settings.status = null;
+      wrapper.vm.selectedTab = 'settings';
+      await nextTick();
+      expect(tuningsStore.fetchSettings).toHaveBeenCalled();
     });
   });
 
@@ -174,6 +262,49 @@ describe('EditManagerProfileDrawer.vue', () => {
         type: 'error',
       });
     });
+
+    it('saves only settings when no profile changes and settings have changes', async () => {
+      profileStore.name.current = profileStore.name.old;
+      profileStore.role.current = profileStore.role.old;
+      profileStore.personality.current = profileStore.personality.old;
+      profileStore.goal.current = profileStore.goal.old;
+      profileStore.save.mockClear();
+
+      tuningsStore.initialSettings = { ...defaultSettingsData };
+      tuningsStore.settings.data = { ...defaultSettingsData, manager: 'other' };
+      tuningsStore.saveSettings.mockResolvedValue(true);
+      const alertSpy = vi.spyOn(alertStore, 'add');
+
+      await wrapper.vm.save();
+
+      expect(profileStore.save).not.toHaveBeenCalled();
+      expect(tuningsStore.saveSettings).toHaveBeenCalled();
+      expect(alertSpy).toHaveBeenCalledWith({
+        text: i18n.global.t('profile.save_success'),
+        type: 'success',
+      });
+      expect(wrapper.vm.modelValue).toBe(false);
+    });
+
+    it('shows settings save error and does not close when saveSettings fails', async () => {
+      profileStore.name.current = profileStore.name.old;
+      profileStore.role.current = profileStore.role.old;
+      profileStore.personality.current = profileStore.personality.old;
+      profileStore.goal.current = profileStore.goal.old;
+
+      tuningsStore.initialSettings = { ...defaultSettingsData };
+      tuningsStore.settings.data = { ...defaultSettingsData, manager: 'other' };
+      tuningsStore.saveSettings.mockResolvedValue(false);
+      const alertSpy = vi.spyOn(alertStore, 'add');
+
+      await wrapper.vm.save();
+
+      expect(alertSpy).toHaveBeenCalledWith({
+        text: i18n.global.t('router.tunings.settings.save_error'),
+        type: 'error',
+      });
+      expect(wrapper.vm.modelValue).toBe(true);
+    });
   });
 
   describe('Close with reset functionality', () => {
@@ -197,6 +328,39 @@ describe('EditManagerProfileDrawer.vue', () => {
     it('closes the drawer after reset', () => {
       wrapper.vm.closeWithReset();
 
+      expect(wrapper.vm.modelValue).toBe(false);
+    });
+
+    it('resets tuningsStore.settings.data to initialSettings when initialSettings exists', () => {
+      const initial = {
+        components: true,
+        progressiveFeedback: true,
+        manager: 'initial-manager',
+      };
+      tuningsStore.initialSettings = { ...initial };
+      tuningsStore.settings.data = {
+        components: false,
+        progressiveFeedback: false,
+        manager: 'modified',
+      };
+
+      wrapper.vm.closeWithReset();
+
+      expect(tuningsStore.settings.data).toEqual(
+        expect.objectContaining(initial),
+      );
+    });
+  });
+
+  describe('Drawer close integration', () => {
+    it('resets profile and closes when drawer emits update:open false', async () => {
+      profileStore.name.current = 'Modified Name';
+      profileStore.role.current = 'Modified Role';
+
+      await drawer().vm.$emit('update:open', false);
+
+      expect(profileStore.name.current).toBe(profileStore.name.old);
+      expect(profileStore.role.current).toBe(profileStore.role.old);
       expect(wrapper.vm.modelValue).toBe(false);
     });
   });
