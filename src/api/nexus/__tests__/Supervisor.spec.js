@@ -10,6 +10,14 @@ vi.mock('@/api/nexusaiRequest', () => ({
   },
 }));
 
+vi.mock('Intl', () => ({
+  DateTimeFormat: vi.fn().mockReturnValue({
+    resolvedOptions: vi.fn().mockReturnValue({
+      timeZone: 'America/Sao_Paulo',
+    }),
+  }),
+}));
+
 describe('Supervisor.js', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -86,7 +94,7 @@ describe('Supervisor.js', () => {
       });
 
       expect(nexusRequest.$http.get).toHaveBeenCalledWith(
-        `/api/v2/${projectUuid}/conversations/${uuid}`,
+        `/api/v2/${projectUuid}/conversations/${uuid}?timezone=America%2FSao_Paulo`,
       );
       expect(result.results).toHaveLength(2);
       expect(result.results[0]).toMatchObject({
@@ -111,7 +119,7 @@ describe('Supervisor.js', () => {
 
       const projectUuid = 'project-123';
       const uuid = 'conv-123';
-      const next = `https://api.example.com/api/v2/${projectUuid}/conversations/${uuid}/?page=1`;
+      const next = `https://api.example.com/api/v2/${projectUuid}/conversations/${uuid}/?page=1&timezone=America%2FSao_Paulo`;
 
       const result = await Supervisor.conversations.getById({
         projectUuid,
@@ -126,6 +134,25 @@ describe('Supervisor.js', () => {
       expect(result.next).toBe(
         'https://api.example.com/api/v2/project-123/conversations/conv-123/?page=2',
       );
+    });
+
+    it('should send timezone as query param for v2 endpoint', async () => {
+      nexusRequest.$http.get.mockResolvedValue(mockV2Response);
+
+      const projectUuid = 'project-123';
+      const uuid = 'conv-123';
+      const timezone = 'America/Sao_Paulo';
+
+      await Supervisor.conversations.getById({
+        projectUuid,
+        uuid,
+        source: 'v2',
+        timezone,
+      });
+
+      const callUrl = nexusRequest.$http.get.mock.calls[0][0];
+      expect(callUrl).toContain(`/api/v2/${projectUuid}/conversations/${uuid}`);
+      expect(callUrl).toContain(new URLSearchParams({ timezone }).toString());
     });
 
     it('should get conversation by id with source legacy', async () => {

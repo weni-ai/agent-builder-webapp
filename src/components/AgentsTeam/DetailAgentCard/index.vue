@@ -1,5 +1,6 @@
 <template>
   <AgentCard
+    data-testid="detail-agent-card"
     class="detail-agent-card"
     :agent="agent"
     :tags="agent.mcp?.system ? [agent.mcp.system] : []"
@@ -10,6 +11,7 @@
 
   <AgentDetailModal
     v-model:open="isAgentDetailModalOpen"
+    data-testid="detail-agent-modal"
     :agent="agent"
   />
 </template>

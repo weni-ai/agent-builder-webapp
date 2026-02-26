@@ -11,8 +11,8 @@ import { ConversationAdapter } from './conversation';
 
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
-/** Data from which conversations come from the v2 endpoint (25/02/2026) */
-export const CONVERSATIONS_SWITCH_DATE = new Date(Date.UTC(2026, 1, 25));
+/** Data from which conversations come from the v2 endpoint (26/02/2026) */
+export const CONVERSATIONS_SWITCH_DATE = new Date(Date.UTC(2026, 1, 26));
 
 export const LEGACY_SOURCE = 'legacy';
 export const NEW_SOURCE = 'v2';
@@ -132,6 +132,16 @@ export function normalizeConversationsBySource(results) {
   });
 
   return [...newResults, ...legacyResults];
+}
+
+/**
+ * Checks if there is an actual next-page URL.
+ * @param {Object} data - { next?, newNext?, legacyNext? }
+ * @returns {boolean}
+ */
+export function hasNextPageUrl(data) {
+  const { next, newNext, legacyNext } = data || {};
+  return !!(next || newNext || legacyNext);
 }
 
 /**
@@ -365,8 +375,14 @@ export async function fetchConversationList(filterData) {
   const endDate = parseDateParam(params.end_date);
   const mode = getConversationMode(startDate, endDate);
 
-  if (mode === 'legacy') return fetchLegacy(params);
-  if (mode === 'new') return fetchNew(buildNewEndpointParams(params));
+  if (mode === 'legacy') {
+    const result = await fetchLegacy(params);
+    return { ...result, _paginationSource: LEGACY_SOURCE };
+  }
+  if (mode === 'new') {
+    const result = await fetchNew(buildNewEndpointParams(params));
+    return { ...result, _paginationSource: NEW_SOURCE };
+  }
 
   if (onlyLegacy) {
     const result = await fetchLegacyWithParams();
