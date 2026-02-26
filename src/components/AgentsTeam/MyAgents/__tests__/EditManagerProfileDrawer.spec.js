@@ -42,8 +42,22 @@ describe('EditManagerProfileDrawer.vue', () => {
   let profileStore;
   let alertStore;
 
-  const drawer = () =>
-    wrapper.findComponent('[data-testid="edit-manager-profile-drawer"]');
+  const drawer = () => wrapper.findComponent({ name: 'UnnnicDrawerNext' });
+  const drawerContent = () =>
+    wrapper.findComponent(
+      '[data-testid="edit-manager-profile-drawer-content"]',
+    );
+  const drawerTitle = () =>
+    wrapper.findComponent('[data-testid="edit-manager-profile-drawer-title"]');
+  const drawerCloseButton = () =>
+    wrapper.findComponent(
+      '[data-testid="edit-manager-profile-drawer-close-button"]',
+    );
+  const drawerSaveButton = () =>
+    wrapper.findComponent(
+      '[data-testid="edit-manager-profile-drawer-save-button"]',
+    );
+
   const generalInfo = () =>
     wrapper.findComponent('[data-testid="general-info"]');
 
@@ -54,6 +68,9 @@ describe('EditManagerProfileDrawer.vue', () => {
       },
       global: {
         plugins: [i18n, pinia],
+        stubs: {
+          UnnnicDrawerNext: false,
+        },
       },
     });
 
@@ -62,58 +79,52 @@ describe('EditManagerProfileDrawer.vue', () => {
   });
 
   describe('Component structure', () => {
-    it('renders the drawer component', () => {
-      expect(drawer().exists()).toBe(true);
-    });
-
     it('renders the general info component', () => {
       expect(generalInfo().exists()).toBe(true);
     });
   });
 
   describe('Props and data binding', () => {
+    it('renders the drawer component', () => {
+      expect(drawer().exists()).toBe(true);
+    });
+
     it('passes modelValue prop to drawer', () => {
-      expect(drawer().props('modelValue')).toBe(true);
+      expect(drawer().props('open')).toBe(true);
     });
 
     it('passes correct title to drawer', () => {
       const expectedTitle = i18n.global.t('profile.edit_manager_profile');
 
-      expect(drawer().props('title')).toBe(expectedTitle);
+      expect(drawerTitle().text()).toBe(expectedTitle);
     });
 
     it('passes correct size to drawer', () => {
-      expect(drawer().props('size')).toBe('lg');
+      expect(drawerContent().props('size')).toBe('large');
     });
 
-    it('passes correct button texts to drawer', () => {
-      expect(drawer().props('primaryButtonText')).toBe(
-        i18n.global.t('profile.save_btn'),
-      );
-      expect(drawer().props('secondaryButtonText')).toBe(
-        i18n.global.t('cancel'),
-      );
+    it('passes correct button texts', () => {
+      expect(drawerSaveButton().text()).toBe(i18n.global.t('profile.save_btn'));
+      expect(drawerCloseButton().text()).toBe(i18n.global.t('cancel'));
     });
 
     it('passes store state to drawer buttons', () => {
-      expect(drawer().props('disabledPrimaryButton')).toBe(
+      expect(drawerSaveButton().props('disabled')).toBe(
         profileStore.isSaveButtonDisabled,
       );
-      expect(drawer().props('loadingPrimaryButton')).toBe(
-        profileStore.isSaving,
-      );
+      expect(drawerSaveButton().props('loading')).toBe(profileStore.isSaving);
     });
   });
 
   describe('Event handling', () => {
     it('emits close event when drawer close is triggered', async () => {
-      await drawer().vm.$emit('close');
+      await drawer().vm.$emit('update:open', false);
 
       expect(wrapper.vm.modelValue).toBe(false);
     });
 
     it('emits close event when secondary button is clicked', async () => {
-      await drawer().vm.$emit('secondary-button-click');
+      await drawerCloseButton().trigger('click');
 
       expect(wrapper.vm.modelValue).toBe(false);
     });
@@ -122,7 +133,7 @@ describe('EditManagerProfileDrawer.vue', () => {
       const saveSpy = vi
         .spyOn(profileStore, 'save')
         .mockResolvedValue({ status: 'success' });
-      await drawer().vm.$emit('primary-button-click');
+      await drawerSaveButton().trigger('click');
 
       expect(saveSpy).toHaveBeenCalled();
     });
