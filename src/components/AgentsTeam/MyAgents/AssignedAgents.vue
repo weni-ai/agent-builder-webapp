@@ -1,5 +1,12 @@
 <template>
   <section class="assigned-agents">
+    <h2
+      class="assigned-agents__title"
+      data-testid="assigned-agents-title"
+    >
+      {{ $t('agents.assigned_agents.title') }}
+    </h2>
+
     <section
       v-if="isLoadingTeam || activeTeam.length"
       class="assigned-agents__cards"
@@ -33,7 +40,7 @@
       <UnnnicIcon
         class="assigned-agents__empty-icon"
         size="xl"
-        scheme="neutral-soft"
+        scheme="gray-200"
         icon="workspaces"
         filled
         data-testid="assigned-agents-icon"
@@ -42,26 +49,25 @@
       <section class="assigned-agents__empty-content">
         <h3
           class="assigned-agents__empty-title"
-          data-testid="assigned-agents-title"
+          data-testid="assigned-agents-empty-title"
         >
           {{ $t('agents.assigned_agents.no_agents.title') }}
         </h3>
 
-        <p
+        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+        <i18n-t
+          tag="p"
           class="assigned-agents__empty-description"
-          data-testid="assigned-agents-description"
+          keypath="agents.assigned_agents.no_agents.description"
+          data-testid="assigned-agents-empty-description"
         >
-          {{ $t('agents.assigned_agents.no_agents.description') }}
-        </p>
+          <template #assign_new_agents>
+            <p class="assigned-agents__empty-description-strong">
+              {{ $t('agents.assigned_agents.no_agents.assign_new_agents') }}
+            </p>
+          </template>
+        </i18n-t>
       </section>
-
-      <UnnnicButton
-        class="assigned-agents__empty-button"
-        :text="$t('agents.assigned_agents.no_agents.assign_agents_button')"
-        type="primary"
-        data-testid="assigned-agents-button"
-        @click="agentsTeamStore.openAgentsGallery"
-      />
     </section>
   </section>
 
@@ -76,7 +82,7 @@ import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 import AssignAgentCard from '@/components/AgentsTeam/AssignAgentCard.vue';
 import DetailAgentCard from '@/components/AgentsTeam/DetailAgentCard/index.vue';
-import AgentsGalleryModal from './AgentsGalleryModal.vue';
+import AgentsGalleryModal from '@/views/AgentsTeam/AgentsGalleryModal.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const activeTeam = computed(
@@ -97,14 +103,17 @@ const agentCard = computed(() =>
 .assigned-agents {
   display: flex;
   flex-direction: column;
-  gap: $unnnic-spacing-sm;
+  gap: $unnnic-space-4;
 
-  margin-top: $unnnic-space-4;
+  &__title {
+    color: $unnnic-color-fg-emphasized;
+    font: $unnnic-font-display-3;
+  }
 
   &__empty {
     height: 100%;
 
-    padding: $unnnic-spacing-xl $unnnic-spacing-sm;
+    padding: $unnnic-space-6 $unnnic-space-4;
 
     display: flex;
     flex-direction: column;
@@ -126,19 +135,23 @@ const agentCard = computed(() =>
     }
 
     &-description {
+      display: flex;
+      align-items: center;
+      gap: $unnnic-space-1;
+
       color: $unnnic-color-fg-base;
       font: $unnnic-font-body;
     }
 
-    &-button {
-      width: 250px;
+    &-description-strong {
+      font-weight: $unnnic-font-weight-bold;
     }
   }
 
   &__cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: $unnnic-spacing-sm;
+    gap: $unnnic-space-4;
   }
 }
 </style>
