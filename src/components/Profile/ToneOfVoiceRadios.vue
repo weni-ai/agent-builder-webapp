@@ -1,6 +1,7 @@
 <template>
   <form
     class="tone-of-voice-radios"
+    data-testid="tone-of-voice-radios"
     @submit.prevent
   >
     <template
@@ -15,6 +16,7 @@
         class="tone-of-voice-radios__radio"
       >
         <button
+          :data-testid="`tone-of-voice-radio-${tone.id}`"
           :class="[
             'tone-of-voice-radios__radio-inner',
             {
