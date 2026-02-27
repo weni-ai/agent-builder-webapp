@@ -21,10 +21,6 @@
         "title": "Instructions",
         "description": "Write quick rules to shape the agent’s behavior"
       },
-      "agents": {
-        "title": "Agents",
-        "description": "Create the perfect team of agents"
-      },
       "knowledge": {
         "title": "Knowledge",
         "description": "Add knowledge through files, links, or text so the agent can reply accurately"
@@ -280,9 +276,9 @@
     }
   },
   "agents": {
-    "title": "Agents",
-    "description": "View and manage your assigned agents",
-    "assign_agents_button": "Assign agents",
+    "title": "My Agents",
+    "description": "Manage your digital workforce, instructions, and behaviors",
+    "assign_agents_button": "Assign new agents",
     "assigned_agents": {
       "new_agent": "New agent",
       "no_agents": {
@@ -395,7 +391,6 @@
   },
   "router": {
     "agents_team": {
-      "assign_agents": "Assign agents",
       "card": {
         "assign": "Assign to the team",
         "assigned": "Assigned",
