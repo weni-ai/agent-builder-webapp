@@ -70,27 +70,18 @@
         label
       />
 
-      <ToneOfVoiceRadios
-        v-else
-        :selectedTone="profile.personality.current"
-        @update:selected-tone="profile.personality.current = $event"
-      />
-
-      <!-- <UnnnicFormElement
+      <UnnnicFormElement
         v-else
         class="form__element"
         :label="$t('profile.fields.personality.title')"
         :message="$t('profile.fields.personality.description')"
         :error="errorRequiredFields.role ? $t('profile.invalid_field') : ''"
       >
-        <UnnnicSelectSmart
-          data-test="select-personality"
-          :modelValue="handlePersonalityValue(profile.personality.current)"
-          :options="personalities"
-          orderedByIndex
-          @update:model-value="profile.personality.current = $event[0].value"
+        <ToneOfVoiceRadios
+          :selectedTone="profile.personality.current"
+          @update:selected-tone="profile.personality.current = $event"
         />
-      </UnnnicFormElement> -->
+      </UnnnicFormElement>
     </section>
   </section>
 </template>

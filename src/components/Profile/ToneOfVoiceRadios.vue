@@ -105,14 +105,6 @@ const tones = computed(() => {
       background: $unnnic-color-teal-50;
     }
   }
-
-  .tone-of-voice-radios__radio-inner {
-    display: flex;
-    align-items: center;
-    gap: $unnnic-space-1;
-    flex: 1;
-    min-width: 0;
-  }
 }
 </style>
 
@@ -124,6 +116,15 @@ const tones = computed(() => {
 
   &__radio-input {
     display: none;
+  }
+
+  &__radio-inner {
+    display: flex;
+    align-items: center;
+    gap: $unnnic-space-1;
+
+    color: $unnnic-color-fg-emphasized;
+    font: $unnnic-font-body;
   }
 }
 </style>
