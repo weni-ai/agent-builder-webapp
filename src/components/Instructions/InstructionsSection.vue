@@ -93,6 +93,8 @@ const instructionsSafetyTopics = computed(() =>
   display: flex;
   flex-direction: column;
 
+  height: 100%;
+
   &__title {
     margin: 0 0 $unnnic-spacing-sm;
 
