@@ -12,14 +12,16 @@
         maxWidth="200px"
         enabled
         :text="tone.tooltip"
-        :class="[
-          'tone-of-voice-radios__radio',
-          { 'tone-of-voice-radios__radio--selected': tone.id === selectedTone },
-        ]"
+        class="tone-of-voice-radios__radio"
       >
         <button
-          class="tone-of-voice-radios__radio-inner"
-          @click="handleToneChange(tone.id)"
+          :class="[
+            'tone-of-voice-radios__radio-inner',
+            {
+              'tone-of-voice-radios__radio-inner--selected':
+                tone.id === selectedTone,
+            },
+          ]"
           @keydown.enter.space.prevent="handleToneChange(tone.id)"
         >
           <input
@@ -82,32 +84,6 @@ const tones = computed(() => {
 });
 </script>
 
-<style lang="scss">
-.tone-of-voice-radios {
-  .tone-of-voice-radios__radio {
-    display: flex;
-    padding: $unnnic-space-2 $unnnic-space-4;
-    justify-content: center;
-    align-items: center;
-    gap: $unnnic-space-1;
-
-    border-radius: $unnnic-radius-2;
-    border: 1px solid $unnnic-color-border-base;
-    background: $unnnic-color-bg-base;
-
-    &,
-    * {
-      cursor: pointer;
-    }
-
-    &--selected {
-      border-color: $unnnic-color-border-active;
-      background: $unnnic-color-teal-50;
-    }
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .tone-of-voice-radios {
   display: flex;
@@ -119,12 +95,29 @@ const tones = computed(() => {
   }
 
   &__radio-inner {
+    padding: $unnnic-space-2 $unnnic-space-4;
+
     display: flex;
     align-items: center;
     gap: $unnnic-space-1;
 
+    border-radius: $unnnic-radius-2;
+    border: 1px solid $unnnic-color-border-base;
+    background: $unnnic-color-bg-base;
+
+    transition-property: background-color, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 0.15s;
+
     color: $unnnic-color-fg-emphasized;
     font: $unnnic-font-body;
+
+    cursor: pointer;
+
+    &--selected {
+      border-color: $unnnic-color-border-active;
+      background: $unnnic-color-teal-50;
+    }
   }
 }
 </style>
