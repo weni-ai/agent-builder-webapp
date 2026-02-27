@@ -3,6 +3,7 @@ import { shallowMount } from '@vue/test-utils';
 
 import MyAgentsView from '@/views/AgentsTeam/MyAgents.vue';
 import AssignedAgents from '@/components/AgentsTeam/MyAgents/AssignedAgents.vue';
+import ManagerCard from '@/components/AgentsTeam/MyAgents/ManagerCard.vue';
 
 describe('MyAgents.vue', () => {
   let wrapper;
@@ -29,5 +30,11 @@ describe('MyAgents.vue', () => {
     createWrapper();
 
     expect(wrapper.findComponent(AssignedAgents).exists()).toBe(true);
+  });
+
+  it('renders ManagerCard component', () => {
+    createWrapper();
+
+    expect(wrapper.findComponent(ManagerCard).exists()).toBe(true);
   });
 });
