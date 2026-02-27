@@ -4,9 +4,9 @@ exports[`NewInstruction.vue > Component rendering > should match snapshot 1`] = 
 "<section data-v-0b69887d="" class="new-instruction" data-testid="new-instruction">
   <header data-v-0b69887d="" class="new-instruction__header" data-testid="new-instruction-header">
     <h2 data-v-0b69887d="" class="new-instruction__title" data-testid="new-instruction-title">New custom instruction</h2>
-    <unnnic-switch-stub data-v-0b69887d="" size="medium" label="" option="" helper="" textleft="" textright="Validate instruction by AI" disabled="false" modelvalue="true" data-testid="new-instruction-switch-validate-instruction-by-ai"></unnnic-switch-stub>
+    <unnnic-switch-stub data-v-0b69887d="" size="medium" label="" labeltooltip="" labelusehtmltooltip="false" option="" helper="" textleft="" textright="Validate instruction by AI" disabled="false" modelvalue="true" usevmodel="false" data-testid="new-instruction-switch-validate-instruction-by-ai"></unnnic-switch-stub>
   </header>
-  <unnnic-text-area-stub data-v-0b69887d="" size="md" resize="vertical" label="" placeholder="You're funny, but don't make jokes" modelvalue="" message="Keep instructions clear, direct, and in the imperative." disabled="false" type="normal" errors="" data-testid="new-instruction-textarea"></unnnic-text-area-stub>
+  <anonymous-stub data-v-0b69887d="" modelvalue="" placeholder="You're funny, but don't make jokes" size="md" resize="vertical" message="Keep instructions clear, direct, and in the imperative." disabled="false" type="normal" tooltip="" errors="" data-testid="new-instruction-textarea"></anonymous-stub>
   <unnnic-button-stub data-v-0b69887d="" size="large" text="Validate instruction" type="primary" float="false" iconleft="" iconright="" iconcenter="" iconsfilled="false" disabled="true" loading="false" class="new-instruction__add-instruction-button" data-testid="add-instruction-button"></unnnic-button-stub>
   <!--v-if-->
 </section>"

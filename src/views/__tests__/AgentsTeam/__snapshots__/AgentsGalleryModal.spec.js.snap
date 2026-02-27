@@ -60,8 +60,8 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
       <section
         class="unnnic-form-element unnnic-form md"
         data-testid="search-input"
-        data-v-2dd04313=""
-        data-v-cb39816d=""
+        data-v-4569ccad=""
+        data-v-a65db32c=""
         data-v-e8ff269c=""
       >
         <!---->
@@ -70,14 +70,14 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
           class="text-input size--md unnnic-form-input"
           data-testid="search-input"
           data-v-28a84b07=""
-          data-v-2dd04313=""
+          data-v-a65db32c=""
           hascloudycolor="false"
           mask=""
         >
           <input
             class="unnnic-form-input input-itself input size-md normal input--has-icon-left unnnic-form-input input-itself"
             data-testid="search-input"
-            data-v-043812be=""
+            data-v-11e89257=""
             data-v-28a84b07=""
             hascloudycolor="false"
             iconleft="search"
