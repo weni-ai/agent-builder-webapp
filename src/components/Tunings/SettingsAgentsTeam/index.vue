@@ -11,15 +11,12 @@
       v-if="featureFlagsStore.flags.settingsAgentVoice"
       data-testid="voice-settings"
     />
-
-    <HumanSupport data-testid="human-support" />
   </section>
 </template>
 
 <script setup>
 import AgentsPreview from './AgentsPreview.vue';
 import VoiceSettings from './VoiceSettings.vue';
-import HumanSupport from './HumanSupport.vue';
 import ManagerSelector from './ManagerSelector/index.vue';
 
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
