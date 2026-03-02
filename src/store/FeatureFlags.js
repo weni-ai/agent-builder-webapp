@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { computed, inject, nextTick, watch } from 'vue';
+import { computed, inject, watch } from 'vue';
 
 import { useProjectStore } from './Project';
 import { useUserStore } from './User';
