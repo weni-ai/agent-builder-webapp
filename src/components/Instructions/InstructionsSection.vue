@@ -30,7 +30,10 @@
         </p>
       </template>
     </UnnnicTab>
-    <CustomInstructionsSection v-if="activeTab === 'custom'" />
+    <CustomInstructionsSection
+      v-if="activeTab === 'custom'"
+      data-testid="instructions-custom"
+    />
     <InstructionsList
       v-if="activeTab === 'default'"
       data-testid="instructions-default"
