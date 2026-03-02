@@ -6,7 +6,7 @@
       type="informational"
       :description="
         $t('agent_builder.supervisor.conversations_v2_disclaimer', {
-          day: format(CONVERSATIONS_SWITCH_DATE, 'd'),
+          day: conversationsSwitchDay,
         })
       "
       data-testid="supervisor-conversations-v2-disclaimer"
@@ -24,14 +24,13 @@
 <script setup>
 import { ref, defineExpose, computed } from 'vue';
 
-import { format } from 'date-fns';
-
 import SupervisorFilters from '../SupervisorFilters/index.vue';
 import ConversationsTable from './ConversationsTable/index.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { CONVERSATIONS_SWITCH_DATE } from '@/api/adapters/supervisor/conversationSources';
 
 const supervisorStore = useSupervisorStore();
+const conversationsSwitchDay = CONVERSATIONS_SWITCH_DATE.getUTCDate();
 
 const hasConversations = computed(
   () => supervisorStore.conversations.data.results.length > 0,
