@@ -1,5 +1,6 @@
 <template>
   <UnnnicDialog
+    data-testid="delete-agent-modal"
     :open="modelValue"
     @update:open="close"
   >
@@ -27,12 +28,14 @@
       <UnnnicDialogFooter>
         <UnnnicDialogClose>
           <UnnnicButton
+            data-testid="delete-agent-cancel"
             :text="$t('router.agents_team.modal_delete_agent.cancel')"
             type="tertiary"
             @click="close"
           />
         </UnnnicDialogClose>
         <UnnnicButton
+          data-testid="delete-agent-confirm"
           :text="$t('router.agents_team.modal_delete_agent.delete')"
           :loading="isDeletingAgent"
           type="warning"
