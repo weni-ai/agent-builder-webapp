@@ -30,13 +30,7 @@
         </p>
       </template>
     </UnnnicTab>
-    <InstructionsList
-      v-if="activeTab === 'custom'"
-      data-testid="instructions-custom"
-      :instructions="instructionsStore.instructions.data"
-      :isLoading="instructionsStore.instructions.status === 'loading'"
-      showActions
-    />
+    <CustomInstructionsSection v-if="activeTab === 'custom'" />
     <InstructionsList
       v-if="activeTab === 'default'"
       data-testid="instructions-default"
@@ -58,6 +52,7 @@
 import { computed, ref } from 'vue';
 import { useInstructionsStore } from '@/store/Instructions';
 
+import CustomInstructionsSection from './CustomInstructionsSection.vue';
 import InstructionsList from './InstructionsList.vue';
 import i18n from '@/utils/plugins/i18n';
 
@@ -98,22 +93,16 @@ const instructionsSafetyTopics = computed(() =>
   &__title {
     margin: 0 0 $unnnic-spacing-sm;
 
-    color: $unnnic-color-neutral-darkest;
-    font-family: $unnnic-font-family-secondary;
-    font-size: $unnnic-font-size-body-lg;
-    font-weight: $unnnic-font-weight-bold;
-    line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
+    color: $unnnic-color-fg-emphasized;
+    font: $unnnic-font-display-3;
   }
 
   &__tab-description {
-    margin-bottom: $unnnic-spacing-xs;
+    margin-bottom: $unnnic-space-4;
 
-    color: $unnnic-color-neutral-cloudy;
+    color: $unnnic-color-fg-base;
 
-    font-family: $unnnic-font-family-secondary;
-    font-size: $unnnic-font-size-body-gt;
-    font-weight: $unnnic-font-weight-regular;
-    line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
+    font: $unnnic-font-body;
   }
 }
 </style>
