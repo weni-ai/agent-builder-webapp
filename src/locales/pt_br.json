@@ -436,7 +436,7 @@
       "create_agent": "Criar agente",
       "modal_delete_agent": {
         "title": "Excluir {agent_name}",
-        "description": "Tem certeza de que deseja excluir o {agent_name}? Esta ação não pode ser revertida",
+        "description": "Tem certeza de que deseja excluir o agente {agent_name}? Esta ação não pode ser desfeita.",
         "delete": "Excluir",
         "cancel": "Cancelar",
         "success_alert": "Agente {agent_name} excluído",
