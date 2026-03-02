@@ -18,8 +18,6 @@ describe('SettingsAgentsTeam/index.vue', () => {
     wrapper.findComponent('[data-testid="agents-preview"]');
   const managerSelectorComponent = () =>
     wrapper.findComponent('[data-testid="manager-selector"]');
-  const humanSupportComponent = () =>
-    wrapper.findComponent('[data-testid="human-support"]');
   const mainContainer = () =>
     wrapper.find('[data-testid="settings-agents-team"]');
 
@@ -40,10 +38,6 @@ describe('SettingsAgentsTeam/index.vue', () => {
     it('renders the AgentsPreview component', () => {
       expect(agentsPreviewComponent().exists()).toBe(true);
     });
-
-    it('renders the HumanSupport component', () => {
-      expect(humanSupportComponent().exists()).toBe(true);
-    });
   });
 
   describe('Component structure and layout', () => {
@@ -51,11 +45,10 @@ describe('SettingsAgentsTeam/index.vue', () => {
       const container = mainContainer();
       const children = Array.from(container.element.children);
 
-      expect(children).toHaveLength(4);
+      expect(children).toHaveLength(3);
       expect(children[0].getAttribute('data-testid')).toBe('manager-selector');
       expect(children[1].getAttribute('data-testid')).toBe('agents-preview');
       expect(children[2].getAttribute('data-testid')).toBe('voice-settings');
-      expect(children[3].getAttribute('data-testid')).toBe('human-support');
     });
   });
 });

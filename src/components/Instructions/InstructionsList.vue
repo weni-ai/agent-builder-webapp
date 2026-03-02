@@ -29,11 +29,7 @@
         scheme="neutral-cleanest"
       />
       <p class="no-instructions__text">
-        {{
-          $t(
-            'agent_builder.instructions.instructions_list.no_custom_instructions',
-          )
-        }}
+        {{ noInstructionsText }}
       </p>
     </section>
     <template v-else>
@@ -49,6 +45,7 @@
 </template>
 
 <script setup>
+import i18n from '@/utils/plugins/i18n';
 import Instruction from './Instruction.vue';
 
 defineProps({
@@ -64,24 +61,28 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  noInstructionsText: {
+    type: String,
+    default: i18n.global.t(
+      'agent_builder.instructions.instructions_list.no_custom_instructions',
+    ),
+  },
 });
 </script>
 
 <style lang="scss" scoped>
 .instructions-list {
-  margin-bottom: $unnnic-spacing-sm;
-
   display: flex;
   flex-direction: column;
 
-  border-radius: $unnnic-border-radius-md;
-  border: $unnnic-border-width-thinner solid $unnnic-color-neutral-soft;
+  border-radius: $unnnic-radius-4;
+  border: 1px solid $unnnic-color-border-soft;
 
   &--loading,
   &--no-instructions {
     height: 100%;
 
-    gap: $unnnic-spacing-nano;
+    gap: $unnnic-space-1;
 
     border: none;
     border-radius: 0;
@@ -94,14 +95,11 @@ defineProps({
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: $unnnic-spacing-nano;
+    gap: $unnnic-space-1;
 
     .no-instructions__text {
-      color: $unnnic-color-neutral-cloudy;
-      font-family: $unnnic-font-family-secondary;
-      font-size: $unnnic-font-size-body-gt;
-      font-weight: $unnnic-font-weight-regular;
-      line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
+      color: $unnnic-color-fg-base;
+      font: $unnnic-font-body;
     }
   }
 }

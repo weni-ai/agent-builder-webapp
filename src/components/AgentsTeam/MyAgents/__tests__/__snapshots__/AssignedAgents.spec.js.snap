@@ -1,0 +1,72 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AssignedAgents.vue > Component rendering > should match snapshot 1`] = `
+<div
+  data-v-app=""
+>
+  
+  <section
+    class="assigned-agents"
+    data-v-6b0b7f6d=""
+  >
+    <h2
+      class="assigned-agents__title"
+      data-testid="assigned-agents-title"
+      data-v-6b0b7f6d=""
+    >
+      Assigned agents
+    </h2>
+    <!--v-if-->
+    <section
+      class="assigned-agents__empty"
+      data-testid="empty-state"
+      data-v-6b0b7f6d=""
+    >
+      <unnnic-icon-stub
+        class="assigned-agents__empty-icon"
+        clickable="false"
+        data-testid="assigned-agents-icon"
+        data-v-6b0b7f6d=""
+        filled="true"
+        icon="workspaces"
+        scheme="gray-200"
+        size="xl"
+      />
+      <section
+        class="assigned-agents__empty-content"
+        data-v-6b0b7f6d=""
+      >
+        <h3
+          class="assigned-agents__empty-title"
+          data-testid="assigned-agents-empty-title"
+          data-v-6b0b7f6d=""
+        >
+          No agents assigned yet
+        </h3>
+        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+        <p
+          class="assigned-agents__empty-description"
+          data-testid="assigned-agents-empty-description"
+          data-v-6b0b7f6d=""
+          keypath="agents.assigned_agents.no_agents.description"
+          tag="p"
+        >
+          
+          <p
+            class="assigned-agents__empty-description-strong"
+            data-v-6b0b7f6d=""
+          >
+            assign new agents
+          </p>
+          
+        </p>
+      </section>
+    </section>
+  </section>
+  <agents-gallery-modal-stub
+    data-testid="agents-gallery-modal"
+    data-v-6b0b7f6d=""
+  />
+  
+</div>
+`;

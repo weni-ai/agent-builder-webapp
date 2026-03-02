@@ -66,18 +66,6 @@ describe('HomeHeaderActions.vue', () => {
     expect(findAssignButton().exists()).toBe(true);
   });
 
-  it('does not render assign button when team has no agents', () => {
-    createWrapper();
-
-    expect(findAssignButton().exists()).toBe(false);
-  });
-
-  it('does not render assign button when activeTeam.data.agents is empty array', () => {
-    createWrapper({ data: { agents: [] } });
-
-    expect(findAssignButton().exists()).toBe(false);
-  });
-
   it('calls openAgentsGallery when assign button is clicked', async () => {
     pinia = createTestingPinia({
       initialState: {
@@ -126,8 +114,9 @@ describe('HomeHeaderActions.vue', () => {
       '[data-testid="assign-agents-button"]',
     );
     expect(button.props('type')).toBe('primary');
+    expect(button.props('iconLeft')).toBe('add');
     expect(button.props('text')).toBe(
-      i18n.global.t('router.agents_team.assign_agents'),
+      i18n.global.t('agents.assign_agents_button'),
     );
   });
 });

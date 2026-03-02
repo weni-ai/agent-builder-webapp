@@ -25,7 +25,6 @@ describe('Instructions.vue', () => {
     });
 
     it('renders components correctly', () => {
-      expect(findComponent('instructionsHeader').exists()).toBe(true);
       expect(findComponent('newInstruction').exists()).toBe(true);
       expect(findComponent('instructionsSection').exists()).toBe(true);
     });

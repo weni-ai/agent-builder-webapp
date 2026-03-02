@@ -17,14 +17,6 @@
         "title": "Conversas",
         "description": "Analise e revise conversas entre agentes e clientes."
       },
-      "instructions": {
-        "title": "Instruções",
-        "description": "Escreva regras rápidas para moldar o comportamento do agente"
-      },
-      "agents": {
-        "title": "Agentes",
-        "description": "Crie a equipe de agentes perfeita"
-      },
       "knowledge": {
         "title": "Conhecimento",
         "description": "Adicione conhecimento através de arquivos, links ou texto para que o agente possa responder com precisão"
@@ -191,7 +183,12 @@
           "Identidade de gênero",
           "Relações sexuais"
         ],
-        "no_custom_instructions": "Nenhuma instrução personalizada adicionada"
+        "no_custom_instructions": "Nenhuma instrução personalizada adicionada",
+        "no_custom_instructions_found": "Nenhuma instrução personalizada encontrada",
+        "search_placeholder": "Buscar",
+        "copy_instructions": "Copiar instruções",
+        "copy_success": "Instruções personalizadas copiadas",
+        "copy_error": "Falha ao copiar instruções"
       },
       "edit_instruction": {
         "title": "Editar instrução",
@@ -281,15 +278,21 @@
     }
   },
   "agents": {
-    "title": "Agentes",
-    "description": "Visualize e gerencie seus agentes atribuídos",
-    "assign_agents_button": "Atribuir agentes",
+    "title": "Meus Agentes",
+    "description": "Gerencie seu time digital, instruções e comportamentos",
+    "assign_agents_button": "Atribuir novos agentes",
     "assigned_agents": {
+      "title": "Agentes atribuídos",
       "new_agent": "Novo agente",
+      "manager": {
+        "name": "Manager",
+        "edit_manager": "Editar Manager",
+        "edit_instructions": "Editar instruções"
+      },
       "no_agents": {
         "title": "Nenhum agente atribuído ainda",
-        "description": "Adicione seu primeiro agente para começar a lidar com consultas de produtos, pedidos e mais.",
-        "assign_agents_button": "Atribuir seu primeiro agente"
+        "description": "Clique em {assign_new_agents} e adicione seu primeiro agente",
+        "assign_new_agents": "atribuir novos agentes"
       },
       "agent_details": {
         "about": "Sobre",
@@ -392,11 +395,41 @@
         "next_button": "Avançar",
         "finish_button": "Concluir"
       }
+    },
+    "instructions": {
+      "title": "Instruções",
+      "description": "Escreva regras rápidas para moldar o comportamento do agente"
+    },
+    "profile": {
+      "tone_of_voice": {
+        "tones": {
+          "friendly": {
+            "name": "Amigável",
+            "tooltip": "Amigável e empático, focado em parceria e ajuda"
+          },
+          "systematic": {
+            "name": "Sistemático",
+            "tooltip": "Direto, bem organizado, focado em processos claros e lógica"
+          },
+          "analytical": {
+            "name": "Analítico",
+            "tooltip": "Lógico, metodológico, e objetivo, usando linguagem precisa e evitando suposições"
+          },
+          "creative": {
+            "name": "Criativo",
+            "tooltip": "Pensamento avançado e imaginativo, priorizando soluções originais"
+          },
+          "casual": {
+            "name": "Informal",
+            "tooltip": "Leve, energético, e informal para um tom mais acessível e humano"
+          }
+
+        }
+      }
     }
   },
   "router": {
     "agents_team": {
-      "assign_agents": "Atribuir agentes",
       "card": {
         "assign": "Atribuir ao time",
         "assigned": "Atribuído",
@@ -667,7 +700,11 @@
     }
   },
   "profile": {
-    "edit_manager_profile": "Editar perfil do Manager",
+    "tabs": {
+      "profile": "Perfil",
+      "settings": "Configurações"
+    },
+    "edit_manager_profile": "Editar Manager",
     "description": "Personalize as informações básicas e o comportamento do agente",
     "save_btn": "Salvar alterações",
     "save_success": "Alterações salvas com sucesso",
@@ -693,18 +730,6 @@
       "personality": {
         "title": "Qual é o tom de voz do agente?",
         "description": "Escolha a forma como o agente se comunica com os usuários"
-      },
-      "personalities": {
-        "friendly": "Amigável",
-        "extrovert": "Extrovertido",
-        "cooperative": "Cooperativo",
-        "generous": "Generoso",
-        "relaxed": "Relaxado",
-        "organized": "Organizado",
-        "systematic": "Sistemático",
-        "innovative": "Inovador",
-        "creative": "Criativo",
-        "intellectual": "Intelectual"
       }
     },
     "instructions": {
