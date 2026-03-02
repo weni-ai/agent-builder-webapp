@@ -27,6 +27,7 @@
       :instructions="filteredInstructions"
       :isLoading="instructionsStore.instructions.status === 'loading'"
       showActions
+      :noInstructionsText="noInstructionsText"
     />
   </section>
 </template>
@@ -43,6 +44,14 @@ const instructionsStore = useInstructionsStore();
 const alertStore = useAlertStore();
 
 const searchTerm = ref('');
+
+const noInstructionsText = computed(() => {
+  return searchTerm.value.trim()
+    ? i18n.global.t(
+        'agent_builder.instructions.instructions_list.no_custom_instructions_found',
+      )
+    : undefined;
+});
 
 const filteredInstructions = computed(() => {
   const data = instructionsStore.instructions.data ?? [];
@@ -80,12 +89,13 @@ async function copyInstructionsToClipboard() {
 
 <style lang="scss" scoped>
 .custom-instructions-section {
+  height: 100%;
+
   display: flex;
   flex-direction: column;
+  gap: $unnnic-space-4;
 
   &__header {
-    margin-bottom: $unnnic-space-4;
-
     display: flex;
     gap: $unnnic-space-4;
     align-items: center;

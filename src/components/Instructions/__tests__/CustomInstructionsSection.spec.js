@@ -114,6 +114,24 @@ describe('CustomInstructionsSection.vue', () => {
     });
   });
 
+  describe('No instructions text', () => {
+    it('returns no instructions text when search is not empty', async () => {
+      const input = findSearchInput();
+      await input.vm.$emit('update:modelValue', 'instruction');
+      await nextTick();
+      expect(findInstructionsList().props('noInstructionsText')).toBe(
+        translation('no_custom_instructions_found'),
+      );
+    });
+
+    it('returns undefined when search is empty', async () => {
+      const input = findSearchInput();
+      await input.vm.$emit('update:modelValue', '   ');
+      await nextTick();
+      expect(wrapper.vm.noInstructionsText).toBe(undefined);
+    });
+  });
+
   describe('Search filter', () => {
     it('filters instructions by search term (case-insensitive)', async () => {
       const input = findSearchInput();

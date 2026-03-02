@@ -182,6 +182,7 @@
           "Sex and relationships"
         ],
         "no_custom_instructions": "No custom instructions added",
+        "no_custom_instructions_found": "No custom instructions found",
         "search_placeholder": "Search",
         "copy_instructions": "Copy instructions",
         "copy_success": "Custom instructions copied",
