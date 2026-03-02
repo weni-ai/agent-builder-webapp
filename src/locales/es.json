@@ -181,7 +181,11 @@
           "Identidad de género",
           "Relaciones sexuales"
         ],
-        "no_custom_instructions": "No hay instrucciones personalizadas agregadas"
+        "no_custom_instructions": "No hay instrucciones personalizadas agregadas",
+        "search_placeholder": "Buscar",
+        "copy_instructions": "Copiar instrucciones",
+        "copy_success": "Instrucciones personalizadas copiadas",
+        "copy_error": "Error al copiar instrucciones"
       },
       "edit_instruction": {
         "title": "Editar instrucción",
