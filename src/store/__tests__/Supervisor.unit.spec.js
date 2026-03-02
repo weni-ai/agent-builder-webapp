@@ -70,6 +70,7 @@ describe('Supervisor Store', () => {
           next: null,
           newNext: null,
           legacyNext: null,
+          legacyInitialAttempted: false,
         },
       });
     });
@@ -137,6 +138,7 @@ describe('Supervisor Store', () => {
         expect(store.conversations.data).toEqual({
           ...mockApiResponse,
           count: 2,
+          legacyInitialAttempted: false,
           results: mockApiResponse.results,
         });
       });
@@ -214,6 +216,7 @@ describe('Supervisor Store', () => {
           next: null,
           newNext: null,
           legacyNext: null,
+          legacyInitialAttempted: false,
         });
       });
     });
