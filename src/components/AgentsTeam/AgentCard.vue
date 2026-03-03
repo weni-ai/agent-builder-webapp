@@ -165,10 +165,6 @@ const isAgentInTeam = computed(() => {
     row-gap: $unnnic-space-4;
 
     .agent-card__icon {
-      width: $unnnic-icon-size-xl;
-      height: auto;
-      aspect-ratio: 1/1;
-
       grid-column: 1 / 2;
       grid-row: 1 / 2;
       align-self: center;

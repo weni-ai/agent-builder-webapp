@@ -111,10 +111,6 @@ function redirectToInstructionsView() {
   }
 
   &__icon {
-    width: $unnnic-icon-size-xl;
-    height: auto;
-    aspect-ratio: 1/1;
-
     align-self: center;
   }
 
