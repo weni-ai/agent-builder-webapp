@@ -11,7 +11,7 @@ exports[`AgentCardSkeleton.vue > renders correctly 1`] = `
     data-v-01ad1ca9=""
   >
     <div
-      class="skeleton"
+      class="skeleton assign-agent-card-skeleton__icon"
       data-testid="skeleton-loading"
       data-v-01ad1ca9=""
     >
