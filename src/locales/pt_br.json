@@ -21,10 +21,6 @@
         "title": "Instruções",
         "description": "Escreva regras rápidas para moldar o comportamento do agente"
       },
-      "agents": {
-        "title": "Agentes",
-        "description": "Crie a equipe de agentes perfeita"
-      },
       "knowledge": {
         "title": "Conhecimento",
         "description": "Adicione conhecimento através de arquivos, links ou texto para que o agente possa responder com precisão"
@@ -281,9 +277,9 @@
     }
   },
   "agents": {
-    "title": "Agentes",
-    "description": "Visualize e gerencie seus agentes atribuídos",
-    "assign_agents_button": "Atribuir agentes",
+    "title": "Meus Agentes",
+    "description": "Gerencie seu time digital, instruções e comportamentos",
+    "assign_agents_button": "Atribuir novos agentes",
     "assigned_agents": {
       "new_agent": "Novo agente",
       "no_agents": {
@@ -300,7 +296,7 @@
       }
     },
     "assign_agents": {
-      "title": "Atribuir agentes",
+      "title": "Atribuir novos agentes",
       "description": "Agentes são especialistas prontos para fornecer suporte personalizado e resolver demandas complexas, atuando como consultores verdadeiros, garantindo uma experiência humana e de alta qualidade para seus clientes.",
       "header": {
         "all_systems": "Todos os sistemas",
@@ -396,7 +392,6 @@
   },
   "router": {
     "agents_team": {
-      "assign_agents": "Atribuir agentes",
       "card": {
         "assign": "Atribuir ao time",
         "assigned": "Atribuído",

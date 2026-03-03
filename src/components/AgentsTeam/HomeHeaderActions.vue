@@ -3,7 +3,8 @@
     v-if="canAssignAgents"
     data-testid="assign-agents-button"
     type="primary"
-    :text="$t('router.agents_team.assign_agents')"
+    iconLeft="add"
+    :text="$t('agents.assign_agents_button')"
     @click="agentsTeamStore.openAgentsGallery"
   />
 </template>
