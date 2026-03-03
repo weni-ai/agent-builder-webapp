@@ -392,6 +392,33 @@
     "instructions": {
       "title": "Instructions",
       "description": "Write quick rules to shape the agent’s behavior"
+    },
+    "profile": {
+      "tone_of_voice": {
+        "tones": {
+          "friendly": {
+            "name": "Friendly",
+            "tooltip": "Supportive and empathetic, focusing on partnership and helpfulness"
+          },
+          "systematic": {
+            "name": "Systematic",
+            "tooltip": "Direct, well-organized, and focused on clear processes and logic"
+          },
+          "analytical": {
+            "name": "Analytical",
+            "tooltip": "Logical, methodical, and objective, using precise language and avoiding assumptions"
+          },
+          "creative": {
+            "name": "Creative",
+            "tooltip": "Forward-thinking and imaginative, prioritizing original solutions"
+          },
+          "casual": {
+            "name": "Casual",
+            "tooltip": "Light, energetic, and informal for a more approachable, human feel"
+          }
+
+        }
+      }
     }
   },
   "router": {
@@ -700,18 +727,6 @@
       "personality": {
         "title": "What's the agent's tone of voice?",
         "description": "Choose how the agent communicates with users"
-      },
-      "personalities": {
-        "friendly": "Friendly",
-        "extrovert": "Extrovert",
-        "cooperative": "Cooperative",
-        "generous": "Generous",
-        "relaxed": "Relaxed",
-        "organized": "Organized",
-        "systematic": "Systematic",
-        "innovative": "Innovative",
-        "creative": "Creative",
-        "intellectual": "Intellectual"
       }
     },
     "instructions": {

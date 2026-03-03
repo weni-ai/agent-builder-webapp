@@ -77,113 +77,27 @@
         :message="$t('profile.fields.personality.description')"
         :error="errorRequiredFields.role ? $t('profile.invalid_field') : ''"
       >
-        <UnnnicSelectSmart
-          data-test="select-personality"
-          :modelValue="handlePersonalityValue(profile.personality.current)"
-          :options="personalities"
-          orderedByIndex
-          @update:model-value="profile.personality.current = $event[0].value"
+        <ToneOfVoiceRadios
+          :selectedTone="profile.personality.current"
+          @update:selected-tone="profile.personality.current = $event"
         />
       </UnnnicFormElement>
     </section>
   </section>
 </template>
 
-<script>
+<script setup lang="ts">
 import { useProfileStore } from '@/store/Profile';
-import { useAlertStore } from '@/store/Alert.js';
 
 import LoadingFormElement from '@/components/LoadingFormElement.vue';
+import ToneOfVoiceRadios from './ToneOfVoiceRadios.vue';
+import { computed } from 'vue';
 
-export default {
-  components: {
-    LoadingFormElement,
-  },
+const profileStore = useProfileStore();
 
-  setup() {
-    const profileStore = useProfileStore();
-    const alertStore = useAlertStore();
-
-    return {
-      alertStore,
-      profileStore,
-    };
-  },
-
-  data() {
-    return {
-      saving: false,
-      removing: false,
-    };
-  },
-
-  computed: {
-    personalities() {
-      return [
-        {
-          label: this.$t('profile.fields.personalities.friendly'),
-          value: 'Amigável',
-        },
-        {
-          label: this.$t('profile.fields.personalities.cooperative'),
-          value: 'Cooperativo',
-        },
-        {
-          label: this.$t('profile.fields.personalities.extrovert'),
-          value: 'Extrovertido',
-        },
-        {
-          label: this.$t('profile.fields.personalities.generous'),
-          value: 'Generoso',
-        },
-        {
-          label: this.$t('profile.fields.personalities.relaxed'),
-          value: 'Relaxado',
-        },
-        {
-          label: this.$t('profile.fields.personalities.organized'),
-          value: 'Organizado',
-        },
-        {
-          label: this.$t('profile.fields.personalities.systematic'),
-          value: 'Sistemático',
-        },
-        {
-          label: this.$t('profile.fields.personalities.innovative'),
-          value: 'Inovador',
-        },
-        {
-          label: this.$t('profile.fields.personalities.creative'),
-          value: 'Criativo',
-        },
-        {
-          label: this.$t('profile.fields.personalities.intellectual'),
-          value: 'Intelectual',
-        },
-      ];
-    },
-
-    loading() {
-      return this.profile.status === 'loading';
-    },
-
-    profile() {
-      return this.profileStore;
-    },
-
-    errorRequiredFields() {
-      return this.profile.errorRequiredFields;
-    },
-  },
-
-  methods: {
-    handlePersonalityValue(value) {
-      const personality = this.personalities.find((e) => value === e.value);
-
-      return personality ? [personality] : [{ label: '', value: '' }];
-    },
-  },
-};
+const loading = computed(() => profileStore.status === 'loading');
+const profile = computed(() => profileStore);
+const errorRequiredFields = computed(() => profileStore.errorRequiredFields);
 </script>
 
 <style lang="scss" scoped>
