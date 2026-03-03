@@ -42,7 +42,7 @@ const agentIconService = {
 
   availableIcons: {
     [categories.CUSTOM]: Array.from(
-      { length: 24 },
+      { length: 7 },
       (_, i) => `CustomIcon${i + 1}`,
     ),
   },
