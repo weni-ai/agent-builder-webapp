@@ -24,3 +24,11 @@ const agentIcon = computed(() => {
   return agentIcons[props.icon] || null;
 });
 </script>
+
+<style lang="scss" scoped>
+.content__icon {
+  pointer-events: none;
+
+  border-radius: $unnnic-radius-full;
+}
+</style>
