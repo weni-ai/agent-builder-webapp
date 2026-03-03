@@ -27,8 +27,16 @@ const agentIcon = computed(() => {
 
 <style lang="scss" scoped>
 .content__icon {
-  pointer-events: none;
+  $paddingValue: $unnnic-space-1;
+  padding: $paddingValue;
 
+  overflow: visible;
   border-radius: $unnnic-radius-full;
+
+  width: calc($unnnic-icon-size-10 + $paddingValue * 2);
+  height: auto;
+  aspect-ratio: 1/1;
+
+  pointer-events: none;
 }
 </style>
