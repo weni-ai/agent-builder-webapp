@@ -25,6 +25,7 @@
             },
           ]"
           @keydown.enter.space.prevent="handleToneChange(tone.id)"
+          @click="handleToneChange(tone.id)"
         >
           <input
             :id="`tone-of-voice-${tone.id}`"
@@ -114,11 +115,14 @@ const tones = computed(() => {
     color: $unnnic-color-fg-emphasized;
     font: $unnnic-font-body;
 
-    cursor: pointer;
-
     &--selected {
       border-color: $unnnic-color-border-active;
       background: $unnnic-color-teal-50;
+    }
+
+    &,
+    > * {
+      cursor: pointer;
     }
   }
 }
