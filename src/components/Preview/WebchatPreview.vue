@@ -9,9 +9,12 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
+import { useFlowPreviewStore } from '@/store/FlowPreview';
+
 const WWC_UMD_URL = 'https://cdn.stg.cloud.weni.ai/webchat-latest.umd.js';
 const WWC_SELECTOR = '#weni-webchat-preview';
 
+const flowPreviewStore = useFlowPreviewStore();
 const scriptElement = ref(null);
 
 function loadUmdBundle() {
@@ -34,16 +37,20 @@ function loadUmdBundle() {
 async function initWebchat() {
   await loadUmdBundle();
 
+  flowPreviewStore.ensurePreviewInitialized();
+  const contactUrn = flowPreviewStore.preview.contact.urn;
+  console.log(contactUrn);
+
   window.WebChat.init({
     selector: WWC_SELECTOR,
     socketUrl: 'https://websocket.stg.cloud.weni.ai',
     host: 'https://flows.stg.cloud.weni.ai',
     channelUuid: '66c1f276-42d0-46f1-b5e3-37bb4d9e908d',
+    sessionId: contactUrn,
     params: {
       preview: true,
     },
     embedded: true,
-    startFullScreen: true,
     showChatAvatar: false,
   });
 }

@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { v4 as createUUID } from 'uuid';
 import { useProjectStore } from '@/store/Project';
+import { useUserStore } from '@/store/User';
 
 interface PreviewContact {
   uuid: string;
@@ -9,6 +10,7 @@ interface PreviewContact {
 
 export default function useFlowPreview() {
   const projectStore = useProjectStore();
+  const userStore = useUserStore();
 
   const preview = ref<{ contact: PreviewContact }>({
     contact: {
@@ -31,11 +33,12 @@ export default function useFlowPreview() {
       '0',
     );
 
-    const urn = `tel:${numberBasedOnProjectUuid}${threeRandomDigits}`;
+    const userEmail = userStore.user.email;
+    const urn = `tel:${userEmail}${numberBasedOnProjectUuid}${threeRandomDigits}`;
 
     preview.value.contact = {
       uuid: createUUID(),
-      urn: urn,
+      urn: userEmail,
     };
   }
 
