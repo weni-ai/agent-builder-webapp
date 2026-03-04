@@ -14,7 +14,8 @@
           data-testid="preview-drawer-preview"
           class="content__preview"
         >
-          <Preview />
+          <WebchatPreview v-if="useWebchatPreview" />
+          <Preview v-else />
         </section>
 
         <section
@@ -32,10 +33,17 @@
 import { computed, watch } from 'vue';
 
 import { usePreviewStore } from '@/store/Preview';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 import Preview from '@/components/Preview/Preview.vue';
+import WebchatPreview from '@/components/Preview/WebchatPreview.vue';
 import PreviewDetails from '../PreviewDetails.vue';
 import PreviewDrawerHeader from './Header.vue';
+
+const featureFlagsStore = useFeatureFlagsStore();
+const useWebchatPreview = computed(
+  () => featureFlagsStore.flags.webchatPreview,
+);
 
 const props = defineProps({
   modelValue: {
