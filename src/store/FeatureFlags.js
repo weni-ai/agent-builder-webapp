@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { computed, inject, nextTick, watch } from 'vue';
+import { computed, inject, watch } from 'vue';
 
 import { useProjectStore } from './Project';
 import { useUserStore } from './User';
@@ -29,6 +29,7 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
     settingsAgentVoice: growthbook?.isOn('settings_agent_voice'),
     assignAgentsView: growthbook?.isOn('assign_agents_view'),
     conversationsV2: growthbook?.isOn('conversations_v2'),
+    webchatPreview: growthbook?.isOn('webchat_preview'),
   }));
 
   watch(
