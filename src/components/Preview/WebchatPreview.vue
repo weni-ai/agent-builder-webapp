@@ -45,7 +45,7 @@ async function initWebchat() {
     selector: WWC_SELECTOR,
     socketUrl: 'https://websocket.stg.cloud.weni.ai',
     host: 'https://flows.stg.cloud.weni.ai',
-    channelUuid: '66c1f276-42d0-46f1-b5e3-37bb4d9e908d',
+    channelUuid: '4f21629b-babe-4d20-951a-609236da9c96',
     sessionId: contactUrn,
     params: {
       preview: true,
