@@ -79,8 +79,21 @@ onBeforeUnmount(() => {
   :deep(.weni-widget) {
     position: absolute !important;
   }
+
   :deep(.weni-chat) {
     position: absolute !important;
+
+    .weni-chat-header {
+      display: none !important;
+    }
+
+    .weni-chat__footer {
+      margin-bottom: $unnnic-space-4;
+
+      .weni-poweredby {
+        display: none !important;
+      }
+    }
   }
 }
 </style>

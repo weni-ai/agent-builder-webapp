@@ -77,6 +77,7 @@ watch(
     grid-template-columns: 1fr 1fr;
 
     overflow: hidden;
+    border-radius: $unnnic-radius-4;
 
     .content__preview {
       overflow: hidden;
