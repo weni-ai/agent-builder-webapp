@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router';
 
-import { computed, onMounted, watch } from 'vue';
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue';
 
 import { useTuningsStore } from '@/store/Tunings';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
@@ -48,12 +48,13 @@ import { useAlertStore } from '@/store/Alert';
 import { useUserStore } from '@/store/User';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { useCurrentModule } from '@/composables/useCurrentModule';
-import { isFederatedModule } from './utils/moduleFederation';
+import { isFederatedModule, safeImport } from './utils/moduleFederation';
 
 import initHotjar from '@/utils/plugins/Hotjar.js';
 
 import Sidebar from '@/components/Sidebar/index.vue';
 import TestAgentsButton from '@/components/Preview/TestAgentsButton.vue';
+import i18n from './utils/plugins/i18n';
 
 const { isBuildModule, isAgentsModule } = useCurrentModule();
 
@@ -91,6 +92,44 @@ watch(
   (email) => {
     if (email) initHotjar(email);
   },
+);
+
+const sharedStore = ref(null);
+
+onBeforeMount(async () => {
+  safeImport(() => import('connect/sharedStore'), 'connect/sharedStore')
+    .then(({ useSharedStore }) => {
+      if (useSharedStore && isFederatedModule) {
+        try {
+          sharedStore.value = useSharedStore();
+        } catch (error) {
+          console.error(
+            '[AgentBuilder - App.vue] Error initializing shared store:',
+            error,
+          );
+        }
+      } else {
+        console.log('[AgentBuilder - App.vue] Not federated module');
+      }
+    })
+    .catch((error) => {
+      console.error(
+        '[AgentBuilder - App.vue] Error loading shared store module:',
+        error,
+      );
+    });
+});
+
+const language = computed(() => sharedStore.value?.user.language || 'en');
+
+watch(
+  language,
+  (newLanguage: string) => {
+    if (!newLanguage) return;
+
+    i18n.global.locale = newLanguage;
+  },
+  { immediate: true },
 );
 </script>
 
