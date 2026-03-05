@@ -281,6 +281,11 @@
     "assigned_agents": {
       "title": "Assigned agents",
       "new_agent": "New agent",
+      "manager": {
+        "name": "Manager",
+        "edit_manager": "Edit Manager",
+        "edit_instructions": "Edit instructions"
+      },
       "no_agents": {
         "title": "No agents assigned yet",
         "description": "Click {assign_new_agents} and add your first agent",

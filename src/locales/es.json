@@ -281,6 +281,11 @@
     "assigned_agents": {
       "title": "Agentes asignados",
       "new_agent": "Nuevo agente",
+      "manager": {
+        "name": "Manager",
+        "edit_manager": "Editar Manager",
+        "edit_instructions": "Editar instrucciones"
+      },
       "no_agents": {
         "title": "No hay agentes asignados aún",
         "description": "Clique en {assign_new_agents} y agregue su primer agente",
