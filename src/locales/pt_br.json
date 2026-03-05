@@ -670,7 +670,11 @@
     }
   },
   "profile": {
-    "edit_manager_profile": "Editar perfil do Manager",
+    "tabs": {
+      "profile": "Perfil",
+      "settings": "Configurações"
+    },
+    "edit_manager_profile": "Editar Manager",
     "description": "Personalize as informações básicas e o comportamento do agente",
     "save_btn": "Salvar alterações",
     "save_success": "Alterações salvas com sucesso",
