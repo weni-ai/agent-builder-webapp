@@ -66,13 +66,8 @@ const buildRoutes: RouteRecordRaw[] = [
   {
     path: MODULE_PATHS.build,
     name: 'build',
-    redirect: { name: 'instructions' },
+    redirect: { name: 'knowledge' },
     children: [
-      {
-        path: 'instructions',
-        name: 'instructions',
-        component: () => import('@/views/Instructions/index.vue'),
-      },
       {
         path: 'knowledge',
         name: 'knowledge',
@@ -87,13 +82,22 @@ const buildRoutes: RouteRecordRaw[] = [
   },
 ];
 
+const knowledgeRoutes: RouteRecordRaw[] = [
+  {
+    path: MODULE_PATHS.knowledge,
+    name: 'knowledge',
+    component: () => import('@/views/Knowledge.vue'),
+  },
+];
+
 const currentModule =
-  getCurrentModuleFromPath(window.location.pathname) || 'build';
+  getCurrentModuleFromPath(window.location.pathname) || 'agents';
 
 const moduleRoutesMap: Record<AgentBuilderModule, RouteRecordRaw[]> = {
   conversations: conversationsRoutes,
   agents: agentsRoutes,
   build: buildRoutes,
+  knowledge: knowledgeRoutes,
 };
 
 const routes: RouteRecordRaw[] = [

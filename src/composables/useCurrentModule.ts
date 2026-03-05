@@ -1,12 +1,17 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
-export type AgentBuilderModule = 'conversations' | 'agents' | 'build';
+export type AgentBuilderModule =
+  | 'conversations'
+  | 'agents'
+  | 'build'
+  | 'knowledge';
 
 export const MODULE_PATHS: Record<AgentBuilderModule, string> = {
   conversations: '/conversations',
   agents: '/agents',
   build: '/build',
+  knowledge: '/knowledge',
 } as const;
 
 export const getCurrentModuleFromPath = (
@@ -28,6 +33,10 @@ export const getCurrentModuleFromPath = (
     return 'build';
   }
 
+  if (path.startsWith(MODULE_PATHS.knowledge)) {
+    return 'knowledge';
+  }
+
   return null;
 };
 
@@ -44,6 +53,7 @@ export const useCurrentModule = () => {
   const isBuildModule = computed(() => isModule('build'));
   const isConversationsModule = computed(() => isModule('conversations'));
   const isAgentsModule = computed(() => isModule('agents'));
+  const isKnowledgeModule = computed(() => isModule('knowledge'));
 
   return {
     currentModule,
@@ -51,6 +61,7 @@ export const useCurrentModule = () => {
     isBuildModule,
     isConversationsModule,
     isAgentsModule,
+    isKnowledgeModule,
     MODULE_PATHS,
   };
 };
