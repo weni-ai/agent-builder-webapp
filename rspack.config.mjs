@@ -69,11 +69,16 @@ export default defineConfig({
       },
       {
         test: /\.(scss|sass)$/,
-        loader: 'sass-loader',
+        use: [
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: `@import '@weni/unnnic-system/src/assets/scss/unnnic.scss';`,
+            },
+          },
+        ],
         type: 'css',
-        options: {
-          additionalData: `@use '@weni/unnnic-system/src/assets/scss/unnnic.scss' as *;`,
-        },
       },
       {
         test: /\.(png|jpe?g|gif|svg|webp|avif)$/i,
