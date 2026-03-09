@@ -1,52 +1,44 @@
 <template>
-  <section class="credentials">
-    <section class="credentials__form">
-      <UnnnicIntelligenceText
-        tag="p"
-        family="secondary"
-        size="body-lg"
-        color="neutral-darkest"
-        weight="bold"
-        data-testid="credentials-description"
-      >
-        {{ $t('router.tunings.credentials.used_by_official_agents') }}
-      </UnnnicIntelligenceText>
-      <CredentialsForm
-        data-testid="credentials-form"
-        :credentials="credentials?.officialAgents"
-      />
-    </section>
+  <FederatedWrapper>
+    <section class="credentials">
+      <section class="credentials__form">
+        <p
+          class="credentials__description"
+          data-testid="credentials-description"
+        >
+          {{ $t('router.tunings.credentials.used_by_official_agents') }}
+        </p>
+        <CredentialsForm
+          data-testid="credentials-form"
+          :credentials="credentials?.officialAgents"
+        />
+      </section>
 
-    <UnnnicDivider data-testid="credentials-divider" />
+      <UnnnicDivider data-testid="credentials-divider" />
 
-    <section class="credentials__form">
-      <UnnnicIntelligenceText
-        tag="p"
-        family="secondary"
-        size="body-lg"
-        color="neutral-darkest"
-        weight="bold"
-        data-testid="credentials-description"
-      >
-        {{ $t('router.tunings.credentials.used_by_customized_agents') }}
-      </UnnnicIntelligenceText>
-      <CredentialsForm
-        data-testid="credentials-form"
-        :credentials="credentials?.myAgents"
-      />
+      <section class="credentials__form">
+        <p
+          class="credentials__description"
+          data-testid="credentials-description"
+        >
+          {{ $t('router.tunings.credentials.used_by_customized_agents') }}
+        </p>
+        <CredentialsForm
+          data-testid="credentials-form"
+          :credentials="credentials?.myAgents"
+        />
+      </section>
     </section>
-  </section>
+  </FederatedWrapper>
 </template>
 
 <script setup lang="ts">
 import { computed, watch, onMounted } from 'vue';
 
-import { ensurePinia } from '@/utils/ensurePinia';
 import { useTuningsStore } from '@/store/Tunings';
 
+import FederatedWrapper from '@/components/FederatedWrapper.vue';
 import CredentialsForm from './CredentialsForm.vue';
-
-ensurePinia();
 
 const props = defineProps({
   saveTrigger: { type: Number, default: 0 },
@@ -92,6 +84,13 @@ watch(
   &__form {
     display: grid;
     gap: $unnnic-spacing-sm;
+  }
+
+  &__description {
+    margin: 0;
+
+    color: $unnnic-color-fg-emphasized;
+    font: $unnnic-font-display-3;
   }
 }
 </style>

@@ -1,51 +1,53 @@
 <template>
-  <p
-    v-if="noChangesDetected"
-    class="changes-history__no-changes"
-  >
-    {{ $t('router.tunings.history.no_changes') }}
-  </p>
-  <template v-else>
-    <section class="changes-history__container__header">
-      <section>
-        <UnnnicIntelligenceText
-          color="neutral-cloudy"
-          family="secondary"
-          size="body-gt"
-          tag="p"
-        >
-          {{ $t('router.tunings.history.description') }}
-        </UnnnicIntelligenceText>
-        <UnnnicIntelligenceText
-          class="text-sub-description"
-          color="neutral-clean"
-          family="secondary"
-          size="body-md"
-          tag="p"
-        >
-          {{ $t('router.tunings.history.sub_description') }}
-        </UnnnicIntelligenceText>
-      </section>
+  <FederatedWrapper>
+    <p
+      v-if="noChangesDetected"
+      class="changes-history__no-changes"
+    >
+      {{ $t('router.tunings.history.no_changes') }}
+    </p>
+    <template v-else>
+      <section class="changes-history__container__header">
+        <section>
+          <UnnnicIntelligenceText
+            color="neutral-cloudy"
+            family="secondary"
+            size="body-gt"
+            tag="p"
+          >
+            {{ $t('router.tunings.history.description') }}
+          </UnnnicIntelligenceText>
+          <UnnnicIntelligenceText
+            class="text-sub-description"
+            color="neutral-clean"
+            family="secondary"
+            size="body-md"
+            tag="p"
+          >
+            {{ $t('router.tunings.history.sub_description') }}
+          </UnnnicIntelligenceText>
+        </section>
 
-      <UnnnicSelectSmart
-        v-model:modelValue="currentFilterOption"
-        class="select-filter"
-        data-test="select-filter"
-        :options="filterOptions"
-        orderedByIndex
+        <UnnnicSelectSmart
+          v-model:modelValue="currentFilterOption"
+          class="select-filter"
+          data-test="select-filter"
+          :options="filterOptions"
+          orderedByIndex
+        />
+      </section>
+      <UnnnicTableNext
+        v-model:pagination="pagination"
+        :headers="table.headers"
+        :rows="formattedRows"
+        :paginationTotal="paginationTotal"
+        :paginationInterval="paginationInterval"
+        :isLoading="isLoading"
+        class="changes-history__table"
+        data-test="table"
       />
-    </section>
-    <UnnnicTableNext
-      v-model:pagination="pagination"
-      :headers="table.headers"
-      :rows="formattedRows"
-      :paginationTotal="paginationTotal"
-      :paginationInterval="paginationInterval"
-      :isLoading="isLoading"
-      class="changes-history__table"
-      data-test="table"
-    />
-  </template>
+    </template>
+  </FederatedWrapper>
 </template>
 
 <script setup>
@@ -55,10 +57,8 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 import HistoryItem from './HistoryItem.vue';
 import HistoryData from './HistoryData.vue';
 import { handleChangeName } from '@/utils/changeNameUtils';
-import { ensurePinia } from '@/utils/ensurePinia';
 import { useProjectStore } from '@/store/Project';
-
-ensurePinia();
+import FederatedWrapper from '@/components/FederatedWrapper.vue';
 
 const projectUuid = useProjectStore().uuid;
 
