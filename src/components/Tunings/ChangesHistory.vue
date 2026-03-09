@@ -55,7 +55,10 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 import HistoryItem from './HistoryItem.vue';
 import HistoryData from './HistoryData.vue';
 import { handleChangeName } from '@/utils/changeNameUtils';
+import { ensurePinia } from '@/utils/ensurePinia';
 import { useProjectStore } from '@/store/Project';
+
+ensurePinia();
 
 const projectUuid = useProjectStore().uuid;
 

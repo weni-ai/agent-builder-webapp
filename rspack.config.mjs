@@ -117,6 +117,15 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       exposes: {
         './main': './src/main.js',
+        './locales/pt_br': './src/locales/pt_br.json',
+        './locales/en': './src/locales/en.json',
+        './locales/es': './src/locales/es.json',
+        './WorkspaceCredentials':
+          './src/components/Tunings/Credentials/index.vue',
+        './WorkspaceChangesHistory':
+          './src/components/Tunings/ChangesHistory.vue',
+        './WorkspaceProjectDetails':
+          './src/components/Tunings/ProjectDetailsModal/index.vue',
       },
       remotes: {
         ...(connectUrl
@@ -130,6 +139,11 @@ export default defineConfig({
         vue: {
           singleton: true,
           requiredVersion: '^3.0.0',
+          eager: true,
+        },
+        pinia: {
+          singleton: true,
+          requiredVersion: pkg.dependencies.pinia,
           eager: true,
         },
         'vue-i18n': {

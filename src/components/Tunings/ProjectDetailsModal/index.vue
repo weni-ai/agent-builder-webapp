@@ -41,9 +41,12 @@
 import { computed } from 'vue';
 
 import i18n from '@/utils/plugins/i18n';
+import { ensurePinia } from '@/utils/ensurePinia';
 
 import { useProjectStore } from '@/store/Project';
 import ProjectInfo from './ProjectInfo.vue';
+
+ensurePinia();
 
 const emit = defineEmits(['update:modelValue']);
 defineProps({
