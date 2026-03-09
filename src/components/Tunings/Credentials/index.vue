@@ -87,8 +87,6 @@ watch(
   }
 
   &__description {
-    margin: 0;
-
     color: $unnnic-color-fg-emphasized;
     font: $unnnic-font-display-3;
   }

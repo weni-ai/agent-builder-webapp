@@ -117,9 +117,6 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       exposes: {
         './main': './src/main.js',
-        './locales/pt_br': './src/locales/pt_br.json',
-        './locales/en': './src/locales/en.json',
-        './locales/es': './src/locales/es.json',
         './WorkspaceCredentials':
           './src/components/Tunings/Credentials/index.vue',
         './WorkspaceChangesHistory':
