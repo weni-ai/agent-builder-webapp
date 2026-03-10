@@ -21,6 +21,7 @@ describe('useCurrentModule', () => {
         conversations: '/conversations',
         agents: '/agents',
         build: '/build',
+        knowledge: '/knowledge',
       });
     });
   });
@@ -74,12 +75,14 @@ describe('useCurrentModule', () => {
           'conversations',
         );
         expect(getCurrentModuleFromPath('/agents/')).toBe('agents');
+        expect(getCurrentModuleFromPath('/knowledge/')).toBe('knowledge');
       });
 
       it('should be case-sensitive', () => {
         expect(getCurrentModuleFromPath('/Build')).toBe(null);
         expect(getCurrentModuleFromPath('/CONVERSATIONS')).toBe(null);
         expect(getCurrentModuleFromPath('/Agents')).toBe(null);
+        expect(getCurrentModuleFromPath('/Knowledge')).toBe(null);
       });
     });
   });
@@ -89,6 +92,7 @@ describe('useCurrentModule', () => {
       build: 'isBuildModule',
       conversations: 'isConversationsModule',
       agents: 'isAgentsModule',
+      knowledge: 'isKnowledgeModule',
     };
 
     Object.entries(MODULE_PATHS).forEach(([moduleName, modulePath]) => {
@@ -133,11 +137,16 @@ describe('useCurrentModule', () => {
       });
 
       it('should return false for all module checks', () => {
-        const { isBuildModule, isConversationsModule, isAgentsModule } =
-          useCurrentModule();
+        const {
+          isBuildModule,
+          isConversationsModule,
+          isAgentsModule,
+          isKnowledgeModule,
+        } = useCurrentModule();
         expect(isBuildModule.value).toBe(false);
         expect(isConversationsModule.value).toBe(false);
         expect(isAgentsModule.value).toBe(false);
+        expect(isKnowledgeModule.value).toBe(false);
       });
 
       it('should return false for isModule function', () => {
@@ -145,13 +154,14 @@ describe('useCurrentModule', () => {
         expect(isModule('build')).toBe(false);
         expect(isModule('conversations')).toBe(false);
         expect(isModule('agents')).toBe(false);
+        expect(isModule('knowledge')).toBe(false);
       });
     });
 
     describe('composable structure', () => {
       beforeEach(() => {
         useRoute.mockReturnValue({
-          path: '/build',
+          path: '/agents',
         });
       });
 
@@ -163,6 +173,7 @@ describe('useCurrentModule', () => {
         expect(result).toHaveProperty('isBuildModule');
         expect(result).toHaveProperty('isConversationsModule');
         expect(result).toHaveProperty('isAgentsModule');
+        expect(result).toHaveProperty('isKnowledgeModule');
         expect(result).toHaveProperty('MODULE_PATHS');
       });
 
@@ -177,12 +188,14 @@ describe('useCurrentModule', () => {
           isBuildModule,
           isConversationsModule,
           isAgentsModule,
+          isKnowledgeModule,
         } = useCurrentModule();
 
         expect(currentModule).toHaveProperty('value');
         expect(isBuildModule).toHaveProperty('value');
         expect(isConversationsModule).toHaveProperty('value');
         expect(isAgentsModule).toHaveProperty('value');
+        expect(isKnowledgeModule).toHaveProperty('value');
       });
 
       it('should return isModule as a function', () => {
