@@ -66,7 +66,45 @@ onBeforeMount(async () => {
 </script>
 
 <style lang="scss">
-.agent-builder-federated {
-  @import '../styles/global.scss';
+:where(.agent-builder-federated) {
+  :where(*, *::before, *::after) {
+    box-sizing: border-box;
+  }
+
+  :where(*) {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  :where(ol, ul) {
+    list-style: none;
+  }
+
+  :where(img, picture, video, canvas, svg) {
+    display: block;
+    max-width: 100%;
+  }
+
+  :where(input, button, textarea, select) {
+    font: inherit;
+  }
+
+  :where(p, h1, h2, h3, h4, h5, h6) {
+    overflow-wrap: break-word;
+  }
+
+  :where(p) {
+    text-wrap: pretty;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6) {
+    text-wrap: balance;
+  }
+
+  :where(table) {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
 }
 </style>
