@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 import i18n from '@/utils/plugins/i18n';
 
@@ -54,6 +54,15 @@ defineProps({
   },
 });
 const projectStore = useProjectStore();
+
+onMounted(() => {
+  if (
+    projectStore.details.status !== 'success' &&
+    projectStore.details.status !== 'loading'
+  ) {
+    projectStore.getProjectDetails();
+  }
+});
 
 const projectDetails = computed(() => projectStore.details);
 const charactersUsage = computed(() => {

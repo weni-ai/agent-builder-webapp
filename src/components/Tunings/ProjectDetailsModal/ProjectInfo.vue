@@ -39,6 +39,8 @@ defineProps({
   }
 
   &__description {
+    margin: 0;
+
     color: $unnnic-color-fg-base;
     font-family: $unnnic-font-family-secondary;
     font-weight: $unnnic-font-weight-regular;
