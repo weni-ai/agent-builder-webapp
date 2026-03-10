@@ -1,35 +1,33 @@
 <template>
-  <FederatedWrapper>
-    <section class="credentials">
-      <section class="credentials__form">
-        <p
-          class="credentials__description"
-          data-testid="credentials-description"
-        >
-          {{ $t('router.tunings.credentials.used_by_official_agents') }}
-        </p>
-        <CredentialsForm
-          data-testid="credentials-form"
-          :credentials="credentials?.officialAgents"
-        />
-      </section>
-
-      <UnnnicDivider data-testid="credentials-divider" />
-
-      <section class="credentials__form">
-        <p
-          class="credentials__description"
-          data-testid="credentials-description"
-        >
-          {{ $t('router.tunings.credentials.used_by_customized_agents') }}
-        </p>
-        <CredentialsForm
-          data-testid="credentials-form"
-          :credentials="credentials?.myAgents"
-        />
-      </section>
+  <section class="credentials">
+    <section class="credentials__form">
+      <p
+        class="credentials__description"
+        data-testid="credentials-description"
+      >
+        {{ $t('router.tunings.credentials.used_by_official_agents') }}
+      </p>
+      <CredentialsForm
+        data-testid="credentials-form"
+        :credentials="credentials?.officialAgents"
+      />
     </section>
-  </FederatedWrapper>
+
+    <UnnnicDivider data-testid="credentials-divider" />
+
+    <section class="credentials__form">
+      <p
+        class="credentials__description"
+        data-testid="credentials-description"
+      >
+        {{ $t('router.tunings.credentials.used_by_customized_agents') }}
+      </p>
+      <CredentialsForm
+        data-testid="credentials-form"
+        :credentials="credentials?.myAgents"
+      />
+    </section>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -37,7 +35,6 @@ import { computed, watch, onMounted } from 'vue';
 
 import { useTuningsStore } from '@/store/Tunings';
 
-import FederatedWrapper from '@/components/FederatedWrapper.vue';
 import CredentialsForm from './CredentialsForm.vue';
 
 const props = defineProps({

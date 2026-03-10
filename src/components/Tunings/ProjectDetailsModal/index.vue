@@ -1,42 +1,40 @@
 <template>
-  <FederatedWrapper>
-    <UnnnicModalDialog
-      class="project-details-modal"
-      data-testid="project-details-modal"
-      :modelValue="modelValue"
-      showCloseIcon
-      size="lg"
-      :title="$t('agent_builder.tunings.project_details')"
-      @update:model-value="emit('update:modelValue', $event)"
-    >
-      <ProjectInfo
-        :title="$t('agent_builder.tunings.agents_backend')"
-        :description="projectDetails.backend"
-      />
+  <UnnnicModalDialog
+    class="project-details-modal"
+    data-testid="project-details-modal"
+    :modelValue="modelValue"
+    showCloseIcon
+    size="lg"
+    :title="$t('agent_builder.tunings.project_details')"
+    @update:model-value="emit('update:modelValue', $event)"
+  >
+    <ProjectInfo
+      :title="$t('agent_builder.tunings.agents_backend')"
+      :description="projectDetails.backend"
+    />
 
+    <UnnnicDivider ySpacing="sm" />
+
+    <ProjectInfo
+      v-for="agent in projectDetails.agentsModels"
+      :key="agent.name"
+      :title="$t('agent_builder.tunings.agent_model', { agent: agent.name })"
+      :description="agent.model"
+    />
+
+    <template v-if="projectDetails.charactersCount">
       <UnnnicDivider ySpacing="sm" />
 
       <ProjectInfo
-        v-for="agent in projectDetails.agentsModels"
-        :key="agent.name"
-        :title="$t('agent_builder.tunings.agent_model', { agent: agent.name })"
-        :description="agent.model"
+        :title="$t('agent_builder.tunings.characters_usage')"
+        :description="charactersUsage"
       />
 
-      <template v-if="projectDetails.charactersCount">
-        <UnnnicDivider ySpacing="sm" />
-
-        <ProjectInfo
-          :title="$t('agent_builder.tunings.characters_usage')"
-          :description="charactersUsage"
-        />
-
-        <p class="project-details-modal__info-explanation">
-          {{ $t('agent_builder.tunings.characters_usage_description') }}
-        </p>
-      </template>
-    </UnnnicModalDialog>
-  </FederatedWrapper>
+      <p class="project-details-modal__info-explanation">
+        {{ $t('agent_builder.tunings.characters_usage_description') }}
+      </p>
+    </template>
+  </UnnnicModalDialog>
 </template>
 
 <script setup>
@@ -45,7 +43,6 @@ import { computed } from 'vue';
 import i18n from '@/utils/plugins/i18n';
 
 import { useProjectStore } from '@/store/Project';
-import FederatedWrapper from '@/components/FederatedWrapper.vue';
 import ProjectInfo from './ProjectInfo.vue';
 import UnnnicDivider from '@/components/Divider.vue';
 

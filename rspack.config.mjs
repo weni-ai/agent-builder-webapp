@@ -118,11 +118,11 @@ export default defineConfig({
       exposes: {
         './main': './src/main.js',
         './WorkspaceCredentials':
-          './src/components/Tunings/Credentials/index.vue',
+          './src/exports/WorkspaceCredentials.vue',
         './WorkspaceChangesHistory':
-          './src/components/Tunings/ChangesHistory.vue',
+          './src/exports/WorkspaceChangesHistory.vue',
         './WorkspaceProjectDetails':
-          './src/components/Tunings/ProjectDetailsModal/index.vue',
+          './src/exports/WorkspaceProjectDetails.vue',
       },
       remotes: {
         ...(connectUrl

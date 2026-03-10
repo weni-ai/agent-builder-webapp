@@ -1,49 +1,36 @@
 <template>
-  <div class="agent-builder-federated">
+  <div
+    v-if="ready"
+    class="agent-builder-federated"
+  >
     <slot />
   </div>
 </template>
 
+<script lang="ts">
+let localesMerged = false;
+let authLoaded = false;
+</script>
+
 <script setup lang="ts">
+import { ref, getCurrentInstance, onBeforeMount } from 'vue';
+import { createPinia, getActivePinia } from 'pinia';
 import { useI18n } from 'vue-i18n';
+
+import { safeImport } from '@/utils/moduleFederation';
+import { moduleStorage } from '@/utils/storage';
 
 import en from '@/locales/en.json';
 import ptBr from '@/locales/pt_br.json';
 import es from '@/locales/es.json';
 
-import { getCurrentInstance } from 'vue';
-import { createPinia, getActivePinia } from 'pinia';
+const ready = ref(false);
 
-/**
- * Ensures a Pinia instance is available in the current Vue app context.
- * Used by individually exported components (Module Federation) that may
- * run inside a host app without its own Pinia instance.
- *
- * Must be called inside a component's setup function.
- * No-op if Pinia is already active.
- */
-function ensurePinia(): void {
-  if (getActivePinia()) return;
-
-  const instance = getCurrentInstance();
-  const app = instance?.appContext?.app;
-
-  if (app) {
-    app.use(createPinia());
-  }
+if (!getActivePinia()) {
+  const app = getCurrentInstance()?.appContext?.app;
+  if (app) app.use(createPinia());
 }
 
-ensurePinia();
-
-/**
- * Merges the locales into the i18n instance.
- * Used by individually exported components (Module Federation) that may
- * run inside a host app without its own i18n instance.
- *
- * Must be called inside a component's setup function.
- * No-op if i18n is already merged.
- */
-let localesMerged = false;
 if (!localesMerged) {
   try {
     const i18n = useI18n({ useScope: 'global' });
@@ -53,9 +40,29 @@ if (!localesMerged) {
     i18n.mergeLocaleMessage('es', es);
     localesMerged = true;
   } catch {
-    console.error('i18n not available in this context');
+    // i18n not available in this context
   }
 }
+
+onBeforeMount(async () => {
+  if (!authLoaded) {
+    const { useSharedStore } = await safeImport(
+      () => import('connect/sharedStore'),
+      'connect/sharedStore',
+    );
+
+    const sharedStore = useSharedStore?.();
+
+    if (sharedStore) {
+      moduleStorage.setItem('authToken', sharedStore.auth.token);
+      moduleStorage.setItem('projectUuid', sharedStore.current.project.uuid);
+    }
+
+    authLoaded = true;
+  }
+
+  ready.value = true;
+});
 </script>
 
 <style lang="scss">
