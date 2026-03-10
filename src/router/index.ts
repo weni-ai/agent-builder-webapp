@@ -62,26 +62,6 @@ const agentsRoutes: RouteRecordRaw[] = [
   },
 ];
 
-const buildRoutes: RouteRecordRaw[] = [
-  {
-    path: MODULE_PATHS.build,
-    name: 'build',
-    redirect: { name: 'knowledge' },
-    children: [
-      {
-        path: 'knowledge',
-        name: 'knowledge',
-        component: () => import('@/views/Knowledge.vue'),
-      },
-      {
-        path: 'tunings',
-        name: 'tunings',
-        component: () => import('@/views/Tunings.vue'),
-      },
-    ],
-  },
-];
-
 const knowledgeRoutes: RouteRecordRaw[] = [
   {
     path: MODULE_PATHS.knowledge,
@@ -96,8 +76,8 @@ const currentModule =
 const moduleRoutesMap: Record<AgentBuilderModule, RouteRecordRaw[]> = {
   conversations: conversationsRoutes,
   agents: agentsRoutes,
-  build: buildRoutes,
   knowledge: knowledgeRoutes,
+  build: knowledgeRoutes,
 };
 
 const routes: RouteRecordRaw[] = [
