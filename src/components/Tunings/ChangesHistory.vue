@@ -26,7 +26,7 @@
     </section>
     <UnnnicTableNext
       v-model:pagination="pagination"
-      :headers="table.headers"
+      :headers="headers"
       :rows="formattedRows"
       :paginationTotal="paginationTotal"
       :paginationInterval="paginationInterval"
@@ -39,12 +39,14 @@
 
 <script setup>
 import { ref, watch, computed } from 'vue';
-import i18n from '@/utils/plugins/i18n';
+import { useI18n } from 'vue-i18n';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import HistoryItem from './HistoryItem.vue';
 import HistoryData from './HistoryData.vue';
 import { handleChangeName } from '@/utils/changeNameUtils';
 import { useProjectStore } from '@/store/Project';
+
+const { t } = useI18n();
 
 const projectUuid = useProjectStore().uuid;
 
@@ -55,44 +57,43 @@ const isLoading = ref(false);
 
 const isCollapsedMap = ref({});
 
-const table = ref({
-  headers: [
-    { content: i18n.global.t('router.tunings.history.fields.change'), size: 3 },
-    { content: i18n.global.t('router.tunings.history.fields.date') },
-  ],
-  rows: [],
-});
+const headers = computed(() => [
+  { content: t('router.tunings.history.fields.change'), size: 3 },
+  { content: t('router.tunings.history.fields.date') },
+]);
 
-const filterOptions = [
+const rows = ref([]);
+
+const filterOptions = computed(() => [
   {
     value: 'all',
-    label: i18n.global.t('router.tunings.history.fields.all-changes'),
+    label: t('router.tunings.history.fields.all-changes'),
   },
   {
     value: 'Customization',
-    label: i18n.global.t('router.tunings.history.fields.instructions-changes'),
+    label: t('router.tunings.history.fields.instructions-changes'),
   },
   {
     value: 'Content',
-    label: i18n.global.t('router.tunings.history.fields.content-changes'),
+    label: t('router.tunings.history.fields.content-changes'),
   },
   {
     value: 'Config',
-    label: i18n.global.t('router.tunings.history.fields.settings-changes'),
+    label: t('router.tunings.history.fields.settings-changes'),
   },
-];
+]);
 
-const currentFilterOption = ref(filterOptions[0].value.value);
+const currentFilterOption = ref(filterOptions.value[0].value);
 
 const noChangesDetected = computed(() => {
-  const noRows = table.value.rows.length === 0;
+  const noRows = rows.value.length === 0;
   const isAllFilterSelected = currentFilterOption.value?.[0].value === 'all';
 
   return noRows && isAllFilterSelected && !isLoading.value;
 });
 
 const formattedRows = computed(() =>
-  table.value.rows.map((row, index) => ({
+  rows.value.map((row, index) => ({
     ...row,
     content: [
       {
@@ -137,7 +138,7 @@ const getChangesHistoryData = async (page = 1, filter = '') => {
       page,
       filter: filter === 'all' ? '' : filter,
     });
-    table.value.rows = data.results;
+    rows.value = data.results;
     paginationTotal.value = data.count;
   } catch (error) {
     console.error('Failed to fetch data:', error);
@@ -162,21 +163,21 @@ function formatTimeSince(dateString) {
   const diffInMinutes = Math.floor((now - createdAt) / 1000 / 60);
 
   if (diffInMinutes < 60) {
-    return i18n.global.t('time.time_ago_minutes', { count: diffInMinutes });
+    return t('time.time_ago_minutes', { count: diffInMinutes });
   }
 
   const diffInHours = Math.floor(diffInMinutes / 60);
   if (diffInHours < 24) {
-    return i18n.global.t('time.time_ago_hours', { count: diffInHours });
+    return t('time.time_ago_hours', { count: diffInHours });
   }
 
   const diffInDays = Math.floor(diffInHours / 24);
   if (diffInDays < 30) {
-    return i18n.global.t('time.time_ago_days', { count: diffInDays });
+    return t('time.time_ago_days', { count: diffInDays });
   }
 
   const diffInMonths = Math.floor(diffInDays / 30);
-  return i18n.global.t('time.time_ago_months', { count: diffInMonths });
+  return t('time.time_ago_months', { count: diffInMonths });
 }
 </script>
 
