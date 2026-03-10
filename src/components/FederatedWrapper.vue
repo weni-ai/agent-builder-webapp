@@ -8,8 +8,11 @@
 </template>
 
 <script lang="ts">
+// Module-level state: persists across all component instances
+// (unlike <script setup> which resets per mount)
+
 let localesMerged = false;
-let authLoaded = false;
+let cachedImport: Record<string, unknown> | null = null;
 </script>
 
 <script setup lang="ts">
@@ -19,6 +22,10 @@ import { useI18n } from 'vue-i18n';
 
 import { safeImport } from '@/utils/moduleFederation';
 import { moduleStorage } from '@/utils/storage';
+
+import { useProjectStore } from '@/store/Project';
+import { useUserStore } from '@/store/User';
+import { useTuningsStore } from '@/store/Tunings';
 
 import en from '@/locales/en.json';
 import ptBr from '@/locales/pt_br.json';
@@ -45,20 +52,40 @@ if (!localesMerged) {
 }
 
 onBeforeMount(async () => {
-  if (!authLoaded) {
-    const { useSharedStore } = await safeImport(
+  if (!cachedImport) {
+    cachedImport = await safeImport(
       () => import('connect/sharedStore'),
       'connect/sharedStore',
     );
+  }
 
-    const sharedStore = useSharedStore?.();
+  const useSharedStore = cachedImport?.useSharedStore as
+    | (() => {
+        auth: { token: string };
+        current: { project: { uuid: string } };
+      })
+    | undefined;
 
-    if (sharedStore) {
-      moduleStorage.setItem('authToken', sharedStore.auth.token);
-      moduleStorage.setItem('projectUuid', sharedStore.current.project.uuid);
+  const sharedStore = useSharedStore?.();
+
+  if (sharedStore) {
+    const newToken = sharedStore.auth.token;
+    const newProjectUuid = sharedStore.current.project.uuid;
+
+    const currentToken = moduleStorage.getItem('authToken');
+    const currentProjectUuid = moduleStorage.getItem('projectUuid');
+
+    const hasContextChanged =
+      newToken !== currentToken || newProjectUuid !== currentProjectUuid;
+
+    moduleStorage.setItem('authToken', newToken);
+    moduleStorage.setItem('projectUuid', newProjectUuid);
+
+    if (hasContextChanged) {
+      useUserStore().setToken(newToken);
+      useProjectStore().$dispose();
+      useTuningsStore().$dispose();
     }
-
-    authLoaded = true;
   }
 
   ready.value = true;
