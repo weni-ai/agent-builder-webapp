@@ -4,14 +4,8 @@
     :class="[
       'app-agent-builder',
       !isFederatedModule ? 'app-agent-builder--dev' : 'app-agent-builder--prod',
-      isBuildModule ? 'app-agent-builder--build' : '',
     ]"
   >
-    <Sidebar
-      v-if="isBuildModule"
-      data-testid="build-sidebar"
-    />
-
     <main
       class="agent-builder__content"
       data-testid="agent-builder-content"
@@ -52,10 +46,9 @@ import { isFederatedModule } from './utils/moduleFederation';
 
 import initHotjar from '@/utils/plugins/Hotjar.js';
 
-import Sidebar from '@/components/Sidebar/index.vue';
 import TestAgentsButton from '@/components/Preview/TestAgentsButton.vue';
 
-const { isBuildModule, isAgentsModule } = useCurrentModule();
+const { isAgentsModule, isKnowledgeModule } = useCurrentModule();
 
 const route = useRoute();
 const agentsTeamStore = useAgentsTeamStore();
@@ -82,8 +75,7 @@ onMounted(() => {
 const showTestAgentsButton = computed(
   () =>
     (isAgentsModule.value && route.name === 'agents-team') ||
-    (isBuildModule.value &&
-      ['instructions', 'knowledge'].includes(route.name as string)),
+    isKnowledgeModule.value,
 );
 
 watch(
@@ -99,10 +91,6 @@ watch(
   overflow: hidden;
 
   display: grid;
-
-  &--build {
-    grid-template-columns: auto 1fr;
-  }
 
   &--prod {
     height: 100%;

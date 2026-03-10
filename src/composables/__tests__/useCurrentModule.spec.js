@@ -62,9 +62,9 @@ describe('useCurrentModule', () => {
         expect(getCurrentModuleFromPath('/random/path')).toBe(null);
       });
 
-      it('should return "build" for path starting with /build even if longer', () => {
-        // Note: '/building' starts with '/build', so it matches the build module
-        expect(getCurrentModuleFromPath('/building')).toBe('build');
+      it('should return "knowledge" for path starting with /knowledge even if longer', () => {
+        // Note: '/knowledgeable' starts with '/knowledge', so it matches the build module
+        expect(getCurrentModuleFromPath('/knowledgeable')).toBe('knowledge');
       });
     });
 
@@ -89,7 +89,6 @@ describe('useCurrentModule', () => {
 
   describe('useCurrentModule composable', () => {
     const moduleCheckers = {
-      build: 'isBuildModule',
       conversations: 'isConversationsModule',
       agents: 'isAgentsModule',
       knowledge: 'isKnowledgeModule',
@@ -137,13 +136,8 @@ describe('useCurrentModule', () => {
       });
 
       it('should return false for all module checks', () => {
-        const {
-          isBuildModule,
-          isConversationsModule,
-          isAgentsModule,
-          isKnowledgeModule,
-        } = useCurrentModule();
-        expect(isBuildModule.value).toBe(false);
+        const { isConversationsModule, isAgentsModule, isKnowledgeModule } =
+          useCurrentModule();
         expect(isConversationsModule.value).toBe(false);
         expect(isAgentsModule.value).toBe(false);
         expect(isKnowledgeModule.value).toBe(false);
@@ -170,7 +164,6 @@ describe('useCurrentModule', () => {
 
         expect(result).toHaveProperty('currentModule');
         expect(result).toHaveProperty('isModule');
-        expect(result).toHaveProperty('isBuildModule');
         expect(result).toHaveProperty('isConversationsModule');
         expect(result).toHaveProperty('isAgentsModule');
         expect(result).toHaveProperty('isKnowledgeModule');
@@ -185,14 +178,12 @@ describe('useCurrentModule', () => {
       it('should return computed properties', () => {
         const {
           currentModule,
-          isBuildModule,
           isConversationsModule,
           isAgentsModule,
           isKnowledgeModule,
         } = useCurrentModule();
 
         expect(currentModule).toHaveProperty('value');
-        expect(isBuildModule).toHaveProperty('value');
         expect(isConversationsModule).toHaveProperty('value');
         expect(isAgentsModule).toHaveProperty('value');
         expect(isKnowledgeModule).toHaveProperty('value');
