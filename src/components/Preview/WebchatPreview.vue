@@ -7,19 +7,23 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount } from 'vue';
+import { watch, onMounted, onBeforeUnmount } from 'vue';
 
 import { useFlowPreviewStore } from '@/store/FlowPreview';
+import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { useWebchatLoader } from '@/composables/useWebchatLoader';
 import env from '@/utils/env';
 import { useI18n } from 'vue-i18n';
 
 const WWC_SELECTOR = '#weni-webchat-preview';
+const WWC_MESSAGES_SELECTOR = `${WWC_SELECTOR} .weni-messages-list`;
 
 const { t } = useI18n();
+const DIRECTION_GROUP_SELECTOR = '.weni-messages-list__direction-group';
 
 const flowPreviewStore = useFlowPreviewStore();
-const { preload, cleanup } = useWebchatLoader();
+const managerSelectorStore = useManagerSelectorStore();
+const { preload, cleanup: cleanupLoader } = useWebchatLoader();
 
 async function initWebchat() {
   await preload();
@@ -43,12 +47,45 @@ async function initWebchat() {
   });
 }
 
+function injectManagerSelectedMessage(managerId) {
+  const container = document.querySelector(WWC_MESSAGES_SELECTOR);
+  if (!container) return;
+
+  const label = flowPreviewStore.getPreviewManagerLabel(managerId);
+  const text = t('router.preview.manager_selected', {
+    name: label,
+  });
+
+  const groups = container.querySelectorAll(DIRECTION_GROUP_SELECTOR);
+
+  const el = document.createElement('div');
+  el.className = 'webchat-manager-status';
+  el.textContent = text;
+
+  const lastGroup = groups[groups.length - 1];
+  if (lastGroup) {
+    lastGroup.after(el);
+  } else {
+    container.appendChild(el);
+  }
+
+  el.scrollIntoView({ behavior: 'smooth' });
+}
+
+watch(
+  () => managerSelectorStore.selectedPreviewManager,
+  (managerId, previousManagerId) => {
+    if (!managerId || managerId === previousManagerId) return;
+    injectManagerSelectedMessage(managerId);
+  },
+);
+
 onMounted(() => {
   initWebchat();
 });
 
 onBeforeUnmount(() => {
-  cleanup();
+  cleanupLoader();
 });
 </script>
 
@@ -71,6 +108,15 @@ onBeforeUnmount(() => {
 
     .weni-messages-list {
       padding: $unnnic-space-6;
+
+      .webchat-manager-status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: $unnnic-color-gray-600;
+        font: $unnnic-font-caption-2;
+      }
     }
 
     .weni-chat__footer {
