@@ -17,19 +17,29 @@
 </template>
 
 <script setup>
-import { ref, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 import PreviewDrawer from './Drawer/index.vue';
 
 import { usePreviewStore } from '@/store/Preview';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
+import { useWebchatLoader } from '@/composables/useWebchatLoader';
 
 const previewStore = usePreviewStore();
+const featureFlagsStore = useFeatureFlagsStore();
+const { preload } = useWebchatLoader();
 
 const isPreviewOpen = ref(false);
 
 const handleTestAgents = () => {
   isPreviewOpen.value = true;
 };
+
+onMounted(() => {
+  if (featureFlagsStore.flags.webchatPreview) {
+    preload();
+  }
+});
 
 onUnmounted(() => {
   if (previewStore.ws) {
