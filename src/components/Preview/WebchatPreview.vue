@@ -7,35 +7,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { onMounted, onBeforeUnmount } from 'vue';
 
 import { useFlowPreviewStore } from '@/store/FlowPreview';
+import { useWebchatLoader } from '@/composables/useWebchatLoader';
+import env from '@/utils/env';
 
-const WWC_UMD_URL = 'https://cdn.stg.cloud.weni.ai/webchat-latest.umd.js';
 const WWC_SELECTOR = '#weni-webchat-preview';
 
 const flowPreviewStore = useFlowPreviewStore();
-const scriptElement = ref(null);
-
-function loadUmdBundle() {
-  return new Promise((resolve, reject) => {
-    if (window.WebChat) {
-      resolve();
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src = WWC_UMD_URL;
-    script.async = true;
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.appendChild(script);
-    scriptElement.value = script;
-  });
-}
+const { preload, cleanup } = useWebchatLoader();
 
 async function initWebchat() {
-  await loadUmdBundle();
+  await preload();
 
   flowPreviewStore.ensurePreviewInitialized();
   const contactUrn = flowPreviewStore.preview.contact.urn;
@@ -43,22 +27,17 @@ async function initWebchat() {
 
   window.WebChat.init({
     selector: WWC_SELECTOR,
-    socketUrl: 'https://websocket.stg.cloud.weni.ai',
-    host: 'https://flows.stg.cloud.weni.ai',
+    socketUrl: env('WWC_SOCKET_URL'),
+    host: env('WWC_HOST_URL'),
     channelUuid: '4f21629b-babe-4d20-951a-609236da9c96',
     sessionId: contactUrn,
     params: {
+      // TODO: Remove this once we have the preview API ready
       preview: true,
     },
     embedded: true,
     showChatAvatar: false,
   });
-}
-
-function cleanup() {
-  window.WebChat?.destroy();
-  scriptElement.value?.remove();
-  scriptElement.value = null;
 }
 
 onMounted(() => {
