@@ -126,10 +126,19 @@ export default defineConfig({
           : {}),
       },
       shared: {
-        ...pkg,
         vue: {
           singleton: true,
           requiredVersion: '^3.0.0',
+          eager: true,
+        },
+        pinia: {
+          singleton: true,
+          requiredVersion: pkg.dependencies.pinia,
+          eager: true,
+        },
+        'vue-router': {
+          singleton: true,
+          requiredVersion: pkg.dependencies['vue-router'],
           eager: true,
         },
         'vue-i18n': {
