@@ -117,8 +117,7 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       exposes: {
         './main': './src/main.js',
-        './WorkspaceCredentials':
-          './src/exports/WorkspaceCredentials.vue',
+        './WorkspaceCredentials': './src/exports/WorkspaceCredentials.vue',
         './WorkspaceChangesHistory':
           './src/exports/WorkspaceChangesHistory.vue',
         './WorkspaceProjectDetails':
@@ -132,7 +131,6 @@ export default defineConfig({
           : {}),
       },
       shared: {
-        ...pkg,
         vue: {
           singleton: true,
           requiredVersion: '^3.0.0',
@@ -141,6 +139,11 @@ export default defineConfig({
         pinia: {
           singleton: true,
           requiredVersion: pkg.dependencies.pinia,
+          eager: true,
+        },
+        'vue-router': {
+          singleton: true,
+          requiredVersion: pkg.dependencies['vue-router'],
           eager: true,
         },
         'vue-i18n': {
