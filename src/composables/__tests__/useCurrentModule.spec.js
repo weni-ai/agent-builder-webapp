@@ -38,17 +38,21 @@ describe('useCurrentModule', () => {
     });
 
     Object.entries(MODULE_PATHS).forEach(([key, value]) => {
-      describe(`when path matches ${key} module`, () => {
-        it(`should return "${key}" for exact path`, () => {
-          expect(getCurrentModuleFromPath(value)).toBe(key);
+      const effectiveKey = key === 'build' ? 'knowledge' : key;
+
+      describe(`when path matches ${effectiveKey} module`, () => {
+        it(`should return "${effectiveKey}" for exact path`, () => {
+          expect(getCurrentModuleFromPath(value)).toBe(effectiveKey);
         });
 
-        it(`should return "${key}" for nested path`, () => {
-          expect(getCurrentModuleFromPath(`${value}/123`)).toBe(key);
+        it(`should return "${effectiveKey}" for nested path`, () => {
+          expect(getCurrentModuleFromPath(`${value}/123`)).toBe(effectiveKey);
         });
 
-        it(`should return "${key}" for path with query params`, () => {
-          expect(getCurrentModuleFromPath(`${value}?tab=active`)).toBe(key);
+        it(`should return "${effectiveKey}" for path with query params`, () => {
+          expect(getCurrentModuleFromPath(`${value}?tab=active`)).toBe(
+            effectiveKey,
+          );
         });
       });
     });
@@ -62,15 +66,15 @@ describe('useCurrentModule', () => {
         expect(getCurrentModuleFromPath('/random/path')).toBe(null);
       });
 
-      it('should return "build" for path starting with /build even if longer', () => {
-        // Note: '/building' starts with '/build', so it matches the build module
-        expect(getCurrentModuleFromPath('/building')).toBe('build');
+      it('should return "knowledge" for path starting with /knowledge even if longer', () => {
+        // Note: '/knowledgeable' starts with '/knowledge', so it matches the knowledge module
+        expect(getCurrentModuleFromPath('/knowledgeable')).toBe('knowledge');
       });
     });
 
     describe('edge cases', () => {
       it('should handle paths with trailing slashes', () => {
-        expect(getCurrentModuleFromPath('/build/')).toBe('build');
+        expect(getCurrentModuleFromPath('/knowledge/')).toBe('knowledge');
         expect(getCurrentModuleFromPath('/conversations/')).toBe(
           'conversations',
         );
@@ -79,7 +83,6 @@ describe('useCurrentModule', () => {
       });
 
       it('should be case-sensitive', () => {
-        expect(getCurrentModuleFromPath('/Build')).toBe(null);
         expect(getCurrentModuleFromPath('/CONVERSATIONS')).toBe(null);
         expect(getCurrentModuleFromPath('/Agents')).toBe(null);
         expect(getCurrentModuleFromPath('/Knowledge')).toBe(null);
@@ -89,13 +92,14 @@ describe('useCurrentModule', () => {
 
   describe('useCurrentModule composable', () => {
     const moduleCheckers = {
-      build: 'isBuildModule',
       conversations: 'isConversationsModule',
       agents: 'isAgentsModule',
       knowledge: 'isKnowledgeModule',
     };
 
     Object.entries(MODULE_PATHS).forEach(([moduleName, modulePath]) => {
+      const effectiveModule = moduleName === 'build' ? 'knowledge' : moduleName;
+
       describe(`when in ${moduleName} module`, () => {
         beforeEach(() => {
           useRoute.mockReturnValue({
@@ -105,20 +109,22 @@ describe('useCurrentModule', () => {
 
         it('should return correct currentModule', () => {
           const { currentModule } = useCurrentModule();
-          expect(currentModule.value).toBe(moduleName);
+          expect(currentModule.value).toBe(effectiveModule);
         });
 
         Object.entries(moduleCheckers).forEach(([module, checkerName]) => {
-          it(`should return ${moduleName === module ? 'true' : 'false'} for ${checkerName}`, () => {
+          it(`should return ${effectiveModule === module ? 'true' : 'false'} for ${checkerName}`, () => {
             const composable = useCurrentModule();
-            expect(composable[checkerName].value).toBe(moduleName === module);
+            expect(composable[checkerName].value).toBe(
+              effectiveModule === module,
+            );
           });
         });
 
         it('should correctly identify module with isModule function', () => {
           const { isModule } = useCurrentModule();
           Object.keys(MODULE_PATHS).forEach((module) => {
-            expect(isModule(module)).toBe(moduleName === module);
+            expect(isModule(module)).toBe(effectiveModule === module);
           });
         });
       });
@@ -137,13 +143,8 @@ describe('useCurrentModule', () => {
       });
 
       it('should return false for all module checks', () => {
-        const {
-          isBuildModule,
-          isConversationsModule,
-          isAgentsModule,
-          isKnowledgeModule,
-        } = useCurrentModule();
-        expect(isBuildModule.value).toBe(false);
+        const { isConversationsModule, isAgentsModule, isKnowledgeModule } =
+          useCurrentModule();
         expect(isConversationsModule.value).toBe(false);
         expect(isAgentsModule.value).toBe(false);
         expect(isKnowledgeModule.value).toBe(false);
@@ -151,7 +152,6 @@ describe('useCurrentModule', () => {
 
       it('should return false for isModule function', () => {
         const { isModule } = useCurrentModule();
-        expect(isModule('build')).toBe(false);
         expect(isModule('conversations')).toBe(false);
         expect(isModule('agents')).toBe(false);
         expect(isModule('knowledge')).toBe(false);
@@ -170,7 +170,6 @@ describe('useCurrentModule', () => {
 
         expect(result).toHaveProperty('currentModule');
         expect(result).toHaveProperty('isModule');
-        expect(result).toHaveProperty('isBuildModule');
         expect(result).toHaveProperty('isConversationsModule');
         expect(result).toHaveProperty('isAgentsModule');
         expect(result).toHaveProperty('isKnowledgeModule');
@@ -185,14 +184,12 @@ describe('useCurrentModule', () => {
       it('should return computed properties', () => {
         const {
           currentModule,
-          isBuildModule,
           isConversationsModule,
           isAgentsModule,
           isKnowledgeModule,
         } = useCurrentModule();
 
         expect(currentModule).toHaveProperty('value');
-        expect(isBuildModule).toHaveProperty('value');
         expect(isConversationsModule).toHaveProperty('value');
         expect(isAgentsModule).toHaveProperty('value');
         expect(isKnowledgeModule).toHaveProperty('value');

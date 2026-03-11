@@ -30,7 +30,7 @@ export const getCurrentModuleFromPath = (
   }
 
   if (path.startsWith(MODULE_PATHS.build)) {
-    return 'build';
+    return 'knowledge';
   }
 
   if (path.startsWith(MODULE_PATHS.knowledge)) {
@@ -50,7 +50,6 @@ export const useCurrentModule = () => {
   const isModule = (module: AgentBuilderModule): boolean =>
     currentModule.value === module;
 
-  const isBuildModule = computed(() => isModule('build'));
   const isConversationsModule = computed(() => isModule('conversations'));
   const isAgentsModule = computed(() => isModule('agents'));
   const isKnowledgeModule = computed(() => isModule('knowledge'));
@@ -58,7 +57,6 @@ export const useCurrentModule = () => {
   return {
     currentModule,
     isModule,
-    isBuildModule,
     isConversationsModule,
     isAgentsModule,
     isKnowledgeModule,
