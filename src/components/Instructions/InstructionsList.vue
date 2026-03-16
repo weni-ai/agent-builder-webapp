@@ -72,6 +72,10 @@ defineProps({
 
 <style lang="scss" scoped>
 .instructions-list {
+  margin-bottom: calc(
+    $unnnic-space-1 * 19
+  ); // 76px to fit the "test your agents" button
+
   display: flex;
   flex-direction: column;
 
