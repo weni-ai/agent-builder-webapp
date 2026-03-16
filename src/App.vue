@@ -74,7 +74,8 @@ onMounted(() => {
 
 const showTestAgentsButton = computed(
   () =>
-    (isAgentsModule.value && route.name === 'agents-team') ||
+    (isAgentsModule.value &&
+      ['agents-team', 'instructions'].includes(route.name as string)) ||
     isKnowledgeModule.value,
 );
 
