@@ -301,7 +301,7 @@ describe('AssignAgentCard.vue', () => {
           const actions = wrapper.vm.assignAgentHeaderActions;
           expect(actions).toHaveLength(1);
           expect(actions[0]).toMatchObject({
-            scheme: 'aux-red-500',
+            scheme: 'red-10',
             icon: 'delete',
             text: i18n.global.t('router.agents_team.card.remove_agent'),
           });
@@ -318,7 +318,7 @@ describe('AssignAgentCard.vue', () => {
           const actions = wrapper.vm.assignAgentHeaderActions;
           expect(actions).toHaveLength(1);
           expect(actions[0]).toMatchObject({
-            scheme: 'aux-red-500',
+            scheme: 'red-10',
             icon: 'delete',
             text: i18n.global.t('router.agents_team.card.delete_agent'),
           });
