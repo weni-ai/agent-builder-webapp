@@ -129,7 +129,7 @@ export default {
 
       if (can.downloadFile) {
         actions.push({
-          scheme: 'neutral-dark',
+          scheme: 'fg-base',
           icon: 'download',
           text: this.$t('content_bases.actions.download_file'),
           onClick: this.download,
@@ -138,7 +138,7 @@ export default {
 
       if (can.accessSite) {
         actions.push({
-          scheme: 'neutral-dark',
+          scheme: 'fg-base',
           icon: 'open_in_new',
           text: this.$t('content_bases.actions.access_site'),
           onClick: () => window.open(this.fileName),
@@ -149,7 +149,7 @@ export default {
         const isCustom = this.file.group === 'custom';
 
         actions.push({
-          scheme: 'neutral-dark',
+          scheme: 'fg-base',
           icon: isCustom ? 'edit' : 'info',
           text: isCustom
             ? this.$t('content_bases.actions.edit_action')
@@ -160,7 +160,7 @@ export default {
 
       if (can.remove) {
         actions.push({
-          scheme: 'aux-red-500',
+          scheme: 'red-10',
           icon: 'delete',
           text:
             {
@@ -242,10 +242,10 @@ export default {
 
     iconScheme() {
       if (this.isFailed) {
-        return 'feedback-red';
+        return 'fg-critical';
       }
 
-      return 'weni-600';
+      return 'fg-accent';
     },
   },
 
@@ -309,13 +309,13 @@ export default {
 <style lang="scss" scoped>
 .files-list__content__file {
   outline-style: solid;
-  outline-color: $unnnic-color-neutral-cleanest;
+  outline-color: $unnnic-color-border-base;
   outline-width: $unnnic-border-width-thinner;
   outline-offset: -$unnnic-border-width-thinner;
 
   background-color: $unnnic-color-background-white;
 
-  border-radius: $unnnic-border-radius-sm;
+  border-radius: $unnnic-radius-2;
 
   padding: $unnnic-spacing-ant;
   display: flex;
@@ -338,7 +338,7 @@ export default {
       padding: 0;
 
       :deep(.unnnic-avatar-icon) {
-        background-color: $unnnic-color-weni-100;
+        background-color: $unnnic-color-bg-accent-plain;
       }
     }
 
@@ -354,9 +354,9 @@ export default {
   }
 
   &--status-fail {
-    outline-color: $unnnic-color-aux-red-500;
-    background-color: $unnnic-color-aux-red-100;
-    color: $unnnic-color-aux-red-500;
+    outline-color: $unnnic-color-fg-critical;
+    background-color: $unnnic-color-bg-red-plain;
+    color: $unnnic-color-fg-critical;
 
     .files-list__content__file__icon {
       background-color: inherit;
@@ -376,11 +376,11 @@ export default {
 
   &__icon {
     display: flex;
-    border-radius: $unnnic-border-radius-sm;
+    border-radius: $unnnic-radius-2;
     padding: 0.6875 * $unnnic-font-size;
 
     &__itself {
-      color: $unnnic-color-neutral-clean;
+      color: $unnnic-color-fg-base;
     }
   }
 
@@ -391,7 +391,7 @@ export default {
     width: 0;
 
     &__title {
-      color: $unnnic-color-neutral-dark;
+      color: $unnnic-color-fg-emphasized;
       font-family: $unnnic-font-family-secondary;
       font-size: $unnnic-font-size-body-gt;
       line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
@@ -404,14 +404,14 @@ export default {
 
     &__sub_title {
       overflow: hidden;
-      color: $unnnic-color-neutral-clean;
+      color: $unnnic-color-fg-base;
       text-overflow: ellipsis;
       font-family: $unnnic-font-family-secondary;
       font-size: $unnnic-font-size-body-md;
       font-weight: $unnnic-font-weight-regular;
 
       &-fail {
-        color: $unnnic-color-aux-red-300;
+        color: $unnnic-color-fg-critical;
       }
     }
   }
@@ -423,7 +423,7 @@ export default {
 
     &__icon {
       cursor: pointer;
-      color: $unnnic-color-neutral-cloudy;
+      color: $unnnic-color-fg-emphasized;
       user-select: none;
       margin-right: $unnnic-spacing-xs;
     }
