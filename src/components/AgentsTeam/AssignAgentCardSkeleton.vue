@@ -5,7 +5,7 @@
   >
     <header class="assign-agent-card-skeleton__header">
       <UnnnicSkeletonLoading
-        class="skeleton"
+        class="skeleton assign-agent-card-skeleton__icon"
         tag="div"
         width="40px"
         height="40px"
@@ -87,6 +87,11 @@
     display: flex;
     gap: $unnnic-space-2;
     flex-wrap: wrap;
+  }
+
+  &__icon {
+    border-radius: $unnnic-radius-full;
+    overflow: hidden;
   }
 
   .skeleton {
