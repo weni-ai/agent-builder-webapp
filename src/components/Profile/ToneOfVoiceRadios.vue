@@ -50,8 +50,23 @@ import { computed } from 'vue';
 import i18n from '@/utils/plugins/i18n';
 
 type ToneTranslation = { name: string; tooltip: string };
+type I18nTones = Record<string, ToneTranslation>;
 
-defineProps<{
+const TONE_EMOJIS: Record<string, string> = {
+  friendly: '😊',
+  systematic: '📋',
+  analytical: '🧠',
+  creative: '💡',
+  casual: '😎',
+};
+
+const DEFAULT_EMOJI = '💬';
+const I18N_TONES_KEY = 'agents.profile.tone_of_voice.tones';
+
+const getEmoji = (toneId: string): string =>
+  TONE_EMOJIS[toneId] ?? DEFAULT_EMOJI;
+
+const props = defineProps<{
   selectedTone: string;
 }>();
 
@@ -64,26 +79,35 @@ const handleToneChange = (tone: string) => {
 };
 
 const tones = computed(() => {
-  const tonesEmojis: Record<string, string> = {
-    friendly: '😊',
-    systematic: '📋',
-    analytical: '🧠',
-    creative: '💡',
-    casual: '😎',
-  };
-
-  type I18nTones = Record<string, ToneTranslation>;
-  const tonesKey = 'agents.profile.tone_of_voice.tones';
   const i18nTones = (i18n.global as { tm: (_key: string) => I18nTones }).tm(
-    tonesKey,
+    I18N_TONES_KEY,
   ) as I18nTones;
 
-  return Object.keys(i18nTones).map((tone) => ({
-    id: tone,
-    name: i18nTones[tone].name,
-    tooltip: i18nTones[tone].tooltip,
-    emoji: tonesEmojis[tone],
-  }));
+  const baseTones = Object.entries(i18nTones).map(
+    ([id, { name, tooltip }]) => ({
+      id,
+      name,
+      tooltip,
+      emoji: getEmoji(id),
+    }),
+  );
+
+  const isUnknownTone =
+    props.selectedTone?.trim() && !(props.selectedTone in i18nTones);
+
+  if (!isUnknownTone) {
+    return baseTones;
+  }
+
+  return [
+    ...baseTones,
+    {
+      id: props.selectedTone,
+      name: props.selectedTone,
+      tooltip: props.selectedTone,
+      emoji: getEmoji(props.selectedTone),
+    },
+  ];
 });
 </script>
 
