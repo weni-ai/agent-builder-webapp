@@ -7,6 +7,7 @@ import { Knowledge } from './nexus/Knowledge';
 import { ProgressiveFeedbackAdapter } from './adapters/tunings/progressiveFeedback';
 import { ComponentsAdapter } from './adapters/tunings/components';
 import { ProjectDetailsAdapter } from './adapters/tunings/projectDetails';
+import { MOCK_ENGINE_SOURCE_DATA } from './mocks/engineSource';
 import i18n from '@/utils/plugins/i18n';
 
 export default {
@@ -126,6 +127,20 @@ export default {
           return request.$http.post(`api/project/${projectUuid}/managers`, {
             currentManager: manager,
           });
+        },
+      },
+
+      engine_source: {
+        // TODO: Remove this mocks after the API is implemented
+
+        async read() {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          return { data: structuredClone(MOCK_ENGINE_SOURCE_DATA) };
+        },
+
+        async edit({ payload }) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          return { data: payload };
         },
       },
 
