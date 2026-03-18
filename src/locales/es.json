@@ -272,6 +272,18 @@
           ],
           "manager_2_dot_6_disclaimer_description": "Manager 2.5 será descontinuado por breve tiempo. Actualizar Manager 2.6 para respuestas más confiáveis ​​enquanto o Manager coordina sus agentes."
         }
+      },
+      "engine_source": {
+        "title": "Fuente del motor",
+        "native": "Nativo",
+        "own_api_key": "API Key propia",
+        "provider": "Proveedor",
+        "model": "Modelo",
+        "load_error": "No fue posible cargar la configuración de la fuente del motor",
+        "placeholder": {
+          "provider": "Seleccionar un proveedor",
+          "model": "Seleccionar un modelo"
+        }
       }
     }
   },
