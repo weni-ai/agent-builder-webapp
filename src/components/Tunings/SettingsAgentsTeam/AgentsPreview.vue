@@ -1,15 +1,11 @@
 <template>
   <section class="agents-preview">
-    <UnnnicIntelligenceText
-      tag="p"
-      family="secondary"
-      size="body-lg"
-      color="neutral-darkest"
-      weight="bold"
+    <h2
+      class="agents-preview__title"
       data-testid="title"
     >
       {{ $t('router.tunings.settings.agents_preview.title') }}
-    </UnnnicIntelligenceText>
+    </h2>
 
     <form class="agents-preview__form">
       <SettingsField
@@ -75,7 +71,12 @@ const showProgressiveFeedback = computed(() => {
 .agents-preview {
   display: flex;
   flex-direction: column;
-  gap: $unnnic-spacing-sm;
+  gap: $unnnic-space-3;
+
+  &__title {
+    @include unnnic-font-body;
+    color: $unnnic-color-fg-base;
+  }
 
   &__form {
     display: flex;

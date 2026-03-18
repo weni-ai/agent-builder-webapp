@@ -253,7 +253,7 @@
         }
       },
       "manager": {
-        "title": "Manager",
+        "title": "Versión del Manager",
         "new": "Nuevo",
         "recommended": "Recomendado",
         "legacy_model": "Modelo legado",
@@ -704,7 +704,7 @@
   "profile": {
     "tabs": {
       "profile": "Perfil",
-      "settings": "Configuración"
+      "settings": "Motor"
     },
     "edit_manager_profile": "Editar Manager",
     "description": "Personaliza la información básica y el comportamiento del agente",
