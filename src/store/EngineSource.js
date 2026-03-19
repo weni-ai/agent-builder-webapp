@@ -21,7 +21,7 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
   const status = ref('idle');
   const saveStatus = ref('idle');
 
-  let initialSnapshot = null;
+  const initialSnapshot = ref(null);
 
   const selectedProvider = computed(() =>
     providers.value.find(
@@ -50,7 +50,7 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
   });
 
   const hasChanges = computed(() => {
-    if (!initialSnapshot) return false;
+    if (!initialSnapshot.value) return false;
 
     const currentState = {
       engineType: engineType.value,
@@ -59,11 +59,11 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
       credentials: credentials.value.map(({ id, value }) => ({ id, value })),
     };
 
-    return JSON.stringify(currentState) !== JSON.stringify(initialSnapshot);
+    return JSON.stringify(currentState) !== JSON.stringify(initialSnapshot.value);
   });
 
   function takeSnapshot() {
-    initialSnapshot = {
+    initialSnapshot.value = {
       engineType: engineType.value,
       selectedProviderId: selectedProviderId.value,
       selectedModel: selectedModel.value,
