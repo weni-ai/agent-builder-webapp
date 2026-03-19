@@ -1,6 +1,5 @@
 <template>
   <section
-    v-if="featureFlagsStore.flags.newSupervisor"
     :class="[
       'supervisor',
       { 'supervisor--with-conversation': selectedConversation },
@@ -27,7 +26,6 @@
       data-testid="supervisor-conversation"
     />
   </section>
-  <OldSupervisor v-else />
 </template>
 
 <script setup>
@@ -37,14 +35,14 @@ import { useRouter, useRoute } from 'vue-router';
 import SupervisorHeader from './SupervisorHeader.vue';
 import SupervisorConversations from './SupervisorConversations/index.vue';
 import Conversation from './SupervisorConversations/Conversation/index.vue';
-import OldSupervisor from '@/views/OldSupervisor/index.vue';
 
+import {
+  hasMoreToLoad,
+} from '@/api/adapters/supervisor/conversationSources';
 import { useSupervisorStore } from '@/store/Supervisor';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { cleanParams } from '@/utils/http';
 
 const supervisorStore = useSupervisorStore();
-const featureFlagsStore = useFeatureFlagsStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -68,11 +66,11 @@ function updateQuery(filters = supervisorStore.filters) {
 }
 
 function hasMoreConversationsToLoad() {
-  const { next } = supervisorStore.conversations.data;
-  const isLoading = supervisorStore.conversations.status === 'loading';
-  const hasError = supervisorStore.conversations.status === 'error';
-
-  return next && !isLoading && !hasError;
+  return hasMoreToLoad(
+    supervisorStore.conversations.data,
+    supervisorStore.conversations.status,
+    supervisorStore.conversations.data.results,
+  );
 }
 
 function isScrollReachedBottom() {
@@ -189,11 +187,7 @@ onBeforeMount(async () => {
   }
 
   &__conversations {
-    padding-left: $unnnic-spacing-sm;
-
-    & > * {
-      margin-right: $unnnic-spacing-sm;
-    }
+    padding: 0 $unnnic-space-4;
   }
 }
 </style>

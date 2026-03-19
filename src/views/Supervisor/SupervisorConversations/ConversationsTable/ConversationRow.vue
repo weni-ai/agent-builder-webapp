@@ -8,8 +8,12 @@
 
   <tr
     v-else
+    data-testid="conversation-row"
     class="conversation-row"
-    :class="{ 'conversation-row--selected': isSelected }"
+    :class="{
+      'conversation-row--selected': isSelected,
+      'conversation-row--with-divider': showDivider,
+    }"
   >
     <section class="conversation-row__main-infos">
       <td class="main-infos__avatar">
@@ -70,11 +74,13 @@ const props = withDefaults(
     conversation?: Conversation;
     isSelected?: boolean;
     isLoading?: boolean;
+    showDivider?: boolean;
   }>(),
   {
     conversation: undefined,
     isSelected: false,
     isLoading: false,
+    showDivider: false,
   },
 );
 
@@ -145,7 +151,7 @@ const csatText = computed(() => {
     background-color: $unnnic-color-background-sky;
   }
 
-  &::after {
+  &--with-divider::after {
     content: '';
     background-color: $unnnic-color-neutral-light;
 
