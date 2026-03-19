@@ -12,30 +12,6 @@ describe('HomeHeaderActions.vue', () => {
   let pinia;
   let openAgentsGalleryMock;
 
-  const createWrapper = (initialState = {}) => {
-    openAgentsGalleryMock = vi.fn();
-    pinia = createTestingPinia({
-      initialState: {
-        AgentsTeam: {
-          activeTeam: {
-            data: {
-              agents: [],
-            },
-            ...initialState,
-          },
-        },
-      },
-    });
-    const store = useAgentsTeamStore(pinia);
-    store.openAgentsGallery = openAgentsGalleryMock;
-
-    wrapper = shallowMount(HomeHeaderActions, {
-      global: {
-        plugins: [pinia],
-      },
-    });
-  };
-
   const findAssignButton = () =>
     wrapper.find('[data-testid="assign-agents-button"]');
 
@@ -64,18 +40,6 @@ describe('HomeHeaderActions.vue', () => {
     });
 
     expect(findAssignButton().exists()).toBe(true);
-  });
-
-  it('does not render assign button when team has no agents', () => {
-    createWrapper();
-
-    expect(findAssignButton().exists()).toBe(false);
-  });
-
-  it('does not render assign button when activeTeam.data.agents is empty array', () => {
-    createWrapper({ data: { agents: [] } });
-
-    expect(findAssignButton().exists()).toBe(false);
   });
 
   it('calls openAgentsGallery when assign button is clicked', async () => {

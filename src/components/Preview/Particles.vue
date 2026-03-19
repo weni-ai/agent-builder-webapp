@@ -1,6 +1,5 @@
 <template>
   <section id="particles-container">
-    <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
     <vue-particles
       :id="id"
       class="particles"
