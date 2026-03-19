@@ -11,21 +11,14 @@
     data-testid="agent-builder-header"
   >
     <section class="agent-builder-header__title">
-      <UnnnicIntelligenceText
-        tag="h1"
-        size="title-sm"
-        family="secondary"
-        weight="bold"
-        color="neutral-darkest"
+      <h1
+        class="agent-builder-header__title-text"
         data-testid="agent-builder-header-title"
       >
         {{ currentView?.title }}
-      </UnnnicIntelligenceText>
-      <UnnnicIntelligenceText
-        tag="h2"
-        size="body-gt"
-        family="secondary"
-        color="neutral-cloudy"
+      </h1>
+      <h2
+        class="agent-builder-header__title-description"
         data-testid="agent-builder-header-description"
       >
         {{ currentView?.description }}
@@ -36,7 +29,7 @@
             featureFlagsStore.flags.newSupervisor
           "
         />
-      </UnnnicIntelligenceText>
+      </h2>
     </section>
 
     <slot name="actions" />
@@ -116,6 +109,16 @@ const currentView = computed(() => {
     display: flex;
     flex-direction: column;
     gap: $unnnic-spacing-xs;
+
+    &-text {
+      @include unnnic-font-display-1;
+      color: $unnnic-color-fg-emphasized;
+    }
+
+    &-description {
+      @include unnnic-font-body;
+      color: $unnnic-color-fg-base;
+    }
   }
 
   &--actions-lg {
