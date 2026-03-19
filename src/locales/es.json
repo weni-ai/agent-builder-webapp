@@ -31,7 +31,7 @@
       "conversation_details": {
         "title": "Sobre conversación",
         "what_is_a_conversation": "¿Qué es una conversación?",
-        "what_is_a_conversation_description": "Consideramos todas las conversaciones dentro de 24 horas del primer contacto como una única conversación.",
+        "what_is_a_conversation_description": "Consideramos todas las conversaciones dentro de 24 horas (reseteando a medianoche) como una única conversación.",
         "optimized_resolution": "Atendido por IA",
         "optimized_resolution_description": "Conversaciones que finalizaron con una resolución clara y efectiva para el contacto.",
         "other_conclusion": "No Atendido",
@@ -61,6 +61,8 @@
       "hide_logs": "Ocultar logs",
       "search": "Buscar",
       "conversations_empty": "No se encontraron conversaciones",
+      "conversations_separator": "Las conversaciones a continuación se clasificaron utilizando el sistema heredado",
+      "conversations_v2_disclaimer": "Comenzando el {day} de marzo, las conversas se organizan en ventanas de 24 horas (reseteando a medianoche) usando nuestro nuevo sistema de clasificación",
       "no_messages_found": {
         "title": "No se encontraron mensajes en esta conversación",
         "description": "Si el soporte humano envió el mensaje o activó una acción automática, lo puedes ver en {studio_link}.",
@@ -296,7 +298,7 @@
       }
     },
     "assign_agents": {
-      "title": "Asignar agentes",
+      "title": "Asignar nuevos agentes",
       "description": "Los agentes son especialistas listos para proporcionar soporte personalizado y resolver demandas complejas, actúan como consultores verdaderos, garantizando una experiencia humana y de alta calidad para sus clientes.",
       "header": {
         "all_systems": "Todos los sistemas",
@@ -462,7 +464,7 @@
       "create_agent": "Crear agente",
       "modal_delete_agent": {
         "title": "Eliminar {agent_name}",
-        "description": "¿Estás seguro de querer eliminar el {agent_name}? Esta acción no puede ser revertida",
+        "description": "¿Estás seguro de querer eliminar el agente {agent_name}? Esta acción no puede ser desfeita.",
         "delete": "Eliminar",
         "cancel": "Cancelar",
         "success_alert": "Agente {agent_name} eliminado",
@@ -559,13 +561,9 @@
         "location": "Ubicación"
       },
       "placeholder": "Inicia una conversación con el agente para probarlo",
-      "save_changes_to_test_the_agent": "Guarda los cambios para probar el agente",
-      "field_changed_to_value": "Parámetro {field} cambiado a {value}",
-      "flow_started": "Flujo {name} iniciado",
-      "flow_finished": "Flujo finalizado",
-      "message_forwarded_to_brain": "Mensaje redirigido a Agent Builder",
       "manager_selected": "Ahora usando {name} para esta conversación",
-      "media_and_location_unavailable": "No hay acciones de multimedia y ubicación registradas",
+      "manager_version": "Versión del Manager",
+      "manager_version_tooltip": "Selecciona qué versión del Manager coordena esta conversación",
       "standby": "Modo de espera",
       "catalog": {
         "title": "Catálogo de productos",

@@ -1,11 +1,11 @@
-import { shallowMount } from '@vue/test-utils';
+import { flushPromises, shallowMount } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { vi } from 'vitest';
+import { nextTick } from 'vue';
 
 import ConversationsTable from '../index.vue';
-import i18n from '@/utils/plugins/i18n';
-import { nextTick } from 'vue';
+import { NEW_SOURCE } from '@/api/adapters/supervisor/conversationSources';
 
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
@@ -37,6 +37,12 @@ vi.mock('@/api/nexusaiAPI', () => ({
   },
 }));
 
+vi.mock('@/store/FeatureFlags', () => ({
+  useFeatureFlagsStore: () => ({
+    whenUserAttributed: () => Promise.resolve(),
+  }),
+}));
+
 vi.mock('vue-router', () => ({
   useRoute: vi.fn().mockReturnValue({
     query: {
@@ -49,76 +55,65 @@ vi.mock('vue-router', () => ({
   }),
 }));
 
+const mockResultsWithSource = [
+  {
+    uuid: '1',
+    urn: 'conversation-123',
+    last_message: 'This is the last message',
+    source: NEW_SOURCE,
+  },
+  {
+    uuid: '2',
+    urn: 'conversation-456',
+    last_message: 'Another message',
+    source: NEW_SOURCE,
+  },
+];
+
 describe('ConversationsTable.vue', () => {
   let wrapper;
   let supervisorStore;
 
   const pinia = createTestingPinia({
-    initialState: {
-      supervisor: {
-        conversations: {
-          data: {
-            results: [],
-            count: 2,
-          },
-          status: 'loading',
-        },
-        filters: {},
-      },
-    },
     stubActions: false,
   });
 
   const table = () => wrapper.find('[data-testid="conversations-table"]');
 
-  const conversationsCount = () =>
-    wrapper.findComponent('[data-testid="conversations-count"]');
-
   const conversationRows = () =>
     wrapper.findAllComponents('[data-testid="conversation-row"]');
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
-
-    supervisorStore = useSupervisorStore();
-
-    supervisorStore.filters.start = '2023-01-01';
-    supervisorStore.filters.end = '2023-01-31';
-    supervisorStore.loadConversations();
 
     wrapper = shallowMount(ConversationsTable, {
       global: {
         plugins: [pinia],
-        stubs: {
-          UnnnicIntelligenceText: {
-            template: '<div><slot /></div>',
-          },
-        },
       },
     });
+
+    supervisorStore = useSupervisorStore();
+    supervisorStore.filters.start = '2023-01-01';
+    supervisorStore.filters.end = '2023-01-31';
+
+    await supervisorStore.loadConversations();
+    await flushPromises();
+
+    supervisorStore.conversations.data.results = mockResultsWithSource;
+    supervisorStore.conversations.data.newNext = null;
+    supervisorStore.conversations.data.legacyNext = null;
+    supervisorStore.conversations.status = 'complete';
+
+    await nextTick();
   });
 
   it('renders the component correctly', () => {
-    console.log(wrapper.html());
-    console.log(wrapper.vm.supervisorStore.conversations);
-
     expect(table().exists()).toBe(true);
-    // Temporaly disabled
-    // expect(conversationsCount().exists()).toBe(true);
-    expect(conversationRows().length).toBe(2);
+    expect(conversationRows()).toHaveLength(2);
   });
 
   it('loads conversations on mount', () => {
-    expect(wrapper.vm.supervisorStore.loadConversations).toHaveBeenCalled();
-  });
-
-  // Temporaly disabled
-  it.skip('correctly displays the conversations count', () => {
-    expect(conversationsCount().text()).toBe(
-      i18n.global.t('agent_builder.supervisor.conversations_count', {
-        count: 2,
-      }),
-    );
+    expect(supervisorStore.loadConversations).toHaveBeenCalled();
   });
 
   it('passes correct props to ConversationRow component', () => {
@@ -136,8 +131,44 @@ describe('ConversationsTable.vue', () => {
 
     await conversationRow.trigger('click');
 
-    expect(wrapper.vm.supervisorStore.selectedConversation).toMatchObject({
+    expect(supervisorStore.selectedConversation).toMatchObject({
       uuid: '1',
+    });
+  });
+
+  describe('showDivider', () => {
+    const setConversations = async (results) => {
+      supervisorStore.conversations.status = 'complete';
+      supervisorStore.conversations.data.results = [...results];
+      supervisorStore.conversations.data.count = results.length;
+      await nextTick();
+    };
+
+    it('sets showDivider for all but the last row when there is no separator', async () => {
+      await setConversations([
+        { uuid: '1', source: NEW_SOURCE },
+        { uuid: '2', source: NEW_SOURCE },
+        { uuid: '3', source: NEW_SOURCE },
+      ]);
+
+      const rows = conversationRows();
+      const showDividerValues = rows.map((row) => row.props('showDivider'));
+
+      expect(showDividerValues).toEqual([true, true, false]);
+    });
+
+    it('skips the divider on the row before the separator', async () => {
+      await setConversations([
+        { uuid: '1', source: NEW_SOURCE },
+        { uuid: '2', source: NEW_SOURCE },
+        { uuid: '3', source: 'legacy' },
+        { uuid: '4', source: 'legacy' },
+      ]);
+
+      const rows = conversationRows();
+      const showDividerValues = rows.map((row) => row.props('showDivider'));
+
+      expect(showDividerValues).toEqual([true, false, true, false]);
     });
   });
 });
