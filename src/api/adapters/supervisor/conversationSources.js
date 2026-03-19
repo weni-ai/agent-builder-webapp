@@ -387,7 +387,11 @@ export async function fetchConversationList(filterData) {
   }
   if (mode === 'new') {
     const result = await fetchNew(buildNewEndpointParams(params));
-    return { ...result, _paginationSource: NEW_SOURCE };
+    return {
+      ...result,
+      _paginationSource: NEW_SOURCE,
+      legacyInitialAttempted: true,
+    };
   }
 
   if (onlyLegacy) {

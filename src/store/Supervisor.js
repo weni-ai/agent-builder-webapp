@@ -169,7 +169,9 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         ...responseData,
         count,
         results: normalizedResults,
-        legacyInitialAttempted: currentConversationsData.legacyInitialAttempted,
+        legacyInitialAttempted:
+          responseData.legacyInitialAttempted ||
+          currentConversationsData.legacyInitialAttempted,
       };
 
       const paginationState = getPaginationStateFromResponse(
