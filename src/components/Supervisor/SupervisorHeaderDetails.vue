@@ -55,10 +55,8 @@ function handleDetailsModal() {
 .supervisor-header-details {
   display: initial;
 
-  color: $unnnic-color-neutral-cloudy;
-  font-size: $unnnic-font-size-body-gt;
-  font-weight: $unnnic-font-weight-bold;
-  font-family: $unnnic-font-family-secondary;
+  color: $unnnic-color-fg-base;
+  @include unnnic-font-body;
   text-decoration: underline;
 
   cursor: pointer;

@@ -3,7 +3,7 @@
 exports[`Instruction.vue > Component rendering > should match snapshot 1`] = `
 "<section data-v-ee639d0b="" data-testid="modal-validate-instruction" class="modal-validate-instruction">
   <section data-v-ee639d0b="" class="modal-validate-instruction__instruction">
-    <section data-v-cb39816d="" data-v-f10cd9b6="" data-v-ee639d0b="" class="unnnic-form-element" data-testid="instruction-textarea">
+    <section data-v-54336f53="" data-v-f10cd9b6="" data-v-ee639d0b="" class="unnnic-form-element" data-testid="instruction-textarea">
       <!----><textarea data-v-f10cd9b6="" class="unnnic-text-area__textarea unnnic-text-area__textarea--size-md unnnic-text-area__textarea--type-normal" placeholder="You're funny, but don't make jokes" value="Initial text"></textarea>
       <!---->
     </section>
@@ -17,10 +17,10 @@ exports[`Instruction.vue > Component rendering > should match snapshot 1`] = `
         <!---->
       </div>
     </section>
-  </section><button data-v-aadba593="" data-v-ee639d0b="" data-testid="revalidate-button" class="unnnic-button unnnic-button--size-large unnnic-button--primary">
+  </section><button data-v-618a2044="" data-v-ee639d0b="" data-testid="revalidate-button" class="unnnic-button unnnic-button--size-large unnnic-button--primary">
     <!---->
     <!---->
-    <!----><span data-v-aadba593="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Re-validate</span>
+    <!----><span data-v-618a2044="" class="unnnic-button__label" style="visibility: visible;" data-testid="button-label"> Re-validate</span>
     <!---->
   </button>
 </section>"

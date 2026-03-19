@@ -95,13 +95,13 @@ const actions = computed(() => [
   {
     text: i18n.global.t('agent_builder.instructions.edit_instruction.title'),
     icon: 'edit_square',
-    scheme: 'neutral-dark',
+    scheme: 'fg-base',
     onClick: () => (isEditing.value = true),
   },
   {
     text: i18n.global.t('agent_builder.instructions.remove_instruction.title'),
     icon: 'delete',
-    scheme: 'aux-red-500',
+    scheme: 'red-10',
     onClick: () => (showModalRemoveInstruction.value = true),
   },
 ]);

@@ -5,7 +5,7 @@
     class="modal-delete-agent"
     showCloseIcon
     icon="warning"
-    iconScheme="aux-red-500"
+    iconScheme="red-10"
     :title="
       $t('router.agents_team.modal_delete_agent.title', {
         agent_name: agent.name,
