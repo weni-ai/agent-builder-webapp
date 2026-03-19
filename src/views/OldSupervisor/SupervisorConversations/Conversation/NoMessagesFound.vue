@@ -26,7 +26,6 @@
       size="body-gt"
       data-testid="no-messages-description"
     >
-      <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
       <i18n-t
         keypath="agent_builder.supervisor.no_messages_found.description"
         tag="p"
