@@ -25,9 +25,7 @@ const createRequest = vi
 const pinia = createTestingPinia({
   initialState: {
     Project: {
-      details: {
-        contentBaseUuid: '5678',
-      },
+      uuid: '5678',
     },
   },
 });
