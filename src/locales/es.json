@@ -17,14 +17,6 @@
         "title": "Conversaciones",
         "description": "Analiza y revisa conversaciones entre agentes y clientes."
       },
-      "instructions": {
-        "title": "Instrucciones",
-        "description": "Escribe reglas rápidas para moldear el comportamiento del agente"
-      },
-      "agents": {
-        "title": "Agentes",
-        "description": "Crea el equipo de agentes perfecto"
-      },
       "knowledge": {
         "title": "Conocimientos",
         "description": "Agrega conocimiento mediante archivos, links o texto para que el agente pueda responder con precisión"
@@ -281,15 +273,21 @@
     }
   },
   "agents": {
-    "title": "Agentes",
-    "description": "Visualice y gestione sus agentes asignados",
-    "assign_agents_button": "Asignar agentes",
+    "title": "Mis Agentes",
+    "description": "Gestiona tu equipo digital, instrucciones y comportamientos",
+    "assign_agents_button": "Asignar nuevos agentes",
     "assigned_agents": {
+      "title": "Agentes asignados",
       "new_agent": "Nuevo agente",
+      "manager": {
+        "name": "Manager",
+        "edit_manager": "Editar Manager",
+        "edit_instructions": "Editar instrucciones"
+      },
       "no_agents": {
         "title": "No hay agentes asignados aún",
-        "description": "Agrega tu primer agente para empezar a manejar consultas de productos, pedidos y más.",
-        "assign_agents_button": "Asignar tu primer agente"
+        "description": "Clique en {assign_new_agents} y agregue su primer agente",
+        "assign_new_agents": "asignar nuevos agentes"
       },
       "agent_details": {
         "about": "Sobre",
@@ -300,7 +298,7 @@
       }
     },
     "assign_agents": {
-      "title": "Asignar agentes",
+      "title": "Asignar nuevos agentes",
       "description": "Los agentes son especialistas listos para proporcionar soporte personalizado y resolver demandas complejas, actúan como consultores verdaderos, garantizando una experiencia humana y de alta calidad para sus clientes.",
       "header": {
         "all_systems": "Todos los sistemas",
@@ -392,11 +390,14 @@
         "next_button": "Siguiente",
         "finish_button": "Finalizar"
       }
+    },
+    "instructions": {
+      "title": "Instrucciones",
+      "description": "Escribe reglas rápidas para moldear el comportamiento del agente"
     }
   },
   "router": {
     "agents_team": {
-      "assign_agents": "Asignar agentes",
       "card": {
         "assign": "Asignar al equipo",
         "assigned": "Asignado",
@@ -667,7 +668,11 @@
     }
   },
   "profile": {
-    "edit_manager_profile": "Editar perfil del Manager",
+    "tabs": {
+      "profile": "Perfil",
+      "settings": "Configuración"
+    },
+    "edit_manager_profile": "Editar Manager",
     "description": "Personaliza la información básica y el comportamiento del agente",
     "save_btn": "Guardar cambios",
     "save_success": "Cambios guardados con éxito",

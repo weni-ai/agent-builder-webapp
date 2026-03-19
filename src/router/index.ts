@@ -46,12 +46,17 @@ const agentsRoutes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'agents-team',
-        component: () => import('@/views/AgentsTeam/AssignedAgents.vue'),
+        component: () => import('@/views/AgentsTeam/MyAgents.vue'),
       },
       {
         path: 'assign',
         name: 'agents-assign',
         component: () => import('@/views/AgentsTeam/AssignAgents.vue'),
+      },
+      {
+        path: 'instructions',
+        name: 'instructions',
+        component: () => import('@/views/Instructions/index.vue'),
       },
     ],
   },

@@ -89,13 +89,13 @@ function handlePrimaryButton() {
 
 <style lang="scss" scoped>
 .new-instruction {
-  border-radius: $unnnic-border-radius-md;
-  border: $unnnic-border-width-thinner solid $unnnic-color-neutral-soft;
-  padding: $unnnic-spacing-sm;
+  border-radius: $unnnic-radius-4;
+  border: 1px solid $unnnic-color-border-soft;
+  padding: $unnnic-space-4;
 
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  row-gap: $unnnic-spacing-sm;
+  row-gap: $unnnic-space-4;
 
   :deep(textarea) {
     resize: none;
@@ -115,11 +115,8 @@ function handlePrimaryButton() {
   &__title {
     margin: 0;
 
-    color: $unnnic-color-neutral-darkest;
-    font-family: $unnnic-font-family-secondary;
-    font-size: $unnnic-font-size-body-lg;
-    font-weight: $unnnic-font-weight-bold;
-    line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
+    color: $unnnic-color-fg-emphasized;
+    font: $unnnic-font-display-3;
   }
 
   &__add-instruction-button {
