@@ -157,26 +157,11 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
     isassigning="false"
     modelvalue="false"
   />
-  <div
-    class="modal-delete-agent"
-    data-testid="modal"
-    data-v-783757c9=""
+  <delete-agent-modal-stub
+    agent="[object Object]"
     data-v-b58c7d6a=""
-  >
-    
-    
-    
-    <p
-      class="modal-delete-agent__description"
-      data-testid="description"
-      data-v-783757c9=""
-    >
-      Are you sure you want to delete the Test Title? This action cannot be reversed
-    </p>
-    
-    
-    
-  </div>
+    modelvalue="false"
+  />
   
 </div>
 `;
