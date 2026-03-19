@@ -34,6 +34,7 @@ const headerTitle = computed(() => {
   const titles: Record<string, string> = {
     'agents-team': t('agents.title'),
     'agents-assign': t('agents.assign_agents.title'),
+    instructions: t('agents.instructions.title'),
   };
 
   return titles[route.name as string] || titles['agents-team'];
@@ -43,6 +44,7 @@ const headerDescription = computed(() => {
   const descriptions: Record<string, string> = {
     'agents-team': t('agents.description'),
     'agents-assign': t('agents.assign_agents.description'),
+    instructions: t('agents.instructions.description'),
   };
 
   return descriptions[route.name as string] || descriptions['agents-team'];
