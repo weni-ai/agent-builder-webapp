@@ -54,7 +54,6 @@
           {{ $t('agents.assigned_agents.no_agents.title') }}
         </h3>
 
-        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
         <i18n-t
           tag="p"
           class="assigned-agents__empty-description"

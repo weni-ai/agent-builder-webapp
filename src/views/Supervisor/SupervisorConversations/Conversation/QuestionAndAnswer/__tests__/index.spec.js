@@ -34,7 +34,7 @@ describe('QuestionAndAnswer index.vue', () => {
     isLoading: false,
     data: {
       id: 'message-123',
-      source_type: 'user',
+      type: 'user',
       text: 'Hello world',
       forwarded_human_support: false,
     },
@@ -115,11 +115,11 @@ describe('QuestionAndAnswer index.vue', () => {
     });
 
     describe('User messages', () => {
-      it('renders user message when source_type is user', () => {
+      it('renders user message when type is user', () => {
         createWrapper({
           data: {
             id: 'user-message-1',
-            source_type: 'user',
+            type: 'user',
             text: 'User question',
           },
         });
@@ -131,7 +131,7 @@ describe('QuestionAndAnswer index.vue', () => {
       it('passes correct props to user Message component', () => {
         const userData = {
           id: 'user-message-1',
-          source_type: 'user',
+          type: 'user',
           text: 'User question',
         };
 
@@ -142,11 +142,11 @@ describe('QuestionAndAnswer index.vue', () => {
     });
 
     describe('Agent messages', () => {
-      it('renders agent answer section when source_type is agent', () => {
+      it('renders agent answer section when type is agent', () => {
         createWrapper({
           data: {
             id: 'agent-message-1',
-            source_type: 'agent',
+            type: 'agent',
             text: 'Agent response',
           },
         });
@@ -158,7 +158,7 @@ describe('QuestionAndAnswer index.vue', () => {
       it('renders single answer message by default', () => {
         createWrapper({
           data: {
-            source_type: 'agent',
+            type: 'agent',
             text: 'Agent response',
           },
         });
@@ -169,7 +169,7 @@ describe('QuestionAndAnswer index.vue', () => {
       it('passes success scheme to agent Message components', () => {
         createWrapper({
           data: {
-            source_type: 'agent',
+            type: 'agent',
             text: 'Agent response',
           },
         });
@@ -187,7 +187,7 @@ describe('QuestionAndAnswer index.vue', () => {
 
       createWrapper({
         data: {
-          source_type: 'agent',
+          type: 'agent',
           text: textWithComponent,
         },
       });
@@ -205,7 +205,7 @@ describe('QuestionAndAnswer index.vue', () => {
 
       createWrapper({
         data: {
-          source_type: 'agent',
+          type: 'agent',
           text: textWithComponents,
         },
       });
@@ -224,7 +224,7 @@ describe('QuestionAndAnswer index.vue', () => {
 
       createWrapper({
         data: {
-          source_type: 'agent',
+          type: 'agent',
           text: textWithMalformedJSON,
         },
       });
@@ -234,7 +234,7 @@ describe('QuestionAndAnswer index.vue', () => {
 
     it('falls back to original data when no valid components', () => {
       const originalData = {
-        source_type: 'agent',
+        type: 'agent',
         text: 'Plain text without components',
       };
 
@@ -253,7 +253,7 @@ describe('QuestionAndAnswer index.vue', () => {
     it('renders ViewLogsButton in agent messages', () => {
       createWrapper({
         data: {
-          source_type: 'agent',
+          type: 'agent',
           text: 'Agent response',
         },
       });
@@ -264,7 +264,7 @@ describe('QuestionAndAnswer index.vue', () => {
     it('passes correct initial props to ViewLogsButton', () => {
       createWrapper({
         data: {
-          source_type: 'agent',
+          type: 'agent',
           text: 'Agent response',
         },
       });
@@ -279,7 +279,7 @@ describe('QuestionAndAnswer index.vue', () => {
     it('does not render PreviewLogs initially', () => {
       createWrapper({
         data: {
-          source_type: 'agent',
+          type: 'agent',
           text: 'Agent response',
         },
       });
@@ -302,7 +302,7 @@ describe('QuestionAndAnswer index.vue', () => {
         createWrapper({
           data: {
             id: 'message-123',
-            source_type: 'agent',
+            type: 'agent',
             text: 'Agent response',
           },
         });
@@ -321,7 +321,7 @@ describe('QuestionAndAnswer index.vue', () => {
 
         createWrapper({
           data: {
-            source_type: 'agent',
+            type: 'agent',
             text: 'Agent response',
           },
         });
@@ -344,7 +344,7 @@ describe('QuestionAndAnswer index.vue', () => {
 
         createWrapper({
           data: {
-            source_type: 'agent',
+            type: 'agent',
             text: 'Agent response',
           },
         });
@@ -374,7 +374,7 @@ describe('QuestionAndAnswer index.vue', () => {
 
         createWrapper({
           data: {
-            source_type: 'agent',
+            type: 'agent',
             text: 'Agent response',
           },
         });
@@ -395,7 +395,7 @@ describe('QuestionAndAnswer index.vue', () => {
 
         createWrapper({
           data: {
-            source_type: 'agent',
+            type: 'agent',
             text: 'Agent response',
           },
         });
@@ -418,7 +418,7 @@ describe('QuestionAndAnswer index.vue', () => {
 
         createWrapper({
           data: {
-            source_type: 'agent',
+            type: 'agent',
             text: 'Agent response',
           },
         });
@@ -446,7 +446,7 @@ describe('QuestionAndAnswer index.vue', () => {
 
         createWrapper({
           data: {
-            source_type: 'agent',
+            type: 'agent',
             text: 'Agent response',
           },
         });
@@ -471,7 +471,7 @@ describe('QuestionAndAnswer index.vue', () => {
         const mockDate = '2021-01-01T00:00:00Z';
         createWrapper({
           data: {
-            source_type: 'user',
+            type: 'user',
             text: 'User question',
             created_at: mockDate,
           },
@@ -484,7 +484,7 @@ describe('QuestionAndAnswer index.vue', () => {
         const mockDate = '2021-01-01T00:00:00Z';
         createWrapper({
           data: {
-            source_type: 'agent',
+            type: 'agent',
             text: 'Agent response',
             created_at: mockDate,
           },

@@ -1,7 +1,22 @@
 <template>
   <section
-    :class="['conversations', { 'conversations--empty': !hasConversations }]"
+    :class="[
+      'conversations',
+      { 'conversations--v2': featureFlagsStore.flags.conversationsV2 },
+      { 'conversations--empty': !hasConversations },
+    ]"
   >
+    <UnnnicDisclaimer
+      v-if="featureFlagsStore.flags.conversationsV2"
+      type="informational"
+      :description="
+        $t('agent_builder.supervisor.conversations_v2_disclaimer', {
+          day: conversationsSwitchDay,
+        })
+      "
+      data-testid="supervisor-conversations-v2-disclaimer"
+    />
+
     <SupervisorFilters data-testid="supervisor-filters" />
 
     <ConversationsTable
@@ -17,8 +32,12 @@ import { ref, defineExpose, computed } from 'vue';
 import SupervisorFilters from '../SupervisorFilters/index.vue';
 import ConversationsTable from './ConversationsTable/index.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
+import { CONVERSATIONS_SWITCH_DATE } from '@/api/adapters/supervisor/conversationSources';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
+const featureFlagsStore = useFeatureFlagsStore();
 const supervisorStore = useSupervisorStore();
+const conversationsSwitchDay = CONVERSATIONS_SWITCH_DATE.getUTCDate();
 
 const hasConversations = computed(
   () => supervisorStore.conversations.data.results.length > 0,
@@ -40,6 +59,10 @@ defineExpose({
 
   &--empty {
     height: 100%;
+  }
+
+  &--v2 {
+    grid-template-rows: auto auto 1fr;
   }
 }
 </style>
