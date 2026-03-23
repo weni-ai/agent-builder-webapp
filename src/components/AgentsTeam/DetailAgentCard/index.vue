@@ -40,6 +40,13 @@ function openAgentDetailModal() {
 
 <style lang="scss" scoped>
 .detail-agent-card {
+  border-color: $unnnic-color-border-soft;
+  transition: border-color 0.13s ease;
+
   cursor: pointer;
+
+  &:hover {
+    border-color: $unnnic-color-border-emphasized;
+  }
 }
 </style>

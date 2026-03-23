@@ -36,11 +36,6 @@ defineProps<{
 .agent-modal-header {
   &__icon {
     margin-right: $unnnic-space-2;
-    padding: 6px;
-
-    width: 48px;
-    height: auto;
-    aspect-ratio: 1/1;
   }
 }
 </style>

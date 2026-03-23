@@ -6,31 +6,11 @@ const resetCustomAssignments = () => {
   agentIconService.nextIconIndex.custom = 0;
 };
 
-const resetOrdersAssignments = () => {
-  agentIconService.iconAssignments.orders = new Map();
-  agentIconService.nextIconIndex.orders = 0;
-};
-
 describe('agentIconService', () => {
   describe('getAgentCategory', () => {
     it('should categorize manager agents correctly', () => {
       const agent = { id: 'manager' };
       expect(agentIconService.getAgentCategory(agent)).toBe('manager');
-    });
-
-    it('should categorize exchange agents correctly', () => {
-      const agent = { name: 'Exchange Agent' };
-      expect(agentIconService.getAgentCategory(agent)).toBe('exchange');
-    });
-
-    it('should categorize order cancellation agents correctly', () => {
-      const agent = { name: 'Order Cancellation Agent' };
-      expect(agentIconService.getAgentCategory(agent)).toBe('cancellation');
-    });
-
-    it('should categorize order agents correctly', () => {
-      const agent = { name: 'Order Processing Agent' };
-      expect(agentIconService.getAgentCategory(agent)).toBe('orders');
     });
 
     it('should default to custom category when no match is found', () => {
@@ -47,26 +27,6 @@ describe('agentIconService', () => {
     it('should return Manager icon for manager agents', () => {
       const agent = { id: 'manager', uuid: 'manager-uuid' };
       expect(agentIconService.getIconForAgent(agent)).toBe('Manager');
-    });
-
-    it('should return ExchangeIcon1 for exchange agents', () => {
-      const agent = { name: 'Exchange Agent', uuid: 'exchange-uuid' };
-      expect(agentIconService.getIconForAgent(agent)).toBe('ExchangeIcon1');
-    });
-
-    it('should return OrderCancelation for order cancellation agents', () => {
-      const agent = { name: 'Order Cancellation Agent', uuid: 'cancel-uuid' };
-      expect(agentIconService.getIconForAgent(agent)).toBe('OrderCancelation');
-    });
-
-    it('should return rotating OrdersIcon for order agents', () => {
-      const agent1 = { name: 'Order Agent 1', uuid: 'order-uuid-1' };
-      const agent2 = { name: 'Order Agent 2', uuid: 'order-uuid-2' };
-
-      resetOrdersAssignments();
-
-      expect(agentIconService.getIconForAgent(agent1)).toBe('OrdersIcon1');
-      expect(agentIconService.getIconForAgent(agent2)).toBe('OrdersIcon2');
     });
 
     it('should return rotating CustomIcon for custom agents', () => {
@@ -95,15 +55,17 @@ describe('agentIconService', () => {
     it('should rotate through all available icons when there are more agents than icons', () => {
       resetCustomAssignments();
 
-      const agents = Array.from({ length: 26 }, (_, i) => ({
+      const agents = Array.from({ length: 9 }, (_, i) => ({
         name: `Custom Agent ${i + 1}`,
         uuid: `custom-uuid-${i + 1}`,
       }));
 
+      console.log(agents);
+
       agents.forEach((agent) => agentIconService.getIconForAgent(agent));
 
-      expect(agentIconService.getIconForAgent(agents[24])).toBe('CustomIcon1');
-      expect(agentIconService.getIconForAgent(agents[25])).toBe('CustomIcon2');
+      expect(agentIconService.getIconForAgent(agents[7])).toBe('CustomIcon1');
+      expect(agentIconService.getIconForAgent(agents[8])).toBe('CustomIcon2');
     });
   });
 

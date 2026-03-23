@@ -103,17 +103,13 @@ function redirectToInstructionsView() {
   row-gap: $unnnic-space-4;
 
   border-radius: $unnnic-radius-4;
-  border: 1px solid $unnnic-color-border-base;
+  border: 1px solid $unnnic-color-border-soft;
 
   &--loading {
     grid-template: none;
   }
 
   &__icon {
-    width: $unnnic-icon-size-xl;
-    height: auto;
-    aspect-ratio: 1/1;
-
     align-self: center;
   }
 
