@@ -218,6 +218,9 @@ describe('EditManagerProfileDrawer.vue', () => {
     });
 
     it('calls save method when primary button is clicked', async () => {
+      profileStore.name.current = 'Modified Name';
+      await nextTick();
+
       const saveSpy = vi
         .spyOn(profileStore, 'save')
         .mockResolvedValue({ status: 'success' });
@@ -229,6 +232,9 @@ describe('EditManagerProfileDrawer.vue', () => {
 
   describe('Save functionality', () => {
     it('calls profileStore.save method', async () => {
+      profileStore.name.current = 'Modified Name';
+      await nextTick();
+
       const saveSpy = vi
         .spyOn(profileStore, 'save')
         .mockResolvedValue({ status: 'success' });
@@ -239,6 +245,9 @@ describe('EditManagerProfileDrawer.vue', () => {
     });
 
     it('shows success alert and closes drawer on successful save', async () => {
+      profileStore.name.current = 'Modified Name';
+      await nextTick();
+
       vi.spyOn(profileStore, 'save').mockResolvedValue({ status: 'success' });
       const alertSpy = vi.spyOn(alertStore, 'add');
 
@@ -252,6 +261,9 @@ describe('EditManagerProfileDrawer.vue', () => {
     });
 
     it('shows error alert on failed save', async () => {
+      profileStore.name.current = 'Modified Name';
+      await nextTick();
+
       vi.spyOn(profileStore, 'save').mockResolvedValue({ status: 'error' });
       const alertSpy = vi.spyOn(alertStore, 'add');
 
