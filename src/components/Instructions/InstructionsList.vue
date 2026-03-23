@@ -29,11 +29,7 @@
         scheme="neutral-cleanest"
       />
       <p class="no-instructions__text">
-        {{
-          $t(
-            'agent_builder.instructions.instructions_list.no_custom_instructions',
-          )
-        }}
+        {{ noInstructionsText }}
       </p>
     </section>
     <template v-else>
@@ -49,6 +45,7 @@
 </template>
 
 <script setup>
+import i18n from '@/utils/plugins/i18n';
 import Instruction from './Instruction.vue';
 
 defineProps({
@@ -63,6 +60,12 @@ defineProps({
   showActions: {
     type: Boolean,
     default: false,
+  },
+  noInstructionsText: {
+    type: String,
+    default: i18n.global.t(
+      'agent_builder.instructions.instructions_list.no_custom_instructions',
+    ),
   },
 });
 </script>
@@ -99,8 +102,8 @@ defineProps({
     gap: $unnnic-space-1;
 
     .no-instructions__text {
-      color: $unnnic-color-fg-emphasized;
-      font: $unnnic-font-display-3;
+      color: $unnnic-color-fg-base;
+      font: $unnnic-font-body;
     }
   }
 }
