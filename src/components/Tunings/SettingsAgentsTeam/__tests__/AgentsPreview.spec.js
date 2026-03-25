@@ -1,11 +1,13 @@
 import { shallowMount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { nextTick } from 'vue';
 import { createTestingPinia } from '@pinia/testing';
 
 import AgentsPreview from '../AgentsPreview.vue';
 import SettingsField from '../SettingsField.vue';
 import Text from '@/components/unnnic-intelligence/Text.vue';
 import { useTuningsStore } from '@/store/Tunings';
+import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import i18n from '@/utils/plugins/i18n';
 import { useProjectStore } from '@/store/Project';
 
@@ -13,6 +15,7 @@ describe('AgentsPreview.vue', () => {
   let wrapper;
   let store;
   let projectStore;
+  let managerSelectorStore;
 
   const titleText = () => wrapper.findComponent('[data-testid="title"]');
   const settingsFields = () => wrapper.findAllComponents(SettingsField);
@@ -44,6 +47,7 @@ describe('AgentsPreview.vue', () => {
 
     store = useTuningsStore();
     projectStore = useProjectStore();
+    managerSelectorStore = useManagerSelectorStore();
     store.settings.data.components = true;
     store.settings.data.progressiveFeedback = false;
   });
@@ -200,6 +204,89 @@ describe('AgentsPreview.vue', () => {
 
       await multipleMessageFormatField().vm.$emit('update:modelValue', true);
       expect(store.settings.data.components).toBe(true);
+    });
+  });
+
+  describe('Components disabled by manager', () => {
+    it('disables the components field when the selected manager does not accept components', async () => {
+      managerSelectorStore.options = {
+        currentManager: 'manager-2.7',
+        serverTime: '2026-01-08T13:00:00Z',
+        managers: {
+          new: {
+            id: 'manager-2.7',
+            label: 'Manager 2.7',
+            accept_components: false,
+          },
+          legacy: null,
+        },
+      };
+      managerSelectorStore.selectedManager = 'manager-2.7';
+      await nextTick();
+
+      expect(multipleMessageFormatField().props('disabled')).toBe(true);
+    });
+
+    it('does not disable the components field when the selected manager accepts components', async () => {
+      managerSelectorStore.options = {
+        currentManager: 'manager-2.8',
+        serverTime: '2026-01-08T13:00:00Z',
+        managers: {
+          new: {
+            id: 'manager-2.8',
+            label: 'Manager 2.8',
+          },
+          legacy: null,
+        },
+      };
+      managerSelectorStore.selectedManager = 'manager-2.8';
+      await nextTick();
+
+      expect(multipleMessageFormatField().props('disabled')).toBe(false);
+    });
+
+    it('does not disable the components field when a different manager is selected', async () => {
+      managerSelectorStore.options = {
+        currentManager: 'manager-2.6',
+        serverTime: '2026-01-08T13:00:00Z',
+        managers: {
+          new: {
+            id: 'manager-2.7',
+            label: 'Manager 2.7',
+            accept_components: false,
+          },
+          legacy: {
+            id: 'manager-2.6',
+            label: 'Manager 2.6',
+            deprecation: '2026-04-15',
+          },
+        },
+      };
+      managerSelectorStore.selectedManager = 'manager-2.6';
+      await nextTick();
+
+      expect(multipleMessageFormatField().props('disabled')).toBe(false);
+    });
+
+    it('forces components to false when the disabled manager is selected', async () => {
+      store.settings.data.components = true;
+
+      managerSelectorStore.options = {
+        currentManager: 'manager-2.7',
+        serverTime: '2026-01-08T13:00:00Z',
+        managers: {
+          new: {
+            id: 'manager-2.7',
+            label: 'Manager 2.7',
+            accept_components: false,
+          },
+          legacy: null,
+        },
+      };
+      managerSelectorStore.selectedManager = 'manager-2.7';
+      await nextTick();
+
+      expect(store.settings.data.components).toBe(false);
     });
   });
 });

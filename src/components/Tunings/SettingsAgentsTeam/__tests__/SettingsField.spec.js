@@ -40,6 +40,7 @@ describe('SettingsField.vue', () => {
 
       expect(switchComp.props('modelValue')).toBe(false);
       expect(switchComp.props('textRight')).toBe('Enable feature');
+      expect(switchComp.props('disabled')).toBe(false);
     });
 
     it('renders the description text with correct content and styling', () => {
@@ -84,6 +85,13 @@ describe('SettingsField.vue', () => {
 
       await wrapper.setProps({ modelValue: false });
       expect(switchComponent().props('modelValue')).toBe(false);
+    });
+
+    it('passes disabled prop to the switch component', async () => {
+      expect(switchComponent().props('disabled')).toBe(false);
+
+      await wrapper.setProps({ disabled: true });
+      expect(switchComponent().props('disabled')).toBe(true);
     });
   });
 
