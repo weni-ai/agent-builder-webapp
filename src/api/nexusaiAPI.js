@@ -121,13 +121,6 @@ export default {
 
           const newManager = { ...data.new };
 
-          console.log(
-            'MANAGERS WITHOUT COMPONENTS env',
-            env('MANAGERS_WITHOUT_COMPONENTS'),
-          );
-
-          console.log('MANAGERS WITHOUT COMPONENTS', managersWithoutComponents);
-
           const isUnsupported = managersWithoutComponents.some((name) =>
             newManager.label?.includes(name),
           );
