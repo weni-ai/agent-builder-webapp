@@ -6,10 +6,12 @@ import { createTestingPinia } from '@pinia/testing';
 import ManagerSelector from '../index.vue';
 import i18n from '@/utils/plugins/i18n';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
+import { useTuningsStore } from '@/store/Tunings';
 
 describe('ManagerSelector.vue', () => {
   let wrapper;
   let managerSelectorStore;
+  let tuningsStore;
   let pinia;
 
   const POST_UPGRADE_DISCLAIMER_STORAGE_KEY =
@@ -36,6 +38,8 @@ describe('ManagerSelector.vue', () => {
     wrapper.findComponent('[data-testid="post-upgrade-disclaimer"]');
   const radiosSkeleton = () =>
     wrapper.findComponent('[data-testid="manager-selector-radios-skeleton"]');
+  const noComponentsDisclaimer = () =>
+    wrapper.findComponent('[data-testid="no-components-disclaimer"]');
 
   const managerMock = {
     currentManager: 'manager-2.5',
@@ -59,6 +63,7 @@ describe('ManagerSelector.vue', () => {
     });
 
     managerSelectorStore = useManagerSelectorStore();
+    tuningsStore = useTuningsStore();
     managerSelectorStore.options = JSON.parse(JSON.stringify(managerMock));
     managerSelectorStore.selectedManager =
       managerSelectorStore.options.currentManager;
@@ -209,5 +214,62 @@ describe('ManagerSelector.vue', () => {
 
     expect(postUpgradeDisclaimer().exists()).toBe(false);
     expect(upgradeBanner().exists()).toBe(true);
+  });
+
+  describe('no-components disclaimer', () => {
+    it('shows the disclaimer when new manager has accept_components false', async () => {
+      managerSelectorStore.options.managers.new.accept_components = false;
+      await nextTick();
+
+      const disclaimer = noComponentsDisclaimer();
+      expect(disclaimer.exists()).toBe(true);
+      expect(disclaimer.props('type')).toBe('neutral');
+      expect(disclaimer.props('description')).toBe(
+        i18n.global.t('agent_builder.tunings.manager.no_components_support', {
+          manager_name: managerMock.managers.new.label,
+        }),
+      );
+    });
+
+    it('does not show the disclaimer when accept_components is not false', () => {
+      expect(noComponentsDisclaimer().exists()).toBe(false);
+    });
+  });
+
+  describe('new manager radio disabled state', () => {
+    it('disables the new manager radio when it does not accept components and components is enabled', async () => {
+      managerSelectorStore.options.managers.new.accept_components = false;
+      tuningsStore.settings.data.components = true;
+      managerSelectorStore.selectedManager = managerMock.managers.legacy.id;
+      await nextTick();
+
+      expect(radioNew().props('disabled')).toBe(true);
+    });
+
+    it('does not disable the new manager radio when components is off', async () => {
+      managerSelectorStore.options.managers.new.accept_components = false;
+      tuningsStore.settings.data.components = false;
+      managerSelectorStore.selectedManager = managerMock.managers.legacy.id;
+      await nextTick();
+
+      expect(radioNew().props('disabled')).toBe(false);
+    });
+
+    it('does not disable the new manager radio when it accepts components', async () => {
+      tuningsStore.settings.data.components = true;
+      managerSelectorStore.selectedManager = managerMock.managers.legacy.id;
+      await nextTick();
+
+      expect(radioNew().props('disabled')).toBe(false);
+    });
+
+    it('does not disable the new manager radio when it is already selected', async () => {
+      managerSelectorStore.options.managers.new.accept_components = false;
+      tuningsStore.settings.data.components = true;
+      managerSelectorStore.selectedManager = managerMock.managers.new.id;
+      await nextTick();
+
+      expect(radioNew().props('disabled')).toBe(false);
+    });
   });
 });
