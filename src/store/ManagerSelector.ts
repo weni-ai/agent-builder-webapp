@@ -77,7 +77,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
   });
 
   const newManagerAcceptsComponents = computed(() => {
-    return options.value.managers.new.accept_components !== false;
+    return options.value?.managers?.new.accept_components !== false;
   });
 
   const writePostUpgradeDisclaimerFlag = (value: boolean) =>
