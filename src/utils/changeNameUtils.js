@@ -1,5 +1,3 @@
-import i18n from '@/utils/plugins/i18n';
-
 function parseActionDetails(actionDetails) {
   return Object.keys(actionDetails).map((key) => ({
     key,
@@ -8,7 +6,7 @@ function parseActionDetails(actionDetails) {
   }));
 }
 
-function generateCustomizationUpdateText(actionDetails) {
+function generateCustomizationUpdateText(t, actionDetails) {
   const moreThanOneChange =
     actionDetails.length > 1 && actionDetails[0] !== 'new';
   const isCustomization = [
@@ -20,22 +18,22 @@ function generateCustomizationUpdateText(actionDetails) {
   ].includes(actionDetails[0]?.key);
 
   if (moreThanOneChange)
-    return i18n.global.t(`router.tunings.history.fields.changes`, {
+    return t(`router.tunings.history.fields.changes`, {
       value: actionDetails.length,
     });
 
   if (isCustomization)
-    return i18n.global.t(
+    return t(
       `router.tunings.history.fields.update-${actionDetails[0]?.key}`,
       {
         value: actionDetails[0]?.newValue,
       },
     );
 
-  return i18n.global.t(`router.tunings.history.fields.changes`);
+  return t(`router.tunings.history.fields.changes`);
 }
 
-function handleGroupText(actionDetails) {
+function handleGroupText(t, actionDetails) {
   const translationName = (name) =>
     `router.tunings.history.fields.update-${name}`;
   const condition = ['name', 'goal', 'role', 'personality', 'instruction'];
@@ -46,7 +44,7 @@ function handleGroupText(actionDetails) {
   )
     return actionDetails.map((e) => {
       if (condition.includes(e.key))
-        return i18n.global.t(translationName(e.key), {
+        return t(translationName(e.key), {
           value: e.newValue,
         });
 
@@ -56,7 +54,7 @@ function handleGroupText(actionDetails) {
   return [];
 }
 
-function handleChangeName(row) {
+function handleChangeName(t, row) {
   if (!row || !row.model_group || !row.action_type || !row.action_details) {
     return {
       icon: 'article',
@@ -73,21 +71,21 @@ function handleChangeName(row) {
       U: {
         icon: 'settings',
         user: row.created_by,
-        text: i18n.global.t('router.tunings.history.fields.update-model'),
+        text: t('router.tunings.history.fields.update-model'),
       },
     },
     Content: {
       D: {
         icon: 'article',
         user: row.created_by,
-        text: i18n.global.t('router.tunings.history.fields.remove-content', {
+        text: t('router.tunings.history.fields.remove-content', {
           value: row.action_details.new,
         }),
       },
       U: {
         icon: 'article',
         user: row.created_by,
-        text: i18n.global.t('router.tunings.history.fields.update-content', {
+        text: t('router.tunings.history.fields.update-content', {
           value: isUpdateContentText
             ? row.action_details.text.new
             : row.action_details.new,
@@ -96,7 +94,7 @@ function handleChangeName(row) {
       C: {
         icon: 'article',
         user: row.created_by,
-        text: i18n.global.t('router.tunings.history.fields.add-content', {
+        text: t('router.tunings.history.fields.add-content', {
           value: row.action_details.new,
         }),
       },
@@ -105,20 +103,20 @@ function handleChangeName(row) {
       C: {
         icon: 'person',
         user: row.created_by,
-        text: i18n.global.t('router.tunings.history.fields.add-instruction', {
+        text: t('router.tunings.history.fields.add-instruction', {
           value: row.action_details.new,
         }),
       },
       U: {
         icon: 'person',
         user: row.created_by,
-        text: generateCustomizationUpdateText(actionDetails),
-        groupText: handleGroupText(actionDetails),
+        text: generateCustomizationUpdateText(t, actionDetails),
+        groupText: handleGroupText(t, actionDetails),
       },
       D: {
         icon: 'person',
         user: row.created_by,
-        text: i18n.global.t(
+        text: t(
           'router.tunings.history.fields.remove-instruction',
           {
             value: row.action_details.old,

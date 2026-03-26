@@ -14,6 +14,7 @@
   >
     <UnnnicSwitch
       data-testid="switch"
+      :disabled="disabled"
       :modelValue="modelValue"
       :textRight="textRight"
       @update:model-value="emit('update:modelValue', $event)"
@@ -51,6 +52,10 @@ defineProps({
   description: {
     type: String,
     required: true,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>

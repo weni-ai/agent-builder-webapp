@@ -23,10 +23,6 @@ vi.mock('@/api/nexusaiAPI', () => ({
           edit: vi.fn(),
         },
       },
-      profile: {
-        read: vi.fn(),
-        edit: vi.fn(),
-      },
     },
   },
 }));
@@ -59,13 +55,6 @@ describe('Tunings Store', () => {
     ],
   };
 
-  const mockSettingsData = {
-    team: {
-      human_support: true,
-      human_support_prompt: 'Test prompt',
-    },
-  };
-
   beforeEach(() => {
     setActivePinia(createPinia());
     store = useTuningsStore();
@@ -88,8 +77,6 @@ describe('Tunings Store', () => {
         data: {
           components: false,
           progressiveFeedback: false,
-          humanSupport: false,
-          humanSupportPrompt: '',
           manager: '',
         },
       });
@@ -175,37 +162,22 @@ describe('Tunings Store', () => {
         store.settings.data = {
           components: true,
           progressiveFeedback: false,
-          humanSupport: true,
-          humanSupportPrompt: 'New prompt',
           manager: 'manager-2.6',
         };
         store.initialSettings = {
           components: false,
           progressiveFeedback: false,
-          humanSupport: false,
-          humanSupportPrompt: '',
           manager: 'manager-2.5',
         };
       });
 
-      it('should return true when settings have changed and humanSupport validation passes', () => {
+      it('should return true when settings have changed', () => {
         expect(store.isSettingsValid).toBe(true);
       });
 
       it('should return false when settings have not changed', () => {
         store.settings.data = cloneDeep(store.initialSettings);
         expect(store.isSettingsValid).toBe(false);
-      });
-
-      it('should return false when humanSupport is enabled but prompt is empty', () => {
-        store.settings.data.humanSupportPrompt = '';
-        expect(store.isSettingsValid).toBe(false);
-      });
-
-      it('should return true when humanSupport is disabled regardless of prompt', () => {
-        store.settings.data.humanSupport = false;
-        store.settings.data.humanSupportPrompt = '';
-        expect(store.isSettingsValid).toBe(true);
       });
 
       it('should return false when initialSettings is null', () => {
@@ -366,9 +338,6 @@ describe('Tunings Store', () => {
         nexusaiAPI.router.tunings.getComponents.mockResolvedValue({
           components: true,
         });
-        nexusaiAPI.router.profile.read.mockResolvedValue({
-          data: mockSettingsData,
-        });
 
         await store.fetchSettings();
 
@@ -376,8 +345,6 @@ describe('Tunings Store', () => {
         expect(store.settings.data).toEqual({
           components: true,
           progressiveFeedback: true,
-          humanSupport: true,
-          humanSupportPrompt: 'Test prompt',
           manager: '',
         });
         expect(store.initialSettings).toEqual(store.settings.data);
@@ -392,23 +359,6 @@ describe('Tunings Store', () => {
 
         expect(store.settings.status).toBe('error');
       });
-
-      it('should handle missing team data gracefully', async () => {
-        nexusaiAPI.router.tunings.getProgressiveFeedback.mockResolvedValue({
-          progressiveFeedback: false,
-        });
-        nexusaiAPI.router.tunings.getComponents.mockResolvedValue({
-          components: false,
-        });
-        nexusaiAPI.router.profile.read.mockResolvedValue({
-          data: {},
-        });
-
-        await store.fetchSettings();
-
-        expect(store.settings.data.humanSupport).toBe(false);
-        expect(store.settings.data.humanSupportPrompt).toBe('');
-      });
     });
 
     describe('saveSettings', () => {
@@ -416,15 +366,11 @@ describe('Tunings Store', () => {
         store.settings.data = {
           components: true,
           progressiveFeedback: true,
-          humanSupport: true,
-          humanSupportPrompt: 'New prompt',
           manager: 'manager-2.6',
         };
         store.initialSettings = {
           components: false,
           progressiveFeedback: false,
-          humanSupport: false,
-          humanSupportPrompt: '',
           manager: 'manager-2.5',
         };
       });
@@ -432,7 +378,6 @@ describe('Tunings Store', () => {
       it('should save all changed settings successfully', async () => {
         nexusaiAPI.router.tunings.editProgressiveFeedback.mockResolvedValue();
         nexusaiAPI.router.tunings.editComponents.mockResolvedValue();
-        nexusaiAPI.router.profile.edit.mockResolvedValue();
         const saveManagerSpy = vi
           .spyOn(managerSelectorStore, 'saveManager')
           .mockResolvedValue(true);
@@ -451,16 +396,6 @@ describe('Tunings Store', () => {
           data: { components: true },
           requestOptions: { hideGenericErrorAlert: true },
         });
-        expect(nexusaiAPI.router.profile.edit).toHaveBeenCalledWith({
-          projectUuid: 'test-project-uuid',
-          data: {
-            team: {
-              human_support: true,
-              human_support_prompt: 'New prompt',
-            },
-          },
-          requestOptions: { hideGenericErrorAlert: true },
-        });
         expect(store.settings.status).toBe('success');
         expect(result).toBe(true);
         expect(saveManagerSpy).toHaveBeenCalled();
@@ -471,7 +406,6 @@ describe('Tunings Store', () => {
         store.settings.data.components = false; // Same as initial
         store.settings.data.manager = store.initialSettings.manager;
 
-        nexusaiAPI.router.profile.edit.mockResolvedValue();
         const saveManagerSpy = vi
           .spyOn(managerSelectorStore, 'saveManager')
           .mockResolvedValue(true);
@@ -482,7 +416,6 @@ describe('Tunings Store', () => {
           nexusaiAPI.router.tunings.editProgressiveFeedback,
         ).not.toHaveBeenCalled();
         expect(nexusaiAPI.router.tunings.editComponents).not.toHaveBeenCalled();
-        expect(nexusaiAPI.router.profile.edit).toHaveBeenCalled();
         expect(saveManagerSpy).not.toHaveBeenCalled();
       });
 
@@ -495,28 +428,6 @@ describe('Tunings Store', () => {
 
         expect(store.settings.status).toBe('error');
         expect(result).toBe(false);
-      });
-
-      it('should post message when human support status changes', async () => {
-        const postMessageSpy = vi
-          .spyOn(window.parent, 'postMessage')
-          .mockImplementation(() => {});
-        nexusaiAPI.router.profile.edit.mockResolvedValue();
-
-        store.initialSettings.humanSupport = false;
-
-        store.settings.data.progressiveFeedback = false;
-        store.settings.data.humanSupport = true;
-
-        await store.saveSettings();
-
-        expect(postMessageSpy).toHaveBeenCalledWith(
-          {
-            event: 'change-human-service-status',
-            value: JSON.stringify(true),
-          },
-          '*',
-        );
       });
 
       it('should sync manager from selector changes', async () => {
@@ -570,15 +481,11 @@ describe('Tunings Store', () => {
         store.settings.data = {
           components: true,
           progressiveFeedback: false,
-          humanSupport: false,
-          humanSupportPrompt: '',
           manager: 'manager-2.5',
         };
         store.initialSettings = {
           components: false,
           progressiveFeedback: false,
-          humanSupport: false,
-          humanSupportPrompt: '',
           manager: 'manager-2.5',
         };
         managerSelectorStore.options.currentManager = 'manager-2.5';

@@ -95,19 +95,19 @@ const statusProps = computed(() => {
 
   const mapStatus = {
     in_progress: {
-      scheme: 'aux-blue-500',
+      scheme: 'blue',
     },
     optimized_resolution: {
-      scheme: 'aux-green-500',
+      scheme: 'green',
     },
     other_conclusion: {
-      scheme: 'aux-red-500',
+      scheme: 'red',
     },
     unclassified: {
-      scheme: 'neutral-cloudy',
+      scheme: 'gray',
     },
     transferred_to_human_support: {
-      scheme: 'aux-yellow-500',
+      scheme: 'yellow',
     },
   };
 

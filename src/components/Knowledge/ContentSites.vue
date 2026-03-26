@@ -69,7 +69,7 @@
         <UnnnicIcon
           icon="error"
           size="md"
-          scheme="aux-red-500"
+          scheme="red-10"
         />
       </template>
 
