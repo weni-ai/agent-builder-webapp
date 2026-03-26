@@ -11,32 +11,20 @@
     data-testid="agent-builder-header"
   >
     <section class="agent-builder-header__title">
-      <UnnnicIntelligenceText
-        tag="h1"
-        size="title-sm"
-        family="secondary"
-        weight="bold"
-        color="neutral-darkest"
+      <h1
+        class="agent-builder-header__title-text"
         data-testid="agent-builder-header-title"
       >
         {{ currentView?.title }}
-      </UnnnicIntelligenceText>
-      <UnnnicIntelligenceText
-        tag="h2"
-        size="body-gt"
-        family="secondary"
-        color="neutral-cloudy"
+      </h1>
+      <h2
+        class="agent-builder-header__title-description"
         data-testid="agent-builder-header-description"
       >
         {{ currentView?.description }}
 
-        <SupervisorHeaderDetails
-          v-if="
-            currentView.page === 'conversations' &&
-            featureFlagsStore.flags.newSupervisor
-          "
-        />
-      </UnnnicIntelligenceText>
+        <SupervisorHeaderDetails v-if="currentView.page === 'conversations'" />
+      </h2>
     </section>
 
     <slot name="actions" />
@@ -57,7 +45,6 @@ import useBuildViews from '@/composables/useBuildViews';
 
 import SupervisorHeaderDetails from './Supervisor/SupervisorHeaderDetails.vue';
 
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import i18n from '@/utils/plugins/i18n';
 
 const route = useRoute();
@@ -81,8 +68,6 @@ const props = defineProps({
     },
   },
 });
-
-const featureFlagsStore = useFeatureFlagsStore();
 
 const currentView = computed(() => {
   const { t } = i18n.global;
@@ -116,6 +101,16 @@ const currentView = computed(() => {
     display: flex;
     flex-direction: column;
     gap: $unnnic-spacing-xs;
+
+    &-text {
+      @include unnnic-font-display-1;
+      color: $unnnic-color-fg-emphasized;
+    }
+
+    &-description {
+      @include unnnic-font-body;
+      color: $unnnic-color-fg-base;
+    }
   }
 
   &--actions-lg {

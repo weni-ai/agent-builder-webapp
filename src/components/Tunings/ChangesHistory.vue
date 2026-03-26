@@ -8,12 +8,23 @@
   <template v-else>
     <section class="changes-history__container__header">
       <section>
-        <p class="changes-history__description">
+        <UnnnicIntelligenceText
+          color="neutral-cloudy"
+          family="secondary"
+          size="body-gt"
+          tag="p"
+        >
           {{ $t('router.tunings.history.description') }}
-        </p>
-        <p class="changes-history__sub-description">
+        </UnnnicIntelligenceText>
+        <UnnnicIntelligenceText
+          class="text-sub-description"
+          color="neutral-clean"
+          family="secondary"
+          size="body-md"
+          tag="p"
+        >
           {{ $t('router.tunings.history.sub_description') }}
-        </p>
+        </UnnnicIntelligenceText>
       </section>
 
       <UnnnicSelectSmart
@@ -47,7 +58,6 @@ import { handleChangeName } from '@/utils/changeNameUtils';
 import { useProjectStore } from '@/store/Project';
 
 const { t } = useI18n();
-
 const projectUuid = useProjectStore().uuid;
 
 const pagination = ref(1);
@@ -62,7 +72,9 @@ const headers = computed(() => [
   { content: t('router.tunings.history.fields.date') },
 ]);
 
-const rows = ref([]);
+const table = ref({
+  rows: [],
+});
 
 const filterOptions = computed(() => [
   {
@@ -83,23 +95,23 @@ const filterOptions = computed(() => [
   },
 ]);
 
-const currentFilterOption = ref(filterOptions.value[0].value);
+const currentFilterOption = ref(filterOptions.value[0].value.value);
 
 const noChangesDetected = computed(() => {
-  const noRows = rows.value.length === 0;
+  const noRows = table.value.rows.length === 0;
   const isAllFilterSelected = currentFilterOption.value?.[0].value === 'all';
 
   return noRows && isAllFilterSelected && !isLoading.value;
 });
 
 const formattedRows = computed(() =>
-  rows.value.map((row, index) => ({
+  table.value.rows.map((row, index) => ({
     ...row,
     content: [
       {
         component: HistoryItem,
         props: {
-          ...handleChangeName(row),
+          ...handleChangeName(t, row),
           isRenderGroupText: isCollapsedMap.value[index] || false,
         },
         events: {},
@@ -138,7 +150,7 @@ const getChangesHistoryData = async (page = 1, filter = '') => {
       page,
       filter: filter === 'all' ? '' : filter,
     });
-    rows.value = data.results;
+    table.value.rows = data.results;
     paginationTotal.value = data.count;
   } catch (error) {
     console.error('Failed to fetch data:', error);
@@ -184,18 +196,9 @@ function formatTimeSince(dateString) {
 <style scoped lang="scss">
 .changes-history {
   &__no-changes {
-    color: $unnnic-color-fg-base;
-    font: $unnnic-font-body;
-  }
-
-  &__description {
-    color: $unnnic-color-fg-base;
-    font: $unnnic-font-body;
-  }
-
-  &__sub-description {
-    color: $unnnic-color-fg-muted;
-    font: $unnnic-font-caption-2;
+    color: $unnnic-color-neutral-cloudy;
+    font-family: $unnnic-font-family-secondary;
+    font-size: $unnnic-font-size-body-gt;
   }
 
   &__container {

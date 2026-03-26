@@ -124,13 +124,13 @@ const isAgentInTeam = computed(() => {
 const assignAgentHeaderActions = computed(() => [
   isAgentInTeam.value
     ? {
-        scheme: 'aux-red-500',
+        scheme: 'red-10',
         icon: 'delete',
         text: i18n.global.t('router.agents_team.card.remove_agent'),
         onClick: toggleAgentAssignment,
       }
     : {
-        scheme: 'aux-red-500',
+        scheme: 'red-10',
         icon: 'delete',
         text: i18n.global.t('router.agents_team.card.delete_agent'),
         onClick: toggleDeleteAgentModal,

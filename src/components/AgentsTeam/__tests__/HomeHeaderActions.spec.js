@@ -12,30 +12,6 @@ describe('HomeHeaderActions.vue', () => {
   let pinia;
   let openAgentsGalleryMock;
 
-  const createWrapper = (initialState = {}) => {
-    openAgentsGalleryMock = vi.fn();
-    pinia = createTestingPinia({
-      initialState: {
-        AgentsTeam: {
-          activeTeam: {
-            data: {
-              agents: [],
-            },
-            ...initialState,
-          },
-        },
-      },
-    });
-    const store = useAgentsTeamStore(pinia);
-    store.openAgentsGallery = openAgentsGalleryMock;
-
-    wrapper = shallowMount(HomeHeaderActions, {
-      global: {
-        plugins: [pinia],
-      },
-    });
-  };
-
   const findAssignButton = () =>
     wrapper.find('[data-testid="assign-agents-button"]');
 

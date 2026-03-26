@@ -61,9 +61,7 @@
           data-testid="concierge-second-step-radio"
           :label="option.name"
           :value="option.value || option.name"
-        >
-          {{ option.name }}
-        </UnnnicRadio>
+        />
       </UnnnicRadioGroup>
     </template>
   </section>

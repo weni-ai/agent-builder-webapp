@@ -4,29 +4,18 @@ import { ref } from 'vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { moduleStorage } from '@/utils/storage';
 
+interface ProjectDetails {
+  status: null | 'loading' | 'success' | 'error';
+  backend?: string;
+  agentsModels?: { name: string; model: string }[];
+  charactersCount?: number;
+}
+
 export const useProjectStore = defineStore('Project', () => {
   const uuid = moduleStorage.getItem('projectUuid') || '';
-  const details = ref({
+  const details = ref<ProjectDetails>({
     status: null,
-    contentBaseUuid: null,
   });
-
-  async function getRouterDetails() {
-    details.value.status = 'loading';
-
-    try {
-      const { data } = await nexusaiAPI.router.read({
-        projectUuid: uuid,
-        obstructiveErrorProducer: true,
-      });
-
-      details.value = { ...details.value, contentBaseUuid: data.uuid };
-      details.value.status = 'success';
-    } catch (error) {
-      console.error(error);
-      details.value.status = 'error';
-    }
-  }
 
   async function getProjectDetails() {
     details.value.status = 'loading';
@@ -46,7 +35,6 @@ export const useProjectStore = defineStore('Project', () => {
 
   return {
     uuid,
-    getRouterDetails,
     getProjectDetails,
     details,
   };

@@ -39,7 +39,6 @@ import { useTuningsStore } from '@/store/Tunings';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
-import { useProjectStore } from '@/store/Project';
 import { useUserStore } from '@/store/User';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { useCurrentModule } from '@/composables/useCurrentModule';
@@ -54,7 +53,6 @@ const { isAgentsModule, isKnowledgeModule } = useCurrentModule();
 const route = useRoute();
 const agentsTeamStore = useAgentsTeamStore();
 const alertStore = useAlertStore();
-const projectStore = useProjectStore();
 const userStore = useUserStore();
 const managerSelectorStore = useManagerSelectorStore();
 
@@ -72,15 +70,12 @@ onMounted(() => {
   useProfileStore().load();
   userStore.getUserDetails();
   managerSelectorStore.loadManagerData();
-
-  if (!projectStore.details.contentBaseUuid) {
-    projectStore.getRouterDetails();
-  }
 });
 
 const showTestAgentsButton = computed(
   () =>
-    (isAgentsModule.value && route.name === 'agents-team') ||
+    (isAgentsModule.value &&
+      ['agents-team', 'instructions'].includes(route.name as string)) ||
     isKnowledgeModule.value,
 );
 

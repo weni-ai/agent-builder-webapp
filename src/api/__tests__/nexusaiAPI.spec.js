@@ -24,6 +24,10 @@ vi.mock('@/utils/storage', () => ({
   },
 }));
 
+vi.mock('@/utils/env', () => ({
+  default: vi.fn(() => 'Manager 2.7'),
+}));
+
 describe('nexusaiAPI.js', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -331,5 +335,54 @@ describe('nexusaiAPI.js', () => {
       { multi_agents: true },
     );
     expect(result).toEqual(mockResponse);
+  });
+
+  describe('manager.read', () => {
+    it('should add accept_components false when manager label matches env list', async () => {
+      request.$http.get.mockResolvedValue({
+        data: {
+          serverTime: '2026-01-08T13:00:00Z',
+          new: { id: 'manager-2.7', label: 'Manager 2.7' },
+          legacy: { id: 'manager-2.6', label: 'Manager 2.6' },
+          currentManager: 'manager-2.6',
+        },
+      });
+
+      const result = await nexusaiAPI.router.tunings.manager.read({
+        projectUuid: 'project1',
+      });
+
+      expect(result.data.managers.new).toEqual({
+        id: 'manager-2.7',
+        label: 'Manager 2.7',
+        accept_components: false,
+      });
+      expect(result.data.managers.legacy).toEqual({
+        id: 'manager-2.6',
+        label: 'Manager 2.6',
+      });
+      expect(result.data.currentManager).toBe('manager-2.6');
+    });
+
+    it('should not add accept_components when manager label does not match env list', async () => {
+      request.$http.get.mockResolvedValue({
+        data: {
+          serverTime: '2026-01-08T13:00:00Z',
+          new: { id: 'manager-2.8', label: 'Manager 2.8' },
+          legacy: { id: 'manager-2.6', label: 'Manager 2.6' },
+          currentManager: 'manager-2.6',
+        },
+      });
+
+      const result = await nexusaiAPI.router.tunings.manager.read({
+        projectUuid: 'project1',
+      });
+
+      expect(result.data.managers.new).toEqual({
+        id: 'manager-2.8',
+        label: 'Manager 2.8',
+      });
+      expect(result.data.managers.new.accept_components).toBeUndefined();
+    });
   });
 });

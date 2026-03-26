@@ -132,7 +132,6 @@ export default defineConfig({
           : {}),
       },
       shared: {
-        ...pkg,
         vue: {
           singleton: true,
           requiredVersion: '^3.0.0',

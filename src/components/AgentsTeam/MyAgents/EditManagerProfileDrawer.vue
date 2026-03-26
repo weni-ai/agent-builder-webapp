@@ -175,6 +175,8 @@ watch(
   display: flex;
   flex-direction: column;
 
+  overflow: hidden;
+
   &__tabs {
     margin-bottom: $unnnic-space-4;
   }

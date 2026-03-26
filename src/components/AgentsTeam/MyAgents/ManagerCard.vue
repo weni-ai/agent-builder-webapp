@@ -42,7 +42,6 @@
       </header>
 
       <footer class="manager-card__actions">
-        <!-- TODO: Add actions here -->
         <UnnnicButton
           :text="$t('agents.assigned_agents.manager.edit_manager')"
           type="secondary"
