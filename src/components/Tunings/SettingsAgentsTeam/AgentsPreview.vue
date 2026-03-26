@@ -88,7 +88,7 @@ const isComponentsDisabled = computed(() => {
 
 watch(isComponentsDisabled, (disabled) => {
   if (disabled) {
-    tuningsStore?.settings?.data?.components = false;
+    tuningsStore.settings.data.components = false;
   }
 });
 </script>
