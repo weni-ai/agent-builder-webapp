@@ -23,12 +23,7 @@
       >
         {{ currentView?.description }}
 
-        <SupervisorHeaderDetails
-          v-if="
-            currentView.page === 'conversations' &&
-            featureFlagsStore.flags.newSupervisor
-          "
-        />
+        <SupervisorHeaderDetails v-if="currentView.page === 'conversations'" />
       </h2>
     </section>
 
@@ -50,7 +45,6 @@ import useBuildViews from '@/composables/useBuildViews';
 
 import SupervisorHeaderDetails from './Supervisor/SupervisorHeaderDetails.vue';
 
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import i18n from '@/utils/plugins/i18n';
 
 const route = useRoute();
@@ -74,8 +68,6 @@ const props = defineProps({
     },
   },
 });
-
-const featureFlagsStore = useFeatureFlagsStore();
 
 const currentView = computed(() => {
   const { t } = i18n.global;

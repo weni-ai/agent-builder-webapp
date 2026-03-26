@@ -1,7 +1,7 @@
 import { isArray } from 'lodash';
 import { Conversation } from '@/store/types/Conversations.types';
 
-interface ApiData {
+interface ApiDataLegacy {
   results: {
     urn: string;
     uuid: string;
@@ -13,6 +13,24 @@ interface ApiData {
     end_date: string;
     resolution: string;
     name: string;
+  }[];
+}
+
+interface ApiDataV2 {
+  results: {
+    uuid: string;
+    contact_urn: string;
+    contact_name: string;
+    status: string;
+    resolution: number;
+    start_date: string;
+    end_date: string;
+    channel_uuid: string;
+    has_chats_room: boolean;
+    csat: string | null;
+    nps: string | null;
+    created_at: string;
+    classification: string | null;
   }[];
 }
 
@@ -46,7 +64,7 @@ export const ConversationAdapter = {
    * @param {Object} apiData - Raw API response data
    * @returns {Object} Transformed data for frontend use
    */
-  fromApi(apiData: ApiData): ConversationResponse {
+  fromApi(apiData: ApiDataLegacy | ApiDataV2): ConversationResponse {
     const statusMap = {
       0: 'optimized_resolution',
       1: 'other_conclusion',
@@ -69,11 +87,11 @@ export const ConversationAdapter = {
         results: apiData.results.map(
           (result): Conversation => ({
             uuid: result.uuid,
-            id: result.external_id,
+            id: result.external_id || result.uuid,
             start: result.start_date,
             end: result.end_date,
-            username: result.name,
-            urn: result.urn,
+            username: result.name || result.contact_name,
+            urn: result.urn || result.contact_urn,
             status: statusMap[result.resolution] || 'in_progress',
             csat:
               result.csat !== null
