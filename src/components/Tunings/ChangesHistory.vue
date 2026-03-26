@@ -8,12 +8,23 @@
   <template v-else>
     <section class="changes-history__container__header">
       <section>
-        <p class="changes-history__description">
+        <UnnnicIntelligenceText
+          color="neutral-cloudy"
+          family="secondary"
+          size="body-gt"
+          tag="p"
+        >
           {{ $t('router.tunings.history.description') }}
-        </p>
-        <p class="changes-history__sub-description">
+        </UnnnicIntelligenceText>
+        <UnnnicIntelligenceText
+          class="text-sub-description"
+          color="neutral-clean"
+          family="secondary"
+          size="body-md"
+          tag="p"
+        >
           {{ $t('router.tunings.history.sub_description') }}
-        </p>
+        </UnnnicIntelligenceText>
       </section>
 
       <UnnnicSelectSmart
@@ -185,18 +196,9 @@ function formatTimeSince(dateString) {
 <style scoped lang="scss">
 .changes-history {
   &__no-changes {
-    color: $unnnic-color-fg-base;
-    font: $unnnic-font-body;
-  }
-
-  &__description {
-    color: $unnnic-color-fg-base;
-    font: $unnnic-font-body;
-  }
-
-  &__sub-description {
-    color: $unnnic-color-fg-muted;
-    font: $unnnic-font-caption-2;
+    color: $unnnic-color-neutral-cloudy;
+    font-family: $unnnic-font-family-secondary;
+    font-size: $unnnic-font-size-body-gt;
   }
 
   &__container {

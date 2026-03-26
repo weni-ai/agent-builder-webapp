@@ -56,12 +56,7 @@ defineProps({
 const projectStore = useProjectStore();
 
 onMounted(() => {
-  if (
-    projectStore.details.status !== 'success' &&
-    projectStore.details.status !== 'loading'
-  ) {
-    projectStore.getProjectDetails();
-  }
+  projectStore.getProjectDetails();
 });
 
 const projectDetails = computed(() => projectStore.details);

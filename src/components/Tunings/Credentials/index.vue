@@ -50,9 +50,7 @@ const credentials = computed(() => tuningsStore.credentials.data);
 const isSaveAvailable = computed(() => tuningsStore.isCredentialsValid);
 
 onMounted(() => {
-  if (!credentials.value && tuningsStore.credentials.status !== 'loading') {
-    tuningsStore.fetchCredentials();
-  }
+  tuningsStore.fetchCredentials();
 });
 
 watch(

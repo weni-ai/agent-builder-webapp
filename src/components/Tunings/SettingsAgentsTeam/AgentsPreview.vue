@@ -82,7 +82,7 @@ const isComponentsDisabled = computed(() => {
 
   return (
     !newManagerAcceptsComponents.value &&
-    selectedManager.value === managers.new.id
+    selectedManager.value === managers?.new?.id
   );
 });
 
