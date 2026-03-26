@@ -13,23 +13,6 @@
 
     <form class="agents-preview__form">
       <SettingsField
-        v-if="showProgressiveFeedback"
-        v-model="tuningsStore.settings.data.progressiveFeedback"
-        data-testid="progressive-feedback"
-        :textRight="
-          $t(
-            'router.tunings.settings.agents_preview.agents_progressive_feedback.title',
-          )
-        "
-        :description="
-          $t(
-            'router.tunings.settings.agents_preview.agents_progressive_feedback.description',
-          )
-        "
-        :loading="isLoading"
-      />
-
-      <SettingsField
         v-model="tuningsStore.settings.data.components"
         data-testid="components"
         :disabled="isComponentsDisabled"
@@ -41,6 +24,23 @@
         :description="
           $t(
             'router.tunings.settings.agents_preview.multiple_message_format.description',
+          )
+        "
+        :loading="isLoading"
+      />
+
+      <SettingsField
+        v-if="showProgressiveFeedback"
+        v-model="tuningsStore.settings.data.progressiveFeedback"
+        data-testid="progressive-feedback"
+        :textRight="
+          $t(
+            'router.tunings.settings.agents_preview.agents_progressive_feedback.title',
+          )
+        "
+        :description="
+          $t(
+            'router.tunings.settings.agents_preview.agents_progressive_feedback.description',
           )
         "
         :loading="isLoading"
