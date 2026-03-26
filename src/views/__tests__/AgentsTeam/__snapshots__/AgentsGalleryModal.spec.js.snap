@@ -61,7 +61,7 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
         class="unnnic-form-element unnnic-form md"
         data-testid="search-input"
         data-v-2dd04313=""
-        data-v-cb39816d=""
+        data-v-61d29f44=""
         data-v-e8ff269c=""
       >
         <!---->
@@ -69,7 +69,7 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
         <div
           class="text-input size--md unnnic-form-input"
           data-testid="search-input"
-          data-v-28a84b07=""
+          data-v-227e7338=""
           data-v-2dd04313=""
           hascloudycolor="false"
           mask=""
@@ -77,8 +77,8 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
           <input
             class="unnnic-form-input input-itself input size-md normal input--has-icon-left unnnic-form-input input-itself"
             data-testid="search-input"
-            data-v-043812be=""
-            data-v-28a84b07=""
+            data-v-11e89257=""
+            data-v-227e7338=""
             hascloudycolor="false"
             iconleft="search"
             iconleftclickable="false"
@@ -92,15 +92,15 @@ exports[`AgentsGalleryModal.vue > Component rendering > should match snapshot 1`
           <span
             class="unnnic-icon material-symbols-rounded unnnic-icon-scheme--fg-base unnnic-icon-size--ant unnnic-icon__size--ant icon-left"
             data-testid="material-icon"
-            data-v-28a84b07=""
-            data-v-69390f82=""
+            data-v-227e7338=""
+            data-v-b593673c=""
             translate="no"
           >
             search
           </span>
           <section
             class="icon-right-container"
-            data-v-28a84b07=""
+            data-v-227e7338=""
           >
             <!---->
             <!---->
