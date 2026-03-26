@@ -37,7 +37,7 @@
     </section>
     <UnnnicTableNext
       v-model:pagination="pagination"
-      :headers="table.headers"
+      :headers="headers"
       :rows="formattedRows"
       :paginationTotal="paginationTotal"
       :paginationInterval="paginationInterval"
@@ -50,13 +50,14 @@
 
 <script setup>
 import { ref, watch, computed } from 'vue';
-import i18n from '@/utils/plugins/i18n';
+import { useI18n } from 'vue-i18n';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import HistoryItem from './HistoryItem.vue';
 import HistoryData from './HistoryData.vue';
 import { handleChangeName } from '@/utils/changeNameUtils';
 import { useProjectStore } from '@/store/Project';
 
+const { t } = useI18n();
 const projectUuid = useProjectStore().uuid;
 
 const pagination = ref(1);
@@ -66,34 +67,35 @@ const isLoading = ref(false);
 
 const isCollapsedMap = ref({});
 
+const headers = computed(() => [
+  { content: t('router.tunings.history.fields.change'), size: 3 },
+  { content: t('router.tunings.history.fields.date') },
+]);
+
 const table = ref({
-  headers: [
-    { content: i18n.global.t('router.tunings.history.fields.change'), size: 3 },
-    { content: i18n.global.t('router.tunings.history.fields.date') },
-  ],
   rows: [],
 });
 
-const filterOptions = [
+const filterOptions = computed(() => [
   {
     value: 'all',
-    label: i18n.global.t('router.tunings.history.fields.all-changes'),
+    label: t('router.tunings.history.fields.all-changes'),
   },
   {
     value: 'Customization',
-    label: i18n.global.t('router.tunings.history.fields.instructions-changes'),
+    label: t('router.tunings.history.fields.instructions-changes'),
   },
   {
     value: 'Content',
-    label: i18n.global.t('router.tunings.history.fields.content-changes'),
+    label: t('router.tunings.history.fields.content-changes'),
   },
   {
     value: 'Config',
-    label: i18n.global.t('router.tunings.history.fields.settings-changes'),
+    label: t('router.tunings.history.fields.settings-changes'),
   },
-];
+]);
 
-const currentFilterOption = ref(filterOptions[0].value.value);
+const currentFilterOption = ref(filterOptions.value[0].value.value);
 
 const noChangesDetected = computed(() => {
   const noRows = table.value.rows.length === 0;
@@ -109,7 +111,7 @@ const formattedRows = computed(() =>
       {
         component: HistoryItem,
         props: {
-          ...handleChangeName(row),
+          ...handleChangeName(t, row),
           isRenderGroupText: isCollapsedMap.value[index] || false,
         },
         events: {},
@@ -173,21 +175,21 @@ function formatTimeSince(dateString) {
   const diffInMinutes = Math.floor((now - createdAt) / 1000 / 60);
 
   if (diffInMinutes < 60) {
-    return i18n.global.t('time.time_ago_minutes', { count: diffInMinutes });
+    return t('time.time_ago_minutes', { count: diffInMinutes });
   }
 
   const diffInHours = Math.floor(diffInMinutes / 60);
   if (diffInHours < 24) {
-    return i18n.global.t('time.time_ago_hours', { count: diffInHours });
+    return t('time.time_ago_hours', { count: diffInHours });
   }
 
   const diffInDays = Math.floor(diffInHours / 24);
   if (diffInDays < 30) {
-    return i18n.global.t('time.time_ago_days', { count: diffInDays });
+    return t('time.time_ago_days', { count: diffInDays });
   }
 
   const diffInMonths = Math.floor(diffInDays / 30);
-  return i18n.global.t('time.time_ago_months', { count: diffInMonths });
+  return t('time.time_ago_months', { count: diffInMonths });
 }
 </script>
 
