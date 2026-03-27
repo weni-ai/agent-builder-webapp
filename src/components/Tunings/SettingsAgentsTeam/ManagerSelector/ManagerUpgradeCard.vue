@@ -7,11 +7,17 @@
       {{ title }}
     </p>
 
-    <p class="manager-upgrade-card__description">
+    <p
+      v-if="isDescriptionEnabled"
+      class="manager-upgrade-card__description"
+    >
       {{ description }}
     </p>
 
-    <ul class="manager-upgrade-card__highlights">
+    <ul
+      v-if="isDescriptionEnabled"
+      class="manager-upgrade-card__highlights"
+    >
       <li
         v-for="(highlight, index) in highlights"
         :key="`${highlight}-${index}`"
@@ -52,6 +58,12 @@ const description = computed(() =>
 const highlights = computed(() =>
   tm('agent_builder.tunings.manager.upgrade_banner.manager_2_dot_6_highlights'),
 );
+
+const isManager2_7 = computed(() =>
+  'Manager 2.7'.includes(managerSelectorStore.options.managers.new.label),
+);
+
+const isDescriptionEnabled = computed(() => !isManager2_7.value);
 </script>
 
 <style lang="scss" scoped>
