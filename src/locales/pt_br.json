@@ -274,7 +274,7 @@
           ],
           "manager_2_dot_6_disclaimer_description": "Manager 2.5 será descontinuado em breve. Atualize para Manager 2.6 para respostas mais confiáveis enquanto o Manager coordena seus agentes."
         },
-        "no_components_support": "{manager_name} não suporta o formato de múltiplas mensagens"
+        "no_components_support": "{manager_name} ainda não suporta o formato de múltiplas mensagens"
       }
     }
   },
