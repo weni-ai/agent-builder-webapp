@@ -14,6 +14,7 @@
       />
 
       <MCPs
+        v-if="agent.MCPs?.length"
         :mcps="agent.MCPs || []"
         data-testid="start-setup-mcps-section"
       />
