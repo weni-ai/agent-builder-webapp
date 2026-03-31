@@ -11,8 +11,8 @@ import { ConversationAdapter } from './conversation';
 
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
-/** Data from which conversations come from the v2 endpoint (13/03/2026) */
-export const CONVERSATIONS_SWITCH_DATE = new Date(Date.UTC(2026, 2, 13));
+/** Data from which conversations come from the v2 endpoint (28/03/2026) */
+export const CONVERSATIONS_SWITCH_DATE = new Date(Date.UTC(2026, 2, 28));
 
 export const LEGACY_SOURCE = 'legacy';
 export const NEW_SOURCE = 'v2';
