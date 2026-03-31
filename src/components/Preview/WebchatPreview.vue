@@ -40,10 +40,6 @@ async function initWebchat() {
     channelUuid: projectStore.details?.wwcChannelUuid,
     sessionId: contactUrn,
     inputTextFieldHint: t('router.preview.preview_tests_placeholder'),
-    params: {
-      // TODO: Remove this once we have the preview API ready
-      preview: true,
-    },
     embedded: true,
     showChatAvatar: false,
   });
