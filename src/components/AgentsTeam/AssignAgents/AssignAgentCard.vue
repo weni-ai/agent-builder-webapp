@@ -127,7 +127,7 @@ function handleAssignButton() {
       return;
     }
 
-    if (props.agent.group) {
+    if (props.agent.presentation) {
       isModalAssignAgentOpen.value = true;
       return;
     }
