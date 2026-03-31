@@ -54,6 +54,7 @@ withDefaults(
 
   display: grid;
   grid-template-columns: 4fr 3fr;
+  grid-template-rows: auto 1fr;
   gap: $unnnic-space-4;
 
   &--loading {
