@@ -1,0 +1,98 @@
+# Required GitHub Secrets (Settings > Secrets and variables > Actions):
+#
+#   JIRA_BASE_URL    - Jira instance URL (e.g. https://<your-org>.atlassian.net)
+#   JIRA_USER_EMAIL  - Service account email for Jira authentication
+#   JIRA_API_TOKEN   - API token generated at https://id.atlassian.com
+#   JIRA_PROJECT_KEY - Jira project key (e.g. LOC)
+
+name: Create Localization Ticket
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+    paths:
+      - 'src/locales/**'
+
+jobs:
+  create-jira-ticket:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect changed locale files
+        id: locale_files
+        run: |
+          CHANGED=$(git diff --name-only \
+            ${{ github.event.pull_request.base.sha }} \
+            ${{ github.event.pull_request.merge_commit_sha }} \
+            -- src/locales/)
+
+          FORMATTED=$(echo "$CHANGED" | sed 's/^/* /')
+
+          echo "list<<EOF" >> $GITHUB_OUTPUT
+          echo "$FORMATTED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Jira ticket
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
+          LOCALE_FILES: ${{ steps.locale_files.outputs.list }}
+        run: |
+          PR_NUMBER=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
+          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          PR_URL=$(jq -r '.pull_request.html_url' "$GITHUB_EVENT_PATH")
+          PR_AUTHOR=$(jq -r '.pull_request.user.login' "$GITHUB_EVENT_PATH")
+          PR_BODY=$(jq -r '.pull_request.body // "No description provided."' "$GITHUB_EVENT_PATH")
+
+          PAYLOAD=$(jq -n \
+            --arg project "$JIRA_PROJECT_KEY" \
+            --arg pr_title "$PR_TITLE" \
+            --arg pr_number "$PR_NUMBER" \
+            --arg pr_url "$PR_URL" \
+            --arg pr_author "$PR_AUTHOR" \
+            --arg locale_files "$LOCALE_FILES" \
+            --arg pr_body "$PR_BODY" \
+            '{
+              fields: {
+                project: { key: $project },
+                summary: ("[Localization] " + $pr_title),
+                description: (
+                  "h3. PR Details\n" +
+                  "||Field||Value||\n" +
+                  "|Author|" + $pr_author + "|\n" +
+                  "|PR|[#" + $pr_number + "|" + $pr_url + "]|\n\n" +
+                  "h3. Changed locale files\n" +
+                  $locale_files + "\n\n" +
+                  "h3. PR Description\n" +
+                  "{noformat}\n" +
+                  $pr_body + "\n" +
+                  "{noformat}"
+                ),
+                issuetype: { name: "Task" }
+              }
+            }')
+
+          RESPONSE=$(curl -s -o response.json -w "%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -u "${JIRA_USER_EMAIL}:${JIRA_API_TOKEN}" \
+            -d "$PAYLOAD" \
+            "${JIRA_BASE_URL}/rest/api/2/issue")
+
+          if [ "$RESPONSE" -eq 201 ]; then
+            TICKET=$(jq -r '.key' response.json)
+            echo "Ticket created: ${JIRA_BASE_URL}/browse/${TICKET}"
+          else
+            echo "Failed to create ticket (HTTP $RESPONSE)"
+            cat response.json
+            exit 1
+          fi
