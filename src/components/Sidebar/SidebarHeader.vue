@@ -46,7 +46,7 @@
 import { ref, computed } from 'vue';
 import { useProfileStore } from '@/store/Profile';
 
-import EditManagerProfileDrawer from './EditManagerProfileDrawer.vue';
+import EditManagerProfileDrawer from '@/components/AgentsTeam/MyAgents/EditManagerProfileDrawer.vue';
 
 const profileStore = useProfileStore();
 const isOpenEditManagerProfileDrawer = ref(false);

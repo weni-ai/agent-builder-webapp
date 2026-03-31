@@ -38,12 +38,13 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 import i18n from '@/utils/plugins/i18n';
 
 import { useProjectStore } from '@/store/Project';
 import ProjectInfo from './ProjectInfo.vue';
+import UnnnicDivider from '@/components/Divider.vue';
 
 const emit = defineEmits(['update:modelValue']);
 defineProps({
@@ -53,6 +54,10 @@ defineProps({
   },
 });
 const projectStore = useProjectStore();
+
+onMounted(() => {
+  projectStore.getProjectDetails();
+});
 
 const projectDetails = computed(() => projectStore.details);
 const charactersUsage = computed(() => {

@@ -17,14 +17,6 @@
         "title": "Conversations",
         "description": "Review and analyze conversations between agents and customers."
       },
-      "instructions": {
-        "title": "Instructions",
-        "description": "Write quick rules to shape the agent’s behavior"
-      },
-      "agents": {
-        "title": "Agents",
-        "description": "Create the perfect team of agents"
-      },
       "knowledge": {
         "title": "Knowledge",
         "description": "Add knowledge through files, links, or text so the agent can reply accurately"
@@ -39,7 +31,7 @@
       "conversation_details": {
         "title": "About conversation",
         "what_is_a_conversation": "What is a conversation?",
-        "what_is_a_conversation_description": "We consider all messages exchanged within 24 hours of the contact's first message as a single conversation.",
+        "what_is_a_conversation_description": "We consider all messages exchanged within 24 hours (resetting at midnight) as a single conversation.",
         "optimized_resolution": "AI-Assisted",
         "optimized_resolution_description": "Conversations that ended with a clear and effective resolution for the contact.",
         "other_conclusion": "Not Assisted",
@@ -70,7 +62,7 @@
       "search": "Search",
       "conversations_empty": "No conversations found",
       "conversations_separator": "Conversations below were classified using the legacy system",
-      "conversations_v2_disclaimer": "Since February {day}, conversations are being classified using our new classification system",
+      "conversations_v2_disclaimer": "Starting on March {day}, conversations are organized into 24-hour windows (resetting at midnight) powered by our new classification system",
       "no_messages_found": {
         "title": "No messages found in this conversation",
         "description": "If the message was sent by human support or triggered an automatic action, you can find it in {studio_link}.",
@@ -191,7 +183,12 @@
           "Gender identity",
           "Sex and relationships"
         ],
-        "no_custom_instructions": "No custom instructions added"
+        "no_custom_instructions": "No custom instructions added",
+        "no_custom_instructions_found": "No custom instructions found",
+        "search_placeholder": "Search",
+        "copy_instructions": "Copy instructions",
+        "copy_success": "Custom instructions copied",
+        "copy_error": "Failed to copy instructions"
       },
       "edit_instruction": {
         "title": "Edit instruction",
@@ -276,20 +273,27 @@
             "More stable orchestration across agents"
           ],
           "manager_2_dot_6_disclaimer_description": "Manager 2.5 will be deprecated soon. Upgrade to Manager 2.6 for more reliable answers while the Manager coordinates your agents."
-        }
+        },
+        "no_components_support": "{manager_name} doesn't support the multiple message format yet"
       }
     }
   },
   "agents": {
-    "title": "Agents",
-    "description": "View and manage your assigned agents",
-    "assign_agents_button": "Assign agents",
+    "title": "My Agents",
+    "description": "Manage your digital workforce, instructions and behaviors",
+    "assign_agents_button": "Assign new agents",
     "assigned_agents": {
+      "title": "Assigned agents",
       "new_agent": "New agent",
+      "manager": {
+        "name": "Manager",
+        "edit_manager": "Edit Manager",
+        "edit_instructions": "Edit instructions"
+      },
       "no_agents": {
         "title": "No agents assigned yet",
-        "description": "Add your first agent to start handling product queries, orders, and more.",
-        "assign_agents_button": "Assign your first agent"
+        "description": "Click {assign_new_agents} and add your first agent",
+        "assign_new_agents": "assign new agents"
       },
       "agent_details": {
         "about": "About",
@@ -300,7 +304,7 @@
       }
     },
     "assign_agents": {
-      "title": "Assign agents",
+      "title": "Assign new agents",
       "description": "Agents are specialists ready to provide personalized support and solve complex demands, they act as true consultants, ensuring a human and high-quality experience for your customers.",
       "header": {
         "all_systems": "All systems",
@@ -392,11 +396,41 @@
         "next_button": "Next",
         "finish_button": "Finish"
       }
+    },
+    "instructions": {
+      "title": "Instructions",
+      "description": "Write quick rules to shape the agent’s behavior"
+    },
+    "profile": {
+      "tone_of_voice": {
+        "tones": {
+          "friendly": {
+            "name": "Friendly",
+            "tooltip": "Supportive and empathetic, focusing on partnership and helpfulness"
+          },
+          "systematic": {
+            "name": "Systematic",
+            "tooltip": "Direct, well-organized, and focused on clear processes and logic"
+          },
+          "analytical": {
+            "name": "Analytical",
+            "tooltip": "Logical, methodical, and objective, using precise language and avoiding assumptions"
+          },
+          "creative": {
+            "name": "Creative",
+            "tooltip": "Forward-thinking and imaginative, prioritizing original solutions"
+          },
+          "casual": {
+            "name": "Casual",
+            "tooltip": "Light, energetic, and informal for a more approachable, human feel"
+          }
+
+        }
+      }
     }
   },
   "router": {
     "agents_team": {
-      "assign_agents": "Assign agents",
       "card": {
         "assign": "Assign to the team",
         "assigned": "Assigned",
@@ -667,7 +701,11 @@
     }
   },
   "profile": {
-    "edit_manager_profile": "Edit Manager profile",
+    "tabs": {
+      "profile": "Profile",
+      "settings": "Settings"
+    },
+    "edit_manager_profile": "Edit Manager",
     "description": "Customize the basic information and behavior of the agent",
     "save_btn": "Save changes",
     "save_success": "Changes saved successfully",
@@ -693,18 +731,6 @@
       "personality": {
         "title": "What's the agent's tone of voice?",
         "description": "Choose how the agent communicates with users"
-      },
-      "personalities": {
-        "friendly": "Friendly",
-        "extrovert": "Extrovert",
-        "cooperative": "Cooperative",
-        "generous": "Generous",
-        "relaxed": "Relaxed",
-        "organized": "Organized",
-        "systematic": "Systematic",
-        "innovative": "Innovative",
-        "creative": "Creative",
-        "intellectual": "Intellectual"
       }
     },
     "instructions": {

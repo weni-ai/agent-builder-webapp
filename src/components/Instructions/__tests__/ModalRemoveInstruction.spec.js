@@ -70,7 +70,7 @@ describe('ModalRemoveInstruction.vue', () => {
       );
       expect(modal.props('showCloseIcon')).toBe(true);
       expect(modal.props('icon')).toBe('warning');
-      expect(modal.props('iconScheme')).toBe('aux-red-500');
+      expect(modal.props('iconScheme')).toBe('red-10');
       expect(modal.props('size')).toBe('sm');
     });
 

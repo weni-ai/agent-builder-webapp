@@ -165,6 +165,7 @@ defineProps({
   }
 
   &__agent-icon {
+    padding: 0;
     width: $unnnic-icon-size-lg;
     height: $unnnic-icon-size-lg;
   }

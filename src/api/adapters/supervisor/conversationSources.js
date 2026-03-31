@@ -11,8 +11,8 @@ import { ConversationAdapter } from './conversation';
 
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
-/** Data from which conversations come from the v2 endpoint (26/02/2026) */
-export const CONVERSATIONS_SWITCH_DATE = new Date(Date.UTC(2026, 1, 26));
+/** Data from which conversations come from the v2 endpoint (13/03/2026) */
+export const CONVERSATIONS_SWITCH_DATE = new Date(Date.UTC(2026, 2, 13));
 
 export const LEGACY_SOURCE = 'legacy';
 export const NEW_SOURCE = 'v2';
@@ -387,7 +387,11 @@ export async function fetchConversationList(filterData) {
   }
   if (mode === 'new') {
     const result = await fetchNew(buildNewEndpointParams(params));
-    return { ...result, _paginationSource: NEW_SOURCE };
+    return {
+      ...result,
+      _paginationSource: NEW_SOURCE,
+      legacyInitialAttempted: true,
+    };
   }
 
   if (onlyLegacy) {

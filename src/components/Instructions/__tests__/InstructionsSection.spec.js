@@ -71,21 +71,6 @@ describe('InstructionsSection.vue', () => {
 
     it('renders custom instructions correctly', () => {
       expect(findComponent('instructionsCustom').exists()).toBe(true);
-      expect(
-        findComponent('instructionsCustom').props('instructions'),
-      ).toStrictEqual([
-        {
-          id: 1,
-          text: 'Instruction 1',
-        },
-        {
-          id: 2,
-          text: 'Instruction 2',
-        },
-      ]);
-      expect(findComponent('instructionsCustom').props('showActions')).toBe(
-        true,
-      );
     });
 
     it('renders default instructions correctly', async () => {

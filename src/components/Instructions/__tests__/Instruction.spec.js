@@ -97,7 +97,7 @@ describe('Instruction.vue', () => {
             'agent_builder.instructions.edit_instruction.title',
           ),
           icon: 'edit_square',
-          scheme: 'neutral-dark',
+          scheme: 'fg-base',
           onClick: expect.any(Function),
         },
         {
@@ -105,7 +105,7 @@ describe('Instruction.vue', () => {
             'agent_builder.instructions.remove_instruction.title',
           ),
           icon: 'delete',
-          scheme: 'aux-red-500',
+          scheme: 'red-10',
           onClick: expect.any(Function),
         },
       ]);

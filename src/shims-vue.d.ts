@@ -3,3 +3,12 @@ declare module '*.vue' {
   const component: DefineComponent;
   export default component;
 }
+
+declare module 'connect/sharedStore' {
+  interface SharedStore {
+    auth: { token: string };
+    current: { project: { uuid: string } };
+  }
+
+  export function useSharedStore(): SharedStore;
+}

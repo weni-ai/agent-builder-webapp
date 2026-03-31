@@ -5,7 +5,7 @@
     class="modal-remove-instruction"
     showCloseIcon
     icon="warning"
-    iconScheme="aux-red-500"
+    iconScheme="red-10"
     :title="$t('agent_builder.instructions.remove_instruction.title')"
     size="sm"
     :secondaryButtonProps="{
