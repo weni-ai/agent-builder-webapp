@@ -9,6 +9,7 @@ interface ProjectDetails {
   backend?: string;
   agentsModels?: { name: string; model: string }[];
   charactersCount?: number;
+  wwcChannelUuid?: string;
 }
 
 export const useProjectStore = defineStore('Project', () => {

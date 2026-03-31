@@ -6,6 +6,7 @@ export const ProjectDetailsAdapter = {
       manager_foundation_model,
       integrated_agents,
       instruction_character_count,
+      default_channel_uuid,
     } = apiData;
     const backend = indexed_database || agents_backend;
     const agentsModels =
@@ -27,6 +28,7 @@ export const ProjectDetailsAdapter = {
         Number.isInteger(instruction_character_count)
           ? instruction_character_count
           : null,
+      wwcChannelUuid: default_channel_uuid,
     };
   },
 };
