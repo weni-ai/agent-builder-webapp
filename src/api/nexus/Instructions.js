@@ -65,6 +65,7 @@ export const Instructions = {
       en: 'English',
       'pt-br': 'Portuguese',
       es: 'Spanish',
+      ro: 'Romanian',
     };
     const language = languageMap[i18n.global.locale] || 'English';
 

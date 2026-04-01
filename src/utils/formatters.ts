@@ -1,7 +1,7 @@
 import i18n from '@/utils/plugins/i18n';
 
 import { format } from 'date-fns';
-import { enUS, es as esLocale, ptBR } from 'date-fns/locale';
+import { enUS, es as esLocale, ptBR, ro as roLocale } from 'date-fns/locale';
 
 /**
  * Formats an array of items into a human-readable string with proper conjunction
@@ -64,11 +64,13 @@ export function formatTimestamp(timestamp: string) {
     en: enUS,
     es: esLocale,
     'pt-br': ptBR,
+    ro: roLocale,
   };
   const DATE_PATTERN_MAP = {
     en: FALLBACK_PATTERN,
     es: 'dd/MM/yy HH:mm',
     'pt-br': 'dd/MM/yy HH:mm',
+    ro: 'dd/MM/yy HH:mm',
   };
 
   const parsedDate = new Date(timestamp);
