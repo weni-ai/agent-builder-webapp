@@ -122,13 +122,13 @@ async function assignAgent() {
 
 function handleAssignButton() {
   if (!props.agent.assigned) {
-    if (props.agent.credentials?.length > 0) {
-      toggleDrawer();
+    if (props.agent.presentation) {
+      isModalAssignAgentOpen.value = true;
       return;
     }
 
-    if (props.agent.group) {
-      isModalAssignAgentOpen.value = true;
+    if (props.agent.credentials?.length > 0) {
+      toggleDrawer();
       return;
     }
   }

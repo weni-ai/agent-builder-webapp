@@ -14,6 +14,7 @@
       />
 
       <MCPs
+        v-if="agent.MCPs?.length"
         :mcps="agent.MCPs || []"
         data-testid="start-setup-mcps-section"
       />
@@ -54,6 +55,7 @@ withDefaults(
 
   display: grid;
   grid-template-columns: 4fr 3fr;
+  grid-template-rows: auto 1fr;
   gap: $unnnic-space-4;
 
   &--loading {
