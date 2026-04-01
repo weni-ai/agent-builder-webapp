@@ -123,7 +123,7 @@ describe('ChangesHistory.vue', () => {
   });
 
   test('handles rendering logic for rows', () => {
-    wrapper.vm.rows = [
+    wrapper.vm.table.rows = [
       {
         created_at: '2024-01-01T00:00:00Z',
         action_details: {},
@@ -150,7 +150,7 @@ describe('ChangesHistory.vue', () => {
 
     await nextTick();
 
-    wrapper.vm.rows = [];
+    wrapper.vm.table.rows = [];
     wrapper.vm.isLoading = false;
 
     await nextTick();
@@ -163,7 +163,7 @@ describe('ChangesHistory.vue', () => {
 
   test('computes noChangesDetected correctly when rows are present', async () => {
     wrapper.vm.currentFilterOption = [{ value: 'all' }];
-    wrapper.vm.rows = [{}];
+    wrapper.vm.table.rows = [{}];
 
     await nextTick();
 
@@ -172,7 +172,7 @@ describe('ChangesHistory.vue', () => {
 
   test('renders description and filter select when there are changes', async () => {
     wrapper.vm.currentFilterOption = [{ value: 'Customization' }];
-    wrapper.vm.rows = [{ id: 1, content: 'Change 1' }];
+    wrapper.vm.table.rows = [{ id: 1, content: 'Change 1' }];
     wrapper.vm.isLoading = false;
 
     await nextTick();
@@ -204,7 +204,7 @@ describe('ChangesHistory.vue', () => {
 
   test('fetches data correctly in getChangesHistoryData', async () => {
     await wrapper.vm.getChangesHistoryData(1, 'all');
-    expect(wrapper.vm.rows).toHaveLength(1);
+    expect(wrapper.vm.table.rows).toHaveLength(1);
     expect(wrapper.vm.paginationTotal).toBe(1);
   });
 
@@ -217,7 +217,7 @@ describe('ChangesHistory.vue', () => {
       'read',
     ).mockRejectedValue(new Error('API Error'));
     await wrapper.vm.getChangesHistoryData(1, 'all');
-    expect(wrapper.vm.rows).toHaveLength(0);
+    expect(wrapper.vm.table.rows).toHaveLength(0);
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       'Failed to fetch data:',
       expect.any(Error),

@@ -14,6 +14,7 @@ import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { useWebchatLoader } from '@/composables/useWebchatLoader';
 import env from '@/utils/env';
 import { useI18n } from 'vue-i18n';
+import { useProjectStore } from '@/store/Project';
 
 const WWC_SELECTOR = '#weni-webchat-preview';
 const WWC_MESSAGES_SELECTOR = `${WWC_SELECTOR} .weni-messages-list`;
@@ -23,6 +24,7 @@ const DIRECTION_GROUP_SELECTOR = '.weni-messages-list__direction-group';
 
 const flowPreviewStore = useFlowPreviewStore();
 const managerSelectorStore = useManagerSelectorStore();
+const projectStore = useProjectStore();
 const { preload, cleanup: cleanupLoader } = useWebchatLoader();
 
 async function initWebchat() {
@@ -35,13 +37,9 @@ async function initWebchat() {
     selector: WWC_SELECTOR,
     socketUrl: env('WWC_SOCKET_URL'),
     host: env('WWC_HOST_URL'),
-    channelUuid: '4f21629b-babe-4d20-951a-609236da9c96',
+    channelUuid: projectStore.project?.wwcChannelUuid,
     sessionId: contactUrn,
     inputTextFieldHint: t('router.preview.preview_tests_placeholder'),
-    params: {
-      // TODO: Remove this once we have the preview API ready
-      preview: true,
-    },
     embedded: true,
     showChatAvatar: false,
   });
