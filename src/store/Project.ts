@@ -9,7 +9,11 @@ interface ProjectDetails {
   backend?: string;
   agentsModels?: { name: string; model: string }[];
   charactersCount?: number;
-  wwcChannelUuid?: string;
+}
+
+interface ProjectInfo {
+  status: null | 'loading' | 'success' | 'error';
+  wwcChannelUuid: string;
 }
 
 export const useProjectStore = defineStore('Project', () => {
@@ -17,6 +21,27 @@ export const useProjectStore = defineStore('Project', () => {
   const details = ref<ProjectDetails>({
     status: null,
   });
+
+  const project = ref<ProjectInfo>({
+    status: null,
+    wwcChannelUuid: '',
+  });
+
+  async function getProject() {
+    project.value.status = 'loading';
+
+    try {
+      const { data } = await nexusaiAPI.router.project.read({
+        projectUuid: uuid,
+      });
+
+      project.value.wwcChannelUuid = data.default_channel_uuid;
+      project.value.status = 'success';
+    } catch (error) {
+      console.error(error);
+      project.value.status = 'error';
+    }
+  }
 
   async function getProjectDetails() {
     details.value.status = 'loading';
@@ -36,7 +61,9 @@ export const useProjectStore = defineStore('Project', () => {
 
   return {
     uuid,
+    getProject,
     getProjectDetails,
+    project,
     details,
   };
 });

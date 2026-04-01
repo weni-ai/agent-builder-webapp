@@ -180,6 +180,12 @@ export default {
       },
     },
 
+    project: {
+      read({ projectUuid }) {
+        return request.$http.get(`api/${projectUuid}/project`);
+      },
+    },
+
     profile: {
       read({ projectUuid }) {
         return request.$http.get(`api/${projectUuid}/customization/`);

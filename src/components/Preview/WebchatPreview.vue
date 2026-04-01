@@ -37,7 +37,7 @@ async function initWebchat() {
     selector: WWC_SELECTOR,
     socketUrl: env('WWC_SOCKET_URL'),
     host: env('WWC_HOST_URL'),
-    channelUuid: projectStore.details?.wwcChannelUuid,
+    channelUuid: projectStore.project?.wwcChannelUuid,
     sessionId: contactUrn,
     inputTextFieldHint: t('router.preview.preview_tests_placeholder'),
     embedded: true,

@@ -71,7 +71,7 @@ onMounted(() => {
   useProfileStore().load();
   userStore.getUserDetails();
   managerSelectorStore.loadManagerData();
-  useProjectStore().getProjectDetails();
+  useProjectStore().getProject();
 });
 
 const showTestAgentsButton = computed(
