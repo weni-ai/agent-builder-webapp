@@ -29,7 +29,7 @@
 
         <UnnnicDialogFooter>
           <UnnnicButton
-            :text="$t('agents.assign_agents.setup.start_button')"
+            :text="footerButtonText"
             :disabled="isLoadingAgentDetails"
             :loading="isAssigning"
             data-testid="next-button"
@@ -44,6 +44,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 
+import { useI18n } from 'vue-i18n';
+
 import { AgentGroup } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
@@ -51,6 +53,8 @@ import ModalAssignAgentGroupStartSetup from './Group/StartSetup/index.vue';
 import ModalAssignAgentGroupFlow from './Group/index.vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
+
+const { t } = useI18n();
 
 const emit = defineEmits(['update:open']);
 
@@ -71,11 +75,16 @@ const agentDetails = ref<AgentGroup | null>(null);
 const isLoadingAgentDetails = ref(false);
 const resolvedAgentDetails = computed(() => agentDetails.value ?? props.agent);
 
-const agentHasNoSetupSteps = computed(() => {
-  const agent = resolvedAgentDetails.value;
-  const { MCPs, systems, credentials } = agent;
+const agentHasSetupSteps = computed(() => {
+  const { MCPs, systems, credentials } = resolvedAgentDetails.value;
 
-  return MCPs?.length > 0 && systems?.length > 0 && credentials?.length > 0;
+  return MCPs?.length > 0 || systems?.length > 0 || credentials?.length > 0;
+});
+
+const footerButtonText = computed(() => {
+  return agentHasSetupSteps.value
+    ? t('agents.assign_agents.setup.start_button')
+    : t('agents.assign_agents.assign_button');
 });
 
 async function fetchAgentDetails() {
@@ -95,7 +104,7 @@ async function fetchAgentDetails() {
 }
 
 async function setupAgent() {
-  if (agentHasNoSetupSteps.value) {
+  if (!agentHasSetupSteps.value) {
     await assignAgent();
     return;
   }
