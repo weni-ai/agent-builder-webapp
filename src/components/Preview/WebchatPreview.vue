@@ -122,7 +122,7 @@ onBeforeUnmount(() => {
         align-items: center;
         justify-content: center;
 
-        color: $unnnic-color-gray-600;
+        color: $unnnic-color-fg-base;
         font: $unnnic-font-caption-2;
       }
     }
