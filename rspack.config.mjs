@@ -34,7 +34,7 @@ export default defineConfig({
     assetModuleFilename: 'assets/[name]-[hash][ext]',
   },
   entry: {
-    main: './src/main.js',
+    main: './src/bootstrap.js',
   },
   stats: {
     warnings: false,
@@ -135,6 +135,14 @@ export default defineConfig({
           singleton: true,
           requiredVersion: '^3.0.0',
           eager: true,
+        },
+        pinia: {
+          singleton: true,
+          requiredVersion: pkg.dependencies.pinia,
+        },
+        'vue-router': {
+          singleton: true,
+          requiredVersion: pkg.dependencies['vue-router'],
         },
         'vue-i18n': {
           singleton: true,
