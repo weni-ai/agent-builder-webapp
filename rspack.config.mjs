@@ -34,7 +34,7 @@ export default defineConfig({
     assetModuleFilename: 'assets/[name]-[hash][ext]',
   },
   entry: {
-    main: './src/main.js',
+    main: './src/bootstrap.js',
   },
   stats: {
     warnings: false,
@@ -117,8 +117,7 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       exposes: {
         './main': './src/main.js',
-        './WorkspaceCredentials':
-          './src/exports/WorkspaceCredentials.vue',
+        './WorkspaceCredentials': './src/exports/WorkspaceCredentials.vue',
         './WorkspaceChangesHistory':
           './src/exports/WorkspaceChangesHistory.vue',
         './WorkspaceProjectDetails':
