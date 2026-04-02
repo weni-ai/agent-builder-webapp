@@ -15,6 +15,7 @@ import { useWebchatLoader } from '@/composables/useWebchatLoader';
 import env from '@/utils/env';
 import { useI18n } from 'vue-i18n';
 import { useProjectStore } from '@/store/Project';
+import nexusaiAPI from '@/api/nexusaiAPI';
 
 const WWC_SELECTOR = '#weni-webchat-preview';
 const WWC_MESSAGES_SELECTOR = `${WWC_SELECTOR} .weni-messages-list`;
@@ -75,6 +76,11 @@ watch(
   (managerId, previousManagerId) => {
     if (!managerId || managerId === previousManagerId) return;
     injectManagerSelectedMessage(managerId);
+
+    nexusaiAPI.agent_builder.simulation.setManagerModel({
+      projectUuid: projectStore.uuid,
+      managerFoundationModel: managerId,
+    });
   },
 );
 
