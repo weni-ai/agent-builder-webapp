@@ -139,7 +139,10 @@ export default defineConfig({
         pinia: {
           singleton: true,
           requiredVersion: pkg.dependencies.pinia,
-          eager: true,
+        },
+        'vue-router': {
+          singleton: true,
+          requiredVersion: pkg.dependencies['vue-router'],
         },
         'vue-i18n': {
           singleton: true,
