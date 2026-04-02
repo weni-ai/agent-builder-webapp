@@ -56,15 +56,17 @@ function injectManagerSelectedMessage(managerId) {
     name: label,
   });
 
-  const groups = container.querySelectorAll(DIRECTION_GROUP_SELECTOR);
-
   const el = document.createElement('div');
   el.className = 'webchat-manager-status';
   el.textContent = text;
 
-  const lastGroup = groups[groups.length - 1];
-  if (lastGroup) {
-    lastGroup.after(el);
+  const anchors = container.querySelectorAll(
+    `${DIRECTION_GROUP_SELECTOR}, .webchat-manager-status`,
+  );
+  const lastAnchor = anchors[anchors.length - 1];
+
+  if (lastAnchor) {
+    lastAnchor.after(el);
   } else {
     container.appendChild(el);
   }
@@ -76,8 +78,13 @@ watch(
   () => managerSelectorStore.selectedPreviewManager,
   (managerId, previousManagerId) => {
     if (!managerId || managerId === previousManagerId) return;
-    injectManagerSelectedMessage(managerId);
-    webchatPreviewStore.changeManagerModel(managerId);
+
+    try {
+      webchatPreviewStore.changeManagerModel(managerId);
+      injectManagerSelectedMessage(managerId);
+    } catch (error) {
+      console.error('Error changing manager model', error);
+    }
   },
 );
 
