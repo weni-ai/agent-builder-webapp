@@ -43,6 +43,14 @@ export default defineConfig({
     extensions: ['...', '.ts', '.vue'],
     alias: {
       '@': resolve(__dirname, 'src'),
+      ...(connectUrl
+        ? {}
+        : {
+            'connect/sharedStore': resolve(
+              __dirname,
+              'src/stubs/connectSharedStore.js',
+            ),
+          }),
     },
   },
   module: {
