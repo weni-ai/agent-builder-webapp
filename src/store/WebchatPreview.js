@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { useProjectStore } from './Project';
@@ -7,6 +8,8 @@ import { useFlowPreviewStore } from './FlowPreview';
 export const useWebchatPreviewStore = defineStore('webchatPreview', () => {
   const projectStore = useProjectStore();
   const flowPreviewStore = useFlowPreviewStore();
+
+  const isWebchatLoaded = ref(false);
 
   async function changeManagerModel(managerId) {
     await nexusaiAPI.agent_builder.simulation.setManagerModel({
@@ -24,5 +27,9 @@ export const useWebchatPreviewStore = defineStore('webchatPreview', () => {
     await window.WebChat?.clear();
   }
 
-  return { changeManagerModel, endSession };
+  function setWebchatLoaded(value) {
+    isWebchatLoaded.value = value;
+  }
+
+  return { isWebchatLoaded, setWebchatLoaded, changeManagerModel, endSession };
 });
