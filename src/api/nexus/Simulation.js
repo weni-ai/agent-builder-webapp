@@ -8,4 +8,10 @@ export const Simulation = {
       manager_foundation_model: managerFoundationModel,
     });
   },
+
+  endSession({ projectUuid, urn }) {
+    return request.$http.post(`api/${projectUuid}/simulation/end-session/`, {
+      urn,
+    });
+  },
 };

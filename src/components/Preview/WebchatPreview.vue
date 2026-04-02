@@ -15,7 +15,7 @@ import { useWebchatLoader } from '@/composables/useWebchatLoader';
 import env from '@/utils/env';
 import { useI18n } from 'vue-i18n';
 import { useProjectStore } from '@/store/Project';
-import nexusaiAPI from '@/api/nexusaiAPI';
+import { useWebchatPreviewStore } from '@/store/WebchatPreview';
 
 const WWC_SELECTOR = '#weni-webchat-preview';
 const WWC_MESSAGES_SELECTOR = `${WWC_SELECTOR} .weni-messages-list`;
@@ -26,6 +26,7 @@ const DIRECTION_GROUP_SELECTOR = '.weni-messages-list__direction-group';
 const flowPreviewStore = useFlowPreviewStore();
 const managerSelectorStore = useManagerSelectorStore();
 const projectStore = useProjectStore();
+const webchatPreviewStore = useWebchatPreviewStore();
 const { preload, cleanup: cleanupLoader } = useWebchatLoader();
 
 async function initWebchat() {
@@ -76,11 +77,7 @@ watch(
   (managerId, previousManagerId) => {
     if (!managerId || managerId === previousManagerId) return;
     injectManagerSelectedMessage(managerId);
-
-    nexusaiAPI.agent_builder.simulation.setManagerModel({
-      projectUuid: projectStore.uuid,
-      managerFoundationModel: managerId,
-    });
+    webchatPreviewStore.changeManagerModel(managerId);
   },
 );
 
