@@ -1,5 +1,13 @@
 <template>
   <div
+    v-if="!isWebchatReady"
+    class="webchat-preview__loading"
+  >
+    <UnnnicIconLoading size="xl" />
+  </div>
+
+  <div
+    v-show="isWebchatReady"
     id="weni-webchat-preview"
     class="webchat-preview"
     data-testid="webchat-preview"
@@ -7,7 +15,7 @@
 </template>
 
 <script setup>
-import { watch, onMounted, onBeforeUnmount } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 
 import { useFlowPreviewStore } from '@/store/FlowPreview';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
@@ -29,11 +37,56 @@ const projectStore = useProjectStore();
 const webchatPreviewStore = useWebchatPreviewStore();
 const { preload, cleanup: cleanupLoader } = useWebchatLoader();
 
+const EMPTY_HISTORY_RESPONSE = JSON.stringify({ type: 'history', history: [] });
+const HISTORY_TIMEOUT_MS = 20000;
+
+const isWebchatReady = ref(false);
+let originalWsSend = null;
+let historyTimeoutId = null;
+
+function setWebchatReady() {
+  isWebchatReady.value = true;
+  clearTimeout(historyTimeoutId);
+  historyTimeoutId = null;
+}
+
+function patchWebSocketToBlockHistory() {
+  originalWsSend = WebSocket.prototype.send;
+
+  WebSocket.prototype.send = function (data) {
+    const parsed = JSON.parse(data);
+
+    if (parsed.type === 'get_history') {
+      setTimeout(() => {
+        this.onmessage?.(
+          new MessageEvent('message', { data: EMPTY_HISTORY_RESPONSE }),
+        );
+        setWebchatReady();
+      }, 0);
+      return;
+    }
+
+    return originalWsSend.call(this, data);
+  };
+}
+
+function restoreWebSocketSend() {
+  if (originalWsSend) {
+    WebSocket.prototype.send = originalWsSend;
+    originalWsSend = null;
+  }
+}
+
 async function initWebchat() {
   await preload();
 
   flowPreviewStore.ensurePreviewInitialized();
   const contactUrn = flowPreviewStore.preview.contact.urn;
+
+  webchatPreviewStore.endSession();
+  patchWebSocketToBlockHistory();
+
+  historyTimeoutId = setTimeout(setWebchatReady, HISTORY_TIMEOUT_MS);
 
   window.WebChat.init({
     selector: WWC_SELECTOR,
@@ -93,11 +146,21 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  clearTimeout(historyTimeoutId);
+  restoreWebSocketSend();
   cleanupLoader();
 });
 </script>
 
 <style lang="scss" scoped>
+.webchat-preview__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
 .webchat-preview {
   width: 100%;
   height: 100%;
