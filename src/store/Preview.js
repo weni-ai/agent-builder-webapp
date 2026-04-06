@@ -5,6 +5,7 @@ import { computed, ref } from 'vue';
 import WS from '@/websocket/setup';
 
 import { useAgentsTeamStore } from './AgentsTeam';
+import { useFeatureFlagsStore } from './FeatureFlags';
 import { processLog } from '@/utils/previewLogs';
 import { useProjectStore } from './Project';
 import { useUserStore } from './User';
@@ -58,11 +59,20 @@ export const usePreviewStore = defineStore('preview', () => {
   function connectWS() {
     if (ws.value) return;
 
-    const newWs = new WS({
-      project: useProjectStore().uuid,
+    const projectUuid = useProjectStore().uuid;
+    const featureFlagsStore = useFeatureFlagsStore();
+
+    const wsOptions = {
+      project: projectUuid,
       token: useUserStore().user.token.replace('Bearer ', ''),
       endpoint: 'preview',
-    });
+    };
+
+    if (featureFlagsStore.flags.webchatPreview) {
+      wsOptions.path = `${projectUuid}/simulation`;
+    }
+
+    const newWs = new WS(wsOptions);
     newWs.connect();
 
     ws.value = newWs;
