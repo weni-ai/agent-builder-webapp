@@ -11,7 +11,7 @@ export const Simulation = {
 
   endSession({ projectUuid, urn }) {
     return request.$http.post(`api/${projectUuid}/simulation/end-session/`, {
-      urn,
+      contact_urn: urn,
     });
   },
 };
