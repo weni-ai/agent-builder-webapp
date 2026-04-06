@@ -58,7 +58,7 @@ const webchatPreviewStore = useWebchatPreviewStore();
 
 const previewHeaderActions = computed(() => [
   {
-    scheme: 'gray-500',
+    scheme: 'fg-base',
     icon: 'refresh',
     text: i18n.global.t('router.preview.options.refresh'),
     onClick: refreshPreview,
