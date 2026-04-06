@@ -320,6 +320,7 @@
       },
       "assign_button": "Assign agent",
       "already_assigned": "Agent already assigned",
+      "view_details": "View details",
       "filters": {
         "search": {
           "placeholder": "Search"

@@ -320,6 +320,7 @@
       },
       "assign_button": "Atribuir agente",
       "already_assigned": "Agente já atribuído",
+      "view_details": "Ver detalhes",
       "filters": {
         "search": {
           "placeholder": "Buscar"
