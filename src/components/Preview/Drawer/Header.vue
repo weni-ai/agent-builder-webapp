@@ -43,6 +43,8 @@ import { computed } from 'vue';
 import { useFlowPreviewStore } from '@/store/FlowPreview';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { usePreviewStore } from '@/store/Preview';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
+import { useWebchatPreviewStore } from '@/store/WebchatPreview';
 
 import i18n from '@/utils/plugins/i18n';
 
@@ -51,10 +53,12 @@ import ContentItemActions from '@/components/ContentItemActions.vue';
 const flowPreviewStore = useFlowPreviewStore();
 const managerSelectorStore = useManagerSelectorStore();
 const previewStore = usePreviewStore();
+const featureFlagsStore = useFeatureFlagsStore();
+const webchatPreviewStore = useWebchatPreviewStore();
 
 const previewHeaderActions = computed(() => [
   {
-    scheme: 'gray-500',
+    scheme: 'fg-base',
     icon: 'refresh',
     text: i18n.global.t('router.preview.options.refresh'),
     onClick: refreshPreview,
@@ -62,6 +66,10 @@ const previewHeaderActions = computed(() => [
 ]);
 
 function refreshPreview() {
+  if (featureFlagsStore.flags.webchatPreview) {
+    webchatPreviewStore.endSession();
+  }
+
   previewStore.clearLogs();
   flowPreviewStore.clearMessages();
   flowPreviewStore.previewInit();

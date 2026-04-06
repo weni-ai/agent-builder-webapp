@@ -1,5 +1,13 @@
 <template>
   <div
+    v-if="!isWebchatReady"
+    class="webchat-preview__loading"
+  >
+    <UnnnicIconLoading size="xl" />
+  </div>
+
+  <div
+    v-show="isWebchatReady"
     id="weni-webchat-preview"
     class="webchat-preview"
     data-testid="webchat-preview"
@@ -7,7 +15,7 @@
 </template>
 
 <script setup>
-import { watch, onMounted, onBeforeUnmount } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 
 import { useFlowPreviewStore } from '@/store/FlowPreview';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
@@ -15,6 +23,7 @@ import { useWebchatLoader } from '@/composables/useWebchatLoader';
 import env from '@/utils/env';
 import { useI18n } from 'vue-i18n';
 import { useProjectStore } from '@/store/Project';
+import { useWebchatPreviewStore } from '@/store/WebchatPreview';
 
 const WWC_SELECTOR = '#weni-webchat-preview';
 const WWC_MESSAGES_SELECTOR = `${WWC_SELECTOR} .weni-messages-list`;
@@ -25,13 +34,59 @@ const DIRECTION_GROUP_SELECTOR = '.weni-messages-list__direction-group';
 const flowPreviewStore = useFlowPreviewStore();
 const managerSelectorStore = useManagerSelectorStore();
 const projectStore = useProjectStore();
+const webchatPreviewStore = useWebchatPreviewStore();
 const { preload, cleanup: cleanupLoader } = useWebchatLoader();
+
+const EMPTY_HISTORY_RESPONSE = JSON.stringify({ type: 'history', history: [] });
+const HISTORY_TIMEOUT_MS = 20000;
+
+const isWebchatReady = ref(false);
+let originalWsSend = null;
+let historyTimeoutId = null;
+
+function setWebchatReady() {
+  isWebchatReady.value = true;
+  clearTimeout(historyTimeoutId);
+  historyTimeoutId = null;
+}
+
+function patchWebSocketToBlockHistory() {
+  originalWsSend = WebSocket.prototype.send;
+
+  WebSocket.prototype.send = function (data) {
+    const parsed = JSON.parse(data);
+
+    if (parsed.type === 'get_history') {
+      setTimeout(() => {
+        this.onmessage?.(
+          new MessageEvent('message', { data: EMPTY_HISTORY_RESPONSE }),
+        );
+        setWebchatReady();
+      }, 0);
+      return;
+    }
+
+    return originalWsSend.call(this, data);
+  };
+}
+
+function restoreWebSocketSend() {
+  if (originalWsSend) {
+    WebSocket.prototype.send = originalWsSend;
+    originalWsSend = null;
+  }
+}
 
 async function initWebchat() {
   await preload();
 
   flowPreviewStore.ensurePreviewInitialized();
   const contactUrn = flowPreviewStore.preview.contact.urn;
+
+  webchatPreviewStore.endSession();
+  patchWebSocketToBlockHistory();
+
+  historyTimeoutId = setTimeout(setWebchatReady, HISTORY_TIMEOUT_MS);
 
   window.WebChat.init({
     selector: WWC_SELECTOR,
@@ -54,15 +109,17 @@ function injectManagerSelectedMessage(managerId) {
     name: label,
   });
 
-  const groups = container.querySelectorAll(DIRECTION_GROUP_SELECTOR);
-
   const el = document.createElement('div');
   el.className = 'webchat-manager-status';
   el.textContent = text;
 
-  const lastGroup = groups[groups.length - 1];
-  if (lastGroup) {
-    lastGroup.after(el);
+  const anchors = container.querySelectorAll(
+    `${DIRECTION_GROUP_SELECTOR}, .webchat-manager-status`,
+  );
+  const lastAnchor = anchors[anchors.length - 1];
+
+  if (lastAnchor) {
+    lastAnchor.after(el);
   } else {
     container.appendChild(el);
   }
@@ -74,7 +131,13 @@ watch(
   () => managerSelectorStore.selectedPreviewManager,
   (managerId, previousManagerId) => {
     if (!managerId || managerId === previousManagerId) return;
-    injectManagerSelectedMessage(managerId);
+
+    try {
+      webchatPreviewStore.changeManagerModel(managerId);
+      injectManagerSelectedMessage(managerId);
+    } catch (error) {
+      console.error('Error changing manager model', error);
+    }
   },
 );
 
@@ -83,11 +146,21 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  clearTimeout(historyTimeoutId);
+  restoreWebSocketSend();
   cleanupLoader();
 });
 </script>
 
 <style lang="scss" scoped>
+.webchat-preview__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
 .webchat-preview {
   width: 100%;
   height: 100%;
@@ -112,7 +185,7 @@ onBeforeUnmount(() => {
         align-items: center;
         justify-content: center;
 
-        color: $unnnic-color-gray-600;
+        color: $unnnic-color-fg-base;
         font: $unnnic-font-caption-2;
       }
     }
