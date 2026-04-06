@@ -86,7 +86,7 @@ const messages = computed(() =>
     gap: $unnnic-space-4;
     justify-content: center;
 
-    height: 100%;
+    height: max-content;
   }
 
   &__bubble {
