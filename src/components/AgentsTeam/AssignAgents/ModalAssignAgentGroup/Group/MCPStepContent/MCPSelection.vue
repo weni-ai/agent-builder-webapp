@@ -23,7 +23,7 @@
         data-testid="concierge-second-step-mcp-radio"
         :selected="selectedMCP?.name === MCP.name"
         :label="MCP.name"
-        :description="MCP.description"
+        :description="getTranslatedField(MCP.description)"
         descriptionVariant="body"
         @update:selected="(checked: boolean) => handleSelect(MCP, checked)"
       />
@@ -37,6 +37,7 @@ import { useI18n } from 'vue-i18n';
 import ModalAssignAgentRadio from '@/components/AgentsTeam/AssignAgents/ModalAssignAgentGroup/Radio.vue';
 
 import { AgentMCP } from '@/store/types/Agents.types';
+import { getTranslatedField } from '@/utils/translatedField';
 
 defineProps<{
   // eslint-disable-next-line vue/prop-name-casing

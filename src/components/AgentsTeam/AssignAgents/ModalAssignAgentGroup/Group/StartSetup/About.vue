@@ -14,7 +14,7 @@
       class="start-setup-about__description"
       data-testid="start-setup-about-description"
     >
-      {{ agent.description }}
+      {{ aboutDescription }}
     </p>
 
     <section
@@ -40,6 +40,7 @@ import { computed } from 'vue';
 import Skill from '@/components/AgentsTeam/Skill.vue';
 import useAgentSystems from '@/composables/useAgentSystems';
 import type { AgentGroup } from '@/store/types/Agents.types';
+import { getTranslatedField } from '@/utils/translatedField';
 
 const props = defineProps<{
   agent: AgentGroup;
@@ -51,6 +52,12 @@ type SystemBadge = {
 };
 
 const { getSystemsObjects } = useAgentSystems();
+
+const aboutDescription = computed(
+  () =>
+    getTranslatedField(props.agent.presentation?.about) ??
+    props.agent.description,
+);
 
 const systemBadges = computed<SystemBadge[]>(() => {
   const agentSystems = props.agent?.systems ?? [];

@@ -1,3 +1,5 @@
+import type { TranslatedField } from '@/utils/translatedField';
+
 export type AgentGroupType = 'CUSTOMIZABLE' | 'PLUG_IN_PLAY';
 export type AgentGroupID = 'CONCIERGE';
 export type AgentCategory = 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS';
@@ -60,9 +62,14 @@ export interface ActiveTeamAgent {
   icon: string;
 }
 
+export type ConversationMessage = {
+  direction: 'incoming' | 'outgoing';
+  text: string;
+};
+
 export interface AgentMCP {
   name: string;
-  description: string;
+  description: TranslatedField<string>;
   system: string;
   credentials?: AgentCredential[];
   config: {
@@ -97,10 +104,9 @@ export interface AgentGroup {
   systems: string[];
   credentials?: AgentCredential[];
   presentation?: {
-    conversation_example?: {
-      direction: 'incoming' | 'outgoing';
-      text: string;
-    }[];
+    agent_name?: string;
+    about?: TranslatedField<string>;
+    conversation_example?: TranslatedField<ConversationMessage[]>;
   };
   assigned: boolean;
   icon: string;
