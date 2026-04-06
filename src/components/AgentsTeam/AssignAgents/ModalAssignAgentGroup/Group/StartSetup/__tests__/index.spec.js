@@ -3,8 +3,8 @@ import { shallowMount } from '@vue/test-utils';
 
 import StartSetup from '../index.vue';
 
-vi.mock('@/utils/translatedField', () => ({
-  getTranslatedField: (field) => field?.en,
+vi.mock('@/composables/useTranslatedField', () => ({
+  default: () => (field) => field?.en,
 }));
 
 const mockAgent = {

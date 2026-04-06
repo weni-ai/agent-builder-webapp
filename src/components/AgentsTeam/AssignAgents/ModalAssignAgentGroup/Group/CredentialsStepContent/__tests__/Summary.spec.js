@@ -11,8 +11,8 @@ vi.mock('@/composables/useAgentSystems', () => ({
   }),
 }));
 
-vi.mock('@/utils/translatedField', () => ({
-  getTranslatedField: (field) => field?.en,
+vi.mock('@/composables/useTranslatedField', () => ({
+  default: () => (field) => field?.en,
 }));
 
 const buildMCP = (overrides = {}) => ({

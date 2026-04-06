@@ -39,8 +39,8 @@ import { computed } from 'vue';
 
 import Skill from '@/components/AgentsTeam/Skill.vue';
 import useAgentSystems from '@/composables/useAgentSystems';
+import useTranslatedField from '@/composables/useTranslatedField';
 import type { AgentGroup } from '@/store/types/Agents.types';
-import { getTranslatedField } from '@/utils/translatedField';
 
 const props = defineProps<{
   agent: AgentGroup;
@@ -52,11 +52,11 @@ type SystemBadge = {
 };
 
 const { getSystemsObjects } = useAgentSystems();
+const translateField = useTranslatedField();
 
 const aboutDescription = computed(
   () =>
-    getTranslatedField(props.agent.presentation?.about) ??
-    props.agent.description,
+    translateField(props.agent.presentation?.about) ?? props.agent.description,
 );
 
 const systemBadges = computed<SystemBadge[]>(() => {

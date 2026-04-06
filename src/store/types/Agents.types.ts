@@ -1,4 +1,4 @@
-import type { TranslatedField } from '@/utils/translatedField';
+import type { TranslatedField } from '@/composables/useTranslatedField';
 
 export type AgentGroupType = 'CUSTOMIZABLE' | 'PLUG_IN_PLAY';
 export type AgentGroupID = 'CONCIERGE';

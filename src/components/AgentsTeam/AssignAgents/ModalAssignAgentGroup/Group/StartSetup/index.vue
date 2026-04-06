@@ -32,7 +32,7 @@
 import { computed } from 'vue';
 
 import type { AgentGroup } from '@/store/types/Agents.types';
-import { getTranslatedField } from '@/utils/translatedField';
+import useTranslatedField from '@/composables/useTranslatedField';
 
 import About from './About.vue';
 import MCPs from './MCPs.vue';
@@ -49,9 +49,10 @@ const props = withDefaults(
   },
 );
 
+const translateField = useTranslatedField();
+
 const conversationExample = computed(
-  () =>
-    getTranslatedField(props.agent.presentation?.conversation_example) ?? [],
+  () => translateField(props.agent.presentation?.conversation_example) ?? [],
 );
 </script>
 
