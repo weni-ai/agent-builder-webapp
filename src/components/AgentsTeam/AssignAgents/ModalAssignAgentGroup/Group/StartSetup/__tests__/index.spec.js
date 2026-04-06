@@ -3,16 +3,30 @@ import { shallowMount } from '@vue/test-utils';
 
 import StartSetup from '../index.vue';
 
+vi.mock('@/composables/useTranslatedField', () => ({
+  default: () => (field) => field?.en,
+}));
+
 const mockAgent = {
   name: 'Product Concierge',
   description: 'Handles concierge flows',
   systems: ['VTEX'],
-  MCPs: [{ name: 'Concierge MCP', description: 'Assists customers' }],
+  MCPs: [
+    {
+      name: 'Concierge MCP',
+      description: { en: 'Assists customers', pt: null, es: null },
+    },
+  ],
   presentation: {
-    conversation_example: [
-      { direction: 'incoming', text: 'Text of the customer' },
-      { direction: 'outgoing', text: 'Text of the agent' },
-    ],
+    about: { en: 'Handles concierge flows', pt: null, es: null },
+    conversation_example: {
+      en: [
+        { direction: 'incoming', text: 'Text of the customer' },
+        { direction: 'outgoing', text: 'Text of the agent' },
+      ],
+      pt: [],
+      es: [],
+    },
   },
 };
 
@@ -54,7 +68,10 @@ describe('StartSetup index', () => {
       name: 'MCPs',
     });
     expect(mcpsComponent.props('mcps')).toEqual([
-      { name: 'Concierge MCP', description: 'Assists customers' },
+      {
+        name: 'Concierge MCP',
+        description: { en: 'Assists customers', pt: null, es: null },
+      },
     ]);
   });
 

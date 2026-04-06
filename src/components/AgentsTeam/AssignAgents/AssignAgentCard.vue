@@ -23,7 +23,11 @@
       >
         <UnnnicButton
           class="assign-agent-card__assign-button"
-          :text="$t('agents.assign_agents.assign_button')"
+          :text="
+            agent.presentation
+              ? $t('agents.assign_agents.view_details')
+              : $t('agents.assign_agents.assign_button')
+          "
           :disabled="agent.assigned"
           :loading="isAssigning"
           @click="handleAssignButton"
