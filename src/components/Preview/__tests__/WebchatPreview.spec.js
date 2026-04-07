@@ -106,6 +106,7 @@ describe('WebchatPreview.vue', () => {
         ),
         embedded: true,
         showChatAvatar: false,
+        showCameraButton: false,
       }),
     );
   });
