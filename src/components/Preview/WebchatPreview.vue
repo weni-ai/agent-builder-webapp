@@ -97,6 +97,7 @@ async function initWebchat() {
     inputTextFieldHint: t('router.preview.preview_tests_placeholder'),
     embedded: true,
     showChatAvatar: false,
+    showCameraButton: false,
   });
 }
 
@@ -165,6 +166,10 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   position: relative;
+
+  * {
+    font-family: Inter, sans-serif !important;
+  }
 
   :deep(.weni-widget) {
     position: absolute !important;
