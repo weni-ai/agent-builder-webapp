@@ -145,18 +145,21 @@ const processedLogs = computed(() => {
   return logs.reduce((logsByAgent, log) => {
     const { agentName = '' } = log.config || {};
 
-    const agent =
-      teamAgents.find((agent) => agent.id === agentName) ||
-      galleryAgents.find((agent) => agent.id === agentName) ||
-      manager;
+    const foundAgent =
+      teamAgents.find((a) => a.id === agentName) ||
+      galleryAgents.find((a) => a.id === agentName);
 
-    if (!agent) return logsByAgent;
+    if (!foundAgent && !agentName) return logsByAgent;
+
+    const agentId = foundAgent?.id || agentName;
+    const agentLabel =
+      foundAgent?.name || (agentName === 'manager' ? 'Manager' : agentName);
 
     const lastLog = logsByAgent.at(-1);
-    if (lastLog?.id !== agent.id) {
+    if (lastLog?.id !== agentId) {
       logsByAgent.push({
-        id: agent.id,
-        agent: agent.name || 'Manager',
+        id: agentId,
+        agent: agentLabel,
         steps: [],
       });
     }
