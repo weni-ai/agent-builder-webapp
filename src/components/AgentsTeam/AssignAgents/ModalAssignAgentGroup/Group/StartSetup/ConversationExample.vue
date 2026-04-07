@@ -83,7 +83,7 @@ const messages = computed(() =>
 
     display: flex;
     flex-direction: column;
-    gap: $unnnic-space-4;
+    gap: $unnnic-space-2;
     justify-content: center;
 
     height: max-content;
