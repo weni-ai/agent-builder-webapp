@@ -307,10 +307,12 @@ watch(
     .logs__log {
       margin-bottom: $unnnic-spacing-sm;
 
-      $progressDotOffset: -($unnnic-spacing-sm + $unnnic-spacing-nano);
+      $progressDotOffset: -($unnnic-space-4 + $unnnic-space-05);
       %progressDot {
         &::before {
           content: '•';
+
+          @include unnnic-font-display-4;
 
           position: absolute;
           z-index: 1;
@@ -332,13 +334,13 @@ watch(
 
         &--left {
           &::before {
-            left: $progressDotOffset;
+            left: $progressDotOffset + 0.3px;
           }
         }
 
         &--right {
           &::before {
-            right: $progressDotOffset + 0.5px;
+            right: $progressDotOffset;
           }
         }
       }
