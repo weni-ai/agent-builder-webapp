@@ -53,7 +53,7 @@
             class="start-setup-mcps__item-description"
             data-testid="start-setup-mcps-item-description"
           >
-            {{ mcp.description }}
+            {{ translateField(mcp.description) }}
           </p>
         </section>
       </li>
@@ -64,10 +64,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { AgentMCP } from '@/store/types/Agents.types';
+import useTranslatedField from '@/composables/useTranslatedField';
 
 defineProps<{
   mcps?: AgentMCP[];
 }>();
+
+const translateField = useTranslatedField();
 
 const expandedIndex = ref<number>(0);
 

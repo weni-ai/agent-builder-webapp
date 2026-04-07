@@ -3,18 +3,34 @@ import { shallowMount } from '@vue/test-utils';
 
 import MCPs from '../MCPs.vue';
 
+vi.mock('@/composables/useTranslatedField', () => ({
+  default: () => (field) => field?.en,
+}));
+
 const mockMCPs = [
   {
     name: 'Search Concierge',
-    description: 'Helps customers find products using natural language',
+    description: {
+      en: 'Helps customers find products using natural language',
+      pt: null,
+      es: null,
+    },
   },
   {
     name: 'Inventory Sync',
-    description: 'Keeps inventory up to date across systems',
+    description: {
+      en: 'Keeps inventory up to date across systems',
+      pt: null,
+      es: null,
+    },
   },
   {
     name: 'Meta Catalog',
-    description: 'Syncs product catalog with Meta',
+    description: {
+      en: 'Syncs product catalog with Meta',
+      pt: null,
+      es: null,
+    },
   },
 ];
 

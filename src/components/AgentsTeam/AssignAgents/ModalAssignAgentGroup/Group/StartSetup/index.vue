@@ -20,7 +20,7 @@
       />
 
       <ConversationExample
-        :conversationExample="agent.presentation?.conversation_example || []"
+        :conversationExample="conversationExample"
         :agentName="agent.name"
         data-testid="start-setup-conversation-section"
       />
@@ -29,14 +29,17 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import type { AgentGroup } from '@/store/types/Agents.types';
+import useTranslatedField from '@/composables/useTranslatedField';
 
 import About from './About.vue';
 import MCPs from './MCPs.vue';
 import ConversationExample from './ConversationExample.vue';
 import StartSetupSkeleton from './StartSetupSkeleton.vue';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     agent: AgentGroup;
     isLoading?: boolean;
@@ -44,6 +47,12 @@ withDefaults(
   {
     isLoading: false,
   },
+);
+
+const translateField = useTranslatedField();
+
+const conversationExample = computed(
+  () => translateField(props.agent.presentation?.conversation_example) ?? [],
 );
 </script>
 
