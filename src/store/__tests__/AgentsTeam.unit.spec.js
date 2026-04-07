@@ -112,12 +112,14 @@ describe('AgentsTeamStore', () => {
   });
 
   describe('toggleAgentAssignment', () => {
-    it('should throws an error if uuid is missing', async () => {
+    it('should throws an error if uuid and group are missing', async () => {
       expect.assertions(1);
       try {
         await store.toggleAgentAssignment({ is_assigned: true });
       } catch (error) {
-        expect(error.message).toBe('uuid and is_assigned are required');
+        expect(error.message).toBe(
+          'uuid or group, and is_assigned are required',
+        );
       }
     });
 
