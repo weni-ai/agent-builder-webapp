@@ -355,6 +355,7 @@
       },
       "setup": {
         "about": "Sobre",
+        "view_documentation": "Ver documentação",
         "mcps_available": {
           "title": "MCPs disponíveis"
         },
