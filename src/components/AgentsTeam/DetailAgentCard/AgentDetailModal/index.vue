@@ -19,7 +19,7 @@
           <section class="agent-detail-modal__summary">
             <AgentDetailSection
               :title="$t('agents.assigned_agents.agent_details.about')"
-              :description="agent.description"
+              :description="aboutDescription"
               data-testid="agent-detail-about-section"
             />
 
@@ -46,7 +46,10 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { ActiveTeamAgent } from '@/store/types/Agents.types';
+import useTranslatedField from '@/composables/useTranslatedField';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import McpSection from './McpSection.vue';
@@ -54,9 +57,15 @@ import SystemSection from './SystemSection.vue';
 import AgentDetailSection from './AgentDetailSection.vue';
 import ViewOptions from './ViewOptions.vue';
 
-defineProps<{
+const props = defineProps<{
   agent: ActiveTeamAgent;
 }>();
+
+const translateField = useTranslatedField();
+
+const aboutDescription = computed(
+  () => translateField(props.agent.about) ?? props.agent.description,
+);
 
 const emit = defineEmits(['update:open']);
 

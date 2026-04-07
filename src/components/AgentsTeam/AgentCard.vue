@@ -122,10 +122,10 @@ const agentsTeamStore = useAgentsTeamStore();
 const featureFlagsStore = useFeatureFlagsStore();
 const translateField = useTranslatedField();
 
-const description = computed(
-  () =>
-    translateField(props.agent.presentation?.about) ?? props.agent.description,
-);
+const description = computed(() => {
+  const about = props.agent?.about || props.agent.presentation?.about;
+  return translateField(about) || props.agent.description;
+});
 
 const isAgentInTeam = computed(() => {
   return agentsTeamStore.activeTeam.data.agents.some(

@@ -57,6 +57,7 @@ export interface ActiveTeamAgent {
   id: string;
   name: string;
   is_official: boolean;
+  about: TranslatedField<string> | null;
   description: string;
   mcp: AgentAssignedMCP | null;
   icon: string;
@@ -117,6 +118,7 @@ export interface Agent {
   uuid: string;
   id?: string;
   name: string;
+  about: TranslatedField<string> | null;
   description: string;
   skills: AgentSkill[];
   assigned: boolean;
