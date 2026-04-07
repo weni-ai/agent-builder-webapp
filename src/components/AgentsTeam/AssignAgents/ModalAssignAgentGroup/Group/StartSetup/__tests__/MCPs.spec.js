@@ -12,6 +12,10 @@ const mockMCPs = [
     name: 'Inventory Sync',
     description: 'Keeps inventory up to date across systems',
   },
+  {
+    name: 'Meta Catalog',
+    description: 'Syncs product catalog with Meta',
+  },
 ];
 
 const mockT = vi.fn((key) => key);
@@ -31,39 +35,83 @@ function createWrapper(props = {}) {
 describe('StartSetup MCPs', () => {
   let wrapper;
 
+  beforeEach(() => {
+    wrapper = createWrapper({ mcps: mockMCPs });
+  });
+
   afterEach(() => {
     wrapper?.unmount();
     vi.clearAllMocks();
   });
 
-  it('renders the title and list when MCPs are provided', () => {
-    wrapper = createWrapper({ mcps: mockMCPs });
+  const getIcons = () =>
+    wrapper.findAll('[data-testid="start-setup-mcps-item-icon"]');
 
+  const getBodies = () =>
+    wrapper.findAll('[data-testid="start-setup-mcps-item-body"]');
+
+  it('renders the title and list when MCPs are provided', () => {
     const items = wrapper.findAll(
       '[data-testid="start-setup-mcps-item-title"]',
     );
-    expect(items).toHaveLength(2);
+    expect(items).toHaveLength(3);
     expect(items[0].text()).toBe('Search Concierge');
     expect(items[1].text()).toBe('Inventory Sync');
+    expect(items[2].text()).toBe('Meta Catalog');
   });
 
-  it('renders descriptions for each MCP', () => {
-    wrapper = createWrapper({ mcps: mockMCPs });
+  it('expands only the first item by default', () => {
+    const bodies = getBodies();
 
-    const descriptions = wrapper.findAll(
-      '[data-testid="start-setup-mcps-item-description"]',
+    expect(bodies[0].classes()).toContain(
+      'start-setup-mcps__item-body--expanded',
     );
-    expect(descriptions).toHaveLength(2);
-    expect(descriptions[0].text()).toBe(
-      'Helps customers find products using natural language',
+    expect(bodies[1].classes()).not.toContain(
+      'start-setup-mcps__item-body--expanded',
     );
-    expect(descriptions[1].text()).toBe(
-      'Keeps inventory up to date across systems',
+    expect(bodies[2].classes()).not.toContain(
+      'start-setup-mcps__item-body--expanded',
     );
   });
 
-  it('hides the list when there are no MCPs', () => {
-    wrapper = createWrapper({ mcps: [] });
+  it('applies expanded icon class only to the first item by default', () => {
+    const icons = getIcons();
+
+    expect(icons[0].classes()).toContain(
+      'start-setup-mcps__item-icon--expanded',
+    );
+    expect(icons[1].classes()).not.toContain(
+      'start-setup-mcps__item-icon--expanded',
+    );
+  });
+
+  it('expands a collapsed item when clicked', async () => {
+    const items = wrapper.findAll('[data-testid="start-setup-mcps-item"]');
+    await items[1].trigger('click');
+
+    const bodies = getBodies();
+
+    expect(bodies[0].classes()).not.toContain(
+      'start-setup-mcps__item-body--expanded',
+    );
+    expect(bodies[1].classes()).toContain(
+      'start-setup-mcps__item-body--expanded',
+    );
+  });
+
+  it('collapses an expanded item when clicked again', async () => {
+    const items = wrapper.findAll('[data-testid="start-setup-mcps-item"]');
+    await items[0].trigger('click');
+
+    const bodies = getBodies();
+
+    expect(bodies[0].classes()).not.toContain(
+      'start-setup-mcps__item-body--expanded',
+    );
+  });
+
+  it('hides the list when there are no MCPs', async () => {
+    await wrapper.setProps({ mcps: [] });
 
     expect(wrapper.find('[data-testid="start-setup-mcps"]').exists()).toBe(
       true,
