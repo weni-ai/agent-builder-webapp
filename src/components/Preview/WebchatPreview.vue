@@ -98,6 +98,9 @@ async function initWebchat() {
     embedded: true,
     showChatAvatar: false,
     showCameraButton: false,
+    voiceMode: {
+      enabled: true,
+    },
   });
 }
 
