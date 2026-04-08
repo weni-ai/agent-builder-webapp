@@ -6,12 +6,14 @@ import env from '@/utils/env';
 export default class WebSocketSetup {
   THIRTY_SECONDS = 30000;
 
-  constructor({ project, token, endpoint }) {
+  constructor({ project, token, endpoint, path }) {
     this.project = project;
     this.token = token;
     this.endpoint = endpoint;
     this.pingIntervalId = null;
-    this.url = `${env('NEXUS_WEBSOCKET_BASE_URL')}/${endpoint}/${this.project}/?Token=${this.token}`;
+
+    const wsPath = path || `${endpoint}/${project}`;
+    this.url = `${env('NEXUS_WEBSOCKET_BASE_URL')}/${wsPath}/?Token=${this.token}`;
   }
 
   connect() {

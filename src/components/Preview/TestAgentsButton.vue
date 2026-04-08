@@ -5,6 +5,7 @@
     type="primary"
     iconLeft="play_arrow"
     iconsFilled
+    :loading="isLoadingWebchat"
     @click="handleTestAgents"
   >
     {{ $t('router.preview.trigger') }}
@@ -12,24 +13,46 @@
 
   <PreviewDrawer
     v-model="isPreviewOpen"
+    :forceMount="hasBeenOpened"
     data-testid="preview-drawer"
   />
 </template>
 
 <script setup>
-import { ref, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 import PreviewDrawer from './Drawer/index.vue';
 
 import { usePreviewStore } from '@/store/Preview';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
+import { useWebchatPreviewStore } from '@/store/WebchatPreview';
+import { useWebchatLoader } from '@/composables/webchat/useWebchatLoader';
 
 const previewStore = usePreviewStore();
+const featureFlagsStore = useFeatureFlagsStore();
+const webchatPreviewStore = useWebchatPreviewStore();
+const { preload } = useWebchatLoader();
 
 const isPreviewOpen = ref(false);
+const hasBeenOpened = ref(false);
+
+const isLoadingWebchat = computed(
+  () =>
+    featureFlagsStore.flags.webchatPreview &&
+    !webchatPreviewStore.isWebchatLoaded,
+);
 
 const handleTestAgents = () => {
+  hasBeenOpened.value = true;
   isPreviewOpen.value = true;
 };
+
+onMounted(async () => {
+  if (featureFlagsStore.flags.webchatPreview) {
+    await preload();
+    webchatPreviewStore.setWebchatLoaded(true);
+  }
+});
 
 onUnmounted(() => {
   if (previewStore.ws) {

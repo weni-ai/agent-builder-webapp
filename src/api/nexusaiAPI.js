@@ -3,6 +3,7 @@ import { AgentsTeam } from './nexus/AgentsTeam';
 import { Supervisor } from './nexus/Supervisor';
 import { Instructions } from './nexus/Instructions';
 import { Knowledge } from './nexus/Knowledge';
+import { Simulation } from './nexus/Simulation';
 
 import { ProgressiveFeedbackAdapter } from './adapters/tunings/progressiveFeedback';
 import { ComponentsAdapter } from './adapters/tunings/components';
@@ -24,6 +25,7 @@ export default {
     },
     supervisor: Supervisor,
     instructions: Instructions,
+    simulation: Simulation,
   },
 
   router: {
@@ -177,6 +179,12 @@ export default {
           );
           return ProjectDetailsAdapter.fromApi(response.data);
         },
+      },
+    },
+
+    project: {
+      read({ projectUuid }) {
+        return request.$http.get(`api/${projectUuid}/project`);
       },
     },
 
