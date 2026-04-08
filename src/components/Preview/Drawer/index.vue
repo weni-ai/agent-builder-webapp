@@ -3,7 +3,11 @@
     v-model:open="drawerOpen"
     class="preview-drawer"
   >
-    <UnnnicDrawerContent size="extra-large">
+    <UnnnicDrawerContent
+      size="extra-large"
+      :forceMount="forceMount"
+      class="preview-drawer__panel"
+    >
       <PreviewDrawerHeader />
 
       <section
@@ -50,6 +54,10 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  forceMount: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -70,6 +78,11 @@ watch(
 </script>
 
 <style lang="scss">
+.preview-drawer__panel[data-state='closed'] {
+  animation-fill-mode: forwards;
+  pointer-events: none;
+}
+
 .preview-drawer {
   &__content {
     height: 100%;
