@@ -10,12 +10,24 @@
       {{ $t('agents.assign_agents.setup.about') }}
     </p>
 
-    <p
-      class="start-setup-about__description"
-      data-testid="start-setup-about-description"
-    >
-      {{ aboutDescription }}
-    </p>
+    <section class="start-setup-about__content">
+      <p
+        class="start-setup-about__description"
+        data-testid="start-setup-about-description"
+      >
+        {{ aboutDescription }}
+      </p>
+
+      <a
+        v-if="documentationUrl"
+        :href="documentationUrl"
+        download
+        class="start-setup-about__view-documentation"
+        data-testid="start-setup-about-view-documentation"
+      >
+        {{ $t('agents.assign_agents.setup.view_documentation') }}
+      </a>
+    </section>
 
     <section
       v-if="systemBadges.length"
@@ -42,6 +54,15 @@ import useAgentSystems from '@/composables/useAgentSystems';
 import useTranslatedField from '@/composables/useTranslatedField';
 import type { AgentGroup } from '@/store/types/Agents.types';
 
+const GROUP_DOCS = {
+  ORDER_PAYMENT: '/docs/Payment_Agent.pdf',
+  FEEDBACK: '/docs/Feedback_Recorder.pdf',
+  ORDER_CANCELLATION: '/docs/Order_Cancellation_Agent.pdf',
+  CONCIERGE: '/docs/Product_Concierge.pdf',
+  RETURN_AND_EXCHANGE: '/docs/Troca_e_Devolução.pdf',
+  ORDER_STATUS: '/docs/Order_Status.pdf',
+};
+
 const props = defineProps<{
   agent: AgentGroup;
 }>();
@@ -53,6 +74,10 @@ type SystemBadge = {
 
 const { getSystemsObjects } = useAgentSystems();
 const translateField = useTranslatedField();
+
+const documentationUrl = computed(
+  () => GROUP_DOCS[props.agent.group.toUpperCase()] ?? null,
+);
 
 const aboutDescription = computed(
   () =>
@@ -77,11 +102,18 @@ const systemBadges = computed<SystemBadge[]>(() => {
 
   display: flex;
   flex-direction: column;
-  gap: $unnnic-space-2;
 
   &__title {
     color: $unnnic-color-fg-emphasized;
     font: $unnnic-font-display-3;
+
+    margin-bottom: $unnnic-space-2;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-space-1;
   }
 
   &__description {
@@ -89,9 +121,20 @@ const systemBadges = computed<SystemBadge[]>(() => {
     font: $unnnic-font-body;
   }
 
+  &__view-documentation {
+    color: $unnnic-color-fg-base;
+    @include unnnic-font-action;
+    text-decoration: underline;
+
+    width: fit-content;
+
+    cursor: pointer;
+  }
+
   &__systems {
     display: flex;
     gap: $unnnic-space-2;
+    margin-top: $unnnic-space-4;
   }
 }
 </style>

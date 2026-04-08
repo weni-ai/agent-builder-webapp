@@ -355,6 +355,7 @@
       },
       "setup": {
         "about": "Despre",
+        "view_documentation": "Vizualizare documentație",
         "mcps_available": {
           "title": "MCP-uri disponibile"
         },
