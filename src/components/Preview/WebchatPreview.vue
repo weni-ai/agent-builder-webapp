@@ -19,62 +19,39 @@ import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 
 import { useFlowPreviewStore } from '@/store/FlowPreview';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
-import { useWebchatLoader } from '@/composables/useWebchatLoader';
-import env from '@/utils/env';
-import { useI18n } from 'vue-i18n';
 import { useProjectStore } from '@/store/Project';
 import { useWebchatPreviewStore } from '@/store/WebchatPreview';
 
+import { useWebchatLoader } from '@/composables/webchat/useWebchatLoader';
+import { useWebSocketHistoryPatch } from '@/composables/webchat/useWebSocketHistoryPatch';
+import { useWebchatDomInjector } from '@/composables/webchat/useWebchatDomInjector';
+
+import env from '@/utils/env';
+import { useI18n } from 'vue-i18n';
+
 const WWC_SELECTOR = '#weni-webchat-preview';
-const WWC_MESSAGES_SELECTOR = `${WWC_SELECTOR} .weni-messages-list`;
+const DIRECTION_GROUP_SELECTOR = '.weni-messages-list__direction-group';
+const HISTORY_TIMEOUT_MS = 50000;
 
 const { t } = useI18n();
-const DIRECTION_GROUP_SELECTOR = '.weni-messages-list__direction-group';
 
 const flowPreviewStore = useFlowPreviewStore();
 const managerSelectorStore = useManagerSelectorStore();
 const projectStore = useProjectStore();
 const webchatPreviewStore = useWebchatPreviewStore();
-const { preload, cleanup: cleanupLoader } = useWebchatLoader();
 
-const EMPTY_HISTORY_RESPONSE = JSON.stringify({ type: 'history', history: [] });
-const HISTORY_TIMEOUT_MS = 20000;
+const { preload, cleanup: cleanupLoader } = useWebchatLoader();
+const { patch: patchWsHistory, restore: restoreWsHistory } =
+  useWebSocketHistoryPatch();
+const domInjector = useWebchatDomInjector(WWC_SELECTOR);
 
 const isWebchatReady = ref(false);
-let originalWsSend = null;
 let historyTimeoutId = null;
 
 function setWebchatReady() {
   isWebchatReady.value = true;
   clearTimeout(historyTimeoutId);
   historyTimeoutId = null;
-}
-
-function patchWebSocketToBlockHistory() {
-  originalWsSend = WebSocket.prototype.send;
-
-  WebSocket.prototype.send = function (data) {
-    const parsed = JSON.parse(data);
-
-    if (parsed.type === 'get_history') {
-      setTimeout(() => {
-        this.onmessage?.(
-          new MessageEvent('message', { data: EMPTY_HISTORY_RESPONSE }),
-        );
-        setWebchatReady();
-      }, 0);
-      return;
-    }
-
-    return originalWsSend.call(this, data);
-  };
-}
-
-function restoreWebSocketSend() {
-  if (originalWsSend) {
-    WebSocket.prototype.send = originalWsSend;
-    originalWsSend = null;
-  }
 }
 
 async function initWebchat() {
@@ -84,7 +61,7 @@ async function initWebchat() {
   const contactUrn = flowPreviewStore.preview.contact.urn;
 
   webchatPreviewStore.endSession();
-  patchWebSocketToBlockHistory();
+  patchWsHistory(setWebchatReady);
 
   historyTimeoutId = setTimeout(setWebchatReady, HISTORY_TIMEOUT_MS);
 
@@ -105,28 +82,18 @@ async function initWebchat() {
 }
 
 function injectManagerSelectedMessage(managerId) {
-  const container = document.querySelector(WWC_MESSAGES_SELECTOR);
-  if (!container) return;
-
   const label = flowPreviewStore.getPreviewManagerLabel(managerId);
-  const text = t('router.preview.manager_selected', {
-    name: label,
+  const text = t('router.preview.manager_selected', { name: label });
+
+  const el = domInjector.createElement({
+    className: 'webchat-manager-status',
+    textContent: text,
   });
 
-  const el = document.createElement('div');
-  el.className = 'webchat-manager-status';
-  el.textContent = text;
-
-  const anchors = container.querySelectorAll(
+  domInjector.insertAfterLastAnchor(
+    el,
     `${DIRECTION_GROUP_SELECTOR}, .webchat-manager-status`,
   );
-  const lastAnchor = anchors[anchors.length - 1];
-
-  if (lastAnchor) {
-    lastAnchor.after(el);
-  } else {
-    container.appendChild(el);
-  }
 
   el.scrollIntoView({ behavior: 'smooth' });
 }
@@ -151,7 +118,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearTimeout(historyTimeoutId);
-  restoreWebSocketSend();
+  restoreWsHistory();
   cleanupLoader();
 });
 </script>

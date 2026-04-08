@@ -26,7 +26,7 @@ import PreviewDrawer from './Drawer/index.vue';
 import { usePreviewStore } from '@/store/Preview';
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useWebchatPreviewStore } from '@/store/WebchatPreview';
-import { useWebchatLoader } from '@/composables/useWebchatLoader';
+import { useWebchatLoader } from '@/composables/webchat/useWebchatLoader';
 
 const previewStore = usePreviewStore();
 const featureFlagsStore = useFeatureFlagsStore();

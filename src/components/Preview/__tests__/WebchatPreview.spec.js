@@ -13,10 +13,20 @@ import i18n from '@/utils/plugins/i18n';
 const mockPreload = vi.fn().mockResolvedValue(undefined);
 const mockCleanup = vi.fn();
 
-vi.mock('@/composables/useWebchatLoader', () => ({
+vi.mock('@/composables/webchat/useWebchatLoader', () => ({
   useWebchatLoader: () => ({
     preload: mockPreload,
     cleanup: mockCleanup,
+  }),
+}));
+
+const mockPatch = vi.fn();
+const mockRestore = vi.fn();
+
+vi.mock('@/composables/webchat/useWebSocketHistoryPatch', () => ({
+  useWebSocketHistoryPatch: () => ({
+    patch: mockPatch,
+    restore: mockRestore,
   }),
 }));
 
@@ -114,6 +124,7 @@ describe('WebchatPreview.vue', () => {
   it('should call cleanup on unmount', () => {
     wrapper.unmount();
 
+    expect(mockRestore).toHaveBeenCalled();
     expect(mockCleanup).toHaveBeenCalled();
   });
 
