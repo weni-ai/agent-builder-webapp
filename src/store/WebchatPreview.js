@@ -10,6 +10,7 @@ export const useWebchatPreviewStore = defineStore('webchatPreview', () => {
   const flowPreviewStore = useFlowPreviewStore();
 
   const isWebchatLoaded = ref(false);
+  const sessionVersion = ref(0);
 
   async function changeManagerModel(managerId) {
     await nexusaiAPI.agent_builder.simulation.setManagerModel({
@@ -26,11 +27,18 @@ export const useWebchatPreviewStore = defineStore('webchatPreview', () => {
     });
 
     await window.WebChat?.clear();
+    sessionVersion.value += 1;
   }
 
   function setWebchatLoaded(value) {
     isWebchatLoaded.value = value;
   }
 
-  return { isWebchatLoaded, setWebchatLoaded, changeManagerModel, endSession };
+  return {
+    isWebchatLoaded,
+    sessionVersion,
+    setWebchatLoaded,
+    changeManagerModel,
+    endSession,
+  };
 });

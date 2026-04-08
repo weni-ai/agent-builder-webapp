@@ -82,5 +82,15 @@ describe('WebchatPreviewStore', () => {
 
       await expect(store.endSession()).resolves.not.toThrow();
     });
+
+    it('should increment sessionVersion', async () => {
+      expect(store.sessionVersion).toBe(0);
+
+      await store.endSession();
+      expect(store.sessionVersion).toBe(1);
+
+      await store.endSession();
+      expect(store.sessionVersion).toBe(2);
+    });
   });
 });
