@@ -26,9 +26,6 @@ import { useWebchatLoader } from '@/composables/webchat/useWebchatLoader';
 import { useWebSocketHistoryPatch } from '@/composables/webchat/useWebSocketHistoryPatch';
 import { useWebchatDomInjector } from '@/composables/webchat/useWebchatDomInjector';
 
-import Placeholder from '@/components/Preview/Placeholder.vue';
-import Unnnic from '@/utils/plugins/UnnnicSystem';
-import i18n from '@/utils/plugins/i18n';
 import env from '@/utils/env';
 import { useI18n } from 'vue-i18n';
 
@@ -51,17 +48,20 @@ const domInjector = useWebchatDomInjector(WWC_SELECTOR);
 
 const isWebchatReady = ref(false);
 let historyTimeoutId = null;
-let placeholderHandle = null;
+let placeholderEl = null;
 let placeholderObserver = null;
 
 function mountPlaceholder() {
   const container = domInjector.getContainer();
-  if (!container || placeholderHandle) return;
+  if (!container || placeholderEl) return;
 
-  placeholderHandle = domInjector.mountComponent(Placeholder, {
-    plugins: [Unnnic, i18n],
-    wrapperClass: 'webchat-placeholder-wrapper',
+  placeholderEl = domInjector.createElement({
+    tag: 'p',
+    className: 'webchat-placeholder',
+    textContent: t('router.preview.placeholder'),
   });
+
+  domInjector.appendToContainer(placeholderEl);
 
   placeholderObserver = new MutationObserver(() => {
     if (
@@ -78,8 +78,8 @@ function mountPlaceholder() {
 function unmountPlaceholder() {
   placeholderObserver?.disconnect();
   placeholderObserver = null;
-  placeholderHandle?.unmount();
-  placeholderHandle = null;
+  placeholderEl?.remove();
+  placeholderEl = null;
 }
 
 function setWebchatReady() {
@@ -151,6 +151,8 @@ watch(
   () => webchatPreviewStore.sessionVersion,
   () => {
     domInjector.removeBySelector(MANAGER_STATUS_SELECTOR);
+    unmountPlaceholder();
+    mountPlaceholder();
   },
 );
 
@@ -180,7 +182,7 @@ onBeforeUnmount(() => {
   height: 100%;
   position: relative;
 
-  *:not(.unnnic-icon) {
+  * {
     font-family: Inter, sans-serif !important;
   }
 
@@ -198,12 +200,19 @@ onBeforeUnmount(() => {
     .weni-messages-list {
       padding: $unnnic-space-6;
 
-      .webchat-placeholder-wrapper {
+      .webchat-placeholder {
+        margin: auto;
+
+        max-width: 180px;
         height: 100%;
 
         display: flex;
         align-items: center;
         justify-content: center;
+
+        text-align: center;
+        color: $unnnic-color-fg-muted;
+        @include unnnic-font-body;
       }
 
       .webchat-manager-status {
@@ -212,7 +221,7 @@ onBeforeUnmount(() => {
         justify-content: center;
 
         color: $unnnic-color-fg-base;
-        font: $unnnic-font-caption-2;
+        @include unnnic-font-caption-2;
       }
     }
 

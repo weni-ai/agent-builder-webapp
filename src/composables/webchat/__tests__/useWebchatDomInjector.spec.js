@@ -1,5 +1,4 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { defineComponent, h } from 'vue';
 
 import { useWebchatDomInjector } from '../useWebchatDomInjector';
 
@@ -186,92 +185,4 @@ describe('useWebchatDomInjector', () => {
     });
   });
 
-  describe('mountComponent', () => {
-    const TestComponent = defineComponent({
-      props: { label: { type: String, default: 'default' } },
-      render() {
-        return h('span', { class: 'test-component' }, this.label);
-      },
-    });
-
-    it('should mount a Vue component into a wrapper inside the container', () => {
-      const { mountComponent } = useWebchatDomInjector(ROOT_SELECTOR);
-
-      const handle = mountComponent(TestComponent);
-
-      const rendered = messagesList.querySelector('.test-component');
-      expect(rendered).not.toBeNull();
-      expect(rendered.textContent).toBe('default');
-
-      handle.unmount();
-    });
-
-    it('should pass props to the component', () => {
-      const { mountComponent } = useWebchatDomInjector(ROOT_SELECTOR);
-
-      const handle = mountComponent(TestComponent, {
-        props: { label: 'custom' },
-      });
-
-      const rendered = messagesList.querySelector('.test-component');
-      expect(rendered.textContent).toBe('custom');
-
-      handle.unmount();
-    });
-
-    it('should apply wrapperClass to the wrapper div', () => {
-      const { mountComponent } = useWebchatDomInjector(ROOT_SELECTOR);
-
-      const handle = mountComponent(TestComponent, {
-        wrapperClass: 'my-wrapper',
-      });
-
-      expect(handle.wrapper.className).toBe('my-wrapper');
-      expect(messagesList.querySelector('.my-wrapper')).toBe(handle.wrapper);
-
-      handle.unmount();
-    });
-
-    it('should remove the wrapper from DOM on unmount', () => {
-      const { mountComponent } = useWebchatDomInjector(ROOT_SELECTOR);
-
-      const handle = mountComponent(TestComponent, {
-        wrapperClass: 'disposable',
-      });
-
-      expect(messagesList.querySelector('.disposable')).not.toBeNull();
-
-      handle.unmount();
-
-      expect(messagesList.querySelector('.disposable')).toBeNull();
-      expect(messagesList.querySelector('.test-component')).toBeNull();
-    });
-
-    it('should install plugins on the mounted app', () => {
-      const installed = [];
-      const fakePlugin = {
-        install(app) {
-          installed.push(app);
-        },
-      };
-
-      const { mountComponent } = useWebchatDomInjector(ROOT_SELECTOR);
-
-      const handle = mountComponent(TestComponent, {
-        plugins: [fakePlugin],
-      });
-
-      expect(installed).toHaveLength(1);
-
-      handle.unmount();
-    });
-
-    it('should return null when container does not exist', () => {
-      const { mountComponent } = useWebchatDomInjector('#nonexistent');
-
-      const handle = mountComponent(TestComponent);
-
-      expect(handle).toBeNull();
-    });
-  });
 });

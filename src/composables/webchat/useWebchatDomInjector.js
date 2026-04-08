@@ -1,5 +1,3 @@
-import { createApp } from 'vue';
-
 export function useWebchatDomInjector(rootSelector) {
   const messagesSelector = `${rootSelector} .weni-messages-list`;
 
@@ -38,36 +36,11 @@ export function useWebchatDomInjector(rootSelector) {
       .forEach((el) => el.remove());
   }
 
-  function mountComponent(
-    component,
-    { props = {}, plugins = [], wrapperClass = '' } = {},
-  ) {
-    const container = getContainer();
-    if (!container) return null;
-
-    const wrapper = document.createElement('div');
-    if (wrapperClass) wrapper.className = wrapperClass;
-    container.appendChild(wrapper);
-
-    const app = createApp(component, props);
-    plugins.forEach((plugin) => app.use(plugin));
-    app.mount(wrapper);
-
-    return {
-      wrapper,
-      unmount() {
-        app.unmount();
-        wrapper.remove();
-      },
-    };
-  }
-
   return {
     getContainer,
     createElement,
     insertAfterLastAnchor,
     appendToContainer,
     removeBySelector,
-    mountComponent,
   };
 }
