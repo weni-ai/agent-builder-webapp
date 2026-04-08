@@ -14,6 +14,7 @@ export const useWebchatPreviewStore = defineStore('webchatPreview', () => {
   async function changeManagerModel(managerId) {
     await nexusaiAPI.agent_builder.simulation.setManagerModel({
       projectUuid: projectStore.uuid,
+      urn: flowPreviewStore.preview.contact.urn,
       managerFoundationModel: managerId,
     });
   }
