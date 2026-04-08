@@ -3,7 +3,7 @@
     <UnnnicIcon
       icon="chat"
       filled
-      scheme="inherit"
+      scheme="fg-base"
       class="preview-placeholder__icon-chat"
     />
 

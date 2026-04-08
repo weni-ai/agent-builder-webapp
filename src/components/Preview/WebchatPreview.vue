@@ -26,12 +26,15 @@ import { useWebchatLoader } from '@/composables/webchat/useWebchatLoader';
 import { useWebSocketHistoryPatch } from '@/composables/webchat/useWebSocketHistoryPatch';
 import { useWebchatDomInjector } from '@/composables/webchat/useWebchatDomInjector';
 
+import Placeholder from '@/components/Preview/Placeholder.vue';
+import Unnnic from '@/utils/plugins/UnnnicSystem';
+import i18n from '@/utils/plugins/i18n';
 import env from '@/utils/env';
 import { useI18n } from 'vue-i18n';
 
 const WWC_SELECTOR = '#weni-webchat-preview';
 const DIRECTION_GROUP_SELECTOR = '.weni-messages-list__direction-group';
-const HISTORY_TIMEOUT_MS = 20000;
+const HISTORY_TIMEOUT_MS = 5000;
 
 const { t } = useI18n();
 
@@ -47,11 +50,39 @@ const domInjector = useWebchatDomInjector(WWC_SELECTOR);
 
 const isWebchatReady = ref(false);
 let historyTimeoutId = null;
+let placeholderHandle = null;
+let placeholderObserver = null;
+
+function mountPlaceholder() {
+  const container = domInjector.getContainer();
+  if (!container || placeholderHandle) return;
+
+  placeholderHandle = domInjector.mountComponent(Placeholder, {
+    plugins: [Unnnic, i18n],
+    wrapperClass: 'webchat-placeholder-wrapper',
+  });
+
+  placeholderObserver = new MutationObserver(() => {
+    if (container.querySelector(DIRECTION_GROUP_SELECTOR)) {
+      unmountPlaceholder();
+    }
+  });
+
+  placeholderObserver.observe(container, { childList: true, subtree: true });
+}
+
+function unmountPlaceholder() {
+  placeholderObserver?.disconnect();
+  placeholderObserver = null;
+  placeholderHandle?.unmount();
+  placeholderHandle = null;
+}
 
 function setWebchatReady() {
   isWebchatReady.value = true;
   clearTimeout(historyTimeoutId);
   historyTimeoutId = null;
+  mountPlaceholder();
 }
 
 async function initWebchat() {
@@ -125,6 +156,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearTimeout(historyTimeoutId);
+  unmountPlaceholder();
   restoreWsHistory();
   cleanupLoader();
 });
@@ -144,7 +176,7 @@ onBeforeUnmount(() => {
   height: 100%;
   position: relative;
 
-  * {
+  *:not(.unnnic-icon) {
     font-family: Inter, sans-serif !important;
   }
 
@@ -161,6 +193,14 @@ onBeforeUnmount(() => {
 
     .weni-messages-list {
       padding: $unnnic-space-6;
+
+      .webchat-placeholder-wrapper {
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
       .webchat-manager-status {
         display: flex;
