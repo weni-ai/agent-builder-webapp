@@ -34,7 +34,8 @@ import { useI18n } from 'vue-i18n';
 
 const WWC_SELECTOR = '#weni-webchat-preview';
 const DIRECTION_GROUP_SELECTOR = '.weni-messages-list__direction-group';
-const HISTORY_TIMEOUT_MS = 5000;
+const MANAGER_STATUS_SELECTOR = '.webchat-manager-status';
+const HISTORY_TIMEOUT_MS = 20000;
 
 const { t } = useI18n();
 
@@ -63,7 +64,10 @@ function mountPlaceholder() {
   });
 
   placeholderObserver = new MutationObserver(() => {
-    if (container.querySelector(DIRECTION_GROUP_SELECTOR)) {
+    if (
+      container.querySelector(DIRECTION_GROUP_SELECTOR) ||
+      container.querySelector(MANAGER_STATUS_SELECTOR)
+    ) {
       unmountPlaceholder();
     }
   });
@@ -117,13 +121,13 @@ function injectManagerSelectedMessage(managerId) {
   const text = t('router.preview.manager_selected', { name: label });
 
   const el = domInjector.createElement({
-    className: 'webchat-manager-status',
+    className: MANAGER_STATUS_SELECTOR.replace('.', ''),
     textContent: text,
   });
 
   domInjector.insertAfterLastAnchor(
     el,
-    `${DIRECTION_GROUP_SELECTOR}, .webchat-manager-status`,
+    `${DIRECTION_GROUP_SELECTOR}, ${MANAGER_STATUS_SELECTOR}`,
   );
 
   el.scrollIntoView({ behavior: 'smooth' });
@@ -146,7 +150,7 @@ watch(
 watch(
   () => webchatPreviewStore.sessionVersion,
   () => {
-    domInjector.removeBySelector('.webchat-manager-status');
+    domInjector.removeBySelector(MANAGER_STATUS_SELECTOR);
   },
 );
 
