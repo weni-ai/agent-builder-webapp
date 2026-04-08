@@ -112,6 +112,13 @@ watch(
   },
 );
 
+watch(
+  () => webchatPreviewStore.sessionVersion,
+  () => {
+    domInjector.removeBySelector('.webchat-manager-status');
+  },
+);
+
 onMounted(() => {
   initWebchat();
 });

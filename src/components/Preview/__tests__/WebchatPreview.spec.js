@@ -223,4 +223,44 @@ describe('WebchatPreview.vue', () => {
       expect(statusElements[1].textContent).toContain('Legacy Manager');
     });
   });
+
+  describe('sessionVersion watcher', () => {
+    function createMessagesContainer() {
+      const container = document.createElement('div');
+      container.id = 'weni-webchat-preview';
+
+      const messagesList = document.createElement('div');
+      messagesList.className = 'weni-messages-list';
+      container.appendChild(messagesList);
+
+      document.body.appendChild(container);
+      return messagesList;
+    }
+
+    afterEach(() => {
+      const existing = document.getElementById('weni-webchat-preview');
+      if (existing) existing.remove();
+    });
+
+    it('should remove manager status elements when sessionVersion changes', async () => {
+      const messagesList = createMessagesContainer();
+
+      managerSelectorStore.selectedPreviewManager = 'new-manager';
+      await nextTick();
+
+      managerSelectorStore.selectedPreviewManager = 'legacy-manager';
+      await nextTick();
+
+      expect(
+        messagesList.querySelectorAll('.webchat-manager-status'),
+      ).toHaveLength(2);
+
+      webchatPreviewStore.sessionVersion += 1;
+      await nextTick();
+
+      expect(
+        messagesList.querySelectorAll('.webchat-manager-status'),
+      ).toHaveLength(0);
+    });
+  });
 });
