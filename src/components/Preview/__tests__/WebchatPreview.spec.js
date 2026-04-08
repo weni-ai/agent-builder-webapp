@@ -247,20 +247,22 @@ describe('WebchatPreview.vue', () => {
       if (existing) existing.remove();
     });
 
-    it('should mount the placeholder when webchat becomes ready and there are no messages', async () => {
+    it('should show the placeholder text when webchat becomes ready and there are no messages', async () => {
       const messagesList = createMessagesContainer();
 
       await vi.waitFor(() => expect(mockPatch).toHaveBeenCalled());
       triggerWebchatReady();
       await nextTick();
 
-      const placeholderWrapper = messagesList.querySelector(
-        '.webchat-placeholder-wrapper',
+      const placeholder = messagesList.querySelector('.webchat-placeholder');
+      expect(placeholder).not.toBeNull();
+      expect(placeholder.tagName).toBe('P');
+      expect(placeholder.textContent).toBe(
+        i18n.global.t('router.preview.placeholder'),
       );
-      expect(placeholderWrapper).not.toBeNull();
     });
 
-    it('should not mount the placeholder if it is already mounted', async () => {
+    it('should not duplicate the placeholder if already shown', async () => {
       const messagesList = createMessagesContainer();
 
       await vi.waitFor(() => expect(mockPatch).toHaveBeenCalled());
@@ -268,10 +270,9 @@ describe('WebchatPreview.vue', () => {
       triggerWebchatReady();
       await nextTick();
 
-      const wrappers = messagesList.querySelectorAll(
-        '.webchat-placeholder-wrapper',
-      );
-      expect(wrappers).toHaveLength(1);
+      expect(
+        messagesList.querySelectorAll('.webchat-placeholder'),
+      ).toHaveLength(1);
     });
 
     it('should remove the placeholder when a direction group appears', async () => {
@@ -281,37 +282,29 @@ describe('WebchatPreview.vue', () => {
       triggerWebchatReady();
       await nextTick();
 
-      expect(
-        messagesList.querySelector('.webchat-placeholder-wrapper'),
-      ).not.toBeNull();
+      expect(messagesList.querySelector('.webchat-placeholder')).not.toBeNull();
 
       const group = document.createElement('div');
       group.className = 'weni-messages-list__direction-group';
       messagesList.appendChild(group);
 
       await vi.waitFor(() => {
-        expect(
-          messagesList.querySelector('.webchat-placeholder-wrapper'),
-        ).toBeNull();
+        expect(messagesList.querySelector('.webchat-placeholder')).toBeNull();
       });
     });
 
-    it('should unmount the placeholder on component unmount', async () => {
+    it('should remove the placeholder on component unmount', async () => {
       const messagesList = createMessagesContainer();
 
       await vi.waitFor(() => expect(mockPatch).toHaveBeenCalled());
       triggerWebchatReady();
       await nextTick();
 
-      expect(
-        messagesList.querySelector('.webchat-placeholder-wrapper'),
-      ).not.toBeNull();
+      expect(messagesList.querySelector('.webchat-placeholder')).not.toBeNull();
 
       wrapper.unmount();
 
-      expect(
-        messagesList.querySelector('.webchat-placeholder-wrapper'),
-      ).toBeNull();
+      expect(messagesList.querySelector('.webchat-placeholder')).toBeNull();
     });
   });
 });
