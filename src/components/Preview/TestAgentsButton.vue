@@ -13,6 +13,7 @@
 
   <PreviewDrawer
     v-model="isPreviewOpen"
+    :forceMount="hasBeenOpened"
     data-testid="preview-drawer"
   />
 </template>
@@ -25,7 +26,7 @@ import PreviewDrawer from './Drawer/index.vue';
 import { usePreviewStore } from '@/store/Preview';
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useWebchatPreviewStore } from '@/store/WebchatPreview';
-import { useWebchatLoader } from '@/composables/useWebchatLoader';
+import { useWebchatLoader } from '@/composables/webchat/useWebchatLoader';
 
 const previewStore = usePreviewStore();
 const featureFlagsStore = useFeatureFlagsStore();
@@ -33,6 +34,7 @@ const webchatPreviewStore = useWebchatPreviewStore();
 const { preload } = useWebchatLoader();
 
 const isPreviewOpen = ref(false);
+const hasBeenOpened = ref(false);
 
 const isLoadingWebchat = computed(
   () =>
@@ -41,6 +43,7 @@ const isLoadingWebchat = computed(
 );
 
 const handleTestAgents = () => {
+  hasBeenOpened.value = true;
   isPreviewOpen.value = true;
 };
 
