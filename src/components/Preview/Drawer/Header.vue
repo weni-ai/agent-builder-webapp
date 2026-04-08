@@ -31,6 +31,7 @@
           :options="previewManagerOptions"
           size="sm"
           :optionsLines="2"
+          :disabled="!webchatPreviewStore.isWebchatReady"
         />
       </UnnnicFormElement>
     </section>

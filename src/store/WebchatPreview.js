@@ -10,6 +10,7 @@ export const useWebchatPreviewStore = defineStore('webchatPreview', () => {
   const flowPreviewStore = useFlowPreviewStore();
 
   const isWebchatLoaded = ref(false);
+  const isWebchatReady = ref(false);
   const sessionVersion = ref(0);
 
   async function changeManagerModel(managerId) {
@@ -36,6 +37,7 @@ export const useWebchatPreviewStore = defineStore('webchatPreview', () => {
 
   return {
     isWebchatLoaded,
+    isWebchatReady,
     sessionVersion,
     setWebchatLoaded,
     changeManagerModel,
