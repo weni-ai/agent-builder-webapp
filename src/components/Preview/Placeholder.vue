@@ -3,7 +3,7 @@
     <UnnnicIcon
       icon="chat"
       filled
-      scheme="fg-base"
+      scheme="fg-muted"
       class="preview-placeholder__icon-chat"
     />
 
@@ -23,7 +23,6 @@
   & &__icon-chat {
     $icon-size: 3.5 * $unnnic-font-size;
 
-    color: $unnnic-color-neutral-soft;
     margin-bottom: $unnnic-spacing-nano;
     font-size: $icon-size;
   }
