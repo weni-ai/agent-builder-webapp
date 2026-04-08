@@ -52,6 +52,7 @@ describe('WebchatPreviewStore', () => {
         nexusaiAPI.agent_builder.simulation.setManagerModel,
       ).toHaveBeenCalledWith({
         projectUuid: 'test-project-uuid',
+        urn: 'test-contact-urn',
         managerFoundationModel: 'manager-123',
       });
     });
