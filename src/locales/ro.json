@@ -1,0 +1,777 @@
+{
+  "and": " și ",
+  "delete": "Ștergere",
+  "cancel": "Anulează",
+  "back": "Înapoi",
+  "next": "Înainte",
+  "finish": "Finalizat",
+  "speed": "Viteză",
+  "new": "Nou",
+  "save_changes": "Salvează modificările",
+  "unauthorized": "Nu ai permisiunea să efectuezi această acțiune",
+  "internal_server_error": "Eroare internă a serverului",
+  "unexpected_error": "A apărut o eroare neașteptată",
+  "agent_builder": {
+    "tabs": {
+      "conversations": {
+        "title": "Conversații",
+        "description": "Revizuiește și analizează conversațiile dintre agenți și clienți."
+      },
+      "knowledge": {
+        "title": "Cunoștințe",
+        "description": "Adaugă cunoștințe prin fișiere, linkuri sau text pentru ca agentul să poată răspunde cu acuratețe"
+      },
+      "tunings": {
+        "title": "Setări",
+        "description": "Gestionează setările și urmărește modificările făcute"
+      }
+    },
+    "supervisor": {
+      "learn_details_conversations": "Află detalii despre o conversație.",
+      "conversation_details": {
+        "title": "Despre conversație",
+        "what_is_a_conversation": "Ce este o conversație?",
+        "what_is_a_conversation_description": "Considerăm că toate mesajele schimbate în decurs de 24 de ore (cu resetare la miezul nopții) constituie o singură conversație.",
+        "optimized_resolution": "Asistat de IA",
+        "optimized_resolution_description": "Conversația s-a încheiat cu o rezoluție clară și eficientă pentru contact.",
+        "other_conclusion": "Neasistat",
+        "other_conclusion_description": "Conversații care s-au încheiat în alte moduri, cum ar fi interacțiuni scurte, salutări, abandonuri sau cazuri care au urmat un flux diferit fără o rezoluție directă.",
+        "transferred_to_human_support": "Transferat la asistență umană",
+        "transferred_to_human_support_description": "Include conversații (asistat de IA și neasistat) transferate către un reprezentant uman."
+      },
+      "conversations_count": "{count} conversații găsite",
+      "unnamed_contact": "Contact fără nume",
+      "attended_by_agent": {
+        "title": "Asistat de un agent",
+        "tooltip": "Conversații finalizate de un agent"
+      },
+      "forwarded_human_support": {
+        "title": "Transferat la asistență umană",
+        "tooltip": "Conversații transferate către asistență umană"
+      },
+      "conversation_start_finish": {
+        "start": "Conversație începută: {datetime}",
+        "finish": "Conversație încheiată: {datetime}"
+      },
+      "contact_urn": "URN contact",
+      "topic": "Subiect",
+      "conversation_details_collapse": "Detalii conversație",
+      "view_full_history": "Vezi istoricul complet",
+      "view_logs": "Afișează jurnalele",
+      "hide_logs": "Ascunde jurnalele",
+      "search": "Căutare",
+      "conversations_empty": "Nu s-au găsit conversații",
+      "conversations_separator": "Conversațiile de mai jos au fost clasificate folosind sistemul anterior",
+      "conversations_v2_disclaimer": "Începând cu {day} martie, conversațiile sunt organizate în ferestre de 24 de ore (cu resetare la miezul nopții) folosind noul nostru sistem de clasificare",
+      "no_messages_found": {
+        "title": "Nu s-au găsit mesaje în această conversație",
+        "description": "Dacă mesajul a fost trimis de asistența umană sau a declanșat o acțiune automată, îl poți găsi în {studio_link}.",
+        "studio_link": "Studio"
+      },
+      "unclassified_status_tooltip": "Conversațiile închise înainte de 8 septembrie 2025 nu pot fi clasificate",
+      "export": {
+        "title": "Exportă pe e-mail",
+        "description": "Vom pregăti fișierul cu informațiile AI și îl vom trimite la următoarele adrese de e-mail:",
+        "token_label": "Token API proiect",
+        "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
+        "token_help": "Poți găsi acest token în",
+        "project_settings": "setări proiect",
+        "and_paste": "și lipește-l aici",
+        "send": "Trimite exportul",
+        "success": "Exportul va fi trimis în curând către toate adresele de e-mail listate",
+        "error": "Eroare la trimiterea exportului. Încearcă din nou mai târziu."
+      },
+      "filters": {
+        "filter_conversations": "Filtrează conversațiile",
+        "count_applied_filters": "(1 filtru aplicat) | ({count} filtre aplicate)",
+        "filter_conversations_drawer": "Filtrează conversațiile",
+        "apply_filters": "Aplicare filtre",
+        "clear_filters": "Elimină filtrele",
+        "period": {
+          "label": "Perioadă"
+        },
+        "status": {
+          "conversations": "Conversații",
+          "in_progress": "În curs",
+          "optimized_resolution": "Asistat de IA",
+          "other_conclusion": "Neasistat",
+          "unclassified": "Neclasificat",
+          "transferred_to_human_support": "Transferat la asistență umană"
+        },
+        "csat": {
+          "csat": "CSAT",
+          "very_satisfied": "🤩 Foarte mulțumit",
+          "satisfied": "😃 Mulțumit",
+          "neutral": "😐 Neutru",
+          "dissatisfied": "😔 Nemulțumit",
+          "very_dissatisfied": "😡 Foarte nemulțumit"
+        },
+        "topic": {
+          "topic": "Subiect"
+        }
+      },
+      "load_conversations": {
+        "error": "Eroare la încărcarea conversațiilor"
+      }
+    },
+    "instructions": {
+      "new_instruction": {
+        "title": "Instrucțiune personalizată nouă",
+        "validate_instruction_by_ai": {
+          "switch": "Validează instrucțiunea prin IA",
+          "button": "Validează instrucțiunea",
+          "modal_title": "Validează instrucțiunea",
+          "re-validate_button": "Revalidează",
+          "cancel_button": "Anulează",
+          "publish_button": "Publică",
+          "error_alert": "Eroare la obținerea sugestiei de instrucțiune prin IA",
+          "results": {
+            "title": "Rezultatele validării",
+            "duplicate": "Duplicat",
+            "conflicts": "Conflicte",
+            "ambiguity": "Ambiguitate",
+            "lack_of_clarity": "Claritate",
+            "no_problems_found": "Nu s-au găsit probleme. Gata de publicare!"
+          },
+          "see_ai_suggestion": {
+            "trigger": "Vezi sugestia IA",
+            "title": "Sugestie IA",
+            "apply_button": "Aplică sugestia IA",
+            "suggestion_applied": "Sugestia IA a fost aplicată",
+            "no_ai_suggestion_tooltip": "Nicio sugestie IA"
+          }
+        },
+        "textarea": {
+          "placeholder": "Ești amuzant, dar nu face glume",
+          "description": "Menține instrucțiunile clare, directe și la imperativ."
+        },
+        "publish_instruction": "Publică instrucțiunea",
+        "success_alert": "Instrucțiune personalizată adăugată",
+        "error_alert": "Eroare la adăugarea instrucțiunii personalizate"
+      },
+      "instructions_list": {
+        "title": "Listă de instrucțiuni",
+        "tabs": {
+          "default": "Instrucțiuni implicite",
+          "safety_topics": "Subiecte privind siguranța",
+          "custom": "Instrucțiuni personalizate",
+          "default_description": "Reguli de bază definite de sistem. Acestea sunt doar în citire și se aplică tuturor conversațiilor cu acest agent.",
+          "safety_topics_description": "Aceste subiecte nu sunt gestionate de agent. Ele sunt setate automat și nu pot fi editate.",
+          "custom_description": "Instrucțiunile tale personalizate pentru acest agent. Le poți edita sau elimina."
+        },
+        "default_instruction": "Instrucțiune implicită",
+        "default_instructions": [
+          "Dacă este nevoie, cere ajutor de la membrii echipei specializate.",
+          "NU trebuie să discuți NICIODATĂ, ÎN NICIUN CAZ, subiecte care nu țin de aria ta de expertiză.",
+          "Asigură-te că comunicarea este optimizată atunci când contactezi MAI MULȚI agenți simultan, ori de câte ori este posibil.",
+          "Păstrează comunicarea cu ceilalți agenți concisă și obiectivă, fără conversații paralele.",
+          "Comunică doar cu agenții necesari pentru a îndeplini solicitarea utilizatorului.",
+          "Răspunde doar pe baza informațiilor din blocul bazei de cunoștințe. Nu folosi presupuneri, cunoștințe externe sau alte surse.",
+          "Nu deduce detalii care nu au fost menționate, nu generaliza dincolo de ceea ce este scris şi nu completa goluri sau nu specula — chiar dacă subiectul pare evident."
+        ],
+        "safety_topics": [
+          "Politică",
+          "Sănătate fizică",
+          "Violență fizică sau morală",
+          "Conținut sexual",
+          "Părtinire",
+          "Ură",
+          "Religie",
+          "Sinucidere",
+          "Auto-vătămare",
+          "Convingeri",
+          "Identitate de gen",
+          "Relații sexuale"
+        ],
+        "no_custom_instructions": "Nu au fost adăugate instrucțiuni personalizate",
+        "no_custom_instructions_found": "Nu s-au găsit instrucțiuni personalizate",
+        "search_placeholder": "Căutare",
+        "copy_instructions": "Copiază instrucțiunile",
+        "copy_success": "Instrucțiunile personalizate au fost copiate",
+        "copy_error": "Eroare la copierea instrucțiunilor"
+      },
+      "edit_instruction": {
+        "title": "Editează instrucțiunea",
+        "success_alert": "Instrucțiune personalizată editată",
+        "error_alert": "Eroare la editarea instrucțiunii personalizate",
+        "save": "Salvează",
+        "cancel": "Anulează"
+      },
+      "remove_instruction": {
+        "title": "Șterge instrucțiunea",
+        "modal_description": "Ești sigur că vrei să ștergi această instrucțiune?",
+        "remove": "Ștergere",
+        "cancel": "Anulează",
+        "success_alert": "Instrucțiune personalizată ștearsă",
+        "error_alert": "Eroare la ștergerea instrucțiunii personalizate"
+      }
+    },
+    "traces": {
+      "search_result_received": "Rezultatele căutării primite",
+      "searching_knowledge_base": "Căutarea informațiilor în baza de cunoștințe",
+      "invoking_model": "Declanșarea modelului",
+      "model_response_received": "Răspunsul modelului a fost primit",
+      "thinking": "Se gândește",
+      "delegating_to_agent": "Se atribuie sarcina agentului",
+      "forwarding_to_manager": "Redirecționare către manager",
+      "executing_tool": "Se execută instrumentul {function}",
+      "tool_result_received": "Rezultate ale instrumentului primite",
+      "sending_response_for_manager": "Se trimite răspuns managerului",
+      "sending_final_response": "Se trimite răspunsul final",
+      "applying_safety_rules": "Se aplică regulile de securitate",
+      "processing_message": "Se procesează mesajul",
+      "filter_logs": {
+        "title": "Filtrează jurnalele",
+        "placeholder": "Caută în jurnale",
+        "categories": {
+          "placeholder": "Categorii",
+          "knowledge": "Cunoștințe",
+          "thinking": "Se gândește",
+          "delegating_to_agent": "Se atribuie sarcina agentului",
+          "forwarding_to_manager": "Redirecționare către manager",
+          "tool": "Instrument",
+          "sending_response_for_manager": "Se trimite către manager",
+          "sending_final_response": "Se trimite răspunsul final",
+          "applying_guardrails": "Se aplică regulile de securitate"
+        },
+        "no_logs_found": "Nu s-au găsit jurnale"
+      }
+    },
+    "tunings": {
+      "project_details": "Detalii proiect",
+      "agents_backend": "Backend agenți:",
+      "agent_model": "Model {agent}:",
+      "characters_usage": "Utilizarea caracterelor:",
+      "characters_usage_description": "Acesta este numărul mediu de caractere pe care agentul tău îl folosește în toate zonele: instrucțiuni, baza de cunoștințe și orice alte setări.",
+      "voice_settings": {
+        "title": "Setări de voce",
+        "switch": {
+          "text": "Utilizare voce",
+          "description": "Cu această funcție activată, agentul poate gestiona apeluri WhatsApp."
+        },
+        "change_voice": {
+          "title": "Alege vocea pentru răspunsurile agentului",
+          "description": "Apasă pentru a asculta vocile și selectează cea care se potrivește cel mai bine agentului tău"
+        }
+      },
+      "manager": {
+        "title": "Manager",
+        "new": "Nou",
+        "recommended": "Recomandat",
+        "legacy_model": "Model anterior",
+        "load_error": "Nu s-au putut încărca managerii",
+        "only_new_manager_description": "Acest proiect folosește {manager_name}. Versiunile anterioare ale Managerului nu mai sunt disponibile.",
+        "upgrade_banner": {
+          "title": "💡 {manager_name} este acum disponibil",
+          "disclaimer_title": "Actualizează la {manager_name}",
+          "disclaimer_title_with_date": "Actualizează la {manager_name} până la {date}",
+          "auto_upgrade_success_title": "{manager_name} este acum activ",
+          "auto_upgrade_success_description": "Acest proiect a fost actualizat la {manager_name} pentru o orchestrare îmbunătățită și răspunsuri mai consistente.",
+          "manager_2_dot_6_description": "Actualizează pentru a obține răspunsuri mai fiabile în timp ce Managerul coordonează agenții tăi.",
+          "manager_2_dot_6_highlights": [
+            "Performanță mai bună în conversații complexe",
+            "Orchestrare mai stabilă între agenți"
+          ],
+          "manager_2_dot_6_disclaimer_description": "Manager 2.5 va fi depreciat în curând. Actualizează la Manager 2.6 pentru răspunsuri mai fiabile în timp ce Managerul coordonează agenții tăi."
+        },
+        "no_components_support": "{manager_name} nu acceptă încă formatul de mesaje multiple"
+      }
+    }
+  },
+  "agents": {
+    "title": "Agenții mei",
+    "description": "Gestionează echipa ta digitală, instrucțiunile și comportamentele",
+    "assign_agents_button": "Atribuie agenți noi",
+    "assigned_agents": {
+      "title": "Agenți atribuiți",
+      "new_agent": "Agent nou",
+      "manager": {
+        "name": "Manager",
+        "edit_manager": "Editează Manager",
+        "edit_instructions": "Editează instrucțiunile"
+      },
+      "no_agents": {
+        "title": "Niciun agent atribuit încă",
+        "description": "Apasă pe {assign_new_agents} și adaugă primul tău agent",
+        "assign_new_agents": "atribuie agenți noi"
+      },
+      "agent_details": {
+        "about": "Despre",
+        "mcp": "MCP",
+        "system": "Sistem",
+        "view_options": "Vizualizare opțiuni",
+        "remove_agent": "Elimină agentul"
+      }
+    },
+    "assign_agents": {
+      "title": "Atribuie agenți noi",
+      "description": "Agenții sunt specialiști gata să ofere asistență personalizată și să rezolve cereri complexe, acționând ca adevărați consultanți, asigurând o experiență umană și de calitate superioară pentru clienții tăi.",
+      "header": {
+        "all_systems": "Toate sistemele",
+        "all_custom_agents": "Toți agenții personalizați",
+        "system_title": "Agenți {system}",
+        "agents_available": "Niciun agent disponibil | {count} agent disponibil | {count} agenți disponibili"
+      },
+      "sidebar": {
+        "official_title": "Agenți oficiali",
+        "custom_title": "Agenți personalizați",
+        "all_systems": "Toate sistemele",
+        "all_custom_agents": "Toți agenții personalizați"
+      },
+      "assign_button": "Atribuie agent",
+      "already_assigned": "Agent deja atribuit",
+      "view_details": "Vizualizează detalii",
+      "filters": {
+        "search": {
+          "placeholder": "Căutare"
+        },
+        "category": {
+          "placeholder": "Categorii",
+          "product_discovery_and_recommendations": "Descoperire și recomandări de produse",
+          "orders_status_and_tracking": "Stare și urmărire comenzi",
+          "returns_exchanges_and_cancellations": "Retururi, schimburi și anulări",
+          "payments_and_checkout": "Plăți și finalizare comandă",
+          "crm_and_lead_capture": "CRM și captarea lead-urilor",
+          "feedback_and_surveys": "Feedback și sondaje",
+          "utilities_and_monitoring": "Utilități și monitorizare",
+          "others": "Altele"
+        }
+      },
+      "empty_states": {
+        "search": {
+          "title": "Nu s-au găsit rezultate",
+          "description": "Căutarea ta nu a returnat niciun rezultat."
+        },
+        "filters": {
+          "title": "Nu s-au găsit rezultate",
+          "description": "Filtrele tale nu au returnat niciun rezultat."
+        },
+        "custom": {
+          "title": "Nu s-au găsit agenți personalizați",
+          "description": "Agenții personalizați sunt creați folosind Weni CLI.",
+          "see_documentation": "Consultă {weni_cli_documentation} pentru instrucțiuni detaliate",
+          "weni_cli_documentation": "Documentația Weni CLI"
+        }
+      },
+      "setup": {
+        "about": "Despre",
+        "view_documentation": "Vizualizare documentație",
+        "mcps_available": {
+          "title": "MCP-uri disponibile"
+        },
+        "conversation_example": {
+          "title": "Exemplu de conversație",
+          "customer_label": "Client"
+        },
+        "system_selection": {
+          "title": "Selectare sistem",
+          "description": "Selectează sistemul sursă de date",
+          "mcp_count": "{count} MCP disponibil | {count} MCP-uri disponibile"
+        },
+        "mcp_selection": {
+          "title": "Selectare MCP",
+          "description": "MCP este un set predefinit de instrumente care activează capacitățile agentului"
+        },
+        "mcp_config": {
+          "placeholder_title": "Selectează un MCP din lista alăturată",
+          "placeholder_description": "Selectează MCP-ul care se potrivește cel mai bine scenariului tău și configurează-l",
+          "title": "Configurare MCP {mcp}",
+          "description": "Acest MCP nu necesită configurare"
+        },
+        "third_step": {
+          "title": "Revizuiește configurarea și introdu datele de autentificare",
+          "description": "Revizuiește configurarea și introdu datele de autentificare pentru a finaliza configurarea agentului",
+          "system_card_title": "Sistem selectat",
+          "mcp_card_title": "MCP selectat",
+          "credentials": {
+            "disclaimer_title": "Acest agent folosește date de autentificare deja introduse în acest proiect",
+            "not_required": "Acest agent nu necesită date de autentificare"
+          }
+        },
+        "start_button": "Începe configurarea",
+        "step": {
+          "title": "Atribuie {agent}",
+          "tag": "Pasul {step} din {total}"
+        },
+        "cancel_button": "Anulează",
+        "back_button": "Înapoi",
+        "next_button": "Înainte",
+        "finish_button": "Finalizează"
+      }
+    },
+    "instructions": {
+      "title": "Instrucțiuni",
+      "description": "Scrie reguli rapide pentru a modela comportamentul agentului"
+    },
+    "profile": {
+      "tone_of_voice": {
+        "tones": {
+          "friendly": {
+            "name": "Prietenos",
+            "tooltip": "Suportiv și empatic, concentrat pe parteneriat și ajutor"
+          },
+          "systematic": {
+            "name": "Sistematic",
+            "tooltip": "Direct, bine organizat și axat pe procese clare și logică"
+          },
+          "analytical": {
+            "name": "Analitic",
+            "tooltip": "Logic, metodic și obiectiv, folosind un limbaj precis și evitând presupunerile"
+          },
+          "creative": {
+            "name": "Creativ",
+            "tooltip": "Vizionar și imaginativ, prioritizând soluții originale"
+          },
+          "casual": {
+            "name": "Informal",
+            "tooltip": "Lejer, energic și informal pentru un stil mai accesibil și uman"
+          }
+
+        }
+      }
+    }
+  },
+  "router": {
+    "agents_team": {
+      "card": {
+        "assign": "Atribuie echipei",
+        "assigned": "Atribuit",
+        "success_assign_alert": "{agent} atribuit",
+        "success_assign_alert_description": "Agentul este gata de utilizare",
+        "success_unassign_alert": "{agent} eliminat din echipă cu succes",
+        "info_unassign_alert": "{agent} eliminat",
+        "error_alert": "Eroare la actualizarea echipei",
+        "official": "Oficial",
+        "custom": "Personalizat",
+        "remove_agent": "Elimină agentul din echipă",
+        "delete_agent": "Șterge agentul"
+      },
+      "drawer": {
+        "title": "Atribuie {name} echipei",
+        "description": "Introdu datele de autentificare pentru a atribui agentul",
+        "use_credentials": "Folosește datele de autentificare configurate în Setări",
+        "assign": "Atribuire",
+        "credentials_used_by_this_agent": "Datele de autentificare utilizate de acest agent",
+        "credentials_shared_with_all_agents": "Aceste date de autentificare vor fi partajate pentru a permite accesul tuturor agenților"
+      },
+      "active_team": {
+        "title": "Echipă activă",
+        "no_team": "Nu există agenți atribuiți echipei tale",
+        "no_team_description": "Accesează {assign_agents} pentru a vizualiza galeria și a atribui agenți echipei tale"
+      },
+      "gallery": {
+        "title": "Galerie agenți",
+        "search_placeholder": "Caută agent sau competență",
+        "official_agents": "Agenți oficiali",
+        "custom_agents": "Agenți personalizați",
+        "no_agent_found": "Nu s-a găsit niciun agent",
+        "custom_agents_description": "Agenții personalizați sunt creați folosind Weni CLI",
+        "weni_cli_documentation": "Documentația Weni CLI",
+        "weni_cli_documentation_description": "Consultă {weni_cli_documentation} pentru instrucțiuni detaliate"
+      },
+      "create_agent": "Creează agent",
+      "modal_delete_agent": {
+        "title": "Șterge {agent_name}",
+        "description": "Ești sigur că vrei să ștergi agentul {agent_name}? Această acțiune nu poate fi anulată.",
+        "delete": "Ștergere",
+        "cancel": "Anulează",
+        "success_alert": "Agentul {agent_name} a fost șters",
+        "error_alert": "Eroare la ștergerea agentului {agent_name}"
+      }
+    },
+    "content": {
+      "fields": {
+        "search_placeholder": "Căutare"
+      }
+    },
+    "tunings": {
+      "save_changes": "Salvează modificările",
+      "changes_saved": "Modificările au fost salvate",
+      "description": "Gestionează setările și urmărește modificările făcute",
+      "tabs": {
+        "config": "Setări",
+        "credentials": "Date de autentificare",
+        "history": "Istoricul modificărilor"
+      },
+      "history": {
+        "no_changes": "Nu s-a făcut nicio modificare în Agent Builder",
+        "description": "Urmărește istoricul modificărilor făcute în Agent Builder",
+        "sub_description": "Vizualizează toate modificările sau aplică un filtru după tip",
+        "fields": {
+          "change": "Modificare",
+          "date": "Dată",
+          "all-changes": "Toate modificările",
+          "instructions-changes": "Modificări instrucțiuni",
+          "content-changes": "Modificări conținut",
+          "settings-changes": "Modificări setări",
+          "changes": "a făcut {value} modificări",
+          "update-personality": "a modificat personalitatea ({value})",
+          "update-goal": "a modificat obiectivul ({value})",
+          "update-name": "a modificat numele ({value})",
+          "update-role": "a modificat rolul ({value})",
+          "add-instruction": "a adăugat o instrucțiune ({value})",
+          "remove-instruction": "a eliminat o instrucțiune ({value})",
+          "update-instruction": "a modificat o instrucțiune ({value})",
+          "add-content": "a adăugat conținut ({value})",
+          "update-content": "a actualizat conținut ({value})",
+          "remove-content": "a eliminat conținut ({value})"
+        }
+      },
+      "credentials": {
+        "no_credentials": "Nu au fost furnizate date de autentificare",
+        "used_by_official_agents": "Date de autentificare utilizate de agenții oficiali",
+        "used_by_customized_agents": "Date de autentificare utilizate de agenții personalizați",
+        "used_by": "Utilizate de",
+        "no_agents_using": "Niciun agent nu le utilizează",
+        "credentials_updated_successfully": "Date de autentificare actualizate cu succes",
+        "get_error": "Eroare la solicitarea datelor de autentificare",
+        "save_error": "Eroare la salvarea datelor de autentificare"
+      },
+      "settings": {
+        "save_error": "Eroare la salvarea setărilor",
+        "agents_preview": {
+          "title": "Previzualizare agent",
+          "agents_progressive_feedback": {
+            "title": "Feedback progresiv agent",
+            "description": "Agentul poate oferi actualizări sumare în timp ce formulează răspunsul final, ajutând contactul să urmărească procesul în timp real."
+          },
+          "multiple_message_format": {
+            "title": "Format multiplu de mesaje",
+            "description": "Agentul poate trimite mai multe mesaje formatate, cum ar fi răspunsuri rapide, liste, CTA-uri și cataloage."
+          }
+        },
+        "human_support": {
+          "title": "Asistență umană",
+          "description": "Agentul poate transfera conversația către asistența umană."
+        }
+      },
+      "save_success": "Setările au fost salvate cu succes"
+    },
+    "preview": {
+      "trigger": "Testează-ți agenții",
+      "title": "Previzualizare agent",
+      "active": "Agent Builder activ",
+      "no_logs_registered": "Nu există înregistrări de jurnale",
+      "see_full_details": "Vizualizează detalii",
+      "manager_task": "Coordonarea sarcinilor echipei",
+      "visual_flow": "Flux vizual",
+      "logs": "Jurnale",
+      "test_your_agents": "Testează-ți agenții",
+      "options": {
+        "refresh": "Șterge conversațiile",
+        "export": "Exportă conversațiile"
+      },
+      "preview_tests_placeholder": "Scrie un mesaj",
+      "preview_tests_attachments": {
+        "photos_or_videos": "Fotografii și videoclipuri",
+        "photos": "Fotografii",
+        "file": "Fișier",
+        "location": "Locație"
+      },
+      "placeholder": "Începe o conversație cu agentul tău pentru a-l testa",
+      "manager_selected": "Acum se folosește {name} pentru această conversație",
+      "manager_version": "Versiune Manager",
+      "manager_version_tooltip": "Selectează ce versiune de Manager coordonează această conversație",
+      "standby": "Mod standby",
+      "catalog": {
+        "title": "Catalog de produse",
+        "view_cart": "Vizualizează coșul ({quantity} articol) | Vizualizează coșul ({quantity} articole)",
+        "add_to_cart": "Adaugă în coș",
+        "subtotal": "Subtotal",
+        "place_order": "Finalizează comanda",
+        "your_cart": "Coș",
+        "order_summary": "Sumar comandă",
+        "order_details": "Detalii comandă",
+        "view_order_details": "Vizualizează detaliile comenzii",
+        "items": "articol | articole",
+        "remove": "Eliminare"
+      }
+    }
+  },
+  "content_bases": {
+    "description": "Adaugă informații prin fișiere, linkuri sau text pentru ca agentul să poată răspunde cu acuratețe",
+    "quick_test": "Test rapid",
+    "sidebar_quick_test_title": "Test rapid al bazei {name}",
+    "sidebar_quick_test_description": "Trimite un mesaj pentru a testa această bază de conținut și a vedea la ce întrebări poate răspunde",
+    "write_content": "Scrie conținut",
+    "write_content_placeholder": "Scrie conținutul tău aici",
+    "write_content_help": "Nu știi cum să adaugi conținut la baza de cunoștințe AI? <a href=\"#\" target=\"_blank\">Vezi documentația</a>",
+    "changes_saved": "Modificările au fost salvate",
+    "time_ago_minutes": "Adăugat acum {minutes} minute",
+    "time_ago_hours": "Adăugat acum {hours} ore",
+    "time_ago_days": "Adăugat acum {days} zile",
+    "tabs": {
+      "files": "Fișiere",
+      "sites": "Site-uri",
+      "text": "Text"
+    },
+    "text": {
+      "description": "Scrie manual conținutul pe care agentul îl va folosi pentru a răspunde la întrebări",
+      "error": "Eroare la încărcarea fișierului",
+      "save": "Salvează"
+    },
+    "file_with_error": "Fișier cu eroare. Șterge-l și adaugă-l din nou.",
+    "site_with_error": "Site cu eroare. Șterge-l și adaugă-l din nou.",
+    "actions": {
+      "see_details": "Vizualizează detalii",
+      "download_file": "Descarcă fișierul",
+      "access_site": "Accesează site-ul",
+      "remove_site": "Șterge site-ul",
+      "remove_file": "Ștergere fișier",
+      "edit_action": "Editează acțiunea",
+      "remove_action": "Elimină acțiunea"
+    },
+    "files": {
+      "upload_content": "Încarcă conținutul din fișiere",
+      "drag_and_drop_your_file_here": "Trage și fixează fișierul aici pentru a adăuga conținut în baza de cunoștințe AI",
+      "supported_files": "Formate acceptate: {suportedFormats}.<br /> Limită de {limitMB} MB per fișier.",
+      "sup_files": "{suportedFormats}.<br /> Limită de {limitMB} MB per fișier.",
+      "description": "Încarcă documentele și fișierele pe care agentul le va folosi pentru a genera răspunsuri",
+      "file_error": "Fișier cu eroare. Șterge-l și adaugă-l din nou.",
+      "browse_file": "Adaugă fișierul",
+      "uploaded_files": "Fișiere încărcate",
+      "status": {
+        "uploading": "Se încarcă conținutul",
+        "uploaded": "Conținut încărcat",
+        "processing": "Se procesează conținutul"
+      },
+      "content_of_the_files_has_been_added": "Conținutul fișierului a fost adăugat la bază",
+      "file_removed_from_base": "{name} a fost eliminat din baza de conținut",
+      "unsupported_format": "Formatul fișierului nu este acceptat",
+      "exceeds_limit": "Dimensiunea fișierului depășește limita de {limitMB} MB",
+      "delete_file": {
+        "title": "Ștergere fișier",
+        "description": "Sigur dorești să ștergi fișierul <b>{name}</b>?<br /> Conținutul acestui fișier va fi eliminat din baza AI.",
+        "cancel": "Anulează",
+        "delete": "Ștergere"
+      },
+      "preview": {
+        "title": "Informații despre fișier",
+        "name": "Fișier:",
+        "date": "Data conținutului:",
+        "content_added_to_the_agent": "Conținutul fișierului a fost adăugat agentului:",
+        "not_found": {
+          "title": "Nu s-a putut afișa conținutul fișierului",
+          "description": "Nu s-a reușit localizarea conținutului fișierului.<br /> Șterge fișierul și încearcă să-l adaugi din nou."
+        },
+        "bedrock": {
+          "title": "Previzualizarea conținutului nu este disponibilă"
+        }
+      }
+    },
+    "sites": {
+      "title": "Introdu URL-urile site-urilor de pe care agentul poate extrage informații",
+      "description": "Asigură-te că site-urile sunt de încredere și conțin informații relevante",
+      "modal": {
+        "description": "Introdu URL-ul site-ului pentru a extrage conținutul",
+        "fields": {
+          "link": {
+            "label": "URL site"
+          }
+        },
+        "buttons": {
+          "cancel": "Anulează",
+          "finish": "Finalizat"
+        }
+      },
+      "uploaded_sites": "Site-uri încărcate",
+      "content_of_the_sites_has_been_added": "Conținutul site-ului a fost adăugat la bază",
+      "sidebar_add": {
+        "title": "Încarcă conținutul site-ului",
+        "description": "Adaugă conținutul site-ului în baza de cunoștințe AI",
+        "fields": {
+          "link": {
+            "label": "Link site",
+            "placeholder": "www.exemplu.com"
+          }
+        },
+        "button_more_one": "Adaugă un alt site",
+        "button_load_content": "Încarcă conținut"
+      },
+      "add_site": "Adaugă site",
+      "delete_site": {
+        "title": "Șterge site-ul",
+        "description": "Sigur dorești să ștergi site-ul <b>{name}</b>?<br /> Tot conținutul acestui site va fi eliminat din baza AI.",
+        "cancel": "Anulează",
+        "delete": "Ștergere"
+      },
+      "preview": {
+        "title": "Informații site",
+        "name": "Site:",
+        "content_added_to_the_agent": "Conținutul site-ului a fost adăugat agentului:"
+      }
+    }
+  },
+  "profile": {
+    "tabs": {
+      "profile": "Profil",
+      "settings": "Setări"
+    },
+    "edit_manager_profile": "Editează manager",
+    "description": "Personalizează informațiile de bază și comportamentul agentului",
+    "save_btn": "Salvează modificările",
+    "save_success": "Modificările au fost salvate cu succes",
+    "save_error": "Eroare la salvarea modificărilor",
+    "invalid_field": "Câmp obligatoriu",
+    "invalid_get_data": "Eroare la încercarea de a prelua datele",
+    "fields": {
+      "name": {
+        "title": "Ce nume folosește agentul pentru a se prezenta?",
+        "description": "Acesta este numele afișat în timpul interacțiunilor cu utilizatorii",
+        "placeholder": "Tudor"
+      },
+      "occupation": {
+        "title": "Care este rolul principal al agentului?",
+        "placeholder": "Asistent de asistență clienți",
+        "description": "Definește rolul principal al agentului pentru ca utilizatorii să știe cum îi poate ajuta"
+      },
+      "goal": {
+        "title": "Care este obiectivul principal al agentului?",
+        "placeholder": "Răspunde la întrebările clienților",
+        "description": "Acest lucru ajută la definirea a ceea ce intenționează agentul să realizeze în timpul interacțiunilor"
+      },
+      "personality": {
+        "title": "Care este tonul vocii agentului?",
+        "description": "Alege modul în care agentul comunică cu utilizatorii"
+      }
+    },
+    "instructions": {
+      "title": "Instrucțiuni generale",
+      "sub_title": "Definește cum vrei ca agentul să se comporte",
+      "instruction": {
+        "title": "Instrucțiune",
+        "placeholder": "Ești amuzant, dar nu face glume"
+      },
+      "modals": {
+        "title": "Șterge instrucțiunea",
+        "description": "Ești sigur că vrei să ștergi instrucțiunea?",
+        "success_message": "Instrucțiune ștearsă",
+        "error_message": "Eroare la ștergerea instrucțiunii",
+        "back_btn": "Anulează",
+        "remove_btn": "Eliminare"
+      }
+    },
+    "human_support": {
+      "title": "Asistență umană",
+      "switch": {
+        "enabled": "Activat",
+        "disabled": "Dezactivat"
+      },
+      "fields": {
+        "rules": {
+          "title": "Când ar trebui agentul să transfere conversația către un om?",
+          "placeholder": "Dacă utilizatorul solicită asistență umană, agentul ar trebui să-l transfere către asistența umană."
+        }
+      }
+    }
+  },
+  "time": {
+    "time_ago_minutes": "Acum {count} minut | Acum {count} minute",
+    "time_ago_hours": "Acum {count} oră | Acum {count} ore",
+    "time_ago_days": "Acum {count} zi | Acum {count} zile",
+    "time_ago_months": "Acum {count} lună | Acum {count} luni"
+  },
+  "audio_recorder": {
+    "discard_button": "Renunță"
+  }
+}
