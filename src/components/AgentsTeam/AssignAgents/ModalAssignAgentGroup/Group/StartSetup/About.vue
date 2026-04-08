@@ -55,12 +55,12 @@ import useTranslatedField from '@/composables/useTranslatedField';
 import type { AgentGroup } from '@/store/types/Agents.types';
 
 const GROUP_DOCS = {
-  ORDER_PAYMENT: '/docs/order_payment.docx',
-  FEEDBACK: '/docs/feedback.docx',
-  ORDER_CANCELLATION: '/docs/order_cancellation.docx',
-  CONCIERGE: '/docs/concierge.docx',
-  RETURN_AND_EXCHANGE: '/docs/return_and_exchange.docx',
-  ORDER_STATUS: '/docs/order_status.docx',
+  ORDER_PAYMENT: '/docs/Payment_Agent.pdf',
+  FEEDBACK: '/docs/Feedback_Recorder.pdf',
+  ORDER_CANCELLATION: '/docs/Order_Cancellation_Agent.pdf',
+  CONCIERGE: '/docs/Product_Concierge.pdf',
+  RETURN_AND_EXCHANGE: '/docs/Troca_e_Devolução.pdf',
+  ORDER_STATUS: '/docs/Order_Status.pdf',
 };
 
 const props = defineProps<{
