@@ -36,8 +36,8 @@
         "optimized_resolution_description": "Conversas que terminaram com uma resolução clara e eficaz para o contato.",
         "other_conclusion": "Não atendido",
         "other_conclusion_description": "Conversas que terminaram de outras formas, como interações breves, saudações, desistências ou casos que seguiram um fluxo diferente sem uma resolução direta.",
-        "transferred_to_human_support": "Transferido para o Suporte Humano",
-        "transferred_to_human_support_description": "Inclui conversas (Atendido por IA e Não atendido) que foram encaminhadas para um atendente humano."
+        "transferred_to_human_support": "Transferido para o atendimento humano",
+        "transferred_to_human_support_description": "Inclui conversas (Atendido por IA e Não atendido) encaminhadas a um atendente humano."
       },
       "conversations_count": "{count} conversas encontradas",
       "unnamed_contact": "Contato sem nome",
@@ -143,7 +143,7 @@
         },
         "textarea": {
           "placeholder": "Você é engraçado, mas não faz piadas",
-          "description": "Mantenha as instruções claras, diretas e imperativas."
+          "description": "Mantenha as instruções claras, diretas e em forma imperativa."
         },
         "publish_instruction": "Publicar instrução",
         "success_alert": "Instrução personalizada adicionada",
@@ -153,26 +153,26 @@
         "title": "Lista de instruções",
         "tabs": {
           "default": "Instruções padrão",
-          "safety_topics": "Tópicos de segurança",
+          "safety_topics": "Temas de segurança",
           "custom": "Instruções personalizadas",
-          "default_description": "Regras centrais, somente leitura, definidas pelo sistema. Elas se aplicam a todas as conversas deste agente.",
-          "safety_topics_description": "O agente não discute esses assuntos. São definidos automaticamente e não podem ser editados.",
-          "custom_description": "Suas instruções personalizadas para este agente. Podem ser editadas e removidas."
+          "default_description": "Regras centrais definidas pelo sistema. São somente leitura e se aplicam a todas as conversas deste agente.",
+          "safety_topics_description": "Esses assuntos não são tratados pelo agente. Eles são definidos automaticamente e não podem ser editados.",
+          "custom_description": "Suas instruções personalizadas para este agente. Você pode editá-las ou removê-las."
         },
         "default_instruction": "Instrução padrão",
         "default_instructions": [
-          "Quando necessário, você deve buscar assistência especializada com os membros da equipe, que estão disponíveis para ajudar a resolver o caso.",
+          "Se necessário, peça ajuda a membros da equipe especializados no que for preciso.",
           "Você NUNCA, em NENHUMA CIRCUNSTÂNCIA, deve discutir assuntos que estejam fora da sua área de especialização.",
-          "Garanta que a comunicação seja otimizada entrando em contato com MÚLTIPLOS agentes ao mesmo tempo, sempre que possível.",
+          "Garanta que a comunicação seja otimizada ao entrar em contato com MÚLTIPLOS agentes simultaneamente, sempre que possível.",
           "Mantenha sua comunicação com outros agentes concisa e objetiva, sem conversas paralelas.",
-          "Comunique-se apenas com os agentes necessários para ajudar na solicitação do Usuário.",
-          "Responda estritamente com base nos fatos encontrados no bloco de base de conhecimento; não utilize conhecimento prévio, suposições ou fontes externas.",
-          "Não infira detalhes não declarados, não generalize além do que está escrito, não preencha lacunas nem especule — mesmo que o assunto pareça óbvio."
+          "Comunique-se apenas com os agentes necessários para atender à solicitação do usuário.",
+          "Responda apenas com base nas informações do bloco de base de conhecimento. Não use suposições, conhecimento externo ou outras fontes.",
+          "Não infira detalhes não declarados, não generalize além do que está escrito e não preencha lacunas nem especule — mesmo que o assunto pareça óbvio."
         ],
         "safety_topics": [
           "Política",
           "Saúde física",
-          "Violência física ou moral", 
+          "Violência física ou moral",
           "Conteúdo sexual",
           "Preconceito",
           "Ódio",
@@ -198,12 +198,12 @@
         "cancel": "Cancelar"
       },
       "remove_instruction": {
-        "title": "Remover instrução",
-        "modal_description": "Tem certeza de que deseja remover a instrução?",
-        "remove": "Remover",
+        "title": "Excluir instrução",
+        "modal_description": "Tem certeza de que deseja excluir a instrução?",
+        "remove": "Excluir",
         "cancel": "Cancelar",
-        "success_alert": "Instrução personalizada removida",
-        "error_alert": "Erro ao remover instrução personalizada"
+        "success_alert": "Instrução personalizada excluída",
+        "error_alert": "Erro ao excluir instrução personalizada"
       }
     },
     "traces": {
@@ -320,6 +320,7 @@
       },
       "assign_button": "Atribuir agente",
       "already_assigned": "Agente já atribuído",
+      "view_details": "Ver detalhes",
       "filters": {
         "search": {
           "placeholder": "Buscar"
@@ -705,7 +706,7 @@
       "profile": "Perfil",
       "settings": "Configurações"
     },
-    "edit_manager_profile": "Editar Manager",
+    "edit_manager_profile": "Editar manager",
     "description": "Personalize as informações básicas e o comportamento do agente",
     "save_btn": "Salvar alterações",
     "save_success": "Alterações salvas com sucesso",

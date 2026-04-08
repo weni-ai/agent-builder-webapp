@@ -29,10 +29,11 @@
 
         <UnnnicDialogFooter>
           <UnnnicButton
-            :text="$t('agents.assign_agents.setup.start_button')"
+            :text="footerButtonText"
             :disabled="isLoadingAgentDetails"
+            :loading="isAssigning"
             data-testid="next-button"
-            @click="openAgentModal"
+            @click="setupAgent"
           />
         </UnnnicDialogFooter>
       </template>
@@ -43,12 +44,17 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 
+import { useI18n } from 'vue-i18n';
+
 import { AgentGroup } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import ModalAssignAgentGroupStartSetup from './Group/StartSetup/index.vue';
 import ModalAssignAgentGroupFlow from './Group/index.vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
+import { useAgentsTeamStore } from '@/store/AgentsTeam';
+
+const { t } = useI18n();
 
 const emit = defineEmits(['update:open']);
 
@@ -61,10 +67,25 @@ const open = defineModel('open', {
   required: true,
 });
 
+const agentsTeamStore = useAgentsTeamStore();
+
 const isConfiguringAgentGroup = ref<boolean>(false);
+const isAssigning = ref(false);
 const agentDetails = ref<AgentGroup | null>(null);
 const isLoadingAgentDetails = ref(false);
 const resolvedAgentDetails = computed(() => agentDetails.value ?? props.agent);
+
+const agentHasSetupSteps = computed(() => {
+  const { MCPs, systems, credentials } = resolvedAgentDetails.value;
+
+  return MCPs?.length > 0 || systems?.length > 0 || credentials?.length > 0;
+});
+
+const footerButtonText = computed(() => {
+  return agentHasSetupSteps.value
+    ? t('agents.assign_agents.setup.start_button')
+    : t('agents.assign_agents.assign_button');
+});
 
 async function fetchAgentDetails() {
   if (isLoadingAgentDetails.value || agentDetails.value) return;
@@ -82,8 +103,27 @@ async function fetchAgentDetails() {
   }
 }
 
-function openAgentModal() {
+async function setupAgent() {
+  if (!agentHasSetupSteps.value) {
+    await assignAgent();
+    return;
+  }
+
   isConfiguringAgentGroup.value = true;
+}
+
+async function assignAgent() {
+  isAssigning.value = true;
+
+  try {
+    await agentsTeamStore.toggleAgentAssignment({
+      group: props.agent.group,
+      is_assigned: true,
+    });
+    closeAgentModal();
+  } finally {
+    isAssigning.value = false;
+  }
 }
 
 function closeAgentModal() {

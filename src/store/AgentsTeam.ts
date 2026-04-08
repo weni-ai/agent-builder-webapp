@@ -186,9 +186,17 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
   }
 
-  async function toggleAgentAssignment({ uuid, is_assigned }) {
-    if (!uuid || typeof is_assigned !== 'boolean') {
-      throw new Error('uuid and is_assigned are required');
+  async function toggleAgentAssignment({
+    uuid,
+    group,
+    is_assigned,
+  }: {
+    uuid?: string;
+    group?: string;
+    is_assigned: boolean;
+  }) {
+    if ((!uuid && !group) || typeof is_assigned !== 'boolean') {
+      throw new Error('uuid or group, and is_assigned are required');
     }
 
     try {
@@ -196,6 +204,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
         officialAgents.data.find(
           (agent) =>
             agent.uuid === uuid ||
+            (group && agent.group === group) ||
             agent.agents?.some((variant) => variant.uuid === uuid),
         ) || myAgents.data.find((agent) => agent.uuid === uuid);
 

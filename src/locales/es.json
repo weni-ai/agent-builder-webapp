@@ -33,11 +33,11 @@
         "what_is_a_conversation": "¿Qué es una conversación?",
         "what_is_a_conversation_description": "Consideramos todas las conversaciones dentro de 24 horas (reseteando a medianoche) como una única conversación.",
         "optimized_resolution": "Atendido por IA",
-        "optimized_resolution_description": "Conversaciones que finalizaron con una resolución clara y efectiva para el contacto.",
-        "other_conclusion": "No Atendido",
-        "other_conclusion_description": "Conversaciones que terminaron de otras maneras, como interacciones breves, saludos, abandonos o casos que siguieron un flujo diferente sin una resolución directa.",
-        "transferred_to_human_support": "Transferido a Soporte Humano",
-        "transferred_to_human_support_description": "Incluye conversaciones (Atendido por IA y No Atendido) que fueron derivadas a un agente humano."
+        "optimized_resolution_description": "Conversaciones finalizadas con una resolución clara y efectiva para el contacto.",
+        "other_conclusion": "No atendido",
+        "other_conclusion_description": "Conversaciones que finalizaron de otras maneras, como interacciones breves, saludos, abandono o casos que siguieron un flujo diferente sin una resolución directa.",
+        "transferred_to_human_support": "Transferidas a soporte humano",
+        "transferred_to_human_support_description": "Incluye conversaciones (Atendido por IA y No atendido) transferidas a un representante humano."
       },
       "conversations_count": "{count} conversaciones encontradas",
       "unnamed_contact": "Contacto sin nombre",
@@ -68,7 +68,7 @@
         "description": "Si el soporte humano envió el mensaje o activó una acción automática, lo puedes ver en {studio_link}.",
         "studio_link": "Estudio"
       },
-      "unclassified_status_tooltip": "Conversas cerradas antes del 8 de septiembre de 2025 no pueden ser clasificadas",
+      "unclassified_status_tooltip": "Las conversaciones finalizadas antes del 8 de septiembre de 2025 no pueden clasificarse",
       "export": {
         "title": "Enviar exportación por email",
         "description": "Vamos a preparar el archivo con los datos de IA y lo enviaremos a los siguientes emails:",
@@ -88,13 +88,13 @@
         "apply_filters": "Aplicar filtros",
         "clear_filters": "Limpiar filtros",
         "period": {
-          "label": "Período"
+          "label": "Periodo"
         },
         "status": {
           "conversations": "Conversaciones",
           "in_progress": "En progreso",
           "optimized_resolution": "Atendido por IA",
-          "other_conclusion": "No Atendido",
+          "other_conclusion": "No atendido",
           "unclassified": "No clasificado",
           "transferred_to_human_support": "Encaminado a soporte humano"
         },
@@ -143,47 +143,47 @@
         },
         "textarea": {
           "placeholder": "Eres gracioso, pero no haces bromas",
-          "description": "Mantén las instrucciones claras, directas e imperativas."
+          "description": "Mantén las instrucciones claras, directas y en forma imperativa."
         },
         "publish_instruction": "Publicar instrucción",
         "success_alert": "Instrucción personalizada agregada",
-        "error_alert": "Error al agregar instrucción personalizada"
+        "error_alert": "Error al agregar la instrucción personalizada"
       },
       "instructions_list": {
         "title": "Lista de instrucciones",
         "tabs": {
           "default": "Instrucciones predeterminadas",
-          "safety_topics": "Tópicos de seguridad",
+          "safety_topics": "Temas de seguridad",
           "custom": "Instrucciones personalizadas",
-          "default_description": "Reglas centrales, de solo lectura, definidas por el sistema. Se aplican a todas las conversaciones de este agente.",
-          "safety_topics_description": "El agente no discute estos temas. Están definidos automáticamente y no se pueden editar.",
-          "custom_description": "Tus instrucciones personalizadas para este agente. Editables y removibles."
+          "default_description": "Reglas básicas definidas por el sistema. Son de solo lectura y se aplican a todas las conversaciones con este agente.",
+          "safety_topics_description": "El agente no maneja estos temas. Se configuran automáticamente y no se pueden editar.",
+          "custom_description": "Tus instrucciones personalizadas para este agente. Puedes editarlas o eliminarlas."
         },
         "default_instruction": "Instrucción predeterminada",
         "default_instructions": [
-          "Cuando sea necesario, debes solicitar asistencia especializada a los miembros del equipo, quienes están disponibles para ayudar a resolver el caso.",
-          "NUNCA, bajo NINGUNA CIRCUNSTANCIA, debes discutir temas que estén fuera de tu área de especialización.",
-          "Asegúrate de optimizar la comunicación contactando a MÚLTIPLES agentes al mismo tiempo siempre que sea posible.",
-          "Mantén tu comunicación con otros agentes concisa y directa, sin conversaciones innecesarias.",
-          "Comunícate solo con los agentes necesarios para ayudar con la consulta del Usuario.",
-          "Responde estrictamente con hechos encontrados en el bloque de la base de conocimiento; no uses conocimiento previo, suposiciones ni fuentes externas.",
-          "No infieras detalles no declarados, no generalices más allá de lo escrito, no rellenes vacíos ni especules — incluso si el tema parece obvio."
+          "Si es necesario, solicita ayuda a miembros especializados del equipo.",
+          "NUNCA debes, bajo NINGUNA CIRCUNSTANCIA, discutir temas que estén fuera de tu área de especialización.",
+          "Asegúrate de optimizar la comunicación al contactar con MÚLTIPLES agentes simultáneamente, cuando sea posible.",
+          "Mantén tu comunicación con otros agentes concisa y objetiva, sin conversaciones paralelas.",
+          "Comunícate solo con los agentes necesarios para atender la solicitud del usuario.",
+          "Responde únicamente basándote en la información del bloque de la base de conocimiento. No uses suposiciones, conocimientos externos u otras fuentes.",
+          "No infieras detalles que no fueron mencionados, no generalices más allá de lo escrito y no rellenes vacíos o especules, incluso si el tema parece obvio."
         ],
         "safety_topics": [
           "Política",
           "Salud física",
-          "Violencia física o moral", 
+          "Violencia física o moral",
           "Contenido sexual",
-          "Prejuicio",
-          "Ódio",
+          "Sesgo",
+          "Odio",
           "Religión",
           "Suicidio",
           "Autolesión",
-          "Crenzas",
+          "Creencias",
           "Identidad de género",
           "Relaciones sexuales"
         ],
-        "no_custom_instructions": "No hay instrucciones personalizadas agregadas",
+        "no_custom_instructions": "No se agregaron instrucciones personalizadas",
         "no_custom_instructions_found": "No se encontraron instrucciones personalizadas",
         "search_placeholder": "Buscar",
         "copy_instructions": "Copiar instrucciones",
@@ -193,17 +193,17 @@
       "edit_instruction": {
         "title": "Editar instrucción",
         "success_alert": "Instrucción personalizada editada",
-        "error_alert": "Error al editar instrucción personalizada",
+        "error_alert": "Error al editar la instrucción personalizada",
         "save": "Guardar",
         "cancel": "Cancelar"
       },
       "remove_instruction": {
         "title": "Eliminar instrucción",
-        "modal_description": "¿Realmente deseas eliminar la instrucción?",
+        "modal_description": "¿Realmente deseas eliminar esta instrucción?",
         "remove": "Eliminar",
         "cancel": "Cancelar",
         "success_alert": "Instrucción personalizada eliminada",
-        "error_alert": "Error al eliminar instrucción personalizada"
+        "error_alert": "Error al eliminar la instrucción personalizada"
       }
     },
     "traces": {
@@ -240,9 +240,9 @@
     "tunings": {
       "project_details": "Detalles del proyecto",
       "agents_backend": "Backend de agentes:",
-      "agent_model": "Modelo del {agent}:",
+      "agent_model": "Modelo de {agent}:",
       "characters_usage": "Uso de caracteres:",
-      "characters_usage_description": "Este es el número medio de caracteres que tu agente está usando en todas las áreas: Instrucciones, Base de Conocimientos y cualquier otra configuración.",
+      "characters_usage_description": "Este es el número promedio de caracteres que tu agente está utilizando en todas las áreas: instrucciones, base de conocimiento y cualquier otra configuración.",
       "voice_settings": {
         "title": "Configuración de voz",
         "switch": {
@@ -320,6 +320,7 @@
       },
       "assign_button": "Asignar agente",
       "already_assigned": "Agente ya asignado",
+      "view_details": "Ver detalles",
       "filters": {
         "search": {
           "placeholder": "Buscar"
@@ -399,7 +400,7 @@
     },
     "instructions": {
       "title": "Instrucciones",
-      "description": "Escribe reglas rápidas para moldear el comportamiento del agente"
+      "description": "Escribe reglas rápidas para configurar el comportamiento del agente"
     },
     "profile": {
       "tone_of_voice": {
@@ -705,7 +706,7 @@
       "profile": "Perfil",
       "settings": "Configuración"
     },
-    "edit_manager_profile": "Editar Manager",
+    "edit_manager_profile": "Editar manager",
     "description": "Personaliza la información básica y el comportamiento del agente",
     "save_btn": "Guardar cambios",
     "save_success": "Cambios guardados con éxito",

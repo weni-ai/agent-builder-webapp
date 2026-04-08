@@ -53,12 +53,12 @@
 
         <section class="agent-card__infos">
           <p
-            v-if="agent.description"
+            v-if="description"
             class="agent-card__description"
-            :title="agent.description"
+            :title="description"
             data-testid="description"
           >
-            {{ agent.description }}
+            {{ description }}
           </p>
 
           <section class="agent-card__skills">
@@ -93,6 +93,7 @@ import { computed } from 'vue';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
+import useTranslatedField from '@/composables/useTranslatedField';
 
 import AssignAgentCardSkeleton from './AssignAgentCardSkeleton.vue';
 import Skill from './Skill.vue';
@@ -119,6 +120,12 @@ const props = defineProps({
 
 const agentsTeamStore = useAgentsTeamStore();
 const featureFlagsStore = useFeatureFlagsStore();
+const translateField = useTranslatedField();
+
+const description = computed(() => {
+  const about = props.agent?.about || props.agent.presentation?.about;
+  return translateField(about) || props.agent.description;
+});
 
 const isAgentInTeam = computed(() => {
   return agentsTeamStore.activeTeam.data.agents.some(

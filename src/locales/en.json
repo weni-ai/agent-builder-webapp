@@ -32,12 +32,12 @@
         "title": "About conversation",
         "what_is_a_conversation": "What is a conversation?",
         "what_is_a_conversation_description": "We consider all messages exchanged within 24 hours (resetting at midnight) as a single conversation.",
-        "optimized_resolution": "AI-Assisted",
-        "optimized_resolution_description": "Conversations that ended with a clear and effective resolution for the contact.",
-        "other_conclusion": "Not Assisted",
-        "other_conclusion_description": "Conversations that ended in other ways, such as brief interactions, greetings, drop-offs, or cases that followed a different flow without a direct resolution.",
-        "transferred_to_human_support": "Transferred to Human Support",
-        "transferred_to_human_support_description": "Includes conversations (AI-Assisted e Not Assisted) that were forwarded do a human agent."
+        "optimized_resolution": "AI-assisted",
+        "optimized_resolution_description": "Conversations ended with a clear, effective resolution for the contact.",
+        "other_conclusion": "Not assisted",
+        "other_conclusion_description": "Conversations that ended in other ways, such as brief interactions, greetings, abandonment, or cases that followed a different flow without a direct resolution.",
+        "transferred_to_human_support": "Transferred to human support",
+        "transferred_to_human_support_description": "Includes conversations (AI-assisted and not assisted) transferred to a human representative."
       },
       "conversations_count": "{count} conversations found",
       "unnamed_contact": "Unnamed contact",
@@ -51,7 +51,7 @@
       },
       "conversation_start_finish": {
         "start": "Conversation started: {datetime}",
-        "finish": "Conversation finished: {datetime}"
+        "finish": "Conversation ended: {datetime}"
       },
       "contact_urn": "Contact URN",
       "topic": "Topic",
@@ -68,7 +68,7 @@
         "description": "If the message was sent by human support or triggered an automatic action, you can find it in {studio_link}.",
         "studio_link": "Studio"
       },
-      "unclassified_status_tooltip": "Conversations closed before September 8, 2025 cannot be classified",
+      "unclassified_status_tooltip": "Conversations closed before September 8, 2025 can't be classified",
       "export": {
         "title": "Export to email",
         "description": "We'll prepare the file with the AI information and send it to the following emails:",
@@ -95,7 +95,7 @@
           "in_progress": "In progress",
           "optimized_resolution": "AI-Assisted",
           "other_conclusion": "Not Assisted",
-          "unclassified": "Unclassified",
+          "unclassified": "Not classified",
           "transferred_to_human_support": "Transferred to human support"
         },
         "csat": {
@@ -143,45 +143,45 @@
         },
         "textarea": {
           "placeholder": "You're funny, but don't make jokes",
-          "description": "Keep instructions clear, direct, and in the imperative."
+          "description": "Keep instructions clear, direct, and in imperative form."
         },
         "publish_instruction": "Publish instruction",
         "success_alert": "Custom instruction added",
-        "error_alert": "Error adding instruction custom"
+        "error_alert": "Error adding custom instruction"
       },
       "instructions_list": {
-        "title": "Instructions list",
+        "title": "Instruction list",
         "tabs": {
           "default": "Default instructions",
           "safety_topics": "Safety topics",
           "custom": "Custom instructions",
-          "default_description": "Core, read-only rules set by the system. They apply to every conversation for this agent.",
-          "safety_topics_description": "The agent does not discuss these topics. They are automatically defined and cannot be edited.",
-          "custom_description": " Your custom instructions for this agent. Editable and removable."
+          "default_description": "Core rules defined by the system. They are read-only and apply to all conversations with this agent.",
+          "safety_topics_description": "These topics aren't handled by the agent. They're set automatically and can't be edited.",
+          "custom_description": "Your custom instructions for this agent. You can edit or remove them."
         },
         "default_instruction": "Default instruction",
         "default_instructions": [
-          "When necessary, you seek specialized assistance from team members, who are available to help resolve the case.",
-          "You MUST NEVER, under ANY CIRCUMSTANCES, discuss topics that are outside your area of expertise.",
-          "Make sure that you optimize your communication by contacting MULTIPLE agents at the same time whenever possible.",
-          "Keep your communications with other agents concise and terse, do not engage in any chit-chat.",
-          "Only communicate with the agents that are necessary to help with the User's query.",
-          "Answer strictly with facts found in the knowledgebase block; do not rely on prior knowledge, assumptions, or external sources.",
-          "Do not infer unstated details, generalize beyond what is written, fill gaps, or speculate—even if the topic seems obvious."
+          "If needed, ask for any help from specialized team members.",
+          "You must NEVER, under ANY CIRCUMSTANCES, discuss topics that are outside your area of expertise.",
+          "Ensure that communication is optimized when contacting MULTIPLE agents simultaneously, whenever possible.",
+          "Keep your communication with other agents concise and objective, without side conversations.",
+          "Communicate only with the agents needed to fulfill the user request.",
+          "Answer only based on the knowledge base block information. Do not use assumptions, external knowledge, or other sources.",
+          "Do not infer details that were not mentioned, do not generalize beyond what is written, and do not fill in gaps or speculate—even if the subject seems obvious."
         ],
         "safety_topics": [
           "Politics",
           "Physical health",
-          "Physical or moral violence", 
+          "Physical or moral violence",
           "Sexual content",
-          "Prejudice",
+          "Bias",
           "Hate",
           "Religion",
           "Suicide",
           "Self-harm",
           "Beliefs",
           "Gender identity",
-          "Sex and relationships"
+          "Sexual relations"
         ],
         "no_custom_instructions": "No custom instructions added",
         "no_custom_instructions_found": "No custom instructions found",
@@ -193,17 +193,17 @@
       "edit_instruction": {
         "title": "Edit instruction",
         "success_alert": "Custom instruction edited",
-        "error_alert": "Error editing instruction custom",
+        "error_alert": "Error editing custom instruction",
         "save": "Save",
         "cancel": "Cancel"
       },
       "remove_instruction": {
-        "title": "Remove instruction",
-        "modal_description": "Are you sure you want to remove the instruction?",
-        "remove": "Remove",
+        "title": "Delete instruction",
+        "modal_description": "Are you sure you want to delete this instruction?",
+        "remove": "Delete",
         "cancel": "Cancel",
-        "success_alert": "Custom instruction removed",
-        "error_alert": "Error removing instruction custom"
+        "success_alert": "Custom instruction deleted",
+        "error_alert": "Error deleting custom instruction"
       }
     },
     "traces": {
@@ -241,8 +241,8 @@
       "project_details": "Project details",
       "agents_backend": "Agents backends:",
       "agent_model": "{agent} model:",
-      "characters_usage": "Characters usage:",
-      "characters_usage_description": "This is the average number of characters your agent is currently using in all areas: Instructions, Knowledge Base, and any other settings.",
+      "characters_usage": "Character usage:",
+      "characters_usage_description": "This is the average number of characters your agent is using across all areas: instructions, knowledge base, and any other settings.",
       "voice_settings": {
         "title": "Voice settings",
         "switch": {
@@ -320,6 +320,7 @@
       },
       "assign_button": "Assign agent",
       "already_assigned": "Agent already assigned",
+      "view_details": "View details",
       "filters": {
         "search": {
           "placeholder": "Search"
@@ -399,7 +400,7 @@
     },
     "instructions": {
       "title": "Instructions",
-      "description": "Write quick rules to shape the agent’s behavior"
+      "description": "Write quick rules to shape agent behavior"
     },
     "profile": {
       "tone_of_voice": {
@@ -705,7 +706,7 @@
       "profile": "Profile",
       "settings": "Settings"
     },
-    "edit_manager_profile": "Edit Manager",
+    "edit_manager_profile": "Edit manager",
     "description": "Customize the basic information and behavior of the agent",
     "save_btn": "Save changes",
     "save_success": "Changes saved successfully",
