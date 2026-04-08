@@ -320,6 +320,7 @@
       },
       "assign_button": "Atribuie agent",
       "already_assigned": "Agent deja atribuit",
+      "view_details": "Vizualizează detalii",
       "filters": {
         "search": {
           "placeholder": "Căutare"
