@@ -38,7 +38,10 @@ export function useWebchatDomInjector(rootSelector) {
       .forEach((el) => el.remove());
   }
 
-  function mountComponent(component, { props = {}, wrapperClass = '' } = {}) {
+  function mountComponent(
+    component,
+    { props = {}, plugins = [], wrapperClass = '' } = {},
+  ) {
     const container = getContainer();
     if (!container) return null;
 
@@ -47,6 +50,7 @@ export function useWebchatDomInjector(rootSelector) {
     container.appendChild(wrapper);
 
     const app = createApp(component, props);
+    plugins.forEach((plugin) => app.use(plugin));
     app.mount(wrapper);
 
     return {

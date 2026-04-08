@@ -247,6 +247,25 @@ describe('useWebchatDomInjector', () => {
       expect(messagesList.querySelector('.test-component')).toBeNull();
     });
 
+    it('should install plugins on the mounted app', () => {
+      const installed = [];
+      const fakePlugin = {
+        install(app) {
+          installed.push(app);
+        },
+      };
+
+      const { mountComponent } = useWebchatDomInjector(ROOT_SELECTOR);
+
+      const handle = mountComponent(TestComponent, {
+        plugins: [fakePlugin],
+      });
+
+      expect(installed).toHaveLength(1);
+
+      handle.unmount();
+    });
+
     it('should return null when container does not exist', () => {
       const { mountComponent } = useWebchatDomInjector('#nonexistent');
 

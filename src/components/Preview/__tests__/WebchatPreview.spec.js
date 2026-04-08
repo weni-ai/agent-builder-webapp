@@ -223,4 +223,95 @@ describe('WebchatPreview.vue', () => {
       expect(statusElements[1].textContent).toContain('Legacy Manager');
     });
   });
+
+  describe('placeholder', () => {
+    function createMessagesContainer() {
+      const container = document.createElement('div');
+      container.id = 'weni-webchat-preview';
+
+      const messagesList = document.createElement('div');
+      messagesList.className = 'weni-messages-list';
+      container.appendChild(messagesList);
+
+      document.body.appendChild(container);
+      return messagesList;
+    }
+
+    function triggerWebchatReady() {
+      const onReady = mockPatch.mock.calls[0]?.[0];
+      onReady?.();
+    }
+
+    afterEach(() => {
+      const existing = document.getElementById('weni-webchat-preview');
+      if (existing) existing.remove();
+    });
+
+    it('should mount the placeholder when webchat becomes ready and there are no messages', async () => {
+      const messagesList = createMessagesContainer();
+
+      await vi.waitFor(() => expect(mockPatch).toHaveBeenCalled());
+      triggerWebchatReady();
+      await nextTick();
+
+      const placeholderWrapper = messagesList.querySelector(
+        '.webchat-placeholder-wrapper',
+      );
+      expect(placeholderWrapper).not.toBeNull();
+    });
+
+    it('should not mount the placeholder if it is already mounted', async () => {
+      const messagesList = createMessagesContainer();
+
+      await vi.waitFor(() => expect(mockPatch).toHaveBeenCalled());
+      triggerWebchatReady();
+      triggerWebchatReady();
+      await nextTick();
+
+      const wrappers = messagesList.querySelectorAll(
+        '.webchat-placeholder-wrapper',
+      );
+      expect(wrappers).toHaveLength(1);
+    });
+
+    it('should remove the placeholder when a direction group appears', async () => {
+      const messagesList = createMessagesContainer();
+
+      await vi.waitFor(() => expect(mockPatch).toHaveBeenCalled());
+      triggerWebchatReady();
+      await nextTick();
+
+      expect(
+        messagesList.querySelector('.webchat-placeholder-wrapper'),
+      ).not.toBeNull();
+
+      const group = document.createElement('div');
+      group.className = 'weni-messages-list__direction-group';
+      messagesList.appendChild(group);
+
+      await vi.waitFor(() => {
+        expect(
+          messagesList.querySelector('.webchat-placeholder-wrapper'),
+        ).toBeNull();
+      });
+    });
+
+    it('should unmount the placeholder on component unmount', async () => {
+      const messagesList = createMessagesContainer();
+
+      await vi.waitFor(() => expect(mockPatch).toHaveBeenCalled());
+      triggerWebchatReady();
+      await nextTick();
+
+      expect(
+        messagesList.querySelector('.webchat-placeholder-wrapper'),
+      ).not.toBeNull();
+
+      wrapper.unmount();
+
+      expect(
+        messagesList.querySelector('.webchat-placeholder-wrapper'),
+      ).toBeNull();
+    });
+  });
 });
