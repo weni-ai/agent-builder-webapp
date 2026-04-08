@@ -1,13 +1,13 @@
 <template>
   <div
-    v-if="!isWebchatReady"
+    v-if="!webchatPreviewStore.isWebchatReady"
     class="webchat-preview__loading"
   >
     <UnnnicIconLoading size="xl" />
   </div>
 
   <div
-    v-show="isWebchatReady"
+    v-show="webchatPreviewStore.isWebchatReady"
     id="weni-webchat-preview"
     class="webchat-preview"
     data-testid="webchat-preview"
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { watch, onMounted, onBeforeUnmount } from 'vue';
 
 import { useFlowPreviewStore } from '@/store/FlowPreview';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
@@ -46,11 +46,10 @@ const { patch: patchWsHistory, restore: restoreWsHistory } =
   useWebSocketHistoryPatch();
 const domInjector = useWebchatDomInjector(WWC_SELECTOR);
 
-const isWebchatReady = ref(false);
 let historyTimeoutId = null;
 
 function setWebchatReady() {
-  isWebchatReady.value = true;
+  webchatPreviewStore.isWebchatReady = true;
   clearTimeout(historyTimeoutId);
   historyTimeoutId = null;
 }
