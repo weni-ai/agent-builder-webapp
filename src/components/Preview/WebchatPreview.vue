@@ -31,7 +31,7 @@ import { useI18n } from 'vue-i18n';
 
 const WWC_SELECTOR = '#weni-webchat-preview';
 const DIRECTION_GROUP_SELECTOR = '.weni-messages-list__direction-group';
-const HISTORY_TIMEOUT_MS = 50000;
+const HISTORY_TIMEOUT_MS = 20000;
 
 const { t } = useI18n();
 
