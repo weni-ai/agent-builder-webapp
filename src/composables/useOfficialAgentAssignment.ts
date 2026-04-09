@@ -114,7 +114,8 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
       );
 
       const normalizedAgent = {
-        ...data.agent,
+        ...agent.value,
+        uuid: data.agent.uuid,
         mcp: {
           name: config.value.MCP?.name || '',
           description: config.value.MCP?.description || '',
