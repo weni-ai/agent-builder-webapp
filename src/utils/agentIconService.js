@@ -59,7 +59,7 @@ const agentIconService = {
   getIconForAgent(agent) {
     if (!agent) return null;
 
-    const { uuid } = agent;
+    const agentId = agent.uuid || agent.group;
     const category = this.getAgentCategory(agent);
 
     if (categoryIconMap[category]) {
@@ -67,8 +67,8 @@ const agentIconService = {
     }
 
     const assignments = this.iconAssignments[category];
-    if (assignments?.has(uuid)) {
-      return assignments.get(uuid);
+    if (assignments?.has(agentId)) {
+      return assignments.get(agentId);
     }
 
     if (this.availableIcons[category]) {
@@ -77,7 +77,7 @@ const agentIconService = {
       const iconId = icons[nextIndex];
 
       this.nextIconIndex[category] = (nextIndex + 1) % icons.length;
-      assignments.set(uuid, iconId);
+      assignments.set(agentId, iconId);
       return iconId;
     }
 

@@ -31,13 +31,13 @@
       "conversation_details": {
         "title": "Sobre conversa",
         "what_is_a_conversation": "O que é uma conversa?",
-        "what_is_a_conversation_description": "Consideramos todas as mensagens trocadas dentro de 24 horas do primeiro contato como uma única conversa.",
+        "what_is_a_conversation_description": "Consideramos todas as mensagens trocadas dentro de 24 horas (resetando à meia-noite) como uma única conversa.",
         "optimized_resolution": "Atendido por IA",
         "optimized_resolution_description": "Conversas que terminaram com uma resolução clara e eficaz para o contato.",
         "other_conclusion": "Não atendido",
         "other_conclusion_description": "Conversas que terminaram de outras formas, como interações breves, saudações, desistências ou casos que seguiram um fluxo diferente sem uma resolução direta.",
-        "transferred_to_human_support": "Transferido para o Suporte Humano",
-        "transferred_to_human_support_description": "Inclui conversas (Atendido por IA e Não atendido) que foram encaminhadas para um atendente humano."
+        "transferred_to_human_support": "Transferido para o atendimento humano",
+        "transferred_to_human_support_description": "Inclui conversas (Atendido por IA e Não atendido) encaminhadas a um atendente humano."
       },
       "conversations_count": "{count} conversas encontradas",
       "unnamed_contact": "Contato sem nome",
@@ -61,6 +61,8 @@
       "hide_logs": "Ocultar logs",
       "search": "Buscar",
       "conversations_empty": "Nenhuma conversa encontrada",
+      "conversations_separator": "As conversas abaixo foram classificadas usando o sistema legado",
+      "conversations_v2_disclaimer": "Começando em {day} de março, as conversas são organizadas em janelas de 24 horas (resetando à meia-noite) usando nosso novo sistema de classificação",
       "no_messages_found": {
         "title": "Nenhuma mensagem encontrada nesta conversa",
         "description": "Se a mensagem foi enviada pelo suporte humano ou ativou uma ação automática, você pode encontrá-la no {studio_link}.",
@@ -141,7 +143,7 @@
         },
         "textarea": {
           "placeholder": "Você é engraçado, mas não faz piadas",
-          "description": "Mantenha as instruções claras, diretas e imperativas."
+          "description": "Mantenha as instruções claras, diretas e em forma imperativa."
         },
         "publish_instruction": "Publicar instrução",
         "success_alert": "Instrução personalizada adicionada",
@@ -151,26 +153,26 @@
         "title": "Lista de instruções",
         "tabs": {
           "default": "Instruções padrão",
-          "safety_topics": "Tópicos de segurança",
+          "safety_topics": "Temas de segurança",
           "custom": "Instruções personalizadas",
-          "default_description": "Regras centrais, somente leitura, definidas pelo sistema. Elas se aplicam a todas as conversas deste agente.",
-          "safety_topics_description": "O agente não discute esses assuntos. São definidos automaticamente e não podem ser editados.",
-          "custom_description": "Suas instruções personalizadas para este agente. Podem ser editadas e removidas."
+          "default_description": "Regras centrais definidas pelo sistema. São somente leitura e se aplicam a todas as conversas deste agente.",
+          "safety_topics_description": "Esses assuntos não são tratados pelo agente. Eles são definidos automaticamente e não podem ser editados.",
+          "custom_description": "Suas instruções personalizadas para este agente. Você pode editá-las ou removê-las."
         },
         "default_instruction": "Instrução padrão",
         "default_instructions": [
-          "Quando necessário, você deve buscar assistência especializada com os membros da equipe, que estão disponíveis para ajudar a resolver o caso.",
+          "Se necessário, peça ajuda a membros da equipe especializados no que for preciso.",
           "Você NUNCA, em NENHUMA CIRCUNSTÂNCIA, deve discutir assuntos que estejam fora da sua área de especialização.",
-          "Garanta que a comunicação seja otimizada entrando em contato com MÚLTIPLOS agentes ao mesmo tempo, sempre que possível.",
+          "Garanta que a comunicação seja otimizada ao entrar em contato com MÚLTIPLOS agentes simultaneamente, sempre que possível.",
           "Mantenha sua comunicação com outros agentes concisa e objetiva, sem conversas paralelas.",
-          "Comunique-se apenas com os agentes necessários para ajudar na solicitação do Usuário.",
-          "Responda estritamente com base nos fatos encontrados no bloco de base de conhecimento; não utilize conhecimento prévio, suposições ou fontes externas.",
-          "Não infira detalhes não declarados, não generalize além do que está escrito, não preencha lacunas nem especule — mesmo que o assunto pareça óbvio."
+          "Comunique-se apenas com os agentes necessários para atender à solicitação do usuário.",
+          "Responda apenas com base nas informações do bloco de base de conhecimento. Não use suposições, conhecimento externo ou outras fontes.",
+          "Não infira detalhes não declarados, não generalize além do que está escrito e não preencha lacunas nem especule — mesmo que o assunto pareça óbvio."
         ],
         "safety_topics": [
           "Política",
           "Saúde física",
-          "Violência física ou moral", 
+          "Violência física ou moral",
           "Conteúdo sexual",
           "Preconceito",
           "Ódio",
@@ -196,12 +198,12 @@
         "cancel": "Cancelar"
       },
       "remove_instruction": {
-        "title": "Remover instrução",
-        "modal_description": "Tem certeza de que deseja remover a instrução?",
-        "remove": "Remover",
+        "title": "Excluir instrução",
+        "modal_description": "Tem certeza de que deseja excluir a instrução?",
+        "remove": "Excluir",
         "cancel": "Cancelar",
-        "success_alert": "Instrução personalizada removida",
-        "error_alert": "Erro ao remover instrução personalizada"
+        "success_alert": "Instrução personalizada excluída",
+        "error_alert": "Erro ao excluir instrução personalizada"
       }
     },
     "traces": {
@@ -271,7 +273,8 @@
             "Orquestração mais estável entre os agentes"
           ],
           "manager_2_dot_6_disclaimer_description": "Manager 2.5 será descontinuado em breve. Atualize para Manager 2.6 para respostas mais confiáveis enquanto o Manager coordena seus agentes."
-        }
+        },
+        "no_components_support": "{manager_name} ainda não suporta o formato de múltiplas mensagens"
       },
       "engine_source": {
         "title": "Fonte do motor",
@@ -313,7 +316,7 @@
       }
     },
     "assign_agents": {
-      "title": "Atribuir agentes",
+      "title": "Atribuir novos agentes",
       "description": "Agentes são especialistas prontos para fornecer suporte personalizado e resolver demandas complexas, atuando como consultores verdadeiros, garantindo uma experiência humana e de alta qualidade para seus clientes.",
       "header": {
         "all_systems": "Todos os sistemas",
@@ -329,6 +332,7 @@
       },
       "assign_button": "Atribuir agente",
       "already_assigned": "Agente já atribuído",
+      "view_details": "Ver detalhes",
       "filters": {
         "search": {
           "placeholder": "Buscar"
@@ -363,6 +367,7 @@
       },
       "setup": {
         "about": "Sobre",
+        "view_documentation": "Ver documentação",
         "mcps_available": {
           "title": "MCPs disponíveis"
         },
@@ -479,7 +484,7 @@
       "create_agent": "Criar agente",
       "modal_delete_agent": {
         "title": "Excluir {agent_name}",
-        "description": "Tem certeza de que deseja excluir o {agent_name}? Esta ação não pode ser revertida",
+        "description": "Tem certeza de que deseja excluir o agente {agent_name}? Esta ação não pode ser desfeita.",
         "delete": "Excluir",
         "cancel": "Cancelar",
         "success_alert": "Agente {agent_name} excluído",
@@ -576,13 +581,9 @@
         "location": "Localização"
       },
       "placeholder": "Inicie uma conversa com seu agente para testá-lo",
-      "save_changes_to_test_the_agent": "Salve as alterações para testar o agente",
-      "field_changed_to_value": "Parâmetro {field} alterado para {value}",
-      "flow_started": "Fluxo {name} iniciado",
-      "flow_finished": "Fluxo finalizado",
-      "message_forwarded_to_brain": "Mensagem redirecionada para o Agent Builder",
       "manager_selected": "Agora usando {name} para esta conversa",
-      "media_and_location_unavailable": "Nenhuma ação de mídias e localização cadastrada",
+      "manager_version": "Versão do Manager",
+      "manager_version_tooltip": "Selecione qual versão do Manager coordena esta conversa",
       "standby": "Modo de espera",
       "catalog": {
         "title": "Catálogo de produtos",
@@ -718,7 +719,7 @@
       "profile": "Perfil",
       "settings": "Motor"
     },
-    "edit_manager_profile": "Editar Manager",
+    "edit_manager_profile": "Editar manager",
     "description": "Personalize as informações básicas e o comportamento do agente",
     "save_btn": "Salvar alterações",
     "save_success": "Alterações salvas com sucesso",

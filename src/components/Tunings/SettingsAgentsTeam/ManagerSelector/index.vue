@@ -22,6 +22,7 @@
       <section class="manager-selector__new-manager">
         <UnnnicRadio
           data-testid="manager-selector-radio-new"
+          :disabled="isNewManagerRadioDisabled"
           :label="managers.new.label"
           :value="managers.new.id"
           :helper="$t('agent_builder.tunings.manager.recommended')"
@@ -42,6 +43,17 @@
         :helper="$t('agent_builder.tunings.manager.legacy_model')"
       />
     </UnnnicRadioGroup>
+
+    <UnnnicDisclaimer
+      v-if="managers?.new?.accept_components === false"
+      type="neutral"
+      :description="
+        $t('agent_builder.tunings.manager.no_components_support', {
+          manager_name: managers.new.label,
+        })
+      "
+      data-testid="no-components-disclaimer"
+    />
   </section>
 </template>
 
@@ -50,16 +62,26 @@ import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
+import { useTuningsStore } from '@/store/Tunings';
 
 import OnlyNewManager from './OnlyNewManager.vue';
 import RadiosSkeletonLoading from './RadiosSkeletonLoading.vue';
 
 const managerSelectorStore = useManagerSelectorStore();
+const tuningsStore = useTuningsStore();
 const { options, selectedManager, status, hasOnlyNewManager } =
   storeToRefs(managerSelectorStore);
 
 const managers = computed(() => options.value?.managers);
 const isLoadingManagers = computed(() => status.value === 'loading');
+
+const isNewManagerRadioDisabled = computed(() => {
+  return (
+    managers.value?.new?.accept_components === false &&
+    tuningsStore.settings.data.components === true &&
+    selectedManager.value !== managers.value?.new?.id
+  );
+});
 
 const updateSelectedManager = (managerId) => {
   managerSelectorStore.setSelectedManager(managerId);

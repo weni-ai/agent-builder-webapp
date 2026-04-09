@@ -60,12 +60,43 @@ describe('agentIconService', () => {
         uuid: `custom-uuid-${i + 1}`,
       }));
 
-      console.log(agents);
-
       agents.forEach((agent) => agentIconService.getIconForAgent(agent));
 
       expect(agentIconService.getIconForAgent(agents[7])).toBe('CustomIcon1');
       expect(agentIconService.getIconForAgent(agents[8])).toBe('CustomIcon2');
+    });
+
+    it('should assign different icons to agent groups identified by group instead of uuid', () => {
+      resetCustomAssignments();
+
+      const agentGroups = [
+        { name: 'Group A', group: 'group-a', is_official: true },
+        { name: 'Group B', group: 'group-b', is_official: true },
+        { name: 'Group C', group: 'group-c', is_official: true },
+      ];
+
+      const icons = agentGroups.map((agent) =>
+        agentIconService.getIconForAgent(agent),
+      );
+
+      expect(icons[0]).toBe('CustomIcon1');
+      expect(icons[1]).toBe('CustomIcon2');
+      expect(icons[2]).toBe('CustomIcon3');
+    });
+
+    it('should return the same icon for the same agent group on repeated calls', () => {
+      resetCustomAssignments();
+
+      const agentGroup = {
+        name: 'Group A',
+        group: 'group-a',
+        is_official: true,
+      };
+
+      const firstIcon = agentIconService.getIconForAgent(agentGroup);
+      const secondIcon = agentIconService.getIconForAgent(agentGroup);
+
+      expect(firstIcon).toBe(secondIcon);
     });
   });
 

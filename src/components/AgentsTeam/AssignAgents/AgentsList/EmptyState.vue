@@ -27,7 +27,6 @@
         {{ description }}
 
         <!-- This comment prevents from auto-capitalizing i18n-t to I18nT which would break the component -->
-        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
         <i18n-t
           v-if="variant === 'custom'"
           keypath="router.agents_team.gallery.weni_cli_documentation_description"

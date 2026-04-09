@@ -1,13 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { handleChangeName } from '@/utils/changeNameUtils';
 
-vi.mock('@/utils/plugins/i18n', () => ({
-  default: {
-    global: {
-      t: vi.fn((key, params) => `${key}-${params?.value || ''}`),
-    },
-  },
-}));
+const t = vi.fn((key, params) => `${key}-${params?.value || ''}`);
 
 describe('utils/changeNameUtils.js', () => {
   describe('handleChangeName', () => {
@@ -18,14 +12,14 @@ describe('utils/changeNameUtils.js', () => {
         created_by: 'user',
       };
 
-      const result = handleChangeName(row);
+      const result = handleChangeName(t, row);
       expect(result).toEqual({
         icon: 'article',
         user: '-',
         text: '-',
       });
 
-      const result2 = handleChangeName({});
+      const result2 = handleChangeName(t, {});
       expect(result2).toEqual({
         icon: 'article',
         user: '-',
@@ -41,7 +35,7 @@ describe('utils/changeNameUtils.js', () => {
         created_by: 'user',
       };
 
-      const result = handleChangeName(row);
+      const result = handleChangeName(t, row);
 
       expect(result).toEqual({
         icon: 'settings',
@@ -58,7 +52,7 @@ describe('utils/changeNameUtils.js', () => {
         created_by: 'user',
       };
 
-      const result = handleChangeName(row);
+      const result = handleChangeName(t, row);
 
       expect(result).toEqual({
         icon: 'article',
@@ -77,7 +71,7 @@ describe('utils/changeNameUtils.js', () => {
         created_by: 'user',
       };
 
-      const result = handleChangeName(row);
+      const result = handleChangeName(t, row);
 
       expect(result).toEqual({
         icon: 'person',
@@ -98,7 +92,7 @@ describe('utils/changeNameUtils.js', () => {
         created_by: 'user',
       };
 
-      const result = handleChangeName(row);
+      const result = handleChangeName(t, row);
 
       expect(result).toEqual({
         icon: 'person',

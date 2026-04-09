@@ -39,9 +39,9 @@ import { useTuningsStore } from '@/store/Tunings';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
-import { useProjectStore } from '@/store/Project';
 import { useUserStore } from '@/store/User';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
+import { useProjectStore } from './store/Project';
 import { useCurrentModule } from '@/composables/useCurrentModule';
 import { isFederatedModule } from './utils/moduleFederation';
 
@@ -54,7 +54,6 @@ const { isAgentsModule, isKnowledgeModule } = useCurrentModule();
 const route = useRoute();
 const agentsTeamStore = useAgentsTeamStore();
 const alertStore = useAlertStore();
-const projectStore = useProjectStore();
 const userStore = useUserStore();
 const managerSelectorStore = useManagerSelectorStore();
 
@@ -72,10 +71,7 @@ onMounted(() => {
   useProfileStore().load();
   userStore.getUserDetails();
   managerSelectorStore.loadManagerData();
-
-  if (!projectStore.details.contentBaseUuid) {
-    projectStore.getRouterDetails();
-  }
+  useProjectStore().getProject();
 });
 
 const showTestAgentsButton = computed(

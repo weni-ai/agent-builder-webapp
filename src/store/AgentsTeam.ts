@@ -186,18 +186,33 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
   }
 
-  async function toggleAgentAssignment({ uuid, is_assigned }) {
-    if (!uuid || typeof is_assigned !== 'boolean') {
-      throw new Error('uuid and is_assigned are required');
+  async function toggleAgentAssignment({
+    uuid,
+    group,
+    is_assigned,
+  }: {
+    uuid?: string;
+    group?: string;
+    is_assigned: boolean;
+  }) {
+    if ((!uuid && !group) || typeof is_assigned !== 'boolean') {
+      throw new Error('uuid or group, and is_assigned are required');
     }
 
     try {
-      const agent =
-        officialAgents.data.find(
-          (agent) =>
-            agent.uuid === uuid ||
-            agent.agents?.some((variant) => variant.uuid === uuid),
-        ) || myAgents.data.find((agent) => agent.uuid === uuid);
+      const foundOfficialAgent = officialAgents.data.find(
+        (agent) =>
+          agent.uuid === uuid ||
+          (group && agent.group === group) ||
+          agent.agents?.some((variant) => variant.uuid === uuid),
+      );
+
+      const foundMyAgent = myAgents.data.find((agent) => agent.uuid === uuid);
+      const foundActiveTeamAgent = activeTeam.data.agents.find(
+        (agent) => agent.uuid === uuid,
+      );
+
+      const agent = foundOfficialAgent || foundMyAgent || foundActiveTeamAgent;
 
       if (!agent) {
         throw new Error('Agent not found');
@@ -274,7 +289,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
           'router.agents_team.modal_delete_agent.success_alert',
           { agent_name: agent.name },
         ),
-        type: 'success',
+        type: 'informational',
       });
     } catch (error) {
       console.error('error', error);

@@ -43,7 +43,6 @@ exports[`AssignedAgents.vue > Component rendering > should match snapshot 1`] = 
         >
           No agents assigned yet
         </h3>
-        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
         <p
           class="assigned-agents__empty-description"
           data-testid="assigned-agents-empty-description"

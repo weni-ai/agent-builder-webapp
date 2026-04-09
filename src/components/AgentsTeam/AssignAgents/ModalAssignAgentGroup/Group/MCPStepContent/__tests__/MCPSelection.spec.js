@@ -15,15 +15,19 @@ vi.mock('@/composables/useAgentSystems', () => ({
   }),
 }));
 
+vi.mock('@/composables/useTranslatedField', () => ({
+  default: () => (field) => field?.en,
+}));
+
 describe('MCPSelection', () => {
   const MCPs = [
     {
       name: 'Search',
-      description: 'Search mcp',
+      description: { en: 'Search mcp', pt: null, es: null },
     },
     {
       name: 'Inventory',
-      description: 'Inventory mcp',
+      description: { en: 'Inventory mcp', pt: null, es: null },
     },
   ];
 

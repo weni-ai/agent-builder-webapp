@@ -4,6 +4,17 @@
     :tags="agent.systems ? getSystemsObjects(agent.systems) : []"
     data-testid="agent-card"
   >
+    <template
+      v-if="!agent.is_official"
+      #actions
+    >
+      <ContentItemActions
+        :actions="assignAgentHeaderActions"
+        minWidth="auto"
+        data-testid="content-item-actions"
+      />
+    </template>
+
     <template #footer>
       <UnnnicToolTip
         side="top"
@@ -12,7 +23,7 @@
       >
         <UnnnicButton
           class="assign-agent-card__assign-button"
-          :text="$t('agents.assign_agents.assign_button')"
+          :text="assignButtonText"
           :disabled="agent.assigned"
           :loading="isAssigning"
           @click="handleAssignButton"
@@ -32,10 +43,15 @@
     v-model:open="isModalAssignAgentOpen"
     :agent="agent"
   />
+
+  <DeleteAgentModal
+    v-model="isDeleteAgentModalOpen"
+    :agent="agent"
+  />
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { useTuningsStore } from '@/store/Tunings';
@@ -45,6 +61,9 @@ import useAgentSystems from '@/composables/useAgentSystems';
 import AgentCard from '../AgentCard.vue';
 import AssignAgentDrawer from '../AssignAgentDrawer.vue';
 import ModalAssignAgentGroup from './ModalAssignAgentGroup/index.vue';
+import DeleteAgentModal from '../DeleteAgentModal.vue';
+import ContentItemActions from '@/components/ContentItemActions.vue';
+import i18n from '@/utils/plugins/i18n';
 
 const { getSystemsObjects } = useAgentSystems();
 
@@ -62,6 +81,26 @@ const isAssignDrawerOpen = ref(false);
 const isAssigning = ref(false);
 const isDrawerAssigning = ref(false);
 const isModalAssignAgentOpen = ref(false);
+const isDeleteAgentModalOpen = ref(false);
+
+const assignButtonText = computed(() => {
+  return props.agent.presentation
+    ? i18n.global.t('agents.assign_agents.view_details')
+    : i18n.global.t('agents.assign_agents.assign_button');
+});
+
+const assignAgentHeaderActions = computed(() => [
+  {
+    scheme: 'aux-red-500',
+    icon: 'delete',
+    text: i18n.global.t('router.agents_team.card.delete_agent'),
+    onClick: toggleDeleteAgentModal,
+  },
+]);
+
+async function toggleDeleteAgentModal() {
+  isDeleteAgentModalOpen.value = !isDeleteAgentModalOpen.value;
+}
 
 async function toggleDrawer() {
   isAssignDrawerOpen.value = !isAssignDrawerOpen.value;
@@ -89,13 +128,13 @@ async function assignAgent() {
 
 function handleAssignButton() {
   if (!props.agent.assigned) {
-    if (props.agent.credentials?.length > 0) {
-      toggleDrawer();
+    if (props.agent.presentation) {
+      isModalAssignAgentOpen.value = true;
       return;
     }
 
-    if (props.agent.group) {
-      isModalAssignAgentOpen.value = true;
+    if (props.agent.credentials?.length > 0) {
+      toggleDrawer();
       return;
     }
   }
