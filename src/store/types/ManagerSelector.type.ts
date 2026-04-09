@@ -5,6 +5,7 @@ interface ManagerSelectorOptions {
     new: {
       id: string;
       label: string;
+      accept_components?: boolean;
     };
     legacy: {
       id: string;

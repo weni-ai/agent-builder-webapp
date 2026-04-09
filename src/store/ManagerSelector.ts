@@ -76,6 +76,10 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     return !!managers.new?.id && !managers.legacy?.id;
   });
 
+  const newManagerAcceptsComponents = computed(() => {
+    return options.value?.managers?.new.accept_components !== false;
+  });
+
   const writePostUpgradeDisclaimerFlag = (value: boolean) =>
     moduleStorage.setItem(POST_UPGRADE_DISCLAIMER_STORAGE_KEY, value);
 
@@ -177,6 +181,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
       });
 
       options.value.currentManager = selectedManager.value;
+      selectedPreviewManager.value = selectedManager.value;
       saveStatus.value = 'success';
 
       return true;
@@ -202,6 +207,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
     shouldShowPostUpgradeDisclaimer,
     selectedPreviewManager,
     hasOnlyNewManager,
+    newManagerAcceptsComponents,
     loadManagerData,
     saveManager,
     setSelectedManager,

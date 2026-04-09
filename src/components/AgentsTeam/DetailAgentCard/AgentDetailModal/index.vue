@@ -15,23 +15,25 @@
       />
 
       <section class="agent-detail-modal__details">
-        <section class="agent-detail-modal__summary">
-          <AgentDetailSection
-            :title="$t('agents.assigned_agents.agent_details.about')"
-            :description="agent.description"
-            data-testid="agent-detail-about-section"
-          />
+        <section class="agent-detail-modal__details-content">
+          <section class="agent-detail-modal__summary">
+            <AgentDetailSection
+              :title="$t('agents.assigned_agents.agent_details.about')"
+              :description="aboutDescription"
+              data-testid="agent-detail-about-section"
+            />
 
-          <SystemSection
-            v-if="agent.mcp?.system"
-            :system="agent.mcp.system"
+            <SystemSection
+              v-if="agent.mcp?.system"
+              :system="agent.mcp.system"
+            />
+          </section>
+
+          <McpSection
+            v-if="agent.mcp"
+            :mcp="agent.mcp"
           />
         </section>
-
-        <McpSection
-          v-if="agent.mcp"
-          :mcp="agent.mcp"
-        />
 
         <ViewOptions
           data-testid="agent-detail-view-options"
@@ -44,7 +46,10 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { ActiveTeamAgent } from '@/store/types/Agents.types';
+import useTranslatedField from '@/composables/useTranslatedField';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import McpSection from './McpSection.vue';
@@ -52,9 +57,15 @@ import SystemSection from './SystemSection.vue';
 import AgentDetailSection from './AgentDetailSection.vue';
 import ViewOptions from './ViewOptions.vue';
 
-defineProps<{
+const props = defineProps<{
   agent: ActiveTeamAgent;
 }>();
+
+const translateField = useTranslatedField();
+
+const aboutDescription = computed(
+  () => translateField(props.agent.about) ?? props.agent.description,
+);
 
 const emit = defineEmits(['update:open']);
 
@@ -73,9 +84,18 @@ function handleAgentRemoved() {
   &__details {
     padding: $unnnic-space-6;
 
-    display: flex;
-    flex-direction: column;
-    gap: $unnnic-space-4;
+    overflow: hidden;
+
+    &,
+    &-content {
+      display: flex;
+      flex-direction: column;
+      gap: $unnnic-space-4;
+    }
+
+    &-content {
+      overflow: auto;
+    }
   }
 
   &__summary {

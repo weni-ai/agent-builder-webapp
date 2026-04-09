@@ -41,6 +41,11 @@ export default defineConfigWithVueTs(
       '@typescript-eslint/no-unused-vars': 'off',
       'vue/block-lang': 'off',
       'vue/multi-word-component-names': 'off',
+      'vue/component-name-in-template-casing': [
+        'error',
+        'PascalCase',
+        { ignores: ['i18n-t', 'vue-particles'] },
+      ],
     },
   },
   {

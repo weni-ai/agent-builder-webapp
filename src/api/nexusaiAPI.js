@@ -3,12 +3,19 @@ import { AgentsTeam } from './nexus/AgentsTeam';
 import { Supervisor } from './nexus/Supervisor';
 import { Instructions } from './nexus/Instructions';
 import { Knowledge } from './nexus/Knowledge';
+import { Simulation } from './nexus/Simulation';
 
 import { ProgressiveFeedbackAdapter } from './adapters/tunings/progressiveFeedback';
 import { ComponentsAdapter } from './adapters/tunings/components';
 import { ProjectDetailsAdapter } from './adapters/tunings/projectDetails';
 import { MOCK_ENGINE_SOURCE_DATA } from './mocks/engineSource';
 import i18n from '@/utils/plugins/i18n';
+import env from '@/utils/env';
+
+const managersWithoutComponents = (env('MANAGERS_WITHOUT_COMPONENTS') || '')
+  .split(',')
+  .map((name) => name.trim())
+  .filter(Boolean);
 
 export default {
   agent_builder: {
@@ -19,6 +26,7 @@ export default {
     },
     supervisor: Supervisor,
     instructions: Instructions,
+    simulation: Simulation,
   },
 
   router: {
@@ -114,10 +122,20 @@ export default {
             `api/project/${projectUuid}/managers`,
           );
 
+          const newManager = { ...data.new };
+
+          const isUnsupported = managersWithoutComponents.some((name) =>
+            newManager.label?.includes(name),
+          );
+
+          if (isUnsupported) {
+            newManager.accept_components = false;
+          }
+
           return {
             data: {
               serverTime: data.serverTime,
-              managers: { new: data.new, legacy: data.legacy },
+              managers: { new: newManager, legacy: data.legacy },
               currentManager: data.currentManager,
             },
           };
@@ -176,6 +194,12 @@ export default {
           );
           return ProjectDetailsAdapter.fromApi(response.data);
         },
+      },
+    },
+
+    project: {
+      read({ projectUuid }) {
+        return request.$http.get(`api/${projectUuid}/project`);
       },
     },
 

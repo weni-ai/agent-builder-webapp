@@ -6,6 +6,13 @@ import { useRoute } from 'vue-router';
 import { useProjectStore } from './Project';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
+import { useFeatureFlagsStore } from './FeatureFlags';
+
+import {
+  getPaginationPayload,
+  getPaginationStateFromResponse,
+  normalizeConversationsBySource,
+} from '@/api/adapters/supervisor/conversationSources';
 
 import i18n from '@/utils/plugins/i18n';
 
@@ -22,6 +29,10 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     status: null,
     data: {
       results: [],
+      next: null,
+      newNext: null,
+      legacyNext: null,
+      legacyInitialAttempted: false,
     },
   });
 
@@ -93,38 +104,89 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
   }
 
   async function loadConversations(page = 1) {
+    conversations.status = 'loading';
+
+    const featureFlagsStore = useFeatureFlagsStore();
+    await featureFlagsStore.whenUserAttributed();
+
     if (conversationsAbortController) {
       await conversationsAbortController.abort();
     }
 
     conversationsAbortController = new AbortController();
+    if (page === 1) {
+      conversations.data.results = [];
+      conversations.data.next = null;
+      conversations.data.newNext = null;
+      conversations.data.legacyNext = null;
+      conversations.data.legacyInitialAttempted = false;
+    }
 
-    conversations.status = 'loading';
-    if (page === 1) conversations.data.results = [];
+    const formatDateParam = (date) =>
+      date ? format(parseISO(date), 'dd-MM-yyyy') : '';
 
-    const formatDateParam = (date) => format(parseISO(date), 'dd-MM-yyyy');
+    const baseFilters = {
+      page,
+      start: formatDateParam(filters.start),
+      end: formatDateParam(filters.end),
+      search: filters.search,
+      status: filters.status,
+      csat: filters.csat,
+      topics: filters.topics,
+    };
+
+    const paginationPayload = getPaginationPayload(
+      page,
+      conversations.data,
+      conversations.data.results,
+    );
 
     try {
-      const response = await supervisorApi.conversations.list({
+      const currentConversationsData = { ...conversations.data };
+      const requestPayload = {
         projectUuid: projectUuid.value,
         signal: conversationsAbortController.signal,
         hideGenericErrorAlert: true,
-        filters: {
-          page,
-          start: formatDateParam(filters.start),
-          end: formatDateParam(filters.end),
-          search: filters.search,
-          status: filters.status,
-          csat: filters.csat,
-          topics: filters.topics,
-        },
-      });
+        filters: paginationPayload ? { ...baseFilters, page: 1 } : baseFilters,
+        pagination: paginationPayload?.pagination,
+        onlyLegacy: paginationPayload?.onlyLegacy,
+      };
+
+      const response = await supervisorApi.conversations.list(requestPayload);
+
+      const responseData =
+        response && !Array.isArray(response) ? response : { results: response };
+      const responseResults = Array.isArray(responseData?.results)
+        ? responseData.results
+        : [];
+
+      const mergedResults = [...conversations.data.results, ...responseResults];
+      const normalizedResults = normalizeConversationsBySource(mergedResults);
+      const count = responseData?.count ?? normalizedResults.length;
 
       conversations.status = 'complete';
       conversations.data = {
-        ...response,
-        results: [...conversations.data.results, ...response.results],
+        ...responseData,
+        count,
+        results: normalizedResults,
+        legacyInitialAttempted:
+          responseData.legacyInitialAttempted ||
+          currentConversationsData.legacyInitialAttempted,
       };
+
+      const paginationState = getPaginationStateFromResponse(
+        responseData,
+        currentConversationsData,
+      );
+      if (paginationState) {
+        conversations.data.next = paginationState.next;
+        conversations.data.newNext = paginationState.newNext;
+        conversations.data.legacyNext = paginationState.legacyNext;
+      }
+
+      if (paginationPayload?.onlyLegacy) {
+        conversations.data.legacyInitialAttempted = true;
+      }
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
 
@@ -156,6 +218,8 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         start: selectedConversation.value.start,
         end: selectedConversation.value.end,
         urn: selectedConversation.value.urn,
+        source: selectedConversation.value.source,
+        uuid: selectedConversation.value.uuid,
         next: next ? selectedConversation.value.data.next : null,
       };
 
@@ -242,7 +306,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         type: 'success',
         text: i18n.global.t('agent_builder.supervisor.export.success'),
       });
-    } catch (error) {
+    } catch {
       alertStore.add({
         type: 'error',
         text: i18n.global.t('agent_builder.supervisor.export.error'),

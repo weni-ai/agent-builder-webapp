@@ -4,16 +4,13 @@
     data-testid="credentials-skeleton"
   />
 
-  <UnnnicIntelligenceText
+  <p
     v-else-if="credentials.length === 0"
-    tag="p"
-    family="secondary"
-    size="body-gt"
-    color="neutral-clean"
+    class="credentials-form__empty"
     data-testid="credentials-description"
   >
     {{ $t('router.tunings.credentials.no_credentials') }}
-  </UnnnicIntelligenceText>
+  </p>
 
   <template v-else>
     <UnnnicFormElement
@@ -61,3 +58,10 @@ function getCredentialDescription(credential) {
   return `${i18n.global.t('router.tunings.credentials.used_by')} ${formattedAgents}`;
 }
 </script>
+
+<style lang="scss" scoped>
+.credentials-form__empty {
+  color: $unnnic-color-fg-muted;
+  font: $unnnic-font-body;
+}
+</style>

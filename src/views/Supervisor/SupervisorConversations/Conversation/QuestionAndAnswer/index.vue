@@ -25,7 +25,7 @@
 
     <template v-else>
       <section
-        v-if="data?.source_type === 'user'"
+        v-if="data?.type === 'user'"
         class="question-and-answer__question"
       >
         <AvatarLetter :text="data?.username" />
@@ -43,7 +43,7 @@
       </section>
 
       <section
-        v-if="data?.source_type === 'agent'"
+        v-if="data?.type === 'agent'"
         class="question-and-answer__answer"
         data-testid="answer"
       >
@@ -129,7 +129,8 @@ const extractedComponents = computed(() => {
         return null;
       }
     })
-    .filter((component) => component !== null);
+    .filter((component) => component !== null)
+    .flatMap((item) => (Array.isArray(item) ? item : [item]));
 });
 
 const treatedData = computed(() => {

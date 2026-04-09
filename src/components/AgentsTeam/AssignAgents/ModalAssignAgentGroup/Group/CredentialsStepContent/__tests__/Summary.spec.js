@@ -11,9 +11,13 @@ vi.mock('@/composables/useAgentSystems', () => ({
   }),
 }));
 
+vi.mock('@/composables/useTranslatedField', () => ({
+  default: () => (field) => field?.en,
+}));
+
 const buildMCP = (overrides = {}) => ({
   name: 'Concierge MCP',
-  description: 'Handles concierge flows',
+  description: { en: 'Handles concierge flows', pt: null, es: null },
   credentials: [],
   config: [],
   ...overrides,
@@ -72,7 +76,11 @@ describe('Summary', () => {
   it('displays the selected MCP name and description', () => {
     const selectedMCP = buildMCP({
       name: 'Inventory MCP',
-      description: 'Manages inventory sync',
+      description: {
+        en: 'Manages inventory sync',
+        pt: null,
+        es: null,
+      },
     });
     const wrapper = createWrapper({ selectedMCP });
 

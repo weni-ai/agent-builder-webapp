@@ -122,7 +122,7 @@ describe('ChangesHistory.vue', () => {
     });
   });
 
-  test('handles rendering logic for table rows', () => {
+  test('handles rendering logic for rows', () => {
     wrapper.vm.table.rows = [
       {
         created_at: '2024-01-01T00:00:00Z',
@@ -193,7 +193,7 @@ describe('ChangesHistory.vue', () => {
     const table = wrapper.findComponent('[data-test="table"]');
     expect(table.exists()).toBe(true);
     expect(table.props('pagination')).toBe(wrapper.vm.pagination);
-    expect(table.props('headers')).toBe(wrapper.vm.table.headers);
+    expect(table.props('headers')).toEqual(wrapper.vm.headers);
     expect(table.props('rows')).toBe(wrapper.vm.formattedRows);
     expect(table.props('paginationTotal')).toBe(wrapper.vm.paginationTotal);
     expect(table.props('paginationInterval')).toBe(

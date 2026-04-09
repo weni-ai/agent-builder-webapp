@@ -28,6 +28,7 @@ export const AgentsTeam = {
         ({
           uuid,
           name,
+          about,
           description,
           skills,
           assigned,
@@ -37,6 +38,7 @@ export const AgentsTeam = {
         }) => ({
           uuid,
           name,
+          about: about ?? null,
           description,
           skills,
           assigned,
@@ -124,6 +126,7 @@ export const AgentsTeam = {
         ({
           uuid,
           name,
+          about,
           description,
           skills,
           assigned,
@@ -133,6 +136,7 @@ export const AgentsTeam = {
         }) => ({
           uuid,
           name,
+          about: about ?? null,
           description,
           skills,
           assigned,
@@ -162,6 +166,7 @@ export const AgentsTeam = {
             name,
             skills,
             id,
+            about,
             description,
             credentials,
             is_official,
@@ -172,6 +177,7 @@ export const AgentsTeam = {
             name,
             skills,
             id: id || slug,
+            about: about ?? null,
             description,
             credentials,
             is_official,

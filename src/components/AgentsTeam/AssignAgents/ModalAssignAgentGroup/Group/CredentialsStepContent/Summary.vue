@@ -43,7 +43,7 @@
           class="modal-assign-agent__summary-mcp-description"
           data-testid="concierge-summary-mcp-description"
         >
-          {{ selectedMCP.description }}
+          {{ translateField(selectedMCP.description) }}
         </p>
       </section>
     </article>
@@ -55,6 +55,7 @@ import { computed } from 'vue';
 
 import useAgentSystems from '@/composables/useAgentSystems';
 import { AgentMCP } from '@/store/types/Agents.types';
+import useTranslatedField from '@/composables/useTranslatedField';
 
 import Skill from '@/components/AgentsTeam/Skill.vue';
 
@@ -64,6 +65,7 @@ const props = defineProps<{
 }>();
 
 const { getSystemObject } = useAgentSystems();
+const translateField = useTranslatedField();
 
 const systemInfo = computed(() => {
   if (!props.selectedSystem) return null;
