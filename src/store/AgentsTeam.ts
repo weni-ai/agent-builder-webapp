@@ -200,13 +200,19 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
 
     try {
-      const agent =
-        officialAgents.data.find(
-          (agent) =>
-            agent.uuid === uuid ||
-            (group && agent.group === group) ||
-            agent.agents?.some((variant) => variant.uuid === uuid),
-        ) || myAgents.data.find((agent) => agent.uuid === uuid);
+      const foundOfficialAgent = officialAgents.data.find(
+        (agent) =>
+          agent.uuid === uuid ||
+          (group && agent.group === group) ||
+          agent.agents?.some((variant) => variant.uuid === uuid),
+      );
+
+      const foundMyAgent = myAgents.data.find((agent) => agent.uuid === uuid);
+      const foundActiveTeamAgent = activeTeam.data.agents.find(
+        (agent) => agent.uuid === uuid,
+      );
+
+      const agent = foundOfficialAgent || foundMyAgent || foundActiveTeamAgent;
 
       if (!agent) {
         throw new Error('Agent not found');
