@@ -1,7 +1,6 @@
 import type { TranslatedField } from '@/composables/useTranslatedField';
 
 export type AgentGroupType = 'CUSTOMIZABLE' | 'PLUG_IN_PLAY';
-export type AgentGroupID = 'CONCIERGE';
 export type AgentCategory = 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS';
 
 export type AgentSystem = {
@@ -99,7 +98,7 @@ export interface AgentGroup {
   description: string;
   type: AgentGroupType;
   category: AgentCategory;
-  group: AgentGroupID;
+  group: string;
   agents: GroupVariant[];
   MCPs: AgentMCP[];
   systems: string[];
