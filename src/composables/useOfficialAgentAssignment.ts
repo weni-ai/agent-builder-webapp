@@ -11,6 +11,7 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 import { unnnicToastManager } from '@weni/unnnic-system';
 import i18n from '@/utils/plugins/i18n';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
+import useTranslatedField from './useTranslatedField';
 
 export type MCPConfigValues = Record<string, string | string[] | boolean>;
 
@@ -30,6 +31,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
     createInitialConfig() as ConciergeAssignmentConfig,
   );
   const agentsTeamStore = useAgentsTeamStore();
+  const translateField = useTranslatedField();
 
   const isSubmitting = ref(false);
   const hasVTEXSystem = agent.value?.systems.some(
@@ -116,6 +118,9 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
       const normalizedAgent = {
         ...agent.value,
         uuid: data.agent.uuid,
+        description:
+          translateField(agent.value.presentation?.about) ??
+          data.agent.description,
         mcp: {
           name: config.value.MCP?.name || '',
           description: config.value.MCP?.description || '',
