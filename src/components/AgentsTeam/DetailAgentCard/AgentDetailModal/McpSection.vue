@@ -45,6 +45,7 @@ import { computed } from 'vue';
 
 import AgentDetailSection from './AgentDetailSection.vue';
 import { formatListToReadable } from '@/utils/formatters';
+import useTranslatedField from '@/composables/useTranslatedField';
 
 import type {
   AgentAssignedMCP,
@@ -55,8 +56,12 @@ const props = defineProps<{
   mcp: AgentAssignedMCP;
 }>();
 
+const translateField = useTranslatedField();
+
 const mcpTitle = computed(() => props.mcp.name || '');
-const mcpDescription = computed(() => props.mcp.description || '');
+const mcpDescription = computed(
+  () => translateField(props.mcp.description) ?? props.mcp.description,
+);
 
 const mcpArguments = computed(() => {
   const configEntries = props.mcp.config || {};

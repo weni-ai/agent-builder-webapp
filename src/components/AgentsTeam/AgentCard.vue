@@ -137,7 +137,7 @@ const isAgentInTeam = computed(() => {
 <style lang="scss" scoped>
 .agent-card {
   border-radius: $unnnic-radius-4;
-  border: $unnnic-border-width-thinner solid $unnnic-color-border-base;
+  border: 1px solid $unnnic-color-border-soft;
 
   padding: $unnnic-spacing-sm;
 
