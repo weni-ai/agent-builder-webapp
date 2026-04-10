@@ -4,17 +4,25 @@ import { shallowMount } from '@vue/test-utils';
 
 import MCPConfigForm from '../MCPConfigForm.vue';
 
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({
+    t: vi.fn((key) => key),
+  }),
+}));
+
 const configFixture = [
   {
     name: 'notifications',
     label: 'Notifications',
     type: 'SWITCH',
     default_value: true,
+    is_required: true,
   },
   {
     name: 'channel',
     label: 'Channel',
     type: 'SELECT',
+    is_required: true,
     options: [
       { name: 'Email', value: 'email' },
       { name: 'SMS', value: 'sms' },
@@ -25,17 +33,20 @@ const configFixture = [
     label: 'Threshold',
     type: 'NUMBER',
     default_value: 5,
+    is_required: false,
   },
   {
     name: 'notes',
     label: 'Notes',
     type: 'TEXT',
     default_value: 'Initial note',
+    is_required: true,
   },
   {
     name: 'features',
     label: 'Features',
     type: 'CHECKBOX',
+    is_required: false,
     options: [
       { name: 'Feature A', value: 'feature-a' },
       { name: 'Feature B', value: 'feature-b' },
@@ -45,6 +56,7 @@ const configFixture = [
     name: 'mode',
     label: 'Mode',
     type: 'RADIO',
+    is_required: true,
     options: [
       { name: 'Automatic', value: 'auto' },
       { name: 'Manual', value: 'manual' },
