@@ -48,7 +48,6 @@ describe('PreviewDrawer/index.vue', () => {
         plugins: [pinia],
         stubs: {
           PreviewDetails: true,
-          Preview: true,
           UnnnicDrawerNext: false,
         },
       },
