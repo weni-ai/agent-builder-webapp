@@ -18,8 +18,7 @@
           data-testid="preview-drawer-preview"
           class="content__preview"
         >
-          <WebchatPreview v-if="useWebchatPreview" />
-          <Preview v-else />
+          <WebchatPreview />
         </section>
 
         <section
@@ -37,17 +36,10 @@
 import { computed, watch } from 'vue';
 
 import { usePreviewStore } from '@/store/Preview';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
-import Preview from '@/components/Preview/Preview.vue';
 import WebchatPreview from '@/components/Preview/WebchatPreview.vue';
 import PreviewDetails from '../PreviewDetails.vue';
 import PreviewDrawerHeader from './Header.vue';
-
-const featureFlagsStore = useFeatureFlagsStore();
-const useWebchatPreview = computed(
-  () => featureFlagsStore.flags.webchatPreview,
-);
 
 const props = defineProps({
   modelValue: {
@@ -98,22 +90,6 @@ watch(
       display: flex;
       border-right: $unnnic-border-width-thinner solid
         $unnnic-color-neutral-soft;
-
-      :deep(.preview) {
-        padding: $unnnic-spacing-sm $unnnic-spacing-md;
-        gap: $unnnic-spacing-xs;
-
-        .preview__messages {
-          padding: 0;
-
-          margin-right: -$unnnic-spacing-ant;
-          padding-right: $unnnic-spacing-ant;
-        }
-
-        .preview__footer {
-          padding: 0;
-        }
-      }
     }
 
     .content__details {
