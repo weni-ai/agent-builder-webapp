@@ -111,6 +111,9 @@ async function initWebchat() {
     showCameraButton: false,
     voiceMode: {
       enabled: true,
+      elevenLabs: {
+        voiceId: env('WWC_VOICE_ID'),
+      },
     },
   });
 }
