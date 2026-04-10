@@ -165,7 +165,7 @@ const isNextDisabled = computed(() => {
   const isSomeRequiredMCPValueMissing = () => {
     const mcpConfig = config.value.MCP?.config ?? [];
     const requiredFieldNames = mcpConfig
-      .filter((field) => field.required)
+      .filter((field) => field.is_required)
       .map((field) => field.name);
 
     return requiredFieldNames.some((name) => {
