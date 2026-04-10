@@ -25,14 +25,14 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
 
   const selectedProvider = computed(() =>
     providers.value.find(
-      (provider) => provider.id === selectedProviderId.value,
+      (provider) => provider.uuid === selectedProviderId.value,
     ),
   );
 
   const availableModels = computed(() => selectedProvider.value?.models || []);
 
   const providerOptions = computed(() =>
-    providers.value.map(({ label, id }) => ({ label, value: id })),
+    providers.value.map(({ label, uuid }) => ({ label, value: uuid })),
   );
 
   const modelOptions = computed(() =>
@@ -80,9 +80,9 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
     selectedModel.value = '';
 
     const provider = providers.value.find(
-      (provider) => provider.id === providerId,
+      (provider) => provider.uuid === providerId,
     );
-    credentials.value = cloneDeep(provider?.crendentials || []);
+    credentials.value = cloneDeep(provider?.credentials || []);
   }
 
   function setModel(modelId) {
@@ -113,9 +113,9 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
 
       if (data.current) {
         engineType.value = 'custom';
-        selectedProviderId.value = data.current.id;
+        selectedProviderId.value = data.current.uuid;
         selectedModel.value = data.current.model;
-        credentials.value = cloneDeep(data.current.crendentials || []);
+        credentials.value = cloneDeep(data.current.credentials || []);
       }
 
       takeSnapshot();
@@ -133,12 +133,12 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
     try {
       saveStatus.value = 'loading';
 
+      // TODO: implement endpoint for switching back to STANDARD
       const payload =
         engineType.value === 'native'
           ? { engine_type: 'native' }
           : {
-              engine_type: 'custom',
-              provider_id: selectedProviderId.value,
+              provider_uuid: selectedProviderId.value,
               model: selectedModel.value,
               credentials: credentials.value.map(({ id, value }) => ({
                 id,

@@ -4,6 +4,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useEngineSourceStore } from '@/store/EngineSource';
 import { useAlertStore } from '@/store/Alert';
 import nexusaiAPI from '@/api/nexusaiAPI';
+import i18n from '@/utils/plugins/i18n';
 
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
@@ -24,19 +25,19 @@ vi.mock('@/store/Project', () => ({
 
 const mockProviders = [
   {
-    id: 'openai',
+    uuid: 'openai',
     label: 'OpenAI',
     models: ['gpt-4o', 'gpt-4o-mini'],
-    crendentials: [
+    credentials: [
       { type: 'PASSWORD', label: 'API Key', value: '', id: 'openai_api_key' },
       { type: 'TEXT', label: 'Org ID', value: '', id: 'openai_org_id' },
     ],
   },
   {
-    id: 'anthropic',
+    uuid: 'anthropic',
     label: 'Anthropic',
     models: ['claude-3-opus', 'claude-3-sonnet'],
-    crendentials: [
+    credentials: [
       {
         type: 'PASSWORD',
         label: 'API Key',
@@ -57,10 +58,10 @@ const mockApiResponseNoCurrent = {
 const mockApiResponseWithCurrent = {
   data: {
     current: {
-      id: 'openai',
+      uuid: 'openai',
       label: 'OpenAI',
       model: 'gpt-4o',
-      crendentials: [
+      credentials: [
         {
           type: 'PASSWORD',
           label: 'API Key',
@@ -113,7 +114,7 @@ describe('EngineSource Store', () => {
     describe('selectedProvider', () => {
       it('should return the provider matching selectedProviderId', () => {
         store.selectedProviderId = 'openai';
-        expect(store.selectedProvider.id).toBe('openai');
+        expect(store.selectedProvider.uuid).toBe('openai');
         expect(store.selectedProvider.label).toBe('OpenAI');
       });
 
@@ -350,7 +351,9 @@ describe('EngineSource Store', () => {
 
         expect(store.status).toBe('error');
         expect(alertStore.add).toHaveBeenCalledWith({
-          text: 'agent_builder.tunings.engine_source.load_error',
+          text: i18n.global.t(
+            'agent_builder.tunings.engine_source.load_error',
+          ),
           type: 'error',
         });
       });
@@ -411,8 +414,7 @@ describe('EngineSource Store', () => {
         ).toHaveBeenCalledWith({
           projectUuid: 'test-project-uuid',
           payload: {
-            engine_type: 'custom',
-            provider_id: 'openai',
+            provider_uuid: 'openai',
             model: 'gpt-4o',
             credentials: [{ id: 'openai_api_key', value: 'sk-123' }],
           },
