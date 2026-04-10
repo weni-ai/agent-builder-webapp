@@ -162,9 +162,21 @@ const isNextDisabled = computed(() => {
     );
   };
 
+  const isSomeRequiredMCPValueMissing = () => {
+    const mcpConfig = config.value.MCP?.config ?? [];
+    const requiredFieldNames = mcpConfig
+      .filter((field) => field.required)
+      .map((field) => field.name);
+
+    return requiredFieldNames.some((name) => {
+      const value = config.value.mcp_config[name];
+      return value === '' || value === undefined;
+    });
+  };
+
   const stepDisabled: Partial<Record<StepKey, () => boolean>> = {
     [Step.MCP]: () => {
-      return !config.value.MCP || isSomeValueMissing(config.value.mcp_config);
+      return !config.value.MCP || isSomeRequiredMCPValueMissing();
     },
     [Step.Credentials]: () => {
       return isSomeValueMissing(config.value.credentials) || isSubmitting.value;

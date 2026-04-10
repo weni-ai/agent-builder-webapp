@@ -76,6 +76,7 @@ export interface AgentMCP {
     name: string;
     label: string;
     default_value: string | boolean | number;
+    required: boolean;
     type:
       | 'SELECT'
       | 'INPUT'
