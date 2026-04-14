@@ -255,7 +255,7 @@
         }
       },
       "manager": {
-        "title": "Manager",
+        "title": "Manager version",
         "new": "New",
         "recommended": "Recommended",
         "legacy_model": "Legacy model",
@@ -275,6 +275,19 @@
           "manager_2_dot_6_disclaimer_description": "Manager 2.5 will be deprecated soon. Upgrade to Manager 2.6 for more reliable answers while the Manager coordinates your agents."
         },
         "no_components_support": "{manager_name} doesn't support the multiple message format yet"
+      },
+      "engine_source": {
+        "title": "Engine source",
+        "native": "Native",
+        "own_api_key": "Own API Key",
+        "provider": "Provider",
+        "model": "Model",
+        "load_error": "Unable to load engine source configuration",
+        "no_components_support": "{provider_name} doesn't support the multiple message format yet",
+        "placeholder": {
+          "provider": "Select a provider",
+          "model": "Select a model"
+        }
       }
     }
   },
@@ -706,7 +719,7 @@
   "profile": {
     "tabs": {
       "profile": "Profile",
-      "settings": "Settings"
+      "settings": "Engine"
     },
     "edit_manager_profile": "Edit manager",
     "description": "Customize the basic information and behavior of the agent",

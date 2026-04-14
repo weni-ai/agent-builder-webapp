@@ -255,7 +255,7 @@
         }
       },
       "manager": {
-        "title": "Manager",
+        "title": "Versión del Manager",
         "new": "Nuevo",
         "recommended": "Recomendado",
         "legacy_model": "Modelo legado",
@@ -275,6 +275,19 @@
           "manager_2_dot_6_disclaimer_description": "Manager 2.5 será descontinuado por breve tiempo. Actualizar Manager 2.6 para respuestas más confiáveis ​​enquanto o Manager coordina sus agentes."
         },
         "no_components_support": "{manager_name} aún no admite el formato de múltiples mensajes"
+      },
+      "engine_source": {
+        "title": "Fuente del motor",
+        "native": "Nativo",
+        "own_api_key": "API Key propia",
+        "provider": "Proveedor",
+        "model": "Modelo",
+        "load_error": "No fue posible cargar la configuración de la fuente del motor",
+        "no_components_support": "{provider_name} aún no admite el formato de múltiples mensajes",
+        "placeholder": {
+          "provider": "Seleccionar un proveedor",
+          "model": "Seleccionar un modelo"
+        }
       }
     }
   },
@@ -706,7 +719,7 @@
   "profile": {
     "tabs": {
       "profile": "Perfil",
-      "settings": "Configuración"
+      "settings": "Motor"
     },
     "edit_manager_profile": "Editar manager",
     "description": "Personaliza la información básica y el comportamiento del agente",

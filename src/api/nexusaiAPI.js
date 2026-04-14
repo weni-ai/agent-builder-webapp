@@ -154,6 +154,31 @@ export default {
         },
       },
 
+      engine_source: {
+        read({ projectUuid }) {
+          return request.$http.get(
+            `api/project/${projectUuid}/model-providers`,
+          );
+        },
+
+        edit({ projectUuid, payload }) {
+          return request.$http.post(
+            `api/project/${projectUuid}/model-providers`,
+            payload,
+          );
+        },
+
+        delete({ projectUuid }) {
+          return request.$http.delete(
+            `api/project/${projectUuid}/model-providers`,
+          );
+        },
+
+        readSource({ projectUuid }) {
+          return request.$http.get(`api/project/${projectUuid}/engine-source`);
+        },
+      },
+
       historyChanges: {
         read({ projectUuid, pageSize = 10, page = 1, filter = '' }) {
           let url = `api/${projectUuid}/activities/?page=${page}&page_size=${pageSize}`;
