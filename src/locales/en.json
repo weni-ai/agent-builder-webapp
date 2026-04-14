@@ -283,6 +283,7 @@
         "provider": "Provider",
         "model": "Model",
         "load_error": "Unable to load engine source configuration",
+        "no_components_support": "{provider_name} doesn't support the multiple message format yet",
         "placeholder": {
           "provider": "Select a provider",
           "model": "Select a model"

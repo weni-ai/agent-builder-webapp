@@ -283,6 +283,7 @@
         "provider": "Provedor",
         "model": "Modelo",
         "load_error": "Não foi possível carregar a configuração da fonte do motor",
+        "no_components_support": "{provider_name} ainda não suporta o formato de múltiplas mensagens",
         "placeholder": {
           "provider": "Selecione um provedor",
           "model": "Selecione um modelo"

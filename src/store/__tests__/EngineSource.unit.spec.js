@@ -6,6 +6,13 @@ import { useAlertStore } from '@/store/Alert';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
 
+vi.mock('@/utils/env', () => ({
+  default: (name) => {
+    if (name === 'PROVIDERS_WITHOUT_COMPONENTS') return 'OpenAI';
+    return '';
+  },
+}));
+
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
     router: {
@@ -214,6 +221,22 @@ describe('EngineSource Store', () => {
       });
     });
 
+    describe('selectedProviderAcceptsComponents', () => {
+      it('should return true when no provider is selected', () => {
+        expect(store.selectedProviderAcceptsComponents).toBe(true);
+      });
+
+      it('should return false when selected provider is in PROVIDERS_WITHOUT_COMPONENTS', () => {
+        store.selectedProviderId = 'openai';
+        expect(store.selectedProviderAcceptsComponents).toBe(false);
+      });
+
+      it('should return true when selected provider is not in PROVIDERS_WITHOUT_COMPONENTS', () => {
+        store.selectedProviderId = 'anthropic';
+        expect(store.selectedProviderAcceptsComponents).toBe(true);
+      });
+    });
+
     describe('hasChanges', () => {
       it('should return false when no snapshot has been taken', () => {
         expect(store.hasChanges).toBe(false);
@@ -281,6 +304,19 @@ describe('EngineSource Store', () => {
         store.selectedModel = 'gpt-4o';
         store.setProvider('anthropic');
         expect(store.selectedModel).toBe('');
+      });
+
+      it('should auto-select model when provider has exactly one model', () => {
+        store.providers = [
+          {
+            uuid: 'single-model',
+            label: 'SingleModel',
+            models: ['only-model'],
+            credentials: [],
+          },
+        ];
+        store.setProvider('single-model');
+        expect(store.selectedModel).toBe('only-model');
       });
 
       it('should set empty credentials for unknown provider', () => {
@@ -452,6 +488,27 @@ describe('EngineSource Store', () => {
             credentials: [{ id: 'openai_api_key', value: 'sk-123' }],
           },
         });
+        expect(
+          nexusaiAPI.router.tunings.engine_source.delete,
+        ).not.toHaveBeenCalled();
+      });
+
+      it('should skip POST when custom engine source has no provider changes', async () => {
+        nexusaiAPI.router.tunings.engine_source.read.mockResolvedValue(
+          JSON.parse(JSON.stringify(mockApiResponseWithCurrent)),
+        );
+        nexusaiAPI.router.tunings.engine_source.readSource.mockResolvedValue(
+          mockSourceOwn,
+        );
+        await store.loadEngineSource();
+
+        const result = await store.saveEngineSource();
+
+        expect(result).toBe(true);
+        expect(store.saveStatus).toBe('success');
+        expect(
+          nexusaiAPI.router.tunings.engine_source.edit,
+        ).not.toHaveBeenCalled();
         expect(
           nexusaiAPI.router.tunings.engine_source.delete,
         ).not.toHaveBeenCalled();

@@ -7,6 +7,12 @@ import { useProjectStore } from './Project';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
+import env from '@/utils/env';
+
+const providersWithoutComponents = (env('PROVIDERS_WITHOUT_COMPONENTS') || '')
+  .split(',')
+  .map((name) => name.trim())
+  .filter(Boolean);
 
 export const useEngineSourceStore = defineStore('EngineSource', () => {
   const alertStore = useAlertStore();
@@ -64,6 +70,34 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
     );
   });
 
+  const hasProviderChanges = computed(() => {
+    if (!initialSnapshot.value) return true;
+
+    const currentProviderState = {
+      selectedProviderId: selectedProviderId.value,
+      selectedModel: selectedModel.value,
+      credentials: credentials.value.map(({ id, value }) => ({ id, value })),
+    };
+
+    const snapshotProviderState = {
+      selectedProviderId: initialSnapshot.value.selectedProviderId,
+      selectedModel: initialSnapshot.value.selectedModel,
+      credentials: initialSnapshot.value.credentials,
+    };
+
+    return (
+      JSON.stringify(currentProviderState) !==
+      JSON.stringify(snapshotProviderState)
+    );
+  });
+
+  const selectedProviderAcceptsComponents = computed(() => {
+    if (!selectedProvider.value) return true;
+    return !providersWithoutComponents.some((name) =>
+      selectedProvider.value.label?.includes(name),
+    );
+  });
+
   function takeSnapshot() {
     initialSnapshot.value = {
       engineType: engineType.value,
@@ -79,11 +113,14 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
 
   function setProvider(providerId) {
     selectedProviderId.value = providerId;
-    selectedModel.value = '';
 
     const provider = providers.value.find(
       (provider) => provider.uuid === providerId,
     );
+
+    selectedModel.value =
+      provider?.models?.length === 1 ? provider.models[0] : '';
+
     credentials.value = cloneDeep(provider?.credentials || []);
   }
 
@@ -146,7 +183,7 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
         await nexusaiAPI.router.tunings.engine_source.delete({
           projectUuid: projectUuid.value,
         });
-      } else {
+      } else if (hasProviderChanges.value) {
         const payload = {
           provider_uuid: selectedProviderId.value,
           model: selectedModel.value,
@@ -186,6 +223,7 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
     modelOptions,
     isValid,
     hasChanges,
+    selectedProviderAcceptsComponents,
     setEngineType,
     setProvider,
     setModel,

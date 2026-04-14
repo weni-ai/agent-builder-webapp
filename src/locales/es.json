@@ -283,6 +283,7 @@
         "provider": "Proveedor",
         "model": "Modelo",
         "load_error": "No fue posible cargar la configuración de la fuente del motor",
+        "no_components_support": "{provider_name} aún no admite el formato de múltiples mensajes",
         "placeholder": {
           "provider": "Seleccionar un proveedor",
           "model": "Seleccionar un modelo"

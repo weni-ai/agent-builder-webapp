@@ -85,6 +85,10 @@ export const useTuningsStore = defineStore('Tunings', () => {
       initialSettings.value &&
       JSON.stringify(settings.data) !== JSON.stringify(initialSettings.value);
 
+    if (engineSourceStore.hasChanges && !engineSourceStore.isValid) {
+      return false;
+    }
+
     return hasSettingsChanges || engineSourceStore.hasChanges;
   });
 
