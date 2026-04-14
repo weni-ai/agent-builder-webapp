@@ -275,6 +275,18 @@
           "manager_2_dot_6_disclaimer_description": "Manager 2.5 will be deprecated soon. Upgrade to Manager 2.6 for more reliable answers while the Manager coordinates your agents."
         },
         "no_components_support": "{manager_name} doesn't support the multiple message format yet"
+      },
+      "engine_source": {
+        "title": "Engine source",
+        "native": "Native",
+        "own_api_key": "Own API Key",
+        "provider": "Provider",
+        "model": "Model",
+        "load_error": "Unable to load engine source configuration",
+        "placeholder": {
+          "provider": "Select a provider",
+          "model": "Select a model"
+        }
       }
     }
   },

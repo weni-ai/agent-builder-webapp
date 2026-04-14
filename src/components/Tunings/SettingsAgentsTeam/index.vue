@@ -3,25 +3,55 @@
     class="settings-agents-team"
     data-testid="settings-agents-team"
   >
-    <ManagerSelector data-testid="manager-selector" />
+    <ManagerDisclaimers data-testid="manager-disclaimers" />
 
-    <AgentsPreview data-testid="agents-preview" />
+    <EngineSource data-testid="engine-source" />
+
+    <ManagerSelector
+      v-if="engineSourceStore.engineType === 'native'"
+      class="settings-agents-team__section--with-divider"
+      data-testid="manager-selector"
+    />
+
+    <CustomModelConfig
+      v-else
+      class="settings-agents-team__section--with-divider"
+      data-testid="custom-model-config"
+    />
+
+    <AgentsPreview
+      data-testid="agents-preview"
+      :class="{
+        'settings-agents-team__section--with-divider': hasAgentVoice,
+      }"
+    />
 
     <VoiceSettings
-      v-if="featureFlagsStore.flags.settingsAgentVoice"
+      v-if="hasAgentVoice"
       data-testid="voice-settings"
     />
   </section>
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 import AgentsPreview from './AgentsPreview.vue';
 import VoiceSettings from './VoiceSettings.vue';
 import ManagerSelector from './ManagerSelector/index.vue';
+import ManagerDisclaimers from './ManagerDisclaimers.vue';
+import EngineSource from './EngineSource/index.vue';
+import CustomModelConfig from './CustomModelConfig/index.vue';
 
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
+import { useEngineSourceStore } from '@/store/EngineSource';
 
 const featureFlagsStore = useFeatureFlagsStore();
+const engineSourceStore = useEngineSourceStore();
+
+const hasAgentVoice = computed(
+  () => featureFlagsStore.flags.settingsAgentVoice,
+);
 </script>
 
 <style lang="scss" scoped>
@@ -30,7 +60,7 @@ const featureFlagsStore = useFeatureFlagsStore();
   flex-direction: column;
   gap: $unnnic-space-6;
 
-  > :not(:last-child) {
+  &__section--with-divider {
     padding-bottom: $unnnic-space-6;
     border-bottom: 1px solid $unnnic-color-border-base;
   }
