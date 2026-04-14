@@ -122,11 +122,11 @@ onUnmounted(() => {
 .manager-selector {
   display: flex;
   flex-direction: column;
-  gap: $unnnic-space-4;
+  gap: $unnnic-space-3;
 
   &__title {
-    font: $unnnic-font-display-3;
-    color: $unnnic-color-neutral-darkest;
+    @include unnnic-font-body;
+    color: $unnnic-color-fg-base;
   }
 
   &__new-manager {

@@ -113,8 +113,8 @@ const selectedVoice = ref([voiceOptions[0]]);
   gap: $unnnic-spacing-sm;
 
   &__title {
-    font: $unnnic-font-display-3;
-    color: $unnnic-color-neutral-darkest;
+    @include unnnic-font-body;
+    color: $unnnic-color-fg-base;
   }
 
   &__form {

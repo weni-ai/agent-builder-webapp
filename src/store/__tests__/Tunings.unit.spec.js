@@ -5,6 +5,7 @@ import { cloneDeep } from 'lodash';
 
 import { useTuningsStore } from '@/store/Tunings';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
+import { useEngineSourceStore } from '@/store/EngineSource';
 import { useAlertStore } from '@/store/Alert';
 import nexusaiAPI from '@/api/nexusaiAPI';
 
@@ -20,6 +21,10 @@ vi.mock('@/api/nexusaiAPI', () => ({
         editComponents: vi.fn(),
         createCredentials: vi.fn(),
         manager: {
+          edit: vi.fn(),
+        },
+        engine_source: {
+          read: vi.fn(),
           edit: vi.fn(),
         },
       },
@@ -43,6 +48,7 @@ describe('Tunings Store', () => {
   let store;
   let alertStore;
   let managerSelectorStore;
+  let engineSourceStore;
 
   const mockCredentialsData = {
     my_agents_credentials: [
@@ -60,6 +66,7 @@ describe('Tunings Store', () => {
     store = useTuningsStore();
     alertStore = useAlertStore();
     managerSelectorStore = useManagerSelectorStore();
+    engineSourceStore = useEngineSourceStore();
 
     vi.spyOn(alertStore, 'add').mockImplementation(() => {});
 
@@ -182,6 +189,18 @@ describe('Tunings Store', () => {
 
       it('should return false when initialSettings is null', () => {
         store.initialSettings = null;
+        expect(store.isSettingsValid).toBe(false);
+      });
+
+      it('should return true when engine source has changes even if settings have not changed', () => {
+        store.settings.data = cloneDeep(store.initialSettings);
+        vi.spyOn(engineSourceStore, 'hasChanges', 'get').mockReturnValue(true);
+        expect(store.isSettingsValid).toBe(true);
+      });
+
+      it('should return false when neither settings nor engine source have changes', () => {
+        store.settings.data = cloneDeep(store.initialSettings);
+        vi.spyOn(engineSourceStore, 'hasChanges', 'get').mockReturnValue(false);
         expect(store.isSettingsValid).toBe(false);
       });
     });
@@ -422,6 +441,44 @@ describe('Tunings Store', () => {
       it('should handle save settings error', async () => {
         nexusaiAPI.router.tunings.editProgressiveFeedback.mockRejectedValue(
           new Error('Error'),
+        );
+
+        const result = await store.saveSettings();
+
+        expect(store.settings.status).toBe('error');
+        expect(result).toBe(false);
+      });
+
+      it('should save engine source when it has changes', async () => {
+        store.settings.data = cloneDeep(store.initialSettings);
+        vi.spyOn(engineSourceStore, 'hasChanges', 'get').mockReturnValue(true);
+        const saveEngineSourceSpy = vi
+          .spyOn(engineSourceStore, 'saveEngineSource')
+          .mockResolvedValue(true);
+
+        const result = await store.saveSettings();
+
+        expect(saveEngineSourceSpy).toHaveBeenCalled();
+        expect(result).toBe(true);
+      });
+
+      it('should not save engine source when it has no changes', async () => {
+        store.settings.data = cloneDeep(store.initialSettings);
+        vi.spyOn(engineSourceStore, 'hasChanges', 'get').mockReturnValue(false);
+        const saveEngineSourceSpy = vi
+          .spyOn(engineSourceStore, 'saveEngineSource')
+          .mockResolvedValue(true);
+
+        await store.saveSettings();
+
+        expect(saveEngineSourceSpy).not.toHaveBeenCalled();
+      });
+
+      it('should fail when engine source save fails', async () => {
+        store.settings.data = cloneDeep(store.initialSettings);
+        vi.spyOn(engineSourceStore, 'hasChanges', 'get').mockReturnValue(true);
+        vi.spyOn(engineSourceStore, 'saveEngineSource').mockResolvedValue(
+          false,
         );
 
         const result = await store.saveSettings();
