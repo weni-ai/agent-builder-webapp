@@ -8,7 +8,6 @@ import { Simulation } from './nexus/Simulation';
 import { ProgressiveFeedbackAdapter } from './adapters/tunings/progressiveFeedback';
 import { ComponentsAdapter } from './adapters/tunings/components';
 import { ProjectDetailsAdapter } from './adapters/tunings/projectDetails';
-import { MOCK_ENGINE_SOURCE_DATA } from './mocks/engineSource';
 import i18n from '@/utils/plugins/i18n';
 import env from '@/utils/env';
 
@@ -149,16 +148,27 @@ export default {
       },
 
       engine_source: {
-        // TODO: Remove this mocks after the API is implemented
-
-        async read() {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          return { data: structuredClone(MOCK_ENGINE_SOURCE_DATA) };
+        read({ projectUuid }) {
+          return request.$http.get(
+            `api/project/${projectUuid}/model-providers`,
+          );
         },
 
-        async edit({ payload }) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          return { data: payload };
+        edit({ projectUuid, payload }) {
+          return request.$http.post(
+            `api/project/${projectUuid}/model-providers`,
+            payload,
+          );
+        },
+
+        delete({ projectUuid }) {
+          return request.$http.delete(
+            `api/project/${projectUuid}/model-providers`,
+          );
+        },
+
+        readSource({ projectUuid }) {
+          return request.$http.get(`api/project/${projectUuid}/engine-source`);
         },
       },
 
