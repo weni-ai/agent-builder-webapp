@@ -30,7 +30,7 @@ import env from '@/utils/env';
 import { useI18n } from 'vue-i18n';
 
 const WWC_SELECTOR = '#weni-webchat-preview';
-const DIRECTION_GROUP_SELECTOR = '.weni-messages-list__direction-group';
+const MESSAGE_SELECTOR = '.weni-message';
 const MANAGER_STATUS_SELECTOR = '.webchat-manager-status';
 const HISTORY_TIMEOUT_MS = 20000;
 
@@ -64,7 +64,7 @@ function mountPlaceholder() {
 
   placeholderObserver = new MutationObserver(() => {
     if (
-      container.querySelector(DIRECTION_GROUP_SELECTOR) ||
+      container.querySelector(MESSAGE_SELECTOR) ||
       container.querySelector(MANAGER_STATUS_SELECTOR)
     ) {
       unmountPlaceholder();
@@ -129,7 +129,7 @@ function injectManagerSelectedMessage(managerId) {
 
   domInjector.insertAfterLastAnchor(
     el,
-    `${DIRECTION_GROUP_SELECTOR}, ${MANAGER_STATUS_SELECTOR}`,
+    `${MESSAGE_SELECTOR}, ${MANAGER_STATUS_SELECTOR}`,
   );
 
   el.scrollIntoView({ behavior: 'smooth' });
@@ -228,6 +228,8 @@ onBeforeUnmount(() => {
       }
 
       .webchat-manager-status {
+        margin: $unnnic-space-2 0;
+
         display: flex;
         align-items: center;
         justify-content: center;
@@ -236,6 +238,10 @@ onBeforeUnmount(() => {
         color: $unnnic-color-fg-base;
         @include unnnic-font-caption-2;
       }
+    }
+
+    .weni-input-box__textarea {
+      min-height: 24px;
     }
 
     .weni-chat__footer {
