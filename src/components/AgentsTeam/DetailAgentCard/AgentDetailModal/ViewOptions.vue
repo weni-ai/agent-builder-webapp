@@ -67,13 +67,13 @@ function toggleExpanded() {
 
 async function handleRemoveAgent() {
   if (isRemovingAgent.value) return;
-  if (!props.agent?.uuid) return;
 
   isRemovingAgent.value = true;
 
   try {
     const { status } = await agentsTeamStore.toggleAgentAssignment({
       uuid: props.agent.uuid,
+      group: props.agent.group,
       is_assigned: false,
     });
 

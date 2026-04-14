@@ -52,6 +52,7 @@ export interface AgentAssignedMCP {
 }
 
 export interface ActiveTeamAgent {
+  group?: string;
   uuid: string;
   id: string;
   name: string;
