@@ -7,7 +7,7 @@
       <UnnnicSwitch
         v-if="element.type === 'SWITCH'"
         data-testid="concierge-second-step-switch"
-        :option="element.label"
+        :option="fieldLabel(element)"
         :modelValue="configValues[element.name] ?? false"
         @update:model-value="updateFieldValue(element.name, $event)"
       />
@@ -15,7 +15,7 @@
       <UnnnicSelect
         v-else-if="element.type === 'SELECT'"
         data-testid="concierge-second-step-select"
-        :label="element.label"
+        :label="fieldLabel(element)"
         :options="formatOptions(element.options)"
         :modelValue="getSelectModelValue(element)"
         @update:model-value="updateFieldValue(element.name, $event)"
@@ -24,7 +24,7 @@
       <UnnnicInput
         v-else-if="['NUMBER', 'TEXT', 'INPUT'].includes(element.type)"
         data-testid="concierge-second-step-input"
-        :label="element.label"
+        :label="fieldLabel(element)"
         :modelValue="String(configValues[element.name] ?? '')"
         :nativeType="element.type === 'NUMBER' ? 'number' : 'text'"
         @update:model-value="updateFieldValue(element.name, $event)"
@@ -33,7 +33,7 @@
       <UnnnicCheckboxGroup
         v-else-if="element.type === 'CHECKBOX'"
         data-testid="concierge-second-step-checkbox-group"
-        :label="element.label"
+        :label="fieldLabel(element)"
       >
         <UnnnicCheckbox
           v-for="option in element.options"
@@ -51,7 +51,7 @@
         v-else-if="element.type === 'RADIO'"
         state="vertical"
         data-testid="concierge-second-step-radio-group"
-        :label="element.label"
+        :label="fieldLabel(element)"
         :modelValue="configValues[element.name]"
         @update:model-value="updateFieldValue(element.name, $event)"
       >
@@ -70,6 +70,7 @@
 <script setup lang="ts">
 import { AgentMCP } from '@/store/types/Agents.types';
 import { watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 type MCPConfigField = AgentMCP['config'] extends (infer U)[] ? U : never;
 type MCPConfigValue = string | string[] | boolean;
@@ -84,6 +85,13 @@ const configValues = defineModel<Record<string, MCPConfigValue>>(
     required: true,
   },
 );
+
+const { t } = useI18n();
+
+function fieldLabel(element: MCPConfigField) {
+  if (element.is_required) return element.label;
+  return `${element.label} (${t('agents.assign_agents.setup.mcp_config.optional')})`;
+}
 
 function buildInitialValues(config: MCPConfigField[]) {
   config.forEach((element) => {
