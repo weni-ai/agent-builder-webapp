@@ -25,12 +25,15 @@ import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
 import useAgentSystems from '@/composables/useAgentSystems';
 const agentsTeamStore = useAgentsTeamStore();
-const { officialAgents, assignAgentsFilters } = storeToRefs(agentsTeamStore);
+const { officialAgents, myAgents, assignAgentsFilters } =
+  storeToRefs(agentsTeamStore);
 const { t } = i18n.global;
 const { getSystemObject } = useAgentSystems();
 
-const availableAgentsCount = computed(
-  () => officialAgents.value.data?.length || 0,
+const availableAgentsCount = computed(() =>
+  assignAgentsFilters.value.system === 'ALL_CUSTOM'
+    ? myAgents.value.data?.length || 0
+    : officialAgents.value.data?.length || 0,
 );
 
 const headerTitle = computed(() => {
