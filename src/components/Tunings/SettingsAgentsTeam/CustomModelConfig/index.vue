@@ -32,6 +32,17 @@
       :credential="credential"
       @update:value="engineSourceStore.updateCredential"
     />
+
+    <UnnnicDisclaimer
+      v-if="!engineSourceStore.selectedProviderAcceptsComponents"
+      type="neutral"
+      :description="
+        $t('agent_builder.tunings.engine_source.no_components_support', {
+          provider_name: engineSourceStore.selectedProvider?.label,
+        })
+      "
+      data-testid="provider-no-components-disclaimer"
+    />
   </section>
 </template>
 
