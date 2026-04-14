@@ -30,7 +30,7 @@ import env from '@/utils/env';
 import { useI18n } from 'vue-i18n';
 
 const WWC_SELECTOR = '#weni-webchat-preview';
-const DIRECTION_GROUP_SELECTOR = '.weni-messages-list__direction-group';
+const MESSAGE_SELECTOR = '.weni-message';
 const MANAGER_STATUS_SELECTOR = '.webchat-manager-status';
 const HISTORY_TIMEOUT_MS = 20000;
 
@@ -64,7 +64,7 @@ function mountPlaceholder() {
 
   placeholderObserver = new MutationObserver(() => {
     if (
-      container.querySelector(DIRECTION_GROUP_SELECTOR) ||
+      container.querySelector(MESSAGE_SELECTOR) ||
       container.querySelector(MANAGER_STATUS_SELECTOR)
     ) {
       unmountPlaceholder();
@@ -129,7 +129,7 @@ function injectManagerSelectedMessage(managerId) {
 
   domInjector.insertAfterLastAnchor(
     el,
-    `${DIRECTION_GROUP_SELECTOR}, ${MANAGER_STATUS_SELECTOR}`,
+    `${MESSAGE_SELECTOR}, ${MANAGER_STATUS_SELECTOR}`,
   );
 
   el.scrollIntoView({ behavior: 'smooth' });
@@ -184,23 +184,33 @@ onBeforeUnmount(() => {
   height: 100%;
   position: relative;
 
-  * {
-    font-family: Inter, sans-serif !important;
+  &:not(:has(.weni-view-product-catalog)) {
+    :deep(.weni-chat-header) {
+      display: none !important;
+    }
   }
 
   :deep(.weni-widget) {
     position: absolute !important;
+
+    width: 100%;
+    height: 100%;
   }
 
   :deep(.weni-chat) {
-    position: absolute !important;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    margin: 0;
 
-    .weni-chat-header {
-      display: none !important;
-    }
+    box-shadow: none;
 
     .weni-messages-list {
       padding: $unnnic-space-6;
+
+      .weni-chat-presentation {
+        display: none;
+      }
 
       .webchat-placeholder {
         margin: auto;
@@ -218,17 +228,26 @@ onBeforeUnmount(() => {
       }
 
       .webchat-manager-status {
+        margin: $unnnic-space-2 0;
+
         display: flex;
         align-items: center;
         justify-content: center;
 
+        text-align: center;
         color: $unnnic-color-fg-base;
         @include unnnic-font-caption-2;
       }
     }
 
+    .weni-input-box__textarea {
+      min-height: $unnnic-space-6;
+    }
+
     .weni-chat__footer {
-      margin: 0 $unnnic-space-4 $unnnic-space-6;
+      .weni-input-box {
+        margin: 0 $unnnic-space-6 $unnnic-space-6;
+      }
 
       .weni-poweredby {
         display: none !important;
