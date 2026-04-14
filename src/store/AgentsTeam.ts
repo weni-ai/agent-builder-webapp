@@ -231,7 +231,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
         });
       }
 
-      listedAgent.assigned = is_assigned;
+      if (listedAgent) listedAgent.assigned = is_assigned;
 
       if (is_assigned) {
         addAgentToTeam(agent);

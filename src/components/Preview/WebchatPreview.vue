@@ -241,7 +241,7 @@ onBeforeUnmount(() => {
     }
 
     .weni-input-box__textarea {
-      min-height: 24px;
+      min-height: $unnnic-space-6;
     }
 
     .weni-chat__footer {
