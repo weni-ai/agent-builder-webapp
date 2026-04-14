@@ -161,6 +161,12 @@ export default {
           );
         },
 
+        delete({ projectUuid }) {
+          return request.$http.delete(
+            `api/project/${projectUuid}/model-providers`,
+          );
+        },
+
         readSource({ projectUuid }) {
           return request.$http.get(`api/project/${projectUuid}/engine-source`);
         },

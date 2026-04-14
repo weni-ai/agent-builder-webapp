@@ -13,6 +13,8 @@ vi.mock('@/api/nexusaiAPI', () => ({
         engine_source: {
           read: vi.fn(),
           edit: vi.fn(),
+          delete: vi.fn(),
+          readSource: vi.fn(),
         },
       },
     },
@@ -78,6 +80,14 @@ const mockApiResponseWithCurrent = {
     },
     providers: mockProviders,
   },
+};
+
+const mockSourceStandard = {
+  data: { engine_source: 'STANDARD' },
+};
+
+const mockSourceOwn = {
+  data: { engine_source: 'OWN' },
 };
 
 describe('EngineSource Store', () => {
@@ -213,6 +223,9 @@ describe('EngineSource Store', () => {
         nexusaiAPI.router.tunings.engine_source.read.mockResolvedValue(
           JSON.parse(JSON.stringify(mockApiResponseNoCurrent)),
         );
+        nexusaiAPI.router.tunings.engine_source.readSource.mockResolvedValue(
+          mockSourceStandard,
+        );
         await store.loadEngineSource();
         expect(store.hasChanges).toBe(false);
       });
@@ -220,6 +233,9 @@ describe('EngineSource Store', () => {
       it('should return true when engine type changes after snapshot', async () => {
         nexusaiAPI.router.tunings.engine_source.read.mockResolvedValue(
           JSON.parse(JSON.stringify(mockApiResponseNoCurrent)),
+        );
+        nexusaiAPI.router.tunings.engine_source.readSource.mockResolvedValue(
+          mockSourceStandard,
         );
         await store.loadEngineSource();
         store.engineType = 'custom';
@@ -229,6 +245,9 @@ describe('EngineSource Store', () => {
       it('should return true when provider changes after snapshot', async () => {
         nexusaiAPI.router.tunings.engine_source.read.mockResolvedValue(
           JSON.parse(JSON.stringify(mockApiResponseWithCurrent)),
+        );
+        nexusaiAPI.router.tunings.engine_source.readSource.mockResolvedValue(
+          mockSourceOwn,
         );
         await store.loadEngineSource();
         store.selectedProviderId = 'anthropic';
@@ -298,9 +317,12 @@ describe('EngineSource Store', () => {
     });
 
     describe('loadEngineSource', () => {
-      it('should load data and set status to success when no current config exists', async () => {
+      it('should load data and set status to success when engine source is STANDARD', async () => {
         nexusaiAPI.router.tunings.engine_source.read.mockResolvedValue(
           JSON.parse(JSON.stringify(mockApiResponseNoCurrent)),
+        );
+        nexusaiAPI.router.tunings.engine_source.readSource.mockResolvedValue(
+          mockSourceStandard,
         );
 
         await store.loadEngineSource();
@@ -311,9 +333,12 @@ describe('EngineSource Store', () => {
         expect(store.current).toBeNull();
       });
 
-      it('should load data and set custom state when current config exists', async () => {
+      it('should load data and set custom state when engine source is OWN', async () => {
         nexusaiAPI.router.tunings.engine_source.read.mockResolvedValue(
           JSON.parse(JSON.stringify(mockApiResponseWithCurrent)),
+        );
+        nexusaiAPI.router.tunings.engine_source.readSource.mockResolvedValue(
+          mockSourceOwn,
         );
 
         await store.loadEngineSource();
@@ -346,12 +371,17 @@ describe('EngineSource Store', () => {
         nexusaiAPI.router.tunings.engine_source.read.mockRejectedValue(
           new Error('Network error'),
         );
+        nexusaiAPI.router.tunings.engine_source.readSource.mockResolvedValue(
+          mockSourceStandard,
+        );
 
         await store.loadEngineSource();
 
         expect(store.status).toBe('error');
         expect(alertStore.add).toHaveBeenCalledWith({
-          text: i18n.global.t('agent_builder.tunings.engine_source.load_error'),
+          text: i18n.global.t(
+            'agent_builder.tunings.engine_source.load_error',
+          ),
           type: 'error',
         });
       });
@@ -363,15 +393,18 @@ describe('EngineSource Store', () => {
             JSON.parse(JSON.stringify(mockApiResponseNoCurrent)),
           );
         });
+        nexusaiAPI.router.tunings.engine_source.readSource.mockResolvedValue(
+          mockSourceStandard,
+        );
 
         store.loadEngineSource();
       });
     });
 
     describe('saveEngineSource', () => {
-      it('should save native payload and return true', async () => {
+      it('should call DELETE and return true when engine type is native', async () => {
         store.engineType = 'native';
-        nexusaiAPI.router.tunings.engine_source.edit.mockResolvedValue({
+        nexusaiAPI.router.tunings.engine_source.delete.mockResolvedValue({
           data: {},
         });
 
@@ -380,14 +413,16 @@ describe('EngineSource Store', () => {
         expect(result).toBe(true);
         expect(store.saveStatus).toBe('success');
         expect(
-          nexusaiAPI.router.tunings.engine_source.edit,
+          nexusaiAPI.router.tunings.engine_source.delete,
         ).toHaveBeenCalledWith({
           projectUuid: 'test-project-uuid',
-          payload: { engine_type: 'native' },
         });
+        expect(
+          nexusaiAPI.router.tunings.engine_source.edit,
+        ).not.toHaveBeenCalled();
       });
 
-      it('should save custom payload with provider, model and credentials', async () => {
+      it('should call POST with provider, model and credentials when engine type is custom', async () => {
         store.engineType = 'custom';
         store.selectedProviderId = 'openai';
         store.selectedModel = 'gpt-4o';
@@ -417,9 +452,13 @@ describe('EngineSource Store', () => {
             credentials: [{ id: 'openai_api_key', value: 'sk-123' }],
           },
         });
+        expect(
+          nexusaiAPI.router.tunings.engine_source.delete,
+        ).not.toHaveBeenCalled();
       });
 
       it('should return false and set error status on failure', async () => {
+        store.engineType = 'custom';
         nexusaiAPI.router.tunings.engine_source.edit.mockRejectedValue(
           new Error('Save error'),
         );
@@ -434,14 +473,18 @@ describe('EngineSource Store', () => {
         nexusaiAPI.router.tunings.engine_source.read.mockResolvedValue(
           JSON.parse(JSON.stringify(mockApiResponseNoCurrent)),
         );
+        nexusaiAPI.router.tunings.engine_source.readSource.mockResolvedValue(
+          mockSourceStandard,
+        );
         await store.loadEngineSource();
 
         store.setEngineType('custom');
         expect(store.hasChanges).toBe(true);
 
-        nexusaiAPI.router.tunings.engine_source.edit.mockResolvedValue({
+        nexusaiAPI.router.tunings.engine_source.delete.mockResolvedValue({
           data: {},
         });
+        store.setEngineType('native');
         await store.saveEngineSource();
 
         expect(store.hasChanges).toBe(false);
