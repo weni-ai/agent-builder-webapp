@@ -306,6 +306,19 @@ describe('EngineSource Store', () => {
         expect(store.selectedModel).toBe('');
       });
 
+      it('should auto-select model when provider has exactly one model', () => {
+        store.providers = [
+          {
+            uuid: 'single-model',
+            label: 'SingleModel',
+            models: ['only-model'],
+            credentials: [],
+          },
+        ];
+        store.setProvider('single-model');
+        expect(store.selectedModel).toBe('only-model');
+      });
+
       it('should set empty credentials for unknown provider', () => {
         store.setProvider('unknown');
         expect(store.credentials).toEqual([]);

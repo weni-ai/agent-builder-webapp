@@ -92,11 +92,14 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
 
   function setProvider(providerId) {
     selectedProviderId.value = providerId;
-    selectedModel.value = '';
 
     const provider = providers.value.find(
       (provider) => provider.uuid === providerId,
     );
+
+    selectedModel.value =
+      provider?.models?.length === 1 ? provider.models[0] : '';
+
     credentials.value = cloneDeep(provider?.credentials || []);
   }
 
