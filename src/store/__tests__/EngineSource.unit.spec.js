@@ -493,6 +493,27 @@ describe('EngineSource Store', () => {
         ).not.toHaveBeenCalled();
       });
 
+      it('should skip POST when custom engine source has no provider changes', async () => {
+        nexusaiAPI.router.tunings.engine_source.read.mockResolvedValue(
+          JSON.parse(JSON.stringify(mockApiResponseWithCurrent)),
+        );
+        nexusaiAPI.router.tunings.engine_source.readSource.mockResolvedValue(
+          mockSourceOwn,
+        );
+        await store.loadEngineSource();
+
+        const result = await store.saveEngineSource();
+
+        expect(result).toBe(true);
+        expect(store.saveStatus).toBe('success');
+        expect(
+          nexusaiAPI.router.tunings.engine_source.edit,
+        ).not.toHaveBeenCalled();
+        expect(
+          nexusaiAPI.router.tunings.engine_source.delete,
+        ).not.toHaveBeenCalled();
+      });
+
       it('should return false and set error status on failure', async () => {
         store.engineType = 'custom';
         nexusaiAPI.router.tunings.engine_source.edit.mockRejectedValue(

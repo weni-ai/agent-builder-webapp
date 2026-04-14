@@ -70,6 +70,27 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
     );
   });
 
+  const hasProviderChanges = computed(() => {
+    if (!initialSnapshot.value) return true;
+
+    const currentProviderState = {
+      selectedProviderId: selectedProviderId.value,
+      selectedModel: selectedModel.value,
+      credentials: credentials.value.map(({ id, value }) => ({ id, value })),
+    };
+
+    const snapshotProviderState = {
+      selectedProviderId: initialSnapshot.value.selectedProviderId,
+      selectedModel: initialSnapshot.value.selectedModel,
+      credentials: initialSnapshot.value.credentials,
+    };
+
+    return (
+      JSON.stringify(currentProviderState) !==
+      JSON.stringify(snapshotProviderState)
+    );
+  });
+
   const selectedProviderAcceptsComponents = computed(() => {
     if (!selectedProvider.value) return true;
     return !providersWithoutComponents.some((name) =>
@@ -162,7 +183,7 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
         await nexusaiAPI.router.tunings.engine_source.delete({
           projectUuid: projectUuid.value,
         });
-      } else {
+      } else if (hasProviderChanges.value) {
         const payload = {
           provider_uuid: selectedProviderId.value,
           model: selectedModel.value,

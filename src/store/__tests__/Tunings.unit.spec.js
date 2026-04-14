@@ -203,6 +203,20 @@ describe('Tunings Store', () => {
         vi.spyOn(engineSourceStore, 'hasChanges', 'get').mockReturnValue(false);
         expect(store.isSettingsValid).toBe(false);
       });
+
+      it('should return false when engine source has changes but is invalid', () => {
+        store.settings.data = cloneDeep(store.initialSettings);
+        vi.spyOn(engineSourceStore, 'hasChanges', 'get').mockReturnValue(true);
+        vi.spyOn(engineSourceStore, 'isValid', 'get').mockReturnValue(false);
+        expect(store.isSettingsValid).toBe(false);
+      });
+
+      it('should return true when engine source has changes and is valid', () => {
+        store.settings.data = cloneDeep(store.initialSettings);
+        vi.spyOn(engineSourceStore, 'hasChanges', 'get').mockReturnValue(true);
+        vi.spyOn(engineSourceStore, 'isValid', 'get').mockReturnValue(true);
+        expect(store.isSettingsValid).toBe(true);
+      });
     });
   });
 
