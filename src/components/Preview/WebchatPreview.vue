@@ -184,16 +184,20 @@ onBeforeUnmount(() => {
   height: 100%;
   position: relative;
 
-  * {
-    font-family: Inter, sans-serif !important;
-  }
-
   :deep(.weni-widget) {
     position: absolute !important;
+
+    width: 100%;
+    height: 100%;
   }
 
   :deep(.weni-chat) {
-    position: absolute !important;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    margin: 0;
+
+    box-shadow: none;
 
     .weni-chat-header {
       display: none !important;
@@ -201,6 +205,11 @@ onBeforeUnmount(() => {
 
     .weni-messages-list {
       padding: $unnnic-space-6;
+      padding-top: 0;
+
+      .weni-chat-presentation {
+        display: none;
+      }
 
       .webchat-placeholder {
         margin: auto;
@@ -228,7 +237,9 @@ onBeforeUnmount(() => {
     }
 
     .weni-chat__footer {
-      margin: 0 $unnnic-space-4 $unnnic-space-6;
+      .weni-input-box {
+        margin: 0 $unnnic-space-6 $unnnic-space-6;
+      }
 
       .weni-poweredby {
         display: none !important;
