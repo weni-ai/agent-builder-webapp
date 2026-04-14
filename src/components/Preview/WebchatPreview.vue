@@ -184,6 +184,12 @@ onBeforeUnmount(() => {
   height: 100%;
   position: relative;
 
+  &:not(:has(.weni-view-product-catalog)) {
+    :deep(.weni-chat-header) {
+      display: none !important;
+    }
+  }
+
   :deep(.weni-widget) {
     position: absolute !important;
 
@@ -199,13 +205,8 @@ onBeforeUnmount(() => {
 
     box-shadow: none;
 
-    .weni-chat-header {
-      display: none !important;
-    }
-
     .weni-messages-list {
       padding: $unnnic-space-6;
-      padding-top: 0;
 
       .weni-chat-presentation {
         display: none;
@@ -231,6 +232,7 @@ onBeforeUnmount(() => {
         align-items: center;
         justify-content: center;
 
+        text-align: center;
         color: $unnnic-color-fg-base;
         @include unnnic-font-caption-2;
       }
