@@ -351,9 +351,7 @@ describe('EngineSource Store', () => {
 
         expect(store.status).toBe('error');
         expect(alertStore.add).toHaveBeenCalledWith({
-          text: i18n.global.t(
-            'agent_builder.tunings.engine_source.load_error',
-          ),
+          text: i18n.global.t('agent_builder.tunings.engine_source.load_error'),
           type: 'error',
         });
       });

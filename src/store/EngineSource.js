@@ -59,7 +59,9 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
       credentials: credentials.value.map(({ id, value }) => ({ id, value })),
     };
 
-    return JSON.stringify(currentState) !== JSON.stringify(initialSnapshot.value);
+    return (
+      JSON.stringify(currentState) !== JSON.stringify(initialSnapshot.value)
+    );
   });
 
   function takeSnapshot() {
@@ -104,15 +106,22 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
     try {
       status.value = 'loading';
 
-      const { data } = await nexusaiAPI.router.tunings.engine_source.read({
-        projectUuid: projectUuid.value,
-      });
+      const [{ data }, { data: sourceData }] = await Promise.all([
+        nexusaiAPI.router.tunings.engine_source.read({
+          projectUuid: projectUuid.value,
+        }),
+        nexusaiAPI.router.tunings.engine_source.readSource({
+          projectUuid: projectUuid.value,
+        }),
+      ]);
 
       providers.value = data.providers;
       current.value = data.current;
 
+      engineType.value =
+        sourceData.engine_source === 'OWN' ? 'custom' : 'native';
+
       if (data.current) {
-        engineType.value = 'custom';
         selectedProviderId.value = data.current.uuid;
         selectedModel.value = data.current.model;
         credentials.value = cloneDeep(data.current.credentials || []);
@@ -133,23 +142,25 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
     try {
       saveStatus.value = 'loading';
 
-      // TODO: implement endpoint for switching back to STANDARD
-      const payload =
-        engineType.value === 'native'
-          ? { engine_type: 'native' }
-          : {
-              provider_uuid: selectedProviderId.value,
-              model: selectedModel.value,
-              credentials: credentials.value.map(({ id, value }) => ({
-                id,
-                value,
-              })),
-            };
+      if (engineType.value === 'native') {
+        await nexusaiAPI.router.tunings.engine_source.delete({
+          projectUuid: projectUuid.value,
+        });
+      } else {
+        const payload = {
+          provider_uuid: selectedProviderId.value,
+          model: selectedModel.value,
+          credentials: credentials.value.map(({ id, value }) => ({
+            id,
+            value,
+          })),
+        };
 
-      await nexusaiAPI.router.tunings.engine_source.edit({
-        projectUuid: projectUuid.value,
-        payload,
-      });
+        await nexusaiAPI.router.tunings.engine_source.edit({
+          projectUuid: projectUuid.value,
+          payload,
+        });
+      }
 
       takeSnapshot();
       saveStatus.value = 'success';
