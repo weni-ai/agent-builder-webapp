@@ -28,6 +28,8 @@ export const useWebchatPreviewStore = defineStore('webchatPreview', () => {
     });
 
     await window.WebChat?.clear();
+    await window.WebChat?.clearPageHistory();
+    await window.WebChat?.clearCart();
     sessionVersion.value += 1;
   }
 

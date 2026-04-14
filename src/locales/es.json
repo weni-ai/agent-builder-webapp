@@ -386,6 +386,7 @@
           "description": "MCP es un conjunto de herramientas que habilita las capacidades del agente"
         },
         "mcp_config": {
+          "optional": "opcional",
           "placeholder_title": "Selecciona un MCP en la lista al lado",
           "placeholder_description": "Selecciona el MCP que mejor se adapte a tu escenario y configúralo",
           "title": "Configurar MCP {mcp}",
