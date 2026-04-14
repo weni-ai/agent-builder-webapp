@@ -7,6 +7,12 @@ import { useProjectStore } from './Project';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
+import env from '@/utils/env';
+
+const providersWithoutComponents = (env('PROVIDERS_WITHOUT_COMPONENTS') || '')
+  .split(',')
+  .map((name) => name.trim())
+  .filter(Boolean);
 
 export const useEngineSourceStore = defineStore('EngineSource', () => {
   const alertStore = useAlertStore();
@@ -61,6 +67,13 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
 
     return (
       JSON.stringify(currentState) !== JSON.stringify(initialSnapshot.value)
+    );
+  });
+
+  const selectedProviderAcceptsComponents = computed(() => {
+    if (!selectedProvider.value) return true;
+    return !providersWithoutComponents.some((name) =>
+      selectedProvider.value.label?.includes(name),
     );
   });
 
@@ -186,6 +199,7 @@ export const useEngineSourceStore = defineStore('EngineSource', () => {
     modelOptions,
     isValid,
     hasChanges,
+    selectedProviderAcceptsComponents,
     setEngineType,
     setProvider,
     setModel,

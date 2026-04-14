@@ -6,6 +6,13 @@ import { useAlertStore } from '@/store/Alert';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
 
+vi.mock('@/utils/env', () => ({
+  default: (name) => {
+    if (name === 'PROVIDERS_WITHOUT_COMPONENTS') return 'OpenAI';
+    return '';
+  },
+}));
+
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
     router: {
@@ -211,6 +218,22 @@ describe('EngineSource Store', () => {
           { id: 'org', value: '' },
         ];
         expect(store.isValid).toBe(false);
+      });
+    });
+
+    describe('selectedProviderAcceptsComponents', () => {
+      it('should return true when no provider is selected', () => {
+        expect(store.selectedProviderAcceptsComponents).toBe(true);
+      });
+
+      it('should return false when selected provider is in PROVIDERS_WITHOUT_COMPONENTS', () => {
+        store.selectedProviderId = 'openai';
+        expect(store.selectedProviderAcceptsComponents).toBe(false);
+      });
+
+      it('should return true when selected provider is not in PROVIDERS_WITHOUT_COMPONENTS', () => {
+        store.selectedProviderId = 'anthropic';
+        expect(store.selectedProviderAcceptsComponents).toBe(true);
       });
     });
 

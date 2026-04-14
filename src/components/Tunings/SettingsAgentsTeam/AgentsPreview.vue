@@ -52,12 +52,14 @@ import { storeToRefs } from 'pinia';
 import { useTuningsStore } from '@/store/Tunings';
 import { useProjectStore } from '@/store/Project';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
+import { useEngineSourceStore } from '@/store/EngineSource';
 
 import SettingsField from './SettingsField.vue';
 
 const tuningsStore = useTuningsStore();
 const projectStore = useProjectStore();
 const managerSelectorStore = useManagerSelectorStore();
+const engineSourceStore = useEngineSourceStore();
 
 const { selectedManager, newManagerAcceptsComponents } =
   storeToRefs(managerSelectorStore);
@@ -74,8 +76,11 @@ const showProgressiveFeedback = computed(() => {
 });
 
 const isComponentsDisabled = computed(() => {
-  const { managers } = managerSelectorStore.options;
+  if (engineSourceStore.engineType === 'custom') {
+    return !engineSourceStore.selectedProviderAcceptsComponents;
+  }
 
+  const { managers } = managerSelectorStore.options;
   return (
     !newManagerAcceptsComponents.value &&
     selectedManager.value === managers?.new?.id

@@ -19,6 +19,17 @@
       data-testid="custom-model-config"
     />
 
+    <UnnnicDisclaimer
+      v-if="showProviderComponentsDisclaimer"
+      type="neutral"
+      :description="
+        $t('agent_builder.tunings.engine_source.no_components_support', {
+          provider_name: engineSourceStore.selectedProvider?.label,
+        })
+      "
+      data-testid="provider-no-components-disclaimer"
+    />
+
     <AgentsPreview
       data-testid="agents-preview"
       :class="{
@@ -51,6 +62,12 @@ const engineSourceStore = useEngineSourceStore();
 
 const hasAgentVoice = computed(
   () => featureFlagsStore.flags.settingsAgentVoice,
+);
+
+const showProviderComponentsDisclaimer = computed(
+  () =>
+    engineSourceStore.engineType === 'custom' &&
+    !engineSourceStore.selectedProviderAcceptsComponents,
 );
 </script>
 
