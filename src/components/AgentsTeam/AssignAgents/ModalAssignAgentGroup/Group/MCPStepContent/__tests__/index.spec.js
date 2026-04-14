@@ -135,9 +135,9 @@ describe('MCPStepContent', () => {
     );
 
   describe('rendering', () => {
-    it('shows placeholder when nothing is selected', () => {
-      expect(findPlaceholder().exists()).toBe(true);
-      expect(findConfigForm().exists()).toBe(false);
+    it('auto-selects the first MCP when none is selected', () => {
+      expect(findPlaceholder().exists()).toBe(false);
+      expect(getSelectedMCP()).toEqual(mcpWithConfig);
     });
 
     it('shows config form when selected MCP has config', async () => {
@@ -175,11 +175,14 @@ describe('MCPStepContent', () => {
     });
 
     it('ignores unchecked selection events', async () => {
-      findMCPSelection().vm.$emit('select', mcpWithConfig, false);
+      const mcpBeforeEvent = getSelectedMCP();
+      const configBeforeEvent = getConfigValues();
+
+      findMCPSelection().vm.$emit('select', mcpWithoutConfig, false);
       await nextTick();
 
-      expect(getSelectedMCP()).toBeNull();
-      expect(getConfigValues()).toEqual({});
+      expect(getSelectedMCP()).toEqual(mcpBeforeEvent);
+      expect(getConfigValues()).toEqual(configBeforeEvent);
     });
   });
 

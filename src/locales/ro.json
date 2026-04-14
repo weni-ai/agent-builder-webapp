@@ -373,6 +373,7 @@
           "description": "MCP este un set predefinit de instrumente care activează capacitățile agentului"
         },
         "mcp_config": {
+          "optional": "opțional",
           "placeholder_title": "Selectează un MCP din lista alăturată",
           "placeholder_description": "Selectează MCP-ul care se potrivește cel mai bine scenariului tău și configurează-l",
           "title": "Configurare MCP {mcp}",

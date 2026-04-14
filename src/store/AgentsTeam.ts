@@ -202,7 +202,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     try {
       const foundOfficialAgent = officialAgents.data.find(
         (agent) =>
-          agent.uuid === uuid ||
+          (agent.uuid && agent.uuid === uuid) ||
           (group && agent.group === group) ||
           agent.agents?.some((variant) => variant.uuid === uuid),
       );
@@ -212,26 +212,26 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
         (agent) => agent.uuid === uuid,
       );
 
-      const agent = foundOfficialAgent || foundMyAgent || foundActiveTeamAgent;
+      const listedAgent = foundOfficialAgent || foundMyAgent;
+      const agent = foundActiveTeamAgent || listedAgent;
 
       if (!agent) {
         throw new Error('Agent not found');
       }
 
-      if (assignAgentsView && agent.is_official) {
-        await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment({
-          group: agent.group,
-          agent_uuid: uuid,
-          assigned: is_assigned,
-        });
-      } else {
+      if (agent.uuid) {
         await nexusaiAPI.router.agents_team.toggleAgentAssignment({
           agentUuid: (agent as Agent)?.uuid,
           is_assigned,
         });
+      } else {
+        await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment({
+          group: agent.group,
+          assigned: is_assigned,
+        });
       }
 
-      agent.assigned = is_assigned;
+      listedAgent.assigned = is_assigned;
 
       if (is_assigned) {
         addAgentToTeam(agent);

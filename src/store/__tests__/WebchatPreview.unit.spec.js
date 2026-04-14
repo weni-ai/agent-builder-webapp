@@ -71,11 +71,39 @@ describe('WebchatPreviewStore', () => {
     });
 
     it('should call window.WebChat.clear when WebChat is available', async () => {
-      window.WebChat = { clear: vi.fn().mockResolvedValue(undefined) };
+      window.WebChat = {
+        clear: vi.fn().mockResolvedValue(undefined),
+        clearPageHistory: vi.fn().mockResolvedValue(undefined),
+        clearCart: vi.fn().mockResolvedValue(undefined),
+      };
 
       await store.endSession();
 
       expect(window.WebChat.clear).toHaveBeenCalled();
+    });
+
+    it('should call window.WebChat.clearPageHistory when WebChat is available', async () => {
+      window.WebChat = {
+        clear: vi.fn().mockResolvedValue(undefined),
+        clearPageHistory: vi.fn().mockResolvedValue(undefined),
+        clearCart: vi.fn().mockResolvedValue(undefined),
+      };
+
+      await store.endSession();
+
+      expect(window.WebChat.clearPageHistory).toHaveBeenCalled();
+    });
+
+    it('should call window.WebChat.clearCart when WebChat is available', async () => {
+      window.WebChat = {
+        clear: vi.fn().mockResolvedValue(undefined),
+        clearPageHistory: vi.fn().mockResolvedValue(undefined),
+        clearCart: vi.fn().mockResolvedValue(undefined),
+      };
+
+      await store.endSession();
+
+      expect(window.WebChat.clearCart).toHaveBeenCalled();
     });
 
     it('should not throw when window.WebChat is undefined', async () => {

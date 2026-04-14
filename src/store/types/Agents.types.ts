@@ -52,6 +52,7 @@ export interface AgentAssignedMCP {
 }
 
 export interface ActiveTeamAgent {
+  group?: string;
   uuid: string;
   id: string;
   name: string;
@@ -76,6 +77,7 @@ export interface AgentMCP {
     name: string;
     label: string;
     default_value: string | boolean | number;
+    is_required: boolean;
     type:
       | 'SELECT'
       | 'INPUT'
