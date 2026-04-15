@@ -215,6 +215,10 @@ onBeforeUnmount(() => {
     .weni-messages-list {
       padding: $unnnic-space-6;
 
+      .weni-messages-list__direction-group:first-child {
+        margin-top: 0;
+      }
+
       .weni-chat-presentation {
         display: none;
       }
