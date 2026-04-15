@@ -90,6 +90,7 @@ describe('ViewOptions', () => {
 
     expect(agentsTeamStore.toggleAgentAssignment).toHaveBeenCalledWith({
       uuid: 'agent-uuid',
+      group: null,
       is_assigned: false,
     });
     expect(wrapper.emitted('agent-removed')).toHaveLength(1);
@@ -104,18 +105,24 @@ describe('ViewOptions', () => {
 
     expect(agentsTeamStore.toggleAgentAssignment).toHaveBeenCalledWith({
       uuid: 'group-uuid',
+      group: 'CONCIERGE',
       is_assigned: false,
     });
   });
 
-  it('does not attempt removal when the agent uuid is missing', async () => {
-    createWrapper({ agent: createAgent({ uuid: undefined }) });
+  it('calls store and emits when agent uuid is missing but group is present', async () => {
+    createWrapper({ agent: createGroupAgent({ uuid: undefined }) });
 
     await findTrigger().trigger('click');
     await findRemove().trigger('click');
+    await flushPromises();
 
-    expect(agentsTeamStore.toggleAgentAssignment).not.toHaveBeenCalled();
-    expect(wrapper.emitted('agent-removed')).toBeUndefined();
+    expect(agentsTeamStore.toggleAgentAssignment).toHaveBeenCalledWith({
+      uuid: undefined,
+      group: 'CONCIERGE',
+      is_assigned: false,
+    });
+    expect(wrapper.emitted('agent-removed')).toHaveLength(1);
   });
 
   it('prevents multiple removals while a request is in flight', async () => {

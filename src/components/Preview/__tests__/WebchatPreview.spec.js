@@ -284,9 +284,9 @@ describe('WebchatPreview.vue', () => {
 
       expect(messagesList.querySelector('.webchat-placeholder')).not.toBeNull();
 
-      const group = document.createElement('div');
-      group.className = 'weni-messages-list__direction-group';
-      messagesList.appendChild(group);
+      const message = document.createElement('div');
+      message.className = 'weni-message';
+      messagesList.appendChild(message);
 
       await vi.waitFor(() => {
         expect(messagesList.querySelector('.webchat-placeholder')).toBeNull();
