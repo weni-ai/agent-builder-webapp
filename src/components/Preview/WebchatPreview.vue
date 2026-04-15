@@ -184,7 +184,14 @@ onBeforeUnmount(() => {
   height: 100%;
   position: relative;
 
-  &:not(:has(.weni-view-product-catalog)) {
+  &:not(
+    :has(
+      .weni-view-product-catalog,
+      .weni-view-product-details,
+      .weni-view-cart,
+      .weni-chat-header [aria-label='Cart']
+    )
+  ) {
     :deep(.weni-chat-header) {
       display: none !important;
     }
