@@ -22,18 +22,18 @@ describe('CustomModelConfig/index.vue', () => {
 
   const mockProviders = [
     {
-      id: 'openai',
+      uuid: 'openai',
       label: 'OpenAI',
       models: ['gpt-4o', 'gpt-4o-mini'],
-      crendentials: [
+      credentials: [
         { type: 'PASSWORD', label: 'API Key', value: '', id: 'api_key' },
       ],
     },
     {
-      id: 'anthropic',
+      uuid: 'anthropic',
       label: 'Anthropic',
       models: ['claude-3-opus'],
-      crendentials: [
+      credentials: [
         { type: 'PASSWORD', label: 'API Key', value: '', id: 'api_key' },
         {
           type: 'TEXTAREA',

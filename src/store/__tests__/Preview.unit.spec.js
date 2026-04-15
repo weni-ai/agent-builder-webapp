@@ -169,6 +169,7 @@ describe('PreviewStore', () => {
         project: 'test-project-uuid',
         token: 'test-token',
         endpoint: 'preview',
+        path: 'test-project-uuid/simulation',
       });
 
       expect(mockWsInstance.connect).toHaveBeenCalled();

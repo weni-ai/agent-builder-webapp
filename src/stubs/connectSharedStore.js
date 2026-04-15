@@ -1,0 +1,1 @@
+export const useSharedStore = () => null;

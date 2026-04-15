@@ -6,6 +6,10 @@ import nexusaiAPI from '@/api/nexusaiAPI.js';
 
 vi.mock('@/api/nexusaiAPI.js');
 
+vi.mock('@/utils/agentIconService', () => ({
+  default: { applyIconsToAgents: vi.fn((agents) => agents) },
+}));
+
 describe('AgentsTeamStore', () => {
   let store;
 
@@ -47,29 +51,32 @@ describe('AgentsTeamStore', () => {
 
   describe('loadOfficialAgents', () => {
     it('should load official agents team successfully', async () => {
-      const mockData = {
-        data: [],
+      const mockResponse = {
+        agents: [],
+        availableSystems: [],
       };
-      const listOfficialAgentsSpy =
-        nexusaiAPI.router.agents_team.listOfficialAgents.mockResolvedValue(
-          mockData,
+      const listOfficialAgents2Spy =
+        nexusaiAPI.router.agents_team.listOfficialAgents2.mockResolvedValue(
+          mockResponse,
         );
 
-      await store.loadOfficialAgents({
-        search: 'Test Search',
-      });
+      store.setAssignAgentsFilters({ search: 'Test Search' });
+
+      await store.loadOfficialAgents();
 
       expect(store.officialAgents.status).toBe('complete');
-      expect(store.officialAgents.data).toEqual(mockData.data);
-      expect(listOfficialAgentsSpy).toHaveBeenCalledWith({
-        search: 'Test Search',
+      expect(store.officialAgents.data).toEqual(mockResponse.agents);
+      expect(listOfficialAgents2Spy).toHaveBeenCalledWith({
+        name: 'Test Search',
+        category: '',
+        system: '',
       });
     });
 
     it('should handle errors when loading official agents', async () => {
       vi.spyOn(console, 'error').mockImplementation(() => {});
 
-      nexusaiAPI.router.agents_team.listOfficialAgents.mockRejectedValue(
+      nexusaiAPI.router.agents_team.listOfficialAgents2.mockRejectedValue(
         new Error('Error'),
       );
 
@@ -86,6 +93,8 @@ describe('AgentsTeamStore', () => {
       };
       const listMyAgentsSpy =
         nexusaiAPI.router.agents_team.listMyAgents.mockResolvedValue(mockData);
+
+      store.setAssignAgentsFilters({ search: 'Test Search' });
 
       await store.loadMyAgents({
         search: 'Test Search',
