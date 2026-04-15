@@ -2,7 +2,7 @@
 
 exports[`InstructionsSection.vue > should match snapshot 1`] = `
 "<section data-v-9546d415="" class="instructions-section">
-  <h2 data-v-9546d415="" class="instructions-section__title" data-testid="instructions-section-title">Instructions list</h2>
+  <h2 data-v-9546d415="" class="instructions-section__title" data-testid="instructions-section-title">Instruction list</h2>
   <anonymous-stub data-v-9546d415="" size="md" activetab="custom" tabs="custom,default,safety_topics" data-testid="instructions-section-tab"></anonymous-stub>
   <custom-instructions-section-stub data-v-9546d415="" data-testid="instructions-custom"></custom-instructions-section-stub>
   <!--v-if-->

@@ -215,7 +215,7 @@ describe('PreviewLogs.vue', () => {
           summary: 'Unknown agent trace',
           data: null,
           config: {
-            agentId: 'unknown-agent',
+            agentName: 'unknown-agent',
           },
         },
       ];
@@ -223,7 +223,7 @@ describe('PreviewLogs.vue', () => {
       await wrapper.setProps({ logs: logsWithUnknownAgent });
 
       expect(wrapper.vm.processedLogs.length).toBe(1);
-      expect(wrapper.vm.processedLogs[0].agent).toBe('Manager');
+      expect(wrapper.vm.processedLogs[0].agent).toBe('unknown-agent');
     });
 
     it('groups consecutive logs from the same agent', async () => {
@@ -262,7 +262,7 @@ describe('PreviewLogs.vue', () => {
       expect(processedLogs[1].steps.length).toBe(1);
     });
 
-    it('handles logs without config correctly', async () => {
+    it('skips logs without config', async () => {
       const logsWithoutConfig = [
         {
           type: 'trace_update',
@@ -273,8 +273,7 @@ describe('PreviewLogs.vue', () => {
       await wrapper.setProps({ logs: logsWithoutConfig });
       const processedLogs = wrapper.vm.processedLogs;
 
-      expect(processedLogs.length).toBe(1);
-      expect(processedLogs[0].agent).toBe('Manager');
+      expect(processedLogs.length).toBe(0);
     });
   });
 
@@ -473,7 +472,7 @@ describe('PreviewLogs.vue', () => {
   });
 
   describe('Edge cases', () => {
-    it('handles logs with missing config.agentName', async () => {
+    it('skips logs with missing config.agentName', async () => {
       const logsWithMissingAgentName = [
         {
           data: null,
@@ -485,11 +484,10 @@ describe('PreviewLogs.vue', () => {
 
       await wrapper.setProps({ logs: logsWithMissingAgentName });
 
-      expect(wrapper.vm.processedLogs.length).toBe(1);
-      expect(wrapper.vm.processedLogs[0].agent).toBe('Manager');
+      expect(wrapper.vm.processedLogs.length).toBe(0);
     });
 
-    it('handles agent not found in agents list', async () => {
+    it('uses agentName as fallback label when agent is not found', async () => {
       const logsWithNonExistentAgent = [
         {
           data: null,
@@ -503,7 +501,7 @@ describe('PreviewLogs.vue', () => {
       await wrapper.setProps({ logs: logsWithNonExistentAgent });
 
       expect(wrapper.vm.processedLogs.length).toBe(1);
-      expect(wrapper.vm.processedLogs[0].agent).toBe('Manager');
+      expect(wrapper.vm.processedLogs[0].agent).toBe('non-existent-agent');
     });
   });
 });

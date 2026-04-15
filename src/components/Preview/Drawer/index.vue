@@ -3,7 +3,11 @@
     v-model:open="drawerOpen"
     class="preview-drawer"
   >
-    <UnnnicDrawerContent size="extra-large">
+    <UnnnicDrawerContent
+      size="extra-large"
+      :forceMount="forceMount"
+      class="preview-drawer__panel"
+    >
       <PreviewDrawerHeader />
 
       <section
@@ -14,7 +18,8 @@
           data-testid="preview-drawer-preview"
           class="content__preview"
         >
-          <Preview />
+          <WebchatPreview v-if="useWebchatPreview" />
+          <Preview v-else />
         </section>
 
         <section
@@ -32,15 +37,26 @@
 import { computed, watch } from 'vue';
 
 import { usePreviewStore } from '@/store/Preview';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 import Preview from '@/components/Preview/Preview.vue';
+import WebchatPreview from '@/components/Preview/WebchatPreview.vue';
 import PreviewDetails from '../PreviewDetails.vue';
 import PreviewDrawerHeader from './Header.vue';
+
+const featureFlagsStore = useFeatureFlagsStore();
+const useWebchatPreview = computed(
+  () => featureFlagsStore.flags.webchatPreview,
+);
 
 const props = defineProps({
   modelValue: {
     type: Boolean,
     required: true,
+  },
+  forceMount: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -62,6 +78,11 @@ watch(
 </script>
 
 <style lang="scss">
+.preview-drawer__panel[data-state='closed'] {
+  animation-fill-mode: forwards;
+  pointer-events: none;
+}
+
 .preview-drawer {
   &__content {
     height: 100%;
@@ -69,6 +90,7 @@ watch(
     grid-template-columns: 1fr 1fr;
 
     overflow: hidden;
+    border-radius: $unnnic-radius-4;
 
     .content__preview {
       overflow: hidden;

@@ -186,37 +186,52 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     }
   }
 
-  async function toggleAgentAssignment({ uuid, is_assigned }) {
-    if (!uuid || typeof is_assigned !== 'boolean') {
-      throw new Error('uuid and is_assigned are required');
+  async function toggleAgentAssignment({
+    uuid,
+    group,
+    is_assigned,
+  }: {
+    uuid?: string;
+    group?: string;
+    is_assigned: boolean;
+  }) {
+    if ((!uuid && !group) || typeof is_assigned !== 'boolean') {
+      throw new Error('uuid or group, and is_assigned are required');
     }
 
     try {
-      const agent =
-        officialAgents.data.find(
-          (agent) =>
-            agent.uuid === uuid ||
-            agent.agents?.some((variant) => variant.uuid === uuid),
-        ) || myAgents.data.find((agent) => agent.uuid === uuid);
+      const foundOfficialAgent = officialAgents.data.find(
+        (agent) =>
+          (agent.uuid && agent.uuid === uuid) ||
+          (group && agent.group === group) ||
+          agent.agents?.some((variant) => variant.uuid === uuid),
+      );
+
+      const foundMyAgent = myAgents.data.find((agent) => agent.uuid === uuid);
+      const foundActiveTeamAgent = activeTeam.data.agents.find(
+        (agent) => agent.uuid === uuid,
+      );
+
+      const listedAgent = foundOfficialAgent || foundMyAgent;
+      const agent = foundActiveTeamAgent || listedAgent;
 
       if (!agent) {
         throw new Error('Agent not found');
       }
 
-      if (assignAgentsView && agent.is_official) {
-        await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment({
-          group: agent.group,
-          agent_uuid: uuid,
-          assigned: is_assigned,
-        });
-      } else {
+      if (agent.uuid) {
         await nexusaiAPI.router.agents_team.toggleAgentAssignment({
           agentUuid: (agent as Agent)?.uuid,
           is_assigned,
         });
+      } else {
+        await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment({
+          group: agent.group,
+          assigned: is_assigned,
+        });
       }
 
-      agent.assigned = is_assigned;
+      if (listedAgent) listedAgent.assigned = is_assigned;
 
       if (is_assigned) {
         addAgentToTeam(agent);

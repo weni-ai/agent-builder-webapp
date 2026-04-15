@@ -15,15 +15,24 @@
       class="start-setup-mcps__list"
     >
       <li
-        v-for="mcp in mcps"
+        v-for="(mcp, index) in mcps"
         :key="mcp.name"
-        class="start-setup-mcps__item"
+        :class="[
+          'start-setup-mcps__item',
+          { 'start-setup-mcps__item--expanded': isExpanded(index) },
+        ]"
+        data-testid="start-setup-mcps-item"
+        @click="toggleItem(index)"
       >
         <UnnnicIcon
-          icon="check_circle"
+          icon="chevron_forward"
           size="sm"
-          scheme="teal-600"
-          class="start-setup-mcps__item-icon"
+          scheme="fg-emphasized"
+          data-testid="start-setup-mcps-item-icon"
+          :class="[
+            'start-setup-mcps__item-icon',
+            { 'start-setup-mcps__item-icon--expanded': isExpanded(index) },
+          ]"
         />
 
         <p
@@ -33,23 +42,45 @@
           {{ mcp.name }}
         </p>
 
-        <p
-          class="start-setup-mcps__item-description"
-          data-testid="start-setup-mcps-item-description"
+        <section
+          data-testid="start-setup-mcps-item-body"
+          :class="[
+            'start-setup-mcps__item-body',
+            { 'start-setup-mcps__item-body--expanded': isExpanded(index) },
+          ]"
         >
-          {{ mcp.description }}
-        </p>
+          <p
+            class="start-setup-mcps__item-description"
+            data-testid="start-setup-mcps-item-description"
+          >
+            {{ translateField(mcp.description) }}
+          </p>
+        </section>
       </li>
     </ul>
   </section>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import type { AgentMCP } from '@/store/types/Agents.types';
+import useTranslatedField from '@/composables/useTranslatedField';
 
 defineProps<{
   mcps?: AgentMCP[];
 }>();
+
+const translateField = useTranslatedField();
+
+const expandedIndex = ref<number>(0);
+
+function isExpanded(index: number): boolean {
+  return expandedIndex.value === index;
+}
+
+function toggleItem(index: number): void {
+  expandedIndex.value = expandedIndex.value === index ? -1 : index;
+}
 </script>
 
 <style scoped lang="scss">
@@ -80,6 +111,8 @@ defineProps<{
     column-gap: $unnnic-space-2;
     align-items: center;
 
+    cursor: pointer;
+
     & + & {
       border-top: none;
     }
@@ -98,6 +131,12 @@ defineProps<{
   &__item-icon {
     grid-row: 1 / 2;
     grid-column: 1 / 2;
+
+    transition: transform 0.2s ease;
+
+    &--expanded {
+      transform: rotate(90deg);
+    }
   }
 
   &__item-title {
@@ -108,9 +147,21 @@ defineProps<{
     font: $unnnic-font-action;
   }
 
-  &__item-description {
+  &__item-body {
     grid-row: 2 / 3;
     grid-column: 2 / 3;
+
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.2s ease;
+
+    &--expanded {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  &__item-description {
+    overflow: hidden;
 
     color: $unnnic-color-fg-base;
     font: $unnnic-font-body;

@@ -130,27 +130,36 @@ const selectedLog = ref({
 });
 
 const processedLogs = computed(() => {
-  const allAgents =
-    Object.keys(props.agents.manager).length && props.agents.agents.length
-      ? props.agents
-      : agentsTeamStore.allAgents;
-  if (!allAgents) return [];
+  const teamData = props.agents.agents?.length
+    ? props.agents
+    : agentsTeamStore.activeTeam?.data;
+
+  const teamAgents = teamData?.agents || [];
+  const galleryAgents = agentsTeamStore.allAgents?.agents || [];
+  const manager = teamData?.manager || agentsTeamStore.allAgents?.manager;
+
+  if (!manager && !teamAgents.length && !galleryAgents.length) return [];
 
   const logs = props.logs;
-  const { agents, manager } = allAgents;
 
   return logs.reduce((logsByAgent, log) => {
     const { agentName = '' } = log.config || {};
 
-    const agent = agents.find((agent) => agent.id === agentName) || manager;
+    const foundAgent =
+      teamAgents.find((a) => a.id === agentName) ||
+      galleryAgents.find((a) => a.id === agentName);
 
-    if (!agent) return logsByAgent;
+    if (!foundAgent && !agentName) return logsByAgent;
+
+    const agentId = foundAgent?.id || agentName;
+    const agentLabel =
+      foundAgent?.name || (agentName === 'manager' ? 'Manager' : agentName);
 
     const lastLog = logsByAgent.at(-1);
-    if (lastLog?.id !== agent.id) {
+    if (lastLog?.id !== agentId) {
       logsByAgent.push({
-        id: agent.id,
-        agent: agent.name || 'Manager',
+        id: agentId,
+        agent: agentLabel,
         steps: [],
       });
     }
@@ -301,10 +310,12 @@ watch(
     .logs__log {
       margin-bottom: $unnnic-spacing-sm;
 
-      $progressDotOffset: -($unnnic-spacing-sm + $unnnic-spacing-nano);
+      $progressDotOffset: -($unnnic-space-4 + $unnnic-space-05);
       %progressDot {
         &::before {
           content: '•';
+
+          @include unnnic-font-display-4;
 
           position: absolute;
           z-index: 1;
@@ -326,13 +337,13 @@ watch(
 
         &--left {
           &::before {
-            left: $progressDotOffset;
+            left: $progressDotOffset + 0.3px;
           }
         }
 
         &--right {
           &::before {
-            right: $progressDotOffset + 0.5px;
+            right: $progressDotOffset;
           }
         }
       }

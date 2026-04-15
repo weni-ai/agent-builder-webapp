@@ -78,6 +78,7 @@ import i18n from '@/utils/plugins/i18n';
 import { useProfileStore } from '@/store/Profile';
 import { useTuningsStore } from '@/store/Tunings';
 import { useAlertStore } from '@/store/Alert';
+import { useEngineSourceStore } from '@/store/EngineSource';
 
 import RouterProfileGeneralInfo from '@/components/Profile/RouterProfileGeneralInfo.vue';
 import SettingsAgentsTeam from '@/components/Tunings/SettingsAgentsTeam/index.vue';
@@ -92,6 +93,7 @@ const modelValue = defineModel({
 
 const profileStore = useProfileStore();
 const tuningsStore = useTuningsStore();
+const engineSourceStore = useEngineSourceStore();
 const alertStore = useAlertStore();
 
 const hasProfileChanges = computed(() => !profileStore.isSaveButtonDisabled);
@@ -161,6 +163,7 @@ watch(
   (newTab) => {
     if (newTab === 'settings' && tuningsStore.settings.status !== 'success') {
       tuningsStore.fetchSettings();
+      engineSourceStore.loadEngineSource();
     }
   },
 );

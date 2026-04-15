@@ -2,6 +2,6 @@
 
 exports[`ModalRemoveInstruction.vue > Component rendering > should match snapshot 1`] = `
 "<div data-v-25f17094="" data-testid="modal" class="modal-remove-instruction">
-  <p data-v-25f17094="" class="modal-remove-instruction__description" data-testid="description">Are you sure you want to remove the instruction?</p>
+  <p data-v-25f17094="" class="modal-remove-instruction__description" data-testid="description">Are you sure you want to delete this instruction?</p>
 </div>"
 `;

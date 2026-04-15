@@ -5,6 +5,7 @@ import { cloneDeep } from 'lodash';
 import { useAlertStore } from './Alert';
 import { useProjectStore } from './Project';
 import { useManagerSelectorStore } from './ManagerSelector';
+import { useEngineSourceStore } from './EngineSource';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
@@ -12,6 +13,7 @@ import i18n from '@/utils/plugins/i18n';
 export const useTuningsStore = defineStore('Tunings', () => {
   const alertStore = useAlertStore();
   const managerSelectorStore = useManagerSelectorStore();
+  const engineSourceStore = useEngineSourceStore();
 
   const projectUuid = computed(() => useProjectStore().uuid);
 
@@ -78,11 +80,16 @@ export const useTuningsStore = defineStore('Tunings', () => {
   });
 
   const isSettingsValid = computed(() => {
-    if (!settings.data || !initialSettings.value) return false;
+    const hasSettingsChanges =
+      settings.data &&
+      initialSettings.value &&
+      JSON.stringify(settings.data) !== JSON.stringify(initialSettings.value);
 
-    return (
-      JSON.stringify(settings.data) !== JSON.stringify(initialSettings.value)
-    );
+    if (engineSourceStore.hasChanges && !engineSourceStore.isValid) {
+      return false;
+    }
+
+    return hasSettingsChanges || engineSourceStore.hasChanges;
   });
 
   function getCredentialIndex(credentialName) {
@@ -240,6 +247,13 @@ export const useTuningsStore = defineStore('Tunings', () => {
         const managerSaved = await managerSelectorStore.saveManager();
         if (!managerSaved) {
           throw new Error('Manager save failed');
+        }
+      }
+
+      if (engineSourceStore.hasChanges) {
+        const engineSourceSaved = await engineSourceStore.saveEngineSource();
+        if (!engineSourceSaved) {
+          throw new Error('Engine source save failed');
         }
       }
 
