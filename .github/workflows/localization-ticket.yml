@@ -1,3 +1,14 @@
+# Localization Ticket Automation
+#
+# Automatically creates a Jira ticket for the Localization team whenever a PR
+# with changes to locale files (src/locales/**) is merged into main.
+#
+# The ticket includes PR details, a filtered diff of the locale changes, and
+# the PR description for context.
+#
+# PRs with the "localization" label are skipped to avoid creating tickets for
+# translation PRs opened by the Localization team itself.
+#
 # Required GitHub Secrets (Settings > Secrets and variables > Actions):
 #
 #   JIRA_BASE_URL    - Jira instance URL (e.g. https://<your-org>.atlassian.net)
@@ -16,7 +27,9 @@ on:
 
 jobs:
   create-jira-ticket:
-    if: github.event.pull_request.merged == true
+    if: >
+      github.event.pull_request.merged == true &&
+      !contains(github.event.pull_request.labels.*.name, 'localization')
     runs-on: ubuntu-latest
 
     steps:
