@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { computed, reactive, ref, watch } from 'vue';
 import { useProjectStore } from './Project';
 import { cloneDeep, differenceBy } from 'lodash';
+import { mapLegacyPersonality } from '@/utils/mapLegacyPersonality';
 
 export const useProfileStore = defineStore('profile', () => {
   const projectUuid = computed(() => useProjectStore().uuid);
@@ -61,7 +62,9 @@ export const useProfileStore = defineStore('profile', () => {
   function setInitialValues(data) {
     name.old = name.current = data.agent?.['name'] || '';
     role.old = role.current = data.agent?.['role'] || '';
-    personality.old = personality.current = data.agent?.['personality'] || '';
+    personality.old = personality.current = mapLegacyPersonality(
+      data.agent?.['personality'],
+    );
     goal.old = goal.current = data.agent?.['goal'] || '';
     instructions.current = data.instructions || [];
 
