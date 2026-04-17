@@ -64,6 +64,7 @@ describe('AgentsTeam API', () => {
       expect(result.data[0]).toEqual({
         uuid: 'agent-uuid-1',
         name: 'Official Agent 1',
+        about: null,
         description: 'First official agent',
         skills: ['skill1', 'skill2'],
         assigned: true,
@@ -177,6 +178,7 @@ describe('AgentsTeam API', () => {
       expect(result.data[0]).toEqual({
         uuid: 'my-agent-uuid-1',
         name: 'My Agent 1',
+        about: null,
         description: 'First personal agent',
         skills: ['custom-skill1'],
         assigned: true,
@@ -282,9 +284,11 @@ describe('AgentsTeam API', () => {
         name: 'Active Agent 1',
         skills: ['active-skill1'],
         id: 'active-agent-1',
+        about: null,
         description: 'First active agent',
         credentials: { type: 'active' },
         is_official: true,
+        mcp: undefined,
       });
     });
 
