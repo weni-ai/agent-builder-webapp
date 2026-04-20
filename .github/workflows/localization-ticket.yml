@@ -9,6 +9,9 @@
 # PRs with the "localization" label are skipped to avoid creating tickets for
 # translation PRs opened by the Localization team itself.
 #
+# PRs that only remove locale keys (no additions or modifications) are also
+# skipped, since there is nothing for the Localization team to translate.
+#
 # Required GitHub Secrets (Settings > Secrets and variables > Actions):
 #
 #   JIRA_BASE_URL    - Jira instance URL (e.g. https://<your-org>.atlassian.net)
@@ -52,7 +55,15 @@ jobs:
           echo "$DIFF" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+          HAS_ADDITIONS=$(echo "$DIFF" | grep -c '^+' || true)
+          if [ "$HAS_ADDITIONS" -gt 0 ]; then
+            echo "has_additions=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_additions=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create Jira ticket
+        if: steps.locale_diff.outputs.has_additions == 'true'
         env:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
