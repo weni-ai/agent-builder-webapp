@@ -24,7 +24,7 @@ name: Create Localization Ticket
 on:
   pull_request:
     types: [closed]
-    branches: [feature/localization-workflow]
+    branches: [main]
     paths:
       - 'src/locales/**'
 
