@@ -11,6 +11,12 @@ vi.mock('@/store/Project', () => ({
   })),
 }));
 
+vi.mock('@/store/User', () => ({
+  useUserStore: vi.fn(() => ({
+    user: { email: 'test@example.com' },
+  })),
+}));
+
 describe('useFlowPreview', () => {
   let flowPreview;
   let mathRandomSpy;
@@ -31,7 +37,7 @@ describe('useFlowPreview', () => {
       flowPreview.previewInit();
 
       expect(flowPreview.preview.value.contact.uuid).toBe('mock-uuid');
-      expect(flowPreview.preview.value.contact.urn).toMatch(/^tel:/);
+      expect(flowPreview.preview.value.contact.urn).toBe('test@example.com');
     });
   });
 });

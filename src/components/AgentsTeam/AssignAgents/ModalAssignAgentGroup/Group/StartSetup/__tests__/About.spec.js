@@ -8,6 +8,7 @@ vi.mock('@/composables/useTranslatedField', () => ({
 }));
 
 const mockAgent = {
+  group: 'CONCIERGE',
   description: 'Handles concierge flows by helping customers',
   presentation: {
     about: {

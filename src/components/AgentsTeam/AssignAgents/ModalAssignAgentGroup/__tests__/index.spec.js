@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
 import { nextTick } from 'vue';
+import { createTestingPinia } from '@pinia/testing';
 
 import ModalAssignAgentGroup from '../index.vue';
 
@@ -45,6 +46,9 @@ describe('ModalAssignAgentGroup', () => {
         open: true,
         agent: conciergeAgent,
         ...props,
+      },
+      global: {
+        plugins: [createTestingPinia({ stubActions: true })],
       },
     });
   };
