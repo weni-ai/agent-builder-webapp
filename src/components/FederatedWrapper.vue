@@ -30,6 +30,7 @@ import { useTuningsStore } from '@/store/Tunings';
 import en from '@/locales/en.json';
 import ptBr from '@/locales/pt_br.json';
 import es from '@/locales/es.json';
+import ro from '@/locales/ro.json';
 
 const ready = ref(false);
 
@@ -45,6 +46,7 @@ if (!localesMerged) {
     i18n.mergeLocaleMessage('en', en);
     i18n.mergeLocaleMessage('pt-br', ptBr);
     i18n.mergeLocaleMessage('es', es);
+    i18n.mergeLocaleMessage('ro', ro);
     localesMerged = true;
   } catch {
     // i18n not available in this context

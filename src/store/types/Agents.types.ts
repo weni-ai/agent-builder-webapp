@@ -1,5 +1,6 @@
+import type { TranslatedField } from '@/composables/useTranslatedField';
+
 export type AgentGroupType = 'CUSTOMIZABLE' | 'PLUG_IN_PLAY';
-export type AgentGroupID = 'CONCIERGE';
 export type AgentCategory = 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS';
 
 export type AgentSystem = {
@@ -45,30 +46,38 @@ export interface AgentAssignedSystem {
 
 export interface AgentAssignedMCP {
   name: string;
-  description: string;
+  description: TranslatedField<string>;
   config?: Record<string, AgentAssignedMCPConfigValue>;
   system?: AgentAssignedSystem;
 }
 
 export interface ActiveTeamAgent {
+  group?: string;
   uuid: string;
   id: string;
   name: string;
   is_official: boolean;
+  about: TranslatedField<string> | null;
   description: string;
   mcp: AgentAssignedMCP | null;
   icon: string;
 }
 
+export type ConversationMessage = {
+  direction: 'incoming' | 'outgoing';
+  text: string;
+};
+
 export interface AgentMCP {
   name: string;
-  description: string;
+  description: TranslatedField<string>;
   system: string;
   credentials?: AgentCredential[];
   config: {
     name: string;
     label: string;
     default_value: string | boolean | number;
+    is_required: boolean;
     type:
       | 'SELECT'
       | 'INPUT'
@@ -91,16 +100,15 @@ export interface AgentGroup {
   description: string;
   type: AgentGroupType;
   category: AgentCategory;
-  group: AgentGroupID;
+  group: string;
   agents: GroupVariant[];
   MCPs: AgentMCP[];
   systems: string[];
   credentials?: AgentCredential[];
   presentation?: {
-    conversation_example?: {
-      direction: 'incoming' | 'outgoing';
-      text: string;
-    }[];
+    agent_name?: string;
+    about?: TranslatedField<string>;
+    conversation_example?: TranslatedField<ConversationMessage[]>;
   };
   assigned: boolean;
   icon: string;
@@ -111,6 +119,7 @@ export interface Agent {
   uuid: string;
   id?: string;
   name: string;
+  about: TranslatedField<string> | null;
   description: string;
   skills: AgentSkill[];
   assigned: boolean;

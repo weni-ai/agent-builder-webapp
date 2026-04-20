@@ -27,8 +27,9 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
   const flags = computed(() => ({
     supervisorExport: isProjectEnabledForFlag('FF_SUPERVISOR_EXPORT'),
     settingsAgentVoice: growthbook?.isOn('settings_agent_voice'),
-    assignAgentsView: growthbook?.isOn('assign_agents_view'),
-    conversationsV2: growthbook?.isOn('conversations_v2'),
+    assignAgentsView: true,
+    conversationsV2: true,
+    webchatPreview: true,
   }));
 
   watch(

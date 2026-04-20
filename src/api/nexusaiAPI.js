@@ -3,6 +3,7 @@ import { AgentsTeam } from './nexus/AgentsTeam';
 import { Supervisor } from './nexus/Supervisor';
 import { Instructions } from './nexus/Instructions';
 import { Knowledge } from './nexus/Knowledge';
+import { Simulation } from './nexus/Simulation';
 
 import { ProgressiveFeedbackAdapter } from './adapters/tunings/progressiveFeedback';
 import { ComponentsAdapter } from './adapters/tunings/components';
@@ -24,6 +25,7 @@ export default {
     },
     supervisor: Supervisor,
     instructions: Instructions,
+    simulation: Simulation,
   },
 
   router: {
@@ -145,6 +147,31 @@ export default {
         },
       },
 
+      engine_source: {
+        read({ projectUuid }) {
+          return request.$http.get(
+            `api/project/${projectUuid}/model-providers`,
+          );
+        },
+
+        edit({ projectUuid, payload }) {
+          return request.$http.post(
+            `api/project/${projectUuid}/model-providers`,
+            payload,
+          );
+        },
+
+        delete({ projectUuid }) {
+          return request.$http.delete(
+            `api/project/${projectUuid}/model-providers`,
+          );
+        },
+
+        readSource({ projectUuid }) {
+          return request.$http.get(`api/project/${projectUuid}/engine-source`);
+        },
+      },
+
       historyChanges: {
         read({ projectUuid, pageSize = 10, page = 1, filter = '' }) {
           let url = `api/${projectUuid}/activities/?page=${page}&page_size=${pageSize}`;
@@ -177,6 +204,12 @@ export default {
           );
           return ProjectDetailsAdapter.fromApi(response.data);
         },
+      },
+    },
+
+    project: {
+      read({ projectUuid }) {
+        return request.$http.get(`api/${projectUuid}/project`);
       },
     },
 

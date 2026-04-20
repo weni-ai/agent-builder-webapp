@@ -17,7 +17,7 @@ describe('AgentsPreview.vue', () => {
   let projectStore;
   let managerSelectorStore;
 
-  const titleText = () => wrapper.findComponent('[data-testid="title"]');
+  const titleText = () => wrapper.find('[data-testid="title"]');
   const settingsFields = () => wrapper.findAllComponents(SettingsField);
   const progressiveFeedbackField = () =>
     wrapper.findComponent('[data-testid="progressive-feedback"]');
@@ -61,11 +61,6 @@ describe('AgentsPreview.vue', () => {
     it('renders the title with correct translation and styling', () => {
       const title = titleText();
 
-      expect(title.props('tag')).toBe('p');
-      expect(title.props('family')).toBe('secondary');
-      expect(title.props('size')).toBe('body-lg');
-      expect(title.props('color')).toBe('neutral-darkest');
-      expect(title.props('weight')).toBe('bold');
       expect(title.text()).toBe(
         i18n.global.t('router.tunings.settings.agents_preview.title'),
       );

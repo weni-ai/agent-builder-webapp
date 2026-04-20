@@ -1,15 +1,11 @@
 <template>
   <section class="agents-preview">
-    <UnnnicIntelligenceText
-      tag="p"
-      family="secondary"
-      size="body-lg"
-      color="neutral-darkest"
-      weight="bold"
+    <h2
+      class="agents-preview__title"
       data-testid="title"
     >
       {{ $t('router.tunings.settings.agents_preview.title') }}
-    </UnnnicIntelligenceText>
+    </h2>
 
     <form class="agents-preview__form">
       <SettingsField
@@ -56,12 +52,14 @@ import { storeToRefs } from 'pinia';
 import { useTuningsStore } from '@/store/Tunings';
 import { useProjectStore } from '@/store/Project';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
+import { useEngineSourceStore } from '@/store/EngineSource';
 
 import SettingsField from './SettingsField.vue';
 
 const tuningsStore = useTuningsStore();
 const projectStore = useProjectStore();
 const managerSelectorStore = useManagerSelectorStore();
+const engineSourceStore = useEngineSourceStore();
 
 const { selectedManager, newManagerAcceptsComponents } =
   storeToRefs(managerSelectorStore);
@@ -78,8 +76,11 @@ const showProgressiveFeedback = computed(() => {
 });
 
 const isComponentsDisabled = computed(() => {
-  const { managers } = managerSelectorStore.options;
+  if (engineSourceStore.engineType === 'custom') {
+    return !engineSourceStore.selectedProviderAcceptsComponents;
+  }
 
+  const { managers } = managerSelectorStore.options;
   return (
     !newManagerAcceptsComponents.value &&
     selectedManager.value === managers?.new?.id
@@ -97,7 +98,12 @@ watch(isComponentsDisabled, (disabled) => {
 .agents-preview {
   display: flex;
   flex-direction: column;
-  gap: $unnnic-spacing-sm;
+  gap: $unnnic-space-3;
+
+  &__title {
+    @include unnnic-font-body;
+    color: $unnnic-color-fg-base;
+  }
 
   &__form {
     display: flex;

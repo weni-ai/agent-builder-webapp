@@ -41,6 +41,7 @@ import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
 import { useUserStore } from '@/store/User';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
+import { useProjectStore } from './store/Project';
 import { useCurrentModule } from '@/composables/useCurrentModule';
 import { isFederatedModule } from './utils/moduleFederation';
 
@@ -70,6 +71,7 @@ onMounted(() => {
   useProfileStore().load();
   userStore.getUserDetails();
   managerSelectorStore.loadManagerData();
+  useProjectStore().getProject();
 });
 
 const showTestAgentsButton = computed(

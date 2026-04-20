@@ -23,7 +23,7 @@
       >
         <UnnnicButton
           class="assign-agent-card__assign-button"
-          :text="$t('agents.assign_agents.assign_button')"
+          :text="assignButtonText"
           :disabled="agent.assigned"
           :loading="isAssigning"
           @click="handleAssignButton"
@@ -83,6 +83,12 @@ const isDrawerAssigning = ref(false);
 const isModalAssignAgentOpen = ref(false);
 const isDeleteAgentModalOpen = ref(false);
 
+const assignButtonText = computed(() => {
+  return props.agent.presentation
+    ? i18n.global.t('agents.assign_agents.view_details')
+    : i18n.global.t('agents.assign_agents.assign_button');
+});
+
 const assignAgentHeaderActions = computed(() => [
   {
     scheme: 'aux-red-500',
@@ -122,13 +128,13 @@ async function assignAgent() {
 
 function handleAssignButton() {
   if (!props.agent.assigned) {
-    if (props.agent.credentials?.length > 0) {
-      toggleDrawer();
+    if (props.agent.presentation) {
+      isModalAssignAgentOpen.value = true;
       return;
     }
 
-    if (props.agent.group) {
-      isModalAssignAgentOpen.value = true;
+    if (props.agent.credentials?.length > 0) {
+      toggleDrawer();
       return;
     }
   }

@@ -16,13 +16,16 @@ export default function useAgent() {
       id: (agent as Agent).id || (agent as Agent).slug || '',
       name: agent.name || '',
       is_official: agent.is_official || false,
+      about: 'about' in agent ? agent.about : null,
       description: agent.description || '',
+      group: 'group' in agent ? (agent.group as string) : undefined,
       mcp:
         'mcp' in agent && agent.mcp
           ? {
               name: agent.mcp?.name || '',
               config: agent.mcp?.config || {},
-              description: agent.mcp?.description || '',
+              description:
+                'description' in agent.mcp ? agent.mcp?.description : null,
               system: getSystemObject(systemName),
             }
           : null,

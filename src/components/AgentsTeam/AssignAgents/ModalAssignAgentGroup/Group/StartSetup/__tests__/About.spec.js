@@ -3,8 +3,20 @@ import { shallowMount } from '@vue/test-utils';
 
 import About from '../About.vue';
 
+vi.mock('@/composables/useTranslatedField', () => ({
+  default: () => (field) => field?.en,
+}));
+
 const mockAgent = {
+  group: 'CONCIERGE',
   description: 'Handles concierge flows by helping customers',
+  presentation: {
+    about: {
+      en: 'Handles concierge flows by helping customers',
+      pt: null,
+      es: null,
+    },
+  },
   systems: ['VTEX', 'SYNERISE'],
 };
 

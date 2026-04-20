@@ -190,6 +190,7 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
     ensurePreviewInitialized,
     removeMessage,
     addManagerSelectedMessage,
+    getPreviewManagerLabel,
     treatAnswerResponse,
     isMedia,
     sendMessage,
