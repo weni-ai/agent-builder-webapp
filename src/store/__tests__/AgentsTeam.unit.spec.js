@@ -55,8 +55,8 @@ describe('AgentsTeamStore', () => {
         agents: [],
         availableSystems: [],
       };
-      const listOfficialAgents2Spy =
-        nexusaiAPI.router.agents_team.listOfficialAgents2.mockResolvedValue(
+      const listOfficialAgentsSpy =
+        nexusaiAPI.router.agents_team.listOfficialAgents.mockResolvedValue(
           mockResponse,
         );
 
@@ -66,7 +66,7 @@ describe('AgentsTeamStore', () => {
 
       expect(store.officialAgents.status).toBe('complete');
       expect(store.officialAgents.data).toEqual(mockResponse.agents);
-      expect(listOfficialAgents2Spy).toHaveBeenCalledWith({
+      expect(listOfficialAgentsSpy).toHaveBeenCalledWith({
         name: 'Test Search',
         category: '',
         system: '',
@@ -76,7 +76,7 @@ describe('AgentsTeamStore', () => {
     it('should handle errors when loading official agents', async () => {
       vi.spyOn(console, 'error').mockImplementation(() => {});
 
-      nexusaiAPI.router.agents_team.listOfficialAgents2.mockRejectedValue(
+      nexusaiAPI.router.agents_team.listOfficialAgents.mockRejectedValue(
         new Error('Error'),
       );
 
@@ -96,9 +96,7 @@ describe('AgentsTeamStore', () => {
 
       store.setAssignAgentsFilters({ search: 'Test Search' });
 
-      await store.loadMyAgents({
-        search: 'Test Search',
-      });
+      await store.loadMyAgents();
 
       expect(store.myAgents.status).toBe('complete');
       expect(store.myAgents.data).toEqual(mockData.data);

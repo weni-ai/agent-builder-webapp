@@ -59,6 +59,7 @@ describe('AssignAgentCard.vue', () => {
   });
 
   afterEach(() => {
+    wrapper?.unmount();
     vi.clearAllMocks();
   });
 

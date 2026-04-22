@@ -3,6 +3,7 @@
     class="agent-detail-modal"
     data-testid="agent-detail-dialog"
     :open="open"
+    lazyMount
     @update:open="$emit('update:open', $event)"
   >
     <UnnnicDialogContent

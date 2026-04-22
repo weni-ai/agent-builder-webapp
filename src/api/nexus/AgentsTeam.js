@@ -12,45 +12,7 @@ function filterSystems(systems) {
 }
 
 export const AgentsTeam = {
-  async listOfficialAgents({ search }) {
-    const params = cleanParams({
-      search,
-    });
-    const { data } = await request.$http.get(
-      `api/agents/official/${projectUuid.value}`,
-      {
-        params,
-      },
-    );
-
-    return {
-      data: data.map(
-        ({
-          uuid,
-          name,
-          about,
-          description,
-          skills,
-          assigned,
-          credentials,
-          is_official,
-          slug,
-        }) => ({
-          uuid,
-          name,
-          about: about ?? null,
-          description,
-          skills,
-          assigned,
-          credentials,
-          is_official,
-          id: slug,
-        }),
-      ),
-    };
-  },
-
-  async listOfficialAgents2({ category, system, name }) {
+  async listOfficialAgents({ category, system, name }) {
     const params = cleanParams({
       project_uuid: projectUuid.value,
       category,
