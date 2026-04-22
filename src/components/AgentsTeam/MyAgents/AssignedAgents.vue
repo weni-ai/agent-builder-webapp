@@ -12,17 +12,17 @@
       class="assigned-agents__cards"
     >
       <template v-if="isLoadingTeam">
-        <AssignAgentCard
+        <DetailAgentCard
           v-for="(_, index) in Array(6)"
           :key="index"
+          :agent="{}"
           loading
           data-testid="loading-card"
         />
       </template>
 
       <template v-else>
-        <component
-          :is="agentCard"
+        <DetailAgentCard
           v-for="agent in activeTeam"
           :key="agent.uuid"
           :agent="agent"
@@ -69,19 +69,14 @@
       </section>
     </section>
   </section>
-
-  <AgentsGalleryModal data-testid="agents-gallery-modal" />
 </template>
 
 <script setup>
 import { computed } from 'vue';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
-import AssignAgentCard from '@/components/AgentsTeam/AssignAgentCard.vue';
 import DetailAgentCard from '@/components/AgentsTeam/DetailAgentCard/index.vue';
-import AgentsGalleryModal from '@/views/AgentsTeam/AgentsGalleryModal.vue';
 
 const agentsTeamStore = useAgentsTeamStore();
 const activeTeam = computed(
@@ -89,12 +84,6 @@ const activeTeam = computed(
 );
 const isLoadingTeam = computed(
   () => agentsTeamStore.activeTeam.status === 'loading',
-);
-
-const featureFlagsStore = useFeatureFlagsStore();
-
-const agentCard = computed(() =>
-  featureFlagsStore.flags.assignAgentsView ? DetailAgentCard : AssignAgentCard,
 );
 </script>
 

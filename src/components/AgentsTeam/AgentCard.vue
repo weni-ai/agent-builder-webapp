@@ -3,6 +3,7 @@
     data-testid="agent-card"
     :class="[
       'agent-card',
+      { 'agent-card--loading': loading },
       { 'agent-card--with-footer': $slots.footer && !loading },
       { 'agent-card--new-agent': newAgentHighlight && !loading },
     ]"
@@ -38,7 +39,6 @@
           </section>
 
           <UnnnicTag
-            v-if="isAgentInTeam || featureFlagsStore.flags.assignAgentsView"
             class="agent-card__tag"
             size="small"
             :text="
@@ -91,8 +91,6 @@
 <script setup>
 import { computed } from 'vue';
 
-import { useAgentsTeamStore } from '@/store/AgentsTeam';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import useTranslatedField from '@/composables/useTranslatedField';
 
 import AssignAgentCardSkeleton from './AssignAgentCardSkeleton.vue';
@@ -118,19 +116,11 @@ const props = defineProps({
   },
 });
 
-const agentsTeamStore = useAgentsTeamStore();
-const featureFlagsStore = useFeatureFlagsStore();
 const translateField = useTranslatedField();
 
 const description = computed(() => {
   const about = props.agent?.about || props.agent.presentation?.about;
   return translateField(about) || props.agent.description;
-});
-
-const isAgentInTeam = computed(() => {
-  return agentsTeamStore.activeTeam.data.agents.some(
-    (agent) => agent.uuid === props.agent.uuid,
-  );
 });
 </script>
 
@@ -143,6 +133,10 @@ const isAgentInTeam = computed(() => {
 
   display: grid;
   gap: $unnnic-space-4;
+
+  &--loading {
+    pointer-events: none;
+  }
 
   &--with-footer {
     grid-template-rows: 1fr auto;
