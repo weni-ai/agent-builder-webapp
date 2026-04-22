@@ -33,7 +33,6 @@
   </AgentCard>
 
   <AssignAgentDrawer
-    v-if="isAssignDrawerOpen"
     v-model="isAssignDrawerOpen"
     :agent="agent"
     :isAssigning="isDrawerAssigning"
@@ -41,13 +40,11 @@
   />
 
   <ModalAssignAgentGroup
-    v-if="isModalAssignAgentOpen"
     v-model:open="isModalAssignAgentOpen"
     :agent="agent"
   />
 
   <DeleteAgentModal
-    v-if="isDeleteAgentModalOpen"
     v-model="isDeleteAgentModalOpen"
     :agent="agent"
   />

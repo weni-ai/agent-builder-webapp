@@ -13,10 +13,7 @@
       <RouterView />
     </main>
 
-    <TestAgentsButton
-      v-if="showTestAgentsButton"
-      data-testid="test-agents-button"
-    />
+    <TestAgentsButton v-if="showTestAgentsButton" />
 
     <UnnnicToast
       v-if="alertStore.data.text"

@@ -135,18 +135,16 @@ describe('DetailAgentCard.vue', () => {
   });
 
   describe('AgentDetailModal', () => {
-    it('does not mount AgentDetailModal initially', () => {
+    it('renders AgentDetailModal with agent prop', () => {
       createWrapper();
-
-      expect(findAgentDetailModal().exists()).toBe(false);
-    });
-
-    it('mounts AgentDetailModal with agent prop after opening', async () => {
-      createWrapper();
-
-      await findAgentCard().trigger('click');
 
       expect(findAgentDetailModal().props('agent')).toEqual(defaultAgent);
+    });
+
+    it('passes open false initially', () => {
+      createWrapper();
+
+      expect(findAgentDetailModal().props('open')).toBe(false);
     });
   });
 
@@ -156,7 +154,6 @@ describe('DetailAgentCard.vue', () => {
 
       await findAgentCard().trigger('click');
 
-      expect(findAgentDetailModal().exists()).toBe(true);
       expect(findAgentDetailModal().props('open')).toBe(true);
     });
 
@@ -171,16 +168,16 @@ describe('DetailAgentCard.vue', () => {
   });
 
   describe('modal close', () => {
-    it('unmounts modal when AgentDetailModal emits update:open false', async () => {
+    it('closes modal when AgentDetailModal emits update:open false', async () => {
       createWrapper();
       await findAgentCard().trigger('click');
 
-      expect(findAgentDetailModal().exists()).toBe(true);
+      expect(findAgentDetailModal().props('open')).toBe(true);
 
       await findAgentDetailModal().vm.$emit('update:open', false);
       await nextTick();
 
-      expect(findAgentDetailModal().exists()).toBe(false);
+      expect(findAgentDetailModal().props('open')).toBe(false);
     });
   });
 });

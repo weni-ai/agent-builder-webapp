@@ -164,8 +164,17 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
     <!--v-if-->
     
   </section>
-  <!--v-if-->
-  <!--v-if-->
+  <assign-agent-drawer-stub
+    agent="[object Object]"
+    data-v-b58c7d6a=""
+    isassigning="false"
+    modelvalue="false"
+  />
+  <delete-agent-modal-stub
+    agent="[object Object]"
+    data-v-b58c7d6a=""
+    modelvalue="false"
+  />
   
 </div>
 `;

@@ -2,6 +2,7 @@
   <UnnnicDialog
     class="modal-assign-agent"
     :open="open"
+    lazyMount
     data-testid="modal-assign-agent"
     @update:open="closeAgentModal"
   >

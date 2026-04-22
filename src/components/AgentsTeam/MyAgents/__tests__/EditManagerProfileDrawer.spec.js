@@ -60,9 +60,7 @@ describe('EditManagerProfileDrawer.vue', () => {
 
   const drawer = () => wrapper.findComponent({ name: 'UnnnicDrawerNext' });
   const drawerContent = () =>
-    wrapper.findComponent(
-      '[data-testid="edit-manager-profile-drawer-content"]',
-    );
+    wrapper.findComponent({ name: 'UnnnicDrawerContent' });
   const drawerTitle = () =>
     wrapper.find('[data-testid="edit-manager-profile-drawer-title"]');
   const drawerCloseButton = () =>

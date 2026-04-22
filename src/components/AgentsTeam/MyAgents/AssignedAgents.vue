@@ -26,7 +26,6 @@
           v-for="agent in activeTeam"
           :key="agent.uuid"
           :agent="agent"
-          :assignment="false"
           data-testid="team-card"
         />
       </template>

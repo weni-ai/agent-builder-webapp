@@ -1,5 +1,6 @@
 <template>
   <AgentCard
+    v-bind="$attrs"
     data-testid="detail-agent-card"
     class="detail-agent-card"
     :agent="agent"
@@ -10,7 +11,6 @@
   />
 
   <AgentDetailModal
-    v-if="isAgentDetailModalOpen"
     v-model:open="isAgentDetailModalOpen"
     data-testid="detail-agent-modal"
     :agent="agent"
@@ -24,6 +24,8 @@ import AgentCard from '../AgentCard.vue';
 import AgentDetailModal from './AgentDetailModal/index.vue';
 import { ActiveTeamAgent } from '@/store/types/Agents.types';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
+
+defineOptions({ inheritAttrs: false });
 
 const agentsTeamStore = useAgentsTeamStore();
 
