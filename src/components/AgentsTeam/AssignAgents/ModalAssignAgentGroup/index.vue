@@ -141,6 +141,5 @@ watch(
       fetchAgentDetails();
     }
   },
-  { immediate: true },
 );
 </script>

@@ -10,6 +10,7 @@
   />
 
   <AgentDetailModal
+    v-if="isAgentDetailModalOpen"
     v-model:open="isAgentDetailModalOpen"
     data-testid="detail-agent-modal"
     :agent="agent"
@@ -26,10 +27,13 @@ import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
 const agentsTeamStore = useAgentsTeamStore();
 
-defineProps<{
-  agent: ActiveTeamAgent;
-  loading: boolean;
-}>();
+withDefaults(
+  defineProps<{
+    agent: ActiveTeamAgent;
+    loading?: boolean;
+  }>(),
+  { loading: false },
+);
 
 const isAgentDetailModalOpen = ref(false);
 
