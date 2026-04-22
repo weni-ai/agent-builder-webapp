@@ -215,7 +215,7 @@ describe('AssignAgentCard.vue', () => {
         expect(tag.props('scheme')).toBe('aux-purple');
       });
 
-      it('should not render tag when agent is not in team', async () => {
+      it('should render custom tag even when agent is not in team', async () => {
         agentsTeamStore.activeTeam.data.agents = [];
 
         await wrapper.setProps({
@@ -228,7 +228,10 @@ describe('AssignAgentCard.vue', () => {
         });
 
         const tag = wrapper.findComponent('[data-testid="agent-tag"]');
-        expect(tag.exists()).toBe(false);
+        expect(tag.exists()).toBe(true);
+        expect(tag.props('text')).toBe(
+          i18n.global.t('router.agents_team.card.custom'),
+        );
       });
     });
 

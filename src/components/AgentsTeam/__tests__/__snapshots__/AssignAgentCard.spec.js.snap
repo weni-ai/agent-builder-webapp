@@ -58,7 +58,20 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
           </section>
           
         </section>
-        <!--v-if-->
+        <section
+          class="unnnic-tag unnnic-tag--small agent-card__tag"
+          data-testid="agent-tag"
+          data-v-8d850a92=""
+          data-v-97ebdc5a=""
+        >
+          <!---->
+          <p
+            class="unnnic-tag__label"
+            data-v-97ebdc5a=""
+          >
+            Custom
+          </p>
+        </section>
       </header>
       <section
         class="agent-card__infos"

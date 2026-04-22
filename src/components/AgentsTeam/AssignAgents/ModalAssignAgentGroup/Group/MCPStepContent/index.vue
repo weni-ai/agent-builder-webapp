@@ -69,10 +69,11 @@ defineOptions({
   name: 'MCPStepContent',
 });
 
-defineProps<{
+const props = defineProps<{
   // eslint-disable-next-line vue/prop-name-casing
   MCPs: AgentMCP[];
 }>();
+
 const selectedMCP = defineModel<AgentMCP | null>('selectedMCP', {
   required: true,
 });
@@ -86,6 +87,17 @@ const selectedMCPConfigValues = defineModel<Record<string, MCPConfigValue>>(
 const selectedMCPConfig = computed<MCPConfigField[]>(() => {
   return (selectedMCP.value?.config ?? []) as MCPConfigField[];
 });
+
+watch(
+  () => props.MCPs,
+  (mcps) => {
+    if (mcps.length && !selectedMCP.value) {
+      handleSelectMCP(mcps[0], true);
+    }
+  },
+  { immediate: true },
+);
+
 watch(
   () => selectedMCP.value,
   (next) => {
@@ -97,11 +109,13 @@ watch(
   },
   { immediate: true },
 );
+
 function handleSelectMCP(MCP: AgentMCP, checked: boolean) {
   if (!checked) return;
   selectedMCP.value = MCP;
   selectedMCPConfigValues.value = buildInitialValues(MCP.config);
 }
+
 function buildInitialValues(config: AgentMCP['config'] = []) {
   return (config as MCPConfigField[]).reduce<Record<string, MCPConfigValue>>(
     (acc, field) => {

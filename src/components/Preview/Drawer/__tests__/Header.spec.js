@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
@@ -53,7 +53,7 @@ describe('PreviewDrawer/Header.vue', () => {
     expect(actionButtons().exists()).toBe(true);
     expect(actionButtons().props('actions')).toEqual([
       {
-        scheme: 'gray-500',
+        scheme: 'fg-base',
         icon: 'refresh',
         onClick: wrapper.vm.refreshPreview,
         text: i18n.global.t('router.preview.options.refresh'),
