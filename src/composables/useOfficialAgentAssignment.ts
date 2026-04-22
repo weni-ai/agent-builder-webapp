@@ -118,6 +118,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
       const normalizedAgent = {
         ...agent.value,
         uuid: data.agent.uuid,
+        id: data.agent.slug,
         description:
           translateField(agent.value.presentation?.about) ??
           data.agent.description,
