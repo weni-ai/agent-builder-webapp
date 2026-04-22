@@ -53,16 +53,6 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
     return matchedManager?.label || managerId;
   }
 
-  function addManagerSelectedMessage(managerId) {
-    if (!managerId) return;
-
-    addMessage({
-      type: 'manager_selected',
-      name: getPreviewManagerLabel(managerId),
-      question_uuid: null,
-    });
-  }
-
   function treatAnswerResponse(answer, data, { fallbackMessage = '' }) {
     if (data?.type === 'broadcast') {
       handleBroadcastResponse(answer, data, fallbackMessage);
@@ -189,7 +179,6 @@ export const useFlowPreviewStore = defineStore('flowPreview', () => {
     clearMessages,
     ensurePreviewInitialized,
     removeMessage,
-    addManagerSelectedMessage,
     getPreviewManagerLabel,
     treatAnswerResponse,
     isMedia,

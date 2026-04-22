@@ -71,17 +71,6 @@ describe('FlowPreview store', () => {
     });
   });
 
-  it('addManagerSelectedMessage adds a manager_selected message with label', () => {
-    store.addManagerSelectedMessage('manager-uuid');
-
-    expect(store.messages).toHaveLength(1);
-    expect(store.messages[0]).toMatchObject({
-      type: 'manager_selected',
-      name: 'New Manager',
-      question_uuid: null,
-    });
-  });
-
   it('sendMessage adds question and schedules answer, treating broadcast response', async () => {
     vi.useFakeTimers();
 
