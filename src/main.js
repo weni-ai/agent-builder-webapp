@@ -12,7 +12,8 @@ import UnnnicIntelligenceText from './components/unnnic-intelligence/Text.vue';
 import Unnnic from './utils/plugins/UnnnicSystem.ts';
 import { gbKey, initializeGrowthBook } from './utils/Growthbook.js';
 import env from './utils/env';
-import { isFederatedModule } from './utils/moduleFederation';
+import { safeImport, isFederatedModule } from './utils/moduleFederation';
+import { moduleStorage } from './utils/storage';
 import { getJwtToken, setupTokenRefreshListener } from './utils/jwt.js';
 import { getProjectUuid } from './utils/project.js';
 import { setupLanguageListener } from './utils/language.js';
@@ -21,6 +22,17 @@ import { useUserStore } from './store/User.js';
 import './styles/global.scss';
 import '@weni/unnnic-system/dist/style.css';
 
+let sharedStore = null;
+
+if (isFederatedModule) {
+  const { useSharedStore } = await safeImport(
+    () => import('connect/sharedStore'),
+    'connect/sharedStore',
+  );
+
+  sharedStore = useSharedStore?.();
+}
+
 export default async function mountAgentBuilderApp({
   containerId = 'app',
   initialRoute,
@@ -28,7 +40,11 @@ export default async function mountAgentBuilderApp({
   const gbInstance = await initializeGrowthBook();
 
   const isInIframe = window.self !== window.top;
-  if (!isFederatedModule && isInIframe) {
+
+  if (sharedStore) {
+    moduleStorage.setItem('authToken', sharedStore.auth.token);
+    moduleStorage.setItem('projectUuid', sharedStore.current.project.uuid);
+  } else if (isInIframe) {
     await Promise.all([
       getJwtToken(),
       getProjectUuid(),
@@ -47,7 +63,7 @@ export default async function mountAgentBuilderApp({
     .use(Unnnic, { teleportTarget: `#${containerId}` })
     .use(i18n);
 
-  if (!isFederatedModule && isInIframe) {
+  if (!sharedStore && isInIframe) {
     const userStore = useUserStore();
     setupTokenRefreshListener(userStore);
   }
@@ -99,6 +115,6 @@ export default async function mountAgentBuilderApp({
   return { app: appRef, router };
 }
 
-if (!isFederatedModule) {
+if (!sharedStore && !isFederatedModule) {
   mountAgentBuilderApp();
 }

@@ -8,7 +8,6 @@ import { RouteRecordRaw } from 'vue-router';
 import {
   getCurrentModuleFromPath,
   MODULE_PATHS,
-  type AgentBuilderModule,
 } from '@/composables/useCurrentModule';
 
 const parseNextPath = (nextPath, to) => {
@@ -70,22 +69,18 @@ const knowledgeRoutes: RouteRecordRaw[] = [
   },
 ];
 
-const currentModule =
-  getCurrentModuleFromPath(window.location.pathname) || 'agents';
-
-const moduleRoutesMap: Record<AgentBuilderModule, RouteRecordRaw[]> = {
-  conversations: conversationsRoutes,
-  agents: agentsRoutes,
-  knowledge: knowledgeRoutes,
-  build: knowledgeRoutes,
-};
-
 const routes: RouteRecordRaw[] = [
-  ...moduleRoutesMap[currentModule],
+  ...conversationsRoutes,
+  ...agentsRoutes,
+  ...knowledgeRoutes,
+  {
+    path: '/',
+    redirect: MODULE_PATHS.agents,
+  },
   {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
-    redirect: { name: currentModule },
+    redirect: MODULE_PATHS.agents,
   },
 ];
 
@@ -108,7 +103,13 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-router.afterEach((_to, _from) => {
+router.afterEach((to) => {
+  if (isFederatedModule) {
+    return;
+  }
+
+  const currentModule = getCurrentModuleFromPath(to.path);
+
   window.parent.postMessage(
     {
       event: 'changePathname',
