@@ -31,10 +31,7 @@
           :options="previewManagerOptions"
           size="sm"
           :optionsLines="2"
-          :disabled="
-            featureFlagsStore.flags.webchatPreview &&
-            !webchatPreviewStore.isWebchatReady
-          "
+          :disabled="!webchatPreviewStore.isWebchatReady"
         />
       </UnnnicFormElement>
     </section>
@@ -44,20 +41,16 @@
 <script setup>
 import { computed } from 'vue';
 
-import { useFlowPreviewStore } from '@/store/FlowPreview';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { usePreviewStore } from '@/store/Preview';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useWebchatPreviewStore } from '@/store/WebchatPreview';
 
 import i18n from '@/utils/plugins/i18n';
 
 import ContentItemActions from '@/components/ContentItemActions.vue';
 
-const flowPreviewStore = useFlowPreviewStore();
 const managerSelectorStore = useManagerSelectorStore();
 const previewStore = usePreviewStore();
-const featureFlagsStore = useFeatureFlagsStore();
 const webchatPreviewStore = useWebchatPreviewStore();
 
 const previewHeaderActions = computed(() => [
@@ -70,13 +63,8 @@ const previewHeaderActions = computed(() => [
 ]);
 
 function refreshPreview() {
-  if (featureFlagsStore.flags.webchatPreview) {
-    webchatPreviewStore.endSession();
-  }
-
+  webchatPreviewStore.endSession();
   previewStore.clearLogs();
-  flowPreviewStore.clearMessages();
-  flowPreviewStore.previewInit();
 }
 
 const previewManagerOptions = computed(() => {

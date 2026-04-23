@@ -29,7 +29,6 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
     settingsAgentVoice: growthbook?.isOn('settings_agent_voice'),
     assignAgentsView: true,
     conversationsV2: true,
-    webchatPreview: true,
   }));
 
   watch(

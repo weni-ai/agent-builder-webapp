@@ -24,23 +24,17 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import PreviewDrawer from './Drawer/index.vue';
 
 import { usePreviewStore } from '@/store/Preview';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useWebchatPreviewStore } from '@/store/WebchatPreview';
 import { useWebchatLoader } from '@/composables/webchat/useWebchatLoader';
 
 const previewStore = usePreviewStore();
-const featureFlagsStore = useFeatureFlagsStore();
 const webchatPreviewStore = useWebchatPreviewStore();
 const { preload } = useWebchatLoader();
 
 const isPreviewOpen = ref(false);
 const hasBeenOpened = ref(false);
 
-const isLoadingWebchat = computed(
-  () =>
-    featureFlagsStore.flags.webchatPreview &&
-    !webchatPreviewStore.isWebchatLoaded,
-);
+const isLoadingWebchat = computed(() => !webchatPreviewStore.isWebchatLoaded);
 
 const handleTestAgents = () => {
   hasBeenOpened.value = true;
@@ -48,10 +42,8 @@ const handleTestAgents = () => {
 };
 
 onMounted(async () => {
-  if (featureFlagsStore.flags.webchatPreview) {
-    await preload();
-    webchatPreviewStore.setWebchatLoaded(true);
-  }
+  await preload();
+  webchatPreviewStore.setWebchatLoaded(true);
 });
 
 onUnmounted(() => {
