@@ -145,6 +145,7 @@ describe('PreviewLogsFilters.vue', () => {
         'delegating_to_agent',
         'forwarding_to_manager',
         'tool',
+        'forwarding_to_human_support',
         'sending_final_response',
         'sending_response_for_manager',
         'applying_guardrails',
@@ -214,7 +215,7 @@ describe('PreviewLogsFilters.vue', () => {
     it('computes categoryOptions correctly', () => {
       const options = wrapper.vm.categoryOptions;
 
-      expect(options.length).toBe(9);
+      expect(options.length).toBe(10);
       expect(options[0].value).toBe('');
       expect(options[1].value).toBe('knowledge');
       expect(options[2].value).toBe('thinking');
