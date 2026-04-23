@@ -77,11 +77,21 @@ export default defineConfig({
       },
       {
         test: /\.(scss|sass)$/,
-        loader: 'sass-loader',
+        use: [
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: `@use '@weni/unnnic-system/src/assets/scss/unnnic.scss' as *;`,
+            },
+          },
+        ],
         type: 'css',
-        options: {
-          additionalData: `@use '@weni/unnnic-system/src/assets/scss/unnnic.scss' as *;`,
-        },
+      },
+      {
+        test: /\.css$/,
+        use: ['postcss-loader'],
+        type: 'css',
       },
       {
         test: /\.(png|jpe?g|gif|svg|webp|avif)$/i,

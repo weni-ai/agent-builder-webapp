@@ -41,7 +41,11 @@ export default async function mountAgentBuilderApp({
 
   const pinia = createPinia();
 
-  app.use(pinia).use(router).use(Unnnic).use(i18n);
+  app
+    .use(pinia)
+    .use(router)
+    .use(Unnnic, { teleportTarget: `#${containerId}` })
+    .use(i18n);
 
   if (!isFederatedModule && isInIframe) {
     const userStore = useUserStore();
@@ -83,6 +87,11 @@ export default async function mountAgentBuilderApp({
   app.component('UnnnicIntelligenceText', UnnnicIntelligenceText);
 
   app.provide(gbKey, gbInstance);
+
+  const container = document.getElementById(containerId);
+  if (container) {
+    container.classList.add('agent-builder-webapp');
+  }
 
   app.mount(`#${containerId}`);
   appRef = app;
