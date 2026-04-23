@@ -24,106 +24,76 @@ describe('AgentsTeam API', () => {
 
   describe('listOfficialAgents', () => {
     const mockOfficialAgentsResponse = {
-      data: [
-        {
-          uuid: 'agent-uuid-1',
-          name: 'Official Agent 1',
-          description: 'First official agent',
-          skills: ['skill1', 'skill2'],
-          assigned: true,
-          credentials: { type: 'oauth' },
-          is_official: true,
-          slug: 'official-agent-1',
+      data: {
+        new: {
+          agents: [
+            {
+              uuid: 'agent-uuid-1',
+              name: 'Official Agent 1',
+              slug: 'official-agent-1',
+              systems: ['system_a', 'no_system', 'custom'],
+            },
+          ],
+          available_systems: ['system_a', 'system_b'],
         },
-        {
-          uuid: 'agent-uuid-2',
-          name: 'Official Agent 2',
-          description: 'Second official agent',
-          skills: ['skill3', 'skill4'],
-          assigned: false,
-          credentials: { type: 'api_key' },
-          is_official: true,
-          slug: 'official-agent-2',
-        },
-      ],
+        legacy: [
+          {
+            uuid: 'agent-uuid-2',
+            name: 'Official Agent 2',
+            slug: 'official-agent-2',
+            systems: ['system_b', 'custom'],
+          },
+        ],
+      },
     };
 
-    it('should list official agents without search', async () => {
+    it('should list official agents with all filters', async () => {
+      request.$http.get.mockResolvedValue(mockOfficialAgentsResponse);
+
+      const result = await AgentsTeam.listOfficialAgents({
+        category: 'productivity',
+        system: 'system_a',
+        name: 'Agent',
+      });
+
+      expect(request.$http.get).toHaveBeenCalledWith('/api/v1/official/agents', {
+        params: {
+          project_uuid: mockProjectUuid,
+          category: 'productivity',
+          system: 'system_a',
+          name: 'Agent',
+        },
+      });
+
+      expect(result.agents).toHaveLength(2);
+      expect(result.availableSystems).toEqual(['system_a', 'system_b']);
+    });
+
+    it('should merge new and legacy agents and filter system tags', async () => {
       request.$http.get.mockResolvedValue(mockOfficialAgentsResponse);
 
       const result = await AgentsTeam.listOfficialAgents({});
 
-      expect(request.$http.get).toHaveBeenCalledWith(
-        `api/agents/official/${mockProjectUuid}`,
-        {
-          params: {},
-        },
-      );
-
-      expect(result.data).toHaveLength(2);
-      expect(result.data[0]).toEqual({
+      expect(result.agents[0]).toMatchObject({
         uuid: 'agent-uuid-1',
-        name: 'Official Agent 1',
-        about: null,
-        description: 'First official agent',
-        skills: ['skill1', 'skill2'],
-        assigned: true,
-        credentials: { type: 'oauth' },
-        is_official: true,
         id: 'official-agent-1',
+        systems: ['system_a'],
+      });
+      expect(result.agents[1]).toMatchObject({
+        uuid: 'agent-uuid-2',
+        id: 'official-agent-2',
+        systems: ['system_b'],
       });
     });
 
-    it('should list official agents with search parameter', async () => {
-      const searchResponse = {
-        data: [mockOfficialAgentsResponse.data[0]],
-      };
-      request.$http.get.mockResolvedValue(searchResponse);
-
-      const result = await AgentsTeam.listOfficialAgents({ search: 'Agent 1' });
-
-      expect(request.$http.get).toHaveBeenCalledWith(
-        `api/agents/official/${mockProjectUuid}`,
-        {
-          params: { search: 'Agent 1' },
-        },
-      );
-
-      expect(result.data).toHaveLength(1);
-      expect(result.data[0].name).toBe('Official Agent 1');
-    });
-
-    it('should transform agent data correctly', async () => {
+    it('should omit empty filters from params', async () => {
       request.$http.get.mockResolvedValue(mockOfficialAgentsResponse);
 
-      const result = await AgentsTeam.listOfficialAgents({});
+      await AgentsTeam.listOfficialAgents({});
 
-      result.data.forEach((agent, index) => {
-        const originalAgent = mockOfficialAgentsResponse.data[index];
-        expect(agent.uuid).toBe(originalAgent.uuid);
-        expect(agent.name).toBe(originalAgent.name);
-        expect(agent.description).toBe(originalAgent.description);
-        expect(agent.skills).toEqual(originalAgent.skills);
-        expect(agent.assigned).toBe(originalAgent.assigned);
-        expect(agent.credentials).toEqual(originalAgent.credentials);
-        expect(agent.is_official).toBe(originalAgent.is_official);
-        expect(agent.id).toBe(originalAgent.slug);
+      expect(request.$http.get).toHaveBeenCalledWith('/api/v1/official/agents', {
+        params: { project_uuid: mockProjectUuid },
       });
-    });
-
-    it('should handle empty search parameter', async () => {
-      request.$http.get.mockResolvedValue({ data: [] });
-
-      const result = await AgentsTeam.listOfficialAgents({ search: '' });
-
-      expect(request.$http.get).toHaveBeenCalledWith(
-        `api/agents/official/${mockProjectUuid}`,
-        {
-          params: {},
-        },
-      );
-
-      expect(result.data).toEqual([]);
     });
 
     it('should handle API error', async () => {
