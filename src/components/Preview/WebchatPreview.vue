@@ -89,7 +89,7 @@ function setWebchatReady() {
 }
 
 async function initWebchat() {
-  await preload();
+  const webchat = await preload();
 
   flowPreviewStore.ensurePreviewInitialized();
   const contactUrn = flowPreviewStore.preview.contact.urn;
@@ -99,7 +99,7 @@ async function initWebchat() {
 
   historyTimeoutId = setTimeout(setWebchatReady, HISTORY_TIMEOUT_MS);
 
-  window.WebChat.init({
+  webchat.init({
     selector: WWC_SELECTOR,
     socketUrl: env('WWC_SOCKET_URL'),
     host: env('WWC_HOST_URL'),

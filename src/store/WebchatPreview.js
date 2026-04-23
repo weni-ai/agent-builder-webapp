@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import { useProjectStore } from './Project';
 import { useFlowPreviewStore } from './FlowPreview';
+import { useWebchatLoader } from '@/composables/webchat/useWebchatLoader';
 
 export const useWebchatPreviewStore = defineStore('webchatPreview', () => {
   const projectStore = useProjectStore();
@@ -27,9 +28,10 @@ export const useWebchatPreviewStore = defineStore('webchatPreview', () => {
       urn: flowPreviewStore.preview.contact.urn,
     });
 
-    await window.WebChat?.clear();
-    await window.WebChat?.clearPageHistory();
-    await window.WebChat?.clearCart();
+    const webchat = useWebchatLoader().getInstance();
+    await webchat?.clear();
+    await webchat?.clearPageHistory();
+    await webchat?.clearCart();
     sessionVersion.value += 1;
   }
 

@@ -10,13 +10,16 @@ import { useManagerSelectorStore } from '@/store/ManagerSelector';
 import { useWebchatPreviewStore } from '@/store/WebchatPreview';
 import i18n from '@/utils/plugins/i18n';
 
-const mockPreload = vi.fn().mockResolvedValue(undefined);
+const mockWebchatInstance = { init: vi.fn() };
+const mockPreload = vi.fn().mockResolvedValue(mockWebchatInstance);
 const mockCleanup = vi.fn();
+const mockGetInstance = vi.fn(() => mockWebchatInstance);
 
 vi.mock('@/composables/webchat/useWebchatLoader', () => ({
   useWebchatLoader: () => ({
     preload: mockPreload,
     cleanup: mockCleanup,
+    getInstance: mockGetInstance,
   }),
 }));
 
@@ -83,14 +86,13 @@ describe('WebchatPreview.vue', () => {
   };
 
   beforeEach(() => {
-    window.WebChat = { init: vi.fn() };
+    mockWebchatInstance.init = vi.fn();
     createWrapper();
   });
 
   afterEach(() => {
     wrapper?.unmount();
     vi.clearAllMocks();
-    delete window.WebChat;
   });
 
   const findContainer = () => wrapper.find('[data-testid="webchat-preview"]');
@@ -104,7 +106,7 @@ describe('WebchatPreview.vue', () => {
       expect(mockPreload).toHaveBeenCalled();
     });
 
-    expect(window.WebChat.init).toHaveBeenCalledWith(
+    expect(mockWebchatInstance.init).toHaveBeenCalledWith(
       expect.objectContaining({
         selector: '#weni-webchat-preview',
         socketUrl: 'mock-WWC_SOCKET_URL',

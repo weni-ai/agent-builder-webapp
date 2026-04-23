@@ -3,6 +3,7 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 
 import { useWebchatPreviewStore } from '@/store/WebchatPreview';
 import nexusaiAPI from '@/api/nexusaiAPI';
+import { useWebchatLoader } from '@/composables/webchat/useWebchatLoader';
 
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
@@ -31,6 +32,10 @@ vi.mock('@/store/FlowPreview', () => ({
   })),
 }));
 
+vi.mock('@/composables/webchat/useWebchatLoader', () => ({
+  useWebchatLoader: vi.fn(),
+}));
+
 describe('WebchatPreviewStore', () => {
   let store;
 
@@ -41,7 +46,6 @@ describe('WebchatPreviewStore', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
-    delete window.WebChat;
   });
 
   describe('changeManagerModel', () => {
@@ -60,6 +64,8 @@ describe('WebchatPreviewStore', () => {
 
   describe('endSession', () => {
     it('should call endSession API with projectUuid and contact urn', async () => {
+      useWebchatLoader.mockReturnValue({ getInstance: () => null });
+
       await store.endSession();
 
       expect(
@@ -70,49 +76,54 @@ describe('WebchatPreviewStore', () => {
       });
     });
 
-    it('should call window.WebChat.clear when WebChat is available', async () => {
-      window.WebChat = {
+    it('should call webchat.clear when instance is available', async () => {
+      const webchat = {
         clear: vi.fn().mockResolvedValue(undefined),
         clearPageHistory: vi.fn().mockResolvedValue(undefined),
         clearCart: vi.fn().mockResolvedValue(undefined),
       };
+      useWebchatLoader.mockReturnValue({ getInstance: () => webchat });
 
       await store.endSession();
 
-      expect(window.WebChat.clear).toHaveBeenCalled();
+      expect(webchat.clear).toHaveBeenCalled();
     });
 
-    it('should call window.WebChat.clearPageHistory when WebChat is available', async () => {
-      window.WebChat = {
+    it('should call webchat.clearPageHistory when instance is available', async () => {
+      const webchat = {
         clear: vi.fn().mockResolvedValue(undefined),
         clearPageHistory: vi.fn().mockResolvedValue(undefined),
         clearCart: vi.fn().mockResolvedValue(undefined),
       };
+      useWebchatLoader.mockReturnValue({ getInstance: () => webchat });
 
       await store.endSession();
 
-      expect(window.WebChat.clearPageHistory).toHaveBeenCalled();
+      expect(webchat.clearPageHistory).toHaveBeenCalled();
     });
 
-    it('should call window.WebChat.clearCart when WebChat is available', async () => {
-      window.WebChat = {
+    it('should call webchat.clearCart when instance is available', async () => {
+      const webchat = {
         clear: vi.fn().mockResolvedValue(undefined),
         clearPageHistory: vi.fn().mockResolvedValue(undefined),
         clearCart: vi.fn().mockResolvedValue(undefined),
       };
+      useWebchatLoader.mockReturnValue({ getInstance: () => webchat });
 
       await store.endSession();
 
-      expect(window.WebChat.clearCart).toHaveBeenCalled();
+      expect(webchat.clearCart).toHaveBeenCalled();
     });
 
-    it('should not throw when window.WebChat is undefined', async () => {
-      delete window.WebChat;
+    it('should not throw when webchat instance is null', async () => {
+      useWebchatLoader.mockReturnValue({ getInstance: () => null });
 
       await expect(store.endSession()).resolves.not.toThrow();
     });
 
     it('should increment sessionVersion', async () => {
+      useWebchatLoader.mockReturnValue({ getInstance: () => null });
+
       expect(store.sessionVersion).toBe(0);
 
       await store.endSession();
