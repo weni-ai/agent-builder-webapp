@@ -157,13 +157,21 @@ function getLogConfig({ trace, config }) {
       category: 'tool',
       icon: 'build',
     },
-    {
-      type: 'tool_result_received',
-      key: actionGroupInvocationOutput,
-      summary: traceT('tool_result_received'),
-      category: 'tool',
-      icon: 'build',
-    },
+    config?.toolName === 'open-ticket'
+      ? {
+          type: 'tool_result_received',
+          key: actionGroupInvocationOutput,
+          summary: traceT('forwarding_to_human_support'),
+          category: 'forwarding_to_human_support',
+          icon: 'headphones',
+        }
+      : {
+          type: 'tool_result_received',
+          key: actionGroupInvocationOutput,
+          summary: traceT('tool_result_received'),
+          category: 'tool',
+          icon: 'build',
+        },
     config?.agentName && config?.agentName !== 'manager'
       ? {
           type: 'sending_response',
