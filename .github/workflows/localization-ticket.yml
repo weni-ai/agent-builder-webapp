@@ -14,10 +14,11 @@
 #
 # Required GitHub Secrets (Settings > Secrets and variables > Actions):
 #
-#   JIRA_BASE_URL    - Jira instance URL (e.g. https://<your-org>.atlassian.net)
-#   JIRA_USER_EMAIL  - Service account email for Jira authentication
-#   JIRA_API_TOKEN   - API token generated at https://id.atlassian.com
-#   JIRA_PROJECT_KEY - Jira project key (e.g. LOC)
+#   JIRA_BASE_URL              - Jira instance URL (e.g. https://<your-org>.atlassian.net)
+#   JIRA_USER_EMAIL            - Service account email for Jira authentication
+#   JIRA_API_TOKEN             - API token generated at https://id.atlassian.com
+#   JIRA_PROJECT_KEY           - Jira project key (e.g. LOC)
+#   JIRA_REPORTER_ACCOUNT_ID   - Atlassian accountId of the product PM (becomes the ticket reporter)
 
 name: Create Localization Ticket
 
@@ -69,6 +70,7 @@ jobs:
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
+          JIRA_REPORTER_ACCOUNT_ID: ${{ secrets.JIRA_REPORTER_ACCOUNT_ID }}
           LOCALE_DIFF: ${{ steps.locale_diff.outputs.content }}
         run: |
           PR_NUMBER=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
@@ -95,8 +97,9 @@ jobs:
             --arg pr_author "$PR_AUTHOR" \
             --arg locale_diff "$LOCALE_DIFF" \
             --arg pr_body "$PR_BODY" \
+            --arg reporter_account_id "$JIRA_REPORTER_ACCOUNT_ID" \
             '{
-              fields: {
+              fields: ({
                 project: { key: $project },
                 summary: ("[CX Platform] " + $pr_title),
                 description: (
@@ -112,7 +115,7 @@ jobs:
                   $pr_body
                 ),
                 issuetype: { name: "Task" }
-              }
+              } + (if $reporter_account_id != "" then { reporter: { accountId: $reporter_account_id } } else {} end))
             }')
 
           RESPONSE=$(curl -s -o response.json -w "%{http_code}" \
