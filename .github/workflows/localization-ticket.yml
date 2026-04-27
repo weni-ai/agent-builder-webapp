@@ -97,9 +97,8 @@ jobs:
             --arg pr_author "$PR_AUTHOR" \
             --arg locale_diff "$LOCALE_DIFF" \
             --arg pr_body "$PR_BODY" \
-            --arg reporter_account_id "$JIRA_REPORTER_ACCOUNT_ID" \
             '{
-              fields: ({
+              fields: {
                 project: { key: $project },
                 summary: ("[CX Platform] " + $pr_title),
                 description: (
@@ -115,7 +114,7 @@ jobs:
                   $pr_body
                 ),
                 issuetype: { name: "Task" }
-              } + (if $reporter_account_id != "" then { reporter: { accountId: $reporter_account_id } } else {} end))
+              }
             }')
 
           RESPONSE=$(curl -s -o response.json -w "%{http_code}" \
@@ -125,11 +124,33 @@ jobs:
             -d "$PAYLOAD" \
             "${JIRA_BASE_URL}/rest/api/2/issue")
 
-          if [ "$RESPONSE" -eq 201 ]; then
-            TICKET=$(jq -r '.key' response.json)
-            echo "Ticket created: ${JIRA_BASE_URL}/browse/${TICKET}"
-          else
+          if [ "$RESPONSE" -ne 201 ]; then
             echo "Failed to create ticket (HTTP $RESPONSE)"
             cat response.json
             exit 1
+          fi
+
+          TICKET=$(jq -r '.key' response.json)
+          echo "Ticket created: ${JIRA_BASE_URL}/browse/${TICKET}"
+
+          # The reporter field is often missing from the Create screen in Jira.
+          # We update it via a separate PUT call (Edit screen) when configured.
+          if [ -n "$JIRA_REPORTER_ACCOUNT_ID" ]; then
+            REPORTER_PAYLOAD=$(jq -n \
+              --arg account_id "$JIRA_REPORTER_ACCOUNT_ID" \
+              '{ fields: { reporter: { accountId: $account_id } } }')
+
+            REPORTER_RESPONSE=$(curl -s -o reporter_response.json -w "%{http_code}" \
+              -X PUT \
+              -H "Content-Type: application/json" \
+              -u "${JIRA_USER_EMAIL}:${JIRA_API_TOKEN}" \
+              -d "$REPORTER_PAYLOAD" \
+              "${JIRA_BASE_URL}/rest/api/2/issue/${TICKET}")
+
+            if [ "$REPORTER_RESPONSE" -eq 204 ]; then
+              echo "Reporter updated to accountId ${JIRA_REPORTER_ACCOUNT_ID}"
+            else
+              echo "Warning: failed to update reporter (HTTP $REPORTER_RESPONSE)"
+              cat reporter_response.json
+            fi
           fi
