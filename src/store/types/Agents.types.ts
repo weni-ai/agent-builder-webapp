@@ -31,7 +31,7 @@ export interface AgentCredential {
   is_confidential: boolean;
 }
 
-export type AgentAssignedMCPConfigValue =
+export type AgentAssignedConstantValue =
   | string
   | boolean
   | number
@@ -47,7 +47,7 @@ export interface AgentAssignedSystem {
 export interface AgentAssignedMCP {
   name: string;
   description: TranslatedField<string>;
-  config?: Record<string, AgentAssignedMCPConfigValue>;
+  constants?: Record<string, AgentAssignedConstantValue>;
   system?: AgentAssignedSystem;
 }
 
@@ -68,31 +68,33 @@ export type ConversationMessage = {
   text: string;
 };
 
+export interface AgentConstantField {
+  name: string;
+  label: string;
+  default_value: string | boolean | number;
+  is_required: boolean;
+  type:
+    | 'SELECT'
+    | 'INPUT'
+    | 'CHECKBOX'
+    | 'RADIO'
+    | 'SWITCH'
+    | 'NUMBER'
+    | 'TEXT';
+  options:
+    | {
+        name: string;
+        value: string;
+      }[]
+    | [];
+}
+
 export interface AgentMCP {
   name: string;
   description: TranslatedField<string>;
   system: string;
   credentials?: AgentCredential[];
-  config: {
-    name: string;
-    label: string;
-    default_value: string | boolean | number;
-    is_required: boolean;
-    type:
-      | 'SELECT'
-      | 'INPUT'
-      | 'CHECKBOX'
-      | 'RADIO'
-      | 'SWITCH'
-      | 'NUMBER'
-      | 'TEXT';
-    options:
-      | {
-          name: string;
-          value: string;
-        }[]
-      | [];
-  }[];
+  constants: AgentConstantField[];
 }
 
 export interface AgentGroup {
@@ -128,6 +130,7 @@ export interface Agent {
   is_official: boolean;
   project: string;
   credentials: AgentCredential[] | [];
+  constants?: AgentConstantField[];
   icon: string;
   group?: AgentGroup | null;
   mcp?: AgentAssignedMCP | null;
