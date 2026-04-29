@@ -27,10 +27,17 @@ vi.mock('@/utils/plugins/i18n', () => ({
 }));
 
 const addAgentToTeamMock = vi.hoisted(() => vi.fn());
+const createCredentialsMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/store/AgentsTeam', () => ({
   useAgentsTeamStore: () => ({
     addAgentToTeam: addAgentToTeamMock,
+  }),
+}));
+
+vi.mock('@/store/Tunings', () => ({
+  useTuningsStore: () => ({
+    createCredentials: createCredentialsMock,
   }),
 }));
 
@@ -80,7 +87,8 @@ describe('useCustomAgentAssignment', () => {
     expect(isSubmitting.value).toBe(false);
   });
 
-  it('submits constants as mcp_config and maps credentials with values', async () => {
+  it('submits credentials separately and constants as mcp_config', async () => {
+    createCredentialsMock.mockResolvedValue(undefined);
     nexusaiAPI.router.agents_team.toggleAgentAssignment.mockResolvedValue({
       data: {},
     });
@@ -94,26 +102,26 @@ describe('useCustomAgentAssignment', () => {
     const result = await submitAssignment();
 
     expect(result).toBe(true);
+    expect(createCredentialsMock).toHaveBeenCalledWith('custom-uuid', [
+      {
+        name: 'api_key',
+        label: 'API Key',
+        is_confidential: true,
+        value: 'token',
+      },
+      {
+        name: 'base_url',
+        label: 'Base URL',
+        is_confidential: false,
+        value: '',
+      },
+    ]);
     expect(
       nexusaiAPI.router.agents_team.toggleAgentAssignment,
     ).toHaveBeenCalledWith({
       agentUuid: 'custom-uuid',
       is_assigned: true,
       mcp_config: { country: 'BRA' },
-      credentials: [
-        {
-          name: 'api_key',
-          label: 'API Key',
-          is_confidential: true,
-          value: 'token',
-        },
-        {
-          name: 'base_url',
-          label: 'Base URL',
-          is_confidential: false,
-          value: '',
-        },
-      ],
     });
     expect(addAgentToTeamMock).toHaveBeenCalledWith(agent.value);
   });
@@ -144,9 +152,10 @@ describe('useCustomAgentAssignment', () => {
     expect(
       nexusaiAPI.router.agents_team.toggleAgentAssignment,
     ).not.toHaveBeenCalled();
+    expect(createCredentialsMock).not.toHaveBeenCalled();
   });
 
-  it('returns empty credentials list when agent has none', async () => {
+  it('does not call createCredentials when agent has no credentials', async () => {
     nexusaiAPI.router.agents_team.toggleAgentAssignment.mockResolvedValue({
       data: {},
     });
@@ -155,12 +164,13 @@ describe('useCustomAgentAssignment', () => {
 
     await submitAssignment();
 
+    expect(createCredentialsMock).not.toHaveBeenCalled();
     expect(
       nexusaiAPI.router.agents_team.toggleAgentAssignment,
-    ).toHaveBeenCalledWith(
-      expect.objectContaining({
-        credentials: [],
-      }),
-    );
+    ).toHaveBeenCalledWith({
+      agentUuid: 'custom-uuid',
+      is_assigned: true,
+      mcp_config: {},
+    });
   });
 });
