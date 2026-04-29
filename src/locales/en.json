@@ -396,8 +396,7 @@
         },
         "constants": {
           "optional": "optional",
-          "title": "Configure {agent}",
-          "not_required": "This agent does not require configuration"
+          "title": "Configure {agent}"
         },
         "custom_credentials": {
           "title": "Enter credentials"
