@@ -49,7 +49,7 @@ import useTranslatedField from '@/composables/useTranslatedField';
 
 import type {
   AgentAssignedMCP,
-  AgentAssignedMCPConfigValue,
+  AgentAssignedConstantValue,
 } from '@/store/types/Agents.types';
 
 const props = defineProps<{
@@ -64,8 +64,8 @@ const mcpDescription = computed(
 );
 
 const mcpArguments = computed(() => {
-  const configEntries = props.mcp.config || {};
-  return Object.entries(configEntries)
+  const constantsEntries = props.mcp.constants || {};
+  return Object.entries(constantsEntries)
     .filter(([_label, value]) => !isValueEmpty(value))
     .map(([label, value]) => ({
       label,
@@ -73,11 +73,11 @@ const mcpArguments = computed(() => {
     }));
 });
 
-function isValueEmpty(value: AgentAssignedMCPConfigValue) {
+function isValueEmpty(value: AgentAssignedConstantValue) {
   return value === null || value === undefined || value === '';
 }
 
-function formatValue(value: AgentAssignedMCPConfigValue) {
+function formatValue(value: AgentAssignedConstantValue) {
   if (Array.isArray(value)) {
     return formatListToReadable(value);
   }

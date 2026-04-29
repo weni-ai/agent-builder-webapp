@@ -4,10 +4,10 @@ import { shallowMount } from '@vue/test-utils';
 
 import MCPStepContent from '../index.vue';
 
-const mcpWithConfig = {
+const mcpWithConstants = {
   name: 'Search',
   description: 'Search products',
-  config: [
+  constants: [
     { name: 'apiKey', type: 'TEXT' },
     {
       name: 'region',
@@ -36,17 +36,16 @@ const mcpWithConfig = {
   ],
 };
 
-const mcpWithoutConfig = {
+const mcpWithoutConstants = {
   name: 'Inventory',
   description: 'Inventory manager',
-  config: [],
+  constants: [],
 };
 
-const MCPs = [mcpWithConfig, mcpWithoutConfig];
+const MCPs = [mcpWithConstants, mcpWithoutConstants];
 
 function getInitialValues() {
   return {
-    // Mocked fields and values
     apiKey: '',
     region: 'us',
     features: [],
@@ -56,7 +55,9 @@ function getInitialValues() {
 
 function createWrapper(overrides = {}) {
   const selectedMCP = ref(overrides.selectedMCP ?? null);
-  const selectedMCPConfigValues = ref(overrides.selectedMCPConfigValues ?? {});
+  const selectedMCPConstantsValues = ref(
+    overrides.selectedMCPConstantsValues ?? {},
+  );
   let wrapper;
 
   const updateSelectedMCP = (value) => {
@@ -66,11 +67,11 @@ function createWrapper(overrides = {}) {
     }
   };
 
-  const updateConfigValues = (value) => {
-    selectedMCPConfigValues.value = value;
+  const updateConstantsValues = (value) => {
+    selectedMCPConstantsValues.value = value;
     if (wrapper) {
       wrapper.setProps({
-        selectedMCPConfigValues: selectedMCPConfigValues.value,
+        selectedMCPConstantsValues: selectedMCPConstantsValues.value,
       });
     }
   };
@@ -80,16 +81,16 @@ function createWrapper(overrides = {}) {
       props: {
         MCPs,
         selectedMCP: selectedMCP.value,
-        selectedMCPConfigValues: selectedMCPConfigValues.value,
+        selectedMCPConstantsValues: selectedMCPConstantsValues.value,
         'onUpdate:selectedMCP': updateSelectedMCP,
-        'onUpdate:selectedMCPConfigValues': updateConfigValues,
+        'onUpdate:selectedMCPConstantsValues': updateConstantsValues,
         ...overrides,
       },
     });
 
     wrapper.setProps({
       selectedMCP: selectedMCP.value,
-      selectedMCPConfigValues: selectedMCPConfigValues.value,
+      selectedMCPConstantsValues: selectedMCPConstantsValues.value,
     });
 
     return wrapper;
@@ -98,20 +99,21 @@ function createWrapper(overrides = {}) {
   return {
     wrapper: mountComponent(),
     getSelectedMCP: () => selectedMCP.value,
-    getConfigValues: () => selectedMCPConfigValues.value,
+    getConstantsValues: () => selectedMCPConstantsValues.value,
     updateSelectedMCP,
-    updateConfigValues,
+    updateConstantsValues,
   };
 }
 
 describe('MCPStepContent', () => {
   let wrapper;
   let getSelectedMCP;
-  let getConfigValues;
+  let getConstantsValues;
 
   const mountWrapper = (overrides = {}) => {
     wrapper?.unmount();
-    ({ wrapper, getSelectedMCP, getConfigValues } = createWrapper(overrides));
+    ({ wrapper, getSelectedMCP, getConstantsValues } =
+      createWrapper(overrides));
   };
 
   beforeEach(() => {
@@ -125,8 +127,8 @@ describe('MCPStepContent', () => {
 
   const findPlaceholder = () =>
     wrapper.find('[data-testid="concierge-second-step-placeholder"]');
-  const findConfigForm = () =>
-    wrapper.find('[data-testid="concierge-second-step-config-form"]');
+  const findConstantsForm = () =>
+    wrapper.find('[data-testid="concierge-second-step-constants-form"]');
   const findConfigDescription = () =>
     wrapper.find('[data-testid="concierge-second-step-config-description"]');
   const findMCPSelection = () =>
@@ -137,77 +139,77 @@ describe('MCPStepContent', () => {
   describe('rendering', () => {
     it('auto-selects the first MCP when none is selected', () => {
       expect(findPlaceholder().exists()).toBe(false);
-      expect(getSelectedMCP()).toEqual(mcpWithConfig);
+      expect(getSelectedMCP()).toEqual(mcpWithConstants);
     });
 
-    it('shows config form when selected MCP has config', async () => {
+    it('shows constants form when selected MCP has constants', async () => {
       mountWrapper({
-        selectedMCP: mcpWithConfig,
-        selectedMCPConfigValues: getInitialValues(),
+        selectedMCP: mcpWithConstants,
+        selectedMCPConstantsValues: getInitialValues(),
       });
 
       await nextTick();
 
-      expect(findConfigForm().exists()).toBe(true);
+      expect(findConstantsForm().exists()).toBe(true);
       expect(findConfigDescription().exists()).toBe(false);
     });
 
-    it('shows description when selected MCP has no config', async () => {
+    it('shows description when selected MCP has no constants', async () => {
       mountWrapper({
-        selectedMCP: mcpWithoutConfig,
-        selectedMCPConfigValues: {},
+        selectedMCP: mcpWithoutConstants,
+        selectedMCPConstantsValues: {},
       });
 
       await nextTick();
 
       expect(findConfigDescription().exists()).toBe(true);
-      expect(findConfigForm().exists()).toBe(false);
+      expect(findConstantsForm().exists()).toBe(false);
     });
   });
 
   describe('selection handling', () => {
     it('selects MCP and builds initial values when emitted', async () => {
-      findMCPSelection().vm.$emit('select', mcpWithConfig, true);
+      findMCPSelection().vm.$emit('select', mcpWithConstants, true);
       await nextTick();
 
-      expect(getSelectedMCP()).toEqual(mcpWithConfig);
-      expect(getConfigValues()).toEqual(getInitialValues());
+      expect(getSelectedMCP()).toEqual(mcpWithConstants);
+      expect(getConstantsValues()).toEqual(getInitialValues());
     });
 
     it('ignores unchecked selection events', async () => {
       const mcpBeforeEvent = getSelectedMCP();
-      const configBeforeEvent = getConfigValues();
+      const constantsBeforeEvent = getConstantsValues();
 
-      findMCPSelection().vm.$emit('select', mcpWithoutConfig, false);
+      findMCPSelection().vm.$emit('select', mcpWithoutConstants, false);
       await nextTick();
 
       expect(getSelectedMCP()).toEqual(mcpBeforeEvent);
-      expect(getConfigValues()).toEqual(configBeforeEvent);
+      expect(getConstantsValues()).toEqual(constantsBeforeEvent);
     });
   });
 
-  describe('config values initialisation', () => {
-    it('builds values when selected MCP is provided without prior config', async () => {
+  describe('constants values initialisation', () => {
+    it('builds values when selected MCP is provided without prior constants', async () => {
       mountWrapper({
-        selectedMCP: mcpWithConfig,
-        selectedMCPConfigValues: {},
+        selectedMCP: mcpWithConstants,
+        selectedMCPConstantsValues: {},
       });
 
       await nextTick();
 
-      expect(getConfigValues()).toEqual(getInitialValues());
+      expect(getConstantsValues()).toEqual(getInitialValues());
     });
 
-    it('keeps values when config is already present', async () => {
+    it('keeps values when constants are already present', async () => {
       const presetValues = { apiKey: 'abc', region: 'br' };
       mountWrapper({
-        selectedMCP: mcpWithConfig,
-        selectedMCPConfigValues: presetValues,
+        selectedMCP: mcpWithConstants,
+        selectedMCPConstantsValues: presetValues,
       });
 
       await nextTick();
 
-      expect(getConfigValues()).toEqual(presetValues);
+      expect(getConstantsValues()).toEqual(presetValues);
     });
   });
 });

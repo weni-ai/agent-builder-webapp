@@ -34,7 +34,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
   const translateField = useTranslatedField();
 
   const isSubmitting = ref(false);
-  const hasVTEXSystem = agent.value?.systems.some(
+  const hasVTEXSystem = agent.value?.systems?.some(
     (system) => system.toLowerCase() === 'vtex',
   );
 
@@ -106,10 +106,10 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
           payload,
         );
 
-      const mcpConfigWithLabels = Object.fromEntries(
+      const constantsWithLabels = Object.fromEntries(
         Object.entries(config.value.mcp_config).map(([key, value]) => {
           const label =
-            config.value.MCP?.config.find((config) => config.name === key)
+            config.value.MCP?.constants.find((field) => field.name === key)
               ?.label || key;
           return [label, value];
         }),
@@ -125,7 +125,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
         mcp: {
           name: config.value.MCP?.name || '',
           description: config.value.MCP?.description || '',
-          config: mcpConfigWithLabels,
+          constants: constantsWithLabels,
         },
       };
 
