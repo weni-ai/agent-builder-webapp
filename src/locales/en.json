@@ -394,6 +394,13 @@
           "title": "Configure {mcp} MCP",
           "description": "This MCP does not require configuration"
         },
+        "constants": {
+          "optional": "optional",
+          "title": "Configure {agent}"
+        },
+        "custom_credentials": {
+          "title": "Enter credentials"
+        },
         "third_step": {
           "title": "Review the setup and enter credentials",
           "description": "Review the setup and enter your credentials to finish the agent setup",
