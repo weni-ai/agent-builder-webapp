@@ -1,20 +1,20 @@
 <template>
   <section class="modal-assign-agent__form">
     <template
-      v-for="element in config"
+      v-for="element in constants"
       :key="element.name"
     >
       <UnnnicSwitch
         v-if="element.type === 'SWITCH'"
-        data-testid="concierge-second-step-switch"
+        data-testid="constants-form-switch"
         :option="fieldLabel(element)"
-        :modelValue="configValues[element.name] ?? false"
+        :modelValue="constantsValues[element.name] ?? false"
         @update:model-value="updateFieldValue(element.name, $event)"
       />
 
       <UnnnicSelect
         v-else-if="element.type === 'SELECT'"
-        data-testid="concierge-second-step-select"
+        data-testid="constants-form-select"
         :label="fieldLabel(element)"
         :options="formatOptions(element.options)"
         :modelValue="getSelectModelValue(element)"
@@ -23,22 +23,22 @@
 
       <UnnnicInput
         v-else-if="['NUMBER', 'TEXT', 'INPUT'].includes(element.type)"
-        data-testid="concierge-second-step-input"
+        data-testid="constants-form-input"
         :label="fieldLabel(element)"
-        :modelValue="String(configValues[element.name] ?? '')"
+        :modelValue="String(constantsValues[element.name] ?? '')"
         :nativeType="element.type === 'NUMBER' ? 'number' : 'text'"
         @update:model-value="updateFieldValue(element.name, $event)"
       />
 
       <UnnnicCheckboxGroup
         v-else-if="element.type === 'CHECKBOX'"
-        data-testid="concierge-second-step-checkbox-group"
+        data-testid="constants-form-checkbox-group"
         :label="fieldLabel(element)"
       >
         <UnnnicCheckbox
           v-for="option in element.options"
           :key="option.value || option.name"
-          data-testid="concierge-second-step-checkbox"
+          data-testid="constants-form-checkbox"
           :label="option.name"
           :modelValue="isCheckboxChecked(element.name, option.value)"
           @update:model-value="
@@ -50,15 +50,15 @@
       <UnnnicRadioGroup
         v-else-if="element.type === 'RADIO'"
         state="vertical"
-        data-testid="concierge-second-step-radio-group"
+        data-testid="constants-form-radio-group"
         :label="fieldLabel(element)"
-        :modelValue="configValues[element.name]"
+        :modelValue="constantsValues[element.name]"
         @update:model-value="updateFieldValue(element.name, $event)"
       >
         <UnnnicRadio
           v-for="option in element.options"
           :key="option.value || option.name"
-          data-testid="concierge-second-step-radio"
+          data-testid="constants-form-radio"
           :label="option.name"
           :value="option.value || option.name"
         />
@@ -68,19 +68,19 @@
 </template>
 
 <script setup lang="ts">
-import { AgentMCP } from '@/store/types/Agents.types';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-type MCPConfigField = AgentMCP['config'] extends (infer U)[] ? U : never;
-type MCPConfigValue = string | string[] | boolean;
+import { AgentConstantField } from '@/store/types/Agents.types';
+
+type ConstantValue = string | string[] | boolean;
 
 const props = defineProps<{
-  config: MCPConfigField[];
+  constants: AgentConstantField[];
 }>();
 
-const configValues = defineModel<Record<string, MCPConfigValue>>(
-  'configValues',
+const constantsValues = defineModel<Record<string, ConstantValue>>(
+  'constantsValues',
   {
     required: true,
   },
@@ -88,44 +88,44 @@ const configValues = defineModel<Record<string, MCPConfigValue>>(
 
 const { t } = useI18n();
 
-function fieldLabel(element: MCPConfigField) {
+function fieldLabel(element: AgentConstantField) {
   if (element.is_required) return element.label;
-  return `${element.label} (${t('agents.assign_agents.setup.mcp_config.optional')})`;
+  return `${element.label} (${t('agents.assign_agents.setup.constants.optional')})`;
 }
 
-function buildInitialValues(config: MCPConfigField[]) {
-  config.forEach((element) => {
+function buildInitialValues(constants: AgentConstantField[] = []) {
+  constants.forEach((element) => {
     if (element.default_value !== undefined) {
-      configValues.value[element.name] =
-        element.default_value as MCPConfigValue;
+      constantsValues.value[element.name] =
+        element.default_value as ConstantValue;
     }
   });
 }
 
 watch(
-  () => props.config,
+  () => props.constants,
   (newValue) => {
-    buildInitialValues(newValue);
+    buildInitialValues(newValue ?? []);
   },
   { immediate: true },
 );
 
-function updateFieldValue(name: string, value: MCPConfigValue) {
-  configValues.value = {
-    ...configValues.value,
+function updateFieldValue(name: string, value: ConstantValue) {
+  constantsValues.value = {
+    ...constantsValues.value,
     [name]: value,
   };
 }
 
-function formatOptions(options: MCPConfigField['options'] = []) {
+function formatOptions(options: AgentConstantField['options'] = []) {
   return options.map((option) => ({
     label: option.name,
     value: option.value || option.name,
   }));
 }
 
-function getSelectModelValue(field: MCPConfigField) {
-  const value = configValues.value[field.name];
+function getSelectModelValue(field: AgentConstantField) {
+  const value = constantsValues.value[field.name];
   if (typeof value === 'string') return value;
   const option = formatOptions(field.options).find(
     (option) => option.value === value,
@@ -134,13 +134,13 @@ function getSelectModelValue(field: MCPConfigField) {
 }
 
 function isCheckboxChecked(fieldName: string, optionValue: string) {
-  const value = configValues.value[fieldName];
+  const value = constantsValues.value[fieldName];
   if (!Array.isArray(value)) return false;
   return value.includes(optionValue);
 }
 
 function toggleCheckboxValue(fieldName: string, optionValue: string) {
-  const value = configValues.value[fieldName];
+  const value = constantsValues.value[fieldName];
   const nextValue = new Set(Array.isArray(value) ? value : []);
   if (nextValue.has(optionValue)) {
     nextValue.delete(optionValue);
@@ -150,3 +150,13 @@ function toggleCheckboxValue(fieldName: string, optionValue: string) {
   updateFieldValue(fieldName, Array.from(nextValue));
 }
 </script>
+
+<style scoped lang="scss">
+.modal-assign-agent__form {
+  display: flex;
+  flex-direction: column;
+  gap: $unnnic-space-4;
+
+  width: 100%;
+}
+</style>
