@@ -1,16 +1,14 @@
 <template>
   <UnnnicDrawerNext
     v-model:open="modelValue"
+    lazyMount
     @update:open="
       (open) => {
         if (!open) closeWithReset();
       }
     "
   >
-    <UnnnicDrawerContent
-      size="large"
-      data-testid="edit-manager-profile-drawer-content"
-    >
+    <UnnnicDrawerContent size="large">
       <UnnnicDrawerHeader>
         <UnnnicDrawerTitle data-testid="edit-manager-profile-drawer-title">{{
           $t('profile.edit_manager_profile')

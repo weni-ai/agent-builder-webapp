@@ -2,6 +2,7 @@
   <UnnnicDrawer
     v-if="agent.credentials?.length"
     :modelValue="modelValue"
+    lazyMount
     class="assign-agent-drawer"
     :title="$t('router.agents_team.drawer.title', { name: agent.name })"
     :primaryButtonText="$t('router.agents_team.drawer.assign')"

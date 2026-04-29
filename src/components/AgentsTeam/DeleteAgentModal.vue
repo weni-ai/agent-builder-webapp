@@ -2,6 +2,7 @@
   <UnnnicDialog
     data-testid="delete-agent-modal"
     :open="modelValue"
+    lazyMount
     @update:open="close"
   >
     <UnnnicDialogContent>
