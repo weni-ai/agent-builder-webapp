@@ -11,13 +11,19 @@ vi.mock('vue-i18n', () => ({
 }));
 
 const useOfficialAgentAssignmentMock = vi.hoisted(() => vi.fn());
+const useCustomAgentAssignmentMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/composables/useOfficialAgentAssignment', () => ({
   default: (...args) => useOfficialAgentAssignmentMock(...args),
 }));
 
-const agentFixture = {
+vi.mock('@/composables/useCustomAgentAssignment', () => ({
+  default: (...args) => useCustomAgentAssignmentMock(...args),
+}));
+
+const officialAgentFixture = {
   name: 'Concierge',
+  is_official: true,
   systems: ['VTEX', 'SYNERISE'],
   MCPs: [],
   agents: [
@@ -29,7 +35,17 @@ const agentFixture = {
   ],
 };
 
-const createAssignmentState = () => ({
+const customAgentFixture = {
+  uuid: 'custom-agent-uuid',
+  name: 'Custom Agent',
+  is_official: false,
+  constants: [
+    { name: 'country', label: 'Country', type: 'TEXT', is_required: true },
+  ],
+  credentials: [{ name: 'api_key', label: 'API Key' }],
+};
+
+const createOfficialAssignmentState = () => ({
   config: ref({
     system: 'VTEX',
     MCP: null,
@@ -41,17 +57,27 @@ const createAssignmentState = () => ({
   submitAssignment: vi.fn().mockResolvedValue(true),
 });
 
-describe('ModalAssignAgentGroupFlow', () => {
+const createCustomAssignmentState = () => ({
+  config: ref({
+    constants: {},
+    credentials: {},
+  }),
+  isSubmitting: ref(false),
+  resetAssignment: vi.fn(),
+  submitAssignment: vi.fn().mockResolvedValue(true),
+});
+
+describe('ModalAssignAgentGroupFlow - official agent', () => {
   let wrapper;
   let assignmentState;
 
   const createWrapper = (props = {}) => {
-    assignmentState = createAssignmentState();
+    assignmentState = createOfficialAssignmentState();
     useOfficialAgentAssignmentMock.mockReturnValue(assignmentState);
 
     wrapper = shallowMount(ModalAssignAgentGroupFlow, {
       props: {
-        agent: agentFixture,
+        agent: officialAgentFixture,
         open: true,
         ...props,
       },
@@ -235,5 +261,90 @@ describe('ModalAssignAgentGroupFlow', () => {
         'agents.assign_agents.setup.finish_button',
       );
     });
+  });
+});
+
+describe('ModalAssignAgentGroupFlow - custom agent', () => {
+  let wrapper;
+  let assignmentState;
+
+  const createWrapper = (props = {}) => {
+    assignmentState = createCustomAssignmentState();
+    useCustomAgentAssignmentMock.mockReturnValue(assignmentState);
+
+    wrapper = shallowMount(ModalAssignAgentGroupFlow, {
+      props: {
+        agent: customAgentFixture,
+        open: true,
+        ...props,
+      },
+    });
+  };
+
+  const constantsStep = () =>
+    wrapper.findComponent({ name: 'ConstantsStepContent' });
+  const customCredentialsStep = () =>
+    wrapper.findComponent({ name: 'CustomCredentialsStepContent' });
+  const findNextButton = () =>
+    wrapper.find('[data-testid="modal-concierge-right-button"]');
+
+  beforeEach(() => {
+    createWrapper();
+  });
+
+  afterEach(() => {
+    wrapper?.unmount();
+    vi.clearAllMocks();
+  });
+
+  it('renders the constants step first', () => {
+    expect(constantsStep().exists()).toBe(true);
+    expect(customCredentialsStep().exists()).toBe(false);
+  });
+
+  it('does not render official-only steps', () => {
+    expect(wrapper.findComponent({ name: 'SystemStepContent' }).exists()).toBe(
+      false,
+    );
+    expect(wrapper.findComponent({ name: 'MCPStepContent' }).exists()).toBe(
+      false,
+    );
+  });
+
+  it('uses 2 steps for custom agents', () => {
+    expect(wrapper.vm.totalSteps).toBe(2);
+  });
+
+  it('disables next when required constant is missing', () => {
+    expect(findNextButton().attributes('disabled')).toBeDefined();
+  });
+
+  it('advances to credentials step when constants are filled', async () => {
+    assignmentState.config.value.constants = { country: 'BRA' };
+    await nextTick();
+
+    expect(findNextButton().attributes('disabled')).toBe('false');
+
+    await findNextButton().trigger('click');
+    await flushPromises();
+
+    expect(customCredentialsStep().exists()).toBe(true);
+    expect(constantsStep().exists()).toBe(false);
+  });
+
+  it('submits the assignment on the credentials step', async () => {
+    assignmentState.config.value.constants = { country: 'BRA' };
+    await nextTick();
+    await findNextButton().trigger('click');
+    await flushPromises();
+
+    assignmentState.config.value.credentials = { api_key: 'token' };
+    await nextTick();
+
+    await findNextButton().trigger('click');
+    await flushPromises();
+
+    expect(assignmentState.submitAssignment).toHaveBeenCalledTimes(1);
+    expect(wrapper.emitted('update:open')).toEqual([[false]]);
   });
 });
