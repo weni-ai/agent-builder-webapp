@@ -257,7 +257,7 @@
         }
       },
       "manager": {
-        "title": "Versión del Manager",
+        "title": "Versión del manager",
         "new": "Nuevo",
         "recommended": "Recomendado",
         "legacy_model": "Modelo legado",
@@ -281,14 +281,14 @@
       "engine_source": {
         "title": "Fuente del motor",
         "native": "Nativo",
-        "own_api_key": "API Key propia",
+        "own_api_key": "Clave de API propia",
         "provider": "Proveedor",
         "model": "Modelo",
-        "load_error": "No fue posible cargar la configuración de la fuente del motor",
+        "load_error": "No se pudo cargar la configuración de la fuente del motor",
         "no_components_support": "{provider_name} aún no admite el formato de múltiples mensajes",
         "placeholder": {
-          "provider": "Seleccionar un proveedor",
-          "model": "Seleccionar un modelo"
+          "provider": "Selecciona un proveedor",
+          "model": "Selecciona un modelo"
         }
       }
     }
