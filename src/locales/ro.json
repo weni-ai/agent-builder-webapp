@@ -216,6 +216,7 @@
       "forwarding_to_manager": "Redirecționare către manager",
       "executing_tool": "Se execută instrumentul {function}",
       "tool_result_received": "Rezultate ale instrumentului primite",
+      "forwarding_to_human_support": "Redirecționare către asistență umană",
       "sending_response_for_manager": "Se trimite răspuns managerului",
       "sending_final_response": "Se trimite răspunsul final",
       "applying_safety_rules": "Se aplică regulile de securitate",
@@ -255,7 +256,7 @@
         }
       },
       "manager": {
-        "title": "Manager",
+        "title": "Versiune Manager",
         "new": "Nou",
         "recommended": "Recomandat",
         "legacy_model": "Model anterior",
@@ -275,6 +276,19 @@
           "manager_2_dot_6_disclaimer_description": "Manager 2.5 va fi depreciat în curând. Actualizează la Manager 2.6 pentru răspunsuri mai fiabile în timp ce Managerul coordonează agenții tăi."
         },
         "no_components_support": "{manager_name} nu acceptă încă formatul de mesaje multiple"
+      },
+      "engine_source": {
+        "title": "Sursa motorului",
+        "native": "Nativ",
+        "own_api_key": "Cheie API proprie",
+        "provider": "Furnizor",
+        "model": "Model",
+        "load_error": "Nu s-a putut încărca configurația sursei motorului",
+        "no_components_support": "{provider_name} nu acceptă încă formatul de mesaje multiple",
+        "placeholder": {
+          "provider": "Selectează un furnizor",
+          "model": "Selectează un model"
+        }
       }
     }
   },
@@ -706,7 +720,7 @@
   "profile": {
     "tabs": {
       "profile": "Profil",
-      "settings": "Setări"
+      "settings": "Motor"
     },
     "edit_manager_profile": "Editează manager",
     "description": "Personalizează informațiile de bază și comportamentul agentului",
