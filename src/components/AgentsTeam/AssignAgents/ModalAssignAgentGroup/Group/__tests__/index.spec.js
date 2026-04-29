@@ -25,7 +25,15 @@ const officialAgentFixture = {
   name: 'Concierge',
   is_official: true,
   systems: ['VTEX', 'SYNERISE'],
-  MCPs: [],
+  MCPs: [
+    {
+      name: 'VTEX MCP',
+      description: 'VTEX integration',
+      system: 'VTEX',
+      credentials: [{ name: 'token', label: 'API Token' }],
+      constants: [],
+    },
+  ],
   agents: [
     {
       uuid: 'variant-vtex',
@@ -35,6 +43,16 @@ const officialAgentFixture = {
   ],
 };
 
+const officialAgentWithoutMCPsFixture = {
+  uuid: 'official-no-mcps',
+  name: 'Debug Reverse Agent',
+  is_official: true,
+  group: null,
+  systems: [],
+  MCPs: [],
+  credentials: [{ name: 'token', label: 'Token Aftersale API' }],
+};
+
 const customAgentFixture = {
   uuid: 'custom-agent-uuid',
   name: 'Custom Agent',
@@ -42,6 +60,24 @@ const customAgentFixture = {
   constants: [
     { name: 'country', label: 'Country', type: 'TEXT', is_required: true },
   ],
+  credentials: [{ name: 'api_key', label: 'API Key' }],
+};
+
+const customAgentOnlyConstantsFixture = {
+  uuid: 'custom-agent-only-constants',
+  name: 'Constants Only Agent',
+  is_official: false,
+  constants: [
+    { name: 'country', label: 'Country', type: 'TEXT', is_required: true },
+  ],
+  credentials: [],
+};
+
+const customAgentOnlyCredentialsFixture = {
+  uuid: 'custom-agent-only-credentials',
+  name: 'Credentials Only Agent',
+  is_official: false,
+  constants: [],
   credentials: [{ name: 'api_key', label: 'API Key' }],
 };
 
@@ -56,6 +92,14 @@ const createOfficialAssignmentState = () => ({
   resetAssignment: vi.fn(),
   submitAssignment: vi.fn().mockResolvedValue(true),
 });
+
+const mockMCPWithCredentials = {
+  name: 'VTEX MCP',
+  description: 'VTEX integration',
+  system: 'VTEX',
+  credentials: [{ name: 'token', label: 'API Token' }],
+  constants: [],
+};
 
 const createCustomAssignmentState = () => ({
   config: ref({
@@ -99,8 +143,8 @@ describe('ModalAssignAgentGroupFlow - official agent', () => {
     await findNextButton().trigger('click');
     await flushPromises();
 
-    assignmentState.config.value.MCP = { name: 'Mock MCP' };
-    assignmentState.config.value.mcp_config = { apiKey: 'value' };
+    assignmentState.config.value.MCP = mockMCPWithCredentials;
+    assignmentState.config.value.mcp_config = {};
     assignmentState.config.value.credentials = { token: 'secret' };
     await nextTick();
 
@@ -165,11 +209,20 @@ describe('ModalAssignAgentGroupFlow - official agent', () => {
     it('does not submit the assignment if the final step is not completed', async () => {
       await advanceToStepThree();
 
-      assignmentState.config.value.credentials = { token: '' };
+      assignmentState.config.value.credentials = {};
       await nextTick();
 
       expect(findNextButton().attributes('disabled')).toBeDefined();
       expect(assignmentState.submitAssignment).not.toHaveBeenCalled();
+    });
+
+    it('disables next button when credentials are empty object', async () => {
+      await advanceToStepThree();
+
+      assignmentState.config.value.credentials = {};
+      await nextTick();
+
+      expect(findNextButton().attributes('disabled')).toBeDefined();
     });
 
     it('does not submit the assignment if the isSubmitting is true', async () => {
@@ -217,8 +270,8 @@ describe('ModalAssignAgentGroupFlow - official agent', () => {
 
       expect(wrapper.vm.stepIndex).toBe(2);
 
-      assignmentState.config.value.MCP = { name: 'Mock MCP' };
-      assignmentState.config.value.mcp_config = { apiKey: 'value' };
+      assignmentState.config.value.MCP = mockMCPWithCredentials;
+      assignmentState.config.value.mcp_config = {};
       await nextTick();
 
       await findNextButton().trigger('click');
@@ -264,7 +317,7 @@ describe('ModalAssignAgentGroupFlow - official agent', () => {
   });
 });
 
-describe('ModalAssignAgentGroupFlow - custom agent', () => {
+describe('ModalAssignAgentGroupFlow - custom agent with both constants and credentials', () => {
   let wrapper;
   let assignmentState;
 
@@ -311,7 +364,7 @@ describe('ModalAssignAgentGroupFlow - custom agent', () => {
     );
   });
 
-  it('uses 2 steps for custom agents', () => {
+  it('uses 2 steps for custom agents with both constants and credentials', () => {
     expect(wrapper.vm.totalSteps).toBe(2);
   });
 
@@ -346,5 +399,188 @@ describe('ModalAssignAgentGroupFlow - custom agent', () => {
 
     expect(assignmentState.submitAssignment).toHaveBeenCalledTimes(1);
     expect(wrapper.emitted('update:open')).toEqual([[false]]);
+  });
+});
+
+describe('ModalAssignAgentGroupFlow - custom agent with only constants', () => {
+  let wrapper;
+  let assignmentState;
+
+  const createWrapper = () => {
+    assignmentState = createCustomAssignmentState();
+    useCustomAgentAssignmentMock.mockReturnValue(assignmentState);
+
+    wrapper = shallowMount(ModalAssignAgentGroupFlow, {
+      props: {
+        agent: customAgentOnlyConstantsFixture,
+        open: true,
+      },
+    });
+  };
+
+  const constantsStep = () =>
+    wrapper.findComponent({ name: 'ConstantsStepContent' });
+  const customCredentialsStep = () =>
+    wrapper.findComponent({ name: 'CustomCredentialsStepContent' });
+  const findNextButton = () =>
+    wrapper.find('[data-testid="modal-concierge-right-button"]');
+
+  beforeEach(() => {
+    createWrapper();
+  });
+
+  afterEach(() => {
+    wrapper?.unmount();
+    vi.clearAllMocks();
+  });
+
+  it('uses 1 step when agent has only constants', () => {
+    expect(wrapper.vm.totalSteps).toBe(1);
+  });
+
+  it('renders constants step and skips credentials step', () => {
+    expect(constantsStep().exists()).toBe(true);
+    expect(customCredentialsStep().exists()).toBe(false);
+  });
+
+  it('submits directly after filling constants', async () => {
+    assignmentState.config.value.constants = { country: 'BRA' };
+    await nextTick();
+
+    await findNextButton().trigger('click');
+    await flushPromises();
+
+    expect(assignmentState.submitAssignment).toHaveBeenCalledTimes(1);
+    expect(wrapper.emitted('update:open')).toEqual([[false]]);
+  });
+});
+
+describe('ModalAssignAgentGroupFlow - custom agent with only credentials', () => {
+  let wrapper;
+  let assignmentState;
+
+  const createWrapper = () => {
+    assignmentState = createCustomAssignmentState();
+    useCustomAgentAssignmentMock.mockReturnValue(assignmentState);
+
+    wrapper = shallowMount(ModalAssignAgentGroupFlow, {
+      props: {
+        agent: customAgentOnlyCredentialsFixture,
+        open: true,
+      },
+    });
+  };
+
+  const constantsStep = () =>
+    wrapper.findComponent({ name: 'ConstantsStepContent' });
+  const customCredentialsStep = () =>
+    wrapper.findComponent({ name: 'CustomCredentialsStepContent' });
+  const findNextButton = () =>
+    wrapper.find('[data-testid="modal-concierge-right-button"]');
+
+  beforeEach(() => {
+    createWrapper();
+  });
+
+  afterEach(() => {
+    wrapper?.unmount();
+    vi.clearAllMocks();
+  });
+
+  it('uses 1 step when agent has only credentials', () => {
+    expect(wrapper.vm.totalSteps).toBe(1);
+  });
+
+  it('renders credentials step directly and skips constants step', () => {
+    expect(customCredentialsStep().exists()).toBe(true);
+    expect(constantsStep().exists()).toBe(false);
+  });
+
+  it('submits directly after filling credentials', async () => {
+    assignmentState.config.value.credentials = { api_key: 'token' };
+    await nextTick();
+
+    await findNextButton().trigger('click');
+    await flushPromises();
+
+    expect(assignmentState.submitAssignment).toHaveBeenCalledTimes(1);
+    expect(wrapper.emitted('update:open')).toEqual([[false]]);
+  });
+
+  it('disables next button when credentials are empty', () => {
+    expect(findNextButton().attributes('disabled')).toBeDefined();
+  });
+
+  it('disables next button when credentials object is empty', async () => {
+    assignmentState.config.value.credentials = {};
+    await nextTick();
+
+    expect(findNextButton().attributes('disabled')).toBeDefined();
+  });
+});
+
+describe('ModalAssignAgentGroupFlow - official agent without MCPs', () => {
+  let wrapper;
+  let assignmentState;
+
+  const createWrapper = () => {
+    assignmentState = createCustomAssignmentState();
+    useCustomAgentAssignmentMock.mockReturnValue(assignmentState);
+
+    wrapper = shallowMount(ModalAssignAgentGroupFlow, {
+      props: {
+        agent: officialAgentWithoutMCPsFixture,
+        open: true,
+      },
+    });
+  };
+
+  const constantsStep = () =>
+    wrapper.findComponent({ name: 'ConstantsStepContent' });
+  const customCredentialsStep = () =>
+    wrapper.findComponent({ name: 'CustomCredentialsStepContent' });
+  const mcpStep = () => wrapper.findComponent({ name: 'MCPStepContent' });
+  const findNextButton = () =>
+    wrapper.find('[data-testid="modal-concierge-right-button"]');
+
+  beforeEach(() => {
+    createWrapper();
+  });
+
+  afterEach(() => {
+    wrapper?.unmount();
+    vi.clearAllMocks();
+  });
+
+  it('uses simple flow (no MCP step) for official agent without MCPs', () => {
+    expect(mcpStep().exists()).toBe(false);
+  });
+
+  it('uses 1 step when official agent has only credentials', () => {
+    expect(wrapper.vm.totalSteps).toBe(1);
+  });
+
+  it('renders credentials step directly', () => {
+    expect(customCredentialsStep().exists()).toBe(true);
+    expect(constantsStep().exists()).toBe(false);
+  });
+
+  it('uses customAssignment composable instead of officialAssignment', () => {
+    expect(useCustomAgentAssignmentMock).toHaveBeenCalled();
+  });
+
+  it('submits directly after filling credentials', async () => {
+    assignmentState.config.value.credentials = { token: 'secret' };
+    await nextTick();
+
+    await findNextButton().trigger('click');
+    await flushPromises();
+
+    expect(assignmentState.submitAssignment).toHaveBeenCalledTimes(1);
+    expect(wrapper.emitted('update:open')).toEqual([[false]]);
+  });
+
+  it('disables next button when credentials are empty', () => {
+    expect(findNextButton().attributes('disabled')).toBeDefined();
   });
 });

@@ -6,6 +6,7 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 import { unnnicToastManager } from '@weni/unnnic-system';
 import i18n from '@/utils/plugins/i18n';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
+import { useTuningsStore } from '@/store/Tunings';
 
 export type ConstantsValues = Record<string, string | string[] | boolean>;
 
@@ -21,6 +22,7 @@ type CredentialPayload = AgentCredential & {
 export default function useCustomAgentAssignment(agent: Ref<Agent>) {
   const config = ref<CustomAssignmentConfig>(createInitialConfig());
   const agentsTeamStore = useAgentsTeamStore();
+  const tuningsStore = useTuningsStore();
 
   const isSubmitting = ref(false);
 
@@ -55,11 +57,19 @@ export default function useCustomAgentAssignment(agent: Ref<Agent>) {
     isSubmitting.value = true;
 
     try {
+      const credentialsPayload = buildCredentialsPayload();
+
+      if (credentialsPayload.length) {
+        await tuningsStore.createCredentials(
+          agent.value.uuid,
+          credentialsPayload,
+        );
+      }
+
       await nexusaiAPI.router.agents_team.toggleAgentAssignment({
         agentUuid: agent.value.uuid,
         is_assigned: true,
         mcp_config: config.value.constants,
-        credentials: buildCredentialsPayload(),
       });
 
       agentsTeamStore.addAgentToTeam(agent.value);
