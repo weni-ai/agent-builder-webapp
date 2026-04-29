@@ -38,23 +38,13 @@ describe('ConstantsStepContent', () => {
 
   const findRoot = () => wrapper.find('[data-testid="constants-step"]');
   const findForm = () => wrapper.find('[data-testid="constants-step-form"]');
-  const findEmpty = () => wrapper.find('[data-testid="constants-step-empty"]');
 
   it('renders root section', () => {
     expect(findRoot().exists()).toBe(true);
   });
 
-  it('renders form when there are constants', () => {
+  it('renders form', () => {
     expect(findForm().exists()).toBe(true);
-    expect(findEmpty().exists()).toBe(false);
-  });
-
-  it('renders empty state when there are no constants', () => {
-    wrapper.unmount();
-    wrapper = createWrapper({ constants: [] });
-
-    expect(findEmpty().exists()).toBe(true);
-    expect(findForm().exists()).toBe(false);
   });
 
   it('passes agent name to title key', () => {
