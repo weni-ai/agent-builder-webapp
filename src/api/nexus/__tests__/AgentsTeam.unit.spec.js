@@ -115,9 +115,29 @@ describe('AgentsTeam API', () => {
           description: 'First personal agent',
           skills: ['custom-skill1'],
           assigned: true,
-          credentials: { type: 'custom' },
+          credentials: [{ name: 'ROOT_KEY', label: 'Should be ignored' }],
           is_official: false,
           slug: 'my-agent-1',
+          mcp_definitions: {
+            config: [
+              {
+                name: 'country',
+                label: 'Country',
+                type: 'TEXT',
+                is_required: true,
+                default_value: 'BRA',
+                options: [],
+              },
+            ],
+            credentials: [
+              {
+                name: 'BASE_URL',
+                label: 'Base URL',
+                placeholder: 'https://example.com',
+                is_confidential: false,
+              },
+            ],
+          },
         },
         {
           uuid: 'my-agent-uuid-2',
@@ -125,9 +145,13 @@ describe('AgentsTeam API', () => {
           description: 'Second personal agent',
           skills: ['custom-skill2', 'custom-skill3'],
           assigned: false,
-          credentials: { type: 'bearer' },
+          credentials: [],
           is_official: false,
           slug: 'my-agent-2',
+          mcp_definitions: {
+            config: [],
+            credentials: [],
+          },
         },
       ],
     };
@@ -152,9 +176,26 @@ describe('AgentsTeam API', () => {
         description: 'First personal agent',
         skills: ['custom-skill1'],
         assigned: true,
-        credentials: { type: 'custom' },
+        credentials: [
+          {
+            name: 'BASE_URL',
+            label: 'Base URL',
+            placeholder: 'https://example.com',
+            is_confidential: false,
+          },
+        ],
         is_official: false,
         id: 'my-agent-1',
+        constants: [
+          {
+            name: 'country',
+            label: 'Country',
+            type: 'TEXT',
+            is_required: true,
+            default_value: 'BRA',
+            options: [],
+          },
+        ],
       });
     });
 
@@ -189,10 +230,26 @@ describe('AgentsTeam API', () => {
         expect(agent.description).toBe(originalAgent.description);
         expect(agent.skills).toEqual(originalAgent.skills);
         expect(agent.assigned).toBe(originalAgent.assigned);
-        expect(agent.credentials).toEqual(originalAgent.credentials);
-        expect(agent.is_official).toBe(originalAgent.is_official);
+        expect(agent.credentials).toEqual(
+          originalAgent.mcp_definitions.credentials,
+        );
         expect(agent.id).toBe(originalAgent.slug);
       });
+    });
+
+    it('forces is_official to false even when the API returns true', async () => {
+      request.$http.get.mockResolvedValue({
+        data: [
+          {
+            ...mockMyAgentsResponse.data[0],
+            is_official: true,
+          },
+        ],
+      });
+
+      const result = await AgentsTeam.listMyAgents({});
+
+      expect(result.data[0].is_official).toBe(false);
     });
 
     it('should handle API error', async () => {

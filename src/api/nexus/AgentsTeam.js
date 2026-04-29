@@ -11,6 +11,13 @@ function filterSystems(systems) {
   );
 }
 
+function normalizeMCPs(MCPs = []) {
+  return MCPs.map(({ config, ...mcp }) => ({
+    ...mcp,
+    constants: config ?? [],
+  }));
+}
+
 export const AgentsTeam = {
   async listOfficialAgents({ category, system, name }) {
     const params = cleanParams({
@@ -28,6 +35,7 @@ export const AgentsTeam = {
       ...agent,
       id: agent.slug,
       systems: filterSystems(agent.systems),
+      MCPs: normalizeMCPs(agent.MCPs),
     }));
 
     return {
@@ -51,6 +59,7 @@ export const AgentsTeam = {
     return {
       ...data,
       systems: filterSystems(data.systems),
+      MCPs: normalizeMCPs(data.MCPs),
     };
   },
 
@@ -92,9 +101,8 @@ export const AgentsTeam = {
           description,
           skills,
           assigned,
-          credentials,
-          is_official,
           slug,
+          mcp_definitions,
         }) => ({
           uuid,
           name,
@@ -102,9 +110,10 @@ export const AgentsTeam = {
           description,
           skills,
           assigned,
-          credentials,
-          is_official,
+          credentials: mcp_definitions?.credentials ?? [],
+          is_official: false,
           id: slug,
+          constants: mcp_definitions?.config ?? [],
         }),
       ),
     };
@@ -150,12 +159,19 @@ export const AgentsTeam = {
     };
   },
 
-  async toggleAgentAssignment({ agentUuid, is_assigned }) {
+  async toggleAgentAssignment({
+    agentUuid,
+    is_assigned,
+    mcp_config,
+    credentials,
+  }) {
+    const body = { assigned: is_assigned };
+    if (mcp_config !== undefined) body.mcp_config = mcp_config;
+    if (credentials !== undefined) body.credentials = credentials;
+
     const { data } = await request.$http.patch(
       `api/project/${projectUuid.value}/assign/${agentUuid}`,
-      {
-        assigned: is_assigned,
-      },
+      body,
       {
         hideGenericErrorAlert: true,
       },
