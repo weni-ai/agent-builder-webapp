@@ -119,6 +119,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
         ...agent.value,
         uuid: data.agent.uuid,
         id: data.agent.slug,
+        systems: [config.value.system],
         description:
           translateField(agent.value.presentation?.about) ??
           data.agent.description,

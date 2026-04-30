@@ -26,7 +26,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
   const { normalizeActiveAgent } = useAgent();
 
   const activeTeam = reactive({
-    status: null,
+    status: 'loading',
     data: {
       manager: null,
       agents: [],

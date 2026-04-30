@@ -55,10 +55,10 @@ const userStore = useUserStore();
 const managerSelectorStore = useManagerSelectorStore();
 
 async function loadAgentsData() {
-  agentsTeamStore.loadActiveTeam();
+  agentsTeamStore.loadMyAgents();
   // The official agents need to be loaded first to get the available systems to active team
   await agentsTeamStore.loadOfficialAgents();
-  agentsTeamStore.loadMyAgents();
+  agentsTeamStore.loadActiveTeam();
 }
 
 onMounted(() => {
