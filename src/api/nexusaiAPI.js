@@ -123,11 +123,11 @@ export default {
 
           const newManager = { ...data.new };
 
-          const isUnsupported = managersWithoutComponents.some((name) =>
+          const isUnsupportedManager = managersWithoutComponents.some((name) =>
             newManager.label?.includes(name),
           );
 
-          if (isUnsupported) {
+          if (isUnsupportedManager) {
             newManager.accept_components = false;
           }
 
