@@ -130,11 +130,11 @@ export default {
           console.log('MANAGERS WITHOUT COMPONENTS', managersWithoutComponents);
           console.log('NEW MANAGER', newManager);
 
-          const isUnsupported = managersWithoutComponents.some((name) =>
+          const isUnsupportedManager = managersWithoutComponents.some((name) =>
             newManager.label?.includes(name),
           );
 
-          if (isUnsupported) {
+          if (isUnsupportedManager) {
             newManager.accept_components = false;
           }
 
