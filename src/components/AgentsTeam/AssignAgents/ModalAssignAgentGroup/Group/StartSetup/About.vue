@@ -52,9 +52,9 @@ import { computed } from 'vue';
 import Skill from '@/components/AgentsTeam/Skill.vue';
 import useAgentSystems from '@/composables/useAgentSystems';
 import useTranslatedField from '@/composables/useTranslatedField';
-import type { AgentGroup } from '@/store/types/Agents.types';
+import type { Agent, AgentGroup } from '@/store/types/Agents.types';
 
-const GROUP_DOCS = {
+const GROUP_DOCS: Record<string, string> = {
   ORDER_PAYMENT: '/docs/Payment_Agent.pdf',
   FEEDBACK: '/docs/Feedback_Recorder.pdf',
   ORDER_CANCELLATION: '/docs/Order_Cancellation_Agent.pdf',
@@ -64,7 +64,7 @@ const GROUP_DOCS = {
 };
 
 const props = defineProps<{
-  agent: AgentGroup;
+  agent: AgentGroup | Agent;
 }>();
 
 type SystemBadge = {
@@ -75,17 +75,19 @@ type SystemBadge = {
 const { getSystemsObjects } = useAgentSystems();
 const translateField = useTranslatedField();
 
-const documentationUrl = computed(
-  () => GROUP_DOCS[props.agent.group.toUpperCase()] ?? null,
-);
+const documentationUrl = computed(() => {
+  const group = (props.agent as AgentGroup).group;
+  if (!group) return null;
+  return GROUP_DOCS[group.toUpperCase()] ?? null;
+});
 
-const aboutDescription = computed(
-  () =>
-    translateField(props.agent.presentation?.about) ?? props.agent.description,
-);
+const aboutDescription = computed(() => {
+  const presentationAbout = (props.agent as AgentGroup).presentation?.about;
+  return translateField(presentationAbout) ?? props.agent.description;
+});
 
 const systemBadges = computed<SystemBadge[]>(() => {
-  const agentSystems = props.agent?.systems ?? [];
+  const agentSystems = (props.agent as AgentGroup).systems ?? [];
   const systems = getSystemsObjects(agentSystems) || [];
 
   return systems.map((system) => ({

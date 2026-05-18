@@ -159,12 +159,13 @@ export const AgentsTeam = {
     };
   },
 
-  async toggleAgentAssignment({ agentUuid, is_assigned }) {
+  async toggleAgentAssignment({ agentUuid, is_assigned, mcp_config }) {
+    const body = { assigned: is_assigned };
+    if (mcp_config !== undefined) body.mcp_config = mcp_config;
+
     const { data } = await request.$http.patch(
       `api/project/${projectUuid.value}/assign/${agentUuid}`,
-      {
-        assigned: is_assigned,
-      },
+      body,
       {
         hideGenericErrorAlert: true,
       },

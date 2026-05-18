@@ -3,6 +3,10 @@
     :class="[
       'modal-assign-agent__start-setup',
       { 'modal-assign-agent__start-setup--loading': isLoading },
+      {
+        'modal-assign-agent__start-setup--with-conversation':
+          conversationExample.length,
+      },
     ]"
     data-testid="start-setup"
   >
@@ -14,12 +18,13 @@
       />
 
       <MCPs
-        v-if="agent.MCPs?.length"
-        :mcps="agent.MCPs || []"
+        v-if="agentMCPs.length"
+        :mcps="agentMCPs"
         data-testid="start-setup-mcps-section"
       />
 
       <ConversationExample
+        v-if="conversationExample.length"
         :conversationExample="conversationExample"
         :agentName="agent.name"
         data-testid="start-setup-conversation-section"
@@ -31,7 +36,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import type { AgentGroup } from '@/store/types/Agents.types';
+import type { Agent, AgentGroup } from '@/store/types/Agents.types';
 import useTranslatedField from '@/composables/useTranslatedField';
 
 import About from './About.vue';
@@ -41,7 +46,7 @@ import StartSetupSkeleton from './StartSetupSkeleton.vue';
 
 const props = withDefaults(
   defineProps<{
-    agent: AgentGroup;
+    agent: AgentGroup | Agent;
     isLoading?: boolean;
   }>(),
   {
@@ -51,9 +56,12 @@ const props = withDefaults(
 
 const translateField = useTranslatedField();
 
-const conversationExample = computed(
-  () => translateField(props.agent.presentation?.conversation_example) ?? [],
-);
+const conversationExample = computed(() => {
+  const presentation = (props.agent as AgentGroup).presentation;
+  return translateField(presentation?.conversation_example) ?? [];
+});
+
+const agentMCPs = computed(() => (props.agent as AgentGroup).MCPs ?? []);
 </script>
 
 <style lang="scss" scoped>
@@ -63,9 +71,12 @@ const conversationExample = computed(
   padding: $unnnic-space-6;
 
   display: grid;
-  grid-template-columns: 4fr 3fr;
-  grid-template-rows: auto 1fr;
   gap: $unnnic-space-4;
+
+  &--with-conversation {
+    grid-template-columns: 4fr 3fr;
+    grid-template-rows: auto 1fr;
+  }
 
   &--loading {
     grid-template-columns: 1fr;

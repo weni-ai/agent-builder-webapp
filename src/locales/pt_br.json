@@ -394,6 +394,13 @@
           "title": "Configurar MCP {mcp}",
           "description": "Este MCP não requer configuração"
         },
+        "constants": {
+          "optional": "opcional",
+          "title": "Configurar {agent}"
+        },
+        "custom_credentials": {
+          "title": "Inserir credenciais"
+        },
         "third_step": {
           "title": "Revise a configuração e insira as credenciais",
           "description": "Revise a configuração e insira suas credenciais para finalizar o setup do agente",

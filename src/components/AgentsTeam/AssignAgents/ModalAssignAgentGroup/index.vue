@@ -47,7 +47,7 @@ import { computed, ref, watch } from 'vue';
 
 import { useI18n } from 'vue-i18n';
 
-import { AgentGroup } from '@/store/types/Agents.types';
+import { Agent, AgentGroup } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import ModalAssignAgentGroupStartSetup from './Group/StartSetup/index.vue';
@@ -60,7 +60,7 @@ const { t } = useI18n();
 const emit = defineEmits(['update:open']);
 
 const props = defineProps<{
-  agent: AgentGroup;
+  agent: AgentGroup | Agent;
 }>();
 
 const open = defineModel('open', {
@@ -72,14 +72,24 @@ const agentsTeamStore = useAgentsTeamStore();
 
 const isConfiguringAgentGroup = ref<boolean>(false);
 const isAssigning = ref(false);
-const agentDetails = ref<AgentGroup | null>(null);
+const agentDetails = ref<AgentGroup | Agent | null>(null);
 const isLoadingAgentDetails = ref(false);
 const resolvedAgentDetails = computed(() => agentDetails.value ?? props.agent);
 
 const agentHasSetupSteps = computed(() => {
-  const { MCPs, systems, credentials } = resolvedAgentDetails.value;
+  const details = resolvedAgentDetails.value;
 
-  return MCPs?.length > 0 || systems?.length > 0 || credentials?.length > 0;
+  if (details.is_official) {
+    const { MCPs, systems, credentials } = details as AgentGroup;
+    return (
+      (MCPs?.length ?? 0) > 0 ||
+      (systems?.length ?? 0) > 0 ||
+      (credentials?.length ?? 0) > 0
+    );
+  }
+
+  const { constants, credentials } = details as Agent;
+  return (constants?.length ?? 0) > 0 || (credentials?.length ?? 0) > 0;
 });
 
 const footerButtonText = computed(() => {
@@ -90,15 +100,20 @@ const footerButtonText = computed(() => {
 
 async function fetchAgentDetails() {
   if (isLoadingAgentDetails.value || agentDetails.value) return;
+  if (!props.agent.is_official) return;
+
+  const group = (props.agent as AgentGroup).group;
+  if (!group) return;
 
   try {
     isLoadingAgentDetails.value = true;
     const agentDetailsData =
-      await nexusaiAPI.router.agents_team.getOfficialAgentDetails(
-        props.agent.group,
-      );
+      await nexusaiAPI.router.agents_team.getOfficialAgentDetails(group);
 
-    agentDetails.value = { ...props.agent, ...agentDetailsData };
+    agentDetails.value = {
+      ...(props.agent as AgentGroup),
+      ...agentDetailsData,
+    };
   } finally {
     isLoadingAgentDetails.value = false;
   }
@@ -117,10 +132,17 @@ async function assignAgent() {
   isAssigning.value = true;
 
   try {
-    await agentsTeamStore.toggleAgentAssignment({
-      group: props.agent.group,
-      is_assigned: true,
-    });
+    if (props.agent.is_official) {
+      await agentsTeamStore.toggleAgentAssignment({
+        group: (props.agent as AgentGroup).group,
+        is_assigned: true,
+      });
+    } else {
+      await agentsTeamStore.toggleAgentAssignment({
+        uuid: (props.agent as Agent).uuid,
+        is_assigned: true,
+      });
+    }
     closeAgentModal();
   } finally {
     isAssigning.value = false;
