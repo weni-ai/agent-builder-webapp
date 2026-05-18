@@ -1,8 +1,8 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
 import { shallowMount } from '@vue/test-utils';
 
-import MCPConfigForm from '../MCPConfigForm.vue';
+import ConstantsForm from '../ConstantsForm.vue';
 
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({
@@ -10,7 +10,7 @@ vi.mock('vue-i18n', () => ({
   }),
 }));
 
-const configFixture = [
+const constantsFixture = [
   {
     name: 'notifications',
     label: 'Notifications',
@@ -65,40 +65,40 @@ const configFixture = [
 ];
 
 function createWrapper(props = {}) {
-  let currentValues = props.configValues || {};
+  let currentValues = props.constantsValues || {};
   let wrapper;
 
   const mountWrapper = () => {
-    wrapper = shallowMount(MCPConfigForm, {
+    wrapper = shallowMount(ConstantsForm, {
       props: {
-        config: configFixture,
-        configValues: currentValues,
-        'onUpdate:configValues': (nextValues) => {
+        constants: constantsFixture,
+        constantsValues: currentValues,
+        'onUpdate:constantsValues': (nextValues) => {
           currentValues = nextValues;
           if (wrapper) {
-            wrapper.setProps({ configValues: currentValues });
+            wrapper.setProps({ constantsValues: currentValues });
           }
         },
         ...props,
       },
     });
 
-    wrapper.setProps({ configValues: currentValues });
+    wrapper.setProps({ constantsValues: currentValues });
     return wrapper;
   };
 
   return {
     wrapper: mountWrapper(),
-    getConfigValues: () => currentValues,
+    getConstantsValues: () => currentValues,
   };
 }
 
-describe('MCPConfigForm', () => {
+describe('ConstantsForm', () => {
   let wrapper;
-  let getConfigValues;
+  let getConstantsValues;
 
   beforeEach(() => {
-    ({ wrapper, getConfigValues } = createWrapper());
+    ({ wrapper, getConstantsValues } = createWrapper());
   });
 
   afterEach(() => {
@@ -106,10 +106,10 @@ describe('MCPConfigForm', () => {
     vi.clearAllMocks();
   });
 
-  it('initializes config values with defaults', async () => {
+  it('initializes constants values with defaults', async () => {
     await nextTick();
 
-    expect(getConfigValues()).toMatchObject({
+    expect(getConstantsValues()).toMatchObject({
       notifications: true,
       threshold: 5,
       notes: 'Initial note',
@@ -122,7 +122,7 @@ describe('MCPConfigForm', () => {
     switchComponent.vm.$emit('update:model-value', false);
     await nextTick();
 
-    expect(getConfigValues().notifications).toBe(false);
+    expect(getConstantsValues().notifications).toBe(false);
   });
 
   it('handles select changes and clears value when empty', async () => {
@@ -132,11 +132,11 @@ describe('MCPConfigForm', () => {
 
     selectComponent.vm.$emit('update:model-value', 'sms');
     await nextTick();
-    expect(getConfigValues().channel).toBe('sms');
+    expect(getConstantsValues().channel).toBe('sms');
 
     selectComponent.vm.$emit('update:model-value', '');
     await nextTick();
-    expect(getConfigValues().channel).toBe('');
+    expect(getConstantsValues().channel).toBe('');
   });
 
   it('updates text input values', async () => {
@@ -146,27 +146,27 @@ describe('MCPConfigForm', () => {
     textInput.vm.$emit('update:model-value', 'Updated note');
     await nextTick();
 
-    expect(getConfigValues().notes).toBe('Updated note');
+    expect(getConstantsValues().notes).toBe('Updated note');
   });
 
   it('toggles checkbox values', async () => {
     wrapper.vm.toggleCheckboxValue('features', 'feature-a');
     await nextTick();
-    expect(getConfigValues().features).toEqual(['feature-a']);
+    expect(getConstantsValues().features).toEqual(['feature-a']);
 
     wrapper.vm.toggleCheckboxValue('features', 'feature-b');
     await nextTick();
-    expect(getConfigValues().features).toEqual(['feature-a', 'feature-b']);
+    expect(getConstantsValues().features).toEqual(['feature-a', 'feature-b']);
 
     wrapper.vm.toggleCheckboxValue('features', 'feature-a');
     await nextTick();
-    expect(getConfigValues().features).toEqual(['feature-b']);
+    expect(getConstantsValues().features).toEqual(['feature-b']);
   });
 
   it('updates radio selection', async () => {
     wrapper.vm.updateFieldValue('mode', 'manual');
     await nextTick();
 
-    expect(getConfigValues().mode).toBe('manual');
+    expect(getConstantsValues().mode).toBe('manual');
   });
 });

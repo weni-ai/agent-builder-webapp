@@ -23,7 +23,7 @@ export default function useAgent() {
         'mcp' in agent && agent.mcp
           ? {
               name: agent.mcp?.name || '',
-              config: agent.mcp?.config || {},
+              constants: agent.mcp?.constants || {},
               description:
                 'description' in agent.mcp ? agent.mcp?.description : null,
               system: getSystemObject(systemName),

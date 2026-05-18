@@ -1,6 +1,6 @@
 <template>
   <section
-    v-if="MCPs.length"
+    v-if="MCPs?.length"
     class="modal-assign-agent__content"
     data-testid="concierge-second-step"
   >
@@ -23,11 +23,11 @@
         }}
       </p>
 
-      <MCPConfigForm
-        v-if="selectedMCPConfig.length"
-        v-model:configValues="selectedMCPConfigValues"
-        :config="selectedMCPConfig"
-        data-testid="concierge-second-step-config-form"
+      <ConstantsForm
+        v-if="selectedMCPConstants.length"
+        v-model:constantsValues="selectedMCPConstantsValues"
+        :constants="selectedMCPConstants"
+        data-testid="concierge-second-step-constants-form"
       />
 
       <p
@@ -60,10 +60,10 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import MCPSelection from './MCPSelection.vue';
-import MCPConfigForm from './MCPConfigForm.vue';
-import { AgentMCP } from '@/store/types/Agents.types';
-type MCPConfigField = AgentMCP['config'] extends (infer U)[] ? U : never;
-type MCPConfigValue = string | string[] | boolean;
+import ConstantsForm from '../ConstantsForm.vue';
+import { AgentConstantField, AgentMCP } from '@/store/types/Agents.types';
+
+type ConstantValue = string | string[] | boolean;
 
 defineOptions({
   name: 'MCPStepContent',
@@ -77,21 +77,21 @@ const props = defineProps<{
 const selectedMCP = defineModel<AgentMCP | null>('selectedMCP', {
   required: true,
 });
-const selectedMCPConfigValues = defineModel<Record<string, MCPConfigValue>>(
-  'selectedMCPConfigValues',
+const selectedMCPConstantsValues = defineModel<Record<string, ConstantValue>>(
+  'selectedMCPConstantsValues',
   {
     required: true,
     default: () => ({}),
   },
 );
-const selectedMCPConfig = computed<MCPConfigField[]>(() => {
-  return (selectedMCP.value?.config ?? []) as MCPConfigField[];
+const selectedMCPConstants = computed<AgentConstantField[]>(() => {
+  return selectedMCP.value?.constants ?? [];
 });
 
 watch(
   () => props.MCPs,
   (mcps) => {
-    if (mcps.length && !selectedMCP.value) {
+    if (mcps?.length && !selectedMCP.value) {
       handleSelectMCP(mcps[0], true);
     }
   },
@@ -102,10 +102,10 @@ watch(
   () => selectedMCP.value,
   (next) => {
     if (!next) return;
-    if (Object.keys(selectedMCPConfigValues.value || {}).length) {
+    if (Object.keys(selectedMCPConstantsValues.value || {}).length) {
       return;
     }
-    selectedMCPConfigValues.value = buildInitialValues(next.config);
+    selectedMCPConstantsValues.value = buildInitialValues(next.constants);
   },
   { immediate: true },
 );
@@ -113,25 +113,22 @@ watch(
 function handleSelectMCP(MCP: AgentMCP, checked: boolean) {
   if (!checked) return;
   selectedMCP.value = MCP;
-  selectedMCPConfigValues.value = buildInitialValues(MCP.config);
+  selectedMCPConstantsValues.value = buildInitialValues(MCP.constants);
 }
 
-function buildInitialValues(config: AgentMCP['config'] = []) {
-  return (config as MCPConfigField[]).reduce<Record<string, MCPConfigValue>>(
-    (acc, field) => {
-      if (field.type === 'CHECKBOX') {
-        acc[field.name] = [];
-        return acc;
-      }
-      if (field.type === 'SELECT' || field.type === 'RADIO') {
-        acc[field.name] = field.options?.[0]?.value ?? '';
-        return acc;
-      }
-      acc[field.name] = '';
+function buildInitialValues(constants: AgentConstantField[] = []) {
+  return constants.reduce<Record<string, ConstantValue>>((acc, field) => {
+    if (field.type === 'CHECKBOX') {
+      acc[field.name] = [];
       return acc;
-    },
-    {},
-  );
+    }
+    if (field.type === 'SELECT' || field.type === 'RADIO') {
+      acc[field.name] = field.options?.[0]?.value ?? '';
+      return acc;
+    }
+    acc[field.name] = '';
+    return acc;
+  }, {});
 }
 </script>
 
@@ -147,14 +144,6 @@ function buildInitialValues(config: AgentMCP['config'] = []) {
   & > :first-child {
     border-right: 1px solid $unnnic-color-border-soft;
   }
-}
-
-.modal-assign-agent__form {
-  display: flex;
-  flex-direction: column;
-  gap: $unnnic-space-4;
-
-  width: 100%;
 }
 
 .modal-assign-agent__config-placeholder,
