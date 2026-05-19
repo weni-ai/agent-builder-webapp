@@ -56,8 +56,9 @@ const managerSelectorStore = useManagerSelectorStore();
 
 async function loadAgentsData() {
   agentsTeamStore.loadMyAgents();
-  // The official agents need to be loaded first to get the available systems to active team
-  await agentsTeamStore.loadOfficialAgents();
+  agentsTeamStore.loadOfficialAgents();
+  // Active team depends on availableSystems to resolve mcp.system
+  await agentsTeamStore.loadAvailableSystems();
   agentsTeamStore.loadActiveTeam();
 }
 
