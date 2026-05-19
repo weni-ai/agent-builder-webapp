@@ -31,7 +31,7 @@ export const AgentsTeam = {
       params,
     });
 
-    const agents = [...data.new.agents, ...data.legacy].map((agent) => ({
+    const agents = (data?.results ?? []).map((agent) => ({
       ...agent,
       id: agent.slug,
       systems: filterSystems(agent.systems),
@@ -40,8 +40,18 @@ export const AgentsTeam = {
 
     return {
       agents,
-      availableSystems: data?.new?.available_systems,
     };
+  },
+
+  async listOfficialAvailableSystems() {
+    const { data } = await request.$http.get(
+      '/api/v1/official/available-systems',
+      {
+        params: { project_uuid: projectUuid.value },
+      },
+    );
+
+    return data?.available_systems ?? [];
   },
 
   async getOfficialAgentDetails(group) {

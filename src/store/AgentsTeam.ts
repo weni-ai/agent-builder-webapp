@@ -126,20 +126,30 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
       const { system, search, category } = assignAgentsFilters;
 
-      const { agents, availableSystems: availableSystemsResponse } =
-        await nexusaiAPI.router.agents_team.listOfficialAgents({
+      const { agents } = await nexusaiAPI.router.agents_team.listOfficialAgents(
+        {
           name: search,
           category: category?.[0]?.value ?? '',
           system: system === 'ALL_OFFICIAL' ? '' : system,
-        });
+        },
+      );
 
       officialAgents.data = agentIconService.applyIconsToAgents(agents);
-      availableSystems.value = availableSystemsResponse ?? [];
       officialAgents.status = 'complete';
     } catch (error) {
       console.error('error', error);
 
       officialAgents.status = 'error';
+    }
+  }
+
+  async function loadAvailableSystems() {
+    try {
+      availableSystems.value =
+        await nexusaiAPI.router.agents_team.listOfficialAvailableSystems();
+    } catch (error) {
+      console.error('error', error);
+
       availableSystems.value = [];
     }
   }
@@ -294,6 +304,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     addAgentToTeam,
     loadActiveTeam,
     loadOfficialAgents,
+    loadAvailableSystems,
     loadMyAgents,
     toggleAgentAssignment,
     deleteAgent,

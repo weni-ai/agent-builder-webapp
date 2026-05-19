@@ -25,18 +25,16 @@ describe('AgentsTeam API', () => {
   describe('listOfficialAgents', () => {
     const mockOfficialAgentsResponse = {
       data: {
-        new: {
-          agents: [
-            {
-              uuid: 'agent-uuid-1',
-              name: 'Official Agent 1',
-              slug: 'official-agent-1',
-              systems: ['system_a', 'no_system', 'custom'],
-            },
-          ],
-          available_systems: ['system_a', 'system_b'],
-        },
-        legacy: [
+        count: 2,
+        page: 1,
+        page_size: 20,
+        results: [
+          {
+            uuid: 'agent-uuid-1',
+            name: 'Official Agent 1',
+            slug: 'official-agent-1',
+            systems: ['system_a', 'no_system', 'custom'],
+          },
           {
             uuid: 'agent-uuid-2',
             name: 'Official Agent 2',
@@ -66,10 +64,10 @@ describe('AgentsTeam API', () => {
       });
 
       expect(result.agents).toHaveLength(2);
-      expect(result.availableSystems).toEqual(['system_a', 'system_b']);
+      expect(result).not.toHaveProperty('availableSystems');
     });
 
-    it('should merge new and legacy agents and filter system tags', async () => {
+    it('should map agents from results and filter system tags', async () => {
       request.$http.get.mockResolvedValue(mockOfficialAgentsResponse);
 
       const result = await AgentsTeam.listOfficialAgents({});
@@ -84,6 +82,14 @@ describe('AgentsTeam API', () => {
         id: 'official-agent-2',
         systems: ['system_b'],
       });
+    });
+
+    it('should return an empty array when results is missing', async () => {
+      request.$http.get.mockResolvedValue({ data: {} });
+
+      const result = await AgentsTeam.listOfficialAgents({});
+
+      expect(result.agents).toEqual([]);
     });
 
     it('should omit empty filters from params', async () => {
@@ -101,6 +107,57 @@ describe('AgentsTeam API', () => {
       request.$http.get.mockRejectedValue(error);
 
       await expect(AgentsTeam.listOfficialAgents({})).rejects.toThrow(
+        'API Error',
+      );
+    });
+  });
+
+  describe('listOfficialAvailableSystems', () => {
+    const mockAvailableSystemsResponse = {
+      data: {
+        available_systems: [
+          { slug: 'vtex', name: 'VTEX', logo: 'https://example.com/vtex.svg' },
+          { slug: 'another-system', name: 'Another System', logo: null },
+        ],
+      },
+    };
+
+    it('should call the available systems endpoint with project_uuid', async () => {
+      request.$http.get.mockResolvedValue(mockAvailableSystemsResponse);
+
+      await AgentsTeam.listOfficialAvailableSystems();
+
+      expect(request.$http.get).toHaveBeenCalledWith(
+        '/api/v1/official/available-systems',
+        {
+          params: { project_uuid: mockProjectUuid },
+        },
+      );
+    });
+
+    it('should return the available_systems array from the response', async () => {
+      request.$http.get.mockResolvedValue(mockAvailableSystemsResponse);
+
+      const result = await AgentsTeam.listOfficialAvailableSystems();
+
+      expect(result).toEqual(
+        mockAvailableSystemsResponse.data.available_systems,
+      );
+    });
+
+    it('should return an empty array when available_systems is missing', async () => {
+      request.$http.get.mockResolvedValue({ data: {} });
+
+      const result = await AgentsTeam.listOfficialAvailableSystems();
+
+      expect(result).toEqual([]);
+    });
+
+    it('should handle API error', async () => {
+      const error = new Error('API Error');
+      request.$http.get.mockRejectedValue(error);
+
+      await expect(AgentsTeam.listOfficialAvailableSystems()).rejects.toThrow(
         'API Error',
       );
     });
