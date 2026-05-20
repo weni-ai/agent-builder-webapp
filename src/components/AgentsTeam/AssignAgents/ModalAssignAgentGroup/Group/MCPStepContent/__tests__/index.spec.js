@@ -7,7 +7,7 @@ import MCPStepContent from '../index.vue';
 const mcpWithConstants = {
   name: 'Search',
   description: 'Search products',
-  constants: [
+  config: [
     { name: 'apiKey', type: 'TEXT' },
     {
       name: 'region',
@@ -39,7 +39,7 @@ const mcpWithConstants = {
 const mcpWithoutConstants = {
   name: 'Inventory',
   description: 'Inventory manager',
-  constants: [],
+  config: [],
 };
 
 const MCPs = [mcpWithConstants, mcpWithoutConstants];

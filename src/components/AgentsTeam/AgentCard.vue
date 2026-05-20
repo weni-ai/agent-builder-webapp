@@ -118,9 +118,7 @@ const props = defineProps({
 
 const translateField = useTranslatedField();
 
-const description = computed(() => {
-  return translateField(props.agent?.about) || props.agent.description;
-});
+const description = computed(() => translateField(props.agent?.about));
 </script>
 
 <style lang="scss" scoped>

@@ -1,8 +1,8 @@
 import { ref, watch, type Ref } from 'vue';
 
 import {
+  Agent,
   AgentCredential,
-  AgentGroup,
   AgentMCP,
 } from '@/store/types/Agents.types';
 
@@ -10,7 +10,6 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 import { unnnicToastManager } from '@weni/unnnic-system';
 import i18n from '@/utils/plugins/i18n';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
-import useTranslatedField from './useTranslatedField';
 
 export type MCPConfigValues = Record<string, string | string[] | boolean>;
 
@@ -21,12 +20,11 @@ export type ConciergeAssignmentConfig = {
   credentials: Record<string, string>;
 };
 
-export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
+export default function useOfficialAgentAssignment(agent: Ref<Agent>) {
   const config = ref<ConciergeAssignmentConfig>(
     createInitialConfig() as ConciergeAssignmentConfig,
   );
   const agentsTeamStore = useAgentsTeamStore();
-  const translateField = useTranslatedField();
 
   const isSubmitting = ref(false);
   const hasVTEXSystem = agent.value?.systems?.some(
@@ -99,27 +97,26 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
       const { data } =
         await nexusaiAPI.router.agents_team.toggleAgentAssignment(payload);
 
-      const constantsWithLabels = Object.fromEntries(
-        Object.entries(config.value.mcp_config).map(([key, value]) => {
-          const label =
-            config.value.MCP?.constants.find((field) => field.name === key)
-              ?.label || key;
-          return [label, value];
-        }),
-      );
+      const selectedMCP = config.value.MCP;
+      const assignedConfig = (selectedMCP?.config ?? []).map((field) => ({
+        ...field,
+        value: config.value.mcp_config[field.name] ?? null,
+      }));
 
-      const normalizedAgent = {
+      const assignedMCP: AgentMCP = {
+        name: selectedMCP?.name ?? '',
+        description: selectedMCP?.description ?? { en: '', pt: '', es: '' },
+        system: config.value.system,
+        credentials: selectedMCP?.credentials ?? [],
+        config: assignedConfig,
+      };
+
+      const normalizedAgent: Agent = {
         ...agent.value,
         uuid: data.agent.uuid,
         id: data.agent.slug,
         systems: [config.value.system],
-        description:
-          translateField(agent.value.about) ?? data.agent.description,
-        mcp: {
-          name: config.value.MCP?.name || '',
-          description: config.value.MCP?.description || '',
-          constants: constantsWithLabels,
-        },
+        mcps: [assignedMCP],
       };
 
       agentsTeamStore.addAgentToTeam(normalizedAgent);

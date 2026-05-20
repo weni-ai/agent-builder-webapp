@@ -52,7 +52,7 @@ import { computed } from 'vue';
 import Skill from '@/components/AgentsTeam/Skill.vue';
 import useAgentSystems from '@/composables/useAgentSystems';
 import useTranslatedField from '@/composables/useTranslatedField';
-import type { Agent, AgentGroup } from '@/store/types/Agents.types';
+import type { Agent } from '@/store/types/Agents.types';
 
 const GROUP_DOCS: Record<string, string> = {
   ORDER_PAYMENT: '/docs/Payment_Agent.pdf',
@@ -64,7 +64,7 @@ const GROUP_DOCS: Record<string, string> = {
 };
 
 const props = defineProps<{
-  agent: AgentGroup | Agent;
+  agent: Agent;
 }>();
 
 type SystemBadge = {
@@ -76,19 +76,15 @@ const { getSystemsObjects } = useAgentSystems();
 const translateField = useTranslatedField();
 
 const documentationUrl = computed(() => {
-  const group = (props.agent as AgentGroup).group;
+  const group = props.agent.group;
   if (!group) return null;
   return GROUP_DOCS[group.toUpperCase()] ?? null;
 });
 
-const aboutDescription = computed(() => {
-  return (
-    translateField(props.agent.about) ?? (props.agent as Agent).description
-  );
-});
+const aboutDescription = computed(() => translateField(props.agent.about));
 
 const systemBadges = computed<SystemBadge[]>(() => {
-  const agentSystems = (props.agent as AgentGroup).systems ?? [];
+  const agentSystems = props.agent.systems ?? [];
   const systems = getSystemsObjects(agentSystems) || [];
 
   return systems.map((system) => ({

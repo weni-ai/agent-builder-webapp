@@ -39,11 +39,12 @@ export default function useCustomAgentAssignment(agent: Ref<Agent>) {
   }
 
   function buildCredentialsPayload(): CredentialPayload[] {
-    if (!agent.value?.credentials?.length) {
+    const credentials = agent.value?.mcps?.[0]?.credentials ?? [];
+    if (!credentials.length) {
       return [];
     }
 
-    return agent.value.credentials.map((credential) => ({
+    return credentials.map((credential) => ({
       ...credential,
       value: config.value.credentials[credential.name] ?? '',
     }));

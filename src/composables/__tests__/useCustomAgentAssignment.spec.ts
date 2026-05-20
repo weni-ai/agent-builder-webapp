@@ -48,11 +48,18 @@ const buildAgent = (overrides = {}) => ({
   uuid: 'custom-uuid',
   name: 'Custom Agent',
   is_official: false,
-  credentials: [
-    { name: 'api_key', label: 'API Key', is_confidential: true },
-    { name: 'base_url', label: 'Base URL', is_confidential: false },
+  mcps: [
+    {
+      name: 'Default',
+      description: { en: '', pt: '', es: '' },
+      system: 'custom',
+      config: [],
+      credentials: [
+        { name: 'api_key', label: 'API Key', is_confidential: true },
+        { name: 'base_url', label: 'Base URL', is_confidential: false },
+      ],
+    },
   ],
-  constants: [],
   ...overrides,
 });
 
@@ -159,7 +166,19 @@ describe('useCustomAgentAssignment', () => {
     nexusaiAPI.router.agents_team.toggleAgentAssignment.mockResolvedValue({
       data: {},
     });
-    const agent = ref(buildAgent({ credentials: [] }));
+    const agent = ref(
+      buildAgent({
+        mcps: [
+          {
+            name: 'Default',
+            description: { en: '', pt: '', es: '' },
+            system: 'custom',
+            config: [],
+            credentials: [],
+          },
+        ],
+      }),
+    );
     const { submitAssignment } = useCustomAgentAssignment(agent);
 
     await submitAssignment();

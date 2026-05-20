@@ -15,10 +15,9 @@
 <script setup lang="ts">
 import Skill from '@/components/AgentsTeam/Skill.vue';
 import AgentDetailSection from './AgentDetailSection.vue';
-import type { AgentAssignedSystem } from '@/store/types/Agents.types';
 
 defineProps<{
-  system: AgentAssignedSystem;
+  system: { name: string; slug: string; icon?: string };
 }>();
 </script>
 
