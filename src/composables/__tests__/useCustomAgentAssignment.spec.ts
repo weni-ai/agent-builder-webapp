@@ -119,8 +119,8 @@ describe('useCustomAgentAssignment', () => {
     expect(
       nexusaiAPI.router.agents_team.toggleAgentAssignment,
     ).toHaveBeenCalledWith({
-      agentUuid: 'custom-uuid',
-      is_assigned: true,
+      agent_uuid: 'custom-uuid',
+      assigned: true,
       mcp_config: { country: 'BRA' },
     });
     expect(addAgentToTeamMock).toHaveBeenCalledWith(agent.value);
@@ -168,8 +168,8 @@ describe('useCustomAgentAssignment', () => {
     expect(
       nexusaiAPI.router.agents_team.toggleAgentAssignment,
     ).toHaveBeenCalledWith({
-      agentUuid: 'custom-uuid',
-      is_assigned: true,
+      agent_uuid: 'custom-uuid',
+      assigned: true,
       mcp_config: {},
     });
   });

@@ -48,10 +48,10 @@ export const AgentsTeam = {
     return data?.available_systems ?? [];
   },
 
-  async toggleOfficialAgentAssignment(payload) {
-    const agentId = payload.group
-      ? `&group=${payload.group}`
-      : `&agent_uuid=${payload.agent_uuid}`;
+  async toggleAgentAssignment(payload) {
+    const agentId = payload.agent_uuid
+      ? `&agent_uuid=${payload.agent_uuid}`
+      : `&group=${payload.group}`;
 
     const { data } = await request.$http.post(
       `/api/v1/official/agents?project_uuid=${projectUuid.value}${agentId}`,
@@ -141,23 +141,6 @@ export const AgentsTeam = {
           }),
         ),
       },
-    };
-  },
-
-  async toggleAgentAssignment({ agentUuid, is_assigned, mcp_config }) {
-    const body = { assigned: is_assigned };
-    if (mcp_config !== undefined) body.mcp_config = mcp_config;
-
-    const { data } = await request.$http.patch(
-      `api/project/${projectUuid.value}/assign/${agentUuid}`,
-      body,
-      {
-        hideGenericErrorAlert: true,
-      },
-    );
-
-    return {
-      data,
     };
   },
 

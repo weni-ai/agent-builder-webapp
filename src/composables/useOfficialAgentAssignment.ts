@@ -97,9 +97,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
       };
 
       const { data } =
-        await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment(
-          payload,
-        );
+        await nexusaiAPI.router.agents_team.toggleAgentAssignment(payload);
 
       const constantsWithLabels = Object.fromEntries(
         Object.entries(config.value.mcp_config).map(([key, value]) => {
