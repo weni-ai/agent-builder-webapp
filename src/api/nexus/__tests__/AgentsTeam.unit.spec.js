@@ -33,13 +33,36 @@ describe('AgentsTeam API', () => {
             uuid: 'agent-uuid-1',
             name: 'Official Agent 1',
             slug: 'official-agent-1',
-            systems: ['system_a', 'no_system', 'custom'],
+            group: 'group-1',
+            systems: ['system_a'],
+            about: { en: 'About EN', pt: null, es: null },
+            mcps: [
+              {
+                name: 'Default',
+                description: { en: 'desc', pt: null, es: null },
+                system: 'system_a',
+                config: [
+                  {
+                    name: 'REQ_FIELD',
+                    label: 'Required',
+                    type: 'TEXT',
+                    is_required: true,
+                    default_value: null,
+                    options: [],
+                  },
+                ],
+                credentials: [],
+              },
+            ],
           },
           {
             uuid: 'agent-uuid-2',
             name: 'Official Agent 2',
             slug: 'official-agent-2',
-            systems: ['system_b', 'custom'],
+            group: 'group-2',
+            systems: ['system_b'],
+            about: { en: 'About EN 2', pt: null, es: null },
+            mcps: [],
           },
         ],
       },
@@ -54,20 +77,23 @@ describe('AgentsTeam API', () => {
         name: 'Agent',
       });
 
-      expect(request.$http.get).toHaveBeenCalledWith('/api/v1/official/agents', {
-        params: {
-          project_uuid: mockProjectUuid,
-          category: 'productivity',
-          system: 'system_a',
-          name: 'Agent',
+      expect(request.$http.get).toHaveBeenCalledWith(
+        '/api/v1/official/agents',
+        {
+          params: {
+            project_uuid: mockProjectUuid,
+            category: 'productivity',
+            system: 'system_a',
+            name: 'Agent',
+          },
         },
-      });
+      );
 
       expect(result.agents).toHaveLength(2);
       expect(result).not.toHaveProperty('availableSystems');
     });
 
-    it('should map agents from results and filter system tags', async () => {
+    it('should map agents from results, normalize mcps and pass systems through', async () => {
       request.$http.get.mockResolvedValue(mockOfficialAgentsResponse);
 
       const result = await AgentsTeam.listOfficialAgents({});
@@ -76,11 +102,43 @@ describe('AgentsTeam API', () => {
         uuid: 'agent-uuid-1',
         id: 'official-agent-1',
         systems: ['system_a'],
+        mcps: [
+          expect.objectContaining({
+            name: 'Default',
+            system: 'system_a',
+            constants: [
+              expect.objectContaining({ name: 'REQ_FIELD', is_required: true }),
+            ],
+          }),
+        ],
       });
       expect(result.agents[1]).toMatchObject({
         uuid: 'agent-uuid-2',
         id: 'official-agent-2',
         systems: ['system_b'],
+        mcps: [],
+      });
+    });
+
+    it('should default mcps and systems to empty arrays when missing', async () => {
+      request.$http.get.mockResolvedValue({
+        data: {
+          results: [
+            {
+              uuid: 'agent-uuid-3',
+              name: 'Official Agent 3',
+              slug: 'official-agent-3',
+            },
+          ],
+        },
+      });
+
+      const result = await AgentsTeam.listOfficialAgents({});
+
+      expect(result.agents[0]).toMatchObject({
+        id: 'official-agent-3',
+        systems: [],
+        mcps: [],
       });
     });
 
@@ -97,9 +155,12 @@ describe('AgentsTeam API', () => {
 
       await AgentsTeam.listOfficialAgents({});
 
-      expect(request.$http.get).toHaveBeenCalledWith('/api/v1/official/agents', {
-        params: { project_uuid: mockProjectUuid },
-      });
+      expect(request.$http.get).toHaveBeenCalledWith(
+        '/api/v1/official/agents',
+        {
+          params: { project_uuid: mockProjectUuid },
+        },
+      );
     });
 
     it('should handle API error', async () => {

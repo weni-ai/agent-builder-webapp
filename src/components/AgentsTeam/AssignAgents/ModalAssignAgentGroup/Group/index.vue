@@ -69,7 +69,6 @@ const emit = defineEmits(['update:open']);
 
 const props = defineProps<{
   agent: AgentGroup | Agent;
-  agentDetails?: AgentGroup | Agent | null;
 }>();
 
 defineModel('open', {
@@ -87,7 +86,6 @@ const Step = {
 type StepKey = (typeof Step)[keyof typeof Step];
 
 const stepIndex = ref<number>(1);
-const resolvedAgentDetails = computed(() => props.agentDetails ?? props.agent);
 const isOfficial = computed(() => Boolean(props.agent?.is_official));
 
 const officialAgent = computed(() => props.agent as AgentGroup);
@@ -95,16 +93,14 @@ const customAgent = computed(() => props.agent as Agent);
 
 const hasSystems = computed(() => {
   if (!isOfficial.value) return false;
-  const systems =
-    (resolvedAgentDetails.value as AgentGroup)?.systems ??
-    officialAgent.value.systems;
+  const systems = officialAgent.value.systems;
   return Array.isArray(systems) && systems.length > 0;
 });
 
 const hasMCPs =
   isOfficial.value &&
-  Array.isArray(officialAgent.value.MCPs) &&
-  officialAgent.value.MCPs.length > 0;
+  Array.isArray(officialAgent.value.mcps) &&
+  officialAgent.value.mcps.length > 0;
 
 const stepSequence = computed<StepKey[]>(() => {
   if (hasMCPs) {
@@ -155,23 +151,22 @@ const currentStepKey = computed<StepKey>(
   () => stepSequence.value[stepIndex.value - 1],
 );
 const currentStepProps = computed(() => {
-  const officialDetails = resolvedAgentDetails.value as AgentGroup | undefined;
   const selectedSystemMCPs =
-    officialDetails?.MCPs?.filter(
+    officialAgent.value?.mcps?.filter(
       (mcp) => mcp.system === officialConfig.value.system,
     ) || [];
 
   const stepProps: Partial<Record<StepKey, Record<string, unknown>>> = {
     [Step.System]: {
       systems: officialAgent.value.systems,
-      MCPs: officialDetails?.MCPs,
+      MCPs: officialAgent.value.mcps,
       selectedSystem: officialConfig.value.system,
       'onUpdate:selectedSystem': (nextSystem: string) => {
         officialConfig.value.system = nextSystem;
       },
     },
     [Step.MCP]: {
-      MCPs: hasSystems.value ? selectedSystemMCPs : officialDetails?.MCPs,
+      MCPs: hasSystems.value ? selectedSystemMCPs : officialAgent.value.mcps,
       selectedMCP: officialConfig.value.MCP,
       selectedMCPConstantsValues: officialConfig.value.mcp_config,
       'onUpdate:selectedMCP': (nextMCP: AgentMCP | null) => {

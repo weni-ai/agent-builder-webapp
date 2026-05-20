@@ -9,13 +9,10 @@ vi.mock('@/composables/useTranslatedField', () => ({
 
 const mockAgent = {
   group: 'CONCIERGE',
-  description: 'Handles concierge flows by helping customers',
-  presentation: {
-    about: {
-      en: 'Handles concierge flows by helping customers',
-      pt: null,
-      es: null,
-    },
+  about: {
+    en: 'Handles concierge flows by helping customers',
+    pt: null,
+    es: null,
   },
   systems: ['VTEX', 'SYNERISE'],
 };
@@ -59,7 +56,7 @@ describe('StartSetup About', () => {
     wrapper = createWrapper();
 
     expect(findTitle().exists()).toBe(true);
-    expect(findDescription().text()).toBe(mockAgent.description);
+    expect(findDescription().text()).toBe(mockAgent.about.en);
   });
 
   it('renders system badges when agent systems are available', () => {

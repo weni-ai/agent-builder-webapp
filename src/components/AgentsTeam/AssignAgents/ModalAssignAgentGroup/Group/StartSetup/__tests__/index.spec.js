@@ -9,24 +9,21 @@ vi.mock('@/composables/useTranslatedField', () => ({
 
 const mockAgent = {
   name: 'Product Concierge',
-  description: 'Handles concierge flows',
   systems: ['VTEX'],
-  MCPs: [
+  about: { en: 'Handles concierge flows', pt: null, es: null },
+  mcps: [
     {
       name: 'Concierge MCP',
       description: { en: 'Assists customers', pt: null, es: null },
     },
   ],
-  presentation: {
-    about: { en: 'Handles concierge flows', pt: null, es: null },
-    conversation_example: {
-      en: [
-        { direction: 'incoming', text: 'Text of the customer' },
-        { direction: 'outgoing', text: 'Text of the agent' },
-      ],
-      pt: [],
-      es: [],
-    },
+  conversation_example: {
+    en: [
+      { direction: 'incoming', text: 'Text of the customer' },
+      { direction: 'outgoing', text: 'Text of the agent' },
+    ],
+    pt: [],
+    es: [],
   },
 };
 

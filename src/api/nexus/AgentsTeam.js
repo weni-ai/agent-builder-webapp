@@ -5,14 +5,8 @@ import { cleanParams } from '@/utils/http';
 
 const projectUuid = computed(() => useProjectStore().uuid);
 
-function filterSystems(systems) {
-  return systems.filter(
-    (system) => system !== 'no_system' && system !== 'custom',
-  );
-}
-
-function normalizeMCPs(MCPs = []) {
-  return MCPs.map(({ config, ...mcp }) => ({
+function normalizeMCPs(mcps = []) {
+  return mcps.map(({ config, ...mcp }) => ({
     ...mcp,
     constants: config ?? [],
   }));
@@ -34,8 +28,8 @@ export const AgentsTeam = {
     const agents = (data?.results ?? []).map((agent) => ({
       ...agent,
       id: agent.slug,
-      systems: filterSystems(agent.systems),
-      MCPs: normalizeMCPs(agent.MCPs),
+      systems: agent.systems ?? [],
+      mcps: normalizeMCPs(agent.mcps),
     }));
 
     return {
@@ -52,25 +46,6 @@ export const AgentsTeam = {
     );
 
     return data?.available_systems ?? [];
-  },
-
-  async getOfficialAgentDetails(group) {
-    const params = {
-      project_uuid: projectUuid.value,
-    };
-
-    const { data } = await request.$http.get(
-      `/api/v1/official/agents/${group}`,
-      {
-        params,
-      },
-    );
-
-    return {
-      ...data,
-      systems: filterSystems(data.systems),
-      MCPs: normalizeMCPs(data.MCPs),
-    };
   },
 
   async toggleOfficialAgentAssignment(payload) {
