@@ -72,8 +72,8 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
     const officialAssignedAgent = officialAgents.data.find(
       (agent) =>
-        agent.uuid === normalizedAgent.uuid ||
-        agent.agents?.some((variant) => variant.uuid === normalizedAgent.uuid),
+        (agent.uuid && agent.uuid === normalizedAgent.uuid) ||
+        (normalizedAgent.group && agent.group === normalizedAgent.group),
     );
     const customAssignedAgent = myAgents.data.find(
       (agent) => agent.uuid === normalizedAgent.uuid,
@@ -177,7 +177,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     is_assigned,
   }: {
     uuid?: string;
-    group?: string;
+    group?: string | null;
     is_assigned: boolean;
   }) {
     if ((!uuid && !group) || typeof is_assigned !== 'boolean') {
@@ -188,8 +188,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       const foundOfficialAgent = officialAgents.data.find(
         (agent) =>
           (agent.uuid && agent.uuid === uuid) ||
-          (group && agent.group === group) ||
-          agent.agents?.some((variant) => variant.uuid === uuid),
+          (group && agent.group === group),
       );
 
       const foundMyAgent = myAgents.data.find((agent) => agent.uuid === uuid);
@@ -204,17 +203,10 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
         throw new Error('Agent not found');
       }
 
-      if (agent.uuid) {
-        await nexusaiAPI.router.agents_team.toggleAgentAssignment({
-          agentUuid: (agent as Agent)?.uuid,
-          is_assigned,
-        });
-      } else {
-        await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment({
-          group: agent.group,
-          assigned: is_assigned,
-        });
-      }
+      await nexusaiAPI.router.agents_team.toggleAgentAssignment({
+        ...(agent.uuid ? { agent_uuid: agent.uuid } : { group: agent.group }),
+        assigned: is_assigned,
+      });
 
       if (listedAgent) listedAgent.assigned = is_assigned;
 

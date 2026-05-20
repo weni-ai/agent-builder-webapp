@@ -67,8 +67,8 @@ export default function useCustomAgentAssignment(agent: Ref<Agent>) {
       }
 
       await nexusaiAPI.router.agents_team.toggleAgentAssignment({
-        agentUuid: agent.value.uuid,
-        is_assigned: true,
+        agent_uuid: agent.value.uuid,
+        assigned: true,
         mcp_config: config.value.constants,
       });
 

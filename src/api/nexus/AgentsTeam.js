@@ -5,14 +5,8 @@ import { cleanParams } from '@/utils/http';
 
 const projectUuid = computed(() => useProjectStore().uuid);
 
-function filterSystems(systems) {
-  return systems.filter(
-    (system) => system !== 'no_system' && system !== 'custom',
-  );
-}
-
-function normalizeMCPs(MCPs = []) {
-  return MCPs.map(({ config, ...mcp }) => ({
+function normalizeMCPs(mcps = []) {
+  return mcps.map(({ config, ...mcp }) => ({
     ...mcp,
     constants: config ?? [],
   }));
@@ -34,8 +28,8 @@ export const AgentsTeam = {
     const agents = (data?.results ?? []).map((agent) => ({
       ...agent,
       id: agent.slug,
-      systems: filterSystems(agent.systems),
-      MCPs: normalizeMCPs(agent.MCPs),
+      systems: agent.systems ?? [],
+      mcps: normalizeMCPs(agent.mcps),
     }));
 
     return {
@@ -54,29 +48,10 @@ export const AgentsTeam = {
     return data?.available_systems ?? [];
   },
 
-  async getOfficialAgentDetails(group) {
-    const params = {
-      project_uuid: projectUuid.value,
-    };
-
-    const { data } = await request.$http.get(
-      `/api/v1/official/agents/${group}`,
-      {
-        params,
-      },
-    );
-
-    return {
-      ...data,
-      systems: filterSystems(data.systems),
-      MCPs: normalizeMCPs(data.MCPs),
-    };
-  },
-
-  async toggleOfficialAgentAssignment(payload) {
-    const agentId = payload.group
-      ? `&group=${payload.group}`
-      : `&agent_uuid=${payload.agent_uuid}`;
+  async toggleAgentAssignment(payload) {
+    const agentId = payload.agent_uuid
+      ? `&agent_uuid=${payload.agent_uuid}`
+      : `&group=${payload.group}`;
 
     const { data } = await request.$http.post(
       `/api/v1/official/agents?project_uuid=${projectUuid.value}${agentId}`,
@@ -166,23 +141,6 @@ export const AgentsTeam = {
           }),
         ),
       },
-    };
-  },
-
-  async toggleAgentAssignment({ agentUuid, is_assigned, mcp_config }) {
-    const body = { assigned: is_assigned };
-    if (mcp_config !== undefined) body.mcp_config = mcp_config;
-
-    const { data } = await request.$http.patch(
-      `api/project/${projectUuid.value}/assign/${agentUuid}`,
-      body,
-      {
-        hideGenericErrorAlert: true,
-      },
-    );
-
-    return {
-      data,
     };
   },
 

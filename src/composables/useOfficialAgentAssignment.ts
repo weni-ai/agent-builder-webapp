@@ -4,7 +4,6 @@ import {
   AgentCredential,
   AgentGroup,
   AgentMCP,
-  GroupVariant,
 } from '@/store/types/Agents.types';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
@@ -17,10 +16,6 @@ export type MCPConfigValues = Record<string, string | string[] | boolean>;
 
 export type ConciergeAssignmentConfig = {
   system: string;
-  variant: {
-    type: GroupVariant | '';
-    config: null;
-  };
   mcp_config: MCPConfigValues;
   MCP: AgentMCP | null;
   credentials: Record<string, string>;
@@ -102,9 +97,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
       };
 
       const { data } =
-        await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment(
-          payload,
-        );
+        await nexusaiAPI.router.agents_team.toggleAgentAssignment(payload);
 
       const constantsWithLabels = Object.fromEntries(
         Object.entries(config.value.mcp_config).map(([key, value]) => {
@@ -121,8 +114,7 @@ export default function useOfficialAgentAssignment(agent: Ref<AgentGroup>) {
         id: data.agent.slug,
         systems: [config.value.system],
         description:
-          translateField(agent.value.presentation?.about) ??
-          data.agent.description,
+          translateField(agent.value.about) ?? data.agent.description,
         mcp: {
           name: config.value.MCP?.name || '',
           description: config.value.MCP?.description || '',

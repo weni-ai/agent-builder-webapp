@@ -2,7 +2,6 @@
   <section
     :class="[
       'modal-assign-agent__start-setup',
-      { 'modal-assign-agent__start-setup--loading': isLoading },
       {
         'modal-assign-agent__start-setup--with-conversation':
           conversationExample.length,
@@ -10,26 +9,23 @@
     ]"
     data-testid="start-setup"
   >
-    <StartSetupSkeleton v-if="isLoading" />
-    <template v-else>
-      <About
-        :agent="agent"
-        data-testid="start-setup-about-section"
-      />
+    <About
+      :agent="agent"
+      data-testid="start-setup-about-section"
+    />
 
-      <MCPs
-        v-if="agentMCPs.length"
-        :mcps="agentMCPs"
-        data-testid="start-setup-mcps-section"
-      />
+    <MCPs
+      v-if="agentMCPs.length"
+      :mcps="agentMCPs"
+      data-testid="start-setup-mcps-section"
+    />
 
-      <ConversationExample
-        v-if="conversationExample.length"
-        :conversationExample="conversationExample"
-        :agentName="agent.name"
-        data-testid="start-setup-conversation-section"
-      />
-    </template>
+    <ConversationExample
+      v-if="conversationExample.length"
+      :conversationExample="conversationExample"
+      :agentName="agent.name"
+      data-testid="start-setup-conversation-section"
+    />
   </section>
 </template>
 
@@ -42,26 +38,19 @@ import useTranslatedField from '@/composables/useTranslatedField';
 import About from './About.vue';
 import MCPs from './MCPs.vue';
 import ConversationExample from './ConversationExample.vue';
-import StartSetupSkeleton from './StartSetupSkeleton.vue';
 
-const props = withDefaults(
-  defineProps<{
-    agent: AgentGroup | Agent;
-    isLoading?: boolean;
-  }>(),
-  {
-    isLoading: false,
-  },
-);
+const props = defineProps<{
+  agent: AgentGroup | Agent;
+}>();
 
 const translateField = useTranslatedField();
 
 const conversationExample = computed(() => {
-  const presentation = (props.agent as AgentGroup).presentation;
-  return translateField(presentation?.conversation_example) ?? [];
+  const conversation = (props.agent as AgentGroup).conversation_example;
+  return translateField(conversation) ?? [];
 });
 
-const agentMCPs = computed(() => (props.agent as AgentGroup).MCPs ?? []);
+const agentMCPs = computed(() => (props.agent as AgentGroup).mcps ?? []);
 </script>
 
 <style lang="scss" scoped>
@@ -76,10 +65,6 @@ const agentMCPs = computed(() => (props.agent as AgentGroup).MCPs ?? []);
   &--with-conversation {
     grid-template-columns: 4fr 3fr;
     grid-template-rows: auto 1fr;
-  }
-
-  &--loading {
-    grid-template-columns: 1fr;
   }
 }
 </style>

@@ -82,8 +82,9 @@ const documentationUrl = computed(() => {
 });
 
 const aboutDescription = computed(() => {
-  const presentationAbout = (props.agent as AgentGroup).presentation?.about;
-  return translateField(presentationAbout) ?? props.agent.description;
+  return (
+    translateField(props.agent.about) ?? (props.agent as Agent).description
+  );
 });
 
 const systemBadges = computed<SystemBadge[]>(() => {
