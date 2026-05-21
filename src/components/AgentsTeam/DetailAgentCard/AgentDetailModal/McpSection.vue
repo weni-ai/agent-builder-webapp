@@ -20,7 +20,7 @@
       </header>
 
       <section
-        v-if="mcpArguments.length"
+        v-if="mcpArguments?.length"
         class="agent-detail-modal__mcp-arguments"
       >
         <p
@@ -62,7 +62,7 @@ const mcpTitle = computed(() => props.mcp.name || '');
 const mcpDescription = computed(() => translateField(props.mcp.description));
 
 const mcpArguments = computed(() => {
-  const constantsEntries = props.mcp.config;
+  const constantsEntries = props.mcp.config ?? [];
   return constantsEntries
     .filter((field) => !isValueEmpty(field.value ?? null))
     .map((field) => ({
