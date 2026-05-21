@@ -4,7 +4,7 @@ exports[`PreviewLogs.vue > Component rendering > matches snapshot 1`] = `
 "<section data-v-b04d9899="" data-testid="preview-logs" class="preview-logs preview-logs--left">
   <!--v-if-->
   <ol data-v-b04d9899="" class="preview-logs__logs preview-logs__logs--left">
-    <li data-v-b04d9899="" class="logs__log logs__log--left logs-enter-from logs-enter-active" data-testid="preview-logs-log">
+    <li data-v-b04d9899="" class="logs__log logs__log--left" data-testid="preview-logs-log">
       <p data-v-b04d9899="" class="log__agent-name log__agent-name--left" data-testid="preview-logs-log-agent-name">Test Agent 1</p>
       <ol data-v-b04d9899="" class="log__steps">
         <li data-v-b04d9899="" class="steps__step steps__step--left" data-testid="preview-logs-log-step">
@@ -18,7 +18,7 @@ exports[`PreviewLogs.vue > Component rendering > matches snapshot 1`] = `
         </li>
       </ol>
     </li>
-    <li data-v-b04d9899="" class="logs__log logs__log--left logs-enter-from logs-enter-active" data-testid="preview-logs-log">
+    <li data-v-b04d9899="" class="logs__log logs__log--left" data-testid="preview-logs-log">
       <p data-v-b04d9899="" class="log__agent-name log__agent-name--left" data-testid="preview-logs-log-agent-name">Manager</p>
       <ol data-v-b04d9899="" class="log__steps">
         <li data-v-b04d9899="" class="steps__step steps__step--left" data-testid="preview-logs-log-step">

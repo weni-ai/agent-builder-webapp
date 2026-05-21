@@ -2,15 +2,14 @@ import i18n from './plugins/i18n';
 import * as Sentry from '@sentry/browser';
 
 /**
- * Processes a trace object and updates it with additional configuration and collaborator information.
+ * Processes a trace object and enriches it with the resolved summary/icon/category.
  *
- * @param {Object} trace - The original trace object to process
- * @param {string} currentAgent - The name of the collaborator that was invoked
+ * @param {Object} params
+ * @param {Object} params.log - The original log message received from the backend
  *
  * @example
  * const result = processLog({
- *   trace: { trace: { trace: { orchestrationTrace: { ... } } } },
- *   currentAgent: 'string'
+ *   log: { trace: { trace: { orchestrationTrace: { ... } }, config: { agentName: 'manager' } } },
  * });
  *
  * @returns
@@ -23,33 +22,19 @@ import * as Sentry from '@sentry/browser';
  *   config: {
  *     summary: 'string',
  *     icon: 'string',
- *     currentAgent: 'string'
+ *     category: 'string',
+ *     agentName: 'string'
  *   }
  * }
  */
-export function processLog({ log, currentAgent }) {
+export function processLog({ log }) {
   const trace = log?.trace?.trace || log?.trace || {};
 
   const {
-    orchestrationTrace: {
-      invocationInput: { agentCollaboratorInvocationInput } = {},
-      observation: { agentCollaboratorInvocationOutput } = {},
-      modelInvocationInput,
-      modelInvocationOutput,
-    } = {},
+    orchestrationTrace: { modelInvocationInput, modelInvocationOutput } = {},
   } = trace;
 
   const configData = log?.trace?.config || {};
-
-  let updatedCollaborator = currentAgent;
-  if (!configData.agentName) {
-    updatedCollaborator = addAgentToConfig({
-      currentAgent,
-      input: agentCollaboratorInvocationInput,
-      output: agentCollaboratorInvocationOutput,
-      config: configData,
-    });
-  }
 
   const traceConfig = getLogConfig({ trace, config: configData });
 
@@ -64,7 +49,6 @@ export function processLog({ log, currentAgent }) {
     config: {
       ...configData,
       ...traceConfig,
-      currentAgent: updatedCollaborator,
     },
   };
 }
@@ -225,30 +209,4 @@ function getLogConfig({ trace, config }) {
     category,
     icon,
   };
-}
-
-/**
- * This function is necessary to maintain agent sequencing according to the invoke,
- * since the agent only sends its ID in the input and output, and not in all of its traces
- * @param {Object} config - The config object to update
- * @param {string} currentAgent - The name of the collaborator that was invoked
- * @param {Object} input - The input object
- * @param {Object} output - The output object
- */
-function addAgentToConfig({ currentAgent, input, output, config }) {
-  const traceInvokingAgent = input?.agentCollaboratorName;
-  const traceOutputAgent = output?.agentCollaboratorName;
-
-  let updatedCollaborator = currentAgent;
-  if (traceInvokingAgent) updatedCollaborator = traceInvokingAgent;
-  else if (traceOutputAgent) updatedCollaborator = '';
-
-  const agentName =
-    traceInvokingAgent || traceOutputAgent || updatedCollaborator;
-
-  if (agentName) {
-    config.agentName = agentName;
-  }
-
-  return updatedCollaborator;
 }

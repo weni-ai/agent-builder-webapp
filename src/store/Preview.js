@@ -4,7 +4,6 @@ import { computed, ref } from 'vue';
 
 import WS from '@/websocket/setup';
 
-import { useAgentsTeamStore } from './AgentsTeam';
 import { processLog } from '@/utils/previewLogs';
 import { useProjectStore } from './Project';
 import { useUserStore } from './User';
@@ -12,43 +11,21 @@ import { useUserStore } from './User';
 export const usePreviewStore = defineStore('preview', () => {
   const ws = ref(null);
   const logs = ref([]);
-  const collaboratorInvoked = ref('');
   const collaboratorsLogs = computed(() =>
     logs.value.filter((log) => log.type === 'trace_update'),
   );
   const activeAgent = computed(() => {
-    const agentsTeamStore = useAgentsTeamStore();
-    const { manager, agents } = agentsTeamStore.activeTeam.data;
     const lastLog = logs.value.at(-1);
-
-    const lastLogAgentId = lastLog?.config?.agentName;
-
-    const agent =
-      lastLogAgentId === 'manager'
-        ? manager
-        : agents?.find(
-            (agent) =>
-              agent?.id && lastLogAgentId && agent?.id === lastLogAgentId,
-          );
+    const rawAgentName = lastLog?.config?.agentName;
 
     return {
-      ...agent,
+      name: rawAgentName === 'manager' ? 'Manager' : rawAgentName,
       currentTask: lastLog?.config?.summary,
     };
   });
 
   function addLog(log) {
-    if (log.type === 'trace_update') {
-      const processedLog = processLog({
-        log,
-        currentAgent: collaboratorInvoked.value,
-      });
-
-      collaboratorInvoked.value = processedLog.config.currentAgent;
-      logs.value.push(processedLog);
-    } else {
-      logs.value.push(log);
-    }
+    logs.value.push(log.type === 'trace_update' ? processLog({ log }) : log);
   }
 
   function clearLogs() {
@@ -89,6 +66,5 @@ export const usePreviewStore = defineStore('preview', () => {
     collaboratorsLogs,
     logs,
     addLog,
-    collaboratorInvoked,
   };
 });
