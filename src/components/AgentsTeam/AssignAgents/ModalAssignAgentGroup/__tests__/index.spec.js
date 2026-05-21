@@ -20,7 +20,7 @@ const conciergeAgent = {
       description: { en: 'desc', pt: null, es: null },
       system: 'vtex',
       config: [],
-      credentials: [],
+      credentials: [{ name: 'token', label: 'API Token' }],
     },
   ],
   systems: ['vtex'],
