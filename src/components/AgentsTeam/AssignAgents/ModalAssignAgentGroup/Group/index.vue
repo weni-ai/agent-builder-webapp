@@ -220,6 +220,7 @@ const isNextDisabled = computed(() => {
   };
 
   const stepDisabled: Partial<Record<StepKey, () => boolean>> = {
+    [Step.System]: () => !config.value.system,
     [Step.MCP]: () =>
       !config.value.MCP ||
       isSomeRequiredFieldMissing(

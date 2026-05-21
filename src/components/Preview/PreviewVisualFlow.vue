@@ -24,7 +24,7 @@
       :height="visualFlowHeight"
       :startY="managerRef?.$el.getBoundingClientRect().height"
       :coloredLineIndex="
-        teamAgents?.findIndex((agent) => agent.id === activeAgent?.id)
+        teamAgents?.findIndex((agent) => agent.name === activeAgent?.name)
       "
     />
 
@@ -98,7 +98,7 @@ const branchPositions = computed(() => {
 });
 
 function isActiveAgent(agent) {
-  return agent?.id === activeAgent.value?.id;
+  return agent?.name === activeAgent.value?.name;
 }
 
 const visualFlowHeight = ref(0);

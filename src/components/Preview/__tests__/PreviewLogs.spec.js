@@ -5,17 +5,6 @@ import { nextTick } from 'vue';
 
 import PreviewLogs from '../PreviewLogs.vue';
 
-import { usePreviewStore } from '@/store/Preview';
-import { useAgentsTeamStore } from '@/store/AgentsTeam';
-
-const mockAllAgents = {
-  agents: [
-    { id: 'agent-1', name: 'Test Agent 1' },
-    { id: 'agent-2', name: 'Test Agent 2' },
-  ],
-  manager: { id: 'manager', name: 'Manager' },
-};
-
 const mockLogs = [
   {
     type: 'trace_update',
@@ -23,7 +12,7 @@ const mockLogs = [
       trace: {},
     },
     config: {
-      agentName: 'agent-1',
+      agentName: 'Test Agent 1',
       icon: 'icon-1',
       summary: 'First trace summary',
     },
@@ -32,7 +21,7 @@ const mockLogs = [
     type: 'trace_update',
     data: null,
     config: {
-      agentName: 'agent-1',
+      agentName: 'Test Agent 1',
       icon: 'icon-2',
       summary: 'Second trace summary',
     },
@@ -48,13 +37,7 @@ const mockLogs = [
 ];
 
 const createWrapper = (props = {}) => {
-  const pinia = createTestingPinia({
-    initialState: {
-      preview: {
-        logs: [...mockLogs],
-      },
-    },
-  });
+  const pinia = createTestingPinia();
 
   return mount(PreviewLogs, {
     props: {
@@ -75,8 +58,6 @@ const createWrapper = (props = {}) => {
 
 describe('PreviewLogs.vue', () => {
   let wrapper;
-  let previewStore;
-  let agentsTeamStore;
 
   const previewLogs = () => wrapper.find('[data-testid="preview-logs"]');
   const emptyMessage = () => wrapper.find('[data-testid="preview-logs-empty"]');
@@ -104,9 +85,6 @@ describe('PreviewLogs.vue', () => {
     }));
 
     wrapper = createWrapper();
-    previewStore = usePreviewStore();
-    agentsTeamStore = useAgentsTeamStore();
-    agentsTeamStore.allAgents = mockAllAgents;
   });
 
   afterEach(() => {
@@ -164,31 +142,6 @@ describe('PreviewLogs.vue', () => {
       await wrapper.setProps({ logsSide: 'right' });
       expect(previewLogs().classes()).toContain('preview-logs--right');
     });
-
-    it('uses provided agents prop when available', async () => {
-      const customAgents = {
-        agents: [{ id: 'custom-agent', name: 'Custom Agent' }],
-        manager: { id: 'custom-manager', name: 'Custom Manager' },
-      };
-
-      const customLogs = [
-        {
-          type: 'trace_update',
-          data: null,
-          config: {
-            agentName: 'custom-agent',
-            summary: 'Custom agent trace',
-          },
-        },
-      ];
-
-      await wrapper.setProps({
-        agents: customAgents,
-        logs: customLogs,
-      });
-
-      expect(logAgentNames().at(0).text()).toBe('Custom Agent');
-    });
   });
 
   describe('Logs processing', () => {
@@ -208,14 +161,14 @@ describe('PreviewLogs.vue', () => {
       expect(wrapper.vm.processedLogs).toEqual([]);
     });
 
-    it('handles missing agent correctly', async () => {
+    it('uses agentName directly as label when backend sends a display name', async () => {
       const logsWithUnknownAgent = [
         {
           type: 'trace_update',
           summary: 'Unknown agent trace',
           data: null,
           config: {
-            agentName: 'unknown-agent',
+            agentName: 'Custom Display Name',
           },
         },
       ];
@@ -223,7 +176,7 @@ describe('PreviewLogs.vue', () => {
       await wrapper.setProps({ logs: logsWithUnknownAgent });
 
       expect(wrapper.vm.processedLogs.length).toBe(1);
-      expect(wrapper.vm.processedLogs[0].agent).toBe('unknown-agent');
+      expect(wrapper.vm.processedLogs[0].agent).toBe('Custom Display Name');
     });
 
     it('groups consecutive logs from the same agent', async () => {
@@ -232,7 +185,7 @@ describe('PreviewLogs.vue', () => {
           type: 'trace_update',
           data: null,
           config: {
-            agentName: 'agent-1',
+            agentName: 'Concierge',
             summary: 'First step',
           },
         },
@@ -240,7 +193,7 @@ describe('PreviewLogs.vue', () => {
           type: 'trace_update',
           data: null,
           config: {
-            agentName: 'agent-1',
+            agentName: 'Concierge',
             summary: 'Second step',
           },
         },
@@ -248,7 +201,7 @@ describe('PreviewLogs.vue', () => {
           type: 'trace_update',
           data: null,
           config: {
-            agentName: 'agent-2',
+            agentName: 'Reservations',
             summary: 'Third step',
           },
         },
@@ -429,14 +382,14 @@ describe('PreviewLogs.vue', () => {
         {
           data: null,
           config: {
-            agentName: 'agent-1',
+            agentName: 'Concierge',
             summary: 'Step without icon',
           },
         },
         {
           data: null,
           config: {
-            agentName: 'agent-1',
+            agentName: 'Concierge',
             summary: 'Second step without icon',
           },
         },
@@ -452,14 +405,14 @@ describe('PreviewLogs.vue', () => {
         {
           data: { trace: { someTrace: 'data' } },
           config: {
-            agentName: 'agent-1',
+            agentName: 'Concierge',
             summary: 'Step with data',
           },
         },
         {
           data: null,
           config: {
-            agentName: 'agent-1',
+            agentName: 'Concierge',
             summary: 'Step without data',
           },
         },
@@ -485,23 +438,6 @@ describe('PreviewLogs.vue', () => {
       await wrapper.setProps({ logs: logsWithMissingAgentName });
 
       expect(wrapper.vm.processedLogs.length).toBe(0);
-    });
-
-    it('uses agentName as fallback label when agent is not found', async () => {
-      const logsWithNonExistentAgent = [
-        {
-          data: null,
-          config: {
-            agentName: 'non-existent-agent',
-            summary: 'Log from non-existent agent',
-          },
-        },
-      ];
-
-      await wrapper.setProps({ logs: logsWithNonExistentAgent });
-
-      expect(wrapper.vm.processedLogs.length).toBe(1);
-      expect(wrapper.vm.processedLogs[0].agent).toBe('non-existent-agent');
     });
   });
 });
