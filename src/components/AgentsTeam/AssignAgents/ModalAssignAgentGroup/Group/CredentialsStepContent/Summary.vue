@@ -15,10 +15,9 @@
         {{ $t('agents.assign_agents.setup.third_step.system_card_title') }}
       </p>
 
-      <Skill
+      <SystemBadge
         class="modal-assign-agent__summary-card-skill"
-        :title="systemName"
-        :icon="systemIcon"
+        :system="selectedSystem"
         data-testid="concierge-summary-system-skill"
       />
     </article>
@@ -51,32 +50,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-
-import useAgentSystems from '@/composables/useAgentSystems';
 import { AgentMCP } from '@/store/types/Agents.types';
 import useTranslatedField from '@/composables/useTranslatedField';
 
-import Skill from '@/components/AgentsTeam/Skill.vue';
+import SystemBadge from '@/components/AgentsTeam/SystemBadge.vue';
 
-const props = defineProps<{
+defineProps<{
   selectedSystem?: string;
   selectedMCP: AgentMCP | null;
 }>();
 
-const { getSystemObject } = useAgentSystems();
 const translateField = useTranslatedField();
-
-const systemInfo = computed(() => {
-  if (!props.selectedSystem) return null;
-  return getSystemObject(props.selectedSystem);
-});
-
-const systemName = computed(() => {
-  if (!props.selectedSystem) return '';
-  return systemInfo.value?.name || props.selectedSystem;
-});
-const systemIcon = computed(() => systemInfo.value?.icon || '');
 </script>
 
 <style scoped lang="scss">

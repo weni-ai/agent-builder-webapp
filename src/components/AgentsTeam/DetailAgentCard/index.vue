@@ -4,7 +4,7 @@
     data-testid="detail-agent-card"
     class="detail-agent-card"
     :agent="agent"
-    :tags="agent.mcp?.system ? [agent.mcp.system] : []"
+    :tags="agentTags"
     :loading="loading"
     :newAgentHighlight="agent.uuid === agentsTeamStore.newAgentAssigned?.uuid"
     @click="openAgentDetailModal"
@@ -18,26 +18,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import AgentCard from '../AgentCard.vue';
 import AgentDetailModal from './AgentDetailModal/index.vue';
-import { ActiveTeamAgent } from '@/store/types/Agents.types';
+import { Agent } from '@/store/types/Agents.types';
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
 
 defineOptions({ inheritAttrs: false });
 
 const agentsTeamStore = useAgentsTeamStore();
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
-    agent: ActiveTeamAgent;
+    agent: Agent;
     loading?: boolean;
   }>(),
   { loading: false },
 );
 
 const isAgentDetailModalOpen = ref(false);
+
+const agentTags = computed(() => {
+  const systemSlug = props.agent.mcps?.[0]?.system;
+  return systemSlug ? [systemSlug] : [];
+});
 
 function openAgentDetailModal() {
   isAgentDetailModalOpen.value = true;

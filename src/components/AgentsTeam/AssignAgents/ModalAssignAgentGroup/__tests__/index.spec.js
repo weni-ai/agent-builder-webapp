@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { createTestingPinia } from '@pinia/testing';
@@ -19,8 +19,8 @@ const conciergeAgent = {
       name: 'Default',
       description: { en: 'desc', pt: null, es: null },
       system: 'vtex',
-      constants: [],
-      credentials: [],
+      config: [],
+      credentials: [{ name: 'token', label: 'API Token' }],
     },
   ],
   systems: ['vtex'],

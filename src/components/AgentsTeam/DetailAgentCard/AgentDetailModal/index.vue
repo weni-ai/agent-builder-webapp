@@ -25,14 +25,14 @@
             />
 
             <SystemSection
-              v-if="agent.mcp?.system"
-              :system="agent.mcp.system"
+              v-if="assignedSystemSlug"
+              :system="assignedSystemSlug"
             />
           </section>
 
           <McpSection
-            v-if="agent.mcp"
-            :mcp="agent.mcp"
+            v-if="assignedMCP"
+            :mcp="assignedMCP"
           />
         </section>
 
@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { ActiveTeamAgent } from '@/store/types/Agents.types';
+import { Agent } from '@/store/types/Agents.types';
 import useTranslatedField from '@/composables/useTranslatedField';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
@@ -59,14 +59,16 @@ import AgentDetailSection from './AgentDetailSection.vue';
 import ViewOptions from './ViewOptions.vue';
 
 const props = defineProps<{
-  agent: ActiveTeamAgent;
+  agent: Agent;
 }>();
 
 const translateField = useTranslatedField();
 
-const aboutDescription = computed(
-  () => translateField(props.agent.about) ?? props.agent.description,
-);
+const aboutDescription = computed(() => translateField(props.agent.about));
+
+const assignedMCP = computed(() => props.agent.mcps?.[0] ?? null);
+
+const assignedSystemSlug = computed(() => assignedMCP.value?.system ?? null);
 
 const emit = defineEmits(['update:open']);
 

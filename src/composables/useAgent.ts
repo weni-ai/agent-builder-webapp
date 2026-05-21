@@ -1,34 +1,11 @@
-import { Agent, AgentGroup, ActiveTeamAgent } from '@/store/types/Agents.types';
+import { Agent } from '@/store/types/Agents.types';
 import agentIconService from '@/utils/agentIconService';
-import useAgentSystems from './useAgentSystems';
 
 export default function useAgent() {
-  const { getSystemObject } = useAgentSystems();
-
-  function normalizeActiveAgent(agent: AgentGroup | Agent): ActiveTeamAgent {
-    const systemName =
-      'systems' in agent
-        ? (agent as AgentGroup).systems[0]
-        : agent.mcp?.system?.name;
-
+  function normalizeActiveAgent(agent: Agent): Agent {
     return {
-      uuid: (agent as Agent).uuid || '',
-      id: (agent as Agent).id || (agent as Agent).slug || '',
-      name: agent.name || '',
-      is_official: agent.is_official || false,
-      about: agent.about ?? null,
-      description: (agent as Agent).description || '',
-      group: 'group' in agent ? (agent.group as string) : undefined,
-      mcp:
-        'mcp' in agent && agent.mcp
-          ? {
-              name: agent.mcp?.name || '',
-              constants: agent.mcp?.constants || {},
-              description:
-                'description' in agent.mcp ? agent.mcp?.description : null,
-              system: getSystemObject(systemName),
-            }
-          : null,
+      ...agent,
+      id: agent.id || agent.slug || '',
       icon: agentIconService.getIconForAgent(agent),
     };
   }

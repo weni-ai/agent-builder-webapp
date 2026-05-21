@@ -1,38 +1,45 @@
 <template>
-  <section class="skill">
+  <section class="system-badge">
     <img
       v-if="icon"
       :src="icon"
-      :alt="title"
-      class="skill__icon"
-      data-testid="skill-icon"
+      :alt="name"
+      class="system-badge__icon"
+      data-testid="system-badge-icon"
     />
 
     <p
-      class="skill__title"
+      class="system-badge__title"
       tag="p"
-      data-testid="skill-name"
+      data-testid="system-badge-name"
     >
-      {{ title }}
+      {{ name }}
     </p>
   </section>
 </template>
 
 <script setup>
-defineProps({
-  title: {
+import { computed } from 'vue';
+
+import useAgentSystems from '@/composables/useAgentSystems';
+
+const props = defineProps({
+  system: {
     type: String,
     required: true,
   },
-  icon: {
-    type: [Object, String],
-    required: true,
-  },
 });
+
+const { getSystemObject } = useAgentSystems();
+
+const systemInfo = computed(() => getSystemObject(props.system));
+
+const name = computed(() => systemInfo.value?.name || props.system);
+const icon = computed(() => systemInfo.value?.icon || '');
 </script>
 
 <style lang="scss" scoped>
-.skill {
+.system-badge {
   border-radius: $unnnic-radius-2;
   background-color: $unnnic-color-bg-soft;
 

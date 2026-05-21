@@ -1,7 +1,7 @@
 <template>
   <AgentCard
     :agent="agent"
-    :tags="agent.systems ? getSystemsObjects(agent.systems) : []"
+    :tags="agent.systems ?? []"
     data-testid="agent-card"
   >
     <template
@@ -46,15 +46,11 @@
 <script setup>
 import { computed, ref } from 'vue';
 
-import useAgentSystems from '@/composables/useAgentSystems';
-
 import AgentCard from '../AgentCard.vue';
 import ModalAssignAgentGroup from './ModalAssignAgentGroup/index.vue';
 import DeleteAgentModal from '../DeleteAgentModal.vue';
 import ContentItemActions from '@/components/ContentItemActions.vue';
 import i18n from '@/utils/plugins/i18n';
-
-const { getSystemsObjects } = useAgentSystems();
 
 const props = defineProps({
   agent: {

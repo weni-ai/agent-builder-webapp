@@ -44,7 +44,7 @@ import { computed, ref } from 'vue';
 
 import { useI18n } from 'vue-i18n';
 
-import { Agent, AgentGroup } from '@/store/types/Agents.types';
+import { Agent } from '@/store/types/Agents.types';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import ModalAssignAgentGroupStartSetup from './Group/StartSetup/index.vue';
@@ -56,7 +56,7 @@ const { t } = useI18n();
 const emit = defineEmits(['update:open']);
 
 const props = defineProps<{
-  agent: AgentGroup | Agent;
+  agent: Agent;
 }>();
 
 const open = defineModel('open', {
@@ -70,13 +70,14 @@ const isConfiguringAgentGroup = ref<boolean>(false);
 const isAssigning = ref(false);
 
 const agentHasSetupSteps = computed(() => {
-  if (props.agent.is_official) {
-    const { mcps } = props.agent as AgentGroup;
-    return (mcps?.length ?? 0) > 0;
-  }
+  const mcps = props.agent.mcps ?? [];
+  if (mcps.length > 1) return true;
 
-  const { constants, credentials } = props.agent as Agent;
-  return (constants?.length ?? 0) > 0 || (credentials?.length ?? 0) > 0;
+  const firstMCP = mcps[0];
+  return (
+    (firstMCP?.config?.length ?? 0) > 0 ||
+    (firstMCP?.credentials?.length ?? 0) > 0
+  );
 });
 
 const footerButtonText = computed(() => {
@@ -98,17 +99,11 @@ async function assignAgent() {
   isAssigning.value = true;
 
   try {
-    if (props.agent.is_official) {
-      await agentsTeamStore.toggleAgentAssignment({
-        group: (props.agent as AgentGroup).group,
-        is_assigned: true,
-      });
-    } else {
-      await agentsTeamStore.toggleAgentAssignment({
-        uuid: (props.agent as Agent).uuid,
-        is_assigned: true,
-      });
-    }
+    await agentsTeamStore.toggleAgentAssignment({
+      uuid: props.agent.uuid,
+      group: props.agent.group,
+      is_assigned: true,
+    });
     closeAgentModal();
   } finally {
     isAssigning.value = false;

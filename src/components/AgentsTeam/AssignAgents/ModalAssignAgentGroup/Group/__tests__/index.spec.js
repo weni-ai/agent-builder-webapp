@@ -10,15 +10,10 @@ vi.mock('vue-i18n', () => ({
   }),
 }));
 
-const useOfficialAgentAssignmentMock = vi.hoisted(() => vi.fn());
-const useCustomAgentAssignmentMock = vi.hoisted(() => vi.fn());
+const useAgentAssignmentMock = vi.hoisted(() => vi.fn());
 
-vi.mock('@/composables/useOfficialAgentAssignment', () => ({
-  default: (...args) => useOfficialAgentAssignmentMock(...args),
-}));
-
-vi.mock('@/composables/useCustomAgentAssignment', () => ({
-  default: (...args) => useCustomAgentAssignmentMock(...args),
+vi.mock('@/composables/useAgentAssignment', () => ({
+  default: (...args) => useAgentAssignmentMock(...args),
 }));
 
 const officialAgentFixture = {
@@ -31,7 +26,7 @@ const officialAgentFixture = {
       description: 'VTEX integration',
       system: 'VTEX',
       credentials: [{ name: 'token', label: 'API Token' }],
-      constants: [],
+      config: [],
     },
   ],
 };
@@ -40,36 +35,58 @@ const customAgentFixture = {
   uuid: 'custom-agent-uuid',
   name: 'Custom Agent',
   is_official: false,
-  constants: [
-    { name: 'country', label: 'Country', type: 'TEXT', is_required: true },
+  mcps: [
+    {
+      name: 'Default',
+      description: { en: '', pt: '', es: '' },
+      system: 'custom',
+      config: [
+        { name: 'country', label: 'Country', type: 'TEXT', is_required: true },
+      ],
+      credentials: [{ name: 'api_key', label: 'API Key' }],
+    },
   ],
-  credentials: [{ name: 'api_key', label: 'API Key' }],
 };
 
 const customAgentOnlyConstantsFixture = {
   uuid: 'custom-agent-only-constants',
   name: 'Constants Only Agent',
   is_official: false,
-  constants: [
-    { name: 'country', label: 'Country', type: 'TEXT', is_required: true },
+  mcps: [
+    {
+      name: 'Default',
+      description: { en: '', pt: '', es: '' },
+      system: 'custom',
+      config: [
+        { name: 'country', label: 'Country', type: 'TEXT', is_required: true },
+      ],
+      credentials: [],
+    },
   ],
-  credentials: [],
 };
 
 const customAgentOnlyCredentialsFixture = {
   uuid: 'custom-agent-only-credentials',
   name: 'Credentials Only Agent',
   is_official: false,
-  constants: [],
-  credentials: [{ name: 'api_key', label: 'API Key' }],
+  mcps: [
+    {
+      name: 'Default',
+      description: { en: '', pt: '', es: '' },
+      system: 'custom',
+      config: [],
+      credentials: [{ name: 'api_key', label: 'API Key' }],
+    },
+  ],
 };
 
-const createOfficialAssignmentState = () => ({
+const createAssignmentState = (overrides = {}) => ({
   config: ref({
-    system: 'VTEX',
+    system: '',
     MCP: null,
     mcp_config: {},
     credentials: {},
+    ...overrides,
   }),
   isSubmitting: ref(false),
   resetAssignment: vi.fn(),
@@ -81,26 +98,16 @@ const mockMCPWithCredentials = {
   description: 'VTEX integration',
   system: 'VTEX',
   credentials: [{ name: 'token', label: 'API Token' }],
-  constants: [],
+  config: [],
 };
-
-const createCustomAssignmentState = () => ({
-  config: ref({
-    constants: {},
-    credentials: {},
-  }),
-  isSubmitting: ref(false),
-  resetAssignment: vi.fn(),
-  submitAssignment: vi.fn().mockResolvedValue(true),
-});
 
 describe('ModalAssignAgentGroupFlow - official agent', () => {
   let wrapper;
   let assignmentState;
 
   const createWrapper = (props = {}) => {
-    assignmentState = createOfficialAssignmentState();
-    useOfficialAgentAssignmentMock.mockReturnValue(assignmentState);
+    assignmentState = createAssignmentState({ system: 'VTEX' });
+    useAgentAssignmentMock.mockReturnValue(assignmentState);
 
     wrapper = shallowMount(ModalAssignAgentGroupFlow, {
       props: {
@@ -305,8 +312,8 @@ describe('ModalAssignAgentGroupFlow - custom agent with both constants and crede
   let assignmentState;
 
   const createWrapper = (props = {}) => {
-    assignmentState = createCustomAssignmentState();
-    useCustomAgentAssignmentMock.mockReturnValue(assignmentState);
+    assignmentState = createAssignmentState();
+    useAgentAssignmentMock.mockReturnValue(assignmentState);
 
     wrapper = shallowMount(ModalAssignAgentGroupFlow, {
       props: {
@@ -356,7 +363,7 @@ describe('ModalAssignAgentGroupFlow - custom agent with both constants and crede
   });
 
   it('advances to credentials step when constants are filled', async () => {
-    assignmentState.config.value.constants = { country: 'BRA' };
+    assignmentState.config.value.mcp_config = { country: 'BRA' };
     await nextTick();
 
     expect(findNextButton().attributes('disabled')).toBe('false');
@@ -369,7 +376,7 @@ describe('ModalAssignAgentGroupFlow - custom agent with both constants and crede
   });
 
   it('submits the assignment on the credentials step', async () => {
-    assignmentState.config.value.constants = { country: 'BRA' };
+    assignmentState.config.value.mcp_config = { country: 'BRA' };
     await nextTick();
     await findNextButton().trigger('click');
     await flushPromises();
@@ -390,8 +397,8 @@ describe('ModalAssignAgentGroupFlow - custom agent with only constants', () => {
   let assignmentState;
 
   const createWrapper = () => {
-    assignmentState = createCustomAssignmentState();
-    useCustomAgentAssignmentMock.mockReturnValue(assignmentState);
+    assignmentState = createAssignmentState();
+    useAgentAssignmentMock.mockReturnValue(assignmentState);
 
     wrapper = shallowMount(ModalAssignAgentGroupFlow, {
       props: {
@@ -427,7 +434,7 @@ describe('ModalAssignAgentGroupFlow - custom agent with only constants', () => {
   });
 
   it('submits directly after filling constants', async () => {
-    assignmentState.config.value.constants = { country: 'BRA' };
+    assignmentState.config.value.mcp_config = { country: 'BRA' };
     await nextTick();
 
     await findNextButton().trigger('click');
@@ -443,8 +450,8 @@ describe('ModalAssignAgentGroupFlow - custom agent with only credentials', () =>
   let assignmentState;
 
   const createWrapper = () => {
-    assignmentState = createCustomAssignmentState();
-    useCustomAgentAssignmentMock.mockReturnValue(assignmentState);
+    assignmentState = createAssignmentState();
+    useAgentAssignmentMock.mockReturnValue(assignmentState);
 
     wrapper = shallowMount(ModalAssignAgentGroupFlow, {
       props: {

@@ -13,8 +13,8 @@ const defaultAgent = {
   id: 'agent-id-1',
   name: 'Test Agent',
   is_official: false,
-  description: 'Test description',
-  mcp: null,
+  about: { en: 'Test description', pt: null, es: null },
+  mcps: [],
   icon: 'icon-url',
 };
 
@@ -70,27 +70,26 @@ describe('DetailAgentCard.vue', () => {
       expect(findAgentCard().props('loading')).toBe(true);
     });
 
-    it('passes empty tags when agent has no mcp', () => {
-      createWrapper({ agent: { ...defaultAgent, mcp: null } });
+    it('passes empty tags when agent has no mcps', () => {
+      createWrapper({ agent: { ...defaultAgent, mcps: [] } });
 
       expect(findAgentCard().props('tags')).toEqual([]);
     });
 
-    it('passes empty tags when agent.mcp has no system', () => {
+    it('passes empty tags when first mcp has no system', () => {
       createWrapper({
-        agent: { ...defaultAgent, mcp: { system: undefined } },
+        agent: { ...defaultAgent, mcps: [{ system: undefined }] },
       });
 
       expect(findAgentCard().props('tags')).toEqual([]);
     });
 
-    it('passes tags with agent.mcp.system when present', () => {
-      const system = { name: 'System A', icon: 'system-icon' };
+    it('passes the system slug as a tag when present', () => {
       createWrapper({
-        agent: { ...defaultAgent, mcp: { system } },
+        agent: { ...defaultAgent, mcps: [{ system: 'system_a' }] },
       });
 
-      expect(findAgentCard().props('tags')).toEqual([system]);
+      expect(findAgentCard().props('tags')).toEqual(['system_a']);
     });
 
     it('passes newAgentHighlight true when agent uuid matches store newAgentAssigned', () => {

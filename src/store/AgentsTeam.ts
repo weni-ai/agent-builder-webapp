@@ -10,13 +10,7 @@ import { unnnicToastManager } from '@weni/unnnic-system';
 
 import i18n from '@/utils/plugins/i18n';
 
-import {
-  Agent,
-  ActiveTeamAgent,
-  AgentGroupOrAgent,
-  AgentSystem,
-  AssignAgentsFilters,
-} from './types/Agents.types';
+import { Agent, AgentSystem, AssignAgentsFilters } from './types/Agents.types';
 import useAgent from '@/composables/useAgent';
 
 export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
@@ -58,9 +52,9 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     };
   });
 
-  const newAgentAssigned = ref<ActiveTeamAgent | null>(null);
+  const newAgentAssigned = ref<Agent | null>(null);
 
-  function addAgentToTeam(agent: AgentGroupOrAgent) {
+  function addAgentToTeam(agent: Agent) {
     const normalizedAgent = normalizeActiveAgent(agent);
 
     activeTeam.data.agents.push(normalizedAgent);
@@ -176,7 +170,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     group,
     is_assigned,
   }: {
-    uuid?: string;
+    uuid?: string | null;
     group?: string | null;
     is_assigned: boolean;
   }) {
