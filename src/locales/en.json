@@ -634,6 +634,11 @@
       "error": "Error loading file",
       "save": "Save"
     },
+    "new_text": {
+      "description": "Write text content the agent will use to answer questions",
+      "supporting_text": "Organize your content into separate texts by topic for more accurate responses",
+      "button_add_new_text": "New text"
+    },
     "file_with_error": "File with error. Delete and add it again.",
     "site_with_error": "Site with error. Delete and add it again.",
     "actions": {

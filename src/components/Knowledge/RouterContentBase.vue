@@ -40,12 +40,17 @@
       :items="sites"
       shape="accordion"
     />
-    <ContentText
-      v-if="activeTab === 'text'"
-      v-model="knowledgeStore.contentText"
-      :isLoading="textLoading"
-      class="content-base__content-tab__text"
-    />
+    <template v-if="activeTab === 'text'">
+      <NewContentText
+        v-if="featureFlagsStore.flags.knowledgeTextOrganization"
+      />
+      <ContentText
+        v-else
+        v-model="knowledgeStore.contentText"
+        :isLoading="textLoading"
+        class="content-base__content-tab__text"
+      />
+    </template>
   </section>
 </template>
 
@@ -55,6 +60,9 @@ import { ref, toRef } from 'vue';
 import ContentFiles from '@/components/Knowledge/ContentFiles.vue';
 import ContentSites from '@/components/Knowledge/ContentSites.vue';
 import ContentText from '@/components/Knowledge/ContentText.vue';
+import NewContentText from '@/components/Knowledge/NewContentText/index.vue';
+
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useKnowledgeStore } from '@/store/Knowledge';
 
 const props = defineProps({
@@ -82,6 +90,7 @@ const sites = toRef(props, 'sitesProp');
 
 const contentStyle = ref('accordion');
 const knowledgeStore = useKnowledgeStore();
+const featureFlagsStore = useFeatureFlagsStore();
 
 const routerTabs = ref([
   { title: 'files', page: 'files' },
@@ -115,7 +124,7 @@ const onTabChange = (newTab) => {
   &__content-tab {
     display: flex;
     flex-direction: column;
-    row-gap: $unnnic-spacing-md;
+    row-gap: $unnnic-space-4;
 
     &--shape-normal {
       height: 100%;

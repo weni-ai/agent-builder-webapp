@@ -634,6 +634,11 @@
       "error": "Error al cargar archivo",
       "save": "Guardar"
     },
+    "new_text": {
+      "description": "Escribe el contenido que el agente utilizará para responder a las preguntas",
+      "supporting_text": "Organiza tu contenido en textos separados por tema para respuestas más precisas",
+      "button_add_new_text": "Nuevo texto"
+    },
     "file_with_error": "El archivo contiene errores. Elimínalo y agrégalo de nuevo.",
     "site_with_error": "El sitio web contiene errores. Elimínalo y agrégalo de nuevo.",
     "actions": {
