@@ -48,7 +48,7 @@ describe('AssignAgentCard.vue', () => {
         loading: false,
         agent: {
           name: 'Test Title',
-          description: 'Test Description',
+          about: { en: 'Test Description', pt: null, es: null },
           skills: [
             { name: 'Skill 1', icon: 'icon-1' },
             { name: 'Skill 2', icon: 'icon-2' },
