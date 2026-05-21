@@ -47,6 +47,7 @@ const categoryOptions = computed(() => {
     createCategoryOption('crm_and_lead_capture'),
     createCategoryOption('feedback_and_surveys'),
     createCategoryOption('utilities_and_monitoring'),
+    createCategoryOption('b2b'),
     createCategoryOption('others'),
   ];
 });

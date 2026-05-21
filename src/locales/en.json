@@ -349,6 +349,7 @@
           "crm_and_lead_capture": "CRM and lead capture",
           "feedback_and_surveys": "Feedback and surveys",
           "utilities_and_monitoring": "Utilities and monitoring",
+          "b2b": "B2B",
           "others": "Others"
         }
       },
