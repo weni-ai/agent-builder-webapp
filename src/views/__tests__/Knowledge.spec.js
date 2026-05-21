@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
-import Knowledge from '@/views/Knowledge.vue';
+import Knowledge from '@/views/Knowledge/index.vue';
 
 const pinia = createTestingPinia({
   initialState: {

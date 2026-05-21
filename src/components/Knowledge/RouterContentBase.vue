@@ -41,7 +41,7 @@
       shape="accordion"
     />
     <template v-if="activeTab === 'text'">
-      <NewContentText
+      <ListContentTexts
         v-if="featureFlagsStore.flags.knowledgeTextOrganization"
       />
       <ContentText
@@ -60,7 +60,7 @@ import { ref, toRef } from 'vue';
 import ContentFiles from '@/components/Knowledge/ContentFiles.vue';
 import ContentSites from '@/components/Knowledge/ContentSites.vue';
 import ContentText from '@/components/Knowledge/ContentText.vue';
-import NewContentText from '@/components/Knowledge/NewContentText/index.vue';
+import ListContentTexts from '@/components/Knowledge/ListContentTexts/index.vue';
 
 import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useKnowledgeStore } from '@/store/Knowledge';
