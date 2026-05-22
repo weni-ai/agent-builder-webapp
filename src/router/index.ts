@@ -69,7 +69,7 @@ const knowledgeRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Knowledge/index.vue'),
     children: [
       {
-        path: 'new-content-text',
+        path: 'content-text/new',
         name: 'new-content-text',
         component: () => import('@/views/Knowledge/NewContentText.vue'),
       },

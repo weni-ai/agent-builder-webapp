@@ -1,5 +1,5 @@
 <template>
-  <section class="new-content-text">
+  <section class="list-content-texts">
     <NewContentTextHeader />
   </section>
 </template>
