@@ -25,6 +25,6 @@ onMounted(() => {
 <style lang="scss" scoped>
 .list-content-texts {
   display: grid;
-  gap: $unnnic-spacing-md;
+  gap: $unnnic-space-4;
 }
 </style>
