@@ -20,6 +20,7 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
   const contentTexts = reactive({
     data: [],
     status: null,
+    next: null,
   });
 
   async function loadContentTexts() {
@@ -29,10 +30,37 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
       const { data } = await nexusaiAPI.knowledge.texts.list();
 
       contentTexts.data = orderByLastUpdatedAt(data?.results);
-
+      contentTexts.next = data?.next ?? null;
       contentTexts.status = 'complete';
     } catch {
       contentTexts.data = [];
+      contentTexts.next = null;
+      contentTexts.status = 'error';
+    }
+  }
+
+  async function loadNextContentTexts() {
+    if (!contentTexts.next || contentTexts.status === 'loading') return;
+
+    contentTexts.status = 'loading';
+
+    try {
+      const { data } = await nexusaiAPI.knowledge.texts.list({
+        next: contentTexts.next,
+      });
+
+      const existingUuids = new Set(contentTexts.data.map(({ uuid }) => uuid));
+      const newItems = (data?.results ?? []).filter(
+        ({ uuid }) => !existingUuids.has(uuid),
+      );
+
+      contentTexts.data = orderByLastUpdatedAt([
+        ...contentTexts.data,
+        ...newItems,
+      ]);
+      contentTexts.next = data?.next ?? null;
+      contentTexts.status = 'complete';
+    } catch {
       contentTexts.status = 'error';
     }
   }
@@ -41,5 +69,6 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
     contentText,
     contentTexts,
     loadContentTexts,
+    loadNextContentTexts,
   };
 });

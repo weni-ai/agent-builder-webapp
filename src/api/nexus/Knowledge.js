@@ -30,15 +30,15 @@ const generateContentBaseEndpoint = ({ type, itemUuid }) => {
 
 export const Knowledge = {
   texts: {
-    list() {
-      return request.$http.get(
-        'https://nexus.apip.stg.cloud.weni.ai/api/23be673e-a7dd-472c-8db5-dc4d67a3ccfe/inline-content-base-text/',
-      );
+    list({ next } = {}) {
+      if (next) {
+        return request.$http.get(forceHttps(next));
+      }
 
-      // const endpoint = generateContentBaseEndpoint({
-      //   type: 'TEXT',
-      // });
-      // return request.$http.get(endpoint);
+      const endpoint = generateContentBaseEndpoint({
+        type: 'TEXT',
+      });
+      return request.$http.get(endpoint);
     },
 
     create({ text, hideGenericErrorAlert = false }) {

@@ -624,6 +624,9 @@
     "time_ago_minutes": "Agregado hace {minutes} minutos",
     "time_ago_hours": "Agregado hace {hours} horas",
     "time_ago_days": "Agregado hace {days} días",
+    "time_ago_edited_minutes": "Editado hace {minutes} minutos",
+    "time_ago_edited_hours": "Editado hace {hours} horas",
+    "time_ago_edited_days": "Editado hace {days} días",
     "tabs": {
       "files": "Archivos",
       "sites": "Sitios web",

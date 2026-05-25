@@ -1,27 +1,55 @@
 <template>
-  <section class="list-content-texts__list">
+  <section
+    ref="scrollContainer"
+    class="list-content-texts__list"
+    data-testid="list-content-texts-list"
+    @scroll="onScroll"
+  >
     <ContentItem
       v-for="text in contentTexts.data"
       :key="text.uuid"
       :file="toItemFile(text)"
-      :loading="contentTexts.status === 'loading'"
+      timeAgoLabelKey="time_ago_edited"
       clickable
       compressed
+      data-testid="list-content-texts-item"
       @click="goToContentText(text.uuid)"
+    />
+
+    <ContentItem
+      v-for="i in loadingPlaceholdersCount"
+      :key="`loading-${i}`"
+      loading
+      compressed
+      data-testid="list-content-texts-loading-item"
     />
   </section>
 </template>
 
 <script setup>
+import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 
 import ContentItem from '@/components/Knowledge/ContentBase/ContentItem.vue';
 import { useKnowledgeStore } from '@/store/Knowledge';
-import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const knowledgeStore = useKnowledgeStore();
 const { contentTexts } = storeToRefs(knowledgeStore);
+
+const scrollContainer = ref(null);
+
+const loadingPlaceholdersCount = computed(() => {
+  if (contentTexts.value.status !== 'loading') return 0;
+
+  const INITIAL_LOADING_PLACEHOLDERS = 8;
+  const PAGINATION_LOADING_PLACEHOLDERS = 4;
+
+  return contentTexts.value.data.length === 0
+    ? INITIAL_LOADING_PLACEHOLDERS
+    : PAGINATION_LOADING_PLACEHOLDERS;
+});
 
 const toItemFile = (text) => ({
   uuid: text.uuid,
@@ -34,6 +62,23 @@ const toItemFile = (text) => ({
 const goToContentText = (uuid) => {
   router.push({ name: 'content-text', params: { uuid } });
 };
+
+const onScroll = () => {
+  const element = scrollContainer.value;
+  if (!element) return;
+
+  const SCROLL_THRESHOLD = 16;
+
+  const { scrollTop, clientHeight, scrollHeight } = element;
+  const reachedBottom =
+    scrollTop + clientHeight + SCROLL_THRESHOLD >= scrollHeight;
+
+  if (!reachedBottom) return;
+  if (!contentTexts.value.next) return;
+  if (contentTexts.value.status === 'loading') return;
+
+  knowledgeStore.loadNextContentTexts();
+};
 </script>
 
 <style lang="scss" scoped>
@@ -41,5 +86,6 @@ const goToContentText = (uuid) => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: $unnnic-space-4;
+  overflow-y: auto;
 }
 </style>
