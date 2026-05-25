@@ -353,17 +353,7 @@ describe('AgentsTeam API', () => {
                 name: 'Default',
                 description: { en: 'Default MCP', pt: '', es: '' },
                 system: 'vtex',
-                config: [
-                  {
-                    name: 'country',
-                    label: 'Country',
-                    type: 'TEXT',
-                    is_required: true,
-                    default_value: 'BRA',
-                    options: [],
-                    value: 'BRA',
-                  },
-                ],
+                config: { country: 'BRA' },
                 credentials: [],
               },
             ],
@@ -402,6 +392,12 @@ describe('AgentsTeam API', () => {
       expect(result.data.agents[0]).toEqual({
         ...mockActiveTeamResponse.data.agents[0],
         id: 'active-agent-1',
+        mcps: [
+          {
+            ...mockActiveTeamResponse.data.agents[0].mcps[0],
+            config: [{ label: 'country', value: 'BRA' }],
+          },
+        ],
       });
     });
 
@@ -458,14 +454,43 @@ describe('AgentsTeam API', () => {
       expect(result.data.agents[0].id).toBe('active-agent-1');
     });
 
-    it('should preserve mcps array passthrough', async () => {
+    it('should transform mcp config object into a labeled array', async () => {
       request.$http.get.mockResolvedValue(mockActiveTeamResponse);
 
       const result = await AgentsTeam.listActiveTeam();
 
-      expect(result.data.agents[0].mcps).toEqual(
-        mockActiveTeamResponse.data.agents[0].mcps,
-      );
+      expect(result.data.agents[0].mcps).toEqual([
+        {
+          ...mockActiveTeamResponse.data.agents[0].mcps[0],
+          config: [{ label: 'country', value: 'BRA' }],
+        },
+      ]);
+    });
+
+    it('should default mcp config to an empty array when missing', async () => {
+      const responseWithoutMcpConfig = {
+        data: {
+          manager: { id: 'manager-id' },
+          agents: [
+            {
+              ...mockActiveTeamResponse.data.agents[0],
+              mcps: [
+                {
+                  name: 'Default',
+                  description: { en: 'Default MCP', pt: '', es: '' },
+                  system: 'vtex',
+                  credentials: [],
+                },
+              ],
+            },
+          ],
+        },
+      };
+      request.$http.get.mockResolvedValue(responseWithoutMcpConfig);
+
+      const result = await AgentsTeam.listActiveTeam();
+
+      expect(result.data.agents[0].mcps[0].config).toEqual([]);
     });
 
     it('should handle API error', async () => {
