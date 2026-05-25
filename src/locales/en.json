@@ -648,7 +648,8 @@
       "remove_site": "Remove site",
       "remove_file": "Remove file",
       "edit_action": "Edit action",
-      "remove_action": "Remove action"
+      "remove_action": "Remove action",
+      "remove_text": "Remove text"
     },
     "files": {
       "upload_content": "Upload content from files",

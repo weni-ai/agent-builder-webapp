@@ -640,7 +640,8 @@
       "remove_site": "Șterge site-ul",
       "remove_file": "Ștergere fișier",
       "edit_action": "Editează acțiunea",
-      "remove_action": "Elimină acțiunea"
+      "remove_action": "Elimină acțiunea",
+      "remove_text": "Elimină textul"
     },
     "files": {
       "upload_content": "Încarcă conținutul din fișiere",
