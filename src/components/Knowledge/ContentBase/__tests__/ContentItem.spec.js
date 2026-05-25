@@ -337,4 +337,94 @@ describe('ContentItem.vue', () => {
       expect(itemIcon.text()).toBe('warning');
     });
   });
+
+  describe('loading prop', () => {
+    const mountLoading = (extraProps = {}) =>
+      mount(ContentItem, {
+        props: {
+          loading: true,
+          compressed: true,
+          ...extraProps,
+        },
+        global: {
+          plugins: [pinia],
+        },
+      });
+
+    it('renders the skeleton variant without the regular card content', () => {
+      wrapper = mountLoading();
+
+      expect(wrapper.find('[data-test="loading"]').exists()).toBe(true);
+      expect(wrapper.find('[data-test="name"]').exists()).toBe(false);
+      expect(wrapper.find('[data-test="item-icon"]').exists()).toBe(false);
+    });
+
+    it('renders icon, title, subtitle and actions skeleton placeholders', () => {
+      wrapper = mountLoading();
+
+      expect(wrapper.find('[data-test="loading-icon"]').exists()).toBe(true);
+      expect(wrapper.find('[data-test="loading-title"]').exists()).toBe(true);
+      expect(wrapper.find('[data-test="loading-subtitle"]').exists()).toBe(
+        true,
+      );
+      expect(wrapper.find('[data-test="loading-actions"]').exists()).toBe(true);
+    });
+
+    it('does not emit click when the loading card is clicked', async () => {
+      wrapper = mountLoading({ clickable: true });
+
+      await wrapper.find('[data-test="loading"]').trigger('click');
+
+      expect(wrapper.emitted('click')).toBeUndefined();
+    });
+
+    it('does not require a file prop to render', () => {
+      wrapper = mountLoading();
+
+      expect(wrapper.find('[data-test="loading"]').exists()).toBe(true);
+    });
+  });
+
+  describe('timeAgoLabelKey prop', () => {
+    const mountWithLabelKey = (timeAgoLabelKey, minutesAgo = 30) =>
+      mount(ContentItem, {
+        props: {
+          file: createFileObject('file', {
+            created_at: new Date(
+              Date.now() - minutesAgo * 60 * 1000,
+            ).toISOString(),
+          }),
+          clickable: false,
+          compressed: true,
+          ...(timeAgoLabelKey !== undefined ? { timeAgoLabelKey } : {}),
+        },
+        global: {
+          plugins: [pinia],
+        },
+      });
+
+    it('defaults to the "Added X ago" copy when the prop is not provided', () => {
+      wrapper = mountWithLabelKey(undefined, 30);
+
+      expect(wrapper.vm.timeAgo).toBe('Added 30 minutes ago');
+    });
+
+    it('uses the edited copy when timeAgoLabelKey is "time_ago_edited"', () => {
+      wrapper = mountWithLabelKey('time_ago_edited', 30);
+
+      expect(wrapper.vm.timeAgo).toBe('Edited 30 minutes ago');
+    });
+
+    it('uses the edited copy for hour-range differences', () => {
+      wrapper = mountWithLabelKey('time_ago_edited', 5 * 60);
+
+      expect(wrapper.vm.timeAgo).toBe('Edited 5 hours ago');
+    });
+
+    it('uses the edited copy for day-range differences', () => {
+      wrapper = mountWithLabelKey('time_ago_edited', 3 * 24 * 60);
+
+      expect(wrapper.vm.timeAgo).toBe('Edited 3 days ago');
+    });
+  });
 });

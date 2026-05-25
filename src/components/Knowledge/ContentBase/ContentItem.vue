@@ -1,5 +1,42 @@
 <template>
+  <section
+    v-if="loading"
+    :class="[
+      'files-list__content__file',
+      'files-list__content__file--loading',
+      {
+        'files-list__content__file--compressed': compressed,
+      },
+    ]"
+    data-test="loading"
+  >
+    <UnnnicSkeletonLoading
+      width="40px"
+      height="40px"
+      data-test="loading-icon"
+    />
+
+    <section class="files-list__content__file__loading__content">
+      <UnnnicSkeletonLoading
+        height="19px"
+        data-test="loading-title"
+      />
+      <UnnnicSkeletonLoading
+        height="19px"
+        width="60%"
+        data-test="loading-subtitle"
+      />
+    </section>
+
+    <UnnnicSkeletonLoading
+      width="19px"
+      height="19px"
+      data-test="loading-actions"
+    />
+  </section>
+
   <UnnnicToolTip
+    v-else
     side="top"
     :text="failureMessage"
     :enabled="isFailed"
@@ -96,9 +133,17 @@ export default {
   },
 
   props: {
-    file: Object,
+    file: {
+      type: Object,
+      default: () => ({}),
+    },
     compressed: Boolean,
     clickable: Boolean,
+    loading: Boolean,
+    timeAgoLabelKey: {
+      type: String,
+      default: 'time_ago',
+    },
   },
 
   emits: ['click', 'remove', 'edit'],
@@ -288,22 +333,23 @@ export default {
       }
 
       const diffInMinutes = Math.floor((now - createdAt) / 1000 / 60);
+      const baseKey = `content_bases.${this.timeAgoLabelKey}`;
 
       if (diffInMinutes < 60) {
-        return i18n.global.t('content_bases.time_ago_minutes', {
+        return i18n.global.t(`${baseKey}_minutes`, {
           minutes: diffInMinutes,
         });
       }
 
       const diffInHours = Math.floor(diffInMinutes / 60);
       if (diffInHours < 24) {
-        return i18n.global.t('content_bases.time_ago_hours', {
+        return i18n.global.t(`${baseKey}_hours`, {
           hours: diffInHours,
         });
       }
 
       const diffInDays = Math.floor(diffInHours / 24);
-      return i18n.global.t('content_bases.time_ago_days', {
+      return i18n.global.t(`${baseKey}_days`, {
         days: diffInDays,
       });
     },
@@ -327,6 +373,21 @@ export default {
 
   p {
     margin: 0;
+  }
+
+  &--loading {
+    column-gap: $unnnic-space-1;
+    pointer-events: none;
+
+    * {
+      display: flex;
+    }
+  }
+
+  &__loading__content {
+    flex: 1;
+    flex-direction: column;
+    row-gap: $unnnic-space-05;
   }
 
   &--compressed {
