@@ -24,6 +24,7 @@ const elements = {
   list: '[data-testid="list-content-texts-list"]',
   item: '[data-testid="list-content-texts-item"]',
   loadingItem: '[data-testid="list-content-texts-loading-item"]',
+  noResults: '[data-testid="list-content-texts-no-results"]',
 };
 
 const createWrapper = ({ contentTexts } = {}) =>
@@ -37,6 +38,7 @@ const createWrapper = ({ contentTexts } = {}) =>
                 data: [],
                 status: null,
                 next: null,
+                searchTerm: '',
                 ...contentTexts,
               },
             },
@@ -248,6 +250,188 @@ describe('ListContentTexts/List.vue', () => {
 
       expect(wrapper.findAll(elements.item)).toHaveLength(items.length);
       expect(wrapper.findAll(elements.loadingItem)).toHaveLength(2);
+    });
+  });
+
+  describe('search filtering', () => {
+    const items = [
+      buildItem({
+        uuid: 'uuid-1',
+        title: 'Onboarding guide',
+        last_updated_at: '2024-03-01T00:00:00Z',
+      }),
+      buildItem({
+        uuid: 'uuid-2',
+        title: 'Refund policy',
+        last_updated_at: '2024-02-01T00:00:00Z',
+      }),
+      buildItem({
+        uuid: 'uuid-3',
+        title: 'Shipping FAQ',
+        last_updated_at: '2024-01-01T00:00:00Z',
+      }),
+    ];
+
+    it('filters items by title case-insensitively', () => {
+      wrapper = createWrapper({
+        contentTexts: {
+          data: items,
+          status: 'complete',
+          next: null,
+          searchTerm: 'REFUND',
+        },
+      });
+
+      const renderedItems = wrapper.findAll(elements.item);
+
+      expect(renderedItems).toHaveLength(1);
+      expect(
+        wrapper
+          .findAllComponents({ name: 'ContentItem' })
+          .filter((c) => !c.props('loading'))[0]
+          .props('file').created_file_name,
+      ).toBe('Refund policy');
+    });
+
+    it('matches partial substrings inside titles', () => {
+      wrapper = createWrapper({
+        contentTexts: {
+          data: items,
+          status: 'complete',
+          next: null,
+          searchTerm: 'po',
+        },
+      });
+
+      expect(wrapper.findAll(elements.item)).toHaveLength(1);
+    });
+
+    it('ignores leading and trailing whitespace in the search term', () => {
+      wrapper = createWrapper({
+        contentTexts: {
+          data: items,
+          status: 'complete',
+          next: null,
+          searchTerm: '  shipping  ',
+        },
+      });
+
+      expect(wrapper.findAll(elements.item)).toHaveLength(1);
+    });
+
+    it('renders all items when the search term is empty', () => {
+      wrapper = createWrapper({
+        contentTexts: {
+          data: items,
+          status: 'complete',
+          next: null,
+          searchTerm: '',
+        },
+      });
+
+      expect(wrapper.findAll(elements.item)).toHaveLength(items.length);
+      expect(wrapper.find(elements.noResults).exists()).toBe(false);
+    });
+  });
+
+  describe('no results message', () => {
+    const items = [
+      buildItem({
+        uuid: 'uuid-1',
+        title: 'Onboarding guide',
+        last_updated_at: '2024-03-01T00:00:00Z',
+      }),
+    ];
+
+    it('shows the no results message when there are no matches and no more pages to fetch', () => {
+      wrapper = createWrapper({
+        contentTexts: {
+          data: items,
+          status: 'complete',
+          next: null,
+          searchTerm: 'no-match',
+        },
+      });
+
+      expect(wrapper.find(elements.noResults).exists()).toBe(true);
+      expect(wrapper.findAll(elements.item)).toHaveLength(0);
+      expect(wrapper.findAll(elements.loadingItem)).toHaveLength(0);
+    });
+
+    it('does not show the no results message while another page is still loading', () => {
+      wrapper = createWrapper({
+        contentTexts: {
+          data: items,
+          status: 'loading',
+          next: 'http://nexus.example.com/?cursor=page-2',
+          searchTerm: 'no-match',
+        },
+      });
+
+      expect(wrapper.find(elements.noResults).exists()).toBe(false);
+      expect(wrapper.findAll(elements.loadingItem).length).toBeGreaterThan(0);
+    });
+
+    it('does not show the no results message while pagination is in progress (next cursor exists)', () => {
+      wrapper = createWrapper({
+        contentTexts: {
+          data: items,
+          status: 'complete',
+          next: 'http://nexus.example.com/?cursor=page-2',
+          searchTerm: 'no-match',
+        },
+      });
+
+      expect(wrapper.find(elements.noResults).exists()).toBe(false);
+    });
+
+    it('does not show the no results message when the search term is empty', () => {
+      wrapper = createWrapper({
+        contentTexts: {
+          data: [],
+          status: 'complete',
+          next: null,
+          searchTerm: '',
+        },
+      });
+
+      expect(wrapper.find(elements.noResults).exists()).toBe(false);
+    });
+
+    it('triggers loadNextContentTexts while searching with no matches and a next cursor is available', async () => {
+      wrapper = createWrapper({
+        contentTexts: {
+          data: items,
+          status: 'complete',
+          next: 'http://nexus.example.com/?cursor=page-2',
+          searchTerm: '',
+        },
+      });
+
+      const knowledgeStore = useKnowledgeStore();
+
+      knowledgeStore.contentTexts.searchTerm = 'no-match';
+      await wrapper.vm.$nextTick();
+
+      expect(knowledgeStore.loadNextContentTexts).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not trigger loadNextContentTexts when searching with no matches but the cursor is exhausted', async () => {
+      wrapper = createWrapper({
+        contentTexts: {
+          data: items,
+          status: 'complete',
+          next: null,
+          searchTerm: '',
+        },
+      });
+
+      const knowledgeStore = useKnowledgeStore();
+
+      knowledgeStore.contentTexts.searchTerm = 'no-match';
+      await wrapper.vm.$nextTick();
+
+      expect(knowledgeStore.loadNextContentTexts).not.toHaveBeenCalled();
     });
   });
 });

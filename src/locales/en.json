@@ -640,7 +640,9 @@
     "new_text": {
       "description": "Write text content the agent will use to answer questions",
       "supporting_text": "Organize your content into separate texts by topic for more accurate responses",
-      "button_add_new_text": "New text"
+      "button_add_new_text": "New text",
+      "search_placeholder": "Search",
+      "no_results": "No results found"
     },
     "file_with_error": "File with error. Delete and add it again.",
     "site_with_error": "Site with error. Delete and add it again.",

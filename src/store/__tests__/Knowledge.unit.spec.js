@@ -32,11 +32,12 @@ describe('Knowledge Store', () => {
   });
 
   describe('initial state', () => {
-    it('starts with empty contentTexts data, no status and no cursor', () => {
+    it('starts with empty contentTexts data, no status, no cursor and no search term', () => {
       expect(store.contentTexts).toEqual({
         data: [],
         status: null,
         next: null,
+        searchTerm: '',
       });
     });
   });
