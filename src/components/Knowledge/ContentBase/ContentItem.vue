@@ -3,7 +3,6 @@
     side="top"
     :text="failureMessage"
     :enabled="isFailed"
-    @click="$emit('click')"
   >
     <section
       :class="[
@@ -16,6 +15,7 @@
           'files-list__content__file--clickable': clickable,
         },
       ]"
+      @click="clickable && $emit('click')"
     >
       <section class="files-list__content__file__icon">
         <UnnnicAvatarIcon
@@ -62,7 +62,10 @@
         </UnnnicToolTip>
       </header>
 
-      <section class="files-list__content__file__actions">
+      <section
+        class="files-list__content__file__actions"
+        @click.stop
+      >
         <UnnnicIcon
           v-if="downloading || isProcessing"
           icon="progress_activity"
@@ -116,7 +119,7 @@ export default {
           this.file.status === 'uploaded',
 
         downloadFile:
-          this.file.extension_file !== 'site' &&
+          !['site', 'text'].includes(this.file.extension_file) &&
           this.file.status === 'uploaded',
 
         remove:
@@ -166,6 +169,7 @@ export default {
             {
               site: this.$t('content_bases.actions.remove_site'),
               action: this.$t('content_bases.actions.remove_action'),
+              text: this.$t('content_bases.actions.remove_text'),
             }[this.extension] || this.$t('content_bases.actions.remove_file'),
           onClick: () => this.$emit('remove'),
         });
@@ -175,7 +179,7 @@ export default {
     },
 
     fileName() {
-      if (['site', 'action'].includes(this.file.extension_file)) {
+      if (['site', 'action', 'text'].includes(this.file.extension_file)) {
         return this.file?.created_file_name;
       }
 
@@ -198,7 +202,7 @@ export default {
     },
 
     extension() {
-      if (['site', 'action'].includes(this.file.extension_file)) {
+      if (['site', 'action', 'text'].includes(this.file.extension_file)) {
         return this.file.extension_file;
       }
 
@@ -228,6 +232,7 @@ export default {
           doc: 'draft',
           docx: 'draft',
           site: 'globe',
+          text: 'subject',
         }[this.extension] || 'draft'
       );
     },
@@ -308,18 +313,15 @@ export default {
 
 <style lang="scss" scoped>
 .files-list__content__file {
-  outline-style: solid;
-  outline-color: $unnnic-color-border-base;
-  outline-width: $unnnic-border-width-thinner;
-  outline-offset: -$unnnic-border-width-thinner;
+  border: 1px solid $unnnic-color-border-base;
 
-  background-color: $unnnic-color-background-white;
+  background-color: $unnnic-color-bg-base;
 
   border-radius: $unnnic-radius-2;
 
-  padding: $unnnic-spacing-ant;
+  padding: $unnnic-space-3;
   display: flex;
-  column-gap: $unnnic-spacing-ant;
+  column-gap: $unnnic-space-2;
   align-items: center;
   position: relative;
 
@@ -351,6 +353,10 @@ export default {
 
   &--clickable {
     cursor: pointer;
+
+    &:hover {
+      border-color: $unnnic-color-border-emphasized;
+    }
   }
 
   &--status-fail {
@@ -391,11 +397,8 @@ export default {
     width: 0;
 
     &__title {
-      color: $unnnic-color-fg-emphasized;
-      font-family: $unnnic-font-family-secondary;
-      font-size: $unnnic-font-size-body-gt;
-      line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
-      font-weight: $unnnic-font-weight-regular;
+      color: $unnnic-color-fg-base;
+      font: $unnnic-font-emphasis;
 
       overflow: hidden;
       white-space: nowrap;
@@ -404,11 +407,9 @@ export default {
 
     &__sub_title {
       overflow: hidden;
-      color: $unnnic-color-fg-base;
+      color: $unnnic-color-fg-muted;
       text-overflow: ellipsis;
-      font-family: $unnnic-font-family-secondary;
-      font-size: $unnnic-font-size-body-md;
-      font-weight: $unnnic-font-weight-regular;
+      font: $unnnic-font-caption-2;
 
       &-fail {
         color: $unnnic-color-fg-critical;
