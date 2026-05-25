@@ -91,6 +91,13 @@ export const AgentsTeam = {
         agents: (agents ?? []).map((agent) => ({
           ...agent,
           id: agent.slug,
+          mcps: agent.mcps?.map((mcp) => ({
+            ...mcp,
+            config: Object.entries(mcp.config ?? {}).map(([key, value]) => ({
+              label: key,
+              value,
+            })),
+          })),
         })),
       },
     };

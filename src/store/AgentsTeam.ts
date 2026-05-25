@@ -190,8 +190,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
         (agent) => agent.uuid === uuid,
       );
 
-      const listedAgent = foundOfficialAgent || foundMyAgent;
-      const agent = foundActiveTeamAgent || listedAgent;
+      const agent = foundActiveTeamAgent || foundOfficialAgent || foundMyAgent;
 
       if (!agent) {
         throw new Error('Agent not found');
@@ -202,7 +201,8 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
         assigned: is_assigned,
       });
 
-      if (listedAgent) listedAgent.assigned = is_assigned;
+      if (foundOfficialAgent) foundOfficialAgent.assigned = is_assigned;
+      if (foundMyAgent) foundMyAgent.assigned = is_assigned;
 
       if (is_assigned) {
         addAgentToTeam(agent);
