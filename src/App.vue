@@ -76,7 +76,7 @@ const showTestAgentsButton = computed(
   () =>
     (isAgentsModule.value &&
       ['agents-team', 'instructions'].includes(route.name as string)) ||
-    isKnowledgeModule.value,
+    (isKnowledgeModule.value && route.name === 'knowledge'),
 );
 
 watch(

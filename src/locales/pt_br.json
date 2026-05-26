@@ -624,6 +624,9 @@
     "time_ago_minutes": "Adicionado {minutes} minutos atrás",
     "time_ago_hours": "Adicionado {hours} horas atrás",
     "time_ago_days": "Adicionado {days} dias atrás",
+    "time_ago_edited_minutes": "Editado {minutes} minutos atrás",
+    "time_ago_edited_hours": "Editado {hours} horas atrás",
+    "time_ago_edited_days": "Editado {days} dias atrás",
     "tabs": {
       "files": "Arquivos",
       "sites": "Sites",
@@ -634,6 +637,22 @@
       "error": "Erro ao carregar arquivo",
       "save": "Salvar"
     },
+    "new_text": {
+      "description": "Escreva o conteúdo que o agente usará para responder às perguntas",
+      "supporting_text": "Organize seu conteúdo em textos separados por tópico para respostas mais precisas",
+      "button_add_new_text": "Novo texto",
+      "default_title": "Texto sem título",
+      "edit_name": "Editar nome",
+      "edit_name_hint": "Pressione ENTER para confirmar ou ESC para cancelar",
+      "save_changes": "Salvar alterações",
+      "search_placeholder": "Buscar",
+      "no_results": "Nenhum resultado encontrado",
+      "write_or_paste_placeholder": "Escreva ou cole seu conteúdo aqui…",
+      "empty_state": {
+        "title": "Nenhum texto adicionado",
+        "description": "Escreva o conteúdo que o agente usará como fonte de conhecimento"
+      }
+    },
     "file_with_error": "Arquivo com erro. Exclua e adicione-o novamente.",
     "site_with_error": "Site com erro. Exclua e adicione-o novamente.",
     "actions": {
@@ -643,7 +662,8 @@
       "remove_site": "Remover site",
       "remove_file": "Remover arquivo",
       "edit_action": "Editar ação",
-      "remove_action": "Remover ação"
+      "remove_action": "Remover ação",
+      "remove_text": "Remover texto"
     },
     "files": {
       "upload_content": "Carregar conteúdo de arquivos",
