@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
 
 import AgentDetailModal from '../index.vue';
 
@@ -7,7 +8,8 @@ function createAgent(overrides = {}) {
   return {
     uuid: 'agent-uuid',
     name: 'Agent Name',
-    description: 'Agent description',
+    about: { en: 'Agent description', pt: null, es: null },
+    mcps: [],
     ...overrides,
   };
 }
@@ -17,8 +19,19 @@ describe('AgentDetailModal', () => {
   let agent;
 
   beforeEach(() => {
+    const pinia = createTestingPinia({
+      initialState: {
+        AgentsTeam: {
+          availableSystems: [],
+        },
+      },
+    });
+
     agent = createAgent();
     wrapper = shallowMount(AgentDetailModal, {
+      global: {
+        plugins: [pinia],
+      },
       props: {
         agent,
         open: true,
@@ -46,12 +59,12 @@ describe('AgentDetailModal', () => {
     expect(viewOptions.props('agent')).toStrictEqual(agent);
   });
 
-  it('renders the about section with the agent description', () => {
+  it('renders the about section with the translated about text', () => {
     const aboutSection = wrapper.findComponent(
       '[data-testid="agent-detail-about-section"]',
     );
 
-    expect(aboutSection.props('description')).toBe(agent.description);
+    expect(aboutSection.props('description')).toBe(agent.about.en);
   });
 
   it('emits update:open when the dialog emits update:open', async () => {
