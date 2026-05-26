@@ -642,7 +642,11 @@
       "supporting_text": "Organize your content into separate texts by topic for more accurate responses",
       "button_add_new_text": "New text",
       "search_placeholder": "Search",
-      "no_results": "No results found"
+      "no_results": "No results found",
+      "empty_state": {
+        "title": "No texts added yet",
+        "description": "Write content the agent will use as a knowledge source"
+      }
     },
     "file_with_error": "File with error. Delete and add it again.",
     "site_with_error": "Site with error. Delete and add it again.",

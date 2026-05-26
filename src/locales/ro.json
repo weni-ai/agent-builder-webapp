@@ -631,7 +631,11 @@
       "supporting_text": "Organizează conținutul în texte separate pe subiecte pentru răspunsuri mai precise",
       "button_add_new_text": "Text nou",
       "search_placeholder": "Caută",
-      "no_results": "Niciun rezultat găsit"
+      "no_results": "Niciun rezultat găsit",
+      "empty_state": {
+        "title": "Niciun text adăugat",
+        "description": "Scrie conținutul pe care agentul îl va folosi ca sursă de cunoaștere"
+      }
     },
     "file_with_error": "Fișier cu eroare. Șterge-l și adaugă-l din nou.",
     "site_with_error": "Site cu eroare. Șterge-l și adaugă-l din nou.",
