@@ -66,8 +66,8 @@ describe('ListContentTexts/List.vue', () => {
       });
     });
 
-    it('renders 6 loading placeholders while loading the first page', () => {
-      expect(wrapper.findAll(elements.loadingItem)).toHaveLength(6);
+    it('renders 8 loading placeholders while loading the first page', () => {
+      expect(wrapper.findAll(elements.loadingItem)).toHaveLength(8);
     });
 
     it('does not render any data items while loading the first page', () => {
@@ -79,7 +79,7 @@ describe('ListContentTexts/List.vue', () => {
         .findAllComponents({ name: 'ContentItem' })
         .filter((c) => c.props('loading'));
 
-      expect(placeholders).toHaveLength(6);
+      expect(placeholders).toHaveLength(8);
       placeholders.forEach((placeholder) => {
         expect(placeholder.props('loading')).toBe(true);
         expect(placeholder.props('compressed')).toBe(true);
@@ -127,7 +127,9 @@ describe('ListContentTexts/List.vue', () => {
         extension_file: 'text',
         status: 'uploaded',
       });
-      expect(itemComponents[0].props('timeAgoLabelKey')).toBe('time_ago_edited');
+      expect(itemComponents[0].props('timeAgoLabelKey')).toBe(
+        'time_ago_edited',
+      );
       expect(itemComponents[0].props('clickable')).toBe(true);
       expect(itemComponents[0].props('compressed')).toBe(true);
     });
@@ -236,7 +238,7 @@ describe('ListContentTexts/List.vue', () => {
       expect(knowledgeStore.loadNextContentTexts).not.toHaveBeenCalled();
     });
 
-    it('renders 2 loading placeholders next to the existing items while loading the next page', () => {
+    it('renders 42 loading placeholders next to the existing items while loading the next page', () => {
       wrapper.unmount();
       wrapper = createWrapper({
         contentTexts: {
@@ -247,7 +249,7 @@ describe('ListContentTexts/List.vue', () => {
       });
 
       expect(wrapper.findAll(elements.item)).toHaveLength(items.length);
-      expect(wrapper.findAll(elements.loadingItem)).toHaveLength(2);
+      expect(wrapper.findAll(elements.loadingItem)).toHaveLength(4);
     });
   });
 });
