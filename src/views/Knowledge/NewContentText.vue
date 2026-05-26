@@ -3,46 +3,61 @@
     class="new-content-text"
     data-testid="new-content-text"
   >
-    <UnnnicPageHeader
-      :title="draftTitle"
-      hasBackButton
+    <TextDetailHeader
       data-testid="new-content-text-header"
+      :uuid="currentUuid"
+      :title="draftTitle"
+      :defaultTitle="defaultTitle"
+      :saveDisabled="saveDisabled"
+      :saveLoading="saveLoading"
+      @update:title="onTitleUpdate"
+      @save="onSave"
       @back="router.push({ name: 'knowledge' })"
-    >
-    </UnnnicPageHeader>
+    />
 
-    <textarea
+    <TextDetailBody
       v-model="draftText"
-      class="new-content-text__textarea"
       data-testid="new-content-text-textarea"
+      :autofocus="!isEditMode"
     />
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 import { useKnowledgeStore } from '@/store/Knowledge';
+
+import TextDetailHeader from '@/components/Knowledge/NewContentText/TextDetailHeader.vue';
+import TextDetailBody from '@/components/Knowledge/NewContentText/TextDetailBody.vue';
 
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 const knowledgeStore = useKnowledgeStore();
 
-const uuid = route.params.uuid;
-const isEditMode = Boolean(uuid);
+const currentUuid = ref(route.params.uuid ?? null);
+const isEditMode = computed(() => Boolean(currentUuid.value));
+
+const defaultTitle = t('content_bases.new_text.default_title');
 
 const loading = ref(false);
-const draftTitle = ref('');
+const saveLoading = ref(false);
+const draftTitle = ref(defaultTitle);
 const draftText = ref('');
-const lastSavedTitle = ref('');
+const lastSavedTitle = ref(defaultTitle);
 const lastSavedText = ref('');
 
-function initializeCreateMode() {
-  const defaultTitle = t('content_bases.new_text.default_title');
+const saveDisabled = computed(() => {
+  if (saveLoading.value) return true;
+  if (draftText.value.trim() === '') return true;
+  if (isEditMode.value && draftText.value === lastSavedText.value) return true;
+  return false;
+});
 
+function initializeCreateMode() {
   draftTitle.value = defaultTitle;
   draftText.value = '';
   lastSavedTitle.value = defaultTitle;
@@ -53,12 +68,12 @@ async function initializeEditMode() {
   loading.value = true;
 
   try {
-    const item = await knowledgeStore.getContentText(uuid);
+    const item = await knowledgeStore.getContentText(currentUuid.value);
 
     const title =
-      item?.title.toLowerCase() === 'untitled' || !item?.title
-        ? t('content_bases.new_text.default_title')
-        : item?.title;
+      item?.title?.toLowerCase() === 'untitled' || !item?.title
+        ? defaultTitle
+        : item.title;
 
     const text = item?.text ?? '';
 
@@ -73,8 +88,52 @@ async function initializeEditMode() {
   }
 }
 
+function onTitleUpdate(nextTitle) {
+  draftTitle.value = nextTitle;
+
+  if (isEditMode.value) {
+    lastSavedTitle.value = nextTitle;
+  }
+}
+
+async function onSave() {
+  if (saveDisabled.value) return;
+
+  saveLoading.value = true;
+
+  try {
+    if (isEditMode.value) {
+      const data = await knowledgeStore.patchContentText(currentUuid.value, {
+        text: draftText.value,
+      });
+
+      lastSavedText.value = data?.text ?? draftText.value;
+    } else {
+      const data = await knowledgeStore.createContentText({
+        text: draftText.value,
+        title: draftTitle.value,
+      });
+
+      lastSavedText.value = data?.text ?? draftText.value;
+      lastSavedTitle.value = data?.title ?? draftTitle.value;
+
+      if (data?.uuid) {
+        currentUuid.value = data.uuid;
+        router.replace({
+          name: 'content-text',
+          params: { uuid: data.uuid },
+        });
+      }
+    }
+  } catch {
+    console.error('Error saving content text');
+  } finally {
+    saveLoading.value = false;
+  }
+}
+
 onMounted(() => {
-  if (isEditMode) {
+  if (isEditMode.value) {
     initializeEditMode();
   } else {
     initializeCreateMode();
@@ -90,19 +149,5 @@ onMounted(() => {
 
   height: 100%;
   width: 100%;
-
-  &__textarea {
-    flex: 1;
-    width: 100%;
-
-    border: 1px solid $unnnic-color-border-base;
-    border-radius: $unnnic-radius-2;
-    padding: $unnnic-space-4;
-
-    font: $unnnic-font-body;
-    color: $unnnic-color-fg-muted;
-
-    resize: none;
-  }
 }
 </style>
