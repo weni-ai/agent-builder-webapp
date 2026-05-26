@@ -203,17 +203,10 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
         throw new Error('Agent not found');
       }
 
-      if (agent.uuid) {
-        await nexusaiAPI.router.agents_team.toggleAgentAssignment({
-          agentUuid: (agent as Agent)?.uuid,
-          is_assigned,
-        });
-      } else {
-        await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment({
-          group: agent.group,
-          assigned: is_assigned,
-        });
-      }
+      await nexusaiAPI.router.agents_team.toggleAgentAssignment({
+        ...(agent.uuid ? { agent_uuid: agent.uuid } : { group: agent.group }),
+        assigned: is_assigned,
+      });
 
       if (listedAgent) listedAgent.assigned = is_assigned;
 
