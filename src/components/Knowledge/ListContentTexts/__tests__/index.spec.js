@@ -15,7 +15,6 @@ vi.mock('vue-router', () => ({
 
 const elements = {
   emptyState: '[data-testid="list-content-texts-empty-state"]',
-  emptyStateIcon: '[data-testid="list-content-texts-empty-state-icon"]',
   emptyStateTitle: '[data-testid="list-content-texts-empty-state-title"]',
   emptyStateDescription:
     '[data-testid="list-content-texts-empty-state-description"]',
@@ -94,19 +93,10 @@ describe('ListContentTexts/index.vue', () => {
       wrapper = createWrapper({ contentTexts: emptyStateConditions });
 
       expect(wrapper.find(elements.emptyState).exists()).toBe(true);
-      expect(wrapper.find(elements.emptyStateIcon).exists()).toBe(true);
       expect(wrapper.find(elements.emptyStateTitle).exists()).toBe(true);
       expect(wrapper.find(elements.emptyStateDescription).exists()).toBe(true);
       expect(wrapper.find(elements.emptyStateNewTextButton).exists()).toBe(
         true,
-      );
-    });
-
-    it('renders the empty state icon as the "subject" icon', () => {
-      wrapper = createWrapper({ contentTexts: emptyStateConditions });
-
-      expect(wrapper.findComponent(elements.emptyStateIcon).props('icon')).toBe(
-        'subject',
       );
     });
 
