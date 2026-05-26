@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRef, type Component, type Ref } from 'vue';
+import { computed, ref, toRef, type Component } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import {
@@ -49,14 +49,9 @@ import {
   AgentMCP,
 } from '@/store/types/Agents.types';
 
-import useOfficialAgentAssignment, {
-  type ConciergeAssignmentConfig,
-  type MCPConfigValues,
-} from '@/composables/useOfficialAgentAssignment';
-import useCustomAgentAssignment, {
-  type ConstantsValues,
-  type CustomAssignmentConfig,
-} from '@/composables/useCustomAgentAssignment';
+import useAgentAssignment, {
+  type AssignmentValues,
+} from '@/composables/useAgentAssignment';
 
 import SystemStepContent from './SystemStepContent.vue';
 import MCPStepContent from './MCPStepContent/index.vue';
@@ -87,26 +82,21 @@ type StepKey = (typeof Step)[keyof typeof Step];
 const stepIndex = ref<number>(1);
 const isOfficial = computed(() => Boolean(props.agent?.is_official));
 
-const officialAgent = computed(() => props.agent);
-const customAgent = computed(() => props.agent);
-
-const customAgentConstants = computed(
-  () => customAgent.value.mcps?.[0]?.config ?? [],
-);
-const customAgentCredentials = computed(
-  () => customAgent.value.mcps?.[0]?.credentials ?? [],
+const agentConstants = computed(() => props.agent.mcps?.[0]?.config ?? []);
+const agentCredentials = computed(
+  () => props.agent.mcps?.[0]?.credentials ?? [],
 );
 
 const hasSystems = computed(() => {
   if (!isOfficial.value) return false;
-  const systems = officialAgent.value.systems;
+  const systems = props.agent.systems;
   return Array.isArray(systems) && systems.length > 0;
 });
 
 const hasMCPs =
   isOfficial.value &&
-  Array.isArray(officialAgent.value.mcps) &&
-  officialAgent.value.mcps.length > 0;
+  Array.isArray(props.agent.mcps) &&
+  props.agent.mcps.length > 0;
 
 const stepSequence = computed<StepKey[]>(() => {
   if (hasMCPs) {
@@ -115,20 +105,16 @@ const stepSequence = computed<StepKey[]>(() => {
       : [Step.MCP, Step.Credentials];
   }
   const steps: StepKey[] = [];
-  if (customAgentConstants.value.length) steps.push(Step.Constants);
-  if (customAgentCredentials.value.length) steps.push(Step.CustomCredentials);
+  if (agentConstants.value.length) steps.push(Step.Constants);
+  if (agentCredentials.value.length) steps.push(Step.CustomCredentials);
   return steps;
 });
 
 const totalSteps = computed(() => stepSequence.value.length);
 const isNextLoading = ref(false);
 
-const { config, isSubmitting, resetAssignment, submitAssignment } = hasMCPs
-  ? useOfficialAgentAssignment(toRef(() => officialAgent.value))
-  : useCustomAgentAssignment(toRef(() => customAgent.value));
-
-const officialConfig = config as Ref<ConciergeAssignmentConfig>;
-const customConfig = config as Ref<CustomAssignmentConfig>;
+const { config, isSubmitting, resetAssignment, submitAssignment } =
+  useAgentAssignment(toRef(() => props.agent));
 
 const { t } = useI18n();
 const setupTranslations = (key: string) =>
@@ -158,51 +144,50 @@ const currentStepKey = computed<StepKey>(
 );
 const currentStepProps = computed(() => {
   const selectedSystemMCPs =
-    officialAgent.value?.mcps?.filter(
-      (mcp) => mcp.system === officialConfig.value.system,
-    ) || [];
+    props.agent?.mcps?.filter((mcp) => mcp.system === config.value.system) ||
+    [];
 
   const stepProps: Partial<Record<StepKey, Record<string, unknown>>> = {
     [Step.System]: {
-      systems: officialAgent.value.systems,
-      MCPs: officialAgent.value.mcps,
-      selectedSystem: officialConfig.value.system,
+      systems: props.agent.systems,
+      MCPs: props.agent.mcps,
+      selectedSystem: config.value.system,
       'onUpdate:selectedSystem': (nextSystem: string) => {
-        officialConfig.value.system = nextSystem;
+        config.value.system = nextSystem;
       },
     },
     [Step.MCP]: {
-      MCPs: hasSystems.value ? selectedSystemMCPs : officialAgent.value.mcps,
-      selectedMCP: officialConfig.value.MCP,
-      selectedMCPConstantsValues: officialConfig.value.mcp_config,
+      MCPs: hasSystems.value ? selectedSystemMCPs : props.agent.mcps,
+      selectedMCP: config.value.MCP,
+      selectedMCPConstantsValues: config.value.mcp_config,
       'onUpdate:selectedMCP': (nextMCP: AgentMCP | null) => {
-        officialConfig.value.MCP = nextMCP;
+        config.value.MCP = nextMCP;
       },
-      'onUpdate:selectedMCPConstantsValues': (nextValues: MCPConfigValues) => {
-        officialConfig.value.mcp_config = nextValues;
+      'onUpdate:selectedMCPConstantsValues': (nextValues: AssignmentValues) => {
+        config.value.mcp_config = nextValues;
       },
     },
     [Step.Credentials]: {
-      selectedSystem: officialConfig.value.system,
-      selectedMCP: officialConfig.value.MCP,
-      credentialValues: officialConfig.value.credentials,
+      selectedSystem: config.value.system,
+      selectedMCP: config.value.MCP,
+      credentialValues: config.value.credentials,
       'onUpdate:credentialValues': (nextValues: Record<string, string>) => {
-        officialConfig.value.credentials = nextValues;
+        config.value.credentials = nextValues;
       },
     },
     [Step.Constants]: {
-      agentName: customAgent.value.name,
-      constants: customAgentConstants.value,
-      constantsValues: customConfig.value.constants,
-      'onUpdate:constantsValues': (nextValues: ConstantsValues) => {
-        customConfig.value.constants = nextValues;
+      agentName: props.agent.name,
+      constants: agentConstants.value,
+      constantsValues: config.value.mcp_config,
+      'onUpdate:constantsValues': (nextValues: AssignmentValues) => {
+        config.value.mcp_config = nextValues;
       },
     },
     [Step.CustomCredentials]: {
-      credentials: customAgentCredentials.value,
-      credentialValues: customConfig.value.credentials,
+      credentials: agentCredentials.value,
+      credentialValues: config.value.credentials,
       'onUpdate:credentialValues': (nextValues: Record<string, string>) => {
-        customConfig.value.credentials = nextValues;
+        config.value.credentials = nextValues;
       },
     },
   };
@@ -235,26 +220,24 @@ const isNextDisabled = computed(() => {
   };
 
   const stepDisabled: Partial<Record<StepKey, () => boolean>> = {
+    [Step.System]: () => !config.value.system,
     [Step.MCP]: () =>
-      !officialConfig.value.MCP ||
+      !config.value.MCP ||
       isSomeRequiredFieldMissing(
-        officialConfig.value.MCP?.config,
-        officialConfig.value.mcp_config,
+        config.value.MCP?.config,
+        config.value.mcp_config,
       ),
     [Step.Credentials]: () =>
       !areAllCredentialsFilled(
-        officialConfig.value.MCP?.credentials,
-        officialConfig.value.credentials,
+        config.value.MCP?.credentials,
+        config.value.credentials,
       ) || isSubmitting.value,
     [Step.Constants]: () =>
-      isSomeRequiredFieldMissing(
-        customAgentConstants.value,
-        customConfig.value.constants,
-      ),
+      isSomeRequiredFieldMissing(agentConstants.value, config.value.mcp_config),
     [Step.CustomCredentials]: () =>
       !areAllCredentialsFilled(
-        customAgentCredentials.value,
-        customConfig.value.credentials,
+        agentCredentials.value,
+        config.value.credentials,
       ) || isSubmitting.value,
   };
 
@@ -282,18 +265,18 @@ async function handleNext() {
 
 const stepCleanupHandlers: Partial<Record<StepKey, () => void>> = {
   [Step.MCP]: () => {
-    officialConfig.value.mcp_config = {};
-    officialConfig.value.MCP = null;
+    config.value.mcp_config = {};
+    config.value.MCP = null;
   },
   [Step.Credentials]: () => {
-    officialConfig.value.credentials = {};
-    officialConfig.value.MCP = null;
+    config.value.credentials = {};
+    config.value.MCP = null;
   },
   [Step.Constants]: () => {
-    customConfig.value.constants = {};
+    config.value.mcp_config = {};
   },
   [Step.CustomCredentials]: () => {
-    customConfig.value.credentials = {};
+    config.value.credentials = {};
   },
 };
 
