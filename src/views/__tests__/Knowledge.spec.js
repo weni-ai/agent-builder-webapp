@@ -4,16 +4,15 @@ import { createTestingPinia } from '@pinia/testing';
 
 import Knowledge from '@/views/Knowledge/index.vue';
 
-const pinia = createTestingPinia({
-  initialState: {
-    Knowledge: {
-      contentText: {
-        uuid: null,
-        current: '',
-        old: '',
-      },
-    },
-  },
+const mockRoute = { name: 'knowledge' };
+
+vi.mock('vue-router', async () => {
+  const actual = await vi.importActual('vue-router');
+
+  return {
+    ...actual,
+    useRoute: vi.fn(() => mockRoute),
+  };
 });
 
 vi.mock('@/api/nexusaiAPI', () => ({
@@ -74,17 +73,34 @@ vi.mock('@/composables/useSitesPagination', () => ({
 describe('Knowledge.vue', () => {
   let wrapper;
 
+  const createWrapper = () =>
+    shallowMount(Knowledge, {
+      global: {
+        plugins: [
+          createTestingPinia({
+            initialState: {
+              Knowledge: {
+                contentText: {
+                  uuid: null,
+                  current: '',
+                  old: '',
+                },
+              },
+            },
+          }),
+        ],
+      },
+    });
+
   const header = () =>
     wrapper.findComponent('[data-testid="knowledge-header"]');
   const routerContentBase = () =>
     wrapper.findComponent('[data-testid="router-content-base"]');
+  const routerView = () => wrapper.findComponent({ name: 'RouterView' });
 
   beforeEach(() => {
-    wrapper = shallowMount(Knowledge, {
-      global: {
-        plugins: [pinia],
-      },
-    });
+    mockRoute.name = 'knowledge';
+    wrapper = createWrapper();
   });
 
   describe('Component rendering', () => {
@@ -107,6 +123,15 @@ describe('Knowledge.vue', () => {
         value: 'Sample text content',
       });
       expect(props.textLoading).toBe(false);
+    });
+
+    it('renders the child route view when the active route is a knowledge child', () => {
+      mockRoute.name = 'new-content-text';
+      wrapper = createWrapper();
+
+      expect(header().exists()).toBe(false);
+      expect(routerContentBase().exists()).toBe(false);
+      expect(routerView().exists()).toBe(true);
     });
   });
 
