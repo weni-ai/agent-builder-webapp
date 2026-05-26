@@ -53,7 +53,6 @@ describe('AgentsTeamStore', () => {
     it('should load official agents team successfully', async () => {
       const mockResponse = {
         agents: [],
-        availableSystems: [],
       };
       const listOfficialAgentsSpy =
         nexusaiAPI.router.agents_team.listOfficialAgents.mockResolvedValue(
@@ -83,6 +82,41 @@ describe('AgentsTeamStore', () => {
       await store.loadOfficialAgents();
 
       expect(store.officialAgents.status).toBe('error');
+    });
+  });
+
+  describe('loadAvailableSystems', () => {
+    it('should populate availableSystems from the API response', async () => {
+      const mockSystems = [
+        { slug: 'vtex', name: 'VTEX', logo: 'vtex.svg' },
+        { slug: 'another-system', name: 'Another System', logo: null },
+      ];
+      nexusaiAPI.router.agents_team.listOfficialAvailableSystems.mockResolvedValue(
+        mockSystems,
+      );
+
+      await store.loadAvailableSystems();
+
+      expect(store.availableSystems).toEqual(mockSystems);
+    });
+
+    it('should reset availableSystems to an empty array on error', async () => {
+      const consoleErrorSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
+      store.availableSystems = [
+        { slug: 'vtex', name: 'VTEX', logo: 'vtex.svg' },
+      ];
+
+      nexusaiAPI.router.agents_team.listOfficialAvailableSystems.mockRejectedValue(
+        new Error('Error'),
+      );
+
+      await store.loadAvailableSystems();
+
+      expect(store.availableSystems).toEqual([]);
+      expect(consoleErrorSpy).toHaveBeenCalledWith('error', new Error('Error'));
     });
   });
 
