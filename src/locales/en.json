@@ -641,8 +641,13 @@
       "description": "Write text content the agent will use to answer questions",
       "supporting_text": "Organize your content into separate texts by topic for more accurate responses",
       "button_add_new_text": "New text",
+      "default_title": "Untitled text",
+      "edit_name": "Edit name",
+      "edit_name_hint": "Press ENTER to confirm or ESC to cancel",
+      "save_changes": "Save changes",
       "search_placeholder": "Search",
       "no_results": "No results found",
+      "write_or_paste_placeholder": "Write or paste your content here…",
       "empty_state": {
         "title": "No texts added yet",
         "description": "Write content the agent will use as a knowledge source"
