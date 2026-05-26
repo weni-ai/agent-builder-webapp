@@ -33,7 +33,7 @@ describe('nexusaiAPI.js', () => {
     vi.clearAllMocks();
   });
 
-  it('should create content base text', async () => {
+  it('should create content base text without title', async () => {
     const mockResponse = { data: 'mockData' };
     request.$http.post.mockResolvedValue(mockResponse);
 
@@ -54,6 +54,41 @@ describe('nexusaiAPI.js', () => {
     expect(result).toEqual(mockResponse);
   });
 
+  it('should create content base text including a non-empty title', async () => {
+    const mockResponse = { data: 'mockData' };
+    request.$http.post.mockResolvedValue(mockResponse);
+
+    await nexusaiAPI.knowledge.texts.create({
+      text: 'Sample Text',
+      title: 'My title',
+    });
+
+    expect(request.$http.post).toHaveBeenCalledWith(
+      'api/project1/inline-content-base-text/',
+      {
+        text: 'Sample Text',
+        title: 'My title',
+      },
+      {
+        routerName: 'contentBase-text-create',
+        hideGenericErrorAlert: false,
+      },
+    );
+  });
+
+  it('should omit title from the payload when it is blank', async () => {
+    request.$http.post.mockResolvedValue({ data: 'mockData' });
+
+    await nexusaiAPI.knowledge.texts.create({
+      text: 'Sample Text',
+      title: '   ',
+    });
+
+    const payload = request.$http.post.mock.calls[0][1];
+    expect(payload).toEqual({ text: 'Sample Text' });
+    expect(payload).not.toHaveProperty('title');
+  });
+
   it('should edit content base text', async () => {
     const mockResponse = { data: 'mockData' };
     request.$http.put.mockResolvedValue(mockResponse);
@@ -72,6 +107,56 @@ describe('nexusaiAPI.js', () => {
         routerName: 'contentBase-text-edit',
         hideGenericErrorAlert: false,
       },
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should patch content base text with text only', async () => {
+    const mockResponse = { data: 'mockData' };
+    request.$http.patch.mockResolvedValue(mockResponse);
+
+    const result = await nexusaiAPI.knowledge.texts.patch({
+      uuid: 'text1',
+      payload: { text: 'Patched body' },
+    });
+
+    expect(request.$http.patch).toHaveBeenCalledWith(
+      'api/project1/inline-content-base-text/text1/',
+      { text: 'Patched body' },
+      {
+        routerName: 'contentBase-text-patch',
+        hideGenericErrorAlert: false,
+      },
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should patch content base text with title only', async () => {
+    request.$http.patch.mockResolvedValue({ data: 'mockData' });
+
+    await nexusaiAPI.knowledge.texts.patch({
+      uuid: 'text1',
+      payload: { title: 'New title' },
+    });
+
+    expect(request.$http.patch).toHaveBeenCalledWith(
+      'api/project1/inline-content-base-text/text1/',
+      { title: 'New title' },
+      {
+        routerName: 'contentBase-text-patch',
+        hideGenericErrorAlert: false,
+      },
+    );
+  });
+
+  it('should read content base text', async () => {
+    const mockResponse = { data: 'mockData' };
+    request.$http.get.mockResolvedValue(mockResponse);
+
+    const result = await nexusaiAPI.knowledge.texts.read({ uuid: 'text1' });
+
+    expect(request.$http.get).toHaveBeenCalledWith(
+      'api/project1/inline-content-base-text/text1/',
     );
     expect(result).toEqual(mockResponse);
   });

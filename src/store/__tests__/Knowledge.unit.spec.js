@@ -9,6 +9,9 @@ vi.mock('@/api/nexusaiAPI', () => ({
     knowledge: {
       texts: {
         list: vi.fn(),
+        read: vi.fn(),
+        patch: vi.fn(),
+        create: vi.fn(),
       },
     },
   },
@@ -196,6 +199,302 @@ describe('Knowledge Store', () => {
         '1',
         '2',
       ]);
+    });
+  });
+
+  describe('getContentText', () => {
+    it('returns the cached item without calling the API when the uuid is already loaded', async () => {
+      const cached = buildItem({
+        uuid: 'cached-uuid',
+        last_updated_at: '2024-04-01T00:00:00Z',
+      });
+      store.contentTexts.data = [cached];
+
+      const result = await store.getContentText('cached-uuid');
+
+      expect(result).toEqual(cached);
+      expect(nexusaiAPI.knowledge.texts.read).not.toHaveBeenCalled();
+      expect(store.contentTexts.data).toHaveLength(1);
+    });
+
+    it('fetches the item from the API when it is not cached and inserts it into data ordered by last_updated_at', async () => {
+      store.contentTexts.data = [
+        buildItem({ uuid: '1', last_updated_at: '2024-01-01T00:00:00Z' }),
+        buildItem({ uuid: '2', last_updated_at: '2024-05-01T00:00:00Z' }),
+      ];
+
+      const fetched = buildItem({
+        uuid: '3',
+        last_updated_at: '2024-03-01T00:00:00Z',
+      });
+      nexusaiAPI.knowledge.texts.read.mockResolvedValue({ data: fetched });
+
+      const result = await store.getContentText('3');
+
+      expect(nexusaiAPI.knowledge.texts.read).toHaveBeenCalledWith({
+        uuid: '3',
+      });
+      expect(result).toEqual(fetched);
+      expect(store.contentTexts.data.map(({ uuid }) => uuid)).toEqual([
+        '2',
+        '3',
+        '1',
+      ]);
+    });
+
+    it('fetches from the API when the cached item came from the list endpoint and has no text body', async () => {
+      store.contentTexts.data = [
+        {
+          uuid: 'partial-uuid',
+          title: 'From list',
+          last_updated_at: '2024-04-01T00:00:00Z',
+        },
+      ];
+
+      nexusaiAPI.knowledge.texts.read.mockResolvedValue({
+        data: {
+          uuid: 'partial-uuid',
+          title: 'From list',
+          text: 'Hydrated body',
+          last_updated_at: '2024-04-01T00:00:00Z',
+        },
+      });
+
+      const result = await store.getContentText('partial-uuid');
+
+      expect(nexusaiAPI.knowledge.texts.read).toHaveBeenCalledWith({
+        uuid: 'partial-uuid',
+      });
+      expect(result.text).toBe('Hydrated body');
+
+      const cached = store.contentTexts.data.find(
+        ({ uuid }) => uuid === 'partial-uuid',
+      );
+      expect(cached.text).toBe('Hydrated body');
+    });
+
+    it('propagates the error when the read request fails', async () => {
+      nexusaiAPI.knowledge.texts.read.mockRejectedValue(new Error('boom'));
+
+      await expect(store.getContentText('missing-uuid')).rejects.toThrow(
+        'boom',
+      );
+      expect(store.contentTexts.data).toEqual([]);
+    });
+  });
+
+  describe('patchContentText', () => {
+    beforeEach(() => {
+      store.contentTexts.data = [
+        buildItem({
+          uuid: 'text-1',
+          title: 'Original title',
+          last_updated_at: '2024-01-01T00:00:00Z',
+        }),
+        buildItem({
+          uuid: 'text-2',
+          title: 'Other title',
+          last_updated_at: '2024-03-01T00:00:00Z',
+        }),
+      ];
+    });
+
+    it('forwards only the title in the payload to the API', async () => {
+      nexusaiAPI.knowledge.texts.patch.mockResolvedValue({
+        data: {
+          uuid: 'text-1',
+          title: 'Renamed',
+          text: 'Text body of text-1',
+          last_updated_at: '2024-02-01T00:00:00Z',
+        },
+      });
+
+      await store.patchContentText('text-1', { title: 'Renamed' });
+
+      expect(nexusaiAPI.knowledge.texts.patch).toHaveBeenCalledTimes(1);
+      expect(nexusaiAPI.knowledge.texts.patch).toHaveBeenCalledWith({
+        uuid: 'text-1',
+        payload: { title: 'Renamed' },
+      });
+
+      const payload = nexusaiAPI.knowledge.texts.patch.mock.calls[0][0].payload;
+      expect(payload).not.toHaveProperty('text');
+    });
+
+    it('updates only the title locally without overwriting the cached text body', async () => {
+      nexusaiAPI.knowledge.texts.patch.mockResolvedValue({
+        data: {
+          uuid: 'text-1',
+          title: 'Renamed',
+          last_updated_at: '2024-04-01T00:00:00Z',
+        },
+      });
+
+      await store.patchContentText('text-1', { title: 'Renamed' });
+
+      const updated = store.contentTexts.data.find(
+        ({ uuid }) => uuid === 'text-1',
+      );
+
+      expect(updated.title).toBe('Renamed');
+      expect(updated.text).toBe('Text body of text-1');
+      expect(updated.last_updated_at).toBe('2024-04-01T00:00:00Z');
+    });
+
+    it('reorders the list by last_updated_at after a successful patch', async () => {
+      nexusaiAPI.knowledge.texts.patch.mockResolvedValue({
+        data: {
+          uuid: 'text-1',
+          title: 'Renamed',
+          last_updated_at: '2024-05-01T00:00:00Z',
+        },
+      });
+
+      await store.patchContentText('text-1', { title: 'Renamed' });
+
+      expect(store.contentTexts.data.map(({ uuid }) => uuid)).toEqual([
+        'text-1',
+        'text-2',
+      ]);
+    });
+
+    it('returns the API data when the patch succeeds', async () => {
+      const apiData = {
+        uuid: 'text-1',
+        title: 'Renamed',
+        last_updated_at: '2024-04-01T00:00:00Z',
+      };
+      nexusaiAPI.knowledge.texts.patch.mockResolvedValue({ data: apiData });
+
+      const result = await store.patchContentText('text-1', {
+        title: 'Renamed',
+      });
+
+      expect(result).toEqual(apiData);
+    });
+
+    it('propagates the error and keeps the cached item unchanged when the patch fails', async () => {
+      nexusaiAPI.knowledge.texts.patch.mockRejectedValue(new Error('boom'));
+
+      await expect(
+        store.patchContentText('text-1', { title: 'Renamed' }),
+      ).rejects.toThrow('boom');
+
+      const cached = store.contentTexts.data.find(
+        ({ uuid }) => uuid === 'text-1',
+      );
+      expect(cached.title).toBe('Original title');
+    });
+
+    it('forwards only the text in the payload when patching the body', async () => {
+      nexusaiAPI.knowledge.texts.patch.mockResolvedValue({
+        data: {
+          uuid: 'text-1',
+          text: 'New body',
+          last_updated_at: '2024-04-01T00:00:00Z',
+        },
+      });
+
+      await store.patchContentText('text-1', { text: 'New body' });
+
+      expect(nexusaiAPI.knowledge.texts.patch).toHaveBeenCalledWith({
+        uuid: 'text-1',
+        payload: { text: 'New body' },
+      });
+
+      const payload = nexusaiAPI.knowledge.texts.patch.mock.calls[0][0].payload;
+      expect(payload).not.toHaveProperty('title');
+    });
+
+    it('updates only the text locally without overwriting the cached title', async () => {
+      nexusaiAPI.knowledge.texts.patch.mockResolvedValue({
+        data: {
+          uuid: 'text-1',
+          text: 'New body',
+          last_updated_at: '2024-04-01T00:00:00Z',
+        },
+      });
+
+      await store.patchContentText('text-1', { text: 'New body' });
+
+      const updated = store.contentTexts.data.find(
+        ({ uuid }) => uuid === 'text-1',
+      );
+
+      expect(updated.text).toBe('New body');
+      expect(updated.title).toBe('Original title');
+      expect(updated.last_updated_at).toBe('2024-04-01T00:00:00Z');
+    });
+  });
+
+  describe('createContentText', () => {
+    it('forwards both text and title to the create endpoint', async () => {
+      nexusaiAPI.knowledge.texts.create.mockResolvedValue({
+        data: buildItem({
+          uuid: 'new-1',
+          title: 'My title',
+          last_updated_at: '2024-05-01T00:00:00Z',
+        }),
+      });
+
+      await store.createContentText({
+        text: 'Body text',
+        title: 'My title',
+      });
+
+      expect(nexusaiAPI.knowledge.texts.create).toHaveBeenCalledTimes(1);
+      expect(nexusaiAPI.knowledge.texts.create).toHaveBeenCalledWith({
+        text: 'Body text',
+        title: 'My title',
+      });
+    });
+
+    it('inserts the newly created item at the top, ordered by last_updated_at', async () => {
+      store.contentTexts.data = [
+        buildItem({ uuid: '1', last_updated_at: '2024-02-01T00:00:00Z' }),
+        buildItem({ uuid: '2', last_updated_at: '2024-01-01T00:00:00Z' }),
+      ];
+
+      nexusaiAPI.knowledge.texts.create.mockResolvedValue({
+        data: buildItem({
+          uuid: 'new-1',
+          last_updated_at: '2024-06-01T00:00:00Z',
+        }),
+      });
+
+      await store.createContentText({ text: 'Body' });
+
+      expect(store.contentTexts.data.map(({ uuid }) => uuid)).toEqual([
+        'new-1',
+        '1',
+        '2',
+      ]);
+    });
+
+    it('returns the created item from the API response', async () => {
+      const apiData = buildItem({
+        uuid: 'new-1',
+        last_updated_at: '2024-06-01T00:00:00Z',
+      });
+      nexusaiAPI.knowledge.texts.create.mockResolvedValue({ data: apiData });
+
+      const result = await store.createContentText({ text: 'Body' });
+
+      expect(result).toEqual(apiData);
+    });
+
+    it('propagates the error and does not mutate the list when the create fails', async () => {
+      store.contentTexts.data = [
+        buildItem({ uuid: '1', last_updated_at: '2024-02-01T00:00:00Z' }),
+      ];
+
+      nexusaiAPI.knowledge.texts.create.mockRejectedValue(new Error('boom'));
+
+      await expect(store.createContentText({ text: 'Body' })).rejects.toThrow(
+        'boom',
+      );
+
+      expect(store.contentTexts.data.map(({ uuid }) => uuid)).toEqual(['1']);
     });
   });
 });
