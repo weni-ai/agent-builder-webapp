@@ -46,7 +46,6 @@ import {
   Agent,
   AgentConstantField,
   AgentCredential,
-  AgentGroup,
   AgentMCP,
 } from '@/store/types/Agents.types';
 
@@ -68,7 +67,7 @@ import CustomCredentialsStepContent from './CustomCredentialsStepContent.vue';
 const emit = defineEmits(['update:open']);
 
 const props = defineProps<{
-  agent: AgentGroup | Agent;
+  agent: Agent;
 }>();
 
 defineModel('open', {
@@ -88,8 +87,15 @@ type StepKey = (typeof Step)[keyof typeof Step];
 const stepIndex = ref<number>(1);
 const isOfficial = computed(() => Boolean(props.agent?.is_official));
 
-const officialAgent = computed(() => props.agent as AgentGroup);
-const customAgent = computed(() => props.agent as Agent);
+const officialAgent = computed(() => props.agent);
+const customAgent = computed(() => props.agent);
+
+const customAgentConstants = computed(
+  () => customAgent.value.mcps?.[0]?.config ?? [],
+);
+const customAgentCredentials = computed(
+  () => customAgent.value.mcps?.[0]?.credentials ?? [],
+);
 
 const hasSystems = computed(() => {
   if (!isOfficial.value) return false;
@@ -109,8 +115,8 @@ const stepSequence = computed<StepKey[]>(() => {
       : [Step.MCP, Step.Credentials];
   }
   const steps: StepKey[] = [];
-  if (customAgent.value.constants?.length) steps.push(Step.Constants);
-  if (customAgent.value.credentials?.length) steps.push(Step.CustomCredentials);
+  if (customAgentConstants.value.length) steps.push(Step.Constants);
+  if (customAgentCredentials.value.length) steps.push(Step.CustomCredentials);
   return steps;
 });
 
@@ -186,14 +192,14 @@ const currentStepProps = computed(() => {
     },
     [Step.Constants]: {
       agentName: customAgent.value.name,
-      constants: customAgent.value.constants ?? [],
+      constants: customAgentConstants.value,
       constantsValues: customConfig.value.constants,
       'onUpdate:constantsValues': (nextValues: ConstantsValues) => {
         customConfig.value.constants = nextValues;
       },
     },
     [Step.CustomCredentials]: {
-      credentials: customAgent.value.credentials ?? [],
+      credentials: customAgentCredentials.value,
       credentialValues: customConfig.value.credentials,
       'onUpdate:credentialValues': (nextValues: Record<string, string>) => {
         customConfig.value.credentials = nextValues;
@@ -232,7 +238,7 @@ const isNextDisabled = computed(() => {
     [Step.MCP]: () =>
       !officialConfig.value.MCP ||
       isSomeRequiredFieldMissing(
-        officialConfig.value.MCP?.constants,
+        officialConfig.value.MCP?.config,
         officialConfig.value.mcp_config,
       ),
     [Step.Credentials]: () =>
@@ -242,12 +248,12 @@ const isNextDisabled = computed(() => {
       ) || isSubmitting.value,
     [Step.Constants]: () =>
       isSomeRequiredFieldMissing(
-        customAgent.value.constants,
+        customAgentConstants.value,
         customConfig.value.constants,
       ),
     [Step.CustomCredentials]: () =>
       !areAllCredentialsFilled(
-        customAgent.value.credentials,
+        customAgentCredentials.value,
         customConfig.value.credentials,
       ) || isSubmitting.value,
   };

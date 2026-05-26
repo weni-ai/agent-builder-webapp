@@ -85,7 +85,7 @@ const selectedMCPConstantsValues = defineModel<Record<string, ConstantValue>>(
   },
 );
 const selectedMCPConstants = computed<AgentConstantField[]>(() => {
-  return selectedMCP.value?.constants ?? [];
+  return selectedMCP.value?.config ?? [];
 });
 
 watch(
@@ -105,7 +105,7 @@ watch(
     if (Object.keys(selectedMCPConstantsValues.value || {}).length) {
       return;
     }
-    selectedMCPConstantsValues.value = buildInitialValues(next.constants);
+    selectedMCPConstantsValues.value = buildInitialValues(next.config);
   },
   { immediate: true },
 );
@@ -113,7 +113,7 @@ watch(
 function handleSelectMCP(MCP: AgentMCP, checked: boolean) {
   if (!checked) return;
   selectedMCP.value = MCP;
-  selectedMCPConstantsValues.value = buildInitialValues(MCP.constants);
+  selectedMCPConstantsValues.value = buildInitialValues(MCP.config);
 }
 
 function buildInitialValues(constants: AgentConstantField[] = []) {

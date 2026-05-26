@@ -20,7 +20,7 @@
       </header>
 
       <section
-        v-if="mcpArguments.length"
+        v-if="mcpArguments?.length"
         class="agent-detail-modal__mcp-arguments"
       >
         <p
@@ -48,28 +48,26 @@ import { formatListToReadable } from '@/utils/formatters';
 import useTranslatedField from '@/composables/useTranslatedField';
 
 import type {
-  AgentAssignedMCP,
+  AgentMCP,
   AgentAssignedConstantValue,
 } from '@/store/types/Agents.types';
 
 const props = defineProps<{
-  mcp: AgentAssignedMCP;
+  mcp: AgentMCP;
 }>();
 
 const translateField = useTranslatedField();
 
 const mcpTitle = computed(() => props.mcp.name || '');
-const mcpDescription = computed(
-  () => translateField(props.mcp.description) ?? props.mcp.description,
-);
+const mcpDescription = computed(() => translateField(props.mcp.description));
 
 const mcpArguments = computed(() => {
-  const constantsEntries = props.mcp.constants || {};
-  return Object.entries(constantsEntries)
-    .filter(([_label, value]) => !isValueEmpty(value))
-    .map(([label, value]) => ({
-      label,
-      value: formatValue(value),
+  const constantsEntries = props.mcp.config;
+  return constantsEntries
+    .filter((field) => !isValueEmpty(field.value ?? null))
+    .map((field) => ({
+      label: field.label,
+      value: formatValue(field.value ?? null),
     }));
 });
 

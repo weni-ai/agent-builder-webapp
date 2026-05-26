@@ -93,7 +93,7 @@ describe('AgentsTeam API', () => {
       expect(result).not.toHaveProperty('availableSystems');
     });
 
-    it('should map agents from results, normalize mcps and pass systems through', async () => {
+    it('should passthrough unified shape and add id alias from slug', async () => {
       request.$http.get.mockResolvedValue(mockOfficialAgentsResponse);
 
       const result = await AgentsTeam.listOfficialAgents({});
@@ -101,12 +101,13 @@ describe('AgentsTeam API', () => {
       expect(result.agents[0]).toMatchObject({
         uuid: 'agent-uuid-1',
         id: 'official-agent-1',
+        slug: 'official-agent-1',
         systems: ['system_a'],
         mcps: [
           expect.objectContaining({
             name: 'Default',
             system: 'system_a',
-            constants: [
+            config: [
               expect.objectContaining({ name: 'REQ_FIELD', is_required: true }),
             ],
           }),
@@ -116,28 +117,6 @@ describe('AgentsTeam API', () => {
         uuid: 'agent-uuid-2',
         id: 'official-agent-2',
         systems: ['system_b'],
-        mcps: [],
-      });
-    });
-
-    it('should default mcps and systems to empty arrays when missing', async () => {
-      request.$http.get.mockResolvedValue({
-        data: {
-          results: [
-            {
-              uuid: 'agent-uuid-3',
-              name: 'Official Agent 3',
-              slug: 'official-agent-3',
-            },
-          ],
-        },
-      });
-
-      const result = await AgentsTeam.listOfficialAgents({});
-
-      expect(result.agents[0]).toMatchObject({
-        id: 'official-agent-3',
-        systems: [],
         mcps: [],
       });
     });
@@ -230,46 +209,52 @@ describe('AgentsTeam API', () => {
         {
           uuid: 'my-agent-uuid-1',
           name: 'My Agent 1',
-          description: 'First personal agent',
-          skills: ['custom-skill1'],
-          assigned: true,
-          credentials: [{ name: 'ROOT_KEY', label: 'Should be ignored' }],
-          is_official: false,
           slug: 'my-agent-1',
-          mcp_definitions: {
-            config: [
-              {
-                name: 'country',
-                label: 'Country',
-                type: 'TEXT',
-                is_required: true,
-                default_value: 'BRA',
-                options: [],
-              },
-            ],
-            credentials: [
-              {
-                name: 'BASE_URL',
-                label: 'Base URL',
-                placeholder: 'https://example.com',
-                is_confidential: false,
-              },
-            ],
-          },
+          group: null,
+          about: { en: 'First personal agent', pt: null, es: null },
+          assigned: true,
+          active: false,
+          is_official: false,
+          category: null,
+          systems: ['custom-system'],
+          mcps: [
+            {
+              name: 'Default',
+              description: { en: 'Default MCP', pt: '', es: '' },
+              system: 'custom-system',
+              config: [
+                {
+                  name: 'country',
+                  label: 'Country',
+                  type: 'TEXT',
+                  is_required: true,
+                  default_value: 'BRA',
+                  options: [],
+                },
+              ],
+              credentials: [
+                {
+                  name: 'BASE_URL',
+                  label: 'Base URL',
+                  placeholder: 'https://example.com',
+                  is_confidential: false,
+                },
+              ],
+            },
+          ],
         },
         {
           uuid: 'my-agent-uuid-2',
           name: 'My Agent 2',
-          description: 'Second personal agent',
-          skills: ['custom-skill2', 'custom-skill3'],
-          assigned: false,
-          credentials: [],
-          is_official: false,
           slug: 'my-agent-2',
-          mcp_definitions: {
-            config: [],
-            credentials: [],
-          },
+          group: null,
+          about: { en: 'Second personal agent', pt: null, es: null },
+          assigned: false,
+          active: false,
+          is_official: false,
+          category: null,
+          systems: [],
+          mcps: [],
         },
       ],
     };
@@ -288,32 +273,8 @@ describe('AgentsTeam API', () => {
 
       expect(result.data).toHaveLength(2);
       expect(result.data[0]).toEqual({
-        uuid: 'my-agent-uuid-1',
-        name: 'My Agent 1',
-        about: null,
-        description: 'First personal agent',
-        skills: ['custom-skill1'],
-        assigned: true,
-        credentials: [
-          {
-            name: 'BASE_URL',
-            label: 'Base URL',
-            placeholder: 'https://example.com',
-            is_confidential: false,
-          },
-        ],
-        is_official: false,
+        ...mockMyAgentsResponse.data[0],
         id: 'my-agent-1',
-        constants: [
-          {
-            name: 'country',
-            label: 'Country',
-            type: 'TEXT',
-            is_required: true,
-            default_value: 'BRA',
-            options: [],
-          },
-        ],
       });
     });
 
@@ -336,7 +297,7 @@ describe('AgentsTeam API', () => {
       expect(result.data[0].name).toBe('My Agent 2');
     });
 
-    it('should transform personal agent data correctly', async () => {
+    it('should add id alias from slug for each agent', async () => {
       request.$http.get.mockResolvedValue(mockMyAgentsResponse);
 
       const result = await AgentsTeam.listMyAgents({});
@@ -345,29 +306,17 @@ describe('AgentsTeam API', () => {
         const originalAgent = mockMyAgentsResponse.data[index];
         expect(agent.uuid).toBe(originalAgent.uuid);
         expect(agent.name).toBe(originalAgent.name);
-        expect(agent.description).toBe(originalAgent.description);
-        expect(agent.skills).toEqual(originalAgent.skills);
-        expect(agent.assigned).toBe(originalAgent.assigned);
-        expect(agent.credentials).toEqual(
-          originalAgent.mcp_definitions.credentials,
-        );
         expect(agent.id).toBe(originalAgent.slug);
+        expect(agent.mcps).toEqual(originalAgent.mcps);
       });
     });
 
-    it('forces is_official to false even when the API returns true', async () => {
-      request.$http.get.mockResolvedValue({
-        data: [
-          {
-            ...mockMyAgentsResponse.data[0],
-            is_official: true,
-          },
-        ],
-      });
+    it('should return an empty array when data is missing', async () => {
+      request.$http.get.mockResolvedValue({ data: null });
 
       const result = await AgentsTeam.listMyAgents({});
 
-      expect(result.data[0].is_official).toBe(false);
+      expect(result.data).toEqual([]);
     });
 
     it('should handle API error', async () => {
@@ -391,20 +340,36 @@ describe('AgentsTeam API', () => {
           {
             uuid: 'active-agent-uuid-1',
             name: 'Active Agent 1',
-            skills: ['active-skill1'],
-            id: 'active-agent-1',
-            description: 'First active agent',
-            credentials: { type: 'active' },
+            slug: 'active-agent-1',
+            group: 'group-1',
+            about: { en: 'First active agent', pt: null, es: null },
+            assigned: true,
+            active: true,
             is_official: true,
+            category: null,
+            systems: ['vtex'],
+            mcps: [
+              {
+                name: 'Default',
+                description: { en: 'Default MCP', pt: '', es: '' },
+                system: 'vtex',
+                config: { country: 'BRA' },
+                credentials: [],
+              },
+            ],
           },
           {
             uuid: 'active-agent-uuid-2',
             name: 'Active Agent 2',
-            skills: ['active-skill2', 'active-skill3'],
-            id: 'active-agent-2',
-            description: 'Second active agent',
-            credentials: { type: 'custom' },
+            slug: 'active-agent-2',
+            group: null,
+            about: { en: 'Second active agent', pt: null, es: null },
+            assigned: true,
+            active: true,
             is_official: false,
+            category: null,
+            systems: [],
+            mcps: [],
           },
         ],
       },
@@ -425,15 +390,14 @@ describe('AgentsTeam API', () => {
 
       expect(result.data.agents).toHaveLength(2);
       expect(result.data.agents[0]).toEqual({
-        uuid: 'active-agent-uuid-1',
-        name: 'Active Agent 1',
-        skills: ['active-skill1'],
+        ...mockActiveTeamResponse.data.agents[0],
         id: 'active-agent-1',
-        about: null,
-        description: 'First active agent',
-        credentials: { type: 'active' },
-        is_official: true,
-        mcp: undefined,
+        mcps: [
+          {
+            ...mockActiveTeamResponse.data.agents[0].mcps[0],
+            config: [{ label: 'country', value: 'BRA' }],
+          },
+        ],
       });
     });
 
@@ -471,21 +435,62 @@ describe('AgentsTeam API', () => {
       expect(result.data.agents).toEqual([]);
     });
 
-    it('should transform active team data correctly', async () => {
+    it('should add id alias from slug when id is missing', async () => {
+      const responseMissingId = {
+        data: {
+          manager: { id: 'manager-id' },
+          agents: [
+            {
+              ...mockActiveTeamResponse.data.agents[0],
+              id: undefined,
+            },
+          ],
+        },
+      };
+      request.$http.get.mockResolvedValue(responseMissingId);
+
+      const result = await AgentsTeam.listActiveTeam();
+
+      expect(result.data.agents[0].id).toBe('active-agent-1');
+    });
+
+    it('should transform mcp config object into a labeled array', async () => {
       request.$http.get.mockResolvedValue(mockActiveTeamResponse);
 
       const result = await AgentsTeam.listActiveTeam();
 
-      result.data.agents.forEach((agent, index) => {
-        const originalAgent = mockActiveTeamResponse.data.agents[index];
-        expect(agent.uuid).toBe(originalAgent.uuid);
-        expect(agent.name).toBe(originalAgent.name);
-        expect(agent.skills).toEqual(originalAgent.skills);
-        expect(agent.id).toBe(originalAgent.id);
-        expect(agent.description).toBe(originalAgent.description);
-        expect(agent.credentials).toEqual(originalAgent.credentials);
-        expect(agent.is_official).toBe(originalAgent.is_official);
-      });
+      expect(result.data.agents[0].mcps).toEqual([
+        {
+          ...mockActiveTeamResponse.data.agents[0].mcps[0],
+          config: [{ label: 'country', value: 'BRA' }],
+        },
+      ]);
+    });
+
+    it('should default mcp config to an empty array when missing', async () => {
+      const responseWithoutMcpConfig = {
+        data: {
+          manager: { id: 'manager-id' },
+          agents: [
+            {
+              ...mockActiveTeamResponse.data.agents[0],
+              mcps: [
+                {
+                  name: 'Default',
+                  description: { en: 'Default MCP', pt: '', es: '' },
+                  system: 'vtex',
+                  credentials: [],
+                },
+              ],
+            },
+          ],
+        },
+      };
+      request.$http.get.mockResolvedValue(responseWithoutMcpConfig);
+
+      const result = await AgentsTeam.listActiveTeam();
+
+      expect(result.data.agents[0].mcps[0].config).toEqual([]);
     });
 
     it('should handle API error', async () => {
@@ -599,41 +604,6 @@ describe('AgentsTeam API', () => {
           assigned: true,
         }),
       ).rejects.toThrow('Failed to toggle agent assignment');
-    });
-  });
-
-  describe('Data transformation', () => {
-    it('should consistently transform agent data across all methods', () => {
-      const originalAgent = {
-        uuid: 'test-uuid',
-        name: 'Test Agent',
-        description: 'Test Description',
-        skills: ['test-skill'],
-        assigned: true,
-        credentials: { type: 'test' },
-        is_official: false,
-        slug: 'test-agent-slug',
-      };
-
-      const transformedAgent = {
-        uuid: originalAgent.uuid,
-        name: originalAgent.name,
-        description: originalAgent.description,
-        skills: originalAgent.skills,
-        assigned: originalAgent.assigned,
-        credentials: originalAgent.credentials,
-        is_official: originalAgent.is_official,
-        id: originalAgent.slug,
-      };
-
-      expect(transformedAgent.id).toBe(originalAgent.slug);
-      expect(transformedAgent.uuid).toBe(originalAgent.uuid);
-      expect(transformedAgent.name).toBe(originalAgent.name);
-      expect(transformedAgent.description).toBe(originalAgent.description);
-      expect(transformedAgent.skills).toEqual(originalAgent.skills);
-      expect(transformedAgent.assigned).toBe(originalAgent.assigned);
-      expect(transformedAgent.credentials).toEqual(originalAgent.credentials);
-      expect(transformedAgent.is_official).toBe(originalAgent.is_official);
     });
   });
 

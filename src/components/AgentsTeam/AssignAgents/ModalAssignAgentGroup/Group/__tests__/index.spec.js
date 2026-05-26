@@ -31,7 +31,7 @@ const officialAgentFixture = {
       description: 'VTEX integration',
       system: 'VTEX',
       credentials: [{ name: 'token', label: 'API Token' }],
-      constants: [],
+      config: [],
     },
   ],
 };
@@ -40,28 +40,49 @@ const customAgentFixture = {
   uuid: 'custom-agent-uuid',
   name: 'Custom Agent',
   is_official: false,
-  constants: [
-    { name: 'country', label: 'Country', type: 'TEXT', is_required: true },
+  mcps: [
+    {
+      name: 'Default',
+      description: { en: '', pt: '', es: '' },
+      system: 'custom',
+      config: [
+        { name: 'country', label: 'Country', type: 'TEXT', is_required: true },
+      ],
+      credentials: [{ name: 'api_key', label: 'API Key' }],
+    },
   ],
-  credentials: [{ name: 'api_key', label: 'API Key' }],
 };
 
 const customAgentOnlyConstantsFixture = {
   uuid: 'custom-agent-only-constants',
   name: 'Constants Only Agent',
   is_official: false,
-  constants: [
-    { name: 'country', label: 'Country', type: 'TEXT', is_required: true },
+  mcps: [
+    {
+      name: 'Default',
+      description: { en: '', pt: '', es: '' },
+      system: 'custom',
+      config: [
+        { name: 'country', label: 'Country', type: 'TEXT', is_required: true },
+      ],
+      credentials: [],
+    },
   ],
-  credentials: [],
 };
 
 const customAgentOnlyCredentialsFixture = {
   uuid: 'custom-agent-only-credentials',
   name: 'Credentials Only Agent',
   is_official: false,
-  constants: [],
-  credentials: [{ name: 'api_key', label: 'API Key' }],
+  mcps: [
+    {
+      name: 'Default',
+      description: { en: '', pt: '', es: '' },
+      system: 'custom',
+      config: [],
+      credentials: [{ name: 'api_key', label: 'API Key' }],
+    },
+  ],
 };
 
 const createOfficialAssignmentState = () => ({
@@ -81,7 +102,7 @@ const mockMCPWithCredentials = {
   description: 'VTEX integration',
   system: 'VTEX',
   credentials: [{ name: 'token', label: 'API Token' }],
-  constants: [],
+  config: [],
 };
 
 const createCustomAssignmentState = () => ({

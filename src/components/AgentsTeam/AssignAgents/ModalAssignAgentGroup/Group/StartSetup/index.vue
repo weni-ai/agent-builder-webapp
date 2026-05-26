@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import type { Agent, AgentGroup } from '@/store/types/Agents.types';
+import type { Agent } from '@/store/types/Agents.types';
 import useTranslatedField from '@/composables/useTranslatedField';
 
 import About from './About.vue';
@@ -40,17 +40,16 @@ import MCPs from './MCPs.vue';
 import ConversationExample from './ConversationExample.vue';
 
 const props = defineProps<{
-  agent: AgentGroup | Agent;
+  agent: Agent;
 }>();
 
 const translateField = useTranslatedField();
 
-const conversationExample = computed(() => {
-  const conversation = (props.agent as AgentGroup).conversation_example;
-  return translateField(conversation) ?? [];
-});
+const conversationExample = computed(
+  () => translateField(props.agent.conversation_example) ?? [],
+);
 
-const agentMCPs = computed(() => (props.agent as AgentGroup).mcps ?? []);
+const agentMCPs = computed(() => props.agent.mcps ?? []);
 </script>
 
 <style lang="scss" scoped>
