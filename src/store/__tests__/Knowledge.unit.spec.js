@@ -9,6 +9,7 @@ vi.mock('@/api/nexusaiAPI', () => ({
     knowledge: {
       texts: {
         list: vi.fn(),
+        read: vi.fn(),
       },
     },
   },
@@ -196,6 +197,56 @@ describe('Knowledge Store', () => {
         '1',
         '2',
       ]);
+    });
+  });
+
+  describe('getContentText', () => {
+    it('returns the cached item without calling the API when the uuid is already loaded', async () => {
+      const cached = buildItem({
+        uuid: 'cached-uuid',
+        last_updated_at: '2024-04-01T00:00:00Z',
+      });
+      store.contentTexts.data = [cached];
+
+      const result = await store.getContentText('cached-uuid');
+
+      expect(result).toEqual(cached);
+      expect(nexusaiAPI.knowledge.texts.read).not.toHaveBeenCalled();
+      expect(store.contentTexts.data).toHaveLength(1);
+    });
+
+    it('fetches the item from the API when it is not cached and inserts it into data ordered by last_updated_at', async () => {
+      store.contentTexts.data = [
+        buildItem({ uuid: '1', last_updated_at: '2024-01-01T00:00:00Z' }),
+        buildItem({ uuid: '2', last_updated_at: '2024-05-01T00:00:00Z' }),
+      ];
+
+      const fetched = buildItem({
+        uuid: '3',
+        last_updated_at: '2024-03-01T00:00:00Z',
+      });
+      nexusaiAPI.knowledge.texts.read.mockResolvedValue({ data: fetched });
+
+      const result = await store.getContentText('3');
+
+      expect(nexusaiAPI.knowledge.texts.read).toHaveBeenCalledWith({
+        uuid: '3',
+      });
+      expect(result).toEqual(fetched);
+      expect(store.contentTexts.data.map(({ uuid }) => uuid)).toEqual([
+        '2',
+        '3',
+        '1',
+      ]);
+    });
+
+    it('propagates the error when the read request fails', async () => {
+      nexusaiAPI.knowledge.texts.read.mockRejectedValue(new Error('boom'));
+
+      await expect(store.getContentText('missing-uuid')).rejects.toThrow(
+        'boom',
+      );
+      expect(store.contentTexts.data).toEqual([]);
     });
   });
 });

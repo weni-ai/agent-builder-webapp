@@ -66,10 +66,30 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
     }
   }
 
+  async function getContentText(uuid) {
+    const cached = contentTexts.data.find((item) => item.uuid === uuid);
+    if (cached) return cached;
+
+    const { data } = await nexusaiAPI.knowledge.texts.read({ uuid });
+
+    const existingIndex = contentTexts.data.findIndex(
+      (item) => item.uuid === data.uuid,
+    );
+
+    if (existingIndex === -1) {
+      contentTexts.data = orderByLastUpdatedAt([...contentTexts.data, data]);
+    } else {
+      contentTexts.data[existingIndex] = data;
+    }
+
+    return data;
+  }
+
   return {
     contentText,
     contentTexts,
     loadContentTexts,
     loadNextContentTexts,
+    getContentText,
   };
 });

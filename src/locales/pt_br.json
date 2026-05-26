@@ -641,6 +641,7 @@
       "description": "Escreva o conteúdo que o agente usará para responder às perguntas",
       "supporting_text": "Organize seu conteúdo em textos separados por tópico para respostas mais precisas",
       "button_add_new_text": "Novo texto",
+      "default_title": "Texto sem título",
       "search_placeholder": "Buscar",
       "no_results": "Nenhum resultado encontrado",
       "empty_state": {
