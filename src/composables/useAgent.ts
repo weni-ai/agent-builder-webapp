@@ -16,8 +16,8 @@ export default function useAgent() {
       id: (agent as Agent).id || (agent as Agent).slug || '',
       name: agent.name || '',
       is_official: agent.is_official || false,
-      about: 'about' in agent ? agent.about : null,
-      description: agent.description || '',
+      about: agent.about ?? null,
+      description: (agent as Agent).description || '',
       group: 'group' in agent ? (agent.group as string) : undefined,
       mcp:
         'mcp' in agent && agent.mcp

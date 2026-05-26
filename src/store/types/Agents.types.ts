@@ -1,20 +1,11 @@
 import type { TranslatedField } from '@/composables/useTranslatedField';
 
-export type AgentGroupType = 'CUSTOMIZABLE' | 'PLUG_IN_PLAY';
 export type AgentCategory = 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS';
 
 export type AgentSystem = {
   slug: string;
   name: string;
   logo: string | null;
-};
-
-export type GroupVariant = {
-  uuid: string;
-  name: string;
-  slug: string;
-  assigned: boolean;
-  systems: string[];
 };
 
 export interface AgentSkill {
@@ -99,19 +90,15 @@ export interface AgentMCP {
 
 export interface AgentGroup {
   name: string;
-  description: string;
-  type: AgentGroupType;
-  category: AgentCategory;
-  group: string;
-  agents: GroupVariant[];
-  MCPs: AgentMCP[];
+  category: AgentCategory | null;
+  group: string | null;
+  uuid: string | null;
+  slug: string | null;
+  active: boolean | null;
+  about: TranslatedField<string>;
+  conversation_example?: TranslatedField<ConversationMessage[]>;
+  mcps: AgentMCP[];
   systems: string[];
-  credentials?: AgentCredential[];
-  presentation?: {
-    agent_name?: string;
-    about?: TranslatedField<string>;
-    conversation_example?: TranslatedField<ConversationMessage[]>;
-  };
   assigned: boolean;
   icon: string;
   is_official: true;
@@ -126,9 +113,7 @@ export interface Agent {
   skills: AgentSkill[];
   assigned: boolean;
   slug: string;
-  model: string;
   is_official: boolean;
-  project: string;
   credentials: AgentCredential[] | [];
   constants?: AgentConstantField[];
   icon: string;

@@ -119,8 +119,7 @@ const props = defineProps({
 const translateField = useTranslatedField();
 
 const description = computed(() => {
-  const about = props.agent?.about || props.agent.presentation?.about;
-  return translateField(about) || props.agent.description;
+  return translateField(props.agent?.about) || props.agent.description;
 });
 </script>
 
