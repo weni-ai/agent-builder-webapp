@@ -86,10 +86,7 @@ describe('ContentItem.vue', () => {
 
     describe('when user clicks inside the component', () => {
       it('emits click event', async () => {
-        const tooltip = wrapper.findComponent({ name: 'UnnnicToolTipStub' });
-
-        tooltip.vm.$emit('click');
-        await wrapper.vm.$nextTick();
+        await wrapper.find('[data-test="name"]').trigger('click');
 
         expect(wrapper.emitted('click')).toHaveLength(1);
       });
