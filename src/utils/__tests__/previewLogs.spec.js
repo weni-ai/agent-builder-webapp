@@ -29,29 +29,31 @@ describe('previewLogs.js', () => {
       },
     });
 
-    const t = (params) => i18n.global.t(params);
-
     describe('Basic functionality', () => {
-      it('should process a basic log with orchestration trace', () => {
-        const mockLog = createMockLog();
-        const currentAgent = 'test-agent';
+      it('should preserve type, trace data and forward backend config (agentName)', () => {
+        const mockLog = {
+          type: 'trace_update',
+          trace: {
+            trace: createMockTrace(),
+            config: { agentName: 'manager' },
+          },
+        };
 
-        const result = processLog({ log: mockLog, currentAgent });
+        const result = processLog({ log: mockLog });
 
         expect(result).toEqual({
           type: 'trace_update',
-          data: { trace: createMockTrace() },
+          data: { trace: createMockTrace(), config: { agentName: 'manager' } },
           config: {
+            agentName: 'manager',
             summary: '',
             category: '',
             icon: '',
-            currentAgent: 'test-agent',
-            agentName: 'test-agent',
           },
         });
       });
 
-      it('should handle log with nested trace structure', () => {
+      it('should handle log with nested trace structure and final response', () => {
         const mockLog = {
           type: 'trace_update',
           trace: {
@@ -63,7 +65,7 @@ describe('previewLogs.js', () => {
           },
         };
 
-        const result = processLog({ log: mockLog, currentAgent: '' });
+        const result = processLog({ log: mockLog });
 
         expect(result.type).toBe('trace_update');
         expect(result.config.summary).toBe('Sending final response');
@@ -81,7 +83,7 @@ describe('previewLogs.js', () => {
           }),
         };
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe(
           i18n.global.t('agent_builder.traces.search_result_received'),
@@ -99,7 +101,7 @@ describe('previewLogs.js', () => {
           },
         });
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe(
           i18n.global.t('agent_builder.traces.searching_knowledge_base'),
@@ -115,7 +117,7 @@ describe('previewLogs.js', () => {
           },
         });
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe(
           i18n.global.t('agent_builder.traces.search_result_received'),
@@ -131,7 +133,7 @@ describe('previewLogs.js', () => {
           modelInvocationInput: { prompt: 'test prompt' },
         });
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe(
           i18n.global.t('agent_builder.traces.invoking_model'),
@@ -146,7 +148,7 @@ describe('previewLogs.js', () => {
           modelInvocationOutput: { response: 'test response' },
         });
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe('Model response received');
         expect(result.config.icon).toBe('workspaces');
@@ -165,15 +167,13 @@ describe('previewLogs.js', () => {
           },
         });
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe(
           i18n.global.t('agent_builder.traces.delegating_to_agent'),
         );
         expect(result.config.icon).toBe('login');
         expect(result.config.category).toBe('delegating_to_agent');
-        expect(result.config.currentAgent).toBe('collaborator-agent');
-        expect(result.config.agentName).toBe('collaborator-agent');
       });
 
       it('should process agent collaborator invocation output', () => {
@@ -185,15 +185,13 @@ describe('previewLogs.js', () => {
           },
         });
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe(
           i18n.global.t('agent_builder.traces.forwarding_to_manager'),
         );
         expect(result.config.icon).toBe('logout');
         expect(result.config.category).toBe('forwarding_to_manager');
-        expect(result.config.currentAgent).toBe('');
-        expect(result.config.agentName).toBe('output-agent');
       });
     });
 
@@ -207,7 +205,7 @@ describe('previewLogs.js', () => {
           },
         });
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe('Executing tool searchTool');
         expect(result.config.icon).toBe('build');
@@ -221,7 +219,7 @@ describe('previewLogs.js', () => {
           },
         });
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe('Executing tool ');
         expect(result.config.icon).toBe('build');
@@ -235,7 +233,7 @@ describe('previewLogs.js', () => {
           },
         });
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe(
           i18n.global.t('agent_builder.traces.tool_result_received'),
@@ -246,35 +244,62 @@ describe('previewLogs.js', () => {
     });
 
     describe('Final response traces', () => {
-      it('should process final response without agent name', () => {
+      it('should process final response without agent name as final response', () => {
         const mockLog = createMockLog({
           observation: {
             finalResponse: { text: 'Final response' },
           },
         });
 
-        const result = processLog({ log: mockLog, currentAgent: '' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe('Sending final response');
         expect(result.config.icon).toBe('question_answer');
         expect(result.config.category).toBe('sending_final_response');
       });
 
-      it('should process final response with agent name in config', () => {
-        const mockLog = createMockLog({
-          observation: {
-            finalResponse: { text: 'Final response' },
+      it('should process final response with collaborator agent name as response for manager', () => {
+        const mockLog = {
+          type: 'trace_update',
+          trace: {
+            trace: createMockTrace({
+              observation: {
+                finalResponse: { text: 'Final response' },
+              },
+            }),
+            config: { agentName: 'collaborator' },
           },
-        });
+        };
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe(
           i18n.global.t('agent_builder.traces.sending_response_for_manager'),
         );
         expect(result.config.icon).toBe('chat_bubble');
         expect(result.config.category).toBe('sending_response_for_manager');
-        expect(result.config.agentName).toBe('agent');
+        expect(result.config.agentName).toBe('collaborator');
+      });
+
+      it('should process final response with agentName "manager" as final response', () => {
+        const mockLog = {
+          type: 'trace_update',
+          trace: {
+            trace: createMockTrace({
+              observation: {
+                finalResponse: { text: 'Final response' },
+              },
+            }),
+            config: { agentName: 'manager' },
+          },
+        };
+
+        const result = processLog({ log: mockLog });
+
+        expect(result.config.summary).toBe('Sending final response');
+        expect(result.config.icon).toBe('question_answer');
+        expect(result.config.category).toBe('sending_final_response');
+        expect(result.config.agentName).toBe('manager');
       });
     });
 
@@ -284,7 +309,7 @@ describe('previewLogs.js', () => {
           rationale: { text: 'Thinking process' },
         });
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe('Thinking');
         expect(result.config.icon).toBe('lightbulb');
@@ -303,7 +328,7 @@ describe('previewLogs.js', () => {
           },
         };
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe(
           i18n.global.t('agent_builder.traces.applying_safety_rules'),
@@ -324,7 +349,7 @@ describe('previewLogs.js', () => {
           },
         };
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result.config.summary).toBe('Processing message');
         expect(result.config.icon).toBe('autorenew');
@@ -336,7 +361,7 @@ describe('previewLogs.js', () => {
       it('should capture Sentry exception when no matching trace rules found', () => {
         const mockLog = createMockLog();
 
-        processLog({ log: mockLog, currentAgent: 'agent' });
+        processLog({ log: mockLog });
 
         expect(Sentry.captureException).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -352,7 +377,7 @@ describe('previewLogs.js', () => {
           trace: {},
         };
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result).toEqual({
           type: 'trace_update',
@@ -361,8 +386,6 @@ describe('previewLogs.js', () => {
             summary: '',
             category: '',
             icon: '',
-            currentAgent: 'agent',
-            agentName: 'agent',
           },
         });
       });
@@ -373,7 +396,7 @@ describe('previewLogs.js', () => {
           trace: null,
         };
 
-        const result = processLog({ log: mockLog, currentAgent: 'agent' });
+        const result = processLog({ log: mockLog });
 
         expect(result).toEqual({
           type: 'trace_update',
@@ -382,60 +405,36 @@ describe('previewLogs.js', () => {
             summary: '',
             category: '',
             icon: '',
-            currentAgent: 'agent',
-            agentName: 'agent',
           },
         });
       });
     });
 
-    describe('Agent name handling', () => {
-      it('should prioritize invocation input agent name over current agent', () => {
-        const mockLog = createMockLog({
-          invocationInput: {
-            agentCollaboratorInvocationInput: {
-              agentCollaboratorName: 'priority-agent',
-            },
+    describe('Agent name passthrough', () => {
+      it('passes through agentName from backend config', () => {
+        const mockLog = {
+          type: 'trace_update',
+          trace: {
+            trace: createMockTrace({
+              rationale: { text: 'Thinking' },
+            }),
+            config: { agentName: 'Concierge' },
           },
-        });
+        };
 
-        const result = processLog({
-          log: mockLog,
-          currentAgent: 'current-agent',
-        });
+        const result = processLog({ log: mockLog });
 
-        expect(result.config.currentAgent).toBe('priority-agent');
-        expect(result.config.agentName).toBe('priority-agent');
+        expect(result.config.agentName).toBe('Concierge');
       });
 
-      it('should reset current agent when output agent is present', () => {
+      it('leaves config.agentName undefined when backend did not send it', () => {
         const mockLog = createMockLog({
-          observation: {
-            agentCollaboratorInvocationOutput: {
-              agentCollaboratorName: 'output-agent',
-            },
-          },
+          rationale: { text: 'Thinking' },
         });
 
-        const result = processLog({
-          log: mockLog,
-          currentAgent: 'current-agent',
-        });
+        const result = processLog({ log: mockLog });
 
-        expect(result.config.currentAgent).toBe('');
-        expect(result.config.agentName).toBe('output-agent');
-      });
-
-      it('should fallback to current agent when no trace agent names', () => {
-        const mockLog = createMockLog();
-
-        const result = processLog({
-          log: mockLog,
-          currentAgent: 'fallback-agent',
-        });
-
-        expect(result.config.currentAgent).toBe('fallback-agent');
-        expect(result.config.agentName).toBe('fallback-agent');
+        expect(result.config.agentName).toBeUndefined();
       });
     });
   });

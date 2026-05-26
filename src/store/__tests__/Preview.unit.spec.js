@@ -2,16 +2,12 @@ import { setActivePinia, createPinia } from 'pinia';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import { usePreviewStore } from '@/store/Preview';
-import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import { useUserStore } from '@/store/User';
 import { useProjectStore } from '@/store/Project';
 import WS from '@/websocket/setup';
 import { processLog } from '@/utils/previewLogs';
 
 vi.mock('@/websocket/setup');
-vi.mock('@/store/AgentsTeam', () => ({
-  useAgentsTeamStore: vi.fn(),
-}));
 vi.mock('@/store/User', () => ({
   useUserStore: vi.fn(),
 }));
@@ -21,25 +17,12 @@ vi.mock('@/store/Project', () => ({
 
 describe('PreviewStore', () => {
   let store;
-  let mockAgentsTeamStore;
   let mockUserStore;
   let mockProjectStore;
   let mockWsInstance;
 
   beforeEach(() => {
     setActivePinia(createPinia());
-
-    mockAgentsTeamStore = {
-      activeTeam: {
-        data: {
-          agents: [
-            { id: 'agent-1', name: 'Agent 1' },
-            { id: 'agent-2', name: 'Agent 2' },
-          ],
-          manager: { id: 'manager', name: 'Manager' },
-        },
-      },
-    };
 
     mockUserStore = {
       user: {
@@ -57,7 +40,6 @@ describe('PreviewStore', () => {
     };
 
     WS.mockImplementation(() => mockWsInstance);
-    useAgentsTeamStore.mockReturnValue(mockAgentsTeamStore);
     useUserStore.mockReturnValue(mockUserStore);
     useProjectStore.mockReturnValue(mockProjectStore);
     store = usePreviewStore();
@@ -86,13 +68,13 @@ describe('PreviewStore', () => {
       expect(store.collaboratorsLogs).toEqual([store.logs[0], store.logs[2]]);
     });
 
-    it('should return the active agent based on the last trace', () => {
+    it('should expose the active agent name and current task from the last trace', () => {
       store.logs = [
         {
           type: 'trace_update',
           data: null,
           config: {
-            agentName: 'agent-1',
+            agentName: 'Concierge',
             summary: 'Task 1',
           },
         },
@@ -100,55 +82,67 @@ describe('PreviewStore', () => {
           type: 'trace_update',
           data: null,
           config: {
-            agentName: 'agent-2',
+            agentName: 'Reservations',
             summary: 'Task 2',
           },
         },
       ];
 
       expect(store.activeAgent).toEqual({
-        ...mockAgentsTeamStore.activeTeam.data.agents[1],
+        name: 'Reservations',
         currentTask: 'Task 2',
       });
     });
 
-    it('should return only the task info when agent not found', () => {
+    it('should normalize "manager" agentName to "Manager"', () => {
       store.logs = [
         {
           type: 'trace_update',
           data: null,
           config: {
-            agentName: 'unknown-agent',
-            summary: 'Task X',
+            agentName: 'manager',
+            summary: 'Thinking',
           },
         },
       ];
+
       expect(store.activeAgent).toEqual({
-        currentTask: 'Task X',
+        name: 'Manager',
+        currentTask: 'Thinking',
+      });
+    });
+
+    it('should return undefined name and currentTask when there are no logs', () => {
+      expect(store.activeAgent).toEqual({
+        name: undefined,
+        currentTask: undefined,
       });
     });
   });
 
   describe('Actions', () => {
-    it('should add a log', () => {
+    it('should add a trace_update log going through processLog', () => {
       const log = {
         type: 'trace_update',
         trace: {
           trace: {
             orchestrationTrace: {
-              invocationInput: {
-                agentCollaboratorInvocationInput: {
-                  agentCollaboratorName: 'agent-1',
-                },
-              },
+              rationale: { text: 'Thinking' },
             },
           },
+          config: { agentName: 'manager' },
         },
       };
       store.addLog(log);
-      const processedLog = processLog({ log, currentAgent: 'agent-1' });
 
-      expect(store.logs).toEqual([processedLog]);
+      expect(store.logs).toEqual([processLog({ log })]);
+    });
+
+    it('should add non-trace_update logs as-is', () => {
+      const log = { type: 'message', text: 'hi' };
+      store.addLog(log);
+
+      expect(store.logs).toEqual([log]);
     });
 
     it('should clear logs', () => {

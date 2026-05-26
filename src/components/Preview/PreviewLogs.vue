@@ -95,7 +95,6 @@
 <script setup>
 import { ref, onMounted, nextTick, computed, watch } from 'vue';
 
-import { useAgentsTeamStore } from '@/store/AgentsTeam';
 import PreviewLogsDetailsModal from './PreviewLogsDetailsModal.vue';
 
 const emit = defineEmits(['scroll-to-bottom']);
@@ -112,16 +111,7 @@ const props = defineProps({
       return ['left', 'right'].includes(value);
     },
   },
-  agents: {
-    type: Object,
-    default: () => ({
-      agents: [],
-      manager: {},
-    }),
-  },
 });
-
-const agentsTeamStore = useAgentsTeamStore();
 
 const showDetailsModal = ref(false);
 const selectedLog = ref({
@@ -130,41 +120,18 @@ const selectedLog = ref({
 });
 
 const processedLogs = computed(() => {
-  const teamData = props.agents.agents?.length
-    ? props.agents
-    : agentsTeamStore.activeTeam?.data;
+  return props.logs.reduce((logsByAgent, log) => {
+    const agentName = log.config?.agentName ?? '';
+    if (!agentName) return logsByAgent;
 
-  const teamAgents = teamData?.agents || [];
-  const galleryAgents = agentsTeamStore.allAgents?.agents || [];
-  const manager = teamData?.manager || agentsTeamStore.allAgents?.manager;
+    const agentLabel = agentName === 'manager' ? 'Manager' : agentName;
+    const lastEntry = logsByAgent.at(-1);
 
-  if (!manager && !teamAgents.length && !galleryAgents.length) return [];
-
-  const logs = props.logs;
-
-  return logs.reduce((logsByAgent, log) => {
-    const { agentName = '' } = log.config || {};
-
-    const foundAgent =
-      teamAgents.find((a) => a.id === agentName) ||
-      galleryAgents.find((a) => a.id === agentName);
-
-    if (!foundAgent && !agentName) return logsByAgent;
-
-    const agentId = foundAgent?.id || agentName;
-    const agentLabel =
-      foundAgent?.name || (agentName === 'manager' ? 'Manager' : agentName);
-
-    const lastLog = logsByAgent.at(-1);
-    if (lastLog?.id !== agentId) {
-      logsByAgent.push({
-        id: agentId,
-        agent: agentLabel,
-        steps: [],
-      });
+    if (lastEntry?.agent !== agentLabel) {
+      logsByAgent.push({ agent: agentLabel, steps: [] });
     }
 
-    logsByAgent.at(-1)?.steps.push({
+    logsByAgent.at(-1).steps.push({
       title: getLogSummary(log) || 'Unknown',
       log,
     });

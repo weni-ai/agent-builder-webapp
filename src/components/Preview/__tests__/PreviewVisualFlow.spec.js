@@ -38,7 +38,7 @@ describe('PreviewVisualFlow.vue', () => {
         },
         preview: {
           activeAgent: {
-            id: 1,
+            name: 'Agent 1',
             currentTask: 'Current Task',
           },
         },
@@ -156,7 +156,7 @@ describe('PreviewVisualFlow.vue', () => {
     it('should update branch positions when active agent changes', async () => {
       const previewStore = usePreviewStore();
       const newActiveAgent = {
-        id: 2,
+        name: 'Agent 2',
         currentTask: 'New Task',
       };
 
