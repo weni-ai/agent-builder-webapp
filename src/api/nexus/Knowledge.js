@@ -41,6 +41,14 @@ export const Knowledge = {
       return request.$http.get(endpoint);
     },
 
+    read({ uuid }) {
+      const endpoint = generateContentBaseEndpoint({
+        type: 'TEXT',
+        itemUuid: uuid,
+      });
+      return request.$http.get(endpoint);
+    },
+
     create({ text, hideGenericErrorAlert = false }) {
       const endpoint = generateContentBaseEndpoint({
         type: 'TEXT',

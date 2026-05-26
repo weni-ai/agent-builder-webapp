@@ -66,3 +66,29 @@ describe('Knowledge API — texts.list', () => {
     );
   });
 });
+
+describe('Knowledge API — texts.read', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('requests the project-scoped item endpoint with the given uuid', async () => {
+    const mockResponse = {
+      data: {
+        uuid: 'text-uuid-1',
+        title: 'My text',
+        text: 'Body',
+        last_updated_at: '2024-01-01T00:00:00Z',
+      },
+    };
+    request.$http.get.mockResolvedValue(mockResponse);
+
+    const result = await Knowledge.texts.read({ uuid: 'text-uuid-1' });
+
+    expect(request.$http.get).toHaveBeenCalledTimes(1);
+    expect(request.$http.get).toHaveBeenCalledWith(
+      'api/project-uuid/inline-content-base-text/text-uuid-1/',
+    );
+    expect(result).toEqual(mockResponse);
+  });
+});
