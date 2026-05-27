@@ -92,15 +92,9 @@
 import { computed, nextTick, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useKnowledgeStore } from '@/store/Knowledge';
-
 const MAX_TITLE_LENGTH = 100;
 
 const props = defineProps({
-  uuid: {
-    type: String,
-    default: null,
-  },
   title: {
     type: String,
     required: true,
@@ -122,7 +116,6 @@ const props = defineProps({
 const emit = defineEmits(['update:title', 'save', 'back']);
 
 const { t } = useI18n();
-const knowledgeStore = useKnowledgeStore();
 
 const editing = ref(false);
 const draft = ref('');
@@ -152,7 +145,7 @@ function onEsc(event) {
   event.target.blur();
 }
 
-async function onBlur() {
+function onBlur() {
   if (!editing.value) return;
 
   if (escCancelled.value) {
@@ -169,14 +162,6 @@ async function onBlur() {
   if (next === props.title) return;
 
   emit('update:title', next);
-
-  if (props.uuid) {
-    try {
-      await knowledgeStore.patchContentText(props.uuid, { title: next });
-    } catch {
-      console.error('Error patching content text');
-    }
-  }
 }
 </script>
 
