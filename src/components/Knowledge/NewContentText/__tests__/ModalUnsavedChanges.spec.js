@@ -70,12 +70,12 @@ describe('ModalUnsavedChanges.vue', () => {
       );
     });
 
-    it('renders the discard button as warning with the localized label', () => {
+    it('renders the discard button as attention with the localized label', () => {
       wrapper = createWrapper();
 
       const discard = wrapper.findComponent(elements.discard);
       expect(discard.exists()).toBe(true);
-      expect(discard.props('type')).toBe('warning');
+      expect(discard.props('type')).toBe('attention');
       expect(discard.props('text')).toBe(
         i18n.global.t('content_bases.new_text.unsaved.discard'),
       );
