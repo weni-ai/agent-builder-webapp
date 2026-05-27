@@ -12,6 +12,7 @@ vi.mock('@/api/nexusaiAPI', () => ({
         read: vi.fn(),
         patch: vi.fn(),
         create: vi.fn(),
+        delete: vi.fn(),
       },
     },
   },
@@ -495,6 +496,62 @@ describe('Knowledge Store', () => {
       );
 
       expect(store.contentTexts.data.map(({ uuid }) => uuid)).toEqual(['1']);
+    });
+  });
+
+  describe('deleteContentText', () => {
+    beforeEach(() => {
+      store.contentTexts.data = [
+        buildItem({ uuid: 'text-1', last_updated_at: '2024-03-01T00:00:00Z' }),
+        buildItem({ uuid: 'text-2', last_updated_at: '2024-02-01T00:00:00Z' }),
+        buildItem({ uuid: 'text-3', last_updated_at: '2024-01-01T00:00:00Z' }),
+      ];
+    });
+
+    it('forwards the uuid to the delete endpoint', async () => {
+      nexusaiAPI.knowledge.texts.delete.mockResolvedValue({ data: null });
+
+      await store.deleteContentText('text-2');
+
+      expect(nexusaiAPI.knowledge.texts.delete).toHaveBeenCalledTimes(1);
+      expect(nexusaiAPI.knowledge.texts.delete).toHaveBeenCalledWith({
+        uuid: 'text-2',
+      });
+    });
+
+    it('removes the item from the local list after a successful delete', async () => {
+      nexusaiAPI.knowledge.texts.delete.mockResolvedValue({ data: null });
+
+      await store.deleteContentText('text-2');
+
+      expect(store.contentTexts.data.map(({ uuid }) => uuid)).toEqual([
+        'text-1',
+        'text-3',
+      ]);
+    });
+
+    it('is a no-op on the local list when the uuid is not found', async () => {
+      nexusaiAPI.knowledge.texts.delete.mockResolvedValue({ data: null });
+
+      await store.deleteContentText('missing-uuid');
+
+      expect(store.contentTexts.data.map(({ uuid }) => uuid)).toEqual([
+        'text-1',
+        'text-2',
+        'text-3',
+      ]);
+    });
+
+    it('propagates the error and keeps the item in the list when the delete fails', async () => {
+      nexusaiAPI.knowledge.texts.delete.mockRejectedValue(new Error('boom'));
+
+      await expect(store.deleteContentText('text-2')).rejects.toThrow('boom');
+
+      expect(store.contentTexts.data.map(({ uuid }) => uuid)).toEqual([
+        'text-1',
+        'text-2',
+        'text-3',
+      ]);
     });
   });
 });
