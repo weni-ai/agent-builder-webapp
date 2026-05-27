@@ -654,6 +654,12 @@
       "empty_state": {
         "title": "No texts added yet",
         "description": "Write content the agent will use as a knowledge source"
+      },
+      "unsaved": {
+        "title": "You have unsaved changes",
+        "description": "If you go back now, all changes made will be discarded. This action can't be undone",
+        "keep": "Keep editing",
+        "discard": "Discard and go back"
       }
     },
     "file_with_error": "File with error. Delete and add it again.",

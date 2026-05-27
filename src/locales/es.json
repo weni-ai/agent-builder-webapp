@@ -654,6 +654,12 @@
       "empty_state": {
         "title": "Sin textos agregados",
         "description": "Escribe el contenido que el agente utilizará como fuente de conocimiento"
+      },
+      "unsaved": {
+        "title": "Tienes cambios sin guardar",
+        "description": "Si vuelves ahora, todos los cambios realizados se descartarán. Esta acción no se puede deshacer",
+        "keep": "Seguir editando",
+        "discard": "Descartar y volver"
       }
     },
     "file_with_error": "El archivo contiene errores. Elimínalo y agrégalo de nuevo.",

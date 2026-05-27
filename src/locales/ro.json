@@ -643,6 +643,12 @@
       "empty_state": {
         "title": "Niciun text adăugat",
         "description": "Scrie conținutul pe care agentul îl va folosi ca sursă de cunoaștere"
+      },
+      "unsaved": {
+        "title": "Ai modificări nesalvate",
+        "description": "Dacă te întorci acum, toate modificările făcute vor fi pierdute. Această acțiune nu poate fi anulată",
+        "keep": "Continuă editarea",
+        "discard": "Renunță și întoarce-te"
       }
     },
     "file_with_error": "Fișier cu eroare. Șterge-l și adaugă-l din nou.",
