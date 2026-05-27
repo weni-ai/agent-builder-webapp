@@ -5,7 +5,6 @@
   >
     <TextDetailHeader
       data-testid="new-content-text-header"
-      :uuid="currentUuid"
       :title="draftTitle"
       :defaultTitle="defaultTitle"
       :saveDisabled="saveDisabled"
@@ -29,6 +28,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 import { useKnowledgeStore } from '@/store/Knowledge';
+import { useAlertStore } from '@/store/Alert';
 
 import TextDetailHeader from '@/components/Knowledge/NewContentText/TextDetailHeader.vue';
 import TextDetailBody from '@/components/Knowledge/NewContentText/TextDetailBody.vue';
@@ -37,6 +37,7 @@ const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 const knowledgeStore = useKnowledgeStore();
+const alertStore = useAlertStore();
 
 const currentUuid = ref(route.params.uuid ?? null);
 const isEditMode = computed(() => Boolean(currentUuid.value));
@@ -50,10 +51,17 @@ const draftText = ref('');
 const lastSavedTitle = ref(defaultTitle);
 const lastSavedText = ref('');
 
+const hasTextChanged = computed(() => draftText.value !== lastSavedText.value);
+const hasTitleChanged = computed(
+  () => draftTitle.value !== lastSavedTitle.value,
+);
+
 const saveDisabled = computed(() => {
   if (saveLoading.value) return true;
   if (draftText.value.trim() === '') return true;
-  if (isEditMode.value && draftText.value === lastSavedText.value) return true;
+  if (isEditMode.value && !hasTextChanged.value && !hasTitleChanged.value) {
+    return true;
+  }
   return false;
 });
 
@@ -90,10 +98,6 @@ async function initializeEditMode() {
 
 function onTitleUpdate(nextTitle) {
   draftTitle.value = nextTitle;
-
-  if (isEditMode.value) {
-    lastSavedTitle.value = nextTitle;
-  }
 }
 
 async function onSave() {
@@ -103,11 +107,17 @@ async function onSave() {
 
   try {
     if (isEditMode.value) {
-      const data = await knowledgeStore.patchContentText(currentUuid.value, {
-        text: draftText.value,
-      });
+      const payload = {};
+      if (hasTextChanged.value) payload.text = draftText.value;
+      if (hasTitleChanged.value) payload.title = draftTitle.value;
+
+      const data = await knowledgeStore.patchContentText(
+        currentUuid.value,
+        payload,
+      );
 
       lastSavedText.value = data?.text ?? draftText.value;
+      lastSavedTitle.value = data?.title ?? draftTitle.value;
     } else {
       const data = await knowledgeStore.createContentText({
         text: draftText.value,
