@@ -3,7 +3,7 @@
     ref="scrollContainer"
     class="list-content-texts__list"
     data-testid="list-content-texts-list"
-    @scroll="onScroll"
+    @scroll="loadMoreIfNeeded"
   >
     <ContentItem
       v-for="text in contentTexts.data"
@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 
@@ -63,22 +63,34 @@ const goToContentText = (uuid) => {
   router.push({ name: 'content-text', params: { uuid } });
 };
 
-const onScroll = () => {
+const SCROLL_THRESHOLD = 16;
+
+function loadMoreIfNeeded() {
   const element = scrollContainer.value;
   if (!element) return;
-
-  const SCROLL_THRESHOLD = 16;
+  if (!contentTexts.value.next) return;
+  if (contentTexts.value.status === 'loading') return;
 
   const { scrollTop, clientHeight, scrollHeight } = element;
   const reachedBottom =
     scrollTop + clientHeight + SCROLL_THRESHOLD >= scrollHeight;
 
   if (!reachedBottom) return;
-  if (!contentTexts.value.next) return;
-  if (contentTexts.value.status === 'loading') return;
 
   knowledgeStore.loadNextContentTexts();
-};
+}
+
+async function loadMoreAfterRender() {
+  await nextTick();
+  loadMoreIfNeeded();
+}
+
+onMounted(loadMoreAfterRender);
+
+watch(
+  [() => contentTexts.value.status, () => contentTexts.value.data.length],
+  loadMoreAfterRender,
+);
 </script>
 
 <style lang="scss" scoped>
