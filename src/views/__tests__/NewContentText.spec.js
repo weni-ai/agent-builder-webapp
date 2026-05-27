@@ -234,7 +234,7 @@ describe('views/Knowledge/NewContentText.vue', () => {
       );
     });
 
-    it('does not replace the route when create fails', async () => {
+    it('does not replace the route and preserves the draft when create fails', async () => {
       const createContentTextMock = vi
         .fn()
         .mockRejectedValue(new Error('boom'));
@@ -253,6 +253,9 @@ describe('views/Knowledge/NewContentText.vue', () => {
       expect(mockRouter.replace).not.toHaveBeenCalled();
       expect(wrapper.findComponent(elements.header).props('saveLoading')).toBe(
         false,
+      );
+      expect(wrapper.findComponent(elements.textarea).props('modelValue')).toBe(
+        'Drafted body',
       );
     });
 
@@ -281,7 +284,7 @@ describe('views/Knowledge/NewContentText.vue', () => {
       mockRoute.params = { uuid: item.uuid };
     });
 
-    it('calls patchContentText with the updated body and disables the save button after success', async () => {
+    it('calls patchContentText with only the updated body and disables the save button after success', async () => {
       const getContentTextMock = vi.fn().mockResolvedValue(item);
       const patchContentTextMock = vi.fn().mockResolvedValue({
         ...item,
@@ -309,13 +312,102 @@ describe('views/Knowledge/NewContentText.vue', () => {
         text: 'Updated body',
       });
 
+      const payload = patchContentTextMock.mock.calls[0][1];
+      expect(payload).not.toHaveProperty('title');
+
       expect(mockRouter.replace).not.toHaveBeenCalled();
       expect(wrapper.findComponent(elements.header).props('saveDisabled')).toBe(
         true,
       );
     });
 
-    it('keeps the save button enabled when the patch fails so the user can retry', async () => {
+    it('enables the save button when only the title changes and patches only the title', async () => {
+      const getContentTextMock = vi.fn().mockResolvedValue(item);
+      const patchContentTextMock = vi.fn().mockResolvedValue({
+        ...item,
+        title: 'Renamed title',
+        last_updated_at: '2024-06-01T00:00:00Z',
+      });
+
+      wrapper = createWrapper({ getContentTextMock, patchContentTextMock });
+      await flushPromises();
+
+      expect(wrapper.findComponent(elements.header).props('saveDisabled')).toBe(
+        true,
+      );
+
+      wrapper
+        .findComponent(elements.header)
+        .vm.$emit('update:title', 'Renamed title');
+      await flushPromises();
+
+      expect(patchContentTextMock).not.toHaveBeenCalled();
+      expect(wrapper.findComponent(elements.header).props('saveDisabled')).toBe(
+        false,
+      );
+
+      wrapper.findComponent(elements.header).vm.$emit('save');
+      await flushPromises();
+
+      expect(patchContentTextMock).toHaveBeenCalledTimes(1);
+      expect(patchContentTextMock).toHaveBeenCalledWith(item.uuid, {
+        title: 'Renamed title',
+      });
+
+      const payload = patchContentTextMock.mock.calls[0][1];
+      expect(payload).not.toHaveProperty('text');
+
+      expect(wrapper.findComponent(elements.header).props('saveDisabled')).toBe(
+        true,
+      );
+    });
+
+    it('patches both title and text when both have changed', async () => {
+      const getContentTextMock = vi.fn().mockResolvedValue(item);
+      const patchContentTextMock = vi.fn().mockResolvedValue({
+        ...item,
+        title: 'Renamed title',
+        text: 'Updated body',
+        last_updated_at: '2024-06-01T00:00:00Z',
+      });
+
+      wrapper = createWrapper({ getContentTextMock, patchContentTextMock });
+      await flushPromises();
+
+      wrapper
+        .findComponent(elements.header)
+        .vm.$emit('update:title', 'Renamed title');
+      wrapper
+        .findComponent(elements.textarea)
+        .vm.$emit('update:modelValue', 'Updated body');
+      await flushPromises();
+
+      wrapper.findComponent(elements.header).vm.$emit('save');
+      await flushPromises();
+
+      expect(patchContentTextMock).toHaveBeenCalledTimes(1);
+      expect(patchContentTextMock).toHaveBeenCalledWith(item.uuid, {
+        text: 'Updated body',
+        title: 'Renamed title',
+      });
+    });
+
+    it('does not call patchContentText when only update:title is emitted by the header', async () => {
+      const getContentTextMock = vi.fn().mockResolvedValue(item);
+      const patchContentTextMock = vi.fn().mockResolvedValue({});
+
+      wrapper = createWrapper({ getContentTextMock, patchContentTextMock });
+      await flushPromises();
+
+      wrapper
+        .findComponent(elements.header)
+        .vm.$emit('update:title', 'Renamed via header only');
+      await flushPromises();
+
+      expect(patchContentTextMock).not.toHaveBeenCalled();
+    });
+
+    it('keeps the save button enabled and preserves the draft when the patch fails so the user can retry', async () => {
       const getContentTextMock = vi.fn().mockResolvedValue(item);
       const patchContentTextMock = vi.fn().mockRejectedValue(new Error('boom'));
 
@@ -335,6 +427,9 @@ describe('views/Knowledge/NewContentText.vue', () => {
       );
       expect(wrapper.findComponent(elements.header).props('saveLoading')).toBe(
         false,
+      );
+      expect(wrapper.findComponent(elements.textarea).props('modelValue')).toBe(
+        'Updated body',
       );
     });
   });

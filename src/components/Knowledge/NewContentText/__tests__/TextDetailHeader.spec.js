@@ -1,10 +1,8 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import { nextTick } from 'vue';
-import { createTestingPinia } from '@pinia/testing';
 
 import TextDetailHeader from '@/components/Knowledge/NewContentText/TextDetailHeader.vue';
-import { useKnowledgeStore } from '@/store/Knowledge';
 
 const DEFAULT_TITLE = 'Untitled text';
 
@@ -19,27 +17,17 @@ const elements = {
   moreButton: '[data-testid="text-detail-header-cave-button"]',
 };
 
-const createWrapper = (props = {}) => {
-  const pinia = createTestingPinia({
-    createSpy: vi.fn,
-    stubActions: true,
-  });
-
-  return mount(TextDetailHeader, {
+const createWrapper = (props = {}) =>
+  mount(TextDetailHeader, {
     props: {
-      uuid: null,
       title: 'My text',
       defaultTitle: DEFAULT_TITLE,
       saveLoading: false,
       saveDisabled: true,
       ...props,
     },
-    global: {
-      plugins: [pinia],
-    },
     attachTo: document.body,
   });
-};
 
 describe('TextDetailHeader.vue', () => {
   let wrapper;
@@ -214,42 +202,6 @@ describe('TextDetailHeader.vue', () => {
 
       expect(wrapper.emitted('update:title')).toEqual([[DEFAULT_TITLE]]);
     });
-
-    it('calls the store patchContentText with only the title when a uuid is provided', async () => {
-      wrapper = createWrapper({ uuid: 'text-uuid-1', title: 'My text' });
-      const knowledgeStore = useKnowledgeStore();
-      knowledgeStore.patchContentText = vi.fn().mockResolvedValue({});
-
-      await wrapper.find(elements.titleWrapper).trigger('click');
-      const input = wrapper.find(elements.input);
-      await input.setValue('Renamed');
-      await input.trigger('keydown.enter');
-      await flushPromises();
-
-      expect(knowledgeStore.patchContentText).toHaveBeenCalledTimes(1);
-      expect(knowledgeStore.patchContentText).toHaveBeenCalledWith(
-        'text-uuid-1',
-        { title: 'Renamed' },
-      );
-
-      const payload = knowledgeStore.patchContentText.mock.calls[0][1];
-      expect(payload).not.toHaveProperty('text');
-    });
-
-    it('does not call patchContentText when no uuid is provided (create mode)', async () => {
-      wrapper = createWrapper({ uuid: null, title: 'Draft' });
-      const knowledgeStore = useKnowledgeStore();
-      knowledgeStore.patchContentText = vi.fn().mockResolvedValue({});
-
-      await wrapper.find(elements.titleWrapper).trigger('click');
-      const input = wrapper.find(elements.input);
-      await input.setValue('Renamed locally');
-      await input.trigger('keydown.enter');
-      await flushPromises();
-
-      expect(knowledgeStore.patchContentText).not.toHaveBeenCalled();
-      expect(wrapper.emitted('update:title')).toEqual([['Renamed locally']]);
-    });
   });
 
   describe('cancelling the title edit', () => {
@@ -265,20 +217,6 @@ describe('TextDetailHeader.vue', () => {
       expect(wrapper.emitted('update:title')).toBeUndefined();
       expect(wrapper.find(elements.input).exists()).toBe(false);
       expect(wrapper.find(elements.title).text()).toBe('My text');
-    });
-
-    it('does not call patchContentText when the edit is cancelled with Esc', async () => {
-      wrapper = createWrapper({ uuid: 'text-uuid-1', title: 'My text' });
-      const knowledgeStore = useKnowledgeStore();
-      knowledgeStore.patchContentText = vi.fn().mockResolvedValue({});
-
-      await wrapper.find(elements.titleWrapper).trigger('click');
-      const input = wrapper.find(elements.input);
-      await input.setValue('Discarded');
-      await input.trigger('keydown.esc');
-      await flushPromises();
-
-      expect(knowledgeStore.patchContentText).not.toHaveBeenCalled();
     });
   });
 
