@@ -9,16 +9,29 @@ import i18n from '@/utils/plugins/i18n';
 
 const mockRoute = { params: {} };
 const mockRouter = { push: vi.fn(), replace: vi.fn() };
+const routeLeaveGuards = [];
+const onBeforeRouteLeaveMock = vi.fn((guard) => {
+  routeLeaveGuards.push(guard);
+});
 
 vi.mock('vue-router', () => ({
   useRoute: () => mockRoute,
   useRouter: () => mockRouter,
+  onBeforeRouteLeave: (guard) => onBeforeRouteLeaveMock(guard),
 }));
+
+const runRouteLeaveGuard = (to = { name: 'knowledge' }) => {
+  const guard = routeLeaveGuards[routeLeaveGuards.length - 1];
+  const next = vi.fn();
+  guard?.(to, { name: 'content-text' }, next);
+  return next;
+};
 
 const elements = {
   root: '[data-testid="new-content-text"]',
   header: '[data-testid="new-content-text-header"]',
   textarea: '[data-testid="new-content-text-textarea"]',
+  unsavedModal: '[data-testid="new-content-text-unsaved-modal"]',
 };
 
 const createWrapper = ({
@@ -64,6 +77,7 @@ describe('views/Knowledge/NewContentText.vue', () => {
 
   beforeEach(() => {
     mockRoute.params = {};
+    routeLeaveGuards.length = 0;
   });
 
   afterEach(() => {
@@ -655,6 +669,270 @@ describe('views/Knowledge/NewContentText.vue', () => {
         await flushPromises();
 
         expect(alertStore.add).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('unsaved changes route guard', () => {
+    describe('in create mode', () => {
+      beforeEach(() => {
+        mockRoute.params = {};
+      });
+
+      it('does not open the unsaved modal and lets navigation proceed when there is no draft text', async () => {
+        wrapper = createWrapper();
+        await flushPromises();
+
+        const next = runRouteLeaveGuard();
+        await flushPromises();
+
+        expect(next).toHaveBeenCalledWith();
+        expect(wrapper.findComponent(elements.unsavedModal).props('open')).toBe(
+          false,
+        );
+      });
+
+      it('does not open the unsaved modal when the draft only contains whitespace', async () => {
+        wrapper = createWrapper();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', '   \n  ');
+        await flushPromises();
+
+        const next = runRouteLeaveGuard();
+        await flushPromises();
+
+        expect(next).toHaveBeenCalledWith();
+        expect(wrapper.findComponent(elements.unsavedModal).props('open')).toBe(
+          false,
+        );
+      });
+
+      it('opens the unsaved modal and pauses navigation when the draft has content', async () => {
+        wrapper = createWrapper();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Drafted body');
+        await flushPromises();
+
+        const next = runRouteLeaveGuard();
+        await flushPromises();
+
+        expect(next).not.toHaveBeenCalled();
+        expect(wrapper.findComponent(elements.unsavedModal).props('open')).toBe(
+          true,
+        );
+      });
+    });
+
+    describe('in edit mode', () => {
+      const item = {
+        uuid: 'text-uuid-1',
+        title: 'Existing title',
+        text: 'Existing body',
+        last_updated_at: '2024-05-01T00:00:00Z',
+      };
+
+      beforeEach(() => {
+        mockRoute.params = { uuid: item.uuid };
+      });
+
+      it('does not open the unsaved modal when neither title nor body have changed', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        wrapper = createWrapper({ getContentTextMock });
+        await flushPromises();
+
+        const next = runRouteLeaveGuard();
+        await flushPromises();
+
+        expect(next).toHaveBeenCalledWith();
+        expect(wrapper.findComponent(elements.unsavedModal).props('open')).toBe(
+          false,
+        );
+      });
+
+      it('opens the unsaved modal when the body has unsaved edits', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        wrapper = createWrapper({ getContentTextMock });
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Edited body');
+        await flushPromises();
+
+        const next = runRouteLeaveGuard();
+        await flushPromises();
+
+        expect(next).not.toHaveBeenCalled();
+        expect(wrapper.findComponent(elements.unsavedModal).props('open')).toBe(
+          true,
+        );
+      });
+
+      it('opens the unsaved modal when only the title has unsaved edits', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        wrapper = createWrapper({ getContentTextMock });
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.header)
+          .vm.$emit('update:title', 'Edited title');
+        await flushPromises();
+
+        const next = runRouteLeaveGuard();
+        await flushPromises();
+
+        expect(next).not.toHaveBeenCalled();
+        expect(wrapper.findComponent(elements.unsavedModal).props('open')).toBe(
+          true,
+        );
+      });
+    });
+
+    describe('modal actions', () => {
+      beforeEach(() => {
+        mockRoute.params = {};
+      });
+
+      it('cancels the navigation when the user keeps editing', async () => {
+        wrapper = createWrapper();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Drafted body');
+        await flushPromises();
+
+        const next = runRouteLeaveGuard();
+        await flushPromises();
+
+        wrapper.findComponent(elements.unsavedModal).vm.$emit('keep');
+        await flushPromises();
+
+        expect(next).toHaveBeenCalledWith(false);
+        expect(wrapper.findComponent(elements.unsavedModal).props('open')).toBe(
+          false,
+        );
+      });
+
+      it('resumes the navigation when the user discards the changes', async () => {
+        wrapper = createWrapper();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Drafted body');
+        await flushPromises();
+
+        const next = runRouteLeaveGuard();
+        await flushPromises();
+
+        wrapper.findComponent(elements.unsavedModal).vm.$emit('discard');
+        await flushPromises();
+
+        expect(next).toHaveBeenCalledWith();
+        expect(wrapper.findComponent(elements.unsavedModal).props('open')).toBe(
+          false,
+        );
+      });
+
+      it('allows further navigation after discarding without re-opening the modal', async () => {
+        wrapper = createWrapper();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Drafted body');
+        await flushPromises();
+
+        runRouteLeaveGuard();
+        await flushPromises();
+
+        wrapper.findComponent(elements.unsavedModal).vm.$emit('discard');
+        await flushPromises();
+
+        const next = runRouteLeaveGuard();
+        await flushPromises();
+
+        expect(next).toHaveBeenCalledWith();
+        expect(wrapper.findComponent(elements.unsavedModal).props('open')).toBe(
+          false,
+        );
+      });
+    });
+
+    describe('beforeunload listener', () => {
+      let addEventListenerSpy;
+      let removeEventListenerSpy;
+
+      beforeEach(() => {
+        mockRoute.params = {};
+        addEventListenerSpy = vi.spyOn(window, 'addEventListener');
+        removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
+      });
+
+      afterEach(() => {
+        addEventListenerSpy.mockRestore();
+        removeEventListenerSpy.mockRestore();
+      });
+
+      it('registers and removes the beforeunload handler on mount and unmount', async () => {
+        wrapper = createWrapper();
+        await flushPromises();
+
+        const beforeunloadCalls = addEventListenerSpy.mock.calls.filter(
+          ([eventName]) => eventName === 'beforeunload',
+        );
+        expect(beforeunloadCalls).toHaveLength(1);
+        const handler = beforeunloadCalls[0][1];
+
+        wrapper.unmount();
+        wrapper = null;
+
+        expect(removeEventListenerSpy).toHaveBeenCalledWith(
+          'beforeunload',
+          handler,
+        );
+      });
+
+      it('prevents the default unload prompt when there are no unsaved changes', async () => {
+        wrapper = createWrapper();
+        await flushPromises();
+
+        const handler = addEventListenerSpy.mock.calls.find(
+          ([eventName]) => eventName === 'beforeunload',
+        )[1];
+
+        const event = { preventDefault: vi.fn(), returnValue: undefined };
+        const result = handler(event);
+
+        expect(event.preventDefault).not.toHaveBeenCalled();
+        expect(result).toBeUndefined();
+      });
+
+      it('blocks the unload by setting returnValue when there are unsaved changes', async () => {
+        wrapper = createWrapper();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Drafted body');
+        await flushPromises();
+
+        const handler = addEventListenerSpy.mock.calls.find(
+          ([eventName]) => eventName === 'beforeunload',
+        )[1];
+
+        const event = { preventDefault: vi.fn(), returnValue: undefined };
+        handler(event);
+
+        expect(event.preventDefault).toHaveBeenCalled();
+        expect(event.returnValue).toBe('');
       });
     });
   });

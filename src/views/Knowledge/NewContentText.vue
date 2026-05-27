@@ -11,7 +11,7 @@
       :saveLoading="saveLoading"
       @update:title="onTitleUpdate"
       @save="onSave"
-      @back="router.push({ name: 'knowledge' })"
+      @back="onBack"
     />
 
     <TextDetailBody
@@ -19,12 +19,19 @@
       data-testid="new-content-text-textarea"
       :autofocus="!isEditMode"
     />
+
+    <ModalUnsavedChanges
+      data-testid="new-content-text-unsaved-modal"
+      :open="unsavedModalOpen"
+      @keep="onKeepEditing"
+      @discard="onDiscardChanges"
+    />
   </section>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 import { useKnowledgeStore } from '@/store/Knowledge';
@@ -32,6 +39,7 @@ import { useAlertStore } from '@/store/Alert';
 
 import TextDetailHeader from '@/components/Knowledge/NewContentText/TextDetailHeader.vue';
 import TextDetailBody from '@/components/Knowledge/NewContentText/TextDetailBody.vue';
+import ModalUnsavedChanges from '@/components/Knowledge/NewContentText/ModalUnsavedChanges.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -55,6 +63,17 @@ const hasTextChanged = computed(() => draftText.value !== lastSavedText.value);
 const hasTitleChanged = computed(
   () => draftTitle.value !== lastSavedTitle.value,
 );
+
+const hasUnsavedChanges = computed(() => {
+  if (isEditMode.value) {
+    return hasTextChanged.value || hasTitleChanged.value;
+  }
+  return draftText.value.trim() !== '';
+});
+
+const unsavedModalOpen = ref(false);
+const pendingNext = ref(null);
+const bypassGuard = ref(false);
 
 const saveDisabled = computed(() => {
   if (saveLoading.value) return true;
@@ -151,12 +170,60 @@ async function onSave() {
   }
 }
 
+function onBack() {
+  router.push({ name: 'knowledge' });
+}
+
+function onKeepEditing() {
+  unsavedModalOpen.value = false;
+
+  const next = pendingNext.value;
+  pendingNext.value = null;
+
+  if (typeof next === 'function') next(false);
+}
+
+function onDiscardChanges() {
+  unsavedModalOpen.value = false;
+
+  bypassGuard.value = true;
+
+  const next = pendingNext.value;
+  pendingNext.value = null;
+
+  if (typeof next === 'function') next();
+}
+
+function onBeforeUnloadHandler(event) {
+  if (!hasUnsavedChanges.value) return undefined;
+
+  event.preventDefault();
+  event.returnValue = '';
+  return '';
+}
+
+onBeforeRouteLeave((to, from, next) => {
+  if (bypassGuard.value || !hasUnsavedChanges.value) {
+    next();
+    return;
+  }
+
+  pendingNext.value = next;
+  unsavedModalOpen.value = true;
+});
+
 onMounted(() => {
+  window.addEventListener('beforeunload', onBeforeUnloadHandler);
+
   if (isEditMode.value) {
     initializeEditMode();
   } else {
     initializeCreateMode();
   }
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('beforeunload', onBeforeUnloadHandler);
 });
 </script>
 
