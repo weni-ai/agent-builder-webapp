@@ -21,6 +21,7 @@
       data-testid="alert-pinia"
       class="app-alert"
       :title="alertStore.data.text"
+      :description="alertStore.data.description"
       :type="alertStore.data.type"
       @destroy="alertStore.close"
     />
