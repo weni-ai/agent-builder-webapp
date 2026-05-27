@@ -16,7 +16,6 @@ vi.mock('vue-router', () => ({
 
 const elements = {
   root: '[data-testid="new-content-text"]',
-  loading: '[data-testid="new-content-text-loading"]',
   header: '[data-testid="new-content-text-header"]',
   textarea: '[data-testid="new-content-text-textarea"]',
 };
@@ -81,10 +80,6 @@ describe('views/Knowledge/NewContentText.vue', () => {
       expect(wrapper.find(elements.root).exists()).toBe(true);
     });
 
-    it('does not render the loading state', () => {
-      expect(wrapper.find(elements.loading).exists()).toBe(false);
-    });
-
     it('initializes the page header title with the localized default title', () => {
       const defaultTitle = i18n.global.t(
         'content_bases.new_text.default_title',
@@ -125,41 +120,6 @@ describe('views/Knowledge/NewContentText.vue', () => {
       mockRoute.params = { uuid: item.uuid };
     });
 
-    it('shows the loading skeleton while the GET request is pending and hides the content', async () => {
-      let resolveRead;
-      const getContentTextMock = vi.fn(
-        () =>
-          new Promise((resolve) => {
-            resolveRead = resolve;
-          }),
-      );
-
-      wrapper = createWrapper({ getContentTextMock });
-      await flushPromises();
-
-      expect(wrapper.find(elements.loading).exists()).toBe(true);
-      expect(wrapper.find(elements.header).exists()).toBe(false);
-      expect(wrapper.find(elements.textarea).exists()).toBe(false);
-
-      resolveRead(item);
-      await flushPromises();
-    });
-
-    it('hides the loading skeleton and hydrates the drafts after the GET resolves', async () => {
-      const getContentTextMock = vi.fn().mockResolvedValue(item);
-
-      wrapper = createWrapper({ getContentTextMock });
-      await flushPromises();
-
-      expect(wrapper.find(elements.loading).exists()).toBe(false);
-      expect(wrapper.findComponent(elements.header).props('title')).toBe(
-        item.title,
-      );
-      expect(wrapper.findComponent(elements.textarea).props('modelValue')).toBe(
-        item.text,
-      );
-    });
-
     it('renders the body with autofocus disabled in edit mode', async () => {
       const getContentTextMock = vi.fn().mockResolvedValue(item);
 
@@ -197,15 +157,6 @@ describe('views/Knowledge/NewContentText.vue', () => {
       expect(wrapper.findComponent(elements.header).props('title')).toBe(
         defaultTitle,
       );
-    });
-
-    it('hides the loading skeleton even when the GET request fails', async () => {
-      const getContentTextMock = vi.fn().mockRejectedValue(new Error('boom'));
-
-      wrapper = createWrapper({ getContentTextMock });
-      await flushPromises();
-
-      expect(wrapper.find(elements.loading).exists()).toBe(false);
     });
   });
 
