@@ -4,6 +4,7 @@ import { createTestingPinia } from '@pinia/testing';
 
 import NewContentText from '@/views/Knowledge/NewContentText.vue';
 import { useKnowledgeStore } from '@/store/Knowledge';
+import { useAlertStore } from '@/store/Alert';
 import i18n from '@/utils/plugins/i18n';
 
 const mockRoute = { params: {} };
@@ -431,6 +432,230 @@ describe('views/Knowledge/NewContentText.vue', () => {
       expect(wrapper.findComponent(elements.textarea).props('modelValue')).toBe(
         'Updated body',
       );
+    });
+  });
+
+  describe('alerts on save', () => {
+    const successAlert = {
+      type: 'success',
+      text: i18n.global.t('content_bases.new_text.save_success'),
+    };
+
+    const errorAlert = {
+      type: 'error',
+      text: i18n.global.t('content_bases.new_text.save_error'),
+      description: i18n.global.t('content_bases.new_text.save_error_hint'),
+    };
+
+    describe('in create mode', () => {
+      beforeEach(() => {
+        mockRoute.params = {};
+      });
+
+      it('adds a success alert when the create request succeeds', async () => {
+        const createContentTextMock = vi.fn().mockResolvedValue({
+          uuid: 'created-uuid',
+          title: 'Title',
+          text: 'Drafted body',
+          last_updated_at: '2024-06-01T00:00:00Z',
+        });
+
+        wrapper = createWrapper({ createContentTextMock });
+        const alertStore = useAlertStore();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Drafted body');
+        await flushPromises();
+
+        wrapper.findComponent(elements.header).vm.$emit('save');
+        await flushPromises();
+
+        expect(alertStore.add).toHaveBeenCalledWith(successAlert);
+      });
+
+      it('adds an error alert with a hint and keeps the draft when create fails', async () => {
+        const createContentTextMock = vi
+          .fn()
+          .mockRejectedValue(new Error('boom'));
+
+        wrapper = createWrapper({ createContentTextMock });
+        const alertStore = useAlertStore();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Drafted body');
+        await flushPromises();
+
+        wrapper.findComponent(elements.header).vm.$emit('save');
+        await flushPromises();
+
+        expect(alertStore.add).toHaveBeenCalledWith(errorAlert);
+        expect(alertStore.add).not.toHaveBeenCalledWith(
+          expect.objectContaining({ type: 'success' }),
+        );
+        expect(
+          wrapper.findComponent(elements.textarea).props('modelValue'),
+        ).toBe('Drafted body');
+      });
+    });
+
+    describe('in edit mode', () => {
+      const item = {
+        uuid: 'text-uuid-1',
+        title: 'Existing title',
+        text: 'Existing body',
+        last_updated_at: '2024-05-01T00:00:00Z',
+      };
+
+      beforeEach(() => {
+        mockRoute.params = { uuid: item.uuid };
+      });
+
+      it('adds a success alert when only the body is patched', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        const patchContentTextMock = vi.fn().mockResolvedValue({
+          ...item,
+          text: 'Updated body',
+          last_updated_at: '2024-06-01T00:00:00Z',
+        });
+
+        wrapper = createWrapper({ getContentTextMock, patchContentTextMock });
+        const alertStore = useAlertStore();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Updated body');
+        await flushPromises();
+
+        wrapper.findComponent(elements.header).vm.$emit('save');
+        await flushPromises();
+
+        expect(alertStore.add).toHaveBeenCalledWith(successAlert);
+      });
+
+      it('adds a success alert when only the title is patched', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        const patchContentTextMock = vi.fn().mockResolvedValue({
+          ...item,
+          title: 'Renamed title',
+          last_updated_at: '2024-06-01T00:00:00Z',
+        });
+
+        wrapper = createWrapper({ getContentTextMock, patchContentTextMock });
+        const alertStore = useAlertStore();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.header)
+          .vm.$emit('update:title', 'Renamed title');
+        await flushPromises();
+
+        wrapper.findComponent(elements.header).vm.$emit('save');
+        await flushPromises();
+
+        expect(alertStore.add).toHaveBeenCalledWith(successAlert);
+      });
+
+      it('adds a success alert when both title and body are patched', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        const patchContentTextMock = vi.fn().mockResolvedValue({
+          ...item,
+          title: 'Renamed title',
+          text: 'Updated body',
+          last_updated_at: '2024-06-01T00:00:00Z',
+        });
+
+        wrapper = createWrapper({ getContentTextMock, patchContentTextMock });
+        const alertStore = useAlertStore();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.header)
+          .vm.$emit('update:title', 'Renamed title');
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Updated body');
+        await flushPromises();
+
+        wrapper.findComponent(elements.header).vm.$emit('save');
+        await flushPromises();
+
+        expect(alertStore.add).toHaveBeenCalledWith(successAlert);
+        expect(alertStore.add).toHaveBeenCalledTimes(1);
+      });
+
+      it('adds an error alert with a hint and keeps the draft body when a body patch fails', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        const patchContentTextMock = vi
+          .fn()
+          .mockRejectedValue(new Error('boom'));
+
+        wrapper = createWrapper({ getContentTextMock, patchContentTextMock });
+        const alertStore = useAlertStore();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Updated body');
+        await flushPromises();
+
+        wrapper.findComponent(elements.header).vm.$emit('save');
+        await flushPromises();
+
+        expect(alertStore.add).toHaveBeenCalledWith(errorAlert);
+        expect(alertStore.add).not.toHaveBeenCalledWith(
+          expect.objectContaining({ type: 'success' }),
+        );
+        expect(
+          wrapper.findComponent(elements.textarea).props('modelValue'),
+        ).toBe('Updated body');
+      });
+
+      it('adds an error alert with a hint and keeps the draft title when a title patch fails', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        const patchContentTextMock = vi
+          .fn()
+          .mockRejectedValue(new Error('boom'));
+
+        wrapper = createWrapper({ getContentTextMock, patchContentTextMock });
+        const alertStore = useAlertStore();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.header)
+          .vm.$emit('update:title', 'Renamed title');
+        await flushPromises();
+
+        wrapper.findComponent(elements.header).vm.$emit('save');
+        await flushPromises();
+
+        expect(alertStore.add).toHaveBeenCalledWith(errorAlert);
+        expect(alertStore.add).not.toHaveBeenCalledWith(
+          expect.objectContaining({ type: 'success' }),
+        );
+        expect(wrapper.findComponent(elements.header).props('title')).toBe(
+          'Renamed title',
+        );
+      });
+
+      it('does not add any alert when only update:title is emitted without clicking save', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+
+        wrapper = createWrapper({ getContentTextMock });
+        const alertStore = useAlertStore();
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.header)
+          .vm.$emit('update:title', 'Renamed title');
+        await flushPromises();
+
+        expect(alertStore.add).not.toHaveBeenCalled();
+      });
     });
   });
 });
