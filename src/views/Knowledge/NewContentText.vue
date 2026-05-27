@@ -9,9 +9,11 @@
       :defaultTitle="defaultTitle"
       :saveDisabled="saveDisabled"
       :saveLoading="saveLoading"
+      :canDelete="isEditMode"
       @update:title="onTitleUpdate"
       @save="onSave"
       @back="onBack"
+      @remove="onRemove"
     />
 
     <TextDetailBody
@@ -25,6 +27,14 @@
       :open="unsavedModalOpen"
       @keep="onKeepEditing"
       @discard="onDiscardChanges"
+    />
+
+    <ModalDeleteText
+      v-if="textToDelete"
+      v-model="deleteModalOpen"
+      data-testid="new-content-text-delete-modal"
+      :text="textToDelete"
+      @confirm="onDeleteConfirmed"
     />
   </section>
 </template>
@@ -40,6 +50,7 @@ import { useAlertStore } from '@/store/Alert';
 import TextDetailHeader from '@/components/Knowledge/NewContentText/TextDetailHeader.vue';
 import TextDetailBody from '@/components/Knowledge/NewContentText/TextDetailBody.vue';
 import ModalUnsavedChanges from '@/components/Knowledge/NewContentText/ModalUnsavedChanges.vue';
+import ModalDeleteText from '@/components/Knowledge/NewContentText/ModalDeleteText.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -74,6 +85,16 @@ const hasUnsavedChanges = computed(() => {
 const unsavedModalOpen = ref(false);
 const pendingNext = ref(null);
 const bypassGuard = ref(false);
+
+const deleteModalOpen = ref(false);
+const textToDelete = computed(() => {
+  if (!isEditMode.value) return null;
+
+  return {
+    uuid: currentUuid.value,
+    title: lastSavedTitle.value,
+  };
+});
 
 const saveDisabled = computed(() => {
   if (saveLoading.value) return true;
@@ -171,6 +192,15 @@ async function onSave() {
 
 function onBack() {
   router.push({ name: 'knowledge', query: { tab: 'text' } });
+}
+
+function onRemove() {
+  if (!isEditMode.value) return;
+  deleteModalOpen.value = true;
+}
+
+function onDeleteConfirmed() {
+  goToKnowledgeTextTab();
 }
 
 function onKeepEditing() {

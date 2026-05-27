@@ -14,6 +14,7 @@
       compressed
       data-testid="list-content-texts-item"
       @click="goToContentText(text.uuid)"
+      @remove="openDeleteModal(text)"
     />
 
     <ContentItem
@@ -31,6 +32,12 @@
     >
       {{ $t('content_bases.new_text.no_results') }}
     </p>
+
+    <ModalDeleteText
+      v-if="textToDelete"
+      v-model="isDeleteModalOpen"
+      :text="textToDelete"
+    />
   </section>
 </template>
 
@@ -40,6 +47,7 @@ import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 
 import ContentItem from '@/components/Knowledge/ContentBase/ContentItem.vue';
+import ModalDeleteText from '@/components/Knowledge/NewContentText/ModalDeleteText.vue';
 import { useKnowledgeStore } from '@/store/Knowledge';
 
 const router = useRouter();
@@ -47,6 +55,14 @@ const knowledgeStore = useKnowledgeStore();
 const { contentTexts } = storeToRefs(knowledgeStore);
 
 const scrollContainer = ref(null);
+
+const isDeleteModalOpen = ref(false);
+const textToDelete = ref(null);
+
+const openDeleteModal = (text) => {
+  textToDelete.value = text;
+  isDeleteModalOpen.value = true;
+};
 
 const normalizedSearchTerm = computed(() =>
   (contentTexts.value.searchTerm ?? '').trim().toLowerCase(),

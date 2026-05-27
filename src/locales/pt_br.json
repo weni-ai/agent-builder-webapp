@@ -660,6 +660,15 @@
         "description": "Se você voltar agora, todas as alterações feitas serão descartadas. Essa ação não pode ser desfeita",
         "keep": "Continuar editando",
         "discard": "Descartar e voltar"
+      },
+      "delete": {
+        "title": "Remover texto",
+        "description": "Tem certeza de que deseja remover {name}? O agente não usará mais esse conteúdo para responder perguntas. Essa ação não pode ser desfeita.",
+        "confirm": "Remover",
+        "cancel": "Cancelar",
+        "success": "Texto removido com sucesso",
+        "error": "Não foi possível remover o texto",
+        "error_hint": "Tente remover o texto novamente"
       }
     },
     "file_with_error": "Arquivo com erro. Exclua e adicione-o novamente.",
