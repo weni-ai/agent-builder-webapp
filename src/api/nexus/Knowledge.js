@@ -30,27 +30,37 @@ const generateContentBaseEndpoint = ({ type, itemUuid }) => {
 
 export const Knowledge = {
   texts: {
-    list() {
+    list({ next } = {}) {
+      if (next) {
+        return request.$http.get(forceHttps(next));
+      }
+
       const endpoint = generateContentBaseEndpoint({
         type: 'TEXT',
       });
       return request.$http.get(endpoint);
     },
 
-    create({ text, hideGenericErrorAlert = false }) {
+    read({ uuid }) {
+      const endpoint = generateContentBaseEndpoint({
+        type: 'TEXT',
+        itemUuid: uuid,
+      });
+      return request.$http.get(endpoint);
+    },
+
+    create({ text, title, hideGenericErrorAlert = false }) {
       const endpoint = generateContentBaseEndpoint({
         type: 'TEXT',
       });
-      return request.$http.post(
-        endpoint,
-        {
-          text,
-        },
-        {
-          routerName: 'contentBase-text-create',
-          hideGenericErrorAlert,
-        },
-      );
+
+      const payload = { text };
+      if (title?.trim()) payload.title = title;
+
+      return request.$http.post(endpoint, payload, {
+        routerName: 'contentBase-text-create',
+        hideGenericErrorAlert,
+      });
     },
 
     edit({ contentBaseTextUuid, text, hideGenericErrorAlert = false }) {
@@ -68,6 +78,25 @@ export const Knowledge = {
           hideGenericErrorAlert,
         },
       );
+    },
+
+    patch({ uuid, payload, hideGenericErrorAlert = false }) {
+      const endpoint = generateContentBaseEndpoint({
+        type: 'TEXT',
+        itemUuid: uuid,
+      });
+      return request.$http.patch(endpoint, payload, {
+        routerName: 'contentBase-text-patch',
+        hideGenericErrorAlert,
+      });
+    },
+
+    delete({ uuid }) {
+      const endpoint = generateContentBaseEndpoint({
+        type: 'TEXT',
+        itemUuid: uuid,
+      });
+      return request.$http.delete(endpoint);
     },
   },
 

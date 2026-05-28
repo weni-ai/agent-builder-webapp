@@ -1,5 +1,8 @@
 <template>
-  <section class="knowledge">
+  <section
+    v-if="route.name === 'knowledge'"
+    class="knowledge"
+  >
     <AgentBuilderHeader
       data-testid="knowledge-header"
       :withDivider="false"
@@ -15,11 +18,14 @@
       @update:files="(v) => (files = v)"
     />
   </section>
+
+  <RouterView v-else />
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { get } from 'lodash';
+import { RouterView, useRoute } from 'vue-router';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 
@@ -31,6 +37,7 @@ import { useSitesPagination } from '@/composables/useSitesPagination';
 
 import AgentBuilderHeader from '@/components/Header.vue';
 
+const route = useRoute();
 const knowledgeStore = useKnowledgeStore();
 
 const text = ref({

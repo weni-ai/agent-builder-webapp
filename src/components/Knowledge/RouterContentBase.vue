@@ -40,75 +40,97 @@
       :items="sites"
       shape="accordion"
     />
-    <ContentText
-      v-if="activeTab === 'text'"
-      v-model="knowledgeStore.contentText"
-      :isLoading="textLoading"
-      class="content-base__content-tab__text"
-    />
+    <template v-if="activeTab === 'text'">
+      <ListContentTexts
+        v-if="featureFlagsStore.flags.knowledgeTextOrganization"
+      />
+      <ContentText
+        v-else
+        v-model="knowledgeStore.contentText"
+        :isLoading="textLoading"
+        class="content-base__content-tab__text"
+      />
+    </template>
   </section>
 </template>
 
-<script>
-import { defineComponent, ref, toRefs } from 'vue';
+<script setup>
+import { ref, toRef, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
 import ContentFiles from '@/components/Knowledge/ContentFiles.vue';
 import ContentSites from '@/components/Knowledge/ContentSites.vue';
 import ContentText from '@/components/Knowledge/ContentText.vue';
+import ListContentTexts from '@/components/Knowledge/ListContentTexts/index.vue';
+
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useKnowledgeStore } from '@/store/Knowledge';
 
-export default defineComponent({
-  name: 'RouterContentBase',
-  components: {
-    ContentFiles,
-    ContentSites,
-    ContentText,
+const props = defineProps({
+  filesProp: {
+    type: Object,
+    required: true,
   },
-  props: {
-    filesProp: {
-      type: Object,
-      required: true,
-    },
-    sitesProp: {
-      type: Object,
-      required: true,
-    },
-    textProp: {
-      type: Object,
-      required: true,
-    },
-    textLoading: {
-      type: Boolean,
-    },
+  sitesProp: {
+    type: Object,
+    required: true,
   },
-  emits: ['update:files'],
-  setup(props, { emit }) {
-    const { filesProp, sitesProp, textProp } = toRefs(props);
-    const contentStyle = ref('accordion');
-    const knowledgeStore = useKnowledgeStore();
-    const routerTabs = ref([
-      { title: 'files', page: 'files' },
-      { title: 'sites', page: 'sites' },
-      { title: 'text', page: 'text' },
-    ]);
-
-    const activeTab = ref(routerTabs.value[0].page);
-
-    const onTabChange = (newTab) => {
-      activeTab.value = newTab;
-    };
-
-    return {
-      files: filesProp,
-      sites: sitesProp,
-      text: textProp,
-      contentStyle,
-      routerTabs,
-      activeTab,
-      onTabChange,
-      knowledgeStore,
-    };
+  textProp: {
+    type: Object,
+    required: true,
+  },
+  textLoading: {
+    type: Boolean,
   },
 });
+
+defineEmits(['update:files']);
+
+const files = toRef(props, 'filesProp');
+const sites = toRef(props, 'sitesProp');
+
+const contentStyle = ref('accordion');
+const knowledgeStore = useKnowledgeStore();
+const featureFlagsStore = useFeatureFlagsStore();
+
+const route = useRoute();
+const router = useRouter();
+
+const ALLOWED_TABS = ['files', 'sites', 'text'];
+const DEFAULT_TAB = ALLOWED_TABS[0];
+
+const routerTabs = ref([
+  { title: 'files', page: 'files' },
+  { title: 'sites', page: 'sites' },
+  { title: 'text', page: 'text' },
+]);
+
+function resolveTabFromQuery(queryTab) {
+  return ALLOWED_TABS.includes(queryTab) ? queryTab : DEFAULT_TAB;
+}
+
+const activeTab = ref(resolveTabFromQuery(route?.query?.tab));
+
+watch(
+  () => route?.query?.tab,
+  (next) => {
+    const resolved = resolveTabFromQuery(next);
+    if (resolved !== activeTab.value) {
+      activeTab.value = resolved;
+    }
+  },
+);
+
+const onTabChange = (newTab) => {
+  if (!ALLOWED_TABS.includes(newTab) || newTab === activeTab.value) return;
+
+  activeTab.value = newTab;
+
+  router.replace({
+    name: 'knowledge',
+    query: { ...route.query, tab: newTab },
+  });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -130,7 +152,9 @@ export default defineComponent({
   &__content-tab {
     display: flex;
     flex-direction: column;
-    row-gap: $unnnic-spacing-md;
+    row-gap: $unnnic-space-4;
+
+    padding-bottom: $unnnic-space-4;
 
     &--shape-normal {
       height: 100%;

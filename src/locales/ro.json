@@ -626,6 +626,40 @@
       "error": "Eroare la încărcarea fișierului",
       "save": "Salvează"
     },
+    "new_text": {
+      "description": "Scrie conținut text pe care agentul îl va folosi pentru a răspunde la întrebări",
+      "supporting_text": "Organizează conținutul în texte separate pe subiecte pentru răspunsuri mai precise",
+      "button_add_new_text": "Text nou",
+      "default_title": "Text fără titlu",
+      "edit_name": "Editează numele",
+      "edit_name_hint": "Apasă ENTER pentru a confirma sau ESC pentru a anula",
+      "save_changes": "Salvează modificările",
+      "save_error": "Nu s-au putut salva modificările",
+      "save_error_hint": "Încearcă să salvezi din nou",
+      "save_success": "Modificări salvate cu succes",
+      "search_placeholder": "Caută",
+      "no_results": "Niciun rezultat găsit",
+      "write_or_paste_placeholder": "Scrie sau lipește conținutul aici…",
+      "empty_state": {
+        "title": "Niciun text adăugat",
+        "description": "Scrie conținutul pe care agentul îl va folosi ca sursă de cunoaștere"
+      },
+      "unsaved": {
+        "title": "Ai modificări nesalvate",
+        "description": "Dacă te întorci acum, toate modificările făcute vor fi pierdute. Această acțiune nu poate fi anulată",
+        "keep": "Continuă editarea",
+        "discard": "Renunță și întoarce-te"
+      },
+      "delete": {
+        "title": "Elimină textul",
+        "description": "Sigur dorești să elimini {name}? Agentul nu va mai folosi acest conținut pentru a răspunde la întrebări. Această acțiune nu poate fi anulată.",
+        "confirm": "Elimină",
+        "cancel": "Anulează",
+        "success": "Text eliminat cu succes",
+        "error": "Nu s-a putut elimina textul",
+        "error_hint": "Încearcă să elimini textul din nou"
+      }
+    },
     "file_with_error": "Fișier cu eroare. Șterge-l și adaugă-l din nou.",
     "site_with_error": "Site cu eroare. Șterge-l și adaugă-l din nou.",
     "actions": {
@@ -635,7 +669,8 @@
       "remove_site": "Șterge site-ul",
       "remove_file": "Ștergere fișier",
       "edit_action": "Editează acțiunea",
-      "remove_action": "Elimină acțiunea"
+      "remove_action": "Elimină acțiunea",
+      "remove_text": "Elimină textul"
     },
     "files": {
       "upload_content": "Încarcă conținutul din fișiere",

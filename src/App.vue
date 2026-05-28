@@ -21,6 +21,7 @@
       data-testid="alert-pinia"
       class="app-alert"
       :title="alertStore.data.text"
+      :description="alertStore.data.description"
       :type="alertStore.data.type"
       @destroy="alertStore.close"
     />
@@ -76,7 +77,7 @@ const showTestAgentsButton = computed(
   () =>
     (isAgentsModule.value &&
       ['agents-team', 'instructions'].includes(route.name as string)) ||
-    isKnowledgeModule.value,
+    (isKnowledgeModule.value && route.name === 'knowledge'),
 );
 
 watch(

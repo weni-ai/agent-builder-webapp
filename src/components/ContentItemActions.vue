@@ -4,11 +4,10 @@
     class="content-item-actions"
   >
     <UnnnicPopoverTrigger class="content-item-actions__trigger">
-      <UnnnicIcon
-        :icon="triggerIcon"
-        :scheme="isActivatedByClick ? 'neutral-darkest' : 'neutral-cloudy'"
-        :size="triggerSize"
-        class="button-menu"
+      <UnnnicButton
+        type="tertiary"
+        size="small"
+        :iconCenter="triggerIcon"
         v-bind="$attrs"
       />
     </UnnnicPopoverTrigger>
@@ -43,10 +42,6 @@ defineProps({
   triggerIcon: {
     type: String,
     default: 'more_vert',
-  },
-  triggerSize: {
-    type: String,
-    default: 'avatar-nano',
   },
 
   align: {

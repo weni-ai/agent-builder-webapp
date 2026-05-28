@@ -6,18 +6,21 @@ export const useAlertStore = defineStore('alert', () => {
   const alert = reactive({
     text: '',
     type: '',
+    description: '',
   });
 
-  function addAlert({ text, type }) {
+  function addAlert({ text, type, description = '' }) {
     id.value += 1;
 
     alert.text = text;
     alert.type = type;
+    alert.description = description;
   }
 
   function closeAlert() {
     alert.text = '';
     alert.type = '';
+    alert.description = '';
   }
 
   return {

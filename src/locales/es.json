@@ -624,6 +624,9 @@
     "time_ago_minutes": "Agregado hace {minutes} minutos",
     "time_ago_hours": "Agregado hace {hours} horas",
     "time_ago_days": "Agregado hace {days} días",
+    "time_ago_edited_minutes": "Editado hace {minutes} minutos",
+    "time_ago_edited_hours": "Editado hace {hours} horas",
+    "time_ago_edited_days": "Editado hace {days} días",
     "tabs": {
       "files": "Archivos",
       "sites": "Sitios web",
@@ -634,6 +637,40 @@
       "error": "Error al cargar archivo",
       "save": "Guardar"
     },
+    "new_text": {
+      "description": "Escribe el contenido que el agente utilizará para responder a las preguntas",
+      "supporting_text": "Organiza tu contenido en textos separados por tema para respuestas más precisas",
+      "button_add_new_text": "Nuevo texto",
+      "default_title": "Texto sin título",
+      "edit_name": "Editar nombre",
+      "edit_name_hint": "Pulsa ENTER para confirmar o ESC para cancelar",
+      "save_changes": "Guardar cambios",
+      "save_error": "No se pudieron guardar los cambios",
+      "save_error_hint": "Inténtalo de nuevo",
+      "save_success": "Cambios guardados con éxito",
+      "search_placeholder": "Buscar",
+      "no_results": "Sin resultados",
+      "write_or_paste_placeholder": "Escribe o pega tu contenido aquí…",
+      "empty_state": {
+        "title": "Sin textos agregados",
+        "description": "Escribe el contenido que el agente utilizará como fuente de conocimiento"
+      },
+      "unsaved": {
+        "title": "Tienes cambios sin guardar",
+        "description": "Si vuelves ahora, todos los cambios realizados se descartarán. Esta acción no se puede deshacer",
+        "keep": "Seguir editando",
+        "discard": "Descartar y volver"
+      },
+      "delete": {
+        "title": "Remover texto",
+        "description": "¿Realmente deseas remover {name}? El agente ya no usará este contenido para responder preguntas. Esta acción no se puede deshacer.",
+        "confirm": "Remover",
+        "cancel": "Cancelar",
+        "success": "Texto removido con éxito",
+        "error": "No se pudo remover el texto",
+        "error_hint": "Inténtalo de nuevo"
+      }
+    },
     "file_with_error": "El archivo contiene errores. Elimínalo y agrégalo de nuevo.",
     "site_with_error": "El sitio web contiene errores. Elimínalo y agrégalo de nuevo.",
     "actions": {
@@ -643,7 +680,8 @@
       "remove_site": "Remover sitio web",
       "remove_file": "Remover archivo",
       "edit_action": "Editar acción",
-      "remove_action": "Remover acción"
+      "remove_action": "Remover acción",
+      "remove_text": "Remover texto"
     },
     "files": {
       "upload_content": "Cargar contenido de archivos",
