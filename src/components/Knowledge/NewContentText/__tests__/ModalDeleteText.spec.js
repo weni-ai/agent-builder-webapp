@@ -149,7 +149,7 @@ describe('ModalDeleteText.vue', () => {
       expect(deleteContentTextMock).toHaveBeenCalledWith(defaultText.uuid);
     });
 
-    it('dispatches a info alert and emits confirm + close on success', async () => {
+    it('dispatches a information alert and emits confirm + close on success', async () => {
       const deleteContentTextMock = vi.fn().mockResolvedValue(undefined);
       let alertStore;
       ({ wrapper, alertStore } = createWrapper({ deleteContentTextMock }));
@@ -158,7 +158,7 @@ describe('ModalDeleteText.vue', () => {
       await flushPromises();
 
       expect(alertStore.add).toHaveBeenCalledWith({
-        type: 'info',
+        type: 'informational',
         text: i18n.global.t('content_bases.new_text.delete.success'),
       });
 
