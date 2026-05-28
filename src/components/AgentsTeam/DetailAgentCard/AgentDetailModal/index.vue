@@ -66,7 +66,9 @@ const translateField = useTranslatedField();
 
 const aboutDescription = computed(() => translateField(props.agent.about));
 
-const assignedMCP = computed(() => props.agent.mcps?.[0] ?? null);
+const assignedMCP = computed(
+  () => props.agent.mcps?.filter((mcp) => mcp.name)?.[0] ?? null,
+);
 
 const assignedSystemSlug = computed(() => assignedMCP.value?.system ?? null);
 

@@ -96,7 +96,8 @@ const hasSystems = computed(() => {
 const hasMCPs =
   isOfficial.value &&
   Array.isArray(props.agent.mcps) &&
-  props.agent.mcps.length > 0;
+  props.agent.mcps.length > 0 &&
+  props.agent.mcps[0]?.name;
 
 const stepSequence = computed<StepKey[]>(() => {
   if (hasMCPs) {

@@ -1,5 +1,6 @@
 <template>
   <section
+    v-if="mcps.length"
     class="start-setup-mcps"
     data-testid="start-setup-mcps"
   >
@@ -10,10 +11,7 @@
       {{ $t('agents.assign_agents.setup.mcps_available.title') }}
     </p>
 
-    <ul
-      v-if="mcps.length"
-      class="start-setup-mcps__list"
-    >
+    <ul class="start-setup-mcps__list">
       <li
         v-for="(mcp, index) in mcps"
         :key="mcp.name"

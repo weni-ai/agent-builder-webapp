@@ -49,7 +49,9 @@ const conversationExample = computed(
   () => translateField(props.agent.conversation_example) ?? [],
 );
 
-const agentMCPs = computed(() => props.agent.mcps ?? []);
+const agentMCPs = computed(
+  () => props.agent.mcps?.filter((mcp) => mcp.name) ?? [],
+);
 </script>
 
 <style lang="scss" scoped>
