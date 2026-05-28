@@ -1,13 +1,16 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import nexusaiAPI from '@/api/nexusaiAPI';
+import type { ContentText } from './types/Knowledge.types';
 
-function orderByLastUpdatedAt(array) {
+function lastActivityAt(item: ContentText) {
+  return new Date(item.last_updated_at ?? item.created_at).getTime();
+}
+
+function orderByLastActivity(array) {
   if (!Array.isArray(array)) return [];
 
-  return array.sort(
-    (a, b) => new Date(b.last_updated_at) - new Date(a.last_updated_at),
-  );
+  return array.sort((a, b) => lastActivityAt(b) - lastActivityAt(a));
 }
 
 export const useKnowledgeStore = defineStore('Knowledge', () => {
@@ -18,7 +21,7 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
   });
 
   const contentTexts = reactive({
-    data: [],
+    data: [] as ContentText[],
     status: null,
     next: null,
     searchTerm: '',
@@ -30,7 +33,7 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
     try {
       const { data } = await nexusaiAPI.knowledge.texts.list();
 
-      contentTexts.data = orderByLastUpdatedAt(data?.results);
+      contentTexts.data = orderByLastActivity(data?.results);
       contentTexts.next = data?.next ?? null;
       contentTexts.status = 'complete';
     } catch {
@@ -55,7 +58,7 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
         ({ uuid }) => !existingUuids.has(uuid),
       );
 
-      contentTexts.data = orderByLastUpdatedAt([
+      contentTexts.data = orderByLastActivity([
         ...contentTexts.data,
         ...newItems,
       ]);
@@ -79,13 +82,13 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
     );
 
     if (existingIndex === -1) {
-      contentTexts.data = orderByLastUpdatedAt([...contentTexts.data, data]);
+      contentTexts.data = orderByLastActivity([...contentTexts.data, data]);
     } else {
       contentTexts.data[existingIndex] = {
         ...contentTexts.data[existingIndex],
         ...data,
       };
-      contentTexts.data = orderByLastUpdatedAt([...contentTexts.data]);
+      contentTexts.data = orderByLastActivity([...contentTexts.data]);
     }
 
     return data;
@@ -100,19 +103,25 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
     const index = contentTexts.data.findIndex((item) => item.uuid === uuid);
 
     if (index === -1) {
-      contentTexts.data = orderByLastUpdatedAt([...contentTexts.data, data]);
+      contentTexts.data = orderByLastActivity([...contentTexts.data, data]);
     } else {
       contentTexts.data[index] = { ...contentTexts.data[index], ...data };
-      contentTexts.data = orderByLastUpdatedAt([...contentTexts.data]);
+      contentTexts.data = orderByLastActivity([...contentTexts.data]);
     }
 
     return data;
   }
 
-  async function createContentText({ text, title } = {}) {
+  async function createContentText({
+    text,
+    title,
+  }: {
+    text: string;
+    title: string;
+  }): Promise<ContentText> {
     const { data } = await nexusaiAPI.knowledge.texts.create({ text, title });
 
-    contentTexts.data = orderByLastUpdatedAt([data, ...contentTexts.data]);
+    contentTexts.data = orderByLastActivity([data, ...contentTexts.data]);
 
     return data;
   }

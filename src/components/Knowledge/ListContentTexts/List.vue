@@ -9,7 +9,9 @@
       v-for="text in itemsFiltered"
       :key="text.uuid"
       :file="toItemFile(text)"
-      timeAgoLabelKey="time_ago_edited"
+      :timeAgoLabelKey="
+        text.last_updated_at ? 'time_ago_edited' : 'time_ago_created'
+      "
       clickable
       compressed
       data-testid="list-content-texts-item"
@@ -104,7 +106,7 @@ const showNoResults = computed(
 const toItemFile = (text) => ({
   uuid: text.uuid,
   created_file_name: text.title,
-  created_at: text.last_updated_at,
+  created_at: text.last_updated_at ?? text.created_at,
   extension_file: 'text',
   status: 'uploaded',
 });
