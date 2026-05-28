@@ -32,7 +32,7 @@
 
             <UnnnicIcon
               icon="edit_square"
-              size="sm"
+              size="avatar-nano"
               scheme="fg-base"
               clickable
               class="text-detail-header__edit-icon"
@@ -81,6 +81,7 @@
         <ContentItemActions
           v-if="actions.length"
           data-testid="text-detail-header-more-actions"
+          triggerSize="large"
           :actions="actions"
         />
       </section>

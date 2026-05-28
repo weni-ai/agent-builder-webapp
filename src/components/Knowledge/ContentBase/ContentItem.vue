@@ -394,7 +394,7 @@ export default {
   }
 
   &--compressed {
-    column-gap: $unnnic-spacing-xs;
+    column-gap: $unnnic-space-3;
 
     :has(.files-list__content__file__content__status) {
       margin-block: -(calc($unnnic-spacing-nano / 2));
