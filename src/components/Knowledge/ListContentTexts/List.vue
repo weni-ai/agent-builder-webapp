@@ -114,26 +114,6 @@ function loadMoreIfNeeded() {
   knowledgeStore.loadNextContentTexts();
 }
 
-// Auto-paginate while searching: if the filtered list has no matches but
-// there are still pages to fetch, keep loading until either a match shows up
-// or the cursor is exhausted (then `showNoResults` becomes true).
-watch(
-  [
-    normalizedSearchTerm,
-    itemsFiltered,
-    isPaginating,
-    () => contentTexts.value.status,
-  ],
-  () => {
-    if (!normalizedSearchTerm.value) return;
-    if (itemsFiltered.value.length > 0) return;
-    if (!isPaginating.value) return;
-    if (contentTexts.value.status === 'loading') return;
-
-    knowledgeStore.loadNextContentTexts();
-  },
-);
-
 async function loadMoreAfterRender() {
   await nextTick();
   loadMoreIfNeeded();
@@ -142,7 +122,11 @@ async function loadMoreAfterRender() {
 onMounted(loadMoreAfterRender);
 
 watch(
-  [() => contentTexts.value.status, () => contentTexts.value.data.length],
+  [
+    () => contentTexts.value.status,
+    () => contentTexts.value.data.length,
+    () => contentTexts.value.searchTerm,
+  ],
   loadMoreAfterRender,
 );
 </script>
