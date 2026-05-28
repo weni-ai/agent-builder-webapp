@@ -3,7 +3,7 @@
     ref="scrollContainer"
     class="list-content-texts__list"
     data-testid="list-content-texts-list"
-    @scroll="onScroll"
+    @scroll="loadMoreIfNeeded"
   >
     <ContentItem
       v-for="text in itemsFiltered"
@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 
@@ -97,41 +97,37 @@ const goToContentText = (uuid) => {
   router.push({ name: 'content-text', params: { uuid } });
 };
 
-const onScroll = () => {
+const SCROLL_THRESHOLD = 16;
+
+function loadMoreIfNeeded() {
   const element = scrollContainer.value;
   if (!element) return;
-
-  const SCROLL_THRESHOLD = 16;
+  if (!contentTexts.value.next) return;
+  if (contentTexts.value.status === 'loading') return;
 
   const { scrollTop, clientHeight, scrollHeight } = element;
   const reachedBottom =
     scrollTop + clientHeight + SCROLL_THRESHOLD >= scrollHeight;
 
   if (!reachedBottom) return;
-  if (!contentTexts.value.next) return;
-  if (contentTexts.value.status === 'loading') return;
 
   knowledgeStore.loadNextContentTexts();
-};
+}
 
-// Auto-paginate while searching: if the filtered list has no matches but
-// there are still pages to fetch, keep loading until either a match shows up
-// or the cursor is exhausted (then `showNoResults` becomes true).
+async function loadMoreAfterRender() {
+  await nextTick();
+  loadMoreIfNeeded();
+}
+
+onMounted(loadMoreAfterRender);
+
 watch(
   [
-    normalizedSearchTerm,
-    itemsFiltered,
-    isPaginating,
     () => contentTexts.value.status,
+    () => contentTexts.value.data.length,
+    () => contentTexts.value.searchTerm,
   ],
-  () => {
-    if (!normalizedSearchTerm.value) return;
-    if (itemsFiltered.value.length > 0) return;
-    if (!isPaginating.value) return;
-    if (contentTexts.value.status === 'loading') return;
-
-    knowledgeStore.loadNextContentTexts();
-  },
+  loadMoreAfterRender,
 );
 </script>
 
