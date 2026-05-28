@@ -60,5 +60,9 @@ onMounted(() => {
   ::placeholder {
     color: $unnnic-color-fg-muted;
   }
+
+  &:focus {
+    outline: 2px solid $unnnic-color-border-accent-strong;
+  }
 }
 </style>

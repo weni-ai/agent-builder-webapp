@@ -109,6 +109,41 @@ describe('Knowledge Store', () => {
       expect(store.contentTexts.data).toEqual([]);
       expect(store.contentTexts.next).toBeNull();
     });
+
+    it('orders by the most recent activity, falling back to created_at when the item was never edited', async () => {
+      nexusaiAPI.knowledge.texts.list.mockResolvedValue({
+        data: {
+          results: [
+            {
+              uuid: 'edited-older',
+              title: 'Edited but older',
+              created_at: '2024-01-01T00:00:00Z',
+              last_updated_at: '2024-02-01T00:00:00Z',
+            },
+            {
+              uuid: 'created-newer',
+              title: 'Just created and newer',
+              created_at: '2024-04-01T00:00:00Z',
+            },
+            {
+              uuid: 'edited-newest',
+              title: 'Edited and newest',
+              created_at: '2024-03-01T00:00:00Z',
+              last_updated_at: '2024-05-01T00:00:00Z',
+            },
+          ],
+          next: null,
+        },
+      });
+
+      await store.loadContentTexts();
+
+      expect(store.contentTexts.data.map(({ uuid }) => uuid)).toEqual([
+        'edited-newest',
+        'created-newer',
+        'edited-older',
+      ]);
+    });
   });
 
   describe('loadNextContentTexts', () => {

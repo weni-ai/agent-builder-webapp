@@ -627,6 +627,9 @@
     "time_ago_edited_minutes": "Edited {minutes} minutes ago",
     "time_ago_edited_hours": "Edited {hours} hours ago",
     "time_ago_edited_days": "Edited {days} days ago",
+    "time_ago_created_minutes": "Created {minutes} minutes ago",
+    "time_ago_created_hours": "Created {hours} hours ago",
+    "time_ago_created_days": "Created {days} days ago",
     "tabs": {
       "files": "Files",
       "sites": "Sites",

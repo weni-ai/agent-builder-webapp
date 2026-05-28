@@ -616,6 +616,9 @@
     "time_ago_minutes": "Adăugat acum {minutes} minute",
     "time_ago_hours": "Adăugat acum {hours} ore",
     "time_ago_days": "Adăugat acum {days} zile",
+    "time_ago_created_minutes": "Creat acum {minutes} minute",
+    "time_ago_created_hours": "Creat acum {hours} ore",
+    "time_ago_created_days": "Creat acum {days} zile",
     "tabs": {
       "files": "Fișiere",
       "sites": "Site-uri",

@@ -14,10 +14,11 @@ vi.mock('vue-router', () => ({
   }),
 }));
 
-const buildItem = ({ uuid, title, last_updated_at }) => ({
+const buildItem = ({ uuid, title, created_at, last_updated_at }) => ({
   uuid,
   title,
   text: `Body of ${uuid}`,
+  created_at: created_at ?? last_updated_at,
   last_updated_at,
 });
 
@@ -116,13 +117,14 @@ describe('ListContentTexts/List.vue', () => {
     const items = [
       buildItem({
         uuid: 'uuid-1',
-        title: 'First text',
+        title: 'Edited text',
+        created_at: '2024-01-01T00:00:00Z',
         last_updated_at: '2024-03-01T00:00:00Z',
       }),
       buildItem({
         uuid: 'uuid-2',
-        title: 'Second text',
-        last_updated_at: '2024-02-01T00:00:00Z',
+        title: 'Created only text',
+        created_at: '2024-02-01T00:00:00Z',
       }),
     ];
 
@@ -132,22 +134,42 @@ describe('ListContentTexts/List.vue', () => {
       });
     });
 
-    it('renders one ContentItem per stored text with the expected mapped file shape', () => {
+    it('renders one ContentItem per stored text', () => {
       const itemComponents = wrapper
         .findAllComponents({ name: 'ContentItem' })
         .filter((c) => !c.props('loading'));
 
       expect(itemComponents).toHaveLength(items.length);
-      expect(itemComponents[0].props('file')).toEqual({
+    });
+
+    it('maps an edited text to the edited label and surfaces the last_updated_at date', () => {
+      const editedItem = wrapper
+        .findAllComponents({ name: 'ContentItem' })
+        .filter((c) => !c.props('loading'))[0];
+
+      expect(editedItem.props('file')).toEqual({
         uuid: 'uuid-1',
-        created_file_name: 'First text',
+        created_file_name: 'Edited text',
         created_at: '2024-03-01T00:00:00Z',
         extension_file: 'text',
         status: 'uploaded',
       });
-      expect(itemComponents[0].props('timeAgoLabelKey')).toBe(
-        'time_ago_edited',
-      );
+      expect(editedItem.props('timeAgoLabelKey')).toBe('time_ago_edited');
+    });
+
+    it('maps a never-edited text to the created label and surfaces the created_at date', () => {
+      const createdOnlyItem = wrapper
+        .findAllComponents({ name: 'ContentItem' })
+        .filter((c) => !c.props('loading'))[1];
+
+      expect(createdOnlyItem.props('file')).toEqual({
+        uuid: 'uuid-2',
+        created_file_name: 'Created only text',
+        created_at: '2024-02-01T00:00:00Z',
+        extension_file: 'text',
+        status: 'uploaded',
+      });
+      expect(createdOnlyItem.props('timeAgoLabelKey')).toBe('time_ago_created');
     });
 
     it('navigates to the content-text route when an item is clicked', async () => {

@@ -99,7 +99,7 @@ async function onConfirm() {
     await knowledgeStore.deleteContentText(props.text.uuid);
 
     alertStore.add({
-      type: 'info',
+      type: 'informational',
       text: t('content_bases.new_text.delete.success'),
     });
 

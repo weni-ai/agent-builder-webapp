@@ -6,7 +6,7 @@
     <UnnnicPopoverTrigger class="content-item-actions__trigger">
       <UnnnicButton
         type="tertiary"
-        size="small"
+        :size="triggerSize"
         :iconCenter="triggerIcon"
         v-bind="$attrs"
       />
@@ -37,6 +37,11 @@ defineProps({
   actions: {
     type: Array,
     default: () => [],
+  },
+
+  triggerSize: {
+    type: String,
+    default: 'small',
   },
 
   triggerIcon: {

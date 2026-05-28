@@ -627,6 +627,9 @@
     "time_ago_edited_minutes": "Editado hace {minutes} minutos",
     "time_ago_edited_hours": "Editado hace {hours} horas",
     "time_ago_edited_days": "Editado hace {days} días",
+    "time_ago_created_minutes": "Creado hace {minutes} minutos",
+    "time_ago_created_hours": "Creado hace {hours} horas",
+    "time_ago_created_days": "Creado hace {days} días",
     "tabs": {
       "files": "Archivos",
       "sites": "Sitios web",
