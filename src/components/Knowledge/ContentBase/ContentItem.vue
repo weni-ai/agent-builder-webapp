@@ -332,7 +332,10 @@ export default {
         return i18n.global.t('content_bases.files.status.uploading');
       }
 
-      const diffInMinutes = Math.floor((now - createdAt) / 1000 / 60);
+      const diffInMinutes = Math.max(
+        0,
+        Math.floor((now - createdAt) / 1000 / 60),
+      );
       const baseKey = `content_bases.${this.timeAgoLabelKey}`;
 
       if (diffInMinutes < 60) {
