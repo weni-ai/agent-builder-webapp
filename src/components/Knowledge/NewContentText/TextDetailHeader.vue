@@ -154,6 +154,7 @@ function startEditing() {
 
   nextTick(() => {
     titleInputRef.value?.focus();
+    titleInputRef.value?.select();
   });
 }
 
