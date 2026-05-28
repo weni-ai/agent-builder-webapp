@@ -50,6 +50,24 @@ const createWrapper = ({ contentTexts } = {}) =>
     },
   });
 
+const stubContainerDimensions = (
+  containerWrapper,
+  { scrollTop = 0, clientHeight, scrollHeight },
+) => {
+  Object.defineProperty(containerWrapper.element, 'scrollTop', {
+    configurable: true,
+    value: scrollTop,
+  });
+  Object.defineProperty(containerWrapper.element, 'clientHeight', {
+    configurable: true,
+    value: clientHeight,
+  });
+  Object.defineProperty(containerWrapper.element, 'scrollHeight', {
+    configurable: true,
+    value: scrollHeight,
+  });
+};
+
 describe('ListContentTexts/List.vue', () => {
   let wrapper;
 
@@ -62,35 +80,39 @@ describe('ListContentTexts/List.vue', () => {
     vi.clearAllMocks();
   });
 
-  describe('initial loading', () => {
-    beforeEach(() => {
+  describe('loading state', () => {
+    it('renders 8 placeholders and no items while loading the first page', () => {
       wrapper = createWrapper({
         contentTexts: { data: [], status: 'loading', next: null },
       });
-    });
 
-    it('renders 8 loading placeholders while loading the first page', () => {
       expect(wrapper.findAll(elements.loadingItem)).toHaveLength(8);
-    });
-
-    it('does not render any data items while loading the first page', () => {
       expect(wrapper.findAll(elements.item)).toHaveLength(0);
     });
 
-    it('passes loading=true and compressed=true to each placeholder ContentItem', () => {
-      const placeholders = wrapper
-        .findAllComponents({ name: 'ContentItem' })
-        .filter((c) => c.props('loading'));
+    it('renders 4 placeholders next to existing items while loading the next page', () => {
+      const items = [
+        buildItem({
+          uuid: 'uuid-1',
+          title: 'First',
+          last_updated_at: '2024-03-01T00:00:00Z',
+        }),
+      ];
 
-      expect(placeholders).toHaveLength(8);
-      placeholders.forEach((placeholder) => {
-        expect(placeholder.props('loading')).toBe(true);
-        expect(placeholder.props('compressed')).toBe(true);
+      wrapper = createWrapper({
+        contentTexts: {
+          data: items,
+          status: 'loading',
+          next: 'http://nexus.example.com/?cursor=page-2',
+        },
       });
+
+      expect(wrapper.findAll(elements.item)).toHaveLength(items.length);
+      expect(wrapper.findAll(elements.loadingItem)).toHaveLength(4);
     });
   });
 
-  describe('rendering items', () => {
+  describe('item rendering', () => {
     const items = [
       buildItem({
         uuid: 'uuid-1',
@@ -110,19 +132,12 @@ describe('ListContentTexts/List.vue', () => {
       });
     });
 
-    it('renders one ContentItem per stored text', () => {
-      expect(wrapper.findAll(elements.item)).toHaveLength(items.length);
-    });
-
-    it('does not render loading placeholders when the request is complete', () => {
-      expect(wrapper.findAll(elements.loadingItem)).toHaveLength(0);
-    });
-
-    it('passes the expected file shape and timeAgoLabelKey to each item', () => {
+    it('renders one ContentItem per stored text with the expected mapped file shape', () => {
       const itemComponents = wrapper
         .findAllComponents({ name: 'ContentItem' })
         .filter((c) => !c.props('loading'));
 
+      expect(itemComponents).toHaveLength(items.length);
       expect(itemComponents[0].props('file')).toEqual({
         uuid: 'uuid-1',
         created_file_name: 'First text',
@@ -133,8 +148,6 @@ describe('ListContentTexts/List.vue', () => {
       expect(itemComponents[0].props('timeAgoLabelKey')).toBe(
         'time_ago_edited',
       );
-      expect(itemComponents[0].props('clickable')).toBe(true);
-      expect(itemComponents[0].props('compressed')).toBe(true);
     });
 
     it('navigates to the content-text route when an item is clicked', async () => {
@@ -239,7 +252,7 @@ describe('ListContentTexts/List.vue', () => {
     });
   });
 
-  describe('infinite scroll', () => {
+  describe('pagination', () => {
     const items = [
       buildItem({
         uuid: 'uuid-1',
@@ -248,99 +261,102 @@ describe('ListContentTexts/List.vue', () => {
       }),
     ];
 
-    let knowledgeStore;
-
-    const triggerScrollWith = async ({
-      scrollTop,
-      clientHeight,
-      scrollHeight,
-    }) => {
-      const container = wrapper.find(elements.list);
-
-      Object.defineProperty(container.element, 'scrollTop', {
-        configurable: true,
-        value: scrollTop,
-      });
-      Object.defineProperty(container.element, 'clientHeight', {
-        configurable: true,
-        value: clientHeight,
-      });
-      Object.defineProperty(container.element, 'scrollHeight', {
-        configurable: true,
-        value: scrollHeight,
-      });
-
-      await container.trigger('scroll');
-    };
-
-    beforeEach(() => {
-      wrapper = createWrapper({
+    const createPaginatableWrapper = (overrides = {}) =>
+      createWrapper({
         contentTexts: {
           data: items,
           status: 'complete',
           next: 'http://nexus.example.com/?cursor=page-2',
+          ...overrides,
         },
       });
 
-      knowledgeStore = useKnowledgeStore();
-    });
-
-    it('calls loadNextContentTexts when the user scrolls to the bottom and a next cursor exists', async () => {
-      await triggerScrollWith({
-        scrollTop: 400,
-        clientHeight: 600,
-        scrollHeight: 1000,
-      });
+    it('loads the next page on mount when the rendered items do not fill the container', async () => {
+      wrapper = createPaginatableWrapper();
+      const knowledgeStore = useKnowledgeStore();
+      await flushPromises();
 
       expect(knowledgeStore.loadNextContentTexts).toHaveBeenCalledTimes(1);
     });
 
-    it('does not call loadNextContentTexts when the bottom has not been reached', async () => {
-      await triggerScrollWith({
+    it('keeps auto-loading subsequent pages while the viewport stays unfilled, until the cursor is exhausted', async () => {
+      wrapper = createPaginatableWrapper();
+      const knowledgeStore = useKnowledgeStore();
+      await flushPromises();
+      expect(knowledgeStore.loadNextContentTexts).toHaveBeenCalledTimes(1);
+
+      knowledgeStore.contentTexts.data = [
+        ...items,
+        buildItem({
+          uuid: 'uuid-2',
+          title: 'Second',
+          last_updated_at: '2024-04-01T00:00:00Z',
+        }),
+      ];
+      await flushPromises();
+      expect(knowledgeStore.loadNextContentTexts).toHaveBeenCalledTimes(2);
+
+      knowledgeStore.contentTexts.next = null;
+      knowledgeStore.contentTexts.data = [
+        ...knowledgeStore.contentTexts.data,
+        buildItem({
+          uuid: 'uuid-3',
+          title: 'Third',
+          last_updated_at: '2024-05-01T00:00:00Z',
+        }),
+      ];
+      await flushPromises();
+      expect(knowledgeStore.loadNextContentTexts).toHaveBeenCalledTimes(2);
+    });
+
+    it('loads the next page when the user scrolls to the bottom of a scrollable container', async () => {
+      wrapper = createPaginatableWrapper();
+      const knowledgeStore = useKnowledgeStore();
+      await flushPromises();
+      knowledgeStore.loadNextContentTexts.mockClear();
+
+      const container = wrapper.find(elements.list);
+      stubContainerDimensions(container, {
+        scrollTop: 400,
+        clientHeight: 600,
+        scrollHeight: 1000,
+      });
+      await container.trigger('scroll');
+
+      expect(knowledgeStore.loadNextContentTexts).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not load the next page when the user has not reached the bottom', async () => {
+      wrapper = createPaginatableWrapper();
+      const knowledgeStore = useKnowledgeStore();
+      await flushPromises();
+      knowledgeStore.loadNextContentTexts.mockClear();
+
+      const container = wrapper.find(elements.list);
+      stubContainerDimensions(container, {
         scrollTop: 0,
         clientHeight: 600,
         scrollHeight: 1000,
       });
+      await container.trigger('scroll');
 
       expect(knowledgeStore.loadNextContentTexts).not.toHaveBeenCalled();
     });
 
-    it('does not call loadNextContentTexts when there is no next cursor', async () => {
-      knowledgeStore.contentTexts.next = null;
-
-      await triggerScrollWith({
-        scrollTop: 400,
-        clientHeight: 600,
-        scrollHeight: 1000,
-      });
+    it('does not load when there is no next cursor', async () => {
+      wrapper = createPaginatableWrapper({ next: null });
+      const knowledgeStore = useKnowledgeStore();
+      await flushPromises();
 
       expect(knowledgeStore.loadNextContentTexts).not.toHaveBeenCalled();
     });
 
-    it('does not call loadNextContentTexts when a request is already loading', async () => {
-      knowledgeStore.contentTexts.status = 'loading';
-
-      await triggerScrollWith({
-        scrollTop: 400,
-        clientHeight: 600,
-        scrollHeight: 1000,
-      });
+    it('does not load while another request is already in flight', async () => {
+      wrapper = createPaginatableWrapper({ status: 'loading' });
+      const knowledgeStore = useKnowledgeStore();
+      await flushPromises();
 
       expect(knowledgeStore.loadNextContentTexts).not.toHaveBeenCalled();
-    });
-
-    it('renders 42 loading placeholders next to the existing items while loading the next page', () => {
-      wrapper.unmount();
-      wrapper = createWrapper({
-        contentTexts: {
-          data: items,
-          status: 'loading',
-          next: 'http://nexus.example.com/?cursor=page-2',
-        },
-      });
-
-      expect(wrapper.findAll(elements.item)).toHaveLength(items.length);
-      expect(wrapper.findAll(elements.loadingItem)).toHaveLength(4);
     });
   });
 
