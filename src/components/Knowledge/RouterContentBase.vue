@@ -154,7 +154,8 @@ const onTabChange = (newTab) => {
     flex-direction: column;
     row-gap: $unnnic-space-4;
 
-    padding-bottom: $unnnic-space-4;
+    $test-your-agents-button-height: 44px;
+    padding-bottom: calc($unnnic-space-4 * 2 + $test-your-agents-button-height);
 
     &--shape-normal {
       height: 100%;

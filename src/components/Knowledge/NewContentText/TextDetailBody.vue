@@ -62,7 +62,7 @@ onMounted(() => {
   }
 
   &:focus {
-    outline: 2px solid $unnnic-color-border-accent-strong;
+    outline: 1px solid $unnnic-color-border-accent-strong;
   }
 }
 </style>
