@@ -77,7 +77,6 @@ const filterButtonText = computed(() => {
   const text = t('agent_builder.supervisor.filters.filter_conversations');
   const countText = t(
     'agent_builder.supervisor.filters.count_applied_filters',
-    count,
     {
       count,
     },
