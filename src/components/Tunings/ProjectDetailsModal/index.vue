@@ -64,7 +64,7 @@ const charactersUsage = computed(() => {
   const count = projectDetails.value.charactersCount;
   const maxCount = 20000;
 
-  const numberFormatter = new Intl.NumberFormat(i18n.global.locale);
+  const numberFormatter = new Intl.NumberFormat(i18n.global.locale.value);
   const formattedCount = numberFormatter.format(count);
   const formattedMaxCount = numberFormatter.format(maxCount);
 

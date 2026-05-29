@@ -244,7 +244,7 @@ export default {
           text,
           attachments,
           contact_urn,
-          language: i18n.global.locale,
+          language: i18n.global.locale.value,
           manager_agent_uuid: manager_uuid,
         });
       },

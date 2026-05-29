@@ -67,7 +67,7 @@ export const Instructions = {
       es: 'Spanish',
       ro: 'Romanian',
     };
-    const language = languageMap[i18n.global.locale] || 'English';
+    const language = languageMap[i18n.global.locale.value] || 'English';
 
     const response = await request.$http.post(
       `api/${projectUuid}/instructions-classification/`,

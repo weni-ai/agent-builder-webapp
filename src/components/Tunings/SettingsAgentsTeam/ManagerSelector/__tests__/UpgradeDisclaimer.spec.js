@@ -76,7 +76,7 @@ describe('UpgradeDisclaimer.vue', () => {
     const disclaimer = wrapper.findComponent(
       '[data-testid="upgrade-disclaimer"]',
     );
-    const normalizedLocale = i18n.global.locale?.toLowerCase() || 'en';
+    const normalizedLocale = i18n.global.locale.value?.toLowerCase() || 'en';
     const localeConfig = localeFormats[normalizedLocale] || localeFormats.en;
     const expectedDate = format(
       new Date(managerOptionsMock.managers.legacy.deprecation),
