@@ -43,7 +43,7 @@ const formattedLegacyDeprecation = computed(() => {
     return '';
   }
 
-  const normalizedLocale = i18n.global.locale?.toLowerCase() || 'en';
+  const normalizedLocale = i18n.global.locale.value?.toLowerCase() || 'en';
   const localeConfig = localeFormats[normalizedLocale] || localeFormats.en;
 
   return format(legacyDeprecationDate.value, localeConfig.pattern, {

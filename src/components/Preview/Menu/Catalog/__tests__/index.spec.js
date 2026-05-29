@@ -231,11 +231,9 @@ describe('Catalog', () => {
       await wrapper.vm.$nextTick();
 
       expect(wrapper.vm.cartButtonText).toBe(
-        i18n.global.t(
-          'router.preview.catalog.view_cart',
-          mockMessage.catalog_message.products.length,
-          { quantity: mockMessage.catalog_message.products.length },
-        ),
+        i18n.global.t('router.preview.catalog.view_cart', {
+          count: mockMessage.catalog_message.products.length,
+        }),
       );
     });
   });

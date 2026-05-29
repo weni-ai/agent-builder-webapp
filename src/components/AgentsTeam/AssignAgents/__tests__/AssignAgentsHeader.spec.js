@@ -86,15 +86,9 @@ describe('AssignAgentsHeader', () => {
     expect(
       wrapper.find('[data-testid="assign-agents-header-subtitle"]').text(),
     ).toBe(
-      i18n.global.t(
-        'agents.assign_agents.header.agents_available',
-        availableAgents.length,
-        {
-          named: {
-            count: availableAgents.length,
-          },
-        },
-      ),
+      i18n.global.t('agents.assign_agents.header.agents_available', {
+        count: availableAgents.length,
+      }),
     );
   });
 
@@ -112,8 +106,8 @@ describe('AssignAgentsHeader', () => {
     expect(
       wrapper.find('[data-testid="assign-agents-header-subtitle"]').text(),
     ).toBe(
-      i18n.global.t('agents.assign_agents.header.agents_available', 2, {
-        named: { count: 2 },
+      i18n.global.t('agents.assign_agents.header.agents_available', {
+        count: 2,
       }),
     );
   });
