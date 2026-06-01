@@ -18,18 +18,6 @@ vi.mock('vue-router', async () => {
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
     knowledge: {
-      texts: {
-        list: vi.fn().mockResolvedValue({
-          data: {
-            results: [
-              {
-                uuid: 'text-uuid',
-                text: 'Sample text content',
-              },
-            ],
-          },
-        }),
-      },
       files: {
         list: vi.fn().mockResolvedValue({
           data: {
@@ -76,19 +64,7 @@ describe('Knowledge.vue', () => {
   const createWrapper = () =>
     shallowMount(Knowledge, {
       global: {
-        plugins: [
-          createTestingPinia({
-            initialState: {
-              Knowledge: {
-                contentText: {
-                  uuid: null,
-                  current: '',
-                  old: '',
-                },
-              },
-            },
-          }),
-        ],
+        plugins: [createTestingPinia()],
       },
     });
 
@@ -115,14 +91,6 @@ describe('Knowledge.vue', () => {
 
       expect(props.filesProp).toBeDefined();
       expect(props.sitesProp).toBeDefined();
-      expect(props.textProp).toEqual({
-        open: true,
-        status: null,
-        uuid: 'text-uuid',
-        oldValue: 'Sample text content',
-        value: 'Sample text content',
-      });
-      expect(props.textLoading).toBe(false);
     });
 
     it('renders the child route view when the active route is a knowledge child', () => {
@@ -136,11 +104,7 @@ describe('Knowledge.vue', () => {
   });
 
   describe('Component lifecycle', () => {
-    it('loads text, files and sites on mount', () => {
-      expect(wrapper.vm.text.uuid).toBe('text-uuid');
-      expect(wrapper.vm.text.value).toBe('Sample text content');
-      expect(wrapper.vm.text.oldValue).toBe('Sample text content');
-      expect(wrapper.vm.text.status).toBeNull();
+    it('loads files and sites on mount', () => {
       expect(wrapper.vm.files.loadNext).toHaveBeenCalled();
       expect(wrapper.vm.sites.loadNext).toHaveBeenCalled();
     });
