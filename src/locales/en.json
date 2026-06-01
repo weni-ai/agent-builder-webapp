@@ -428,7 +428,12 @@
       "title": "Instructions",
       "description": "Define the rules that guide how Manager responds, communicates, and makes decisions",
       "export_instructions": "Export instructions",
-      "new_instruction": "New instruction"
+      "new_instruction": "New instruction",
+      "new_instruction_drawer": {
+        "title": "New instruction",
+        "save": "Save",
+        "cancel": "Cancel"
+      }
     },
     "profile": {
       "tone_of_voice": {
