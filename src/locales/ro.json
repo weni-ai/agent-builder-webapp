@@ -394,6 +394,13 @@
           "title": "Configurare MCP {mcp}",
           "description": "Acest MCP nu necesită configurare"
         },
+        "constants": {
+          "optional": "opțional",
+          "title": "Configurează {agent}"
+        },
+        "custom_credentials": {
+          "title": "Introdu datele de autentificare"
+        },
         "third_step": {
           "title": "Revizuiește configurarea și introdu datele de autentificare",
           "description": "Revizuiește configurarea și introdu datele de autentificare pentru a finaliza configurarea agentului",
