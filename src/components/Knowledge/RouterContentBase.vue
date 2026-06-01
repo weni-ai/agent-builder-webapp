@@ -40,17 +40,7 @@
       :items="sites"
       shape="accordion"
     />
-    <template v-if="activeTab === 'text'">
-      <ListContentTexts
-        v-if="featureFlagsStore.flags.knowledgeTextOrganization"
-      />
-      <ContentText
-        v-else
-        v-model="knowledgeStore.contentText"
-        :isLoading="textLoading"
-        class="content-base__content-tab__text"
-      />
-    </template>
+    <ListContentTexts v-if="activeTab === 'text'" />
   </section>
 </template>
 
@@ -60,11 +50,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import ContentFiles from '@/components/Knowledge/ContentFiles.vue';
 import ContentSites from '@/components/Knowledge/ContentSites.vue';
-import ContentText from '@/components/Knowledge/ContentText.vue';
 import ListContentTexts from '@/components/Knowledge/ListContentTexts/index.vue';
-
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
-import { useKnowledgeStore } from '@/store/Knowledge';
 
 const props = defineProps({
   filesProp: {
@@ -75,13 +61,6 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  textProp: {
-    type: Object,
-    required: true,
-  },
-  textLoading: {
-    type: Boolean,
-  },
 });
 
 defineEmits(['update:files']);
@@ -90,8 +69,6 @@ const files = toRef(props, 'filesProp');
 const sites = toRef(props, 'sitesProp');
 
 const contentStyle = ref('accordion');
-const knowledgeStore = useKnowledgeStore();
-const featureFlagsStore = useFeatureFlagsStore();
 
 const route = useRoute();
 const router = useRouter();
