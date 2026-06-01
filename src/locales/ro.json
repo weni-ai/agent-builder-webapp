@@ -425,7 +425,9 @@
     },
     "instructions": {
       "title": "Instrucțiuni",
-      "description": "Scrie reguli rapide pentru a modela comportamentul agentului"
+      "description": "Definește regulile care ghidează modul în care Manager răspunde, comunică și ia decizii",
+      "export_instructions": "Exportă instrucțiuni",
+      "new_instruction": "Instrucțiune nouă"
     },
     "profile": {
       "tone_of_voice": {
