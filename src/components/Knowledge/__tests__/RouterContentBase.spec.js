@@ -1,11 +1,12 @@
 import { mount, flushPromises } from '@vue/test-utils';
+import { reactive } from 'vue';
+import { createTestingPinia } from '@pinia/testing';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+
 import RouterContentBase from '@/components/Knowledge/RouterContentBase.vue';
 import ContentFiles from '@/components/Knowledge/ContentFiles.vue';
 import ContentSites from '@/components/Knowledge/ContentSites.vue';
 import ListContentTexts from '@/components/Knowledge/ListContentTexts/index.vue';
-import { createTestingPinia } from '@pinia/testing';
-import { expect, vi } from 'vitest';
-import { reactive } from 'vue';
 
 const mockRoute = reactive({ name: 'knowledge', query: {} });
 const mockRouter = { push: vi.fn(), replace: vi.fn() };
@@ -24,24 +25,22 @@ const pinia = createTestingPinia({
   },
 });
 
+const mockFilesProp = {
+  status: 'complete',
+  data: [{ name: 'File 1' }, { name: 'File 2' }],
+};
+
+const mockSitesProp = {
+  data: [{ name: 'Site 1' }, { name: 'Site 2' }],
+};
+
 describe('RouterContentBase', () => {
   let wrapper;
 
-  const mockFilesProp = {
-    status: 'complete',
-    data: [{ name: 'File 1' }, { name: 'File 2' }],
-  };
+  const createWrapper = (query = {}) => {
+    mockRoute.query = query;
 
-  const mockSitesProp = {
-    data: [{ name: 'Site 1' }, { name: 'Site 2' }],
-  };
-
-  beforeEach(() => {
-    mockRouter.push.mockReset();
-    mockRouter.replace.mockReset();
-    mockRoute.query = {};
-
-    wrapper = mount(RouterContentBase, {
+    return mount(RouterContentBase, {
       props: {
         filesProp: mockFilesProp,
         sitesProp: mockSitesProp,
@@ -55,6 +54,19 @@ describe('RouterContentBase', () => {
         },
       },
     });
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockRouter.push.mockReset();
+    mockRouter.replace.mockReset();
+    mockRoute.query = {};
+
+    wrapper = createWrapper();
+  });
+
+  afterEach(() => {
+    wrapper?.unmount();
   });
 
   test('renders correctly with initial props', () => {
@@ -151,11 +163,10 @@ describe('RouterContentBase', () => {
         props: {
           filesProp: mockFilesProp,
           sitesProp: mockSitesProp,
-          textProp: mockTextProp,
         },
         global: {
           plugins: [pinia],
-          components: { ContentFiles, ContentSites, ContentText },
+          components: { ContentFiles, ContentSites },
         },
       });
     };
@@ -168,6 +179,12 @@ describe('RouterContentBase', () => {
         expect(wrapper.vm.activeTab).toBe(tab);
       },
     );
+
+    test('renders ListContentTexts when route.query.tab is text on mount', () => {
+      remountWithQuery({ tab: 'text' });
+
+      expect(wrapper.findComponent(ListContentTexts).exists()).toBe(true);
+    });
 
     test('falls back to the files tab when route.query.tab is invalid', () => {
       remountWithQuery({ tab: 'invalid' });
@@ -202,6 +219,14 @@ describe('RouterContentBase', () => {
       await flushPromises();
 
       expect(wrapper.vm.activeTab).toBe('text');
+      expect(wrapper.findComponent(ListContentTexts).exists()).toBe(true);
+    });
+
+    test('does not call router.replace when the tab is unchanged', async () => {
+      wrapper.vm.onTabChange('files');
+      await flushPromises();
+
+      expect(mockRouter.replace).not.toHaveBeenCalled();
     });
   });
 });
