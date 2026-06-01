@@ -28,7 +28,6 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
     supervisorExport: isProjectEnabledForFlag('FF_SUPERVISOR_EXPORT'),
     settingsAgentVoice: growthbook?.isOn('settings_agent_voice'),
     conversationsV2: true,
-    knowledgeTextOrganization: growthbook?.isOn('knowledge_text_organization'),
   }));
 
   watch(

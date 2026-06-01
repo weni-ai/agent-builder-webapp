@@ -2,7 +2,7 @@ import { mount, flushPromises } from '@vue/test-utils';
 import RouterContentBase from '@/components/Knowledge/RouterContentBase.vue';
 import ContentFiles from '@/components/Knowledge/ContentFiles.vue';
 import ContentSites from '@/components/Knowledge/ContentSites.vue';
-import ContentText from '@/components/Knowledge/ContentText.vue';
+import ListContentTexts from '@/components/Knowledge/ListContentTexts/index.vue';
 import { createTestingPinia } from '@pinia/testing';
 import { expect, vi } from 'vitest';
 import { reactive } from 'vue';
@@ -27,7 +27,6 @@ const pinia = createTestingPinia({
 describe('RouterContentBase', () => {
   let wrapper;
 
-  // Mock props para o teste
   const mockFilesProp = {
     status: 'complete',
     data: [{ name: 'File 1' }, { name: 'File 2' }],
@@ -35,11 +34,6 @@ describe('RouterContentBase', () => {
 
   const mockSitesProp = {
     data: [{ name: 'Site 1' }, { name: 'Site 2' }],
-  };
-
-  const mockTextProp = {
-    open: false,
-    content: 'Sample Text',
   };
 
   beforeEach(() => {
@@ -51,14 +45,13 @@ describe('RouterContentBase', () => {
       props: {
         filesProp: mockFilesProp,
         sitesProp: mockSitesProp,
-        textProp: mockTextProp,
       },
       global: {
         plugins: [pinia],
         components: {
           ContentFiles,
           ContentSites,
-          ContentText,
+          ListContentTexts,
         },
       },
     });
@@ -110,21 +103,17 @@ describe('RouterContentBase', () => {
     await flushPromises();
 
     expect(wrapper.vm.activeTab).toBe('text');
-    expect(wrapper.findComponent(ContentText).exists()).toBe(true);
+    expect(wrapper.findComponent(ListContentTexts).exists()).toBe(true);
     expect(wrapper.findComponent(ContentSites).exists()).toBe(false);
   });
 
-  test('renders ContentText based on activeTab', async () => {
-    expect(wrapper.findComponent(ContentText).exists()).toBe(false);
+  test('renders ListContentTexts based on activeTab', async () => {
+    expect(wrapper.findComponent(ListContentTexts).exists()).toBe(false);
 
     wrapper.vm.onTabChange('text');
     await flushPromises();
 
-    const textComponent = wrapper.findComponent(ContentText);
-    expect(textComponent.exists()).toBe(true);
-    expect(textComponent.classes()).toContain(
-      'content-base__content-tab__text',
-    );
+    expect(wrapper.findComponent(ListContentTexts).exists()).toBe(true);
   });
 
   test('applies correct classes for different contentStyle values', async () => {
@@ -138,29 +127,6 @@ describe('RouterContentBase', () => {
         wrapper.find(`.content-base__content-tab--shape-${style}`).exists(),
       ).toBe(true);
     }
-  });
-
-  test('renders correct components based on props and tab state', async () => {
-    expect(wrapper.findComponent(ContentFiles).exists()).toBe(true);
-    expect(wrapper.findComponent(ContentSites).exists()).toBe(false);
-    expect(wrapper.findComponent(ContentText).exists()).toBe(false);
-
-    wrapper.vm.onTabChange('text');
-    await flushPromises();
-
-    const textComponent = wrapper.findComponent(ContentText);
-    expect(textComponent.exists()).toBe(true);
-    expect(textComponent.classes()).toContain(
-      'content-base__content-tab__text',
-    );
-  });
-
-  test('does not render ContentText when textProp.open is false', async () => {
-    wrapper.vm.onTabChange('text');
-    await flushPromises();
-
-    const textComponent = wrapper.findComponent(ContentText);
-    expect(textComponent.exists()).toBe(true);
   });
 
   test('renders ContentSites with correct items', async () => {
