@@ -62,12 +62,12 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
           class="unnnic-tag unnnic-tag--small agent-card__tag"
           data-testid="agent-tag"
           data-v-8d850a92=""
-          data-v-97ebdc5a=""
+          data-v-fae8d172=""
         >
           <!---->
           <p
             class="unnnic-tag__label"
-            data-v-97ebdc5a=""
+            data-v-fae8d172=""
           >
             Custom
           </p>
@@ -143,7 +143,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
       class="assign-agent-card__button unnnic-button unnnic-button--size-small unnnic-button--primary assign-agent-card__button"
       data-testid="assign-button"
       data-v-b58c7d6a=""
-      data-v-fb18c550=""
+      data-v-d7396b6a=""
     >
       <!---->
       <!---->
@@ -151,7 +151,7 @@ exports[`AssignAgentCard.vue > renders correctly 1`] = `
       <span
         class="unnnic-button__label"
         data-testid="button-label"
-        data-v-fb18c550=""
+        data-v-d7396b6a=""
         style="visibility: visible;"
       >
         
