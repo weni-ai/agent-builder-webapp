@@ -425,7 +425,9 @@
     },
     "instructions": {
       "title": "Instrucciones",
-      "description": "Escribe reglas rápidas para configurar el comportamiento del agente"
+      "description": "Define las reglas que guían cómo el Manager responde, se comunica y toma decisiones",
+      "export_instructions": "Exportar instrucciones",
+      "new_instruction": "Nueva instrucción"
     },
     "profile": {
       "tone_of_voice": {
