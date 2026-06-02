@@ -431,6 +431,7 @@
       "new_instruction": "New instruction",
       "new_instruction_drawer": {
         "title": "New instruction",
+        "validate": "Validate",
         "save": "Save",
         "cancel": "Cancel"
       }
