@@ -90,23 +90,35 @@ describe('NewInstructionDrawer/Form.vue', () => {
       expect(findComponent('validateButton').props('disabled')).toBe(true);
     });
 
-    it('enables the validate button when the text has content', () => {
+    it('enables the validate button when the text has content and there is no suggestion status', () => {
       wrapper = createWrapper({
         newInstruction: { text: 'Valid text', status: null },
       });
       expect(findComponent('validateButton').props('disabled')).toBe(false);
     });
 
-    it('shows the loading state when the suggestion status is loading', () => {
+    it('disables the validate button when the suggestion status is loading', () => {
       wrapper = createWrapper({
         newInstruction: { text: 'Valid text', status: null },
         instructionSuggestedByAI: { status: 'loading' },
       });
-      expect(findComponent('validateButton').props('loading')).toBe(true);
+      expect(findComponent('validateButton').props('disabled')).toBe(true);
     });
 
-    it('does not show the loading state when the suggestion status is not loading', () => {
-      expect(findComponent('validateButton').props('loading')).toBe(false);
+    it('disables the validate button when the suggestion status is complete', () => {
+      wrapper = createWrapper({
+        newInstruction: { text: 'Valid text', status: null },
+        instructionSuggestedByAI: { status: 'complete' },
+      });
+      expect(findComponent('validateButton').props('disabled')).toBe(true);
+    });
+
+    it('enables the validate button when the suggestion status is error and the text has content', () => {
+      wrapper = createWrapper({
+        newInstruction: { text: 'Valid text', status: null },
+        instructionSuggestedByAI: { status: 'error' },
+      });
+      expect(findComponent('validateButton').props('disabled')).toBe(false);
     });
   });
 
