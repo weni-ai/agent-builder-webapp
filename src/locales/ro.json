@@ -432,6 +432,7 @@
       "new_instruction": "Instrucțiune nouă",
       "new_instruction_drawer": {
         "title": "Instrucțiune nouă",
+        "validate": "Validează",
         "save": "Salvează",
         "cancel": "Anulează"
       }
