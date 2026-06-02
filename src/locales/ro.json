@@ -349,7 +349,11 @@
         "title": "Instrucțiune nouă",
         "validate": "Validează",
         "save": "Salvează",
-        "cancel": "Anulează"
+        "cancel": "Anulează",
+        "ai_analysis": {
+          "title": "Analiză AI",
+          "validating": "Se validează instrucțiunea..."
+        }
       }
     },
     "profile": {
