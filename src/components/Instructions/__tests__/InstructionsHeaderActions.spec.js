@@ -11,6 +11,8 @@ describe('InstructionsHeaderActions.vue', () => {
     wrapper.findComponent('[data-testid="export-instructions-button"]');
   const findNewInstructionButton = () =>
     wrapper.findComponent('[data-testid="new-instruction-button"]');
+  const findDrawer = () =>
+    wrapper.findComponent('[data-testid="new-instruction-drawer"]');
 
   const createWrapper = () => {
     wrapper = shallowMount(InstructionsHeaderActions);
@@ -57,6 +59,28 @@ describe('InstructionsHeaderActions.vue', () => {
       expect(findNewInstructionButton().props('text')).toBe(
         i18n.global.t('agents.instructions.new_instruction'),
       );
+    });
+  });
+
+  describe('NewInstructionDrawer', () => {
+    it('renders the drawer', () => {
+      createWrapper();
+
+      expect(findDrawer().exists()).toBe(true);
+    });
+
+    it('is closed by default', () => {
+      createWrapper();
+
+      expect(findDrawer().props('modelValue')).toBe(false);
+    });
+
+    it('opens when the new instruction button is clicked', async () => {
+      createWrapper();
+
+      await findNewInstructionButton().trigger('click');
+
+      expect(findDrawer().props('modelValue')).toBe(true);
     });
   });
 });

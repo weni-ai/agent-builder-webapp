@@ -13,7 +13,10 @@
     @click="newInstruction"
   />
 
-  <NewInstructionDrawer v-model="showNewInstructionDrawer" />
+  <NewInstructionDrawer
+    v-model="showNewInstructionDrawer"
+    data-testid="new-instruction-drawer"
+  />
 </template>
 
 <script setup lang="ts">
