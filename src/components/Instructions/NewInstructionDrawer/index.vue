@@ -11,18 +11,20 @@
       </UnnnicDrawerHeader>
 
       <section class="new-instruction-drawer">
-        <NewInstructionDrawerForm />
+        <NewInstructionDrawerForm data-testid="new-instruction-drawer-form" />
       </section>
 
       <UnnnicDrawerFooter>
         <UnnnicDrawerClose>
           <UnnnicButton
+            data-testid="new-instruction-drawer-cancel-button"
             :text="$t('agents.instructions.new_instruction_drawer.cancel')"
             type="tertiary"
             @click="close"
           />
         </UnnnicDrawerClose>
         <UnnnicButton
+          data-testid="new-instruction-drawer-save-button"
           :text="$t('agents.instructions.new_instruction_drawer.save')"
           type="primary"
           @click="save"

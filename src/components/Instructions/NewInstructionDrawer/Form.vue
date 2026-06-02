@@ -1,6 +1,7 @@
 <template>
   <form
     class="new-instruction-drawer__form"
+    data-testid="new-instruction-drawer-form"
     @submit.prevent="validate"
   >
     <textarea
@@ -8,9 +9,11 @@
       ref="textareaRef"
       v-model="instructionsStore.newInstruction.text"
       class="new-instruction-drawer__textarea"
+      data-testid="new-instruction-drawer-textarea"
     />
 
     <UnnnicButton
+      data-testid="new-instruction-drawer-validate-button"
       type="secondary"
       :text="$t('agents.instructions.new_instruction_drawer.validate')"
       :disabled="!instructionsStore.newInstruction.text.trim()"
