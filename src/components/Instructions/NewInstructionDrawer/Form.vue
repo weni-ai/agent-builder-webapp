@@ -16,20 +16,30 @@
       data-testid="new-instruction-drawer-validate-button"
       type="secondary"
       :text="$t('agents.instructions.new_instruction_drawer.validate')"
-      :disabled="!instructionsStore.newInstruction.text.trim()"
-      :loading="instructionsStore.instructionSuggestedByAI.status === 'loading'"
+      :disabled="validateButtonDisabled"
     />
   </form>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 import { useInstructionsStore } from '@/store/Instructions';
 
 const instructionsStore = useInstructionsStore();
 
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
+
+const validateButtonDisabled = computed(() => {
+  const instructionSuggestionStatus =
+    instructionsStore.instructionSuggestedByAI.status;
+  const newInstructionText = instructionsStore.newInstruction.text.trim();
+  return (
+    !newInstructionText ||
+    instructionSuggestionStatus === 'complete' ||
+    instructionSuggestionStatus === 'loading'
+  );
+});
 
 function validate() {
   instructionsStore.getInstructionSuggestionByAI(
