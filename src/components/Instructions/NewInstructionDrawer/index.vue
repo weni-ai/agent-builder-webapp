@@ -10,7 +10,9 @@
         </UnnnicDrawerTitle>
       </UnnnicDrawerHeader>
 
-      <section class="new-instruction-drawer"></section>
+      <section class="new-instruction-drawer">
+        <NewInstructionDrawerForm />
+      </section>
 
       <UnnnicDrawerFooter>
         <UnnnicDrawerClose>
@@ -31,6 +33,8 @@
 </template>
 
 <script setup>
+import NewInstructionDrawerForm from './Form.vue';
+
 const modelValue = defineModel({
   type: Boolean,
   required: true,

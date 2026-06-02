@@ -1,0 +1,72 @@
+<template>
+  <form
+    class="new-instruction-drawer__form"
+    @submit.prevent="validate"
+  >
+    <textarea
+      id="new-instruction-drawer-textarea"
+      ref="textareaRef"
+      v-model="instructionsStore.newInstruction.text"
+      class="new-instruction-drawer__textarea"
+    />
+
+    <UnnnicButton
+      type="secondary"
+      :text="$t('agents.instructions.new_instruction_drawer.validate')"
+      :disabled="!instructionsStore.newInstruction.text.trim()"
+      :loading="instructionsStore.instructionSuggestedByAI.status === 'loading'"
+    />
+  </form>
+</template>
+
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+
+import { useInstructionsStore } from '@/store/Instructions';
+
+const instructionsStore = useInstructionsStore();
+
+const textareaRef = ref<HTMLTextAreaElement | null>(null);
+
+function validate() {
+  instructionsStore.getInstructionSuggestionByAI(
+    instructionsStore.newInstruction.text,
+  );
+}
+
+onMounted(() => {
+  textareaRef.value?.focus();
+});
+</script>
+
+<style lang="scss" scoped>
+.new-instruction-drawer {
+  &__form {
+    border-radius: $unnnic-radius-2;
+    border: 1px solid $unnnic-color-border-base;
+    background-color: $unnnic-color-bg-base;
+
+    padding: $unnnic-space-4;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $unnnic-space-3;
+  }
+
+  &__textarea {
+    border-radius: $unnnic-radius-1;
+
+    resize: none;
+    width: 100%;
+    height: 80px;
+
+    color: $unnnic-color-fg-emphasized;
+    font: $unnnic-font-body;
+
+    &:focus {
+      outline: 1px solid $unnnic-color-border-accent-strong;
+    }
+  }
+}
+</style>
