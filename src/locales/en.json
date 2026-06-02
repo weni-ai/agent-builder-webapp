@@ -435,7 +435,11 @@
         "title": "New instruction",
         "validate": "Validate",
         "save": "Save",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "ai_analysis": {
+          "title": "AI analysis",
+          "validating": "Validating instruction..."
+        }
       }
     },
     "profile": {
