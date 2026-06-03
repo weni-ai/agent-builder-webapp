@@ -30,12 +30,15 @@
 
         <IssuesFound />
       </section>
-      <section class="results__suggested-rewrite">
+      <section
+        v-if="data.suggestion"
+        class="results__suggested-rewrite"
+      >
         <h3 class="results__title">
           {{ aiAnalysisT('suggested_rewrite') }}
         </h3>
 
-        <SuggestedRewrite v-if="data.suggestion" />
+        <SuggestedRewrite />
       </section>
     </section>
   </section>
