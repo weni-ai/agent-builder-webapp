@@ -438,7 +438,10 @@
         "cancel": "Cancelar",
         "ai_analysis": {
           "title": "Análisis de IA",
-          "validating": "Validando instrucción..."
+          "validating": "Validando instrucción...",
+          "suggested_category": "Categoría sugerida",
+          "issues": "Problemas encontrados",
+          "suggested_rewrite": "Reescritura sugerida"
         }
       }
     },
