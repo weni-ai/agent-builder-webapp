@@ -1,11 +1,11 @@
 <template>
   <section class="new-instruction-drawer__ai-analysis">
     <h2 class="ai-analysis__title">
-      {{ $t('agents.instructions.new_instruction_drawer.ai_analysis.title') }}
+      {{ aiAnalysisT('title') }}
     </h2>
 
     <section
-      v-if="instructionsStore.instructionSuggestedByAI.status === 'loading'"
+      v-if="status === 'loading'"
       class="ai-analysis__loading"
     >
       <UnnnicIconLoading size="20px" />
@@ -20,46 +20,44 @@
     </section>
 
     <section
-      v-else-if="
-        instructionsStore.instructionSuggestedByAI.status === 'complete'
-      "
+      v-else-if="status === 'complete'"
       class="ai-analysis__results"
     >
-      <section class="results__suggested-category">
-        <h3 class="results__title">
-          {{
-            $t(
-              'agents.instructions.new_instruction_drawer.ai_analysis.suggested_category',
-            )
-          }}
-        </h3>
-      </section>
       <section class="results__issues">
         <h3 class="results__title">
-          {{
-            $t('agents.instructions.new_instruction_drawer.ai_analysis.issues')
-          }}
+          {{ aiAnalysisT('issues') }}
         </h3>
+
+        <IssuesFound />
       </section>
       <section class="results__suggested-rewrite">
         <h3 class="results__title">
-          {{
-            $t(
-              'agents.instructions.new_instruction_drawer.ai_analysis.suggested_rewrite',
-            )
-          }}
+          {{ aiAnalysisT('suggested_rewrite') }}
         </h3>
+
+        <SuggestedRewrite v-if="data.suggestion" />
       </section>
     </section>
   </section>
 </template>
 
 <script setup lang="ts">
+import { toRefs } from 'vue';
+import { useI18n } from 'vue-i18n';
+
 import { UnnnicIconLoading } from '@weni/unnnic-system';
 
 import { useInstructionsStore } from '@/store/Instructions';
 
+import IssuesFound from './IssuesFound.vue';
+import SuggestedRewrite from './SuggestedRewrite.vue';
+
+const { t } = useI18n();
+const aiAnalysisT = (key: string) =>
+  t(`agents.instructions.new_instruction_drawer.ai_analysis.${key}`);
+
 const instructionsStore = useInstructionsStore();
+const { data, status } = toRefs(instructionsStore.instructionSuggestedByAI);
 </script>
 
 <style lang="scss" scoped>
