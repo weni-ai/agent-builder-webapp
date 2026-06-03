@@ -24,7 +24,33 @@
         instructionsStore.instructionSuggestedByAI.status === 'complete'
       "
       class="ai-analysis__results"
-    ></section>
+    >
+      <section class="results__suggested-category">
+        <h3 class="results__title">
+          {{
+            $t(
+              'agents.instructions.new_instruction_drawer.ai_analysis.suggested_category',
+            )
+          }}
+        </h3>
+      </section>
+      <section class="results__issues">
+        <h3 class="results__title">
+          {{
+            $t('agents.instructions.new_instruction_drawer.ai_analysis.issues')
+          }}
+        </h3>
+      </section>
+      <section class="results__suggested-rewrite">
+        <h3 class="results__title">
+          {{
+            $t(
+              'agents.instructions.new_instruction_drawer.ai_analysis.suggested_rewrite',
+            )
+          }}
+        </h3>
+      </section>
+    </section>
   </section>
 </template>
 
@@ -57,6 +83,30 @@ const instructionsStore = useInstructionsStore();
     &__loading-text {
       font: $unnnic-font-body;
       color: $unnnic-color-fg-muted;
+    }
+
+    &__results {
+      border-radius: $unnnic-radius-2;
+      border: 1px solid $unnnic-color-border-base;
+
+      > * {
+        border-bottom: 1px solid $unnnic-color-border-base;
+
+        padding: $unnnic-space-4;
+
+        display: flex;
+        flex-direction: column;
+        gap: $unnnic-space-2;
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      .results__title {
+        font: $unnnic-font-action;
+        color: $unnnic-color-fg-emphasized;
+      }
     }
   }
 }

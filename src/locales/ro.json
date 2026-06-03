@@ -352,7 +352,10 @@
         "cancel": "Anulează",
         "ai_analysis": {
           "title": "Analiză AI",
-          "validating": "Se validează instrucțiunea..."
+          "validating": "Se validează instrucțiunea...",
+          "suggested_category": "Categorie sugerată",
+          "issues": "Probleme găsite",
+          "suggested_rewrite": "Rescriere sugerată"
         }
       }
     },
