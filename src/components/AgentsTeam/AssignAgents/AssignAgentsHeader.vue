@@ -54,15 +54,9 @@ const headerTitle = computed(() => {
 });
 
 const availableAgentsText = computed(() =>
-  t(
-    'agents.assign_agents.header.agents_available',
-    availableAgentsCount.value,
-    {
-      named: {
-        count: availableAgentsCount.value,
-      },
-    },
-  ),
+  t('agents.assign_agents.header.agents_available', {
+    count: availableAgentsCount.value,
+  }),
 );
 </script>
 

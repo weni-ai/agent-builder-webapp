@@ -83,7 +83,7 @@
       },
       "filters": {
         "filter_conversations": "Filtrează conversațiile",
-        "count_applied_filters": "(1 filtru aplicat) | ({count} filtre aplicate)",
+        "count_applied_filters": "{count, plural, one {(1 filtru aplicat)} few {({count} filtre aplicate)} other {({count} de filtre aplicate)}}",
         "filter_conversations_drawer": "Filtrează conversațiile",
         "apply_filters": "Aplicare filtre",
         "clear_filters": "Elimină filtrele",
@@ -324,7 +324,7 @@
         "all_systems": "Toate sistemele",
         "all_custom_agents": "Toți agenții personalizați",
         "system_title": "Agenți {system}",
-        "agents_available": "Niciun agent disponibil | {count} agent disponibil | {count} agenți disponibili"
+        "agents_available": "{count, plural, =0 {Niciun agent disponibil} one {{count} agent disponibil} few {{count} agenți disponibili} other {{count} de agenți disponibili}}"
       },
       "sidebar": {
         "official_title": "Agenți oficiali",
@@ -381,7 +381,7 @@
         "system_selection": {
           "title": "Selectare sistem",
           "description": "Selectează sistemul sursă de date",
-          "mcp_count": "{count} MCP disponibil | {count} MCP-uri disponibile"
+          "mcp_count": "{count, plural, one {{count} MCP disponibil} few {{count} MCP-uri disponibile} other {{count} de MCP-uri disponibile}}"
         },
         "mcp_selection": {
           "title": "Selectare MCP",
@@ -598,7 +598,7 @@
       "standby": "Mod standby",
       "catalog": {
         "title": "Catalog de produse",
-        "view_cart": "Vizualizează coșul ({quantity} articol) | Vizualizează coșul ({quantity} articole)",
+        "view_cart": "{count, plural, one {Vizualizează coșul ({count} articol)} few {Vizualizează coșul ({count} articole)} other {Vizualizează coșul ({count} de articole)}}",
         "add_to_cart": "Adaugă în coș",
         "subtotal": "Subtotal",
         "place_order": "Finalizează comanda",
@@ -606,7 +606,7 @@
         "order_summary": "Sumar comandă",
         "order_details": "Detalii comandă",
         "view_order_details": "Vizualizează detaliile comenzii",
-        "items": "articol | articole",
+        "items": "{count, plural, one {articol} few {articole} other {de articole}}",
         "remove": "Eliminare"
       }
     }
@@ -789,10 +789,10 @@
     }
   },
   "time": {
-    "time_ago_minutes": "Acum {count} minut | Acum {count} minute",
-    "time_ago_hours": "Acum {count} oră | Acum {count} ore",
-    "time_ago_days": "Acum {count} zi | Acum {count} zile",
-    "time_ago_months": "Acum {count} lună | Acum {count} luni"
+    "time_ago_minutes": "{count, plural, one {Acum {count} minut} few {Acum {count} minute} other {Acum {count} de minute}}",
+    "time_ago_hours": "{count, plural, one {Acum {count} oră} few {Acum {count} ore} other {Acum {count} de ore}}",
+    "time_ago_days": "{count, plural, one {Acum {count} zi} few {Acum {count} zile} other {Acum {count} de zile}}",
+    "time_ago_months": "{count, plural, one {Acum {count} lună} few {Acum {count} luni} other {Acum {count} de luni}}"
   },
   "audio_recorder": {
     "discard_button": "Renunță"

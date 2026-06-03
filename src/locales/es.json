@@ -83,7 +83,7 @@
       },
       "filters": {
         "filter_conversations": "Filtrar conversaciones",
-        "count_applied_filters": "(1 filtro aplicado) | ({count} filtros aplicados)",
+        "count_applied_filters": "{count, plural, one {(1 filtro aplicado)} other {({count} filtros aplicados)}}",
         "filter_conversations_drawer": "Filtrar conversaciones",
         "apply_filters": "Aplicar filtros",
         "clear_filters": "Limpiar filtros",
@@ -325,7 +325,7 @@
         "all_systems": "Todos los sistemas",
         "all_custom_agents": "Todos los agentes personalizados",
         "system_title": "Agentes {system}",
-        "agents_available": "No hay agentes disponibles | {count} agente disponible | {count} agentes disponibles"
+        "agents_available": "{count, plural, =0 {No hay agentes disponibles} one {{count} agente disponible} other {{count} agentes disponibles}}"
       },
       "sidebar": {
         "official_title": "Agentes oficiales",
@@ -382,7 +382,7 @@
         "system_selection": {
           "title": "Selección de sistema",
           "description": "Seleccione el sistema de origen de los datos",
-          "mcp_count": "{count} MCP disponible | {count} MCPs disponibles"
+          "mcp_count": "{count, plural, one {{count} MCP disponible} other {{count} MCPs disponibles}}"
         },
         "mcp_selection": {
           "title": "Selección de MCP",
@@ -599,7 +599,7 @@
       "standby": "Modo de espera",
       "catalog": {
         "title": "Catálogo de productos",
-        "view_cart": "Ver carrito ({quantity} ítem) | Ver carrito ({quantity} ítems)",
+        "view_cart": "{count, plural, one {Ver carrito ({count} ítem)} other {Ver carrito ({count} ítems)}}",
         "add_to_cart": "Agregar al carrito",
         "subtotal": "Subtotal",
         "place_order": "Finalizar compra",
@@ -607,7 +607,7 @@
         "order_summary": "Resumen del pedido",
         "order_details": "Detalles del pedido",
         "view_order_details": "Ver detalles del pedido",
-        "items": "ítem | ítems",
+        "items": "{count, plural, one {ítem} other {ítems}}",
         "remove": "Remover"
       }
     }
@@ -790,10 +790,10 @@
     }
   },
   "time": {
-    "time_ago_minutes": "Hace {count} minuto | Hace {count} minutos",
-    "time_ago_hours": "Hace {count} hora | Hace {count} horas",
-    "time_ago_days": "Hace {count} día | Hace {count} días",
-    "time_ago_months": "Hace {count} mes | Hace {count} meses"
+    "time_ago_minutes": "{count, plural, one {Hace {count} minuto} other {Hace {count} minutos}}",
+    "time_ago_hours": "{count, plural, one {Hace {count} hora} other {Hace {count} horas}}",
+    "time_ago_days": "{count, plural, one {Hace {count} día} other {Hace {count} días}}",
+    "time_ago_months": "{count, plural, one {Hace {count} mes} other {Hace {count} meses}}"
   },
   "audio_recorder": {
     "discard_button": "Descartar"

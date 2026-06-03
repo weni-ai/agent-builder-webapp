@@ -4,7 +4,7 @@ export function setupLanguageListener() {
   return new Promise((resolve) => {
     window.addEventListener('message', (event) => {
       if (event.data.event === 'setLanguage') {
-        i18n.global.locale = event.data.language;
+        i18n.global.locale.value = event.data.language;
         resolve();
       }
     });
