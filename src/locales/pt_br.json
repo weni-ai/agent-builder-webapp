@@ -354,9 +354,18 @@
         "ai_analysis": {
           "title": "Análise de IA",
           "validating": "Validando instrução...",
-          "suggested_category": "Categoria sugerida",
           "issues": "Problemas encontrados",
-          "suggested_rewrite": "Reescrita sugerida"
+          "issues_types": {
+            "duplicate": "Duplicado",
+            "conflicts": "Conflitos",
+            "ambiguity": "Ambiguidade",
+            "lack_of_clarity": "Clareza",
+            "no_issues_found": "Tudo certo. Nenhum problema encontrado."
+          },
+          "suggested_rewrite": "Reescrita sugerida",
+          "suggestion_applied": "Sugestão aplicada",
+          "undo_button": "Desfazer",
+          "apply_button": "Aplicar"
         }
       }
     },
