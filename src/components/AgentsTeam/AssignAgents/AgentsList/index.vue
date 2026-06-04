@@ -48,6 +48,11 @@ const isEmpty = computed(() => props.agents.length === 0 && !props.isLoading);
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: $unnnic-space-4;
 
+  // Limit to 3 columns maximum for large desktops
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   &--empty {
     height: 100%;
 
