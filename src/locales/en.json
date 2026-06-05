@@ -451,7 +451,6 @@
           "undo_button": "Undo",
           "apply_button": "Apply",
           "category": {
-            "placeholder": "Select category",
             "new_badge": "New",
             "suggested_category": "Suggested category",
             "other_categories": "Other categories",

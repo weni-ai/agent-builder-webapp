@@ -334,6 +334,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       suggestion: '',
       suggested_category: '',
     };
+    instructionSuggestedByAI.status = null;
   }
 
   return {

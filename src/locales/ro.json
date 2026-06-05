@@ -450,7 +450,6 @@
           "undo_button": "Anulează",
           "apply_button": "Aplică",
           "category": {
-            "placeholder": "Selectează categoria",
             "new_badge": "Nouă",
             "suggested_category": "Categorie sugerată",
             "other_categories": "Alte categorii",

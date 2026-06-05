@@ -451,7 +451,6 @@
           "undo_button": "Desfazer",
           "apply_button": "Aplicar",
           "category": {
-            "placeholder": "Selecionar categoria",
             "new_badge": "Nova",
             "suggested_category": "Categoria sugerida",
             "other_categories": "Outras categorias",
