@@ -13,6 +13,18 @@ export interface InstructionSuggestedByAI {
     instruction: string;
     classification: Classification[] | [];
     suggestion: string;
+    suggested_category: string;
   };
+  status: 'loading' | 'complete' | 'error' | null;
+}
+
+export interface InstructionCategory {
+  id: number | null;
+  name: string;
+}
+
+export interface NewInstruction {
+  text: string;
+  category: InstructionCategory | null;
   status: 'loading' | 'complete' | 'error' | null;
 }

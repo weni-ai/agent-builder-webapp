@@ -437,6 +437,7 @@
         "ai_analysis": {
           "title": "Análise de IA",
           "validating": "Validando instrução...",
+          "suggested_category": "Categoria sugerida",
           "issues": "Problemas encontrados",
           "issues_types": {
             "duplicate": "Duplicado",
@@ -448,7 +449,23 @@
           "suggested_rewrite": "Reescrita sugerida",
           "suggestion_applied": "Sugestão aplicada",
           "undo_button": "Desfazer",
-          "apply_button": "Aplicar"
+          "apply_button": "Aplicar",
+          "category": {
+            "placeholder": "Selecionar categoria",
+            "new_badge": "Nova",
+            "suggested_category": "Categoria sugerida",
+            "other_categories": "Outras categorias",
+            "create_action": "Nova categoria",
+            "create_title": "Criar categoria",
+            "name_label": "Nome da categoria",
+            "name_placeholder": "Nome",
+            "cancel": "Cancelar",
+            "create": "Criar",
+            "validation": {
+              "required": "Preencha este campo",
+              "invalid_chars": "Use apenas letras, números, espaços e hifens"
+            }
+          }
         }
       }
     },
