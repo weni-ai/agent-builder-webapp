@@ -22,11 +22,17 @@ import { useSupervisorStore } from '@/store/Supervisor';
 
 const supervisorStore = useSupervisorStore();
 
+const UNCLASSIFIED_TOPIC = {
+  label: i18n.global.t('agent_builder.supervisor.filters.topic.unclassified'),
+  value: 'unclassified',
+};
+
 const topicOptions = computed(() => [
   {
     label: i18n.global.t(`agent_builder.supervisor.filters.topic.topic`),
     value: '',
   },
+  UNCLASSIFIED_TOPIC,
   ...supervisorStore.topics,
 ]);
 const topicFilter = ref(
@@ -37,7 +43,10 @@ watch(
   () => topicFilter.value,
   () => {
     supervisorStore.temporaryFilters.topics = topicFilter.value.map(
-      (subject) => subject?.label || '',
+      (subject) =>
+        subject?.value === UNCLASSIFIED_TOPIC.value
+          ? subject.value
+          : subject?.label || '',
     );
   },
   { immediate: true, deep: true },

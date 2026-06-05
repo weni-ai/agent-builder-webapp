@@ -81,7 +81,19 @@ describe('FilterTopics.vue', () => {
       const options = topicSelect().props('options');
       expect(options).toStrictEqual(wrapper.vm.topicOptions);
       expect(Array.isArray(options)).toBe(true);
-      expect(options.length).toBe(5); // 1 default + 4 topic options
+      expect(options.length).toBe(6); // 1 default + 1 unclassified + 4 topic options
+    });
+
+    it('provides a fixed unclassified topic option', () => {
+      const options = topicSelect().props('options');
+      const unclassifiedOption = options.find(
+        (option) => option.value === 'unclassified',
+      );
+
+      expect(unclassifiedOption).toStrictEqual({
+        label: 'Not classified',
+        value: 'unclassified',
+      });
     });
   });
 
@@ -127,6 +139,27 @@ describe('FilterTopics.vue', () => {
 
       expect(store.temporaryFilters.topics).toEqual(['Billing']);
     });
+
+    it('stores the unclassified topic by its id', async () => {
+      const selection = [{ label: 'Not classified', value: 'unclassified' }];
+
+      await topicSelect().vm.$emit('update:modelValue', selection);
+      await nextTick();
+
+      expect(store.temporaryFilters.topics).toEqual(['unclassified']);
+    });
+
+    it('stores the unclassified topic by id alongside regular topics by label', async () => {
+      const selection = [
+        { label: 'Not classified', value: 'unclassified' },
+        { label: 'Billing', value: 'billing' },
+      ];
+
+      await topicSelect().vm.$emit('update:modelValue', selection);
+      await nextTick();
+
+      expect(store.temporaryFilters.topics).toEqual(['unclassified', 'Billing']);
+    });
   });
 
   describe('Topic options validation', () => {
@@ -134,6 +167,7 @@ describe('FilterTopics.vue', () => {
       const options = topicSelect().props('options');
       const expectedLabels = [
         'Topic', // default option
+        'Not classified', // fixed unclassified option
         'Billing',
         'Support',
         'Technical',
