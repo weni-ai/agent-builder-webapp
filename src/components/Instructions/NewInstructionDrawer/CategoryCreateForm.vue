@@ -17,30 +17,33 @@
       </h3>
     </header>
 
-    <UnnnicInput
-      v-model="name"
-      :label="categoryT('name_label')"
-      :placeholder="categoryT('name_placeholder')"
-      :maxlength="MAX_LENGTH"
-      showMaxlengthCounter
-      :errors="displayedErrors"
-      data-testid="category-create-form-input"
-      @blur="touched = true"
-      @keyup.enter="submit"
-    />
+    <form
+      class="category-create-form__input-section"
+      @submit.prevent="submit"
+    >
+      <UnnnicInput
+        v-model="name"
+        :label="categoryT('name_label')"
+        :placeholder="categoryT('name_placeholder')"
+        :maxlength="MAX_LENGTH"
+        showMaxlengthCounter
+        :errors="displayedErrors"
+        data-testid="category-create-form-input"
+        @blur="touched = true"
+        @keyup.enter="submit"
+      />
+    </form>
   </section>
 
   <UnnnicPopoverFooter>
     <UnnnicButton
       type="tertiary"
-      size="small"
       :text="categoryT('cancel')"
       data-testid="category-create-form-cancel"
       @click="$emit('back')"
     />
     <UnnnicButton
       type="primary"
-      size="small"
       :text="categoryT('create')"
       :disabled="!isValid"
       data-testid="category-create-form-create"
@@ -84,6 +87,12 @@ function submit() {
 }
 </script>
 
+<style lang="scss">
+.suggested-category__content {
+  padding: 0;
+}
+</style>
+
 <style lang="scss" scoped>
 .category-create-form {
   &__header {
@@ -91,9 +100,13 @@ function submit() {
     align-items: center;
     gap: $unnnic-space-2;
 
-    padding-bottom: $unnnic-space-4;
+    padding: $unnnic-space-4;
 
     border-bottom: 1px solid $unnnic-color-border-base;
+  }
+
+  &__input-section {
+    padding: $unnnic-space-4;
   }
 
   &__title {

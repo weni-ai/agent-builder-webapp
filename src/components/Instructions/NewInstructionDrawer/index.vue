@@ -59,6 +59,7 @@ const modelValue = defineModel({
 const saveDisabled = computed(
   () =>
     !instructionsStore.newInstruction.text.trim() ||
+    instructionsStore.instructionSuggestedByAI.status === 'loading' ||
     instructionsStore.newInstruction.status === 'loading',
 );
 

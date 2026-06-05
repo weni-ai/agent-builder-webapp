@@ -55,8 +55,6 @@
 import { toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { UnnnicIconLoading } from '@weni/unnnic-system';
-
 import { useInstructionsStore } from '@/store/Instructions';
 
 import IssuesFound from './IssuesFound.vue';

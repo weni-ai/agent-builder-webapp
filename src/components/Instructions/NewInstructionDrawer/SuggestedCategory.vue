@@ -39,54 +39,63 @@
       width="100%"
       class="suggested-category__content"
     >
-      <section
-        v-if="mode === 'list'"
-        class="suggested-category__list"
-      >
-        <section
-          v-if="suggestedCategory"
-          class="suggested-category__category-section"
-        >
-          <p class="suggested-category__category-title">
-            {{ categoryT('suggested_category') }}
-          </p>
-
-          <UnnnicPopoverOption
-            data-testid="suggested-category-suggested-option"
-            :active="isActive(suggestedCategory)"
-            @click="selectCategory(suggestedCategory)"
+      <template v-if="mode === 'list'">
+        <section class="suggested-category__list">
+          <section
+            v-if="suggestedCategory"
+            class="suggested-category__category-section"
           >
-            <span class="suggested-category__suggested-value">
-              {{ suggestedCategory.name }}
-            </span>
-            <UnnnicTag
-              v-if="suggestedCategoryIsNew"
-              scheme="gray"
-              size="small"
-              :text="categoryT('new_badge')"
-              data-testid="suggested-category-suggested-new-tag"
+            <p class="suggested-category__category-title">
+              {{ categoryT('suggested_category') }}
+            </p>
+
+            <UnnnicPopoverOption
+              data-testid="suggested-category-suggested-option"
+              :active="isActive(suggestedCategory)"
+              @click="selectCategory(suggestedCategory)"
+            >
+              <span class="suggested-category__suggested-value">
+                {{ suggestedCategory.name }}
+              </span>
+              <UnnnicTag
+                v-if="suggestedCategoryIsNew"
+                scheme="gray"
+                size="small"
+                :text="categoryT('new_badge')"
+                data-testid="suggested-category-suggested-new-tag"
+              />
+            </UnnnicPopoverOption>
+          </section>
+
+          <section
+            v-if="otherCategories.length > 0"
+            class="suggested-category__category-section"
+          >
+            <p class="suggested-category__category-title">
+              {{ categoryT('other_categories') }}
+            </p>
+
+            <UnnnicPopoverOption
+              v-for="option in otherCategories"
+              :key="option.name"
+              :label="option.name"
+              :active="isActive(option)"
+              :data-testid="`suggested-category-option-${option.name}`"
+              @click="selectCategory(option)"
             />
-          </UnnnicPopoverOption>
+          </section>
         </section>
 
-        <section
-          v-if="otherCategories.length > 0"
-          class="suggested-category__category-section"
-        >
-          <p class="suggested-category__category-title">
-            {{ categoryT('other_categories') }}
-          </p>
-
-          <UnnnicPopoverOption
-            v-for="option in otherCategories"
-            :key="option.name"
-            :label="option.name"
-            :active="isActive(option)"
-            :data-testid="`suggested-category-option-${option.name}`"
-            @click="selectCategory(option)"
+        <UnnnicPopoverFooter>
+          <UnnnicButton
+            iconLeft="add"
+            :text="categoryT('create_action')"
+            type="secondary"
+            data-testid="suggested-category-create-action"
+            @click="mode = 'create'"
           />
-        </section>
-      </section>
+        </UnnnicPopoverFooter>
+      </template>
 
       <CategoryCreateForm
         v-else
@@ -94,17 +103,6 @@
         @back="mode = 'list'"
         @create="handleCreate"
       />
-
-      <!-- UnnnicPopoverFooter must be a direct child of UnnnicPopoverContent -->
-      <UnnnicPopoverFooter v-if="mode === 'list'">
-        <UnnnicButton
-          iconLeft="add"
-          :text="categoryT('create_action')"
-          type="secondary"
-          data-testid="suggested-category-create-action"
-          @click="mode = 'create'"
-        />
-      </UnnnicPopoverFooter>
     </UnnnicPopoverContent>
   </UnnnicPopover>
 </template>
@@ -163,8 +161,8 @@ function selectCategory(option: InstructionCategory | null) {
 
 function handleCreate(name: string) {
   instructionsStore.createCategory(name);
-  mode.value = 'list';
   isOpen.value = false;
+  mode.value = 'list';
 }
 
 function handleOpenChange(open: boolean) {
@@ -172,16 +170,19 @@ function handleOpenChange(open: boolean) {
 }
 </script>
 
-<style lang="scss" scoped>
-$content-width: 320px;
+<style lang="scss">
+.suggested-category__content {
+  padding: 0;
 
-:deep(.suggested-category__content) {
-  width: $content-width;
+  width: 320px;
+  height: 300px;
 }
+</style>
 
+<style lang="scss" scoped>
 .suggested-category {
   &__field {
-    width: $content-width;
+    width: 320px;
 
     display: flex;
     align-items: center;
@@ -220,6 +221,8 @@ $content-width: 320px;
     display: flex;
     flex-direction: column;
     gap: $unnnic-space-4;
+
+    padding: $unnnic-space-4;
   }
 
   &__category-section {
