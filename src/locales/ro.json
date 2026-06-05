@@ -107,7 +107,8 @@
           "very_dissatisfied": "😡 Foarte nemulțumit"
         },
         "topic": {
-          "topic": "Subiect"
+          "topic": "Subiect",
+          "unclassified": "Neclasificat"
         }
       },
       "load_conversations": {

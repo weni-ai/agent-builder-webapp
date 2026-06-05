@@ -107,7 +107,8 @@
           "very_dissatisfied": "😡 Very dissatisfied"
         },
         "topic": {
-          "topic": "Topic"
+          "topic": "Topic",
+          "unclassified": "Not classified"
         }
       },
       "load_conversations": {
