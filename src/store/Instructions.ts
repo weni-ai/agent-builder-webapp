@@ -71,6 +71,22 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     () => !!newInstruction.category && newInstruction.category.id === null,
   );
 
+  const suggestedCategory = computed<InstructionCategory | null>(() => {
+    const name = instructionSuggestedByAI.data.suggested_category;
+    if (!name) return null;
+
+    return (
+      categoryOptions.value.find((category) => category.name === name) ?? {
+        id: null,
+        name,
+      }
+    );
+  });
+
+  const suggestedCategoryIsNew = computed(
+    () => !!suggestedCategory.value && suggestedCategory.value.id === null,
+  );
+
   function createCategory(name: string) {
     const trimmedName = name.trim();
     if (!sessionCategories.value.includes(trimmedName)) {
@@ -327,6 +343,8 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     categoryOptions,
     newInstruction,
     selectedCategoryIsNew,
+    suggestedCategory,
+    suggestedCategoryIsNew,
     validateInstructionByAI,
     instructionSuggestedByAI,
     activeInstructionsListTab,

@@ -22,7 +22,7 @@ const passThroughStub = {
 
 const optionStub = {
   props: ['label', 'active', 'icon', 'scheme'],
-  template: `<button v-bind="$attrs" @click="$emit('click')"><slot>{{ label }}</slot></button>`,
+  template: `<button v-bind="$attrs" :data-active="active" @click="$emit('click')"><slot>{{ label }}</slot></button>`,
 };
 
 const tagStub = {
@@ -62,6 +62,8 @@ describe('NewInstructionDrawer/SuggestedCategory.vue', () => {
   };
 
   const find = (selector) => wrapper.find(SELECTORS[selector]);
+  const findOption = (name) =>
+    wrapper.find(`[data-testid="suggested-category-option-${name}"]`);
 
   const createWrapper = (initialState = {}) => {
     const pinia = createTestingPinia({
@@ -83,7 +85,7 @@ describe('NewInstructionDrawer/SuggestedCategory.vue', () => {
               instruction: '',
               classification: [],
               suggestion: '',
-              suggested_category: '',
+              suggested_category: 'Personality',
             },
             suggestionApplied: '',
             status: 'complete',
@@ -155,53 +157,99 @@ describe('NewInstructionDrawer/SuggestedCategory.vue', () => {
     });
   });
 
-  describe('Options list', () => {
-    it('renders the selected category as the suggested option', () => {
+  describe('Suggested category section', () => {
+    it('renders the AI-suggested category as the suggested option', () => {
       expect(find('suggestedOption').exists()).toBe(true);
-      expect(find('suggestedOption').text()).toContain('Sales');
+      expect(find('suggestedOption').text()).toContain('Personality');
     });
 
-    it('does not render the suggested option when no category is selected', () => {
+    it('does not render the suggested section when there is no suggested category', () => {
       wrapper = createWrapper({
-        newInstruction: { text: 'My instruction', category: null, status: null },
+        instructionSuggestedByAI: {
+          data: {
+            instruction: '',
+            classification: [],
+            suggestion: '',
+            suggested_category: '',
+          },
+          suggestionApplied: '',
+          status: 'complete',
+        },
       });
 
       expect(find('suggestedOption').exists()).toBe(false);
     });
 
-    it('shows the New tag inside the suggested option when the category is new', () => {
-      wrapper = createWrapper({
-        newInstruction: {
-          text: 'My instruction',
-          category: { id: null, name: 'Brand new' },
-          status: null,
-        },
-      });
-
+    it('shows the New tag when the suggested category does not exist yet', () => {
       expect(find('suggestedNewTag').exists()).toBe(true);
       expect(find('suggestedNewTag').text()).toBe(categoryT('new_badge'));
     });
 
-    it('renders the remaining categories excluding the selected one', () => {
+    it('does not show the New tag when the suggested category already exists', () => {
+      wrapper = createWrapper({
+        instructionSuggestedByAI: {
+          data: {
+            instruction: '',
+            classification: [],
+            suggestion: '',
+            suggested_category: 'Sales',
+          },
+          suggestionApplied: '',
+          status: 'complete',
+        },
+      });
+
+      expect(find('suggestedNewTag').exists()).toBe(false);
+    });
+
+    it('marks the suggested option as active when it is the selected category', () => {
+      wrapper = createWrapper({
+        newInstruction: {
+          text: 'My instruction',
+          category: { id: null, name: 'Personality' },
+          status: null,
+        },
+      });
+
+      expect(find('suggestedOption').attributes('data-active')).toBe('true');
+    });
+
+    it('selects the suggested category when the suggested option is clicked', async () => {
+      await find('suggestedOption').trigger('click');
+
+      expect(store.newInstruction.category).toEqual({
+        id: null,
+        name: 'Personality',
+      });
+    });
+  });
+
+  describe('Other categories section', () => {
+    it('renders the categories excluding the suggested one', () => {
       const options = wrapper.findAll(
         '[data-testid^="suggested-category-option-"]',
       );
 
-      expect(options).toHaveLength(1);
-      expect(options[0].text()).toBe('Support');
+      expect(options.map((option) => option.text())).toEqual([
+        'Sales',
+        'Support',
+      ]);
+    });
+
+    it('marks an option as active when it is the selected category', () => {
+      expect(findOption('Sales').attributes('data-active')).toBe('true');
+      expect(findOption('Support').attributes('data-active')).toBe('false');
+    });
+
+    it('updates the selected category in the store when an option is clicked', async () => {
+      await findOption('Support').trigger('click');
+
+      expect(store.newInstruction.category).toEqual({ id: 2, name: 'Support' });
     });
 
     it('renders the create category action', () => {
       expect(find('createAction').exists()).toBe(true);
       expect(find('createAction').text()).toBe(categoryT('create_action'));
-    });
-
-    it('updates the selected category in the store when an option is clicked', async () => {
-      await wrapper
-        .find('[data-testid="suggested-category-option-Support"]')
-        .trigger('click');
-
-      expect(store.newInstruction.category).toEqual({ id: 2, name: 'Support' });
     });
   });
 

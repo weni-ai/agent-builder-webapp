@@ -44,30 +44,29 @@
         class="suggested-category__list"
       >
         <section
-          v-if="selectedCategory"
+          v-if="suggestedCategory"
           class="suggested-category__category-section"
         >
           <p class="suggested-category__category-title">
             {{ categoryT('suggested_category') }}
           </p>
 
-          <button
-            type="button"
-            class="suggested-category__suggested-option"
+          <UnnnicPopoverOption
             data-testid="suggested-category-suggested-option"
-            @click="selectCategory(selectedCategory)"
+            :active="isActive(suggestedCategory)"
+            @click="selectCategory(suggestedCategory)"
           >
             <span class="suggested-category__suggested-value">
-              {{ selectedCategory.name }}
+              {{ suggestedCategory.name }}
             </span>
             <UnnnicTag
-              v-if="selectedCategoryIsNew"
+              v-if="suggestedCategoryIsNew"
               scheme="gray"
               size="small"
               :text="categoryT('new_badge')"
               data-testid="suggested-category-suggested-new-tag"
             />
-          </button>
+          </UnnnicPopoverOption>
         </section>
 
         <section
@@ -118,6 +117,7 @@ import { useInstructionsStore } from '@/store/Instructions';
 import type { InstructionCategory } from '@/store/types/Instructions.types';
 
 import CategoryCreateForm from './CategoryCreateForm.vue';
+import { UnnnicPopoverOption } from '@weni/unnnic-system';
 
 const { t } = useI18n();
 const categoryT = (key: string) =>
@@ -135,23 +135,28 @@ const selectedCategory = computed(
 const selectedCategoryIsNew = computed(
   () => instructionsStore.selectedCategoryIsNew,
 );
+const suggestedCategory = computed(() => instructionsStore.suggestedCategory);
+const suggestedCategoryIsNew = computed(
+  () => instructionsStore.suggestedCategoryIsNew,
+);
 
 const selectedLabel = computed(
   () => selectedCategory.value?.name ?? categoryT('placeholder'),
 );
 
-const otherCategories = computed(() => {
-  return categoryOptions.value.filter(
-    (option) => option.name !== selectedLabel.value,
-  );
-});
+const otherCategories = computed(() =>
+  categoryOptions.value.filter(
+    (option) => option.name !== suggestedCategory.value?.name,
+  ),
+);
 
-function isActive(option: InstructionCategory) {
-  const selected = instructionsStore.newInstruction.category;
-  return !!selected && selected.name === option.name;
+function isActive(option: InstructionCategory | null) {
+  const selected = selectedCategory.value;
+  return !!selected && !!option && selected.name === option.name;
 }
 
-function selectCategory(option: InstructionCategory) {
+function selectCategory(option: InstructionCategory | null) {
+  if (!option) return;
   instructionsStore.newInstruction.category = { ...option };
   isOpen.value = false;
 }
@@ -221,27 +226,6 @@ $content-width: 320px;
     display: flex;
     flex-direction: column;
     gap: $unnnic-space-2;
-  }
-
-  &__suggested-option {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: $unnnic-space-2;
-
-    padding: $unnnic-space-2 $unnnic-space-4;
-
-    border: none;
-    border-radius: $unnnic-radius-2;
-    background-color: transparent;
-
-    cursor: pointer;
-
-    &:hover {
-      background-color: $unnnic-color-bg-soft;
-    }
   }
 
   &__suggested-value {
