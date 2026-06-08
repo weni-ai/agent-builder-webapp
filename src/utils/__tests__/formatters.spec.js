@@ -1,5 +1,11 @@
-import { describe, it, expect } from 'vitest';
-import { formatListToReadable, formatWhatsappUrn } from '@/utils/formatters';
+import { afterEach, describe, it, expect } from 'vitest';
+import {
+  formatListToReadable,
+  formatWhatsappUrn,
+  formatLongDate,
+  formatTime,
+} from '@/utils/formatters';
+import i18n from '@/utils/plugins/i18n';
 
 describe('formatters', () => {
   describe('formatListToReadable', () => {
@@ -93,6 +99,48 @@ describe('formatters', () => {
       it(`should handle ${description} gracefully`, () => {
         expect(formatWhatsappUrn(input)).toBe(expected);
       });
+    });
+  });
+
+  describe('formatLongDate', () => {
+    const TIMESTAMP = '2026-05-13T15:15:00';
+
+    afterEach(() => {
+      i18n.global.locale.value = 'en';
+    });
+
+    it('formats the long date', () => {
+      expect(formatLongDate(TIMESTAMP)).toBe('May 13, 2026');
+    });
+
+    it('falls back to the en pattern for an unmapped locale', () => {
+      i18n.global.locale.value = 'unmapped';
+      expect(formatLongDate(TIMESTAMP)).toBe('May 13, 2026');
+    });
+
+    it('returns an empty string for an invalid date', () => {
+      expect(formatLongDate('not-a-date')).toBe('');
+    });
+  });
+
+  describe('formatTime', () => {
+    const TIMESTAMP = '2026-05-13T15:15:00';
+
+    afterEach(() => {
+      i18n.global.locale.value = 'en';
+    });
+
+    it('formats the time', () => {
+      expect(formatTime(TIMESTAMP)).toBe('3:15 p.m.');
+    });
+
+    it('falls back to the en pattern for an unmapped locale', () => {
+      i18n.global.locale.value = 'unmapped';
+      expect(formatTime(TIMESTAMP)).toBe('3:15 p.m.');
+    });
+
+    it('returns an empty string for an invalid date', () => {
+      expect(formatTime('not-a-date')).toBe('');
     });
   });
 });

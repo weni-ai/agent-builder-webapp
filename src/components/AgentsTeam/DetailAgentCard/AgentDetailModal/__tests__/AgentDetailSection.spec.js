@@ -21,6 +21,8 @@ describe('AgentDetailSection.vue', () => {
     wrapper.find('[data-testid="agent-detail-section-title"]');
   const findDescription = () =>
     wrapper.find('[data-testid="agent-detail-section-description"]');
+  const findLastUpdated = () =>
+    wrapper.find('[data-testid="agent-detail-section-last-updated"]');
 
   afterEach(() => {
     wrapper?.unmount();
@@ -55,6 +57,24 @@ describe('AgentDetailSection.vue', () => {
     createWrapper({ title: 'About', description: '' });
 
     expect(findDescription().exists()).toBe(false);
+  });
+
+  it('renders the last updated text when provided', () => {
+    createWrapper({
+      title: 'About',
+      lastUpdated: 'Updated on May 13, 2026, at 3:15 p.m.',
+    });
+
+    expect(findLastUpdated().exists()).toBe(true);
+    expect(findLastUpdated().text()).toBe(
+      'Updated on May 13, 2026, at 3:15 p.m.',
+    );
+  });
+
+  it('does not render the last updated text when not provided', () => {
+    createWrapper({ title: 'About' });
+
+    expect(findLastUpdated().exists()).toBe(false);
   });
 
   it('renders default slot content', () => {

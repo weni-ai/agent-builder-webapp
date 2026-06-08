@@ -3,6 +3,13 @@ import i18n from '@/utils/plugins/i18n';
 import { format } from 'date-fns';
 import { enUS, es as esLocale, ptBR, ro as roLocale } from 'date-fns/locale';
 
+const DATE_FNS_LOCALE_MAP = {
+  en: enUS,
+  es: esLocale,
+  'pt-br': ptBR,
+  ro: roLocale,
+};
+
 /**
  * Formats an array of items into a human-readable string with proper conjunction
  * @param {Array} items - Array of items to format
@@ -77,8 +84,48 @@ export function formatTimestamp(timestamp: string) {
 
   if (Number.isNaN(parsedDate.getTime())) return '';
 
-  const dateLocale = DATE_LOCALE_MAP[locale] || enUS;
-  const displayPattern = DATE_PATTERN_MAP[locale] || FALLBACK_PATTERN;
+  const dateLocale = DATE_LOCALE_MAP[locale.value] || enUS;
+  const displayPattern = DATE_PATTERN_MAP[locale.value] || FALLBACK_PATTERN;
+
+  return format(parsedDate, displayPattern, { locale: dateLocale });
+}
+
+export function formatLongDate(timestamp: string) {
+  const { locale } = i18n.global;
+  const FALLBACK_PATTERN = 'MMMM d, yyyy';
+  const DATE_PATTERN_MAP = {
+    en: FALLBACK_PATTERN,
+    es: "d 'de' MMMM 'de' yyyy",
+    'pt-br': "d 'de' MMMM 'de' yyyy",
+    ro: 'd MMMM yyyy',
+  };
+
+  const parsedDate = new Date(timestamp);
+
+  if (Number.isNaN(parsedDate.getTime())) return '';
+
+  const dateLocale = DATE_FNS_LOCALE_MAP[locale.value] || enUS;
+  const displayPattern = DATE_PATTERN_MAP[locale.value] || FALLBACK_PATTERN;
+
+  return format(parsedDate, displayPattern, { locale: dateLocale });
+}
+
+export function formatTime(timestamp: string) {
+  const { locale } = i18n.global;
+  const FALLBACK_PATTERN = 'h:mm aaaa';
+  const TIME_PATTERN_MAP = {
+    en: FALLBACK_PATTERN,
+    es: 'HH:mm',
+    'pt-br': "HH'h'mm",
+    ro: 'HH:mm',
+  };
+
+  const parsedDate = new Date(timestamp);
+
+  if (Number.isNaN(parsedDate.getTime())) return '';
+
+  const dateLocale = DATE_FNS_LOCALE_MAP[locale.value] || enUS;
+  const displayPattern = TIME_PATTERN_MAP[locale.value] || FALLBACK_PATTERN;
 
   return format(parsedDate, displayPattern, { locale: dateLocale });
 }
