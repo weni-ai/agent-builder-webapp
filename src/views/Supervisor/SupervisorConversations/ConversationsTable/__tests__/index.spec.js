@@ -37,13 +37,6 @@ vi.mock('@/api/nexusaiAPI', () => ({
   },
 }));
 
-vi.mock('@/store/FeatureFlags', () => ({
-  useFeatureFlagsStore: () => ({
-    flags: { conversationsV2: true },
-    isFeatureFlagEnabled: () => false,
-  }),
-}));
-
 vi.mock('vue-router', () => ({
   useRoute: vi.fn().mockReturnValue({
     query: {

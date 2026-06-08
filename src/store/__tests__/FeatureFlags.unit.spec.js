@@ -119,9 +119,5 @@ describe('FeatureFlags store', () => {
 
       expect(store.flags.supervisorExport).toBe(true);
     });
-
-    it('keeps conversationsV2 enabled', () => {
-      expect(store.flags.conversationsV2).toBe(true);
-    });
   });
 });
