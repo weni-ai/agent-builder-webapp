@@ -311,6 +311,7 @@
       },
       "agent_details": {
         "about": "Despre",
+        "last_updated": "Actualizat pe {date}, la {time}",
         "mcp": "MCP",
         "system": "Sistem",
         "view_options": "Vizualizare opțiuni",
