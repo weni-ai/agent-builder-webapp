@@ -2,12 +2,11 @@
   <section
     :class="[
       'conversations',
-      { 'conversations--v2': featureFlagsStore.flags.conversationsV2 },
+      'conversations--v2',
       { 'conversations--empty': !hasConversations },
     ]"
   >
     <UnnnicDisclaimer
-      v-if="featureFlagsStore.flags.conversationsV2"
       type="informational"
       :description="
         $t('agent_builder.supervisor.conversations_v2_disclaimer', {
@@ -33,9 +32,7 @@ import SupervisorFilters from '../SupervisorFilters/index.vue';
 import ConversationsTable from './ConversationsTable/index.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { CONVERSATIONS_SWITCH_DATE } from '@/api/adapters/supervisor/conversationSources';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
-const featureFlagsStore = useFeatureFlagsStore();
 const supervisorStore = useSupervisorStore();
 const conversationsSwitchDay = CONVERSATIONS_SWITCH_DATE.getUTCDate();
 

@@ -1,19 +1,16 @@
 import { defineStore } from 'pinia';
-import { computed, inject, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useProjectStore } from './Project';
-import { useUserStore } from './User';
 
-import { gbKey } from '../utils/Growthbook';
+import nexusaiAPI from '@/api/nexusaiAPI';
 import env from '@/utils/env';
 
-const USER_ATTRIBUTION_TIMEOUT_MS = 3000;
-
 export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
-  const growthbook = inject(gbKey);
-
   const currentProjectUuid = computed(() => useProjectStore().uuid || '');
-  const currentUserEmail = computed(() => useUserStore().user.email || '');
+
+  const activeFeatures = ref([]);
+  const isLoadingFeatureFlags = ref(false);
 
   const getListAtEnv = (key) => {
     return env(key)?.split(',') || [];
@@ -24,77 +21,40 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
     return projectList.includes(currentProjectUuid.value);
   };
 
+  const isFeatureFlagEnabled = (flagName) => {
+    return activeFeatures.value.includes(flagName);
+  };
+
+  async function getFeatureFlags() {
+    try {
+      isLoadingFeatureFlags.value = true;
+
+      const { data } = await nexusaiAPI.feature_flags.read({
+        projectUuid: currentProjectUuid.value,
+      });
+
+      activeFeatures.value = data.active_features || [];
+    } catch (error) {
+      console.error('Error getting feature flags', error);
+      activeFeatures.value = [];
+    } finally {
+      isLoadingFeatureFlags.value = false;
+    }
+  }
+
   const flags = computed(() => ({
     supervisorExport: isProjectEnabledForFlag('FF_SUPERVISOR_EXPORT'),
-    settingsAgentVoice: growthbook?.isOn('settings_agent_voice'),
-    conversationsV2: true,
-    categorizationOfInstructions: growthbook?.isOn(
+    settingsAgentVoice: isFeatureFlagEnabled('settings_agent_voice'),
+    categorizationOfInstructions: isFeatureFlagEnabled(
       'categorization_of_instructions',
     ),
   }));
 
-  watch(
-    currentProjectUuid,
-    (newProjectUuid) => {
-      if (newProjectUuid && growthbook) {
-        growthbook.setAttributes({
-          ...growthbook.getAttributes(),
-          weni_project: newProjectUuid,
-        });
-      }
-    },
-    { immediate: true },
-  );
-
-  watch(
-    currentUserEmail,
-    (currentUserEmail) => {
-      if (currentUserEmail && growthbook) {
-        growthbook.setAttributes({
-          ...growthbook.getAttributes(),
-          email: currentUserEmail,
-        });
-      }
-    },
-    { immediate: true },
-  );
-
-  /**
-   * Returns a Promise that resolves when the user email is set in Growthbook
-   * Resolves immediately if Growthbook is not available, or after a timeout
-   * to avoid blocking forever when the user has no email.
-   * @returns {Promise<void>}
-   */
-  function whenUserAttributed() {
-    if (!growthbook) return Promise.resolve();
-
-    const email = currentUserEmail.value;
-    if (email) {
-      return Promise.resolve();
-    }
-
-    return new Promise((resolve) => {
-      const timeoutId = setTimeout(() => {
-        stopWatch();
-        resolve();
-      }, USER_ATTRIBUTION_TIMEOUT_MS);
-
-      const stopWatch = watch(
-        currentUserEmail,
-        (newEmail) => {
-          if (newEmail) {
-            clearTimeout(timeoutId);
-            stopWatch();
-            resolve();
-          }
-        },
-        { immediate: true },
-      );
-    });
-  }
-
   return {
     flags,
-    whenUserAttributed,
+    activeFeatures,
+    isLoadingFeatureFlags,
+    getFeatureFlags,
+    isFeatureFlagEnabled,
   };
 });
