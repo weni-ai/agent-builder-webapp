@@ -39,7 +39,8 @@ vi.mock('@/api/nexusaiAPI', () => ({
 
 vi.mock('@/store/FeatureFlags', () => ({
   useFeatureFlagsStore: () => ({
-    whenUserAttributed: () => Promise.resolve(),
+    flags: { conversationsV2: true },
+    isFeatureFlagEnabled: () => false,
   }),
 }));
 
