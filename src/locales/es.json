@@ -313,6 +313,7 @@
       },
       "agent_details": {
         "about": "Sobre",
+        "last_updated": "Actualizado el {date}, a las {time}",
         "mcp": "MCP",
         "system": "Sistema",
         "view_options": "Ver opciones",

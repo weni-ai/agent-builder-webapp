@@ -21,6 +21,7 @@
             <AgentDetailSection
               :title="$t('agents.assigned_agents.agent_details.about')"
               :description="aboutDescription"
+              :lastUpdated="lastUpdatedLabel"
               data-testid="agent-detail-about-section"
             />
 
@@ -49,8 +50,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+import { useI18n } from 'vue-i18n';
+
 import { Agent } from '@/store/types/Agents.types';
 import useTranslatedField from '@/composables/useTranslatedField';
+import { formatLongDate, formatTime } from '@/utils/formatters';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import McpSection from './McpSection.vue';
@@ -62,9 +66,21 @@ const props = defineProps<{
   agent: Agent;
 }>();
 
+const { t } = useI18n();
+
 const translateField = useTranslatedField();
 
 const aboutDescription = computed(() => translateField(props.agent.about));
+
+const lastUpdatedLabel = computed(() => {
+  const { last_updated, is_official } = props.agent;
+  if (!last_updated || is_official) return undefined;
+
+  return t('agents.assigned_agents.agent_details.last_updated', {
+    date: formatLongDate(last_updated),
+    time: formatTime(last_updated),
+  });
+});
 
 const assignedMCP = computed(
   () => props.agent.mcps?.filter((mcp) => mcp.name)?.[0] ?? null,
