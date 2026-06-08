@@ -73,11 +73,12 @@ const translateField = useTranslatedField();
 const aboutDescription = computed(() => translateField(props.agent.about));
 
 const lastUpdatedLabel = computed(() => {
-  if (!props.agent.last_updated) return undefined;
+  const { last_updated, is_official } = props.agent;
+  if (!last_updated || is_official) return undefined;
 
   return t('agents.assigned_agents.agent_details.last_updated', {
-    date: formatLongDate(props.agent.last_updated),
-    time: formatTime(props.agent.last_updated),
+    date: formatLongDate(last_updated),
+    time: formatTime(last_updated),
   });
 });
 
