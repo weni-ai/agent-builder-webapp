@@ -438,6 +438,7 @@
         "ai_analysis": {
           "title": "Analiză AI",
           "validating": "Se validează instrucțiunea...",
+          "suggested_category": "Categorie sugerată",
           "issues": "Probleme găsite",
           "issues_types": {
             "duplicate": "Duplicat",
@@ -449,7 +450,22 @@
           "suggested_rewrite": "Rescriere sugerată",
           "suggestion_applied": "Sugestie aplicată",
           "undo_button": "Anulează",
-          "apply_button": "Aplică"
+          "apply_button": "Aplică",
+          "category": {
+            "new_badge": "Nouă",
+            "suggested_category": "Categorie sugerată",
+            "other_categories": "Alte categorii",
+            "create_action": "Nouă categorie",
+            "create_title": "Creează categorie",
+            "name_label": "Numele categoriei",
+            "name_placeholder": "Nume",
+            "cancel": "Anulează",
+            "create": "Creează",
+            "validation": {
+              "required": "Completează acest câmp",
+              "invalid_chars": "Folosește doar litere, cifre, spații și cratime"
+            }
+          }
         }
       }
     },
