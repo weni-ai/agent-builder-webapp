@@ -315,10 +315,12 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       }
     } catch (error) {
       instructionSuggestedByAI.status = 'error';
-      callAlert(
-        'error',
-        'new_instruction.validate_instruction_by_ai.error_alert',
-      );
+      if (useV2()) {
+        callAlert(
+          'error',
+          'new_instruction.validate_instruction_by_ai.error_alert',
+        );
+      }
     }
   }
 

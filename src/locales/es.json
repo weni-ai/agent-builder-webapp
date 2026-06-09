@@ -437,6 +437,7 @@
         "save": "Guardar",
         "cancel": "Cancelar",
         "ai_analysis": {
+          "error": "No se pudo validar la instrucción. Inténtalo de nuevo.",
           "title": "Análisis de IA",
           "validating": "Validando instrucción...",
           "suggested_category": "Categoría sugerida",
