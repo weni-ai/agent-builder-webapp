@@ -23,6 +23,13 @@
       v-else-if="status === 'complete'"
       class="ai-analysis__results"
     >
+      <section class="results__suggested-category">
+        <h3 class="results__title">
+          {{ aiAnalysisT('suggested_category') }}
+        </h3>
+
+        <SuggestedCategory />
+      </section>
       <section class="results__issues">
         <h3 class="results__title">
           {{ aiAnalysisT('issues') }}
@@ -48,11 +55,10 @@
 import { toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { UnnnicIconLoading } from '@weni/unnnic-system';
-
 import { useInstructionsStore } from '@/store/Instructions';
 
 import IssuesFound from './IssuesFound.vue';
+import SuggestedCategory from './SuggestedCategory.vue';
 import SuggestedRewrite from './SuggestedRewrite.vue';
 
 const { t } = useI18n();
