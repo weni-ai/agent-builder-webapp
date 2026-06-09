@@ -32,6 +32,8 @@
           data-testid="new-instruction-drawer-save-button"
           :text="$t('agents.instructions.new_instruction_drawer.save')"
           type="primary"
+          :disabled="saveDisabled"
+          :loading="instructionsStore.newInstruction.status === 'loading'"
           @click="save"
         />
       </UnnnicDrawerFooter>
@@ -40,6 +42,8 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 import NewInstructionDrawerForm from './Form.vue';
 import NewInstructionDrawerAIAnalysis from './AIAnalysis.vue';
 
@@ -52,12 +56,25 @@ const modelValue = defineModel({
   required: true,
 });
 
+const saveDisabled = computed(
+  () =>
+    !instructionsStore.newInstruction.text.trim() ||
+    instructionsStore.instructionSuggestedByAI.status !== 'complete',
+);
+
 function close() {
   modelValue.value = false;
 }
 
-function save() {
-  // TODO: Implement save
+async function save() {
+  if (saveDisabled.value) return;
+
+  await instructionsStore.addInstruction();
+
+  if (instructionsStore.newInstruction.status === 'error') return;
+
+  instructionsStore.resetInstructionSuggestedByAI();
+  close();
 }
 </script>
 
