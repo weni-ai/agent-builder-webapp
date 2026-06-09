@@ -295,7 +295,7 @@
     }
   },
   "agents": {
-    "title": "Meus Agentes",
+    "title": "Meus agentes",
     "description": "Gerencie seu time digital, instruções e comportamentos",
     "assign_agents_button": "Atribuir novos agentes",
     "assigned_agents": {
@@ -303,7 +303,7 @@
       "new_agent": "Novo agente",
       "manager": {
         "name": "Manager",
-        "edit_manager": "Editar Manager",
+        "edit_manager": "Editar manager",
         "edit_instructions": "Editar instruções"
       },
       "no_agents": {
