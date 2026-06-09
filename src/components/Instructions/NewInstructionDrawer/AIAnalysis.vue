@@ -7,6 +7,7 @@
     <section
       v-if="status === 'loading'"
       class="ai-analysis__loading"
+      data-testid="ai-analysis-loading"
     >
       <UnnnicIconLoading size="20px" />
 
@@ -18,14 +19,19 @@
     <section
       v-else-if="status === 'error'"
       class="ai-analysis__error"
+      data-testid="ai-analysis-error"
     >
       <UnnnicIcon
         icon="cancel"
         size="avatar-nano"
         scheme="fg-critical"
+        data-testid="ai-analysis-error-icon"
       />
 
-      <p class="ai-analysis__error-text">
+      <p
+        class="ai-analysis__error-text"
+        data-testid="ai-analysis-error-text"
+      >
         {{ aiAnalysisT('error') }}
       </p>
     </section>
@@ -33,6 +39,7 @@
     <section
       v-else-if="status === 'complete'"
       class="ai-analysis__results"
+      data-testid="ai-analysis-results"
     >
       <section class="results__suggested-category">
         <h3 class="results__title">
