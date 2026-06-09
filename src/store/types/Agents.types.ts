@@ -80,6 +80,7 @@ export interface Agent {
   conversation_example?: TranslatedField<ConversationMessage[]> | null;
   icon: string;
   id?: string;
+  last_updated?: string | null;
 }
 
 type SelectOption = {

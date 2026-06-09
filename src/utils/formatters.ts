@@ -3,6 +3,13 @@ import i18n from '@/utils/plugins/i18n';
 import { format } from 'date-fns';
 import { enUS, es as esLocale, ptBR, ro as roLocale } from 'date-fns/locale';
 
+const DATE_FNS_LOCALE_MAP = {
+  en: enUS,
+  es: esLocale,
+  'pt-br': ptBR,
+  ro: roLocale,
+};
+
 /**
  * Formats an array of items into a human-readable string with proper conjunction
  * @param {Array} items - Array of items to format
@@ -57,28 +64,72 @@ export function formatWhatsappUrn(urn: string): string {
   return `+${ddi} (${ddd}) ${formattedNumber}`;
 }
 
-export function formatTimestamp(timestamp: string) {
-  const { locale } = i18n.global;
-  const FALLBACK_PATTERN = 'MM/dd/yy HH:mm';
-  const DATE_LOCALE_MAP = {
-    en: enUS,
-    es: esLocale,
-    'pt-br': ptBR,
-    ro: roLocale,
-  };
-  const DATE_PATTERN_MAP = {
-    en: FALLBACK_PATTERN,
-    es: 'dd/MM/yy HH:mm',
-    'pt-br': 'dd/MM/yy HH:mm',
-    ro: 'dd/MM/yy HH:mm',
-  };
-
+/**
+ * Formats a timestamp using a locale-specific date-fns pattern.
+ * Parses and guards the timestamp, then resolves the pattern and locale for
+ * the active language, falling back to the provided pattern and enUS.
+ * @param {String} timestamp - The timestamp to format
+ * @param {Object} patternMap - Map of locale to date-fns pattern
+ * @param {String} fallbackPattern - Pattern used for unmapped locales
+ * @returns {String} Formatted timestamp or empty string for invalid dates
+ */
+function formatWithLocalePattern(
+  timestamp: string,
+  patternMap: Record<string, string>,
+  fallbackPattern: string,
+): string {
   const parsedDate = new Date(timestamp);
 
   if (Number.isNaN(parsedDate.getTime())) return '';
 
-  const dateLocale = DATE_LOCALE_MAP[locale] || enUS;
-  const displayPattern = DATE_PATTERN_MAP[locale] || FALLBACK_PATTERN;
+  const { locale } = i18n.global;
+  const dateLocale = DATE_FNS_LOCALE_MAP[locale.value] || enUS;
+  const displayPattern = patternMap[locale.value] || fallbackPattern;
 
   return format(parsedDate, displayPattern, { locale: dateLocale });
+}
+
+export function formatTimestamp(timestamp: string) {
+  const FALLBACK_PATTERN = 'MM/dd/yy HH:mm';
+
+  return formatWithLocalePattern(
+    timestamp,
+    {
+      en: FALLBACK_PATTERN,
+      es: 'dd/MM/yy HH:mm',
+      'pt-br': 'dd/MM/yy HH:mm',
+      ro: 'dd/MM/yy HH:mm',
+    },
+    FALLBACK_PATTERN,
+  );
+}
+
+export function formatLongDate(timestamp: string) {
+  const FALLBACK_PATTERN = 'MMMM d, yyyy';
+
+  return formatWithLocalePattern(
+    timestamp,
+    {
+      en: FALLBACK_PATTERN,
+      es: "d 'de' MMMM 'de' yyyy",
+      'pt-br': "d 'de' MMMM 'de' yyyy",
+      ro: 'd MMMM yyyy',
+    },
+    FALLBACK_PATTERN,
+  );
+}
+
+export function formatTime(timestamp: string) {
+  const FALLBACK_PATTERN = 'h:mm aaaa';
+
+  return formatWithLocalePattern(
+    timestamp,
+    {
+      en: FALLBACK_PATTERN,
+      es: 'HH:mm',
+      'pt-br': "HH'h'mm",
+      ro: 'HH:mm',
+    },
+    FALLBACK_PATTERN,
+  );
 }

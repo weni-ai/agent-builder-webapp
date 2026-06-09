@@ -67,6 +67,46 @@ describe('AgentDetailModal', () => {
     expect(aboutSection.props('description')).toBe(agent.about.en);
   });
 
+  it('does not pass lastUpdated when the agent has no last_updated', () => {
+    const aboutSection = wrapper.findComponent(
+      '[data-testid="agent-detail-about-section"]',
+    );
+
+    expect(aboutSection.props('lastUpdated')).toBeUndefined();
+  });
+
+  it('passes the formatted last updated label for a custom agent with last_updated', async () => {
+    await wrapper.setProps({
+      agent: createAgent({
+        is_official: false,
+        last_updated: '2026-05-13T15:15:00',
+      }),
+    });
+
+    const aboutSection = wrapper.findComponent(
+      '[data-testid="agent-detail-about-section"]',
+    );
+
+    expect(aboutSection.props('lastUpdated')).toBe(
+      'Updated on May 13, 2026, at 3:15 p.m.',
+    );
+  });
+
+  it('does not pass lastUpdated for an official agent even with last_updated', async () => {
+    await wrapper.setProps({
+      agent: createAgent({
+        is_official: true,
+        last_updated: '2026-05-13T15:15:00',
+      }),
+    });
+
+    const aboutSection = wrapper.findComponent(
+      '[data-testid="agent-detail-about-section"]',
+    );
+
+    expect(aboutSection.props('lastUpdated')).toBeUndefined();
+  });
+
   it('emits update:open when the dialog emits update:open', async () => {
     const dialog = wrapper.findComponent('[data-testid="agent-detail-dialog"]');
 
