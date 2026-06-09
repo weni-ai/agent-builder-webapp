@@ -148,6 +148,8 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   });
 
   const activeInstructionsListTab = ref('custom');
+  const activeInstructionsView = ref<'categories' | 'list'>('categories');
+  const searchTerm = ref('');
 
   async function addInstruction() {
     newInstruction.status = 'loading';
@@ -351,6 +353,8 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     validateInstructionByAI,
     instructionSuggestedByAI,
     activeInstructionsListTab,
+    activeInstructionsView,
+    searchTerm,
     createCategory,
     addInstruction,
     loadInstructions,
