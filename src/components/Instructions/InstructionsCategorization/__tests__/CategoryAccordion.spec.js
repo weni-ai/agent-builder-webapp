@@ -123,12 +123,25 @@ describe('CategoryAccordion.vue', () => {
     expect(find('root').classes()).toContain('category-accordion--expanded');
   });
 
-  it('stays expanded while forceExpanded is set, ignoring the toggle', async () => {
+  it('opens when forceExpanded is set but can still be collapsed', async () => {
     wrapper = createWrapper(customGroup(), { forceExpanded: true });
 
     expect(find('root').classes()).toContain('category-accordion--expanded');
 
     await find('chevron').trigger('click');
+    expect(find('root').classes()).not.toContain(
+      'category-accordion--expanded',
+    );
+  });
+
+  it('opens when forceExpanded becomes true', async () => {
+    wrapper = createWrapper(customGroup(), { forceExpanded: false });
+
+    expect(find('root').classes()).not.toContain(
+      'category-accordion--expanded',
+    );
+
+    await wrapper.setProps({ forceExpanded: true });
     expect(find('root').classes()).toContain('category-accordion--expanded');
   });
 
