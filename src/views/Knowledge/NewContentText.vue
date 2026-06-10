@@ -135,8 +135,17 @@ async function onSave() {
         });
       }
     }
+
+    alertStore.add({
+      type: 'success',
+      text: t('content_bases.new_text.save_success'),
+    });
   } catch {
-    console.error('Error saving content text');
+    alertStore.add({
+      type: 'error',
+      text: t('content_bases.new_text.save_error'),
+      description: t('content_bases.new_text.save_error_hint'),
+    });
   } finally {
     saveLoading.value = false;
   }
