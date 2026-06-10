@@ -49,66 +49,51 @@
   </section>
 </template>
 
-<script>
-import { defineComponent, ref, toRefs } from 'vue';
+<script setup>
+import { ref, toRef } from 'vue';
+
 import ContentFiles from '@/components/Knowledge/ContentFiles.vue';
 import ContentSites from '@/components/Knowledge/ContentSites.vue';
 import ContentText from '@/components/Knowledge/ContentText.vue';
 import { useKnowledgeStore } from '@/store/Knowledge';
 
-export default defineComponent({
-  name: 'RouterContentBase',
-  components: {
-    ContentFiles,
-    ContentSites,
-    ContentText,
+const props = defineProps({
+  filesProp: {
+    type: Object,
+    required: true,
   },
-  props: {
-    filesProp: {
-      type: Object,
-      required: true,
-    },
-    sitesProp: {
-      type: Object,
-      required: true,
-    },
-    textProp: {
-      type: Object,
-      required: true,
-    },
-    textLoading: {
-      type: Boolean,
-    },
+  sitesProp: {
+    type: Object,
+    required: true,
   },
-  emits: ['update:files'],
-  setup(props, { emit }) {
-    const { filesProp, sitesProp, textProp } = toRefs(props);
-    const contentStyle = ref('accordion');
-    const knowledgeStore = useKnowledgeStore();
-    const routerTabs = ref([
-      { title: 'files', page: 'files' },
-      { title: 'sites', page: 'sites' },
-      { title: 'text', page: 'text' },
-    ]);
-
-    const activeTab = ref(routerTabs.value[0].page);
-
-    const onTabChange = (newTab) => {
-      activeTab.value = newTab;
-    };
-
-    return {
-      files: filesProp,
-      sites: sitesProp,
-      text: textProp,
-      contentStyle,
-      routerTabs,
-      activeTab,
-      onTabChange,
-      knowledgeStore,
-    };
+  textProp: {
+    type: Object,
+    required: true,
+  },
+  textLoading: {
+    type: Boolean,
   },
 });
+
+defineEmits(['update:files']);
+
+const files = toRef(props, 'filesProp');
+const sites = toRef(props, 'sitesProp');
+
+const contentStyle = ref('accordion');
+const knowledgeStore = useKnowledgeStore();
+
+const routerTabs = ref([
+  { title: 'files', page: 'files' },
+  { title: 'sites', page: 'sites' },
+  { title: 'text', page: 'text' },
+]);
+
+const activeTab = ref(routerTabs.value[0].page);
+
+const onTabChange = (newTab) => {
+  activeTab.value = newTab;
+};
 </script>
 
 <style lang="scss" scoped>
