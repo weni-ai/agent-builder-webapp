@@ -40,12 +40,7 @@
       :items="sites"
       shape="accordion"
     />
-    <ContentText
-      v-if="activeTab === 'text'"
-      v-model="knowledgeStore.contentText"
-      :isLoading="textLoading"
-      class="content-base__content-tab__text"
-    />
+    <ListContentTexts v-if="activeTab === 'text'" />
   </section>
 </template>
 
@@ -54,8 +49,7 @@ import { ref, toRef } from 'vue';
 
 import ContentFiles from '@/components/Knowledge/ContentFiles.vue';
 import ContentSites from '@/components/Knowledge/ContentSites.vue';
-import ContentText from '@/components/Knowledge/ContentText.vue';
-import { useKnowledgeStore } from '@/store/Knowledge';
+import ListContentTexts from '@/components/Knowledge/ListContentTexts/index.vue';
 
 const props = defineProps({
   filesProp: {
@@ -66,13 +60,6 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  textProp: {
-    type: Object,
-    required: true,
-  },
-  textLoading: {
-    type: Boolean,
-  },
 });
 
 defineEmits(['update:files']);
@@ -81,7 +68,6 @@ const files = toRef(props, 'filesProp');
 const sites = toRef(props, 'sitesProp');
 
 const contentStyle = ref('accordion');
-const knowledgeStore = useKnowledgeStore();
 
 const routerTabs = ref([
   { title: 'files', page: 'files' },
@@ -115,7 +101,7 @@ const onTabChange = (newTab) => {
   &__content-tab {
     display: flex;
     flex-direction: column;
-    row-gap: $unnnic-spacing-md;
+    row-gap: $unnnic-space-4;
 
     &--shape-normal {
       height: 100%;

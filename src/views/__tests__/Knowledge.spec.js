@@ -2,35 +2,22 @@ import { shallowMount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
-import Knowledge from '@/views/Knowledge.vue';
+import Knowledge from '@/views/Knowledge/index.vue';
 
-const pinia = createTestingPinia({
-  initialState: {
-    Knowledge: {
-      contentText: {
-        uuid: null,
-        current: '',
-        old: '',
-      },
-    },
-  },
+const mockRoute = { name: 'knowledge' };
+
+vi.mock('vue-router', async () => {
+  const actual = await vi.importActual('vue-router');
+
+  return {
+    ...actual,
+    useRoute: vi.fn(() => mockRoute),
+  };
 });
 
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
     knowledge: {
-      texts: {
-        list: vi.fn().mockResolvedValue({
-          data: {
-            results: [
-              {
-                uuid: 'text-uuid',
-                text: 'Sample text content',
-              },
-            ],
-          },
-        }),
-      },
       files: {
         list: vi.fn().mockResolvedValue({
           data: {
@@ -74,17 +61,22 @@ vi.mock('@/composables/useSitesPagination', () => ({
 describe('Knowledge.vue', () => {
   let wrapper;
 
+  const createWrapper = () =>
+    shallowMount(Knowledge, {
+      global: {
+        plugins: [createTestingPinia()],
+      },
+    });
+
   const header = () =>
     wrapper.findComponent('[data-testid="knowledge-header"]');
   const routerContentBase = () =>
     wrapper.findComponent('[data-testid="router-content-base"]');
+  const routerView = () => wrapper.findComponent({ name: 'RouterView' });
 
   beforeEach(() => {
-    wrapper = shallowMount(Knowledge, {
-      global: {
-        plugins: [pinia],
-      },
-    });
+    mockRoute.name = 'knowledge';
+    wrapper = createWrapper();
   });
 
   describe('Component rendering', () => {
@@ -99,23 +91,20 @@ describe('Knowledge.vue', () => {
 
       expect(props.filesProp).toBeDefined();
       expect(props.sitesProp).toBeDefined();
-      expect(props.textProp).toEqual({
-        open: true,
-        status: null,
-        uuid: 'text-uuid',
-        oldValue: 'Sample text content',
-        value: 'Sample text content',
-      });
-      expect(props.textLoading).toBe(false);
+    });
+
+    it('renders the child route view when the active route is a knowledge child', () => {
+      mockRoute.name = 'new-content-text';
+      wrapper = createWrapper();
+
+      expect(header().exists()).toBe(false);
+      expect(routerContentBase().exists()).toBe(false);
+      expect(routerView().exists()).toBe(true);
     });
   });
 
   describe('Component lifecycle', () => {
-    it('loads text, files and sites on mount', () => {
-      expect(wrapper.vm.text.uuid).toBe('text-uuid');
-      expect(wrapper.vm.text.value).toBe('Sample text content');
-      expect(wrapper.vm.text.oldValue).toBe('Sample text content');
-      expect(wrapper.vm.text.status).toBeNull();
+    it('loads files and sites on mount', () => {
       expect(wrapper.vm.files.loadNext).toHaveBeenCalled();
       expect(wrapper.vm.sites.loadNext).toHaveBeenCalled();
     });
