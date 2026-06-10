@@ -373,6 +373,7 @@
       },
       "setup": {
         "about": "About",
+        "last_updated": "Updated on {date}, at {time}",
         "view_documentation": "View documentation",
         "mcps_available": {
           "title": "MCPs available"

@@ -29,6 +29,14 @@
       </a>
     </section>
 
+    <p
+      v-if="lastUpdatedLabel"
+      class="start-setup-about__last-updated"
+      data-testid="start-setup-about-last-updated"
+    >
+      {{ lastUpdatedLabel }}
+    </p>
+
     <section
       v-if="agentSystems.length"
       class="start-setup-about__systems"
@@ -48,8 +56,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+import { useI18n } from 'vue-i18n';
+
 import SystemBadge from '@/components/AgentsTeam/SystemBadge.vue';
 import useTranslatedField from '@/composables/useTranslatedField';
+import { formatLongDate, formatTime } from '@/utils/formatters';
 import type { Agent } from '@/store/types/Agents.types';
 
 const GROUP_DOCS: Record<string, string> = {
@@ -65,7 +76,19 @@ const props = defineProps<{
   agent: Agent;
 }>();
 
+const { t } = useI18n();
+
 const translateField = useTranslatedField();
+
+const lastUpdatedLabel = computed(() => {
+  const { last_updated, is_official } = props.agent;
+  if (!last_updated || is_official) return undefined;
+
+  return t('agents.assign_agents.setup.last_updated', {
+    date: formatLongDate(last_updated),
+    time: formatTime(last_updated),
+  });
+});
 
 const documentationUrl = computed(() => {
   const group = props.agent.group;
@@ -102,6 +125,12 @@ const agentSystems = computed(() => props.agent.systems ?? []);
   &__description {
     color: $unnnic-color-fg-base;
     font: $unnnic-font-body;
+  }
+
+  &__last-updated {
+    color: $unnnic-color-fg-muted;
+    font: $unnnic-font-body;
+    margin-top: $unnnic-space-2;
   }
 
   &__view-documentation {

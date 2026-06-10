@@ -372,6 +372,7 @@
       },
       "setup": {
         "about": "Despre",
+        "last_updated": "Actualizat pe {date}, la {time}",
         "view_documentation": "Vizualizează documentația",
         "mcps_available": {
           "title": "MCP-uri disponibile"
