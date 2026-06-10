@@ -42,6 +42,8 @@ describe('StartSetup About', () => {
     wrapper.find('[data-testid="start-setup-system-badges"]');
   const findBadges = () =>
     wrapper.findAllComponents('[data-testid="start-setup-about-skill"]');
+  const findLastUpdated = () =>
+    wrapper.find('[data-testid="start-setup-about-last-updated"]');
 
   it('renders title and description', () => {
     wrapper = createWrapper();
@@ -66,5 +68,39 @@ describe('StartSetup About', () => {
     });
 
     expect(findSystemBadges().exists()).toBe(false);
+  });
+
+  it('renders the formatted last updated label for a custom agent with last_updated', () => {
+    // Parsed as local time so the formatted output is timezone-independent.
+    wrapper = createWrapper({
+      agent: {
+        ...mockAgent,
+        is_official: false,
+        last_updated: '2026-05-13T15:15:00',
+      },
+    });
+
+    expect(findLastUpdated().exists()).toBe(true);
+    expect(findLastUpdated().text()).toBe(
+      'Updated on May 13, 2026, at 3:15 p.m.',
+    );
+  });
+
+  it('does not render the last updated label when agent has no last_updated', () => {
+    wrapper = createWrapper();
+
+    expect(findLastUpdated().exists()).toBe(false);
+  });
+
+  it('does not render the last updated label for an official agent', () => {
+    wrapper = createWrapper({
+      agent: {
+        ...mockAgent,
+        is_official: true,
+        last_updated: '2026-05-13T15:15:00',
+      },
+    });
+
+    expect(findLastUpdated().exists()).toBe(false);
   });
 });
