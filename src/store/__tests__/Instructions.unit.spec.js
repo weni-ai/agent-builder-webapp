@@ -528,7 +528,9 @@ describe('Instructions Store', () => {
         expect(
           nexusaiAPI.agent_builder.instructions.listGrouped,
         ).toHaveBeenCalledWith({ projectUuid: 'test-project-uuid' });
-        expect(nexusaiAPI.agent_builder.instructions.list).not.toHaveBeenCalled();
+        expect(
+          nexusaiAPI.agent_builder.instructions.list,
+        ).not.toHaveBeenCalled();
         expect(store.instructions.data).toEqual(groupedResponse.instructions);
         expect(store.categories).toEqual(groupedResponse.categories);
         expect(store.instructions.status).toBe('complete');
@@ -664,6 +666,105 @@ describe('Instructions Store', () => {
           name: 'Logistics',
         });
       });
+    });
+  });
+
+  describe('groupedInstructions getter', () => {
+    const viewT = (key) => i18n.global.t(`agents.instructions.view.${key}`);
+
+    const keysOf = () => store.groupedInstructions.map((group) => group.key);
+    const groupByKey = (key) =>
+      store.groupedInstructions.find((group) => group.key === key);
+
+    it('groups custom categories ordered by the last added instruction', () => {
+      store.categories = [
+        { id: 10, name: 'Sales' },
+        { id: 20, name: 'Support' },
+      ];
+      store.instructions.data = [
+        { id: 1, text: 'Sales A', category: { id: 10, name: 'Sales' } },
+        { id: 5, text: 'Support A', category: { id: 20, name: 'Support' } },
+        { id: 3, text: 'Sales B', category: { id: 10, name: 'Sales' } },
+      ];
+
+      expect(keysOf()).toEqual(['category-20', 'category-10', 'default']);
+    });
+
+    it('orders instructions within a group by the last inserted first', () => {
+      store.categories = [{ id: 10, name: 'Sales' }];
+      store.instructions.data = [
+        { id: 1, text: 'Sales A', category: { id: 10, name: 'Sales' } },
+        { id: 3, text: 'Sales B', category: { id: 10, name: 'Sales' } },
+      ];
+
+      expect(groupByKey('category-10').instructions.map((i) => i.text)).toEqual(
+        ['Sales B', 'Sales A'],
+      );
+    });
+
+    it('keeps custom categories without instructions for the empty state', () => {
+      store.categories = [{ id: 10, name: 'Empty' }];
+      store.instructions.data = [];
+
+      const group = groupByKey('category-10');
+      expect(group).toBeDefined();
+      expect(group.locked).toBe(false);
+      expect(group.instructions).toEqual([]);
+    });
+
+    it('shows the Uncategorized locked group only when it has instructions', () => {
+      store.categories = [];
+      store.instructions.data = [
+        { id: 1, text: 'Loose instruction', category: null },
+      ];
+
+      const group = groupByKey('uncategorized');
+      expect(group.label).toBe(viewT('uncategorized'));
+      expect(group.locked).toBe(true);
+      expect(group.instructions).toHaveLength(1);
+    });
+
+    it('hides the Uncategorized group when there are no uncategorized instructions', () => {
+      store.categories = [{ id: 10, name: 'Sales' }];
+      store.instructions.data = [
+        { id: 1, text: 'Sales A', category: { id: 10, name: 'Sales' } },
+      ];
+
+      expect(groupByKey('uncategorized')).toBeUndefined();
+    });
+
+    it('always exposes the mocked Default instructions locked group', () => {
+      store.categories = [];
+      store.instructions.data = [];
+      const legacyDefaultInstructions = i18n.global.tm(
+        'agent_builder.instructions.instructions_list.default_instructions',
+      );
+
+      const group = groupByKey('default');
+      expect(group.label).toBe(viewT('default_instructions'));
+      expect(group.locked).toBe(true);
+      expect(group.instructions).toHaveLength(legacyDefaultInstructions.length);
+      expect(group.instructions.map((i) => i.text)).toEqual(
+        legacyDefaultInstructions,
+      );
+      expect(
+        group.instructions.some((i) => i.text.includes('specialized team')),
+      ).toBe(true);
+      expect(group.instructions.every((i) => i.locked)).toBe(true);
+    });
+
+    it('filters instructions by the search term and hides groups without matches', () => {
+      store.categories = [{ id: 10, name: 'Sales' }];
+      store.instructions.data = [
+        { id: 1, text: 'tracking number', category: { id: 10, name: 'Sales' } },
+        { id: 2, text: 'refund policy', category: { id: 10, name: 'Sales' } },
+      ];
+      store.searchTerm = 'tracking';
+
+      expect(keysOf()).toEqual(['category-10']);
+      expect(groupByKey('category-10').instructions.map((i) => i.text)).toEqual(
+        ['tracking number'],
+      );
     });
   });
 });

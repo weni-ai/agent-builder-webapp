@@ -5,11 +5,15 @@ import type {
   InstructionSuggestedByAI,
   InstructionCategory,
   NewInstruction,
+  GroupedInstructionItem,
+  InstructionGroup,
 } from './types/Instructions.types';
 
 import { useProjectStore } from './Project';
 import { useAlertStore } from './Alert';
 import { useFeatureFlagsStore } from './FeatureFlags';
+
+import { buildInstructionGroups } from './helpers/instructionGroups';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 
@@ -150,6 +154,35 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   const activeInstructionsListTab = ref('custom');
   const activeInstructionsView = ref<'categories' | 'list'>('categories');
   const searchTerm = ref('');
+
+  const groupT = (key: string) =>
+    i18n.global.t(`agents.instructions.view.${key}`);
+
+  const defaultInstructionsMock = computed<GroupedInstructionItem[]>(() => {
+    const globalI18n = i18n.global as { tm: (_key: string) => string[] };
+    const mockedInstructions = globalI18n.tm(
+      'agent_builder.instructions.instructions_list.default_instructions',
+    );
+
+    return mockedInstructions?.map((instruction, index) => ({
+      id: `default-${index + 1}`,
+      text: String(instruction),
+      locked: true,
+    }));
+  });
+
+  const groupedInstructions = computed<InstructionGroup[]>(() =>
+    buildInstructionGroups({
+      instructions: instructions.data,
+      categories: categories.value,
+      defaultInstructions: defaultInstructionsMock.value,
+      searchTerm: searchTerm.value,
+      labels: {
+        uncategorized: groupT('uncategorized'),
+        default: groupT('default_instructions'),
+      },
+    }),
+  );
 
   async function addInstruction() {
     newInstruction.status = 'loading';
@@ -355,6 +388,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     activeInstructionsListTab,
     activeInstructionsView,
     searchTerm,
+    groupedInstructions,
     createCategory,
     addInstruction,
     loadInstructions,

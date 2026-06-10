@@ -23,6 +23,20 @@ export interface InstructionCategory {
   name: string;
 }
 
+export interface GroupedInstructionItem {
+  id: number | string;
+  text: string;
+  category?: InstructionCategory | null;
+  locked?: boolean;
+}
+
+export interface InstructionGroup {
+  key: string;
+  label: string;
+  locked: boolean;
+  instructions: GroupedInstructionItem[];
+}
+
 export interface NewInstruction {
   text: string;
   category: InstructionCategory | null;
