@@ -9,8 +9,6 @@ import { endOfDay, startOfDay } from 'date-fns';
 import nexusRequest from '@/api/nexusaiRequest';
 import { ConversationAdapter } from './conversation';
 
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
-
 /** Data from which conversations come from the v2 endpoint (28/03/2026) */
 export const CONVERSATIONS_SWITCH_DATE = new Date(Date.UTC(2026, 2, 28));
 
@@ -92,9 +90,6 @@ function buildNewEndpointParams(params) {
  * @returns {ConversationMode}
  */
 export function getConversationMode(startDate, endDate) {
-  const featureFlagsStore = useFeatureFlagsStore();
-
-  if (!featureFlagsStore.flags.conversationsV2) return 'legacy';
   if (!startDate || !endDate) return 'legacy';
   if (endDate < CONVERSATIONS_SWITCH_DATE) return 'legacy';
   if (startDate >= CONVERSATIONS_SWITCH_DATE) return 'new';

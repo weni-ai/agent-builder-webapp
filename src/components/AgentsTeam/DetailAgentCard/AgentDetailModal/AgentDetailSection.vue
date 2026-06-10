@@ -16,6 +16,13 @@
     >
       {{ description }}
     </p>
+    <p
+      v-if="lastUpdated"
+      class="agent-detail-modal__section-last-updated"
+      data-testid="agent-detail-section-last-updated"
+    >
+      {{ lastUpdated }}
+    </p>
     <slot />
   </section>
 </template>
@@ -24,6 +31,7 @@
 defineProps<{
   title: string;
   description?: string;
+  lastUpdated?: string;
 }>();
 </script>
 
@@ -40,6 +48,11 @@ defineProps<{
 
   &-description {
     color: $unnnic-color-fg-base;
+    font: $unnnic-font-body;
+  }
+
+  &-last-updated {
+    color: $unnnic-color-fg-muted;
     font: $unnnic-font-body;
   }
 }

@@ -6,7 +6,7 @@ vi.mock('@/api/nexusaiRequest', () => ({
   default: {
     $http: {
       get: vi.fn(),
-      patch: vi.fn(),
+      post: vi.fn(),
     },
   },
 }));
@@ -25,23 +25,44 @@ describe('AgentsTeam API', () => {
   describe('listOfficialAgents', () => {
     const mockOfficialAgentsResponse = {
       data: {
-        new: {
-          agents: [
-            {
-              uuid: 'agent-uuid-1',
-              name: 'Official Agent 1',
-              slug: 'official-agent-1',
-              systems: ['system_a', 'no_system', 'custom'],
-            },
-          ],
-          available_systems: ['system_a', 'system_b'],
-        },
-        legacy: [
+        count: 2,
+        page: 1,
+        page_size: 20,
+        results: [
+          {
+            uuid: 'agent-uuid-1',
+            name: 'Official Agent 1',
+            slug: 'official-agent-1',
+            group: 'group-1',
+            systems: ['system_a'],
+            about: { en: 'About EN', pt: null, es: null },
+            mcps: [
+              {
+                name: 'Default',
+                description: { en: 'desc', pt: null, es: null },
+                system: 'system_a',
+                config: [
+                  {
+                    name: 'REQ_FIELD',
+                    label: 'Required',
+                    type: 'TEXT',
+                    is_required: true,
+                    default_value: null,
+                    options: [],
+                  },
+                ],
+                credentials: [],
+              },
+            ],
+          },
           {
             uuid: 'agent-uuid-2',
             name: 'Official Agent 2',
             slug: 'official-agent-2',
-            systems: ['system_b', 'custom'],
+            group: 'group-2',
+            systems: ['system_b'],
+            about: { en: 'About EN 2', pt: null, es: null },
+            mcps: [],
           },
         ],
       },
@@ -56,20 +77,23 @@ describe('AgentsTeam API', () => {
         name: 'Agent',
       });
 
-      expect(request.$http.get).toHaveBeenCalledWith('/api/v1/official/agents', {
-        params: {
-          project_uuid: mockProjectUuid,
-          category: 'productivity',
-          system: 'system_a',
-          name: 'Agent',
+      expect(request.$http.get).toHaveBeenCalledWith(
+        '/api/v1/official/agents',
+        {
+          params: {
+            project_uuid: mockProjectUuid,
+            category: 'productivity',
+            system: 'system_a',
+            name: 'Agent',
+          },
         },
-      });
+      );
 
       expect(result.agents).toHaveLength(2);
-      expect(result.availableSystems).toEqual(['system_a', 'system_b']);
+      expect(result).not.toHaveProperty('availableSystems');
     });
 
-    it('should merge new and legacy agents and filter system tags', async () => {
+    it('should passthrough unified shape and add id alias from slug', async () => {
       request.$http.get.mockResolvedValue(mockOfficialAgentsResponse);
 
       const result = await AgentsTeam.listOfficialAgents({});
@@ -77,13 +101,32 @@ describe('AgentsTeam API', () => {
       expect(result.agents[0]).toMatchObject({
         uuid: 'agent-uuid-1',
         id: 'official-agent-1',
+        slug: 'official-agent-1',
         systems: ['system_a'],
+        mcps: [
+          expect.objectContaining({
+            name: 'Default',
+            system: 'system_a',
+            config: [
+              expect.objectContaining({ name: 'REQ_FIELD', is_required: true }),
+            ],
+          }),
+        ],
       });
       expect(result.agents[1]).toMatchObject({
         uuid: 'agent-uuid-2',
         id: 'official-agent-2',
         systems: ['system_b'],
+        mcps: [],
       });
+    });
+
+    it('should return an empty array when results is missing', async () => {
+      request.$http.get.mockResolvedValue({ data: {} });
+
+      const result = await AgentsTeam.listOfficialAgents({});
+
+      expect(result.agents).toEqual([]);
     });
 
     it('should omit empty filters from params', async () => {
@@ -91,9 +134,12 @@ describe('AgentsTeam API', () => {
 
       await AgentsTeam.listOfficialAgents({});
 
-      expect(request.$http.get).toHaveBeenCalledWith('/api/v1/official/agents', {
-        params: { project_uuid: mockProjectUuid },
-      });
+      expect(request.$http.get).toHaveBeenCalledWith(
+        '/api/v1/official/agents',
+        {
+          params: { project_uuid: mockProjectUuid },
+        },
+      );
     });
 
     it('should handle API error', async () => {
@@ -106,52 +152,109 @@ describe('AgentsTeam API', () => {
     });
   });
 
+  describe('listOfficialAvailableSystems', () => {
+    const mockAvailableSystemsResponse = {
+      data: {
+        available_systems: [
+          { slug: 'vtex', name: 'VTEX', logo: 'https://example.com/vtex.svg' },
+          { slug: 'another-system', name: 'Another System', logo: null },
+        ],
+      },
+    };
+
+    it('should call the available systems endpoint with project_uuid', async () => {
+      request.$http.get.mockResolvedValue(mockAvailableSystemsResponse);
+
+      await AgentsTeam.listOfficialAvailableSystems();
+
+      expect(request.$http.get).toHaveBeenCalledWith(
+        '/api/v1/official/available-systems',
+        {
+          params: { project_uuid: mockProjectUuid },
+        },
+      );
+    });
+
+    it('should return the available_systems array from the response', async () => {
+      request.$http.get.mockResolvedValue(mockAvailableSystemsResponse);
+
+      const result = await AgentsTeam.listOfficialAvailableSystems();
+
+      expect(result).toEqual(
+        mockAvailableSystemsResponse.data.available_systems,
+      );
+    });
+
+    it('should return an empty array when available_systems is missing', async () => {
+      request.$http.get.mockResolvedValue({ data: {} });
+
+      const result = await AgentsTeam.listOfficialAvailableSystems();
+
+      expect(result).toEqual([]);
+    });
+
+    it('should handle API error', async () => {
+      const error = new Error('API Error');
+      request.$http.get.mockRejectedValue(error);
+
+      await expect(AgentsTeam.listOfficialAvailableSystems()).rejects.toThrow(
+        'API Error',
+      );
+    });
+  });
+
   describe('listMyAgents', () => {
     const mockMyAgentsResponse = {
       data: [
         {
           uuid: 'my-agent-uuid-1',
           name: 'My Agent 1',
-          description: 'First personal agent',
-          skills: ['custom-skill1'],
-          assigned: true,
-          credentials: [{ name: 'ROOT_KEY', label: 'Should be ignored' }],
-          is_official: false,
           slug: 'my-agent-1',
-          mcp_definitions: {
-            config: [
-              {
-                name: 'country',
-                label: 'Country',
-                type: 'TEXT',
-                is_required: true,
-                default_value: 'BRA',
-                options: [],
-              },
-            ],
-            credentials: [
-              {
-                name: 'BASE_URL',
-                label: 'Base URL',
-                placeholder: 'https://example.com',
-                is_confidential: false,
-              },
-            ],
-          },
+          group: null,
+          about: { en: 'First personal agent', pt: null, es: null },
+          assigned: true,
+          active: false,
+          is_official: false,
+          category: null,
+          systems: ['custom-system'],
+          mcps: [
+            {
+              name: 'Default',
+              description: { en: 'Default MCP', pt: '', es: '' },
+              system: 'custom-system',
+              config: [
+                {
+                  name: 'country',
+                  label: 'Country',
+                  type: 'TEXT',
+                  is_required: true,
+                  default_value: 'BRA',
+                  options: [],
+                },
+              ],
+              credentials: [
+                {
+                  name: 'BASE_URL',
+                  label: 'Base URL',
+                  placeholder: 'https://example.com',
+                  is_confidential: false,
+                },
+              ],
+            },
+          ],
         },
         {
           uuid: 'my-agent-uuid-2',
           name: 'My Agent 2',
-          description: 'Second personal agent',
-          skills: ['custom-skill2', 'custom-skill3'],
-          assigned: false,
-          credentials: [],
-          is_official: false,
           slug: 'my-agent-2',
-          mcp_definitions: {
-            config: [],
-            credentials: [],
-          },
+          group: null,
+          about: { en: 'Second personal agent', pt: null, es: null },
+          assigned: false,
+          active: false,
+          is_official: false,
+          category: null,
+          systems: [],
+          mcps: [],
         },
       ],
     };
@@ -170,32 +273,8 @@ describe('AgentsTeam API', () => {
 
       expect(result.data).toHaveLength(2);
       expect(result.data[0]).toEqual({
-        uuid: 'my-agent-uuid-1',
-        name: 'My Agent 1',
-        about: null,
-        description: 'First personal agent',
-        skills: ['custom-skill1'],
-        assigned: true,
-        credentials: [
-          {
-            name: 'BASE_URL',
-            label: 'Base URL',
-            placeholder: 'https://example.com',
-            is_confidential: false,
-          },
-        ],
-        is_official: false,
+        ...mockMyAgentsResponse.data[0],
         id: 'my-agent-1',
-        constants: [
-          {
-            name: 'country',
-            label: 'Country',
-            type: 'TEXT',
-            is_required: true,
-            default_value: 'BRA',
-            options: [],
-          },
-        ],
       });
     });
 
@@ -218,7 +297,7 @@ describe('AgentsTeam API', () => {
       expect(result.data[0].name).toBe('My Agent 2');
     });
 
-    it('should transform personal agent data correctly', async () => {
+    it('should add id alias from slug for each agent', async () => {
       request.$http.get.mockResolvedValue(mockMyAgentsResponse);
 
       const result = await AgentsTeam.listMyAgents({});
@@ -227,29 +306,17 @@ describe('AgentsTeam API', () => {
         const originalAgent = mockMyAgentsResponse.data[index];
         expect(agent.uuid).toBe(originalAgent.uuid);
         expect(agent.name).toBe(originalAgent.name);
-        expect(agent.description).toBe(originalAgent.description);
-        expect(agent.skills).toEqual(originalAgent.skills);
-        expect(agent.assigned).toBe(originalAgent.assigned);
-        expect(agent.credentials).toEqual(
-          originalAgent.mcp_definitions.credentials,
-        );
         expect(agent.id).toBe(originalAgent.slug);
+        expect(agent.mcps).toEqual(originalAgent.mcps);
       });
     });
 
-    it('forces is_official to false even when the API returns true', async () => {
-      request.$http.get.mockResolvedValue({
-        data: [
-          {
-            ...mockMyAgentsResponse.data[0],
-            is_official: true,
-          },
-        ],
-      });
+    it('should return an empty array when data is missing', async () => {
+      request.$http.get.mockResolvedValue({ data: null });
 
       const result = await AgentsTeam.listMyAgents({});
 
-      expect(result.data[0].is_official).toBe(false);
+      expect(result.data).toEqual([]);
     });
 
     it('should handle API error', async () => {
@@ -273,20 +340,36 @@ describe('AgentsTeam API', () => {
           {
             uuid: 'active-agent-uuid-1',
             name: 'Active Agent 1',
-            skills: ['active-skill1'],
-            id: 'active-agent-1',
-            description: 'First active agent',
-            credentials: { type: 'active' },
+            slug: 'active-agent-1',
+            group: 'group-1',
+            about: { en: 'First active agent', pt: null, es: null },
+            assigned: true,
+            active: true,
             is_official: true,
+            category: null,
+            systems: ['vtex'],
+            mcps: [
+              {
+                name: 'Default',
+                description: { en: 'Default MCP', pt: '', es: '' },
+                system: 'vtex',
+                config: { country: 'BRA' },
+                credentials: [],
+              },
+            ],
           },
           {
             uuid: 'active-agent-uuid-2',
             name: 'Active Agent 2',
-            skills: ['active-skill2', 'active-skill3'],
-            id: 'active-agent-2',
-            description: 'Second active agent',
-            credentials: { type: 'custom' },
+            slug: 'active-agent-2',
+            group: null,
+            about: { en: 'Second active agent', pt: null, es: null },
+            assigned: true,
+            active: true,
             is_official: false,
+            category: null,
+            systems: [],
+            mcps: [],
           },
         ],
       },
@@ -307,15 +390,14 @@ describe('AgentsTeam API', () => {
 
       expect(result.data.agents).toHaveLength(2);
       expect(result.data.agents[0]).toEqual({
-        uuid: 'active-agent-uuid-1',
-        name: 'Active Agent 1',
-        skills: ['active-skill1'],
+        ...mockActiveTeamResponse.data.agents[0],
         id: 'active-agent-1',
-        about: null,
-        description: 'First active agent',
-        credentials: { type: 'active' },
-        is_official: true,
-        mcp: undefined,
+        mcps: [
+          {
+            ...mockActiveTeamResponse.data.agents[0].mcps[0],
+            config: [{ label: 'country', value: 'BRA' }],
+          },
+        ],
       });
     });
 
@@ -353,21 +435,62 @@ describe('AgentsTeam API', () => {
       expect(result.data.agents).toEqual([]);
     });
 
-    it('should transform active team data correctly', async () => {
+    it('should add id alias from slug when id is missing', async () => {
+      const responseMissingId = {
+        data: {
+          manager: { id: 'manager-id' },
+          agents: [
+            {
+              ...mockActiveTeamResponse.data.agents[0],
+              id: undefined,
+            },
+          ],
+        },
+      };
+      request.$http.get.mockResolvedValue(responseMissingId);
+
+      const result = await AgentsTeam.listActiveTeam();
+
+      expect(result.data.agents[0].id).toBe('active-agent-1');
+    });
+
+    it('should transform mcp config object into a labeled array', async () => {
       request.$http.get.mockResolvedValue(mockActiveTeamResponse);
 
       const result = await AgentsTeam.listActiveTeam();
 
-      result.data.agents.forEach((agent, index) => {
-        const originalAgent = mockActiveTeamResponse.data.agents[index];
-        expect(agent.uuid).toBe(originalAgent.uuid);
-        expect(agent.name).toBe(originalAgent.name);
-        expect(agent.skills).toEqual(originalAgent.skills);
-        expect(agent.id).toBe(originalAgent.id);
-        expect(agent.description).toBe(originalAgent.description);
-        expect(agent.credentials).toEqual(originalAgent.credentials);
-        expect(agent.is_official).toBe(originalAgent.is_official);
-      });
+      expect(result.data.agents[0].mcps).toEqual([
+        {
+          ...mockActiveTeamResponse.data.agents[0].mcps[0],
+          config: [{ label: 'country', value: 'BRA' }],
+        },
+      ]);
+    });
+
+    it('should default mcp config to an empty array when missing', async () => {
+      const responseWithoutMcpConfig = {
+        data: {
+          manager: { id: 'manager-id' },
+          agents: [
+            {
+              ...mockActiveTeamResponse.data.agents[0],
+              mcps: [
+                {
+                  name: 'Default',
+                  description: { en: 'Default MCP', pt: '', es: '' },
+                  system: 'vtex',
+                  credentials: [],
+                },
+              ],
+            },
+          ],
+        },
+      };
+      request.$http.get.mockResolvedValue(responseWithoutMcpConfig);
+
+      const result = await AgentsTeam.listActiveTeam();
+
+      expect(result.data.agents[0].mcps[0].config).toEqual([]);
     });
 
     it('should handle API error', async () => {
@@ -383,72 +506,89 @@ describe('AgentsTeam API', () => {
   describe('toggleAgentAssignment', () => {
     const mockToggleResponse = {
       data: {
-        success: true,
-        message: 'Agent assignment updated',
-        agent_uuid: 'agent-uuid-123',
         assigned: true,
+        agent: {
+          uuid: 'agent-uuid-123',
+          slug: 'agent-slug',
+        },
       },
     };
 
-    it('should assign agent successfully', async () => {
-      request.$http.patch.mockResolvedValue(mockToggleResponse);
+    it('should call the unified endpoint with agent_uuid', async () => {
+      request.$http.post.mockResolvedValue(mockToggleResponse);
 
-      const result = await AgentsTeam.toggleAgentAssignment({
-        agentUuid: 'agent-uuid-123',
-        is_assigned: true,
-      });
+      const payload = { agent_uuid: 'agent-uuid-123', assigned: true };
+      const result = await AgentsTeam.toggleAgentAssignment(payload);
 
-      expect(request.$http.patch).toHaveBeenCalledWith(
-        `api/project/${mockProjectUuid}/assign/agent-uuid-123`,
-        {
-          assigned: true,
-        },
-        {
-          hideGenericErrorAlert: true,
-        },
+      expect(request.$http.post).toHaveBeenCalledWith(
+        `/api/v1/official/agents?project_uuid=${mockProjectUuid}&agent_uuid=agent-uuid-123`,
+        payload,
+        { hideGenericErrorAlert: true },
       );
 
       expect(result.data).toEqual(mockToggleResponse.data);
     });
 
-    it('should unassign agent successfully', async () => {
-      const unassignResponse = {
-        data: {
-          success: true,
-          message: 'Agent assignment removed',
-          agent_uuid: 'agent-uuid-456',
-          assigned: false,
-        },
-      };
-      request.$http.patch.mockResolvedValue(unassignResponse);
+    it('should call the unified endpoint with group when agent_uuid is missing', async () => {
+      request.$http.post.mockResolvedValue(mockToggleResponse);
 
-      const result = await AgentsTeam.toggleAgentAssignment({
-        agentUuid: 'agent-uuid-456',
-        is_assigned: false,
+      const payload = { group: 'CONCIERGE', assigned: false };
+      await AgentsTeam.toggleAgentAssignment(payload);
+
+      expect(request.$http.post).toHaveBeenCalledWith(
+        `/api/v1/official/agents?project_uuid=${mockProjectUuid}&group=CONCIERGE`,
+        payload,
+        { hideGenericErrorAlert: true },
+      );
+    });
+
+    it('should prefer agent_uuid over group when both are provided', async () => {
+      request.$http.post.mockResolvedValue(mockToggleResponse);
+
+      await AgentsTeam.toggleAgentAssignment({
+        agent_uuid: 'agent-uuid-456',
+        group: 'CONCIERGE',
+        assigned: true,
       });
 
-      expect(request.$http.patch).toHaveBeenCalledWith(
-        `api/project/${mockProjectUuid}/assign/agent-uuid-456`,
-        {
-          assigned: false,
-        },
-        {
-          hideGenericErrorAlert: true,
-        },
-      );
+      const calledUrl = request.$http.post.mock.calls[0][0];
+      expect(calledUrl).toContain('agent_uuid=agent-uuid-456');
+      expect(calledUrl).not.toContain('group=CONCIERGE');
+    });
 
-      expect(result.data).toEqual(unassignResponse.data);
+    it('should send the full payload (including system, mcp, mcp_config, credentials) as body', async () => {
+      request.$http.post.mockResolvedValue(mockToggleResponse);
+
+      const credentials = [
+        { name: 'token', value: 'a', is_confidential: true },
+        { name: 'store_id', value: 'b', is_confidential: false },
+      ];
+
+      const payload = {
+        agent_uuid: 'agent-uuid-123',
+        assigned: true,
+        system: 'vtex',
+        mcp: 'Default',
+        mcp_config: { country: 'BRA' },
+        credentials,
+      };
+
+      await AgentsTeam.toggleAgentAssignment(payload);
+
+      const calledBody = request.$http.post.mock.calls[0][1];
+      expect(calledBody).toEqual(payload);
+      expect(Array.isArray(calledBody.credentials)).toBe(true);
     });
 
     it('should include hideGenericErrorAlert in request config', async () => {
-      request.$http.patch.mockResolvedValue(mockToggleResponse);
+      request.$http.post.mockResolvedValue(mockToggleResponse);
 
       await AgentsTeam.toggleAgentAssignment({
-        agentUuid: 'agent-uuid-123',
-        is_assigned: true,
+        agent_uuid: 'agent-uuid-123',
+        assigned: true,
       });
 
-      const callArgs = request.$http.patch.mock.calls[0];
+      const callArgs = request.$http.post.mock.calls[0];
       expect(callArgs[2]).toEqual({
         hideGenericErrorAlert: true,
       });
@@ -456,68 +596,14 @@ describe('AgentsTeam API', () => {
 
     it('should handle API error', async () => {
       const error = new Error('Failed to toggle agent assignment');
-      request.$http.patch.mockRejectedValue(error);
+      request.$http.post.mockRejectedValue(error);
 
       await expect(
         AgentsTeam.toggleAgentAssignment({
-          agentUuid: 'agent-uuid-123',
-          is_assigned: true,
+          agent_uuid: 'agent-uuid-123',
+          assigned: true,
         }),
       ).rejects.toThrow('Failed to toggle agent assignment');
-    });
-
-    it('should handle missing parameters', async () => {
-      request.$http.patch.mockResolvedValue(mockToggleResponse);
-
-      await AgentsTeam.toggleAgentAssignment({
-        agentUuid: undefined,
-        is_assigned: true,
-      });
-
-      expect(request.$http.patch).toHaveBeenCalledWith(
-        `api/project/${mockProjectUuid}/assign/undefined`,
-        {
-          assigned: true,
-        },
-        {
-          hideGenericErrorAlert: true,
-        },
-      );
-    });
-  });
-
-  describe('Data transformation', () => {
-    it('should consistently transform agent data across all methods', () => {
-      const originalAgent = {
-        uuid: 'test-uuid',
-        name: 'Test Agent',
-        description: 'Test Description',
-        skills: ['test-skill'],
-        assigned: true,
-        credentials: { type: 'test' },
-        is_official: false,
-        slug: 'test-agent-slug',
-      };
-
-      const transformedAgent = {
-        uuid: originalAgent.uuid,
-        name: originalAgent.name,
-        description: originalAgent.description,
-        skills: originalAgent.skills,
-        assigned: originalAgent.assigned,
-        credentials: originalAgent.credentials,
-        is_official: originalAgent.is_official,
-        id: originalAgent.slug,
-      };
-
-      expect(transformedAgent.id).toBe(originalAgent.slug);
-      expect(transformedAgent.uuid).toBe(originalAgent.uuid);
-      expect(transformedAgent.name).toBe(originalAgent.name);
-      expect(transformedAgent.description).toBe(originalAgent.description);
-      expect(transformedAgent.skills).toEqual(originalAgent.skills);
-      expect(transformedAgent.assigned).toBe(originalAgent.assigned);
-      expect(transformedAgent.credentials).toEqual(originalAgent.credentials);
-      expect(transformedAgent.is_official).toBe(originalAgent.is_official);
     });
   });
 
@@ -545,12 +631,12 @@ describe('AgentsTeam API', () => {
     it('should propagate authentication errors', async () => {
       const authError = new Error('Unauthorized');
       authError.response = { status: 401 };
-      request.$http.patch.mockRejectedValue(authError);
+      request.$http.post.mockRejectedValue(authError);
 
       await expect(
         AgentsTeam.toggleAgentAssignment({
-          agentUuid: 'test-uuid',
-          is_assigned: true,
+          agent_uuid: 'test-uuid',
+          assigned: true,
         }),
       ).rejects.toThrow('Unauthorized');
     });

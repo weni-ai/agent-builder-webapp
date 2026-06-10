@@ -30,15 +30,14 @@
     </section>
 
     <section
-      v-if="systemBadges.length"
+      v-if="agentSystems.length"
       class="start-setup-about__systems"
       data-testid="start-setup-system-badges"
     >
-      <Skill
-        v-for="system in systemBadges"
-        :key="system.name"
-        :title="system.name"
-        :icon="system?.icon"
+      <SystemBadge
+        v-for="slug in agentSystems"
+        :key="slug"
+        :system="slug"
         class="start-setup-about__skill"
         data-testid="start-setup-about-skill"
       />
@@ -49,10 +48,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import Skill from '@/components/AgentsTeam/Skill.vue';
-import useAgentSystems from '@/composables/useAgentSystems';
+import SystemBadge from '@/components/AgentsTeam/SystemBadge.vue';
 import useTranslatedField from '@/composables/useTranslatedField';
-import type { Agent, AgentGroup } from '@/store/types/Agents.types';
+import type { Agent } from '@/store/types/Agents.types';
 
 const GROUP_DOCS: Record<string, string> = {
   ORDER_PAYMENT: '/docs/Payment_Agent.pdf',
@@ -64,37 +62,20 @@ const GROUP_DOCS: Record<string, string> = {
 };
 
 const props = defineProps<{
-  agent: AgentGroup | Agent;
+  agent: Agent;
 }>();
 
-type SystemBadge = {
-  name: string;
-  icon: object;
-};
-
-const { getSystemsObjects } = useAgentSystems();
 const translateField = useTranslatedField();
 
 const documentationUrl = computed(() => {
-  const group = (props.agent as AgentGroup).group;
+  const group = props.agent.group;
   if (!group) return null;
   return GROUP_DOCS[group.toUpperCase()] ?? null;
 });
 
-const aboutDescription = computed(() => {
-  const presentationAbout = (props.agent as AgentGroup).presentation?.about;
-  return translateField(presentationAbout) ?? props.agent.description;
-});
+const aboutDescription = computed(() => translateField(props.agent.about));
 
-const systemBadges = computed<SystemBadge[]>(() => {
-  const agentSystems = (props.agent as AgentGroup).systems ?? [];
-  const systems = getSystemsObjects(agentSystems) || [];
-
-  return systems.map((system) => ({
-    name: system?.name ?? '',
-    icon: system?.icon ?? {},
-  }));
-});
+const agentSystems = computed(() => props.agent.systems ?? []);
 </script>
 
 <style lang="scss" scoped>

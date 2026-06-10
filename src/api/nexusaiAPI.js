@@ -4,6 +4,7 @@ import { Supervisor } from './nexus/Supervisor';
 import { Instructions } from './nexus/Instructions';
 import { Knowledge } from './nexus/Knowledge';
 import { Simulation } from './nexus/Simulation';
+import { FeatureFlags } from './nexus/FeatureFlags';
 
 import { ProgressiveFeedbackAdapter } from './adapters/tunings/progressiveFeedback';
 import { ComponentsAdapter } from './adapters/tunings/components';
@@ -244,7 +245,7 @@ export default {
           text,
           attachments,
           contact_urn,
-          language: i18n.global.locale,
+          language: i18n.global.locale.value,
           manager_agent_uuid: manager_uuid,
         });
       },
@@ -262,4 +263,6 @@ export default {
   },
 
   knowledge: Knowledge,
+
+  feature_flags: FeatureFlags,
 };

@@ -23,18 +23,19 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { debounce } from 'lodash';
 import { computed, watch } from 'vue';
 
 import i18n from '@/utils/plugins/i18n';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
+import type { AgentCategory } from '@/store/types/Agents.types';
 
 const agentsTeamStore = useAgentsTeamStore();
 
 const categoryOptions = computed(() => {
-  const createCategoryOption = (category) => ({
+  const createCategoryOption = (category: AgentCategory) => ({
     label: i18n.global.t(`agents.assign_agents.filters.category.${category}`),
     value: category,
   });

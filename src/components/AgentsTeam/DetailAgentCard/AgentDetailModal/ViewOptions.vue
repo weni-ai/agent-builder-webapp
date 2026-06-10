@@ -46,10 +46,10 @@
 import { ref } from 'vue';
 
 import { useAgentsTeamStore } from '@/store/AgentsTeam';
-import type { ActiveTeamAgent } from '@/store/types/Agents.types';
+import type { Agent } from '@/store/types/Agents.types';
 
 const props = defineProps<{
-  agent: ActiveTeamAgent;
+  agent: Agent;
 }>();
 
 const emit = defineEmits<{

@@ -53,7 +53,6 @@ describe('AgentsTeamStore', () => {
     it('should load official agents team successfully', async () => {
       const mockResponse = {
         agents: [],
-        availableSystems: [],
       };
       const listOfficialAgentsSpy =
         nexusaiAPI.router.agents_team.listOfficialAgents.mockResolvedValue(
@@ -83,6 +82,41 @@ describe('AgentsTeamStore', () => {
       await store.loadOfficialAgents();
 
       expect(store.officialAgents.status).toBe('error');
+    });
+  });
+
+  describe('loadAvailableSystems', () => {
+    it('should populate availableSystems from the API response', async () => {
+      const mockSystems = [
+        { slug: 'vtex', name: 'VTEX', logo: 'vtex.svg' },
+        { slug: 'another-system', name: 'Another System', logo: null },
+      ];
+      nexusaiAPI.router.agents_team.listOfficialAvailableSystems.mockResolvedValue(
+        mockSystems,
+      );
+
+      await store.loadAvailableSystems();
+
+      expect(store.availableSystems).toEqual(mockSystems);
+    });
+
+    it('should reset availableSystems to an empty array on error', async () => {
+      const consoleErrorSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
+      store.availableSystems = [
+        { slug: 'vtex', name: 'VTEX', logo: 'vtex.svg' },
+      ];
+
+      nexusaiAPI.router.agents_team.listOfficialAvailableSystems.mockRejectedValue(
+        new Error('Error'),
+      );
+
+      await store.loadAvailableSystems();
+
+      expect(store.availableSystems).toEqual([]);
+      expect(consoleErrorSpy).toHaveBeenCalledWith('error', new Error('Error'));
     });
   });
 
@@ -130,7 +164,7 @@ describe('AgentsTeamStore', () => {
       }
     });
 
-    it('updates agent assignment correctly', async () => {
+    it('updates agent assignment correctly using agent_uuid', async () => {
       const uuid = '123';
       const is_assigned = true;
       const agent = { uuid, assigned: true };
@@ -145,8 +179,8 @@ describe('AgentsTeamStore', () => {
       expect(
         nexusaiAPI.router.agents_team.toggleAgentAssignment,
       ).toHaveBeenCalledWith({
-        agentUuid: uuid,
-        is_assigned,
+        agent_uuid: uuid,
+        assigned: is_assigned,
       });
 
       expect(store.officialAgents.data[0].assigned).toBe(true);
@@ -157,6 +191,27 @@ describe('AgentsTeamStore', () => {
       await store.toggleAgentAssignment({ uuid, is_assigned });
 
       expect(store.myAgents.data[0].assigned).toBe(true);
+    });
+
+    it('uses group when the official agent has no uuid yet', async () => {
+      const is_assigned = true;
+      const agent = { uuid: null, group: 'CONCIERGE', assigned: false };
+      nexusaiAPI.router.agents_team.toggleAgentAssignment.mockResolvedValue({
+        data: { agent: { uuid: 'new-uuid' } },
+      });
+
+      store.officialAgents.data.push(agent);
+
+      await store.toggleAgentAssignment({ group: 'CONCIERGE', is_assigned });
+
+      expect(
+        nexusaiAPI.router.agents_team.toggleAgentAssignment,
+      ).toHaveBeenCalledWith({
+        group: 'CONCIERGE',
+        assigned: is_assigned,
+      });
+
+      expect(store.officialAgents.data[0].assigned).toBe(true);
     });
 
     it('should handle agent not found error when toggling assignment', async () => {

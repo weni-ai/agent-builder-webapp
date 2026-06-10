@@ -10,13 +10,7 @@ import { unnnicToastManager } from '@weni/unnnic-system';
 
 import i18n from '@/utils/plugins/i18n';
 
-import {
-  Agent,
-  ActiveTeamAgent,
-  AgentGroupOrAgent,
-  AgentSystem,
-  AssignAgentsFilters,
-} from './types/Agents.types';
+import { Agent, AgentSystem, AssignAgentsFilters } from './types/Agents.types';
 import useAgent from '@/composables/useAgent';
 
 export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
@@ -58,9 +52,9 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     };
   });
 
-  const newAgentAssigned = ref<ActiveTeamAgent | null>(null);
+  const newAgentAssigned = ref<Agent | null>(null);
 
-  function addAgentToTeam(agent: AgentGroupOrAgent) {
+  function addAgentToTeam(agent: Agent) {
     const normalizedAgent = normalizeActiveAgent(agent);
 
     activeTeam.data.agents.push(normalizedAgent);
@@ -72,8 +66,8 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
     const officialAssignedAgent = officialAgents.data.find(
       (agent) =>
-        agent.uuid === normalizedAgent.uuid ||
-        agent.agents?.some((variant) => variant.uuid === normalizedAgent.uuid),
+        (agent.uuid && agent.uuid === normalizedAgent.uuid) ||
+        (normalizedAgent.group && agent.group === normalizedAgent.group),
     );
     const customAssignedAgent = myAgents.data.find(
       (agent) => agent.uuid === normalizedAgent.uuid,
@@ -126,20 +120,30 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
       const { system, search, category } = assignAgentsFilters;
 
-      const { agents, availableSystems: availableSystemsResponse } =
-        await nexusaiAPI.router.agents_team.listOfficialAgents({
+      const { agents } = await nexusaiAPI.router.agents_team.listOfficialAgents(
+        {
           name: search,
           category: category?.[0]?.value ?? '',
           system: system === 'ALL_OFFICIAL' ? '' : system,
-        });
+        },
+      );
 
       officialAgents.data = agentIconService.applyIconsToAgents(agents);
-      availableSystems.value = availableSystemsResponse ?? [];
       officialAgents.status = 'complete';
     } catch (error) {
       console.error('error', error);
 
       officialAgents.status = 'error';
+    }
+  }
+
+  async function loadAvailableSystems() {
+    try {
+      availableSystems.value =
+        await nexusaiAPI.router.agents_team.listOfficialAvailableSystems();
+    } catch (error) {
+      console.error('error', error);
+
       availableSystems.value = [];
     }
   }
@@ -166,8 +170,8 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     group,
     is_assigned,
   }: {
-    uuid?: string;
-    group?: string;
+    uuid?: string | null;
+    group?: string | null;
     is_assigned: boolean;
   }) {
     if ((!uuid && !group) || typeof is_assigned !== 'boolean') {
@@ -178,8 +182,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       const foundOfficialAgent = officialAgents.data.find(
         (agent) =>
           (agent.uuid && agent.uuid === uuid) ||
-          (group && agent.group === group) ||
-          agent.agents?.some((variant) => variant.uuid === uuid),
+          (group && agent.group === group),
       );
 
       const foundMyAgent = myAgents.data.find((agent) => agent.uuid === uuid);
@@ -187,26 +190,19 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
         (agent) => agent.uuid === uuid,
       );
 
-      const listedAgent = foundOfficialAgent || foundMyAgent;
-      const agent = foundActiveTeamAgent || listedAgent;
+      const agent = foundActiveTeamAgent || foundOfficialAgent || foundMyAgent;
 
       if (!agent) {
         throw new Error('Agent not found');
       }
 
-      if (agent.uuid) {
-        await nexusaiAPI.router.agents_team.toggleAgentAssignment({
-          agentUuid: (agent as Agent)?.uuid,
-          is_assigned,
-        });
-      } else {
-        await nexusaiAPI.router.agents_team.toggleOfficialAgentAssignment({
-          group: agent.group,
-          assigned: is_assigned,
-        });
-      }
+      await nexusaiAPI.router.agents_team.toggleAgentAssignment({
+        ...(agent.uuid ? { agent_uuid: agent.uuid } : { group: agent.group }),
+        assigned: is_assigned,
+      });
 
-      if (listedAgent) listedAgent.assigned = is_assigned;
+      if (foundOfficialAgent) foundOfficialAgent.assigned = is_assigned;
+      if (foundMyAgent) foundMyAgent.assigned = is_assigned;
 
       if (is_assigned) {
         addAgentToTeam(agent);
@@ -294,6 +290,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
     addAgentToTeam,
     loadActiveTeam,
     loadOfficialAgents,
+    loadAvailableSystems,
     loadMyAgents,
     toggleAgentAssignment,
     deleteAgent,

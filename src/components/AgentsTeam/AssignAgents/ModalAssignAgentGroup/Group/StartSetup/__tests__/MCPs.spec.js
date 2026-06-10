@@ -130,7 +130,7 @@ describe('StartSetup MCPs', () => {
     await wrapper.setProps({ mcps: [] });
 
     expect(wrapper.find('[data-testid="start-setup-mcps"]').exists()).toBe(
-      true,
+      false,
     );
     expect(
       wrapper.find('[data-testid="start-setup-mcps-item-title"]').exists(),

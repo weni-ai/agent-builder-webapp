@@ -37,12 +37,6 @@ vi.mock('@/api/nexusaiAPI', () => ({
   },
 }));
 
-vi.mock('@/store/FeatureFlags', () => ({
-  useFeatureFlagsStore: () => ({
-    whenUserAttributed: () => Promise.resolve(),
-  }),
-}));
-
 vi.mock('vue-router', () => ({
   useRoute: vi.fn().mockReturnValue({
     query: {

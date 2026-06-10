@@ -1,37 +1,29 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { createTestingPinia } from '@pinia/testing';
 
 import ModalAssignAgentGroup from '../index.vue';
 
-const getOfficialAgentDetailsMock = vi.hoisted(() => vi.fn());
-
-vi.mock('@/api/nexusaiAPI', () => ({
-  default: {
-    router: {
-      agents_team: {
-        getOfficialAgentDetails: getOfficialAgentDetailsMock,
-      },
-    },
-  },
-}));
-
-const findAgentVariantUuidMock = vi.hoisted(() => vi.fn());
-
-vi.mock('@/composables/useOfficialAgentAssignment', () => ({
-  findAgentVariantUuid: (...args) => findAgentVariantUuidMock(...args),
-}));
-
 const conciergeAgent = {
   name: 'Concierge',
-  description: 'Handles concierge flows',
-  type: 'PLUG_IN_PLAY',
   category: 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS',
   group: 'CONCIERGE',
-  agents: [],
-  MCPs: [],
-  systems: ['VTEX'],
+  uuid: null,
+  slug: 'concierge',
+  active: null,
+  about: { en: 'About concierge', pt: null, es: null },
+  conversation_example: { en: [], pt: [], es: [] },
+  mcps: [
+    {
+      name: 'Default',
+      description: { en: 'desc', pt: null, es: null },
+      system: 'vtex',
+      config: [],
+      credentials: [{ name: 'token', label: 'API Token' }],
+    },
+  ],
+  systems: ['vtex'],
   assigned: false,
   icon: 'concierge-icon',
   is_official: true,
@@ -64,11 +56,6 @@ describe('ModalAssignAgentGroup', () => {
     await nextButton().trigger('click');
     await nextTick();
   };
-
-  beforeEach(() => {
-    getOfficialAgentDetailsMock.mockResolvedValue({ MCPs: [] });
-    findAgentVariantUuidMock.mockReturnValue('variant-vtex');
-  });
 
   afterEach(() => {
     wrapper?.unmount();

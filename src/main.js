@@ -10,7 +10,6 @@ import i18n from './utils/plugins/i18n.ts';
 import UnnnicDivider from './components/Divider.vue';
 import UnnnicIntelligenceText from './components/unnnic-intelligence/Text.vue';
 import Unnnic from './utils/plugins/UnnnicSystem.ts';
-import { gbKey, initializeGrowthBook } from './utils/Growthbook.js';
 import env from './utils/env';
 import { isFederatedModule } from './utils/moduleFederation';
 import { getJwtToken, setupTokenRefreshListener } from './utils/jwt.js';
@@ -25,8 +24,6 @@ export default async function mountAgentBuilderApp({
   containerId = 'app',
   initialRoute,
 } = {}) {
-  const gbInstance = await initializeGrowthBook();
-
   const isInIframe = window.self !== window.top;
   if (!isFederatedModule && isInIframe) {
     await Promise.all([
@@ -81,8 +78,6 @@ export default async function mountAgentBuilderApp({
 
   app.component('UnnnicDivider', UnnnicDivider);
   app.component('UnnnicIntelligenceText', UnnnicIntelligenceText);
-
-  app.provide(gbKey, gbInstance);
 
   app.mount(`#${containerId}`);
   appRef = app;

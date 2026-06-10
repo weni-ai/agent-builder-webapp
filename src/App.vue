@@ -39,6 +39,7 @@ import { useProfileStore } from '@/store/Profile';
 import { useAlertStore } from '@/store/Alert';
 import { useUserStore } from '@/store/User';
 import { useManagerSelectorStore } from '@/store/ManagerSelector';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useProjectStore } from './store/Project';
 import { useCurrentModule } from '@/composables/useCurrentModule';
 import { isFederatedModule } from './utils/moduleFederation';
@@ -57,8 +58,9 @@ const managerSelectorStore = useManagerSelectorStore();
 
 async function loadAgentsData() {
   agentsTeamStore.loadMyAgents();
-  // The official agents need to be loaded first to get the available systems to active team
-  await agentsTeamStore.loadOfficialAgents();
+  agentsTeamStore.loadOfficialAgents();
+  // Active team depends on availableSystems to resolve mcp.system
+  await agentsTeamStore.loadAvailableSystems();
   agentsTeamStore.loadActiveTeam();
 }
 
@@ -70,6 +72,7 @@ onMounted(() => {
   userStore.getUserDetails();
   managerSelectorStore.loadManagerData();
   useProjectStore().getProject();
+  useFeatureFlagsStore().getFeatureFlags();
 });
 
 const showTestAgentsButton = computed(

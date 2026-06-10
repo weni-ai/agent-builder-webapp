@@ -1,28 +1,20 @@
 import type { TranslatedField } from '@/composables/useTranslatedField';
 
-export type AgentGroupType = 'CUSTOMIZABLE' | 'PLUG_IN_PLAY';
-export type AgentCategory = 'PRODUCT_DISCOVERY_AND_RECOMMENDATIONS';
+export type AgentCategory =
+  | 'product_discovery_and_recommendations'
+  | 'orders_status_and_tracking'
+  | 'returns_exchanges_and_cancellations'
+  | 'payments_and_checkout'
+  | 'crm_and_lead_capture'
+  | 'feedback_and_surveys'
+  | 'utilities_and_monitoring'
+  | 'others';
 
 export type AgentSystem = {
   slug: string;
   name: string;
   logo: string | null;
 };
-
-export type GroupVariant = {
-  uuid: string;
-  name: string;
-  slug: string;
-  assigned: boolean;
-  systems: string[];
-};
-
-export interface AgentSkill {
-  icon?: string;
-  name: string;
-  agent: string;
-  unique_name: string;
-}
 
 export interface AgentCredential {
   name: string;
@@ -37,31 +29,6 @@ export type AgentAssignedConstantValue =
   | number
   | string[]
   | null;
-
-export interface AgentAssignedSystem {
-  name: string;
-  slug: string;
-  icon: string;
-}
-
-export interface AgentAssignedMCP {
-  name: string;
-  description: TranslatedField<string>;
-  constants?: Record<string, AgentAssignedConstantValue>;
-  system?: AgentAssignedSystem;
-}
-
-export interface ActiveTeamAgent {
-  group?: string;
-  uuid: string;
-  id: string;
-  name: string;
-  is_official: boolean;
-  about: TranslatedField<string> | null;
-  description: string;
-  mcp: AgentAssignedMCP | null;
-  icon: string;
-}
 
 export type ConversationMessage = {
   direction: 'incoming' | 'outgoing';
@@ -87,6 +54,7 @@ export interface AgentConstantField {
         value: string;
       }[]
     | [];
+  value?: AgentAssignedConstantValue;
 }
 
 export interface AgentMCP {
@@ -94,49 +62,26 @@ export interface AgentMCP {
   description: TranslatedField<string>;
   system: string;
   credentials?: AgentCredential[];
-  constants: AgentConstantField[];
-}
-
-export interface AgentGroup {
-  name: string;
-  description: string;
-  type: AgentGroupType;
-  category: AgentCategory;
-  group: string;
-  agents: GroupVariant[];
-  MCPs: AgentMCP[];
-  systems: string[];
-  credentials?: AgentCredential[];
-  presentation?: {
-    agent_name?: string;
-    about?: TranslatedField<string>;
-    conversation_example?: TranslatedField<ConversationMessage[]>;
-  };
-  assigned: boolean;
-  icon: string;
-  is_official: true;
+  config: AgentConstantField[];
 }
 
 export interface Agent {
-  uuid: string;
-  id?: string;
+  group: string | null;
   name: string;
+  slug: string | null;
+  uuid: string | null;
   about: TranslatedField<string> | null;
-  description: string;
-  skills: AgentSkill[];
   assigned: boolean;
-  slug: string;
-  model: string;
+  active: boolean | null;
   is_official: boolean;
-  project: string;
-  credentials: AgentCredential[] | [];
-  constants?: AgentConstantField[];
+  category: AgentCategory | null;
+  systems: string[] | null;
+  mcps: AgentMCP[] | null;
+  conversation_example?: TranslatedField<ConversationMessage[]> | null;
   icon: string;
-  group?: AgentGroup | null;
-  mcp?: AgentAssignedMCP | null;
+  id?: string;
+  last_updated?: string | null;
 }
-
-export type AgentGroupOrAgent = AgentGroup | Agent;
 
 type SelectOption = {
   label: string;

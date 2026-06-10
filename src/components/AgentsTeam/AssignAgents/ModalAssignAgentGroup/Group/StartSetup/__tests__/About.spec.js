@@ -9,24 +9,13 @@ vi.mock('@/composables/useTranslatedField', () => ({
 
 const mockAgent = {
   group: 'CONCIERGE',
-  description: 'Handles concierge flows by helping customers',
-  presentation: {
-    about: {
-      en: 'Handles concierge flows by helping customers',
-      pt: null,
-      es: null,
-    },
+  about: {
+    en: 'Handles concierge flows by helping customers',
+    pt: null,
+    es: null,
   },
   systems: ['VTEX', 'SYNERISE'],
 };
-
-const getSystemsObjectsMock = vi.fn();
-
-vi.mock('@/composables/useAgentSystems', () => ({
-  default: () => ({
-    getSystemsObjects: getSystemsObjectsMock,
-  }),
-}));
 
 function createWrapper(props = {}) {
   return shallowMount(About, {
@@ -51,32 +40,27 @@ describe('StartSetup About', () => {
     wrapper.find('[data-testid="start-setup-about-description"]');
   const findSystemBadges = () =>
     wrapper.find('[data-testid="start-setup-system-badges"]');
-  const findSkills = () =>
-    wrapper.findAll('[data-testid="start-setup-about-skill"]');
+  const findBadges = () =>
+    wrapper.findAllComponents('[data-testid="start-setup-about-skill"]');
 
   it('renders title and description', () => {
-    getSystemsObjectsMock.mockReturnValue([]);
     wrapper = createWrapper();
 
     expect(findTitle().exists()).toBe(true);
-    expect(findDescription().text()).toBe(mockAgent.description);
+    expect(findDescription().text()).toBe(mockAgent.about.en);
   });
 
-  it('renders system badges when agent systems are available', () => {
-    getSystemsObjectsMock.mockReturnValue([
-      { name: 'VTEX', icon: 'vtex-icon' },
-      { name: 'SYNERISE', icon: 'synerise-icon' },
-    ]);
+  it('renders one SystemBadge per agent system passing the slug', () => {
     wrapper = createWrapper();
 
     expect(findSystemBadges().exists()).toBe(true);
-    const skills = findSkills();
-    expect(skills).toHaveLength(2);
-    expect(getSystemsObjectsMock).toHaveBeenCalledWith(mockAgent.systems);
+    const badges = findBadges();
+    expect(badges).toHaveLength(2);
+    expect(badges[0].props('system')).toBe('VTEX');
+    expect(badges[1].props('system')).toBe('SYNERISE');
   });
 
   it('hides system badges when agent has no systems', () => {
-    getSystemsObjectsMock.mockReturnValue([]);
     wrapper = createWrapper({
       agent: { ...mockAgent, systems: [] },
     });

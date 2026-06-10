@@ -25,10 +25,10 @@
 
 <script setup lang="ts">
 import AgentIcon from '@/components/AgentsTeam/AgentIcon.vue';
-import { Agent, AgentGroup } from '@/store/types/Agents.types';
+import { Agent } from '@/store/types/Agents.types';
 
 defineProps<{
-  agent: AgentGroup | Agent;
+  agent: Agent;
 }>();
 </script>
 

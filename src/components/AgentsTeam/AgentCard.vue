@@ -62,11 +62,10 @@
           </p>
 
           <section class="agent-card__skills">
-            <Skill
-              v-for="(tag, index) in tags"
-              :key="`${index}-${tag.name}`"
-              :title="tag.name"
-              :icon="tag.icon"
+            <SystemBadge
+              v-for="(slug, index) in tags"
+              :key="`${index}-${slug}`"
+              :system="slug"
               data-testid="skill"
             />
           </section>
@@ -94,7 +93,7 @@ import { computed } from 'vue';
 import useTranslatedField from '@/composables/useTranslatedField';
 
 import AssignAgentCardSkeleton from './AssignAgentCardSkeleton.vue';
-import Skill from './Skill.vue';
+import SystemBadge from './SystemBadge.vue';
 import AgentIcon from './AgentIcon.vue';
 
 const props = defineProps({
@@ -118,10 +117,7 @@ const props = defineProps({
 
 const translateField = useTranslatedField();
 
-const description = computed(() => {
-  const about = props.agent?.about || props.agent.presentation?.about;
-  return translateField(about) || props.agent.description;
-});
+const description = computed(() => translateField(props.agent?.about));
 </script>
 
 <style lang="scss" scoped>

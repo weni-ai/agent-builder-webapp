@@ -15,7 +15,7 @@ This rule defines how tests must be written in this project (unit tests for Vue 
 - Tests must validate **observable behavior** (rendered output, emitted events, store state changes, API calls), not implementation details.
 - Tests must be **deterministic** and isolated: no shared state between tests, no real network, no real timers, no reliance on random values.
 - Tests must be **readable first**: small helpers, clear `describe`/`it` names, and consistent selection via `data-testid`.
-- Prefer **unit scope** by default: stub/mocks for external dependencies (API, router, Growthbook) and only `mount()` when integration is required.
+- Prefer **unit scope** by default: stub/mocks for external dependencies (API, router) and only `mount()` when integration is required.
 - Avoid overengineering in tests: introduce helpers only when they remove repetition or significantly clarify intent.
 
 ## Mandatory Rules

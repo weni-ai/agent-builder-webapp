@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
 
 import AgentDetailModal from '../index.vue';
 
@@ -7,7 +8,8 @@ function createAgent(overrides = {}) {
   return {
     uuid: 'agent-uuid',
     name: 'Agent Name',
-    description: 'Agent description',
+    about: { en: 'Agent description', pt: null, es: null },
+    mcps: [],
     ...overrides,
   };
 }
@@ -17,8 +19,19 @@ describe('AgentDetailModal', () => {
   let agent;
 
   beforeEach(() => {
+    const pinia = createTestingPinia({
+      initialState: {
+        AgentsTeam: {
+          availableSystems: [],
+        },
+      },
+    });
+
     agent = createAgent();
     wrapper = shallowMount(AgentDetailModal, {
+      global: {
+        plugins: [pinia],
+      },
       props: {
         agent,
         open: true,
@@ -46,12 +59,52 @@ describe('AgentDetailModal', () => {
     expect(viewOptions.props('agent')).toStrictEqual(agent);
   });
 
-  it('renders the about section with the agent description', () => {
+  it('renders the about section with the translated about text', () => {
     const aboutSection = wrapper.findComponent(
       '[data-testid="agent-detail-about-section"]',
     );
 
-    expect(aboutSection.props('description')).toBe(agent.description);
+    expect(aboutSection.props('description')).toBe(agent.about.en);
+  });
+
+  it('does not pass lastUpdated when the agent has no last_updated', () => {
+    const aboutSection = wrapper.findComponent(
+      '[data-testid="agent-detail-about-section"]',
+    );
+
+    expect(aboutSection.props('lastUpdated')).toBeUndefined();
+  });
+
+  it('passes the formatted last updated label for a custom agent with last_updated', async () => {
+    await wrapper.setProps({
+      agent: createAgent({
+        is_official: false,
+        last_updated: '2026-05-13T15:15:00',
+      }),
+    });
+
+    const aboutSection = wrapper.findComponent(
+      '[data-testid="agent-detail-about-section"]',
+    );
+
+    expect(aboutSection.props('lastUpdated')).toBe(
+      'Updated on May 13, 2026, at 3:15 p.m.',
+    );
+  });
+
+  it('does not pass lastUpdated for an official agent even with last_updated', async () => {
+    await wrapper.setProps({
+      agent: createAgent({
+        is_official: true,
+        last_updated: '2026-05-13T15:15:00',
+      }),
+    });
+
+    const aboutSection = wrapper.findComponent(
+      '[data-testid="agent-detail-about-section"]',
+    );
+
+    expect(aboutSection.props('lastUpdated')).toBeUndefined();
   });
 
   it('emits update:open when the dialog emits update:open', async () => {

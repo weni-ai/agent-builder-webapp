@@ -5,19 +5,6 @@ import { cleanParams } from '@/utils/http';
 
 const projectUuid = computed(() => useProjectStore().uuid);
 
-function filterSystems(systems) {
-  return systems.filter(
-    (system) => system !== 'no_system' && system !== 'custom',
-  );
-}
-
-function normalizeMCPs(MCPs = []) {
-  return MCPs.map(({ config, ...mcp }) => ({
-    ...mcp,
-    constants: config ?? [],
-  }));
-}
-
 export const AgentsTeam = {
   async listOfficialAgents({ category, system, name }) {
     const params = cleanParams({
@@ -31,42 +18,31 @@ export const AgentsTeam = {
       params,
     });
 
-    const agents = [...data.new.agents, ...data.legacy].map((agent) => ({
+    const agents = (data?.results ?? []).map((agent) => ({
       ...agent,
       id: agent.slug,
-      systems: filterSystems(agent.systems),
-      MCPs: normalizeMCPs(agent.MCPs),
     }));
 
     return {
       agents,
-      availableSystems: data?.new?.available_systems,
     };
   },
 
-  async getOfficialAgentDetails(group) {
-    const params = {
-      project_uuid: projectUuid.value,
-    };
-
+  async listOfficialAvailableSystems() {
     const { data } = await request.$http.get(
-      `/api/v1/official/agents/${group}`,
+      '/api/v1/official/available-systems',
       {
-        params,
+        params: { project_uuid: projectUuid.value },
       },
     );
 
-    return {
-      ...data,
-      systems: filterSystems(data.systems),
-      MCPs: normalizeMCPs(data.MCPs),
-    };
+    return data?.available_systems ?? [];
   },
 
-  async toggleOfficialAgentAssignment(payload) {
-    const agentId = payload.group
-      ? `&group=${payload.group}`
-      : `&agent_uuid=${payload.agent_uuid}`;
+  async toggleAgentAssignment(payload) {
+    const agentId = payload.agent_uuid
+      ? `&agent_uuid=${payload.agent_uuid}`
+      : `&group=${payload.group}`;
 
     const { data } = await request.$http.post(
       `/api/v1/official/agents?project_uuid=${projectUuid.value}${agentId}`,
@@ -93,29 +69,10 @@ export const AgentsTeam = {
     );
 
     return {
-      data: data.map(
-        ({
-          uuid,
-          name,
-          about,
-          description,
-          skills,
-          assigned,
-          slug,
-          mcp_definitions,
-        }) => ({
-          uuid,
-          name,
-          about: about ?? null,
-          description,
-          skills,
-          assigned,
-          credentials: mcp_definitions?.credentials ?? [],
-          is_official: false,
-          id: slug,
-          constants: mcp_definitions?.config ?? [],
-        }),
-      ),
+      data: (data ?? []).map((agent) => ({
+        ...agent,
+        id: agent.slug,
+      })),
     };
   },
 
@@ -131,48 +88,18 @@ export const AgentsTeam = {
         manager: {
           id: manager.id || 'manager',
         },
-        agents: agents.map(
-          ({
-            uuid,
-            name,
-            skills,
-            id,
-            about,
-            description,
-            credentials,
-            is_official,
-            slug,
-            mcp,
-          }) => ({
-            uuid,
-            name,
-            skills,
-            id: id || slug,
-            about: about ?? null,
-            description,
-            credentials,
-            is_official,
-            mcp,
-          }),
-        ),
+        agents: (agents ?? []).map((agent) => ({
+          ...agent,
+          id: agent.slug,
+          mcps: agent.mcps?.map((mcp) => ({
+            ...mcp,
+            config: Object.entries(mcp.config ?? {}).map(([key, value]) => ({
+              label: key,
+              value,
+            })),
+          })),
+        })),
       },
-    };
-  },
-
-  async toggleAgentAssignment({ agentUuid, is_assigned, mcp_config }) {
-    const body = { assigned: is_assigned };
-    if (mcp_config !== undefined) body.mcp_config = mcp_config;
-
-    const { data } = await request.$http.patch(
-      `api/project/${projectUuid.value}/assign/${agentUuid}`,
-      body,
-      {
-        hideGenericErrorAlert: true,
-      },
-    );
-
-    return {
-      data,
     };
   },
 

@@ -83,7 +83,7 @@
       },
       "filters": {
         "filter_conversations": "Filter conversations",
-        "count_applied_filters": "(1 filter applied) | ({count} filters applied)",
+        "count_applied_filters": "{count, plural, one {(1 filter applied)} other {({count} filters applied)}}",
         "filter_conversations_drawer": "Filter conversations",
         "apply_filters": "Apply filters",
         "clear_filters": "Clear filters",
@@ -107,7 +107,8 @@
           "very_dissatisfied": "😡 Very dissatisfied"
         },
         "topic": {
-          "topic": "Topic"
+          "topic": "Topic",
+          "unclassified": "Not classified"
         }
       },
       "load_conversations": {
@@ -312,6 +313,7 @@
       },
       "agent_details": {
         "about": "About",
+        "last_updated": "Updated on {date}, at {time}",
         "mcp": "MCP",
         "system": "System",
         "view_options": "View options",
@@ -325,7 +327,7 @@
         "all_systems": "All systems",
         "all_custom_agents": "All custom agents",
         "system_title": "{system} agents",
-        "agents_available": "No agents available | {count} agent available | {count} agents available"
+        "agents_available": "{count, plural, =0 {No agents available} one {{count} agent available} other {{count} agents available}}"
       },
       "sidebar": {
         "official_title": "Official agents",
@@ -382,7 +384,7 @@
         "system_selection": {
           "title": "System selection",
           "description": "Select the data source system",
-          "mcp_count": "{count} MCP available | {count} MCPs available"
+          "mcp_count": "{count, plural, one {{count} MCP available} other {{count} MCPs available}}"
         },
         "mcp_selection": {
           "title": "MCP selection",
@@ -599,7 +601,7 @@
       "standby": "Standby mode",
       "catalog": {
         "title": "Product catalog",
-        "view_cart": "View cart ({quantity} item) | View cart ({quantity} items)",
+        "view_cart": "{count, plural, one {View cart ({count} item)} other {View cart ({count} items)}}",
         "add_to_cart": "Add to cart",
         "subtotal": "Subtotal",
         "place_order": "Checkout",
@@ -607,7 +609,7 @@
         "order_summary": "Order summary",
         "order_details": "Order details",
         "view_order_details": "View order details",
-        "items": "item | items",
+        "items": "{count, plural, one {item} other {items}}",
         "remove": "Remove"
       }
     }
@@ -831,10 +833,10 @@
     }
   },
   "time": {
-    "time_ago_minutes": "{count} minute ago | {count} minutes ago",
-    "time_ago_hours": "{count} hour ago | {count} hours ago",
-    "time_ago_days": "{count} day ago | {count} days ago",
-    "time_ago_months": "{count} month ago | {count} months ago"
+    "time_ago_minutes": "{count, plural, one {{count} minute ago} other {{count} minutes ago}}",
+    "time_ago_hours": "{count, plural, one {{count} hour ago} other {{count} hours ago}}",
+    "time_ago_days": "{count, plural, one {{count} day ago} other {{count} days ago}}",
+    "time_ago_months": "{count, plural, one {{count} month ago} other {{count} months ago}}"
   },
   "audio_recorder": {
     "discard_button": "Discard"

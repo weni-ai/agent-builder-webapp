@@ -86,13 +86,9 @@ const cartButtonText = computed(() => {
     return i18n.global.t('router.preview.catalog.add_to_cart');
   }
 
-  return i18n.global.t(
-    'router.preview.catalog.view_cart',
-    cartItemsQuantity.value,
-    {
-      quantity: cartItemsQuantity.value,
-    },
-  );
+  return i18n.global.t('router.preview.catalog.view_cart', {
+    count: cartItemsQuantity.value,
+  });
 });
 
 const cartItems = ref([]);

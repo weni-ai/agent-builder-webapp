@@ -21,18 +21,19 @@
             <AgentDetailSection
               :title="$t('agents.assigned_agents.agent_details.about')"
               :description="aboutDescription"
+              :lastUpdated="lastUpdatedLabel"
               data-testid="agent-detail-about-section"
             />
 
             <SystemSection
-              v-if="agent.mcp?.system"
-              :system="agent.mcp.system"
+              v-if="assignedSystemSlug"
+              :system="assignedSystemSlug"
             />
           </section>
 
           <McpSection
-            v-if="agent.mcp"
-            :mcp="agent.mcp"
+            v-if="assignedMCP"
+            :mcp="assignedMCP"
           />
         </section>
 
@@ -49,8 +50,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { ActiveTeamAgent } from '@/store/types/Agents.types';
+import { useI18n } from 'vue-i18n';
+
+import { Agent } from '@/store/types/Agents.types';
 import useTranslatedField from '@/composables/useTranslatedField';
+import { formatLongDate, formatTime } from '@/utils/formatters';
 
 import AgentModalHeader from '@/components/AgentsTeam/AgentModalHeader.vue';
 import McpSection from './McpSection.vue';
@@ -59,14 +63,30 @@ import AgentDetailSection from './AgentDetailSection.vue';
 import ViewOptions from './ViewOptions.vue';
 
 const props = defineProps<{
-  agent: ActiveTeamAgent;
+  agent: Agent;
 }>();
+
+const { t } = useI18n();
 
 const translateField = useTranslatedField();
 
-const aboutDescription = computed(
-  () => translateField(props.agent.about) ?? props.agent.description,
+const aboutDescription = computed(() => translateField(props.agent.about));
+
+const lastUpdatedLabel = computed(() => {
+  const { last_updated, is_official } = props.agent;
+  if (!last_updated || is_official) return undefined;
+
+  return t('agents.assigned_agents.agent_details.last_updated', {
+    date: formatLongDate(last_updated),
+    time: formatTime(last_updated),
+  });
+});
+
+const assignedMCP = computed(
+  () => props.agent.mcps?.filter((mcp) => mcp.name)?.[0] ?? null,
 );
+
+const assignedSystemSlug = computed(() => assignedMCP.value?.system ?? null);
 
 const emit = defineEmits(['update:open']);
 
