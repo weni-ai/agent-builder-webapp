@@ -295,7 +295,7 @@
     }
   },
   "agents": {
-    "title": "Mis Agentes",
+    "title": "Mis agentes",
     "description": "Gestiona tu equipo digital, instrucciones y comportamientos",
     "assign_agents_button": "Asignar nuevos agentes",
     "assigned_agents": {
@@ -303,7 +303,7 @@
       "new_agent": "Nuevo agente",
       "manager": {
         "name": "Manager",
-        "edit_manager": "Editar Manager",
+        "edit_manager": "Editar manager",
         "edit_instructions": "Editar instrucciones"
       },
       "no_agents": {
