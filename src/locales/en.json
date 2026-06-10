@@ -432,11 +432,16 @@
       "export_instructions": "Export instructions",
       "new_instruction": "New instruction",
       "view": {
+        "default_instructions": "Default instructions",
+        "delete_category": "Delete category",
+        "empty_category": "No instructions in this category yet",
+        "locked_tooltip": "Default instructions can't be edited or removed",
         "search_placeholder": "Search...",
         "segmented": {
           "categories": "Categories",
           "list": "List"
-        }
+        },
+        "uncategorized": "Uncategorized"
       },
       "new_instruction_drawer": {
         "title": "New instruction",

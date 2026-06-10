@@ -432,11 +432,16 @@
       "export_instructions": "Exportar instruções",
       "new_instruction": "Nova instrução",
       "view": {
+        "default_instructions": "Instruções padrão",
+        "delete_category": "Excluir categoria",
+        "empty_category": "Ainda não há instruções nesta categoria",
+        "locked_tooltip": "As instruções padrão não podem ser editadas nem removidas",
         "search_placeholder": "Buscar...",
         "segmented": {
           "categories": "Categorias",
           "list": "Lista"
-        }
+        },
+        "uncategorized": "Sem categoria"
       },
       "new_instruction_drawer": {
         "title": "Nova instrução",

@@ -431,11 +431,16 @@
       "export_instructions": "Exportă instrucțiuni",
       "new_instruction": "Instrucțiune nouă",
       "view": {
+        "default_instructions": "Instrucțiuni implicite",
+        "delete_category": "Șterge categoria",
+        "empty_category": "Încă nu există instrucțiuni în această categorie",
+        "locked_tooltip": "Instrucțiunile implicite nu pot fi editate sau eliminate",
         "search_placeholder": "Caută...",
         "segmented": {
           "categories": "Categorii",
           "list": "Listă"
-        }
+        },
+        "uncategorized": "Fără categorie"
       },
       "new_instruction_drawer": {
         "title": "Instrucțiune nouă",
