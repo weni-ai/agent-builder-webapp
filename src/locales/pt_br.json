@@ -642,7 +642,9 @@
     "new_text": {
       "description": "Escreva o conteúdo que o agente usará para responder às perguntas",
       "supporting_text": "Organize seu conteúdo em textos separados por tópico para respostas mais precisas",
-      "button_add_new_text": "Novo texto"
+      "button_add_new_text": "Novo texto",
+      "search_placeholder": "Buscar",
+      "no_results": "Nenhum resultado encontrado"
     },
     "file_with_error": "Arquivo com erro. Exclua e adicione-o novamente.",
     "site_with_error": "Site com erro. Exclua e adicione-o novamente.",

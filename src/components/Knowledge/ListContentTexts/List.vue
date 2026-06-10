@@ -6,7 +6,7 @@
     @scroll="loadMoreIfNeeded"
   >
     <ContentItem
-      v-for="text in contentTexts.data"
+      v-for="text in itemsFiltered"
       :key="text.uuid"
       :file="toItemFile(text)"
       timeAgoLabelKey="time_ago_edited"
@@ -23,6 +23,14 @@
       compressed
       data-testid="list-content-texts-loading-item"
     />
+
+    <p
+      v-if="showNoResults"
+      class="list-content-texts__no-results"
+      data-testid="list-content-texts-no-results"
+    >
+      {{ $t('content_bases.new_text.no_results') }}
+    </p>
   </section>
 </template>
 
@@ -40,6 +48,21 @@ const { contentTexts } = storeToRefs(knowledgeStore);
 
 const scrollContainer = ref(null);
 
+const normalizedSearchTerm = computed(() =>
+  (contentTexts.value.searchTerm ?? '').trim().toLowerCase(),
+);
+
+const itemsFiltered = computed(() => {
+  const term = normalizedSearchTerm.value;
+  if (!term) return contentTexts.value.data;
+
+  return contentTexts.value.data.filter((text) =>
+    (text.title ?? '').toLowerCase().includes(term),
+  );
+});
+
+const isPaginating = computed(() => contentTexts.value.next !== null);
+
 const loadingPlaceholdersCount = computed(() => {
   if (contentTexts.value.status !== 'loading') return 0;
 
@@ -50,6 +73,17 @@ const loadingPlaceholdersCount = computed(() => {
     ? INITIAL_LOADING_PLACEHOLDERS
     : PAGINATION_LOADING_PLACEHOLDERS;
 });
+
+// "No results" inline message is only definitive when there's no more pages
+// to fetch. While `next !== null`, we keep paginating in the background and
+// show skeletons instead of the empty message.
+const showNoResults = computed(
+  () =>
+    !!normalizedSearchTerm.value &&
+    itemsFiltered.value.length === 0 &&
+    !isPaginating.value &&
+    contentTexts.value.status !== 'loading',
+);
 
 const toItemFile = (text) => ({
   uuid: text.uuid,
@@ -88,16 +122,28 @@ async function loadMoreAfterRender() {
 onMounted(loadMoreAfterRender);
 
 watch(
-  [() => contentTexts.value.status, () => contentTexts.value.data.length],
+  [
+    () => contentTexts.value.status,
+    () => contentTexts.value.data.length,
+    () => contentTexts.value.searchTerm,
+  ],
   loadMoreAfterRender,
 );
 </script>
 
 <style lang="scss" scoped>
-.list-content-texts__list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: $unnnic-space-4;
-  overflow-y: auto;
+.list-content-texts {
+  &__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $unnnic-space-4;
+    overflow-y: auto;
+  }
+
+  &__no-results {
+    grid-column: 1 / -1;
+    font: $unnnic-font-body;
+    color: $unnnic-color-fg-muted;
+  }
 }
 </style>

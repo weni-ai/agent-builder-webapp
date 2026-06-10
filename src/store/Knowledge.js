@@ -21,6 +21,7 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
     data: [],
     status: null,
     next: null,
+    searchTerm: '',
   });
 
   async function loadContentTexts() {
