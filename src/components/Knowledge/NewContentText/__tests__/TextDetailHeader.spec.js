@@ -14,7 +14,7 @@ const elements = {
   input: '[data-testid="text-detail-header-input"]',
   hint: '[data-testid="text-detail-header-hint"]',
   saveButton: '[data-testid="text-detail-header-save-button"]',
-  moreButton: '[data-testid="text-detail-header-cave-button"]',
+  moreMenu: '[data-testid="text-detail-header-more-actions"]',
 };
 
 const createWrapper = (props = {}) =>
@@ -97,13 +97,49 @@ describe('TextDetailHeader.vue', () => {
       );
     });
 
-    it('renders the more menu placeholder as a tertiary button with the more_vert icon', () => {
+    it('does not render the more menu when there are no actions available (canDelete=false)', () => {
       wrapper = createWrapper();
 
-      const moreButton = wrapper.findComponent(elements.moreButton);
-      expect(moreButton.exists()).toBe(true);
-      expect(moreButton.props('type')).toBe('tertiary');
-      expect(moreButton.props('iconCenter')).toBe('more_vert');
+      expect(wrapper.findComponent(elements.moreMenu).exists()).toBe(false);
+    });
+  });
+
+  describe('more menu', () => {
+    it('renders the more menu when canDelete is true', () => {
+      wrapper = createWrapper({ canDelete: true });
+
+      expect(wrapper.findComponent(elements.moreMenu).exists()).toBe(true);
+    });
+
+    it('exposes a single "Remove text" action when canDelete is true', () => {
+      wrapper = createWrapper({ canDelete: true });
+
+      const actions = wrapper.findComponent(elements.moreMenu).props('actions');
+
+      expect(actions).toHaveLength(1);
+      expect(actions[0]).toMatchObject({
+        scheme: 'red-10',
+        icon: 'delete',
+        text: 'Remove text',
+      });
+    });
+
+    it('emits remove when the remove action is invoked', () => {
+      wrapper = createWrapper({ canDelete: true });
+
+      const action = wrapper
+        .findComponent(elements.moreMenu)
+        .props('actions')[0];
+
+      action.onClick();
+
+      expect(wrapper.emitted('remove')).toHaveLength(1);
+    });
+
+    it('does not expose the remove action when canDelete is false', () => {
+      wrapper = createWrapper({ canDelete: false });
+
+      expect(wrapper.findComponent(elements.moreMenu).exists()).toBe(false);
     });
   });
 

@@ -658,6 +658,15 @@
         "description": "Dacă te întorci acum, toate modificările făcute vor fi pierdute. Această acțiune nu poate fi anulată",
         "keep": "Continuă editarea",
         "discard": "Renunță și întoarce-te"
+      },
+      "delete": {
+        "title": "Elimină textul",
+        "description": "Sigur dorești să elimini {name}? Agentul nu va mai folosi acest conținut pentru a răspunde la întrebări. Această acțiune nu poate fi anulată.",
+        "confirm": "Elimină",
+        "cancel": "Anulează",
+        "success": "Text eliminat cu succes",
+        "error": "Nu s-a putut elimina textul",
+        "error_hint": "Încearcă să elimini textul din nou"
       }
     },
     "file_with_error": "Fișier cu eroare. Șterge-l și adaugă-l din nou.",

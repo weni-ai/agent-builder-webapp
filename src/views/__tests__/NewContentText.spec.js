@@ -32,6 +32,7 @@ const elements = {
   header: '[data-testid="new-content-text-header"]',
   textarea: '[data-testid="new-content-text-textarea"]',
   unsavedModal: '[data-testid="new-content-text-unsaved-modal"]',
+  deleteModal: '[data-testid="new-content-text-delete-modal"]',
 };
 
 const createWrapper = ({
@@ -971,6 +972,139 @@ describe('views/Knowledge/NewContentText.vue', () => {
       expect(mockRouter.push).toHaveBeenCalledWith({
         name: 'knowledge',
         query: { tab: 'text' },
+      });
+    });
+  });
+
+  describe('delete flow', () => {
+    const item = {
+      uuid: 'text-uuid-1',
+      title: 'Existing title',
+      text: 'Existing body',
+      last_updated_at: '2024-05-01T00:00:00Z',
+    };
+
+    describe('create mode', () => {
+      it('does not enable the more menu in the header (canDelete=false)', async () => {
+        mockRoute.params = {};
+        wrapper = createWrapper();
+        await flushPromises();
+
+        expect(wrapper.findComponent(elements.header).props('canDelete')).toBe(
+          false,
+        );
+      });
+
+      it('does not render the delete modal in create mode', async () => {
+        mockRoute.params = {};
+        wrapper = createWrapper();
+        await flushPromises();
+
+        expect(wrapper.find(elements.deleteModal).exists()).toBe(false);
+      });
+    });
+
+    describe('edit mode', () => {
+      beforeEach(() => {
+        mockRoute.params = { uuid: item.uuid };
+      });
+
+      it('enables the more menu in the header (canDelete=true)', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        wrapper = createWrapper({ getContentTextMock });
+        await flushPromises();
+
+        expect(wrapper.findComponent(elements.header).props('canDelete')).toBe(
+          true,
+        );
+      });
+
+      it('does not render the delete modal until the header emits remove', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        wrapper = createWrapper({ getContentTextMock });
+        await flushPromises();
+
+        expect(wrapper.find(elements.deleteModal).exists()).toBe(true);
+        expect(
+          wrapper.findComponent(elements.deleteModal).props('modelValue'),
+        ).toBe(false);
+      });
+
+      it('opens the delete modal with the current text data when the header emits remove', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        wrapper = createWrapper({ getContentTextMock });
+        await flushPromises();
+
+        wrapper.findComponent(elements.header).vm.$emit('remove');
+        await flushPromises();
+
+        const modal = wrapper.findComponent(elements.deleteModal);
+
+        expect(modal.props('modelValue')).toBe(true);
+        expect(modal.props('text')).toEqual({
+          uuid: item.uuid,
+          title: item.title,
+        });
+      });
+
+      it('navigates to the knowledge text tab when the delete modal emits confirm', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        wrapper = createWrapper({ getContentTextMock });
+        await flushPromises();
+
+        wrapper.findComponent(elements.header).vm.$emit('remove');
+        await flushPromises();
+
+        wrapper.findComponent(elements.deleteModal).vm.$emit('confirm');
+        await flushPromises();
+
+        expect(mockRouter.push).toHaveBeenCalledWith({
+          name: 'knowledge',
+          query: { tab: 'text' },
+        });
+      });
+
+      it('bypasses the unsaved changes guard when navigating after a successful delete', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue(item);
+        wrapper = createWrapper({ getContentTextMock });
+        await flushPromises();
+
+        wrapper
+          .findComponent(elements.textarea)
+          .vm.$emit('update:modelValue', 'Dirty unsaved changes');
+        await flushPromises();
+
+        wrapper.findComponent(elements.header).vm.$emit('remove');
+        await flushPromises();
+        wrapper.findComponent(elements.deleteModal).vm.$emit('confirm');
+        await flushPromises();
+
+        const next = runRouteLeaveGuard({ name: 'knowledge' });
+
+        expect(next).toHaveBeenCalledWith();
+        expect(
+          wrapper.findComponent(elements.unsavedModal).props('open'),
+        ).toBe(false);
+      });
+
+      it('falls back to the default title when the loaded item has no title', async () => {
+        const getContentTextMock = vi.fn().mockResolvedValue({
+          ...item,
+          title: '',
+        });
+        wrapper = createWrapper({ getContentTextMock });
+        await flushPromises();
+
+        wrapper.findComponent(elements.header).vm.$emit('remove');
+        await flushPromises();
+
+        const defaultTitle = i18n.global.t(
+          'content_bases.new_text.default_title',
+        );
+
+        expect(
+          wrapper.findComponent(elements.deleteModal).props('text').title,
+        ).toBe(defaultTitle);
       });
     });
   });

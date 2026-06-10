@@ -78,10 +78,10 @@
           @click="$emit('save')"
         />
 
-        <UnnnicButton
-          type="tertiary"
-          iconCenter="more_vert"
-          data-testid="text-detail-header-cave-button"
+        <ContentItemActions
+          v-if="actions.length"
+          data-testid="text-detail-header-more-actions"
+          :actions="actions"
         />
       </section>
     </template>
@@ -91,6 +91,8 @@
 <script setup>
 import { computed, nextTick, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import ContentItemActions from '@/components/ContentItemActions.vue';
 
 const MAX_TITLE_LENGTH = 100;
 
@@ -111,11 +113,30 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  canDelete: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const emit = defineEmits(['update:title', 'save', 'back']);
+const emit = defineEmits(['update:title', 'save', 'back', 'remove']);
 
 const { t } = useI18n();
+
+const actions = computed(() => {
+  const list = [];
+
+  if (props.canDelete) {
+    list.push({
+      scheme: 'red-10',
+      icon: 'delete',
+      text: t('content_bases.actions.remove_text'),
+      onClick: () => emit('remove'),
+    });
+  }
+
+  return list;
+});
 
 const editing = ref(false);
 const draft = ref('');

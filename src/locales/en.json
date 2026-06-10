@@ -662,6 +662,15 @@
         "description": "If you go back now, all changes made will be discarded. This action can't be undone",
         "keep": "Keep editing",
         "discard": "Discard and go back"
+      },
+      "delete": {
+        "title": "Remove text",
+        "description": "Are you sure you want to remove {name}? The agent will no longer use this content to answer questions. This action cannot be undone.",
+        "confirm": "Remove",
+        "cancel": "Cancel",
+        "success": "Text removed successfully",
+        "error": "Something went wrong while removing text",
+        "error_hint": "Try removing the text again"
       }
     },
     "file_with_error": "File with error. Delete and add it again.",

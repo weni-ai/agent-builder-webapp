@@ -3,6 +3,7 @@ import { shallowMount, flushPromises } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
 
 import List from '@/components/Knowledge/ListContentTexts/List.vue';
+import ModalDeleteText from '@/components/Knowledge/NewContentText/ModalDeleteText.vue';
 import { useKnowledgeStore } from '@/store/Knowledge';
 
 const pushMock = vi.fn();
@@ -160,6 +161,94 @@ describe('ListContentTexts/List.vue', () => {
         name: 'content-text',
         params: { uuid: 'uuid-1' },
       });
+    });
+  });
+
+  describe('delete flow', () => {
+    const items = [
+      buildItem({
+        uuid: 'uuid-1',
+        title: 'First text',
+        last_updated_at: '2024-03-01T00:00:00Z',
+      }),
+      buildItem({
+        uuid: 'uuid-2',
+        title: 'Second text',
+        last_updated_at: '2024-02-01T00:00:00Z',
+      }),
+    ];
+
+    beforeEach(() => {
+      wrapper = createWrapper({
+        contentTexts: { data: items, status: 'complete', next: null },
+      });
+    });
+
+    it('does not render the ModalDeleteText until a remove is triggered', () => {
+      expect(wrapper.findComponent(ModalDeleteText).exists()).toBe(false);
+    });
+
+    it('opens the ModalDeleteText with the selected text when an item emits remove', async () => {
+      const firstItem = wrapper
+        .findAllComponents({ name: 'ContentItem' })
+        .filter((c) => !c.props('loading'))[0];
+
+      await firstItem.vm.$emit('remove');
+
+      const modal = wrapper.findComponent(ModalDeleteText);
+
+      expect(modal.exists()).toBe(true);
+      expect(modal.props('modelValue')).toBe(true);
+      expect(modal.props('text')).toEqual(items[0]);
+    });
+
+    it('passes the matching text to the modal when a different item emits remove', async () => {
+      const secondItem = wrapper
+        .findAllComponents({ name: 'ContentItem' })
+        .filter((c) => !c.props('loading'))[1];
+
+      await secondItem.vm.$emit('remove');
+
+      expect(wrapper.findComponent(ModalDeleteText).props('text')).toEqual(
+        items[1],
+      );
+    });
+
+    it('closes the modal when the dialog requests to close', async () => {
+      const firstItem = wrapper
+        .findAllComponents({ name: 'ContentItem' })
+        .filter((c) => !c.props('loading'))[0];
+
+      await firstItem.vm.$emit('remove');
+
+      const modal = wrapper.findComponent(ModalDeleteText);
+      await modal.vm.$emit('update:modelValue', false);
+
+      expect(wrapper.findComponent(ModalDeleteText).props('modelValue')).toBe(
+        false,
+      );
+    });
+
+    it('removes the item from the rendered list after the deletion is confirmed in the store', async () => {
+      const knowledgeStore = useKnowledgeStore();
+
+      const firstItem = wrapper
+        .findAllComponents({ name: 'ContentItem' })
+        .filter((c) => !c.props('loading'))[0];
+
+      await firstItem.vm.$emit('remove');
+
+      knowledgeStore.contentTexts.data = items.filter(
+        (item) => item.uuid !== 'uuid-1',
+      );
+      await flushPromises();
+
+      const renderedItems = wrapper
+        .findAllComponents({ name: 'ContentItem' })
+        .filter((c) => !c.props('loading'));
+
+      expect(renderedItems).toHaveLength(1);
+      expect(renderedItems[0].props('file').uuid).toBe('uuid-2');
     });
   });
 
