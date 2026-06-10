@@ -28,7 +28,14 @@
       </UnnnicSegmentedControl>
     </header>
 
+    <CategoriesView
+      v-if="instructionsStore.activeInstructionsView === 'categories'"
+      :isLoading="isLoading"
+      data-testid="instructions-categories-view"
+    />
+
     <InstructionsList
+      v-else
       :instructions="instructionsStore.instructions.data"
       :isLoading="isLoading"
       showActions
@@ -43,6 +50,7 @@ import { computed } from 'vue';
 import { useInstructionsStore } from '@/store/Instructions';
 
 import InstructionsList from '@/components/Instructions/InstructionsList.vue';
+import CategoriesView from './CategoriesView.vue';
 
 const views = ['categories', 'list'];
 
