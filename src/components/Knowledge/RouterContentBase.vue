@@ -103,6 +103,8 @@ const onTabChange = (newTab) => {
     flex-direction: column;
     row-gap: $unnnic-space-4;
 
+    padding-bottom: $unnnic-space-4;
+
     &--shape-normal {
       height: 100%;
     }

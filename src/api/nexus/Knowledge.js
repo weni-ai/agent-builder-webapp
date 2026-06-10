@@ -30,7 +30,11 @@ const generateContentBaseEndpoint = ({ type, itemUuid }) => {
 
 export const Knowledge = {
   texts: {
-    list() {
+    list({ next } = {}) {
+      if (next) {
+        return request.$http.get(forceHttps(next));
+      }
+
       const endpoint = generateContentBaseEndpoint({
         type: 'TEXT',
       });

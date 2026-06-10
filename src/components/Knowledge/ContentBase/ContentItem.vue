@@ -1,9 +1,45 @@
 <template>
+  <section
+    v-if="loading"
+    :class="[
+      'files-list__content__file',
+      'files-list__content__file--loading',
+      {
+        'files-list__content__file--compressed': compressed,
+      },
+    ]"
+    data-test="loading"
+  >
+    <UnnnicSkeletonLoading
+      width="40px"
+      height="40px"
+      data-test="loading-icon"
+    />
+
+    <section class="files-list__content__file__loading__content">
+      <UnnnicSkeletonLoading
+        height="19px"
+        data-test="loading-title"
+      />
+      <UnnnicSkeletonLoading
+        height="19px"
+        width="60%"
+        data-test="loading-subtitle"
+      />
+    </section>
+
+    <UnnnicSkeletonLoading
+      width="19px"
+      height="19px"
+      data-test="loading-actions"
+    />
+  </section>
+
   <UnnnicToolTip
+    v-else
     side="top"
     :text="failureMessage"
     :enabled="isFailed"
-    @click="$emit('click')"
   >
     <section
       :class="[
@@ -16,6 +52,7 @@
           'files-list__content__file--clickable': clickable,
         },
       ]"
+      @click="clickable && $emit('click')"
     >
       <section class="files-list__content__file__icon">
         <UnnnicAvatarIcon
@@ -62,7 +99,10 @@
         </UnnnicToolTip>
       </header>
 
-      <section class="files-list__content__file__actions">
+      <section
+        class="files-list__content__file__actions"
+        @click.stop
+      >
         <UnnnicIcon
           v-if="downloading || isProcessing"
           icon="progress_activity"
@@ -93,9 +133,17 @@ export default {
   },
 
   props: {
-    file: Object,
+    file: {
+      type: Object,
+      default: () => ({}),
+    },
     compressed: Boolean,
     clickable: Boolean,
+    loading: Boolean,
+    timeAgoLabelKey: {
+      type: String,
+      default: 'time_ago',
+    },
   },
 
   emits: ['click', 'remove', 'edit'],
@@ -116,7 +164,7 @@ export default {
           this.file.status === 'uploaded',
 
         downloadFile:
-          this.file.extension_file !== 'site' &&
+          !['site', 'text'].includes(this.file.extension_file) &&
           this.file.status === 'uploaded',
 
         remove:
@@ -166,6 +214,7 @@ export default {
             {
               site: this.$t('content_bases.actions.remove_site'),
               action: this.$t('content_bases.actions.remove_action'),
+              text: this.$t('content_bases.actions.remove_text'),
             }[this.extension] || this.$t('content_bases.actions.remove_file'),
           onClick: () => this.$emit('remove'),
         });
@@ -175,7 +224,7 @@ export default {
     },
 
     fileName() {
-      if (['site', 'action'].includes(this.file.extension_file)) {
+      if (['site', 'action', 'text'].includes(this.file.extension_file)) {
         return this.file?.created_file_name;
       }
 
@@ -198,7 +247,7 @@ export default {
     },
 
     extension() {
-      if (['site', 'action'].includes(this.file.extension_file)) {
+      if (['site', 'action', 'text'].includes(this.file.extension_file)) {
         return this.file.extension_file;
       }
 
@@ -228,6 +277,7 @@ export default {
           doc: 'draft',
           docx: 'draft',
           site: 'globe',
+          text: 'subject',
         }[this.extension] || 'draft'
       );
     },
@@ -283,22 +333,23 @@ export default {
       }
 
       const diffInMinutes = Math.floor((now - createdAt) / 1000 / 60);
+      const baseKey = `content_bases.${this.timeAgoLabelKey}`;
 
       if (diffInMinutes < 60) {
-        return i18n.global.t('content_bases.time_ago_minutes', {
+        return i18n.global.t(`${baseKey}_minutes`, {
           minutes: diffInMinutes,
         });
       }
 
       const diffInHours = Math.floor(diffInMinutes / 60);
       if (diffInHours < 24) {
-        return i18n.global.t('content_bases.time_ago_hours', {
+        return i18n.global.t(`${baseKey}_hours`, {
           hours: diffInHours,
         });
       }
 
       const diffInDays = Math.floor(diffInHours / 24);
-      return i18n.global.t('content_bases.time_ago_days', {
+      return i18n.global.t(`${baseKey}_days`, {
         days: diffInDays,
       });
     },
@@ -308,23 +359,35 @@ export default {
 
 <style lang="scss" scoped>
 .files-list__content__file {
-  outline-style: solid;
-  outline-color: $unnnic-color-border-base;
-  outline-width: $unnnic-border-width-thinner;
-  outline-offset: -$unnnic-border-width-thinner;
+  border: 1px solid $unnnic-color-border-base;
 
-  background-color: $unnnic-color-background-white;
+  background-color: $unnnic-color-bg-base;
 
   border-radius: $unnnic-radius-2;
 
-  padding: $unnnic-spacing-ant;
+  padding: $unnnic-space-3;
   display: flex;
-  column-gap: $unnnic-spacing-ant;
+  column-gap: $unnnic-space-2;
   align-items: center;
   position: relative;
 
   p {
     margin: 0;
+  }
+
+  &--loading {
+    column-gap: $unnnic-space-1;
+    pointer-events: none;
+
+    * {
+      display: flex;
+    }
+  }
+
+  &__loading__content {
+    flex: 1;
+    flex-direction: column;
+    row-gap: $unnnic-space-05;
   }
 
   &--compressed {
@@ -351,6 +414,10 @@ export default {
 
   &--clickable {
     cursor: pointer;
+
+    &:hover {
+      border-color: $unnnic-color-border-emphasized;
+    }
   }
 
   &--status-fail {
@@ -391,11 +458,8 @@ export default {
     width: 0;
 
     &__title {
-      color: $unnnic-color-fg-emphasized;
-      font-family: $unnnic-font-family-secondary;
-      font-size: $unnnic-font-size-body-gt;
-      line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
-      font-weight: $unnnic-font-weight-regular;
+      color: $unnnic-color-fg-base;
+      font: $unnnic-font-emphasis;
 
       overflow: hidden;
       white-space: nowrap;
@@ -404,11 +468,9 @@ export default {
 
     &__sub_title {
       overflow: hidden;
-      color: $unnnic-color-fg-base;
+      color: $unnnic-color-fg-muted;
       text-overflow: ellipsis;
-      font-family: $unnnic-font-family-secondary;
-      font-size: $unnnic-font-size-body-md;
-      font-weight: $unnnic-font-weight-regular;
+      font: $unnnic-font-caption-2;
 
       &-fail {
         color: $unnnic-color-fg-critical;
