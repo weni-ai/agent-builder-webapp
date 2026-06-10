@@ -639,8 +639,13 @@
       "description": "Scrie conținut text pe care agentul îl va folosi pentru a răspunde la întrebări",
       "supporting_text": "Organizează conținutul în texte separate pe subiecte pentru răspunsuri mai precise",
       "button_add_new_text": "Text nou",
+      "default_title": "Text fără titlu",
+      "edit_name": "Editează numele",
+      "edit_name_hint": "Apasă ENTER pentru a confirma sau ESC pentru a anula",
+      "save_changes": "Salvează modificările",
       "search_placeholder": "Caută",
       "no_results": "Niciun rezultat găsit",
+      "write_or_paste_placeholder": "Scrie sau lipește conținutul aici…",
       "empty_state": {
         "title": "Niciun text adăugat",
         "description": "Scrie conținutul pe care agentul îl va folosi ca sursă de cunoaștere"

@@ -643,8 +643,13 @@
       "description": "Escribe el contenido que el agente utilizará para responder a las preguntas",
       "supporting_text": "Organiza tu contenido en textos separados por tema para respuestas más precisas",
       "button_add_new_text": "Nuevo texto",
+      "default_title": "Texto sin título",
+      "edit_name": "Editar nombre",
+      "edit_name_hint": "Pulsa ENTER para confirmar o ESC para cancelar",
+      "save_changes": "Guardar cambios",
       "search_placeholder": "Buscar",
       "no_results": "Sin resultados",
+      "write_or_paste_placeholder": "Escribe o pega tu contenido aquí…",
       "empty_state": {
         "title": "Sin textos agregados",
         "description": "Escribe el contenido que el agente utilizará como fuente de conocimiento"
