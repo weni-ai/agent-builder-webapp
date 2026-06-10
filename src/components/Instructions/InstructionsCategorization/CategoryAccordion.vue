@@ -77,7 +77,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ContentItemActions from '@/components/ContentItemActions.vue';
@@ -103,8 +103,15 @@ const emit = defineEmits(['delete-category']);
 const { t } = useI18n();
 const viewT = (key) => t(`agents.instructions.view.${key}`);
 
-const isOpen = ref(props.initiallyExpanded);
-const isExpanded = computed(() => props.forceExpanded || isOpen.value);
+const isExpanded = ref(props.initiallyExpanded);
+
+watch(
+  () => props.forceExpanded,
+  (force) => {
+    if (force) isExpanded.value = true;
+  },
+  { immediate: true },
+);
 
 const lockedTooltip = computed(() => viewT('locked_tooltip'));
 const emptyText = computed(() => viewT('empty_category'));
@@ -119,7 +126,7 @@ const actions = computed(() => [
 ]);
 
 function toggle() {
-  isOpen.value = !isOpen.value;
+  isExpanded.value = !isExpanded.value;
 }
 </script>
 
