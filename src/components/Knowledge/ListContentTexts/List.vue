@@ -9,7 +9,9 @@
       v-for="text in itemsFiltered"
       :key="text.uuid"
       :file="toItemFile(text)"
-      timeAgoLabelKey="time_ago_edited"
+      :timeAgoLabelKey="
+        text.last_updated_at ? 'time_ago_edited' : 'time_ago_created'
+      "
       clickable
       compressed
       data-testid="list-content-texts-item"
@@ -49,6 +51,7 @@ import { useRouter } from 'vue-router';
 import ContentItem from '@/components/Knowledge/ContentBase/ContentItem.vue';
 import ModalDeleteText from '@/components/Knowledge/NewContentText/ModalDeleteText.vue';
 import { useKnowledgeStore } from '@/store/Knowledge';
+import { includesNormalized, normalizeText } from '@/utils/strings';
 
 const router = useRouter();
 const knowledgeStore = useKnowledgeStore();
@@ -65,7 +68,7 @@ const openDeleteModal = (text) => {
 };
 
 const normalizedSearchTerm = computed(() =>
-  (contentTexts.value.searchTerm ?? '').trim().toLowerCase(),
+  normalizeText((contentTexts.value.searchTerm ?? '').trim()),
 );
 
 const itemsFiltered = computed(() => {
@@ -73,7 +76,7 @@ const itemsFiltered = computed(() => {
   if (!term) return contentTexts.value.data;
 
   return contentTexts.value.data.filter((text) =>
-    (text.title ?? '').toLowerCase().includes(term),
+    includesNormalized(text.title, term),
   );
 });
 
@@ -104,7 +107,7 @@ const showNoResults = computed(
 const toItemFile = (text) => ({
   uuid: text.uuid,
   created_file_name: text.title,
-  created_at: text.last_updated_at,
+  created_at: text.last_updated_at ?? text.created_at,
   extension_file: 'text',
   status: 'uploaded',
 });

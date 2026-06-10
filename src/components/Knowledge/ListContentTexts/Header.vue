@@ -14,7 +14,6 @@
 
     <UnnnicButton
       type="primary"
-      iconLeft="add"
       :text="$t('content_bases.new_text.button_add_new_text')"
       data-testid="list-content-texts-new-text-button"
       @click="router.push({ name: 'new-content-text' })"

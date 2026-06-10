@@ -310,6 +310,28 @@ describe('ContentItem.vue', () => {
           expect(timeAgo).toBe('Added 3 days ago');
         });
       });
+
+      describe('when the server timestamp is slightly in the future (clock skew)', () => {
+        beforeEach(() => {
+          wrapper = mount(ContentItem, {
+            props: {
+              file: createFileObject('file', {
+                created_at: new Date(Date.now() + 5 * 1000).toISOString(),
+              }),
+              clickable: false,
+              compressed: true,
+            },
+
+            global: {
+              plugins: [pinia],
+            },
+          });
+        });
+
+        it('clamps the minutes diff at 0 instead of rendering a negative value', () => {
+          expect(wrapper.vm.timeAgo).toBe('Added 0 minutes ago');
+        });
+      });
     });
   });
 
