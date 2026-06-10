@@ -644,7 +644,11 @@
       "supporting_text": "Organiza tu contenido en textos separados por tema para respuestas más precisas",
       "button_add_new_text": "Nuevo texto",
       "search_placeholder": "Buscar",
-      "no_results": "Sin resultados"
+      "no_results": "Sin resultados",
+      "empty_state": {
+        "title": "Sin textos agregados",
+        "description": "Escribe el contenido que el agente utilizará como fuente de conocimiento"
+      }
     },
     "file_with_error": "El archivo contiene errores. Elimínalo y agrégalo de nuevo.",
     "site_with_error": "El sitio web contiene errores. Elimínalo y agrégalo de nuevo.",
