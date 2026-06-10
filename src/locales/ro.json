@@ -435,6 +435,7 @@
         "delete_category": "Șterge categoria",
         "empty_category": "Încă nu există instrucțiuni în această categorie",
         "locked_tooltip": "Instrucțiunile implicite nu pot fi editate sau eliminate",
+        "results_count": "{count, plural, =0 {Nu s-au găsit instrucțiuni} one {{count} instrucțiune găsită} few {{count} instrucțiuni găsite} other {{count} de instrucțiuni găsite}}",
         "search_placeholder": "Caută...",
         "segmented": {
           "categories": "Categorii",
