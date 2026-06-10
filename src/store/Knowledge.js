@@ -117,6 +117,12 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
     return data;
   }
 
+  async function deleteContentText(uuid) {
+    await nexusaiAPI.knowledge.texts.delete({ uuid });
+
+    contentTexts.data = contentTexts.data.filter((item) => item.uuid !== uuid);
+  }
+
   return {
     contentText,
     contentTexts,
@@ -125,5 +131,6 @@ export const useKnowledgeStore = defineStore('Knowledge', () => {
     getContentText,
     patchContentText,
     createContentText,
+    deleteContentText,
   };
 });

@@ -90,6 +90,14 @@ export const Knowledge = {
         hideGenericErrorAlert,
       });
     },
+
+    delete({ uuid }) {
+      const endpoint = generateContentBaseEndpoint({
+        type: 'TEXT',
+        itemUuid: uuid,
+      });
+      return request.$http.delete(endpoint);
+    },
   },
 
   sites: {

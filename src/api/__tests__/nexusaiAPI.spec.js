@@ -161,6 +161,18 @@ describe('nexusaiAPI.js', () => {
     expect(result).toEqual(mockResponse);
   });
 
+  it('should delete content base text', async () => {
+    const mockResponse = { data: 'mockData' };
+    request.$http.delete.mockResolvedValue(mockResponse);
+
+    const result = await nexusaiAPI.knowledge.texts.delete({ uuid: 'text1' });
+
+    expect(request.$http.delete).toHaveBeenCalledWith(
+      'api/project1/inline-content-base-text/text1/',
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
   it('should create content base link', async () => {
     const mockResponse = { data: 'mockData' };
     request.$http.post.mockResolvedValue(mockResponse);
