@@ -435,6 +435,25 @@ describe('ListContentTexts/List.vue', () => {
       expect(wrapper.findAll(elements.item)).toHaveLength(1);
     });
 
+    it('matches titles ignoring accents', () => {
+      wrapper = createWrapper({
+        contentTexts: {
+          data: [
+            buildItem({
+              uuid: 'uuid-accent',
+              title: 'Política de troca',
+              last_updated_at: '2024-04-01T00:00:00Z',
+            }),
+          ],
+          status: 'complete',
+          next: null,
+          searchTerm: 'politica',
+        },
+      });
+
+      expect(wrapper.findAll(elements.item)).toHaveLength(1);
+    });
+
     it('ignores leading and trailing whitespace in the search term', () => {
       wrapper = createWrapper({
         contentTexts: {

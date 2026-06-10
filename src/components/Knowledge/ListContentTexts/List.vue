@@ -51,6 +51,7 @@ import { useRouter } from 'vue-router';
 import ContentItem from '@/components/Knowledge/ContentBase/ContentItem.vue';
 import ModalDeleteText from '@/components/Knowledge/NewContentText/ModalDeleteText.vue';
 import { useKnowledgeStore } from '@/store/Knowledge';
+import { includesNormalized, normalizeText } from '@/utils/strings';
 
 const router = useRouter();
 const knowledgeStore = useKnowledgeStore();
@@ -67,7 +68,7 @@ const openDeleteModal = (text) => {
 };
 
 const normalizedSearchTerm = computed(() =>
-  (contentTexts.value.searchTerm ?? '').trim().toLowerCase(),
+  normalizeText((contentTexts.value.searchTerm ?? '').trim()),
 );
 
 const itemsFiltered = computed(() => {
@@ -75,7 +76,7 @@ const itemsFiltered = computed(() => {
   if (!term) return contentTexts.value.data;
 
   return contentTexts.value.data.filter((text) =>
-    (text.title ?? '').toLowerCase().includes(term),
+    includesNormalized(text.title, term),
   );
 });
 
