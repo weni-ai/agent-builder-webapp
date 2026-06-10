@@ -180,7 +180,7 @@ describe('views/Knowledge/NewContentText.vue', () => {
       mockRoute.params = {};
     });
 
-    it('calls createContentText with the current draft and replaces the route on success', async () => {
+    it('calls createContentText with the current draft and navigates to the knowledge text tab on success', async () => {
       const created = {
         uuid: 'created-uuid',
         title: 'Created title',
@@ -206,9 +206,9 @@ describe('views/Knowledge/NewContentText.vue', () => {
         title: i18n.global.t('content_bases.new_text.default_title'),
       });
 
-      expect(mockRouter.replace).toHaveBeenCalledWith({
-        name: 'content-text',
-        params: { uuid: created.uuid },
+      expect(mockRouter.push).toHaveBeenCalledWith({
+        name: 'knowledge',
+        query: { tab: 'text' },
       });
     });
 
@@ -249,7 +249,7 @@ describe('views/Knowledge/NewContentText.vue', () => {
       );
     });
 
-    it('does not replace the route and preserves the draft when create fails', async () => {
+    it('does not navigate and preserves the draft when create fails', async () => {
       const createContentTextMock = vi
         .fn()
         .mockRejectedValue(new Error('boom'));
@@ -265,7 +265,7 @@ describe('views/Knowledge/NewContentText.vue', () => {
       wrapper.findComponent(elements.header).vm.$emit('save');
       await flushPromises();
 
-      expect(mockRouter.replace).not.toHaveBeenCalled();
+      expect(mockRouter.push).not.toHaveBeenCalled();
       expect(wrapper.findComponent(elements.header).props('saveLoading')).toBe(
         false,
       );
@@ -299,7 +299,7 @@ describe('views/Knowledge/NewContentText.vue', () => {
       mockRoute.params = { uuid: item.uuid };
     });
 
-    it('calls patchContentText with only the updated body and disables the save button after success', async () => {
+    it('calls patchContentText with only the updated body and navigates to the knowledge text tab on success', async () => {
       const getContentTextMock = vi.fn().mockResolvedValue(item);
       const patchContentTextMock = vi.fn().mockResolvedValue({
         ...item,
@@ -330,10 +330,10 @@ describe('views/Knowledge/NewContentText.vue', () => {
       const payload = patchContentTextMock.mock.calls[0][1];
       expect(payload).not.toHaveProperty('title');
 
-      expect(mockRouter.replace).not.toHaveBeenCalled();
-      expect(wrapper.findComponent(elements.header).props('saveDisabled')).toBe(
-        true,
-      );
+      expect(mockRouter.push).toHaveBeenCalledWith({
+        name: 'knowledge',
+        query: { tab: 'text' },
+      });
     });
 
     it('enables the save button when only the title changes and patches only the title', async () => {
@@ -933,6 +933,44 @@ describe('views/Knowledge/NewContentText.vue', () => {
 
         expect(event.preventDefault).toHaveBeenCalled();
         expect(event.returnValue).toBe('');
+      });
+    });
+  });
+
+  describe('back navigation', () => {
+    it('navigates to the knowledge text tab when the header emits back in create mode', async () => {
+      mockRoute.params = {};
+      wrapper = createWrapper();
+      await flushPromises();
+
+      wrapper.findComponent(elements.header).vm.$emit('back');
+      await flushPromises();
+
+      expect(mockRouter.push).toHaveBeenCalledWith({
+        name: 'knowledge',
+        query: { tab: 'text' },
+      });
+    });
+
+    it('navigates to the knowledge text tab when the header emits back in edit mode', async () => {
+      const item = {
+        uuid: 'text-uuid-1',
+        title: 'Existing title',
+        text: 'Existing body',
+        last_updated_at: '2024-05-01T00:00:00Z',
+      };
+      mockRoute.params = { uuid: item.uuid };
+
+      const getContentTextMock = vi.fn().mockResolvedValue(item);
+      wrapper = createWrapper({ getContentTextMock });
+      await flushPromises();
+
+      wrapper.findComponent(elements.header).vm.$emit('back');
+      await flushPromises();
+
+      expect(mockRouter.push).toHaveBeenCalledWith({
+        name: 'knowledge',
+        query: { tab: 'text' },
       });
     });
   });

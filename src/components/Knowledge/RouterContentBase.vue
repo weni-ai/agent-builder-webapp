@@ -45,7 +45,8 @@
 </template>
 
 <script setup>
-import { ref, toRef } from 'vue';
+import { ref, toRef, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import ContentFiles from '@/components/Knowledge/ContentFiles.vue';
 import ContentSites from '@/components/Knowledge/ContentSites.vue';
@@ -69,16 +70,43 @@ const sites = toRef(props, 'sitesProp');
 
 const contentStyle = ref('accordion');
 
+const route = useRoute();
+const router = useRouter();
+
+const ALLOWED_TABS = ['files', 'sites', 'text'];
+const DEFAULT_TAB = ALLOWED_TABS[0];
+
 const routerTabs = ref([
   { title: 'files', page: 'files' },
   { title: 'sites', page: 'sites' },
   { title: 'text', page: 'text' },
 ]);
 
-const activeTab = ref(routerTabs.value[0].page);
+function resolveTabFromQuery(queryTab) {
+  return ALLOWED_TABS.includes(queryTab) ? queryTab : DEFAULT_TAB;
+}
+
+const activeTab = ref(resolveTabFromQuery(route?.query?.tab));
+
+watch(
+  () => route?.query?.tab,
+  (next) => {
+    const resolved = resolveTabFromQuery(next);
+    if (resolved !== activeTab.value) {
+      activeTab.value = resolved;
+    }
+  },
+);
 
 const onTabChange = (newTab) => {
+  if (!ALLOWED_TABS.includes(newTab) || newTab === activeTab.value) return;
+
   activeTab.value = newTab;
+
+  router.replace({
+    name: 'knowledge',
+    query: { ...route.query, tab: newTab },
+  });
 };
 </script>
 

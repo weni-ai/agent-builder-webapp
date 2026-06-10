@@ -119,6 +119,11 @@ function onTitleUpdate(nextTitle) {
   draftTitle.value = nextTitle;
 }
 
+function goToKnowledgeTextTab() {
+  bypassGuard.value = true;
+  router.push({ name: 'knowledge', query: { tab: 'text' } });
+}
+
 async function onSave() {
   if (saveDisabled.value) return;
 
@@ -145,20 +150,14 @@ async function onSave() {
 
       lastSavedText.value = data?.text ?? draftText.value;
       lastSavedTitle.value = data?.title ?? draftTitle.value;
-
-      if (data?.uuid) {
-        currentUuid.value = data.uuid;
-        router.replace({
-          name: 'content-text',
-          params: { uuid: data.uuid },
-        });
-      }
     }
 
     alertStore.add({
       type: 'success',
       text: t('content_bases.new_text.save_success'),
     });
+
+    goToKnowledgeTextTab();
   } catch {
     alertStore.add({
       type: 'error',
@@ -171,7 +170,7 @@ async function onSave() {
 }
 
 function onBack() {
-  router.push({ name: 'knowledge' });
+  router.push({ name: 'knowledge', query: { tab: 'text' } });
 }
 
 function onKeepEditing() {
