@@ -64,6 +64,17 @@ describe('CategoryAccordion.vue', () => {
     const instructions = wrapper.findAllComponents(Instruction);
     expect(instructions).toHaveLength(2);
     expect(instructions[0].props('showActions')).toBe(true);
+    expect(instructions[0].props('emitEditOnClick')).toBe(true);
+  });
+
+  it('forwards the edit event from an instruction', async () => {
+    const group = customGroup();
+    wrapper = createWrapper(group);
+
+    const instruction = group.instructions[0];
+    await wrapper.findComponent(Instruction).vm.$emit('edit', instruction);
+
+    expect(wrapper.emitted('edit')).toEqual([[instruction]]);
   });
 
   it('renders the actions menu for custom groups', () => {
