@@ -430,7 +430,12 @@
       "title": "Instruções",
       "description": "Defina as regras que orientam como o Manager responde, se comunica e toma decisões",
       "export_instructions": "Exportar instruções",
-      "new_instruction": "Nova instrução"
+      "new_instruction": "Nova instrução",
+      "new_instruction_drawer": {
+        "title": "Nova instrução",
+        "save": "Salvar",
+        "cancel": "Cancelar"
+      }
     },
     "profile": {
       "tone_of_voice": {
