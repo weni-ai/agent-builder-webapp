@@ -25,10 +25,13 @@ import { useRoute } from 'vue-router';
 
 import i18n from '@/utils/plugins/i18n';
 
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import HomeHeaderActions from '@/components/AgentsTeam/HomeHeaderActions.vue';
+import InstructionsHeaderActions from '@/components/Instructions/InstructionsHeaderActions.vue';
 
 const route = useRoute();
 const { t } = i18n.global;
+const featureFlagsStore = useFeatureFlagsStore();
 
 const headerTitle = computed(() => {
   const titles: Record<string, string> = {
@@ -54,6 +57,9 @@ const headerActions = computed(() => {
   const actionsMap: Record<string, Component | null> = {
     'agents-team': HomeHeaderActions,
     'agents-assign': null,
+    instructions: featureFlagsStore.flags.categorizationOfInstructions
+      ? InstructionsHeaderActions
+      : null,
   };
 
   return actionsMap[route.name as string] || null;

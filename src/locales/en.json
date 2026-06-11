@@ -428,7 +428,9 @@
     },
     "instructions": {
       "title": "Instructions",
-      "description": "Write quick rules to shape agent behavior"
+      "description": "Define the rules that guide how Manager responds, communicates, and makes decisions",
+      "export_instructions": "Export instructions",
+      "new_instruction": "New instruction"
     },
     "profile": {
       "tone_of_voice": {

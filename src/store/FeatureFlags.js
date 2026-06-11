@@ -45,6 +45,9 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
   const flags = computed(() => ({
     supervisorExport: isProjectEnabledForFlag('FF_SUPERVISOR_EXPORT'),
     settingsAgentVoice: isFeatureFlagEnabled('settings_agent_voice'),
+    categorizationOfInstructions: isFeatureFlagEnabled(
+      'categorization_of_instructions',
+    ),
   }));
 
   return {
