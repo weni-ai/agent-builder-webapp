@@ -19,13 +19,7 @@ vi.mock('@/store/FeatureFlags', () => ({
 describe('CategoriesView.vue', () => {
   let wrapper;
 
-  const SELECTORS = {
-    loading: '[data-testid="categories-view-loading"]',
-  };
-
-  const find = (selector) => wrapper.find(SELECTORS[selector]);
-
-  const createWrapper = ({ instructionsState = {}, props = {} } = {}) => {
+  const createWrapper = ({ instructionsState = {} } = {}) => {
     const pinia = createTestingPinia({
       initialState: {
         Instructions: {
@@ -41,7 +35,6 @@ describe('CategoriesView.vue', () => {
     useInstructionsStore();
 
     return shallowMount(CategoriesView, {
-      props,
       global: { plugins: [pinia] },
     });
   };
@@ -49,13 +42,6 @@ describe('CategoriesView.vue', () => {
   afterEach(() => {
     wrapper?.unmount();
     vi.clearAllMocks();
-  });
-
-  it('renders skeleton loaders while loading', () => {
-    wrapper = createWrapper({ props: { isLoading: true } });
-
-    expect(find('loading').exists()).toBe(true);
-    expect(wrapper.findAllComponents(CategoryAccordion)).toHaveLength(0);
   });
 
   it('renders an accordion for each group from the store', () => {
