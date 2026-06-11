@@ -61,7 +61,9 @@
           :key="instruction.id"
           :instruction="instruction"
           :showActions="!instruction.locked"
+          emitEditOnClick
           data-testid="category-accordion-instruction"
+          @edit="$emit('edit', $event)"
         />
 
         <p
@@ -98,7 +100,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['delete-category']);
+const emit = defineEmits(['delete-category', 'edit']);
 
 const { t } = useI18n();
 const viewT = (key) => t(`agents.instructions.view.${key}`);

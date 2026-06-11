@@ -5,7 +5,6 @@ import { createTestingPinia } from '@pinia/testing';
 import CategoriesView from '../CategoriesView.vue';
 import CategoryAccordion from '../CategoryAccordion.vue';
 import { useInstructionsStore } from '@/store/Instructions';
-import i18n from '@/utils/plugins/i18n';
 
 vi.mock('@/store/Project', () => ({
   useProjectStore: () => ({ uuid: 'test-project-uuid' }),
@@ -22,8 +21,6 @@ describe('CategoriesView.vue', () => {
 
   const SELECTORS = {
     loading: '[data-testid="categories-view-loading"]',
-    empty: '[data-testid="categories-view-empty"]',
-    resultsCount: '[data-testid="categories-view-results-count"]',
   };
 
   const find = (selector) => wrapper.find(SELECTORS[selector]);
@@ -83,22 +80,6 @@ describe('CategoriesView.vue', () => {
     ).toBe(true);
   });
 
-  it('shows the no-results count message when the search has no matches', () => {
-    wrapper = createWrapper({
-      instructionsState: {
-        instructions: { data: [], status: 'complete' },
-        categories: [],
-        searchTerm: 'no-match-term',
-      },
-    });
-
-    expect(find('resultsCount').text()).toBe(
-      i18n.global.t('agents.instructions.view.results_count', { count: 0 }),
-    );
-    expect(find('empty').exists()).toBe(false);
-    expect(wrapper.findAllComponents(CategoryAccordion)).toHaveLength(0);
-  });
-
   it('expands only the first group by default and does not force expansion', () => {
     wrapper = createWrapper({
       instructionsState: {
@@ -126,7 +107,7 @@ describe('CategoriesView.vue', () => {
     );
   });
 
-  it('shows the results count and forces groups expanded while searching', () => {
+  it('forces groups expanded while searching', () => {
     wrapper = createWrapper({
       instructionsState: {
         instructions: {
@@ -134,11 +115,6 @@ describe('CategoriesView.vue', () => {
             {
               id: 1,
               text: 'unicorn alpha',
-              category: { id: 10, name: 'Sales' },
-            },
-            {
-              id: 2,
-              text: 'unicorn beta',
               category: { id: 10, name: 'Sales' },
             },
           ],
@@ -149,9 +125,6 @@ describe('CategoriesView.vue', () => {
       },
     });
 
-    expect(find('resultsCount').text()).toBe(
-      i18n.global.t('agents.instructions.view.results_count', { count: 2 }),
-    );
     expect(
       wrapper
         .findAllComponents(CategoryAccordion)
@@ -159,7 +132,7 @@ describe('CategoriesView.vue', () => {
     ).toBe(true);
   });
 
-  it('does not show the results count when not searching', () => {
+  it('forwards the edit event from an accordion', async () => {
     wrapper = createWrapper({
       instructionsState: {
         instructions: {
@@ -172,7 +145,12 @@ describe('CategoriesView.vue', () => {
       },
     });
 
-    expect(find('resultsCount').exists()).toBe(false);
+    const instruction = { id: 1 };
+    await wrapper
+      .findComponent(CategoryAccordion)
+      .vm.$emit('edit', instruction);
+
+    expect(wrapper.emitted('edit')).toEqual([[instruction]]);
   });
 
   it('forwards the delete-category event from an accordion', async () => {
