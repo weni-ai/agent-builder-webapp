@@ -5,9 +5,9 @@
   >
     <UnnnicDrawerContent size="large">
       <UnnnicDrawerHeader>
-        <UnnnicDrawerTitle data-testid="new-instruction-drawer-title">{{
-          $t('agents.instructions.new_instruction_drawer.title')
-        }}</UnnnicDrawerTitle>
+        <UnnnicDrawerTitle data-testid="new-instruction-drawer-title">
+          {{ $t('agents.instructions.new_instruction_drawer.title') }}
+        </UnnnicDrawerTitle>
       </UnnnicDrawerHeader>
 
       <section class="new-instruction-drawer"></section>
