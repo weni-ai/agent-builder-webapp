@@ -28,21 +28,29 @@
       </UnnnicSegmentedControl>
     </header>
 
-    <InstructionsResultsCount />
+    <template v-if="isLoading">
+      <UnnnicSkeletonLoading
+        v-for="index in 7"
+        :key="index"
+        width="100%"
+        height="69px"
+        data-testid="instructions-loading"
+      />
+    </template>
 
-    <CategoriesView
-      v-if="instructionsStore.activeInstructionsView === 'categories'"
-      :isLoading="isLoading"
-      data-testid="instructions-categories-view"
-    />
+    <template v-else>
+      <InstructionsResultsCount />
 
-    <InstructionsList
-      v-else
-      :instructions="instructionsStore.instructions.data"
-      :isLoading="isLoading"
-      showActions
-      data-testid="instructions-baseline-list"
-    />
+      <CategoriesView
+        v-if="showCategoriesView"
+        data-testid="instructions-categories-view"
+      />
+
+      <ListView
+        v-if="showListView"
+        data-testid="instructions-list-view"
+      />
+    </template>
   </section>
 </template>
 
@@ -51,9 +59,9 @@ import { computed } from 'vue';
 
 import { useInstructionsStore } from '@/store/Instructions';
 
-import InstructionsList from '@/components/Instructions/InstructionsList.vue';
 import InstructionsResultsCount from './InstructionsResultsCount.vue';
 import CategoriesView from './CategoriesView.vue';
+import ListView from './ListView.vue';
 
 const views = ['categories', 'list'];
 
@@ -65,6 +73,20 @@ if (instructionsStore.instructions.status === null) {
 
 const isLoading = computed(
   () => instructionsStore.instructions.status === 'loading',
+);
+
+const showCategoriesView = computed(
+  () =>
+    !isLoading.value &&
+    instructionsStore.flatInstructions.length > 0 &&
+    instructionsStore.activeInstructionsView === 'categories',
+);
+
+const showListView = computed(
+  () =>
+    !isLoading.value &&
+    instructionsStore.flatInstructions.length > 0 &&
+    instructionsStore.activeInstructionsView === 'list',
 );
 </script>
 
