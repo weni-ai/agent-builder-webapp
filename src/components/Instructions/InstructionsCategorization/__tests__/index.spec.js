@@ -3,6 +3,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
 import InstructionsCategorization from '../index.vue';
+import InstructionsResultsCount from '../InstructionsResultsCount.vue';
 import { useInstructionsStore } from '@/store/Instructions';
 import i18n from '@/utils/plugins/i18n';
 
@@ -28,7 +29,8 @@ describe('InstructionsCategorization/index.vue', () => {
     triggerCategories: '[data-testid="instructions-view-trigger-categories"]',
     triggerList: '[data-testid="instructions-view-trigger-list"]',
     categoriesView: '[data-testid="instructions-categories-view"]',
-    baselineList: '[data-testid="instructions-baseline-list"]',
+    listView: '[data-testid="instructions-list-view"]',
+    loading: '[data-testid="instructions-loading"]',
   };
 
   const find = (selector) => wrapper.find(SELECTORS[selector]);
@@ -89,13 +91,19 @@ describe('InstructionsCategorization/index.vue', () => {
 
     it('renders the categories view by default', () => {
       expect(find('categoriesView').exists()).toBe(true);
-      expect(find('baselineList').exists()).toBe(false);
+      expect(find('listView').exists()).toBe(false);
     });
 
-    it('renders the baseline list when the list view is active', () => {
+    it('renders the shared results count above the views', () => {
+      expect(wrapper.findComponent(InstructionsResultsCount).exists()).toBe(
+        true,
+      );
+    });
+
+    it('renders the list view when the list view is active', () => {
       wrapper = createWrapper({}, 'list');
 
-      expect(find('baselineList').exists()).toBe(true);
+      expect(find('listView').exists()).toBe(true);
       expect(find('categoriesView').exists()).toBe(false);
     });
   });
@@ -127,16 +135,12 @@ describe('InstructionsCategorization/index.vue', () => {
       expect(instructionsStore.loadInstructions).not.toHaveBeenCalled();
     });
 
-    it('passes the loading state to the categories view', () => {
+    it('renders the shared loading state and hides the views while loading', () => {
       wrapper = createWrapper({ status: 'loading' });
 
-      expect(findComponent('categoriesView').props('isLoading')).toBe(true);
-    });
-
-    it('passes the loading state to the baseline list in the list view', () => {
-      wrapper = createWrapper({ status: 'loading' }, 'list');
-
-      expect(findComponent('baselineList').props('isLoading')).toBe(true);
+      expect(find('loading').exists()).toBe(true);
+      expect(find('categoriesView').exists()).toBe(false);
+      expect(find('listView').exists()).toBe(false);
     });
   });
 });
