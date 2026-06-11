@@ -41,15 +41,17 @@
     <template v-else>
       <InstructionsResultsCount />
 
-      <CategoriesView
-        v-if="instructionsStore.activeInstructionsView === 'categories'"
-        data-testid="instructions-categories-view"
-      />
+      <template v-if="instructionsStore.flatInstructions.length > 0">
+        <CategoriesView
+          v-if="instructionsStore.activeInstructionsView === 'categories'"
+          data-testid="instructions-categories-view"
+        />
 
-      <ListView
-        v-else
-        data-testid="instructions-list-view"
-      />
+        <ListView
+          v-else
+          data-testid="instructions-list-view"
+        />
+      </template>
     </template>
   </section>
 </template>
