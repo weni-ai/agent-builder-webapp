@@ -125,7 +125,7 @@ function cancelEditingInstruction() {
 .instruction {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: $unnnic-spacing-nano;
 
   padding: $unnnic-spacing-sm;
