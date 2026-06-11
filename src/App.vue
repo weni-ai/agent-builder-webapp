@@ -10,7 +10,7 @@
       class="agent-builder__content"
       data-testid="agent-builder-content"
     >
-      <RouterView />
+      <RouterView v-if="featureFlagsLoaded" />
     </main>
 
     <TestAgentsButton v-if="showTestAgentsButton" />
@@ -47,6 +47,7 @@ import { isFederatedModule } from './utils/moduleFederation';
 import initHotjar from '@/utils/plugins/Hotjar.js';
 
 import TestAgentsButton from '@/components/Preview/TestAgentsButton.vue';
+import { storeToRefs } from 'pinia';
 
 const { isAgentsModule, isKnowledgeModule } = useCurrentModule();
 
@@ -55,6 +56,8 @@ const agentsTeamStore = useAgentsTeamStore();
 const alertStore = useAlertStore();
 const userStore = useUserStore();
 const managerSelectorStore = useManagerSelectorStore();
+const featureFlagsStore = useFeatureFlagsStore();
+const { featureFlagsLoaded } = storeToRefs(featureFlagsStore);
 
 async function loadAgentsData() {
   agentsTeamStore.loadMyAgents();
@@ -64,7 +67,9 @@ async function loadAgentsData() {
   agentsTeamStore.loadActiveTeam();
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await featureFlagsStore.getFeatureFlags();
+
   loadAgentsData();
 
   useTuningsStore().fetchCredentials();
@@ -72,7 +77,6 @@ onMounted(() => {
   userStore.getUserDetails();
   managerSelectorStore.loadManagerData();
   useProjectStore().getProject();
-  useFeatureFlagsStore().getFeatureFlags();
 });
 
 const showTestAgentsButton = computed(

@@ -35,7 +35,7 @@ describe('FeatureFlags store', () => {
 
   it('starts with empty active features and not loading', () => {
     expect(store.activeFeatures).toEqual([]);
-    expect(store.isLoadingFeatureFlags).toBe(false);
+    expect(store.featureFlagsLoaded).toBe(false);
   });
 
   describe('getFeatureFlags', () => {
@@ -59,7 +59,7 @@ describe('FeatureFlags store', () => {
       await store.getFeatureFlags();
 
       expect(store.activeFeatures).toEqual(['categorization_of_instructions']);
-      expect(store.isLoadingFeatureFlags).toBe(false);
+      expect(store.featureFlagsLoaded).toBe(true);
     });
 
     it('defaults to an empty array when active_features is missing', async () => {
@@ -80,7 +80,7 @@ describe('FeatureFlags store', () => {
       await store.getFeatureFlags();
 
       expect(store.activeFeatures).toEqual([]);
-      expect(store.isLoadingFeatureFlags).toBe(false);
+      expect(store.featureFlagsLoaded).toBe(false);
       expect(consoleError).toHaveBeenCalled();
 
       consoleError.mockRestore();
