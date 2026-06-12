@@ -4,6 +4,7 @@ import { createTestingPinia } from '@pinia/testing';
 
 import InstructionsCategorization from '../index.vue';
 import InstructionsResultsCount from '../InstructionsResultsCount.vue';
+import ModalRemoveCategory from '@/components/Instructions/ModalRemoveCategory.vue';
 import { useInstructionsStore } from '@/store/Instructions';
 import i18n from '@/utils/plugins/i18n';
 
@@ -105,6 +106,28 @@ describe('InstructionsCategorization/index.vue', () => {
 
       expect(find('listView').exists()).toBe(true);
       expect(find('categoriesView').exists()).toBe(false);
+    });
+  });
+
+  describe('Delete category', () => {
+    const removeModal = () => wrapper.findComponent(ModalRemoveCategory);
+
+    it('does not render the remove category modal by default', () => {
+      expect(removeModal().exists()).toBe(false);
+    });
+
+    it('opens the remove category modal with the selected category', async () => {
+      await findComponent('categoriesView').vm.$emit('delete-category', {
+        key: 'category-10',
+        categoryId: 10,
+        label: 'Sales',
+      });
+
+      expect(removeModal().exists()).toBe(true);
+      expect(removeModal().props('category')).toEqual({
+        id: 10,
+        name: 'Sales',
+      });
     });
   });
 
