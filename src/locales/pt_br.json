@@ -107,11 +107,12 @@
       },
       "remove_instruction": {
         "title": "Excluir instrução",
-        "modal_description": "Tem certeza de que deseja excluir a instrução?",
-        "remove": "Excluir",
+        "modal_description": "Esta instrução será removida permanentemente e o agente Manager deixará de segui-la. Essa ação não pode ser desfeita.",
+        "remove": "Excluir instrução",
         "cancel": "Cancelar",
-        "success_alert": "Instrução personalizada excluída",
-        "error_alert": "Erro ao excluir instrução personalizada"
+        "success_alert": "Instrução excluída",
+        "error_alert": "Não foi possível excluir a instrução",
+        "error_alert_description": "Algo deu errado e nada foi alterado. Tente novamente."
       }
     },
     "traces": {
