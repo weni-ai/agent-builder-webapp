@@ -159,6 +159,10 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   const activeInstructionsView = ref<'categories' | 'list'>('categories');
   const searchTerm = ref('');
 
+  const isInstructionDrawerOpen = ref(false);
+  const instructionDrawerMode = ref<'create' | 'edit'>('create');
+  const editingInstructionId = ref<number | string | null>(null);
+
   const groupT = (key: string) =>
     i18n.global.t(`agents.instructions.view.${key}`);
 
@@ -236,6 +240,69 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     } catch (error) {
       newInstruction.status = 'error';
       callAlert('error', 'new_instruction.error_alert');
+    }
+  }
+
+  function resetNewInstruction() {
+    newInstruction.text = '';
+    newInstruction.category = null;
+    newInstruction.status = null;
+  }
+
+  function openNewInstructionDrawer() {
+    resetNewInstruction();
+    resetInstructionSuggestedByAI();
+    instructionDrawerMode.value = 'create';
+    editingInstructionId.value = null;
+    isInstructionDrawerOpen.value = true;
+  }
+
+  function startEditingInstruction(instruction: { id: number | string }) {
+    const target = instructions.data.find((item) => item.id === instruction.id);
+    if (!target) return;
+
+    resetInstructionSuggestedByAI();
+    newInstruction.text = target.text;
+    newInstruction.category = target.category ?? null;
+    newInstruction.status = null;
+    instructionDrawerMode.value = 'edit';
+    editingInstructionId.value = target.id;
+    isInstructionDrawerOpen.value = true;
+  }
+
+  function closeInstructionDrawer() {
+    isInstructionDrawerOpen.value = false;
+    instructionDrawerMode.value = 'create';
+    editingInstructionId.value = null;
+    resetNewInstruction();
+    resetInstructionSuggestedByAI();
+  }
+
+  async function updateEditingInstruction() {
+    const target = instructions.data.find(
+      (item) => item.id === editingInstructionId.value,
+    );
+    if (!target) return;
+
+    newInstruction.status = 'loading';
+
+    try {
+      target.text = newInstruction.text;
+      target.category = newInstruction.category;
+
+      const response = await nexusaiAPI.agent_builder.instructions.update({
+        projectUuid: projectUuid.value,
+        ...toGroupedPayload(),
+      });
+
+      instructions.data = response.instructions;
+      categories.value = response.categories;
+
+      newInstruction.status = null;
+      callAlert('success', 'edit_instruction.success_alert');
+    } catch {
+      newInstruction.status = 'error';
+      callAlert('error', 'edit_instruction.error_alert');
     }
   }
 
@@ -412,10 +479,17 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     activeInstructionsListTab,
     activeInstructionsView,
     searchTerm,
+    isInstructionDrawerOpen,
+    instructionDrawerMode,
+    editingInstructionId,
     groupedInstructions,
     flatInstructions,
     createCategory,
     addInstruction,
+    openNewInstructionDrawer,
+    startEditingInstruction,
+    closeInstructionDrawer,
+    updateEditingInstruction,
     loadInstructions,
     editInstruction,
     removeInstruction,

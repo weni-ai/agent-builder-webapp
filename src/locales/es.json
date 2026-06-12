@@ -451,6 +451,8 @@
       },
       "new_instruction_drawer": {
         "title": "Nueva instrucción",
+        "edit_title": "Editar instrucción",
+        "category_label": "Categoría",
         "validate": "Validar",
         "save": "Guardar",
         "cancel": "Cancelar",
@@ -479,6 +481,7 @@
             "create_title": "Crear categoría",
             "name_label": "Nombre de la categoría",
             "name_placeholder": "Nombre",
+            "placeholder": "Seleccionar...",
             "cancel": "Cancelar",
             "create": "Crear",
             "validation": {
