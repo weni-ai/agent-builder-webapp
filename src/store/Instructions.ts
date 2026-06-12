@@ -24,10 +24,13 @@ import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
 import { moduleStorage } from '@/utils/storage';
 
-function callAlert(type, alertText) {
+function callAlert(type, alertText, descriptionKey?: string) {
   const alertStore = useAlertStore();
   alertStore.add({
     text: i18n.global.t(`agent_builder.instructions.${alertText}`),
+    description: descriptionKey
+      ? i18n.global.t(`agent_builder.instructions.${descriptionKey}`)
+      : '',
     type,
   });
 }
@@ -401,11 +404,15 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       instructions.data = instructions.data.filter(
         (instruction) => instruction.id !== id,
       );
-      callAlert('default', 'remove_instruction.success_alert');
+      callAlert('informational', 'remove_instruction.success_alert');
       return { status: null };
     } catch (error) {
       instruction.status = 'error';
-      callAlert('error', 'remove_instruction.error_alert');
+      callAlert(
+        'error',
+        'remove_instruction.error_alert',
+        'remove_instruction.error_alert_description',
+      );
     }
 
     return { status: instruction?.status };
