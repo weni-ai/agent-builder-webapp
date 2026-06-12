@@ -365,6 +365,8 @@
       },
       "new_instruction_drawer": {
         "title": "Instrucțiune nouă",
+        "edit_title": "Editare instrucțiune",
+        "category_label": "Categorie",
         "validate": "Validează",
         "save": "Salvează",
         "cancel": "Anulează",
@@ -393,6 +395,7 @@
             "create_title": "Creează categorie",
             "name_label": "Numele categoriei",
             "name_placeholder": "Nume",
+            "placeholder": "Selectează...",
             "cancel": "Anulează",
             "create": "Creează",
             "validation": {
