@@ -14,8 +14,10 @@ import { computed } from 'vue';
 import { useInstructionsStore } from '@/store/Instructions';
 import { Classification } from '@/store/types/Instructions.types';
 
-import i18n from '@/utils/plugins/i18n';
+import { useI18n } from 'vue-i18n';
 import { formatListToReadable } from '@/utils/formatters';
+
+const { t } = useI18n();
 
 const instructionsStore = useInstructionsStore();
 const classification = computed<{
@@ -24,7 +26,7 @@ const classification = computed<{
   reason: string;
 }>(() => {
   const getTranslation = (key: string) =>
-    i18n.global.t(
+    t(
       `agents.instructions.new_instruction_drawer.ai_analysis.issues_types.${key}`,
     );
 

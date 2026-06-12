@@ -39,14 +39,14 @@ import { ref, toRefs } from 'vue';
 import { useInstructionsStore } from '@/store/Instructions';
 import type { Classification } from '@/store/types/Instructions.types';
 
-import i18n from '@/utils/plugins/i18n';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const instructionsStore = useInstructionsStore();
 
 const suggestionT = (key: string) =>
-  i18n.global.t(
-    `agents.instructions.new_instruction_drawer.ai_analysis.${key}`,
-  );
+  t(`agents.instructions.new_instruction_drawer.ai_analysis.${key}`);
 
 const { data, suggestionApplied } = toRefs(
   instructionsStore.instructionSuggestedByAI,
@@ -72,7 +72,7 @@ function undoSuggestion() {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .suggested-rewrite {
   display: flex;
   flex-direction: column;
