@@ -28,21 +28,31 @@
       </UnnnicSegmentedControl>
     </header>
 
-    <InstructionsResultsCount />
+    <template v-if="isLoading">
+      <UnnnicSkeletonLoading
+        v-for="index in 7"
+        :key="index"
+        width="100%"
+        height="69px"
+        data-testid="instructions-loading"
+      />
+    </template>
 
-    <CategoriesView
-      v-if="instructionsStore.activeInstructionsView === 'categories'"
-      :isLoading="isLoading"
-      data-testid="instructions-categories-view"
-    />
+    <template v-else>
+      <InstructionsResultsCount />
 
-    <InstructionsList
-      v-else
-      :instructions="instructionsStore.instructions.data"
-      :isLoading="isLoading"
-      showActions
-      data-testid="instructions-baseline-list"
-    />
+      <template v-if="instructionsStore.flatInstructions.length > 0">
+        <CategoriesView
+          v-if="instructionsStore.activeInstructionsView === 'categories'"
+          data-testid="instructions-categories-view"
+        />
+
+        <ListView
+          v-else
+          data-testid="instructions-list-view"
+        />
+      </template>
+    </template>
   </section>
 </template>
 
@@ -51,9 +61,9 @@ import { computed } from 'vue';
 
 import { useInstructionsStore } from '@/store/Instructions';
 
-import InstructionsList from '@/components/Instructions/InstructionsList.vue';
 import InstructionsResultsCount from './InstructionsResultsCount.vue';
 import CategoriesView from './CategoriesView.vue';
+import ListView from './ListView.vue';
 
 const views = ['categories', 'list'];
 

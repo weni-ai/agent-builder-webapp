@@ -1,3 +1,5 @@
+export type RequestStatus = 'loading' | 'complete' | 'error' | null;
+
 export interface Classification {
   name:
     | 'duplicate'
@@ -15,7 +17,7 @@ export interface InstructionSuggestedByAI {
     suggestion: string;
     suggestedCategory: string;
   };
-  status: 'loading' | 'complete' | 'error' | null;
+  status: RequestStatus;
 }
 
 export interface InstructionCategory {
@@ -23,7 +25,7 @@ export interface InstructionCategory {
   name: string;
 }
 
-export interface GroupedInstructionItem {
+export interface Instruction {
   id: number | string;
   text: string;
   category?: InstructionCategory | null;
@@ -34,11 +36,19 @@ export interface InstructionGroup {
   key: string;
   label: string;
   locked: boolean;
-  instructions: GroupedInstructionItem[];
+  instructions: Instruction[];
+}
+
+export interface FlatInstruction {
+  id: number | string;
+  text: string;
+  categoryLabel: string;
+  categoryLocked: boolean;
+  locked: boolean;
 }
 
 export interface NewInstruction {
   text: string;
   category: InstructionCategory | null;
-  status: 'loading' | 'complete' | 'error' | null;
+  status: RequestStatus;
 }
