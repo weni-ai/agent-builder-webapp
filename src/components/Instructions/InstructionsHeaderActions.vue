@@ -10,16 +10,20 @@
     data-testid="new-instruction-button"
     type="primary"
     :text="$t('agents.instructions.new_instruction')"
-    @click="newInstruction"
+    @click="instructionsStore.openNewInstructionDrawer"
   />
+
+  <NewInstructionDrawer data-testid="new-instruction-drawer" />
 </template>
 
 <script setup lang="ts">
+import { useInstructionsStore } from '@/store/Instructions';
+
+import NewInstructionDrawer from '@/components/Instructions/NewInstructionDrawer/index.vue';
+
+const instructionsStore = useInstructionsStore();
+
 function exportInstructions() {
   // TODO: Implement export instructions
-}
-
-function newInstruction() {
-  // TODO: Implement new instruction drawer
 }
 </script>

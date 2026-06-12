@@ -1,5 +1,6 @@
 import nexusRequest from '../nexusaiRequest';
 import { InstructionAdapter } from '../adapters/instructions/instruction';
+import { InstructionsGroupedAdapter } from '../adapters/instructions/grouped';
 import { useInstructionsStore } from '@/store/Instructions';
 
 import i18n from '@/utils/plugins/i18n';
@@ -7,6 +8,45 @@ import i18n from '@/utils/plugins/i18n';
 const request = nexusRequest;
 
 export const Instructions = {
+  async listGrouped({ projectUuid }) {
+    const response = await request.$http.get(
+      `api/${projectUuid}/instructions/`,
+    );
+
+    return InstructionsGroupedAdapter.fromApi(response.data);
+  },
+
+  async create({ projectUuid, instruction, category }) {
+    const response = await request.$http.post(
+      `api/${projectUuid}/instructions/`,
+      InstructionsGroupedAdapter.toCreateApi({ text: instruction, category }),
+      {
+        hideGenericErrorAlert: true,
+      },
+    );
+
+    return InstructionsGroupedAdapter.fromApi(response.data);
+  },
+
+  async update({ projectUuid, categories, uncategorized_instructions }) {
+    const response = await request.$http.patch(
+      `api/${projectUuid}/instructions/`,
+      { categories, uncategorized_instructions },
+    );
+
+    return InstructionsGroupedAdapter.fromApi(response.data);
+  },
+
+  async deleteInstruction({ projectUuid, id }) {
+    await request.$http.delete(`api/${projectUuid}/instructions/?id=${id}`);
+  },
+
+  async deleteCategory({ projectUuid, id }) {
+    await request.$http.delete(
+      `api/${projectUuid}/instructions/categories/${id}/`,
+    );
+  },
+
   async addInstruction({ projectUuid, instruction }) {
     const instructionsStore = useInstructionsStore();
     const body = {
@@ -60,7 +100,11 @@ export const Instructions = {
     await request.$http.delete(`api/${projectUuid}/customization/?id=${id}`);
   },
 
-  async getSuggestionByAI({ projectUuid, instruction }) {
+  async getSuggestionByAI({
+    projectUuid,
+    instruction,
+    instructionsCategories = [],
+  }) {
     const languageMap = {
       en: 'English',
       'pt-br': 'Portuguese',
@@ -73,6 +117,7 @@ export const Instructions = {
       `api/${projectUuid}/instructions-classification/`,
       {
         instruction,
+        instructions_categories: instructionsCategories,
         language,
       },
     );

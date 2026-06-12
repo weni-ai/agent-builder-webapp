@@ -81,13 +81,18 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  emitEditOnClick: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const emit = defineEmits(['edit']);
 
 const instructionsStore = useInstructionsStore();
 
 const isEditing = ref(false);
 const editingText = ref(props.instruction.text);
-const MAX_INSTRUCTION_LENGTH = 200;
 
 const showModalRemoveInstruction = ref(false);
 
@@ -96,7 +101,10 @@ const actions = computed(() => [
     text: i18n.global.t('agent_builder.instructions.edit_instruction.title'),
     icon: 'edit_square',
     scheme: 'fg-base',
-    onClick: () => (isEditing.value = true),
+    onClick: () =>
+      props.emitEditOnClick
+        ? emit('edit', props.instruction)
+        : (isEditing.value = true),
   },
   {
     text: i18n.global.t('agent_builder.instructions.remove_instruction.title'),
@@ -125,7 +133,7 @@ function cancelEditingInstruction() {
 .instruction {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: $unnnic-spacing-nano;
 
   padding: $unnnic-spacing-sm;
