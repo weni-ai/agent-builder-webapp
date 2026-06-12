@@ -1,17 +1,32 @@
 <template>
   <UnnnicDrawerNext
-    v-model:open="modelValue"
+    :open="instructionsStore.isInstructionDrawerOpen"
     lazyMount
+    @update:open="onOpenChange"
   >
     <UnnnicDrawerContent size="large">
       <UnnnicDrawerHeader>
         <UnnnicDrawerTitle data-testid="new-instruction-drawer-title">
-          {{ $t('agents.instructions.new_instruction_drawer.title') }}
+          {{ title }}
         </UnnnicDrawerTitle>
       </UnnnicDrawerHeader>
 
       <section class="new-instruction-drawer">
         <NewInstructionDrawerForm data-testid="new-instruction-drawer-form" />
+
+        <section
+          v-if="showStandaloneCategory"
+          class="new-instruction-drawer__category"
+          data-testid="new-instruction-drawer-category"
+        >
+          <p class="new-instruction-drawer__category-label">
+            {{
+              $t('agents.instructions.new_instruction_drawer.category_label')
+            }}
+          </p>
+
+          <SuggestedCategory />
+        </section>
 
         <NewInstructionDrawerAIAnalysis
           v-if="instructionsStore.instructionSuggestedByAI.status"
@@ -43,37 +58,59 @@
 
 <script setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import NewInstructionDrawerForm from './Form.vue';
 import NewInstructionDrawerAIAnalysis from './AIAnalysis.vue';
+import SuggestedCategory from './SuggestedCategory.vue';
 
 import { useInstructionsStore } from '@/store/Instructions';
 
+const { t } = useI18n();
+
 const instructionsStore = useInstructionsStore();
 
-const modelValue = defineModel({
-  type: Boolean,
-  required: true,
-});
-
-const saveDisabled = computed(
-  () =>
-    !instructionsStore.newInstruction.text.trim() ||
-    instructionsStore.instructionSuggestedByAI.status !== 'complete',
+const isEditing = computed(
+  () => instructionsStore.instructionDrawerMode === 'edit',
 );
 
+const showStandaloneCategory = computed(
+  () => isEditing.value && !instructionsStore.instructionSuggestedByAI.status,
+);
+
+const title = computed(() =>
+  t(
+    `agents.instructions.new_instruction_drawer.${
+      isEditing.value ? 'edit_title' : 'title'
+    }`,
+  ),
+);
+
+const saveDisabled = computed(() => {
+  if (!instructionsStore.newInstruction.text.trim()) return true;
+  if (isEditing.value) return false;
+  return instructionsStore.instructionSuggestedByAI.status !== 'complete';
+});
+
 function close() {
-  modelValue.value = false;
+  instructionsStore.closeInstructionDrawer();
+}
+
+function onOpenChange(open) {
+  if (!open) close();
 }
 
 async function save() {
   if (saveDisabled.value) return;
 
-  await instructionsStore.addInstruction();
+  if (isEditing.value) {
+    await instructionsStore.updateEditingInstruction();
+  } else {
+    await instructionsStore.addInstruction();
+  }
 
   if (instructionsStore.newInstruction.status === 'error') return;
 
-  instructionsStore.resetInstructionSuggestedByAI();
   close();
 }
 </script>
@@ -87,5 +124,16 @@ async function save() {
   display: flex;
   flex-direction: column;
   gap: $unnnic-space-6;
+
+  &__category {
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-space-1;
+  }
+
+  &__category-label {
+    font: $unnnic-font-body;
+    color: $unnnic-color-fg-base;
+  }
 }
 </style>
