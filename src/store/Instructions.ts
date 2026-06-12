@@ -413,6 +413,49 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     return { status: instruction?.status };
   }
 
+  async function deleteCategory(id: number) {
+    const movedCount = instructions.data.filter(
+      (instruction) => instruction.category?.id === id,
+    ).length;
+
+    const alertStore = useAlertStore();
+    const categoryT = (key: string, params?: Record<string, unknown>) =>
+      i18n.global.t(`agents.instructions.delete_category.${key}`, params ?? {});
+
+    try {
+      await nexusaiAPI.agent_builder.instructions.deleteCategory({
+        projectUuid: projectUuid.value,
+        id,
+      });
+
+      // Instructions are preserved and reassigned to Uncategorized.
+      instructions.data = instructions.data.map((instruction) =>
+        instruction.category?.id === id
+          ? { ...instruction, category: null }
+          : instruction,
+      );
+      categories.value = categories.value.filter(
+        (category) => category.id !== id,
+      );
+
+      alertStore.add({
+        type: 'informational',
+        text: categoryT('success_title'),
+        description: categoryT('success_description', { count: movedCount }),
+      });
+
+      return { status: null };
+    } catch {
+      alertStore.add({
+        type: 'error',
+        text: categoryT('error_title'),
+        description: categoryT('error_description'),
+      });
+
+      return { status: 'error' };
+    }
+  }
+
   async function getInstructionSuggestionByAI(instruction: string) {
     instructionSuggestedByAI.status = 'loading';
 
@@ -500,6 +543,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     loadInstructions,
     editInstruction,
     removeInstruction,
+    deleteCategory,
     getInstructionSuggestionByAI,
     updateValidateInstructionByAI,
     resetInstructionSuggestedByAI,
