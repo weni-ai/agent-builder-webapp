@@ -87,6 +87,7 @@ function toCustomGroups(
   return categorized
     .map((category) => ({
       key: `category-${category.id}`,
+      categoryId: category.id,
       label: category.name,
       locked: false,
       instructions: newestFirst(category.instructions),
