@@ -431,6 +431,17 @@
       "description": "Definește regulile care ghidează modul în care Manager răspunde, comunică și ia decizii",
       "export_instructions": "Exportă instrucțiuni",
       "new_instruction": "Instrucțiune nouă",
+      "delete_category": {
+        "modal_title": "Șterge categoria",
+        "modal_description": "{count} din {name} în Fără categorie. Nu se șterge nimic, se elimină doar eticheta categoriei.",
+        "instructions_count": "{count, plural, one {{count} instrucțiune va fi mutată} other {{count} instrucțiuni vor fi mutate}}",
+        "cancel": "Anulează",
+        "confirm": "Șterge categoria",
+        "success_title": "Categorie ștearsă",
+        "success_description": "{count, plural, one {{count} instrucțiune mutată în Fără categorie} other {{count} instrucțiuni mutate în Fără categorie}}",
+        "error_title": "Categoria nu a putut fi ștearsă",
+        "error_description": "Ceva nu a funcționat și nimic nu a fost modificat. Încearcă din nou."
+      },
       "view": {
         "default_instruction": "Instrucțiune implicită",
         "default_instructions": "Instrucțiuni implicite",
