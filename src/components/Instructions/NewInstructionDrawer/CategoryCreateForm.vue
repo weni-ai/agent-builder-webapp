@@ -60,7 +60,7 @@ import { UnnnicPopoverFooter } from '@weni/unnnic-system';
 
 import { useCategoryValidation } from './useCategoryValidation';
 
-const MAX_LENGTH = 25;
+const MAX_LENGTH = 50;
 
 const emit = defineEmits<{
   back: [];
