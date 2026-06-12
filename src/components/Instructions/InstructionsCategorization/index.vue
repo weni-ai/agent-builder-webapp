@@ -44,6 +44,7 @@
       <CategoriesView
         v-if="showCategoriesView"
         data-testid="instructions-categories-view"
+        @delete-category="onDeleteCategory"
         @edit="instructionsStore.startEditingInstruction"
       />
 
@@ -53,17 +54,25 @@
         @edit="instructionsStore.startEditingInstruction"
       />
     </template>
+
+    <ModalRemoveCategory
+      v-if="categoryToDelete"
+      v-model="isRemoveCategoryModalOpen"
+      :category="categoryToDelete"
+      data-testid="instructions-remove-category-modal"
+    />
   </section>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useInstructionsStore } from '@/store/Instructions';
 
 import InstructionsResultsCount from './InstructionsResultsCount.vue';
 import CategoriesView from './CategoriesView.vue';
 import ListView from './ListView.vue';
+import ModalRemoveCategory from '@/components/Instructions/ModalRemoveCategory.vue';
 
 const views = ['categories', 'list'];
 
@@ -72,6 +81,9 @@ const instructionsStore = useInstructionsStore();
 if (instructionsStore.instructions.status === null) {
   instructionsStore.loadInstructions();
 }
+
+const categoryToDelete = ref(null);
+const isRemoveCategoryModalOpen = ref(false);
 
 const isLoading = computed(
   () => instructionsStore.instructions.status === 'loading',
@@ -90,6 +102,11 @@ const showListView = computed(
     instructionsStore.flatInstructions.length > 0 &&
     instructionsStore.activeInstructionsView === 'list',
 );
+
+function onDeleteCategory(group) {
+  categoryToDelete.value = { id: group.categoryId, name: group.label };
+  isRemoveCategoryModalOpen.value = true;
+}
 </script>
 
 <style lang="scss" scoped>
