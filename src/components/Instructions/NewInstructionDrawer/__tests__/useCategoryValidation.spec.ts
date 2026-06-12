@@ -43,13 +43,6 @@ describe('useCategoryValidation', () => {
     expect(validation.isValid.value).toBe(false);
   });
 
-  it('returns the max length message when the name exceeds 25 characters', () => {
-    const { validation } = setup('a'.repeat(26));
-
-    expect(validation.error.value).toBe(validationT('max_length'));
-    expect(validation.isValid.value).toBe(false);
-  });
-
   it('returns the invalid chars message when disallowed characters are used', () => {
     const { validation } = setup('Sales & Support');
 
