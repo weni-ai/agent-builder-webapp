@@ -18,6 +18,7 @@ vi.mock('@/api/nexusaiAPI', () => ({
         listGrouped: vi.fn(),
         update: vi.fn(),
         deleteInstruction: vi.fn(),
+        deleteCategory: vi.fn(),
         getSuggestionByAI: vi.fn(),
       },
     },
@@ -414,6 +415,87 @@ describe('Instructions Store', () => {
           text: 'Instruction 3',
           status: 'complete',
         });
+      });
+    });
+
+    describe('deleteCategory', () => {
+      beforeEach(() => {
+        store.categories = [
+          { id: 10, name: 'Sales' },
+          { id: 20, name: 'Support' },
+        ];
+        store.instructions.data = [
+          { id: 1, text: 'A', category: { id: 10, name: 'Sales' } },
+          { id: 2, text: 'B', category: { id: 10, name: 'Sales' } },
+          { id: 3, text: 'C', category: { id: 20, name: 'Support' } },
+        ];
+      });
+
+      it('moves the category instructions to uncategorized and removes the category', async () => {
+        nexusaiAPI.agent_builder.instructions.deleteCategory.mockResolvedValue();
+
+        const result = await store.deleteCategory(10);
+
+        expect(
+          nexusaiAPI.agent_builder.instructions.deleteCategory,
+        ).toHaveBeenCalledWith({ projectUuid: 'test-project-uuid', id: 10 });
+        expect(
+          store.instructions.data.find((i) => i.id === 1).category,
+        ).toBeNull();
+        expect(
+          store.instructions.data.find((i) => i.id === 2).category,
+        ).toBeNull();
+        expect(
+          store.instructions.data.find((i) => i.id === 3).category,
+        ).toEqual({
+          id: 20,
+          name: 'Support',
+        });
+        expect(store.categories).toEqual([{ id: 20, name: 'Support' }]);
+        expect(result).toEqual({ status: null });
+      });
+
+      it('shows a success toast with the moved instructions count', async () => {
+        nexusaiAPI.agent_builder.instructions.deleteCategory.mockResolvedValue();
+
+        await store.deleteCategory(10);
+
+        expect(alertStore.add).toHaveBeenCalledWith({
+          type: 'informational',
+          text: i18n.global.t(
+            'agents.instructions.delete_category.success_title',
+          ),
+          description: i18n.global.t(
+            'agents.instructions.delete_category.success_description',
+            { count: 2 },
+          ),
+        });
+      });
+
+      it('keeps state and shows an error toast on failure', async () => {
+        nexusaiAPI.agent_builder.instructions.deleteCategory.mockRejectedValue(
+          new Error('API Error'),
+        );
+
+        const result = await store.deleteCategory(10);
+
+        expect(store.categories).toHaveLength(2);
+        expect(
+          store.instructions.data.find((i) => i.id === 1).category,
+        ).toEqual({
+          id: 10,
+          name: 'Sales',
+        });
+        expect(alertStore.add).toHaveBeenCalledWith({
+          type: 'error',
+          text: i18n.global.t(
+            'agents.instructions.delete_category.error_title',
+          ),
+          description: i18n.global.t(
+            'agents.instructions.delete_category.error_description',
+          ),
+        });
+        expect(result).toEqual({ status: 'error' });
       });
     });
 

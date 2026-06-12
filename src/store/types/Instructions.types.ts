@@ -37,6 +37,7 @@ export interface InstructionGroup {
   label: string;
   locked: boolean;
   instructions: Instruction[];
+  categoryId?: number | null;
 }
 
 export interface FlatInstruction {
