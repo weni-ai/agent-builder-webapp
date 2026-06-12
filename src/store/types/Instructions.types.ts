@@ -13,7 +13,7 @@ export interface InstructionSuggestedByAI {
     instruction: string;
     classification: Classification[] | [];
     suggestion: string;
-    suggested_category: string;
+    suggestedCategory: string;
   };
   status: 'loading' | 'complete' | 'error' | null;
 }

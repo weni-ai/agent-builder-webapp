@@ -53,7 +53,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       }
     });
 
-    const suggested = instructionSuggestedByAI.data.suggested_category;
+    const suggested = instructionSuggestedByAI.data.suggestedCategory;
     if (suggested && !optionsByName.has(suggested)) {
       optionsByName.set(suggested, { id: null, name: suggested });
     }
@@ -72,7 +72,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   );
 
   const suggestedCategory = computed<InstructionCategory | null>(() => {
-    const name = instructionSuggestedByAI.data.suggested_category;
+    const name = instructionSuggestedByAI.data.suggestedCategory;
     if (!name) return null;
 
     return (
@@ -102,15 +102,15 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   }
 
   function toGroupedPayload() {
-    type GroupedItem = { id: number; instruction: string };
+    type GroupedItem = { id: number; text: string };
     const categoriesById = new Map<
       number,
       { id: number; name: string; instructions: GroupedItem[] }
     >();
-    const uncategorized_instructions: GroupedItem[] = [];
+    const uncategorizedInstructions: GroupedItem[] = [];
 
     instructions.data.forEach((instruction) => {
-      const item = { id: instruction.id, instruction: instruction.text };
+      const item = { id: instruction.id, text: instruction.text };
 
       if (instruction.category) {
         const { id, name } = instruction.category;
@@ -122,13 +122,13 @@ export const useInstructionsStore = defineStore('Instructions', () => {
         group.instructions.push(item);
         categoriesById.set(id, group);
       } else {
-        uncategorized_instructions.push(item);
+        uncategorizedInstructions.push(item);
       }
     });
 
     return {
       categories: [...categoriesById.values()],
-      uncategorized_instructions,
+      uncategorizedInstructions,
     };
   }
 
@@ -141,7 +141,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       instruction: '',
       classification: [],
       suggestion: '',
-      suggested_category: '',
+      suggestedCategory: '',
     },
     suggestionApplied: '',
     status: null,
@@ -284,7 +284,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     instructionSuggestedByAI.status = 'loading';
 
     try {
-      const { data } =
+      const data =
         await nexusaiAPI.agent_builder.instructions.getSuggestionByAI({
           projectUuid: projectUuid.value,
           instruction,
@@ -293,13 +293,13 @@ export const useInstructionsStore = defineStore('Instructions', () => {
           ),
         });
 
-      const suggestedCategory = data.suggested_category ?? '';
+      const suggestedCategory = data.suggestedCategory ?? '';
 
       instructionSuggestedByAI.data = {
         instruction,
         classification: data.classification ?? [],
         suggestion: data.suggestion ?? '',
-        suggested_category: suggestedCategory,
+        suggestedCategory,
       };
       instructionSuggestedByAI.suggestionApplied = '';
       instructionSuggestedByAI.status = 'complete';
@@ -332,7 +332,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       instruction: '',
       classification: [],
       suggestion: '',
-      suggested_category: '',
+      suggestedCategory: '',
     };
     instructionSuggestedByAI.status = null;
   }
