@@ -222,12 +222,19 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     try {
       instruction.status = 'loading';
 
+
       if (useV2()) {
-        instruction.text = text;
-        await nexusaiAPI.agent_builder.instructions.update({
-          projectUuid: projectUuid.value,
-          ...toGroupedPayload(),
-        });
+        const previousText = instruction.text;
+        try {
+          await nexusaiAPI.agent_builder.instructions.update({
+            projectUuid: projectUuid.value,
+            ...toGroupedPayload(),
+          });
+          instruction.text = text;
+        } catch (error) {
+          instruction.text = previousText;
+          throw error;
+        }
       } else {
         await nexusaiAPI.agent_builder.instructions.edit({
           projectUuid: projectUuid.value,
@@ -236,6 +243,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
         });
         instruction.text = text;
       }
+
 
       instruction.status = 'complete';
 
