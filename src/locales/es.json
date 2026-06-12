@@ -347,6 +347,17 @@
       "description": "Define las reglas que guían cómo el Manager responde, se comunica y toma decisiones",
       "export_instructions": "Exportar instrucciones",
       "new_instruction": "Nueva instrucción",
+      "delete_category": {
+        "modal_title": "Eliminar categoría",
+        "modal_description": "{count} de {name} a Sin categoría. No se eliminará nada, solo se quita la etiqueta de la categoría.",
+        "instructions_count": "{count, plural, one {{count} instrucción se moverá} other {{count} instrucciones se moverán}}",
+        "cancel": "Cancelar",
+        "confirm": "Eliminar categoría",
+        "success_title": "Categoría eliminada",
+        "success_description": "{count, plural, one {{count} instrucción movida a Sin categoría} other {{count} instrucciones movidas a Sin categoría}}",
+        "error_title": "No se pudo eliminar la categoría",
+        "error_description": "Algo salió mal y no se cambió nada. Inténtalo de nuevo."
+      },
       "view": {
         "default_instruction": "Instrucción predeterminada",
         "default_instructions": "Instrucciones predeterminadas",
