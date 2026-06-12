@@ -1,5 +1,6 @@
 import nexusRequest from '../nexusaiRequest';
 import { InstructionAdapter } from '../adapters/instructions/instruction';
+import { InstructionClassificationAdapter } from '../adapters/instructions/classification';
 import { InstructionsGroupedAdapter } from '../adapters/instructions/grouped';
 import { useInstructionsStore } from '@/store/Instructions';
 
@@ -28,10 +29,10 @@ export const Instructions = {
     return InstructionsGroupedAdapter.fromApi(response.data);
   },
 
-  async update({ projectUuid, categories, uncategorized_instructions }) {
+  async update({ projectUuid, ...groupedPayload }) {
     const response = await request.$http.patch(
       `api/${projectUuid}/instructions/`,
-      { categories, uncategorized_instructions },
+      InstructionsGroupedAdapter.toUpdateApi(groupedPayload),
     );
 
     return InstructionsGroupedAdapter.fromApi(response.data);
@@ -121,6 +122,6 @@ export const Instructions = {
         language,
       },
     );
-    return response;
+    return InstructionClassificationAdapter.fromApi(response.data);
   },
 };

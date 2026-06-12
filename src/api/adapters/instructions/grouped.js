@@ -32,4 +32,21 @@ export const InstructionsGroupedAdapter = {
 
     return body;
   },
+
+  toUpdateApi({ categories = [], uncategorizedInstructions = [] } = {}) {
+    const toApiInstruction = ({ id, text }) => ({
+      id,
+      instruction: text,
+    });
+
+    return {
+      categories: categories.map((category) => ({
+        id: category.id,
+        name: category.name,
+        instructions: (category.instructions || []).map(toApiInstruction),
+      })),
+      uncategorized_instructions:
+        uncategorizedInstructions.map(toApiInstruction),
+    };
+  },
 };

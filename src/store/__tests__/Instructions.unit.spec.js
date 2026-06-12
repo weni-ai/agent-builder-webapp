@@ -528,7 +528,9 @@ describe('Instructions Store', () => {
         expect(
           nexusaiAPI.agent_builder.instructions.listGrouped,
         ).toHaveBeenCalledWith({ projectUuid: 'test-project-uuid' });
-        expect(nexusaiAPI.agent_builder.instructions.list).not.toHaveBeenCalled();
+        expect(
+          nexusaiAPI.agent_builder.instructions.list,
+        ).not.toHaveBeenCalled();
         expect(store.instructions.data).toEqual(groupedResponse.instructions);
         expect(store.categories).toEqual(groupedResponse.categories);
         expect(store.instructions.status).toBe('complete');
@@ -629,11 +631,9 @@ describe('Instructions Store', () => {
         store.categories = [{ id: 10, name: 'Sales' }];
         nexusaiAPI.agent_builder.instructions.getSuggestionByAI.mockResolvedValue(
           {
-            data: {
-              classification: [],
-              suggestion: '',
-              suggested_category: 'Sales',
-            },
+            classification: [],
+            suggestion: '',
+            suggestedCategory: 'Sales',
           },
         );
 
@@ -649,11 +649,9 @@ describe('Instructions Store', () => {
         store.categories = [{ id: 10, name: 'Sales' }];
         nexusaiAPI.agent_builder.instructions.getSuggestionByAI.mockResolvedValue(
           {
-            data: {
-              classification: [],
-              suggestion: '',
-              suggested_category: 'Logistics',
-            },
+            classification: [],
+            suggestion: '',
+            suggestedCategory: 'Logistics',
           },
         );
 
