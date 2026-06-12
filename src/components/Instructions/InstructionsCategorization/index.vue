@@ -45,11 +45,13 @@
         <CategoriesView
           v-if="instructionsStore.activeInstructionsView === 'categories'"
           data-testid="instructions-categories-view"
+          @edit="instructionsStore.startEditingInstruction"
         />
 
         <ListView
           v-else
           data-testid="instructions-list-view"
+          @edit="instructionsStore.startEditingInstruction"
         />
       </template>
     </template>
