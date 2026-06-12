@@ -81,6 +81,7 @@ const status = computed(
 
 const removeTarget = computed(() => ({
   id: props.instruction.id,
+  text: props.instruction.text,
   status: status.value,
 }));
 
