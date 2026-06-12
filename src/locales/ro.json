@@ -434,7 +434,23 @@
         "title": "Instrucțiune nouă",
         "validate": "Validează",
         "save": "Salvează",
-        "cancel": "Anulează"
+        "cancel": "Anulează",
+        "ai_analysis": {
+          "title": "Analiză AI",
+          "validating": "Se validează instrucțiunea...",
+          "issues": "Probleme găsite",
+          "issues_types": {
+            "duplicate": "Duplicat",
+            "conflicts": "Conflicte",
+            "ambiguity": "Ambiguitate",
+            "lack_of_clarity": "Claritate",
+            "no_issues_found": "Totul în regulă. Nicio problemă găsită."
+          },
+          "suggested_rewrite": "Rescriere sugerată",
+          "suggestion_applied": "Sugestie aplicată",
+          "undo_button": "Anulează",
+          "apply_button": "Aplică"
+        }
       }
     },
     "profile": {

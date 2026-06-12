@@ -435,7 +435,23 @@
         "title": "Nova instrução",
         "validate": "Validar",
         "save": "Salvar",
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "ai_analysis": {
+          "title": "Análise de IA",
+          "validating": "Validando instrução...",
+          "issues": "Problemas encontrados",
+          "issues_types": {
+            "duplicate": "Duplicado",
+            "conflicts": "Conflitos",
+            "ambiguity": "Ambiguidade",
+            "lack_of_clarity": "Clareza",
+            "no_issues_found": "Tudo certo. Nenhum problema encontrado."
+          },
+          "suggested_rewrite": "Reescrita sugerida",
+          "suggestion_applied": "Sugestão aplicada",
+          "undo_button": "Desfazer",
+          "apply_button": "Aplicar"
+        }
       }
     },
     "profile": {
