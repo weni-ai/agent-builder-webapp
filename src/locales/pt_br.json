@@ -559,7 +559,7 @@
         "agents_preview": {
           "title": "Prévia dos agentes",
           "agents_progressive_feedback": {
-            "title": "Feedback progressivo dos agentes",
+            "title": "Feedback progressivo dos agentes (Apenas disponível para o Assistente de Compras)",
             "description": "O agente pode fornecer atualizações breves enquanto formula a resposta final, ajudando o contato a acompanhar o processo em tempo real."
           },
           "multiple_message_format": {

@@ -559,7 +559,7 @@
         "agents_preview": {
           "title": "Vista previa de los agentes",
           "agents_progressive_feedback": {
-            "title": "Feedback progresivo de los agentes",
+            "title": "Feedback progresivo de los agentes (Solo disponible para el Shopping Assistant)",
             "description": "El agente puede proporcionar actualizaciones breves mientras formula la respuesta final. Esto ayuda al contacto a seguir el proceso en tiempo real."
           },
           "multiple_message_format": {
