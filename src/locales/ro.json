@@ -558,7 +558,7 @@
         "agents_preview": {
           "title": "Previzualizare agent",
           "agents_progressive_feedback": {
-            "title": "Feedback progresiv agent",
+            "title": "Feedback progresiv agent (Disponibil doar pentru Shopping Assistant)",
             "description": "Agentul poate oferi actualizări sumare în timp ce formulează răspunsul final, ajutând contactul să urmărească procesul în timp real."
           },
           "multiple_message_format": {
