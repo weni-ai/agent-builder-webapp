@@ -1,6 +1,6 @@
 <template>
   <p
-    v-if="isSearching"
+    v-if="instructionsStore.isSearching"
     class="instructions-results-count"
     data-testid="instructions-results-count"
   >
@@ -17,10 +17,6 @@ import { useInstructionsStore } from '@/store/Instructions';
 const { t } = useI18n();
 
 const instructionsStore = useInstructionsStore();
-
-const isSearching = computed(
-  () => instructionsStore.searchTerm.trim().length > 0,
-);
 
 const resultsCountText = computed(() =>
   t('agents.instructions.view.results_count', {

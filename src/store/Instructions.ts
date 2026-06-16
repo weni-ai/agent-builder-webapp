@@ -155,6 +155,8 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   const activeInstructionsView = ref<'categories' | 'list'>('categories');
   const searchTerm = ref('');
 
+  const isSearching = computed(() => searchTerm.value.trim().length > 0);
+
   const groupT = (key: string) =>
     i18n.global.t(`agents.instructions.view.${key}`);
 
@@ -257,7 +259,6 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     try {
       instruction.status = 'loading';
 
-
       if (useV2()) {
         const previousText = instruction.text;
         try {
@@ -278,7 +279,6 @@ export const useInstructionsStore = defineStore('Instructions', () => {
         });
         instruction.text = text;
       }
-
 
       instruction.status = 'complete';
 
@@ -396,6 +396,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     activeInstructionsListTab,
     activeInstructionsView,
     searchTerm,
+    isSearching,
     groupedInstructions,
     createCategory,
     addInstruction,
