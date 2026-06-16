@@ -290,6 +290,14 @@
           "provider": "Selectează un furnizor",
           "model": "Selectează un model"
         }
+      },
+      "system_messages": {
+        "title": "Mesaje de sistem",
+        "error_message": {
+          "label": "Mesaj de eroare",
+          "save_error": "Mesajul de eroare nu a putut fi salvat din cauza unei probleme tehnice",
+          "tooltip": "Acest mesaj este afișat contactului când agentul nu poate genera un răspuns.\nDe exemplu, în cazuri de instabilitate tehnică, erori de procesare sau timpi de răspuns depășiți.\nPersonalizează-l pentru a menține tonul vocii brandului tău chiar și în situații de eroare."
+        }
       }
     }
   },

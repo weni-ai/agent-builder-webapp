@@ -291,6 +291,14 @@
           "provider": "Selecione um provedor",
           "model": "Selecione um modelo"
         }
+      },
+      "system_messages": {
+        "title": "Mensagens do sistema",
+        "error_message": {
+          "label": "Mensagem de erro",
+          "save_error": "Não foi possível salvar a mensagem de erro devido a um problema técnico",
+          "tooltip": "Esta mensagem é exibida para o contato quando o agente não consegue gerar uma resposta.\nPor exemplo, em casos de instabilidade técnica, erros de processamento ou tempo de resposta excedido.\nPersonalize-a para manter o tom de voz da sua marca mesmo em situações de erro."
+        }
       }
     }
   },

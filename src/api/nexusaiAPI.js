@@ -8,6 +8,7 @@ import { FeatureFlags } from './nexus/FeatureFlags';
 
 import { ProgressiveFeedbackAdapter } from './adapters/tunings/progressiveFeedback';
 import { ComponentsAdapter } from './adapters/tunings/components';
+import { ApiErrorMessageAdapter } from './adapters/tunings/apiErrorMessage';
 import { ProjectDetailsAdapter } from './adapters/tunings/projectDetails';
 import i18n from '@/utils/plugins/i18n';
 import env from '@/utils/env';
@@ -114,6 +115,27 @@ export default {
           ComponentsAdapter.toApi(data),
           requestOptions,
         );
+      },
+
+      apiErrorMessage: {
+        async read({ projectUuid }) {
+          const response = await request.$http.get(
+            `api/project/${projectUuid}/api-error-message`,
+            { hideGenericErrorAlert: true },
+          );
+
+          return ApiErrorMessageAdapter.fromApi(response.data);
+        },
+
+        async edit({ projectUuid, data, requestOptions = {} }) {
+          const response = await request.$http.patch(
+            `api/project/${projectUuid}/api-error-message`,
+            ApiErrorMessageAdapter.toApi(data),
+            { hideGenericErrorAlert: true, ...requestOptions },
+          );
+
+          return ApiErrorMessageAdapter.fromApi(response.data);
+        },
       },
 
       manager: {
