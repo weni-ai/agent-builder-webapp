@@ -749,6 +749,22 @@ describe('Instructions Store', () => {
       expect(group.instructions.every((i) => i.locked)).toBe(true);
     });
 
+    it('returns false for isSearching when the search term is empty or whitespace', () => {
+      store.searchTerm = '';
+      expect(store.isSearching).toBe(false);
+
+      store.searchTerm = '   ';
+      expect(store.isSearching).toBe(false);
+    });
+
+    it('returns true for isSearching when the search term has content', () => {
+      store.searchTerm = 'tracking';
+      expect(store.isSearching).toBe(true);
+
+      store.searchTerm = '  tracking  ';
+      expect(store.isSearching).toBe(true);
+    });
+
     it('filters instructions by the search term and hides groups without matches', () => {
       store.categories = [{ id: 10, name: 'Sales' }];
       store.instructions.data = [

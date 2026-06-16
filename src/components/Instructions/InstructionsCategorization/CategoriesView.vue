@@ -19,7 +19,7 @@
         :key="group.key"
         :group="group"
         :initiallyExpanded="index === 0"
-        :forceExpanded="isSearching"
+        :forceExpanded="instructionsStore.isSearching"
         :data-testid="`categories-view-group-${group.key}`"
         @delete-category="$emit('delete-category', $event)"
         @edit="$emit('edit', $event)"
@@ -47,10 +47,6 @@ defineEmits(['delete-category', 'edit']);
 const instructionsStore = useInstructionsStore();
 
 const groups = computed(() => instructionsStore.groupedInstructions);
-
-const isSearching = computed(
-  () => instructionsStore.searchTerm.trim().length > 0,
-);
 </script>
 
 <style lang="scss" scoped>
