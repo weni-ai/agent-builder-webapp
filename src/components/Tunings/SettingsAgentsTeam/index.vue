@@ -21,9 +21,14 @@
 
     <AgentsPreview
       data-testid="agents-preview"
+      class="settings-agents-team__section--with-divider"
+    />
+
+    <SystemMessages
       :class="{
         'settings-agents-team__section--with-divider': hasAgentVoice,
       }"
+      data-testid="system-messages"
     />
 
     <VoiceSettings
@@ -37,6 +42,7 @@
 import { computed } from 'vue';
 
 import AgentsPreview from './AgentsPreview.vue';
+import SystemMessages from './SystemMessages.vue';
 import VoiceSettings from './VoiceSettings.vue';
 import ManagerSelector from './ManagerSelector/index.vue';
 import ManagerDisclaimers from './ManagerDisclaimers.vue';

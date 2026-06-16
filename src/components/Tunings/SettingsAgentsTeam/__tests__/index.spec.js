@@ -31,6 +31,8 @@ describe('SettingsAgentsTeam/index.vue', () => {
     wrapper.findComponent('[data-testid="custom-model-config"]');
   const agentsPreview = () =>
     wrapper.findComponent('[data-testid="agents-preview"]');
+  const systemMessages = () =>
+    wrapper.findComponent('[data-testid="system-messages"]');
   const voiceSettings = () =>
     wrapper.findComponent('[data-testid="voice-settings"]');
 
@@ -52,10 +54,11 @@ describe('SettingsAgentsTeam/index.vue', () => {
     vi.clearAllMocks();
   });
 
-  it('renders ManagerDisclaimers, EngineSource, and AgentsPreview', () => {
+  it('renders ManagerDisclaimers, EngineSource, AgentsPreview, and SystemMessages', () => {
     expect(managerDisclaimers().exists()).toBe(true);
     expect(engineSource().exists()).toBe(true);
     expect(agentsPreview().exists()).toBe(true);
+    expect(systemMessages().exists()).toBe(true);
   });
 
   it('renders ManagerSelector when engine type is native', () => {
@@ -82,6 +85,7 @@ describe('SettingsAgentsTeam/index.vue', () => {
     expect(children[1].getAttribute('data-testid')).toBe('engine-source');
     expect(children[2].getAttribute('data-testid')).toBe('manager-selector');
     expect(children[3].getAttribute('data-testid')).toBe('agents-preview');
-    expect(children[4].getAttribute('data-testid')).toBe('voice-settings');
+    expect(children[4].getAttribute('data-testid')).toBe('system-messages');
+    expect(children[5].getAttribute('data-testid')).toBe('voice-settings');
   });
 });
