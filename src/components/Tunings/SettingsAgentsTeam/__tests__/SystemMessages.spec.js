@@ -52,8 +52,8 @@ describe('SystemMessages.vue', () => {
       text: i18n.global.t(
         'agent_builder.tunings.system_messages.error_message.tooltip',
       ),
-      side: 'bottom',
-      maxWidth: '240px',
+      side: 'top',
+      maxWidth: '550px',
     });
   });
 
