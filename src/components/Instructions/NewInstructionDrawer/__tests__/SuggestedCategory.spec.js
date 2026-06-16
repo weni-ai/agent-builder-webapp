@@ -85,7 +85,7 @@ describe('NewInstructionDrawer/SuggestedCategory.vue', () => {
               instruction: '',
               classification: [],
               suggestion: '',
-              suggested_category: 'Personality',
+              suggestedCategory: 'Personality',
             },
             suggestionApplied: '',
             status: 'complete',
@@ -150,7 +150,11 @@ describe('NewInstructionDrawer/SuggestedCategory.vue', () => {
 
     it('falls back to the placeholder when no category is selected', () => {
       wrapper = createWrapper({
-        newInstruction: { text: 'My instruction', category: null, status: null },
+        newInstruction: {
+          text: 'My instruction',
+          category: null,
+          status: null,
+        },
       });
 
       expect(find('value').text()).toBe(categoryT('placeholder'));
@@ -170,7 +174,7 @@ describe('NewInstructionDrawer/SuggestedCategory.vue', () => {
             instruction: '',
             classification: [],
             suggestion: '',
-            suggested_category: '',
+            suggestedCategory: '',
           },
           suggestionApplied: '',
           status: 'complete',
@@ -192,7 +196,7 @@ describe('NewInstructionDrawer/SuggestedCategory.vue', () => {
             instruction: '',
             classification: [],
             suggestion: '',
-            suggested_category: 'Sales',
+            suggestedCategory: 'Sales',
           },
           suggestionApplied: '',
           status: 'complete',
