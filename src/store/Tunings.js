@@ -32,12 +32,14 @@ export const useTuningsStore = defineStore('Tunings', () => {
   });
 
   const initialSettings = ref(null);
+  const lastErrorMessageSaveFailed = ref(false);
   const settings = reactive({
     status: null,
     data: {
       components: false,
       progressiveFeedback: false,
       manager: '',
+      errorMessage: '',
     },
   });
 
@@ -183,6 +185,8 @@ export const useTuningsStore = defineStore('Tunings', () => {
 
   async function fetchSettings() {
     try {
+      settings.status = 'loading';
+
       const { progressiveFeedback } =
         await nexusaiAPI.router.tunings.getProgressiveFeedback({
           projectUuid: projectUuid.value,
@@ -192,10 +196,24 @@ export const useTuningsStore = defineStore('Tunings', () => {
         projectUuid: projectUuid.value,
       });
 
+      let errorMessage = '';
+
+      try {
+        const { errorMessage: savedErrorMessage } =
+          await nexusaiAPI.router.tunings.apiErrorMessage.read({
+            projectUuid: projectUuid.value,
+          });
+
+        errorMessage = savedErrorMessage ?? '';
+      } catch {
+        errorMessage = '';
+      }
+
       settings.data = {
         ...settings.data,
         components,
         progressiveFeedback,
+        errorMessage,
       };
       initialSettings.value = cloneDeep(settings.data);
 
@@ -206,6 +224,8 @@ export const useTuningsStore = defineStore('Tunings', () => {
   }
 
   async function saveSettings() {
+    lastErrorMessageSaveFailed.value = false;
+
     try {
       settings.status = 'loading';
 
@@ -257,10 +277,38 @@ export const useTuningsStore = defineStore('Tunings', () => {
         }
       }
 
-      initialSettings.value = cloneDeep(settings.data);
+      const hasErrorMessageChanges =
+        initialSettings.value.errorMessage !== settings.data.errorMessage;
+
+      if (hasErrorMessageChanges) {
+        try {
+          const { errorMessage: savedErrorMessage } =
+            await nexusaiAPI.router.tunings.apiErrorMessage.edit({
+              projectUuid: projectUuid.value,
+              data: {
+                errorMessage: settings.data.errorMessage,
+              },
+              requestOptions: {
+                hideGenericErrorAlert: true,
+              },
+            });
+
+          settings.data.errorMessage = savedErrorMessage ?? '';
+        } catch {
+          lastErrorMessageSaveFailed.value = true;
+        }
+      }
+
+      const nextInitialSettings = cloneDeep(settings.data);
+
+      if (lastErrorMessageSaveFailed.value) {
+        nextInitialSettings.errorMessage = initialSettings.value.errorMessage;
+      }
+
+      initialSettings.value = nextInitialSettings;
       settings.status = 'success';
 
-      return true;
+      return !lastErrorMessageSaveFailed.value;
     } catch (error) {
       settings.status = 'error';
       return false;
@@ -308,10 +356,21 @@ export const useTuningsStore = defineStore('Tunings', () => {
           text: i18n.global.t('router.tunings.settings.save_error'),
           type: 'error',
         });
+      } else if (lastErrorMessageSaveFailed.value) {
+        alertStore.add({
+          text: i18n.global.t(
+            'agent_builder.tunings.system_messages.error_message.save_error',
+          ),
+          type: 'error',
+        });
       }
     }
 
-    if (!hasCredentialsError && !hasSettingsError) {
+    if (
+      !hasCredentialsError &&
+      !hasSettingsError &&
+      !lastErrorMessageSaveFailed.value
+    ) {
       alertStore.add({
         text: i18n.global.t('router.tunings.save_success'),
         type: 'success',
@@ -327,6 +386,7 @@ export const useTuningsStore = defineStore('Tunings', () => {
     isSettingsValid,
     initialCredentials,
     initialSettings,
+    lastErrorMessageSaveFailed,
     getCredentialIndex,
     updateCredential,
     fetchCredentials,
