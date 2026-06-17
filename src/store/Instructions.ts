@@ -106,41 +106,9 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     newInstruction.category = { id: null, name: trimmedName };
   }
 
-  function toCategoryPayload() {
-    const category = newInstruction.category;
+  function toCategoryPayload(category = newInstruction.category) {
     if (!category) return undefined;
     return category.id !== null ? { id: category.id } : { name: category.name };
-  }
-
-  function toGroupedPayload() {
-    type GroupedItem = { id: number; text: string };
-    const categoriesById = new Map<
-      number,
-      { id: number; name: string; instructions: GroupedItem[] }
-    >();
-    const uncategorizedInstructions: GroupedItem[] = [];
-
-    instructions.data.forEach((instruction) => {
-      const item = { id: instruction.id, text: instruction.text };
-
-      if (instruction.category) {
-        const { id, name } = instruction.category;
-        const group = categoriesById.get(id) ?? {
-          id,
-          name,
-          instructions: [],
-        };
-        group.instructions.push(item);
-        categoriesById.set(id, group);
-      } else {
-        uncategorizedInstructions.push(item);
-      }
-    });
-
-    return {
-      categories: [...categoriesById.values()],
-      uncategorizedInstructions,
-    };
   }
 
   const storedValidation = moduleStorage.getItem('validateInstructionByAI');
@@ -295,12 +263,11 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     const previousCategory = target.category;
 
     try {
-      target.text = newInstruction.text;
-      target.category = newInstruction.category;
-
       const response = await nexusaiAPI.agent_builder.instructions.update({
         projectUuid: projectUuid.value,
-        ...toGroupedPayload(),
+        id: editingInstructionId.value,
+        instruction: newInstruction.text,
+        category: toCategoryPayload(),
       });
 
       instructions.data = response.instructions;
@@ -351,17 +318,15 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       instruction.status = 'loading';
 
       if (useV2()) {
-        const previousText = instruction.text;
-        try {
-          await nexusaiAPI.agent_builder.instructions.update({
-            projectUuid: projectUuid.value,
-            ...toGroupedPayload(),
-          });
-          instruction.text = text;
-        } catch (error) {
-          instruction.text = previousText;
-          throw error;
-        }
+        const response = await nexusaiAPI.agent_builder.instructions.update({
+          projectUuid: projectUuid.value,
+          id,
+          instruction: text,
+          category: toCategoryPayload(instruction.category ?? null),
+        });
+
+        instructions.data = response.instructions;
+        categories.value = response.categories;
       } else {
         await nexusaiAPI.agent_builder.instructions.edit({
           projectUuid: projectUuid.value,
