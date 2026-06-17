@@ -124,4 +124,12 @@ export const Instructions = {
     );
     return InstructionClassificationAdapter.fromApi(response.data);
   },
+
+  async export({ projectUuid }) {
+    const response = await request.$http.get(
+      `api/${projectUuid}/instructions/export/`,
+    );
+
+    return response.data;
+  },
 };
