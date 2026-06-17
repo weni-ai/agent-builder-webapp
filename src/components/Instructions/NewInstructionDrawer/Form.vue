@@ -15,7 +15,7 @@
     <UnnnicButton
       data-testid="new-instruction-drawer-validate-button"
       type="secondary"
-      :text="$t('agents.instructions.new_instruction_drawer.validate')"
+      :text="validateButtonText"
       :disabled="validateButtonDisabled"
     />
   </form>
@@ -23,22 +23,48 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { useInstructionsStore } from '@/store/Instructions';
 
+const { t } = useI18n();
 const instructionsStore = useInstructionsStore();
 
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
+
+const drawerT = (key: string) =>
+  t(`agents.instructions.new_instruction_drawer.${key}`);
+
+const validateButtonText = computed(() => {
+  const { status } = instructionsStore.instructionSuggestedByAI;
+  const isEditing = instructionsStore.instructionDrawerMode === 'edit';
+
+  if (isEditing || status === 'complete') {
+    return drawerT('re_validate');
+  }
+
+  return drawerT('validate');
+});
 
 const validateButtonDisabled = computed(() => {
   const instructionSuggestionStatus =
     instructionsStore.instructionSuggestedByAI.status;
   const newInstructionText = instructionsStore.newInstruction.text.trim();
-  return (
-    !newInstructionText ||
-    instructionSuggestionStatus === 'complete' ||
-    instructionSuggestionStatus === 'loading'
-  );
+  const validatedInstructionText =
+    instructionsStore.instructionSuggestedByAI.data.instruction.trim();
+
+  if (!newInstructionText || instructionSuggestionStatus === 'loading') {
+    return true;
+  }
+
+  if (
+    instructionSuggestionStatus === 'complete' &&
+    newInstructionText === validatedInstructionText
+  ) {
+    return true;
+  }
+
+  return false;
 });
 
 function validate() {
