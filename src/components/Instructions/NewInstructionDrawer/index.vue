@@ -131,6 +131,8 @@ async function save() {
   flex-direction: column;
   gap: $unnnic-space-6;
 
+  overflow-y: auto;
+
   &__category {
     display: flex;
     flex-direction: column;
