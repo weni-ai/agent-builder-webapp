@@ -473,6 +473,7 @@
         "title": "Nova instrução",
         "edit_title": "Editar instrução",
         "category_label": "Categoria",
+        "re_validate": "Revalidar",
         "validate": "Validar",
         "save": "Salvar",
         "cancel": "Cancelar",
