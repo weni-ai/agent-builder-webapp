@@ -37,8 +37,8 @@ const recencyOf = (item: Instruction) => Number(item.id) || 0;
 const newestFirst = (items: Instruction[]) =>
   [...items].sort((a, b) => recencyOf(b) - recencyOf(a));
 
-const lastAddedId = (items: Instruction[]) =>
-  items.reduce((newest, item) => Math.max(newest, recencyOf(item)), -Infinity);
+const alphabetically = (a: string, b: string) =>
+  a.localeCompare(b, undefined, { sensitivity: 'base' });
 
 const createCategoryGroup = (category: InstructionCategory) => ({
   id: category.id,
@@ -80,7 +80,7 @@ function partitionByCategory(
   return { categorized: [...byCategory.values()], uncategorized };
 }
 
-// Custom groups are ordered by their most recently added instruction.
+// Custom groups are ordered alphabetically by category name.
 function toCustomGroups(
   categorized: CategoryWithInstructions[],
 ): InstructionGroup[] {
@@ -92,7 +92,7 @@ function toCustomGroups(
       locked: false,
       instructions: newestFirst(category.instructions),
     }))
-    .sort((a, b) => lastAddedId(b.instructions) - lastAddedId(a.instructions));
+    .sort((a, b) => alphabetically(a.label, b.label));
 }
 
 // System groups are mocked and are always read-only.

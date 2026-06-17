@@ -1000,7 +1000,7 @@ describe('Instructions Store', () => {
     const groupByKey = (key) =>
       store.groupedInstructions.find((group) => group.key === key);
 
-    it('groups custom categories ordered by the last added instruction', () => {
+    it('groups custom categories in alphabetical order', () => {
       store.categories = [
         { id: 10, name: 'Sales' },
         { id: 20, name: 'Support' },
@@ -1011,7 +1011,7 @@ describe('Instructions Store', () => {
         { id: 3, text: 'Sales B', category: { id: 10, name: 'Sales' } },
       ];
 
-      expect(keysOf()).toEqual(['category-20', 'category-10', 'default']);
+      expect(keysOf()).toEqual(['category-10', 'category-20', 'default']);
     });
 
     it('orders instructions within a group by the last inserted first', () => {

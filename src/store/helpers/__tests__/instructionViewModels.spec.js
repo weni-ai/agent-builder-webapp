@@ -25,7 +25,7 @@ const keysOf = (groups) => groups.map((group) => group.key);
 const byKey = (groups, key) => groups.find((group) => group.key === key);
 
 describe('buildInstructionGroups', () => {
-  it('orders custom categories by the last added instruction', () => {
+  it('orders custom categories alphabetically by name', () => {
     const groups = build({
       categories: [
         { id: 10, name: 'Sales' },
@@ -38,7 +38,7 @@ describe('buildInstructionGroups', () => {
       ],
     });
 
-    expect(keysOf(groups)).toEqual(['category-20', 'category-10', 'default']);
+    expect(keysOf(groups)).toEqual(['category-10', 'category-20', 'default']);
   });
 
   it('orders instructions within a group with the last inserted first', () => {
