@@ -88,8 +88,14 @@ const title = computed(() =>
 
 const saveDisabled = computed(() => {
   if (!instructionsStore.newInstruction.text.trim()) return true;
-  if (isEditing.value) return false;
-  return instructionsStore.instructionSuggestedByAI.status !== 'complete';
+
+  const aiStatus = instructionsStore.instructionSuggestedByAI.status;
+
+  if (isEditing.value) {
+    return aiStatus === 'loading' || aiStatus === 'error';
+  }
+
+  return aiStatus !== 'complete';
 });
 
 function close() {

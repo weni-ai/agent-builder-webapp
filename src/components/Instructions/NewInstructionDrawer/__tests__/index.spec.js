@@ -76,6 +76,24 @@ describe('NewInstructionDrawer/index.vue', () => {
       expect(findComponent('saveButton').props('disabled')).toBe(true);
     });
 
+    it('disables save while AI validation is loading', () => {
+      wrapper = createWrapper({
+        newInstruction: { text: 'New rule', category: null, status: null },
+        instructionSuggestedByAI: { status: 'loading' },
+      });
+
+      expect(findComponent('saveButton').props('disabled')).toBe(true);
+    });
+
+    it('disables save when AI validation fails', () => {
+      wrapper = createWrapper({
+        newInstruction: { text: 'New rule', category: null, status: null },
+        instructionSuggestedByAI: { status: 'error' },
+      });
+
+      expect(findComponent('saveButton').props('disabled')).toBe(true);
+    });
+
     it('adds the instruction when saving a validated instruction', async () => {
       wrapper = createWrapper({
         newInstruction: { text: 'New rule', category: null, status: null },
@@ -106,6 +124,24 @@ describe('NewInstructionDrawer/index.vue', () => {
       wrapper = createWrapper(editState);
 
       expect(findComponent('saveButton').props('disabled')).toBe(false);
+    });
+
+    it('disables save while AI validation is loading', () => {
+      wrapper = createWrapper({
+        ...editState,
+        instructionSuggestedByAI: { status: 'loading' },
+      });
+
+      expect(findComponent('saveButton').props('disabled')).toBe(true);
+    });
+
+    it('disables save when AI validation fails', () => {
+      wrapper = createWrapper({
+        ...editState,
+        instructionSuggestedByAI: { status: 'error' },
+      });
+
+      expect(findComponent('saveButton').props('disabled')).toBe(true);
     });
 
     it('updates the instruction when saving', async () => {
