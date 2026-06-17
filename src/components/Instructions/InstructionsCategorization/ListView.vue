@@ -7,10 +7,10 @@
       class="list-view__columns"
       data-testid="list-view-columns"
     >
-      <p class="list-view__column list-view__column">
+      <p class="list-view__column">
         {{ columnsT('instruction') }}
       </p>
-      <p class="list-view__column list-view__column">
+      <p class="list-view__column">
         {{ columnsT('category') }}
       </p>
     </header>

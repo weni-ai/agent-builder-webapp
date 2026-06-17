@@ -41,17 +41,15 @@
     <template v-else>
       <InstructionsResultsCount />
 
-      <template v-if="instructionsStore.flatInstructions.length > 0">
-        <CategoriesView
-          v-if="instructionsStore.activeInstructionsView === 'categories'"
-          data-testid="instructions-categories-view"
-        />
+      <CategoriesView
+        v-if="showCategoriesView"
+        data-testid="instructions-categories-view"
+      />
 
-        <ListView
-          v-else
-          data-testid="instructions-list-view"
-        />
-      </template>
+      <ListView
+        v-if="showListView"
+        data-testid="instructions-list-view"
+      />
     </template>
   </section>
 </template>
@@ -75,6 +73,20 @@ if (instructionsStore.instructions.status === null) {
 
 const isLoading = computed(
   () => instructionsStore.instructions.status === 'loading',
+);
+
+const showCategoriesView = computed(
+  () =>
+    !isLoading.value &&
+    instructionsStore.flatInstructions.length > 0 &&
+    instructionsStore.activeInstructionsView === 'categories',
+);
+
+const showListView = computed(
+  () =>
+    !isLoading.value &&
+    instructionsStore.flatInstructions.length > 0 &&
+    instructionsStore.activeInstructionsView === 'list',
 );
 </script>
 
