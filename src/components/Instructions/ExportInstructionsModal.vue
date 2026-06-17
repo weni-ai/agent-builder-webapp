@@ -11,17 +11,22 @@
           {{ $t('agents.instructions.export_instructions.modal_title') }}
         </UnnnicDialogTitle>
       </UnnnicDialogHeader>
-      <p class="export-instructions-modal__description">
+      <p
+        class="export-instructions-modal__description"
+        data-testid="description"
+      >
         {{ $t('agents.instructions.export_instructions.modal_description') }}
       </p>
       <UnnnicDialogFooter>
         <UnnnicDialogClose>
           <UnnnicButton
+            data-testid="cancel-button"
             :text="$t('agents.instructions.export_instructions.cancel_button')"
             type="tertiary"
           />
         </UnnnicDialogClose>
         <UnnnicButton
+          data-testid="export-button"
           :text="$t('agents.instructions.export_instructions.export_button')"
           type="primary"
           :loading="instructionsStore.isExportingInstructionsLoading"

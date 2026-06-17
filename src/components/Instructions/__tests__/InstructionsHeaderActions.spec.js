@@ -16,6 +16,8 @@ describe('InstructionsHeaderActions.vue', () => {
     wrapper.findComponent('[data-testid="new-instruction-button"]');
   const findDrawer = () =>
     wrapper.findComponent('[data-testid="new-instruction-drawer"]');
+  const findExportModal = () =>
+    wrapper.findComponent('[data-testid="export-instructions-modal"]');
 
   const createWrapper = () => {
     const pinia = createTestingPinia();
@@ -48,8 +50,26 @@ describe('InstructionsHeaderActions.vue', () => {
       createWrapper();
 
       expect(findExportButton().props('text')).toBe(
-        i18n.global.t('agents.instructions.export_instructions'),
+        i18n.global.t('agents.instructions.export_instructions.title'),
       );
+    });
+
+    it('opens the export modal when clicked', async () => {
+      createWrapper();
+
+      expect(findExportModal().props('modelValue')).toBe(false);
+
+      await findExportButton().trigger('click');
+
+      expect(findExportModal().props('modelValue')).toBe(true);
+    });
+  });
+
+  describe('ExportInstructionsModal', () => {
+    it('renders the export modal', () => {
+      createWrapper();
+
+      expect(findExportModal().exists()).toBe(true);
     });
   });
 
