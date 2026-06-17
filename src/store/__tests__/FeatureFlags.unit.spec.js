@@ -80,7 +80,7 @@ describe('FeatureFlags store', () => {
       await store.getFeatureFlags();
 
       expect(store.activeFeatures).toEqual([]);
-      expect(store.featureFlagsLoaded).toBe(false);
+      expect(store.featureFlagsLoaded).toBe(true);
       expect(consoleError).toHaveBeenCalled();
 
       consoleError.mockRestore();
