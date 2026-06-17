@@ -345,7 +345,15 @@
     "instructions": {
       "title": "Instrucciones",
       "description": "Define las reglas que guían cómo el Manager responde, se comunica y toma decisiones",
-      "export_instructions": "Exportar instrucciones",
+      "export_instructions": {
+        "title": "Exportar instrucciones",
+        "cancel_button": "Cancelar",
+        "export_button": "Exportar",
+        "modal_description": "Las instrucciones se descargarán en un archivo CSV, compatible con Excel, Google Sheets y herramientas similares",
+        "modal_title": "Exportar instrucciones",
+        "success_alert_description": "El archivo CSV está listo en la carpeta de descargas",
+        "success_alert_title": "Instrucciones exportadas"
+      },
       "new_instruction": "Nueva instrucción",
       "delete_category": {
         "modal_title": "Eliminar categoría",

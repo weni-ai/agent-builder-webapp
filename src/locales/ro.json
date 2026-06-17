@@ -344,7 +344,15 @@
     "instructions": {
       "title": "Instrucțiuni",
       "description": "Definește regulile care ghidează modul în care Manager răspunde, comunică și ia decizii",
-      "export_instructions": "Exportă instrucțiuni",
+      "export_instructions": {
+        "title": "Exportă instrucțiuni",
+        "cancel_button": "Anulează",
+        "export_button": "Exportă",
+        "modal_description": "Instrucțiunile vor fi descărcate într-un fișier CSV, compatibil cu Excel, Google Sheets și instrumente similare",
+        "modal_title": "Exportă instrucțiuni",
+        "success_alert_description": "Fișierul CSV este gata în folderul de descărcări",
+        "success_alert_title": "Instrucțiuni exportate"
+      },
       "new_instruction": "Instrucțiune nouă",
       "delete_category": {
         "modal_title": "Șterge categoria",
