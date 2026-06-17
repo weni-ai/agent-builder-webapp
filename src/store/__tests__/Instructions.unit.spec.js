@@ -1,5 +1,5 @@
 import { setActivePinia, createPinia } from 'pinia';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { useInstructionsStore } from '@/store/Instructions';
 import { useAlertStore } from '@/store/Alert';
 import nexusaiAPI from '@/api/nexusaiAPI';
@@ -20,6 +20,7 @@ vi.mock('@/api/nexusaiAPI', () => ({
         deleteInstruction: vi.fn(),
         deleteCategory: vi.fn(),
         getSuggestionByAI: vi.fn(),
+        export: vi.fn(),
       },
     },
   },
@@ -415,6 +416,79 @@ describe('Instructions Store', () => {
           text: 'Instruction 3',
           status: 'complete',
         });
+      });
+    });
+
+    describe('exportInstructions', () => {
+      const mockClick = vi.fn();
+      let createElementSpy;
+
+      beforeEach(() => {
+        window.URL.createObjectURL = vi.fn(() => 'blob:mock-url');
+        window.URL.revokeObjectURL = vi.fn();
+        createElementSpy = vi.spyOn(document, 'createElement').mockReturnValue({
+          href: '',
+          download: '',
+          click: mockClick,
+        });
+      });
+
+      afterEach(() => {
+        createElementSpy.mockRestore();
+      });
+
+      it('downloads the CSV and shows a success alert', async () => {
+        const csvData = 'instruction,category\nHello,Sales';
+        nexusaiAPI.agent_builder.instructions.export.mockResolvedValue(csvData);
+
+        const result = await store.exportInstructions();
+
+        expect(
+          nexusaiAPI.agent_builder.instructions.export,
+        ).toHaveBeenCalledWith({ projectUuid: 'test-project-uuid' });
+        expect(window.URL.createObjectURL).toHaveBeenCalled();
+        expect(mockClick).toHaveBeenCalled();
+        expect(window.URL.revokeObjectURL).toHaveBeenCalledWith(
+          'blob:mock-url',
+        );
+        expect(alertStore.add).toHaveBeenCalledWith({
+          type: 'success',
+          text: i18n.global.t(
+            'agents.instructions.export_instructions.success_alert_title',
+          ),
+          description: i18n.global.t(
+            'agents.instructions.export_instructions.success_alert_description',
+          ),
+        });
+        expect(result).toEqual({ status: 'success' });
+      });
+
+      it('sets loading while exporting and clears it afterward', async () => {
+        nexusaiAPI.agent_builder.instructions.export.mockImplementation(() => {
+          expect(store.isExportingInstructionsLoading).toBe(true);
+          return Promise.resolve('csv');
+        });
+
+        await store.exportInstructions();
+
+        expect(store.isExportingInstructionsLoading).toBe(false);
+      });
+
+      it('returns error status when the export request fails', async () => {
+        const consoleErrorSpy = vi
+          .spyOn(console, 'error')
+          .mockImplementation(() => {});
+        nexusaiAPI.agent_builder.instructions.export.mockRejectedValue(
+          new Error('API Error'),
+        );
+
+        const result = await store.exportInstructions();
+
+        expect(alertStore.add).not.toHaveBeenCalled();
+        expect(result).toEqual({ status: 'error' });
+        expect(store.isExportingInstructionsLoading).toBe(false);
+
+        consoleErrorSpy.mockRestore();
       });
     });
 
