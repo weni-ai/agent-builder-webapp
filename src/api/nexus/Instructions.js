@@ -29,10 +29,14 @@ export const Instructions = {
     return InstructionsGroupedAdapter.fromApi(response.data);
   },
 
-  async update({ projectUuid, ...groupedPayload }) {
+  async update({ projectUuid, id, instruction, category }) {
     const response = await request.$http.patch(
       `api/${projectUuid}/instructions/`,
-      InstructionsGroupedAdapter.toUpdateApi(groupedPayload),
+      InstructionsGroupedAdapter.toUpdateApi({
+        id,
+        text: instruction,
+        category,
+      }),
     );
 
     return InstructionsGroupedAdapter.fromApi(response.data);
