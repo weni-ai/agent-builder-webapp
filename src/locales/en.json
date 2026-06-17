@@ -430,8 +430,16 @@
     "instructions": {
       "title": "Instructions",
       "description": "Define the rules that guide how Manager responds, communicates, and makes decisions",
-      "export_instructions": "Export instructions",
       "new_instruction": "New instruction",
+      "export_instructions": {
+        "title": "Export instructions",
+        "cancel_button": "Cancel",
+        "export_button": "Export",
+        "modal_description": "Instructions will be downloaded as a CSV file, compatible with Excel, Google Sheets, and similar tools",
+        "modal_title": "Export instructions",
+        "success_alert_description": "The CSV file is ready in the downloads folder",
+        "success_alert_title": "Instructions exported"
+      },
       "delete_category": {
         "modal_title": "Delete category",
         "modal_description": "{count} from {name} to Uncategorized. Nothing will be deleted, only the category label is removed.",
