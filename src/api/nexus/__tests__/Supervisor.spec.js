@@ -209,4 +209,110 @@ describe('Supervisor.js', () => {
       ).rejects.toThrow('API Error');
     });
   });
+
+  describe('improvements', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    async function startMockAnalysis() {
+      const promise = Supervisor.improvements.runAnalysis({
+        projectUuid: 'project-123',
+      });
+
+      await vi.advanceTimersByTimeAsync(400);
+
+      return promise;
+    }
+
+    async function pollMockAnalysis() {
+      const promise = Supervisor.improvements.getAnalysis({
+        projectUuid: 'project-123',
+      });
+
+      await vi.advanceTimersByTimeAsync(400);
+
+      return promise;
+    }
+
+    it('runAnalysis returns an initial running task with empty improvements', async () => {
+      const result = await startMockAnalysis();
+
+      expect(result.task).toEqual({
+        isRunning: true,
+        progress: 0,
+        total: 5,
+      });
+      expect(result.improvements).toEqual([]);
+    });
+
+    it('getAnalysis throws when no analysis task was started', async () => {
+      vi.resetModules();
+
+      const { Supervisor: FreshSupervisor } = await import(
+        '@/api/nexus/Supervisor'
+      );
+
+      await expect(
+        FreshSupervisor.improvements.getAnalysis({
+          projectUuid: 'project-123',
+        }),
+      ).rejects.toThrow('No improvements analysis task found.');
+    });
+
+    it('getAnalysis advances progress until improvements are returned', async () => {
+      await startMockAnalysis();
+
+      let result;
+
+      for (let step = 1; step <= 5; step += 1) {
+        result = await pollMockAnalysis();
+
+        if (step < 5) {
+          expect(result.task).toEqual({
+            isRunning: true,
+            progress: step,
+            total: 5,
+          });
+          expect(result.improvements).toEqual([]);
+        }
+      }
+
+      expect(result.task).toEqual({
+        isRunning: false,
+        progress: 5,
+        total: 5,
+      });
+      expect(result.improvements).toHaveLength(6);
+      expect(result.improvements[0]).toMatchObject({
+        uuid: 'improvement-uuid-1',
+        type: 'brand_voice_mismatch',
+        conversationsCount: 18,
+      });
+      expect(result.improvements[5]).toMatchObject({
+        uuid: 'improvement-uuid-6',
+        type: 'amazing_conversation',
+        conversationsCount: 3,
+      });
+    });
+
+    it('getAnalysis keeps returning completed data without changing progress', async () => {
+      await startMockAnalysis();
+
+      let completedResult;
+
+      for (let step = 0; step < 5; step += 1) {
+        completedResult = await pollMockAnalysis();
+      }
+
+      const result = await pollMockAnalysis();
+
+      expect(result.task).toEqual(completedResult.task);
+      expect(result.improvements).toEqual(completedResult.improvements);
+    });
+  });
 });
