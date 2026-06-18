@@ -31,7 +31,7 @@ describe('InstructionsGroupedAdapter.toUpdateApi', () => {
     });
   });
 
-  it('builds an uncategorized payload when category has no id', () => {
+  it('builds a categories payload with name when assigning a new category', () => {
     expect(
       InstructionsGroupedAdapter.toUpdateApi({
         id: 7,
@@ -39,7 +39,12 @@ describe('InstructionsGroupedAdapter.toUpdateApi', () => {
         category: { name: 'Marketing' },
       }),
     ).toEqual({
-      uncategorized_instructions: [{ id: 7, instruction: 'New text' }],
+      categories: [
+        {
+          name: 'Marketing',
+          instructions: [{ id: 7, instruction: 'New text' }],
+        },
+      ],
     });
   });
 
