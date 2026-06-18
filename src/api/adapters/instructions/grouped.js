@@ -39,16 +39,27 @@ export const InstructionsGroupedAdapter = {
       instruction: text.trim(),
     };
 
-    if (!category || category.id == null) {
+    if (!category) {
       return {
         uncategorized_instructions: [instructionItem],
+      };
+    }
+
+    if (category.id != null) {
+      return {
+        categories: [
+          {
+            id: category.id,
+            instructions: [instructionItem],
+          },
+        ],
       };
     }
 
     return {
       categories: [
         {
-          id: category.id,
+          name: category.name,
           instructions: [instructionItem],
         },
       ],

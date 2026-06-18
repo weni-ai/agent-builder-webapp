@@ -1047,6 +1047,45 @@ describe('Instructions Store', () => {
       });
     });
 
+    it('creates a new category when editing an instruction with a custom category', async () => {
+      store.instructions.data = [
+        { id: 7, text: 'Be concise', category: { id: 3, name: 'Tone' } },
+      ];
+      const updated = {
+        instructions: [
+          {
+            id: 7,
+            text: 'Be concise',
+            category: { id: 9, name: 'Marketing' },
+          },
+        ],
+        categories: [
+          { id: 3, name: 'Tone' },
+          { id: 9, name: 'Marketing' },
+        ],
+      };
+      nexusaiAPI.agent_builder.instructions.update.mockResolvedValue(updated);
+
+      store.startEditingInstruction({ id: 7 });
+      store.newInstruction.category = { id: null, name: 'Marketing' };
+
+      await store.updateEditingInstruction();
+
+      expect(nexusaiAPI.agent_builder.instructions.update).toHaveBeenCalledWith(
+        {
+          projectUuid: 'test-project-uuid',
+          id: 7,
+          instruction: 'Be concise',
+          category: { name: 'Marketing' },
+        },
+      );
+      expect(store.instructions.data[0]).toEqual({
+        id: 7,
+        text: 'Be concise',
+        category: { id: 9, name: 'Marketing' },
+      });
+    });
+
     it('preserves instruction state when the grouped update fails', async () => {
       const originalInstruction = {
         id: 7,
