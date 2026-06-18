@@ -292,6 +292,14 @@
           "provider": "Select a provider",
           "model": "Select a model"
         }
+      },
+      "system_messages": {
+        "title": "System messages",
+        "error_message": {
+          "label": "Error message",
+          "save_error": "Error message couldn't be saved due to a technical issue",
+          "tooltip": "This message is displayed to the contact when the agent is unable to generate a response.\nFor example, in cases of technical instability, processing errors, or exceeded response times.\nCustomize it to maintain your brand’s tone of voice even in error situations."
+        }
       }
     }
   },

@@ -20,6 +20,10 @@ vi.mock('@/api/nexusaiAPI', () => ({
         editProgressiveFeedback: vi.fn(),
         editComponents: vi.fn(),
         createCredentials: vi.fn(),
+        apiErrorMessage: {
+          read: vi.fn(),
+          edit: vi.fn(),
+        },
         manager: {
           edit: vi.fn(),
         },
@@ -49,6 +53,9 @@ describe('Tunings Store', () => {
   let alertStore;
   let managerSelectorStore;
   let engineSourceStore;
+
+  const backendDefaultErrorMessage =
+    'Sorry, I was unable to process your request. Try again.';
 
   const mockCredentialsData = {
     my_agents_credentials: [
@@ -85,6 +92,7 @@ describe('Tunings Store', () => {
           components: false,
           progressiveFeedback: false,
           manager: '',
+          errorMessage: '',
         },
       });
       expect(store.initialCredentials).toBeNull();
@@ -170,11 +178,13 @@ describe('Tunings Store', () => {
           components: true,
           progressiveFeedback: false,
           manager: 'manager-2.6',
+          errorMessage: backendDefaultErrorMessage,
         };
         store.initialSettings = {
           components: false,
           progressiveFeedback: false,
           manager: 'manager-2.5',
+          errorMessage: backendDefaultErrorMessage,
         };
       });
 
@@ -371,6 +381,9 @@ describe('Tunings Store', () => {
         nexusaiAPI.router.tunings.getComponents.mockResolvedValue({
           components: true,
         });
+        nexusaiAPI.router.tunings.apiErrorMessage.read.mockResolvedValue({
+          errorMessage: backendDefaultErrorMessage,
+        });
 
         await store.fetchSettings();
 
@@ -379,8 +392,42 @@ describe('Tunings Store', () => {
           components: true,
           progressiveFeedback: true,
           manager: '',
+          errorMessage: backendDefaultErrorMessage,
         });
         expect(store.initialSettings).toEqual(store.settings.data);
+      });
+
+      it('should pre-fill saved custom error message', async () => {
+        nexusaiAPI.router.tunings.getProgressiveFeedback.mockResolvedValue({
+          progressiveFeedback: false,
+        });
+        nexusaiAPI.router.tunings.getComponents.mockResolvedValue({
+          components: false,
+        });
+        nexusaiAPI.router.tunings.apiErrorMessage.read.mockResolvedValue({
+          errorMessage: 'Custom API error',
+        });
+
+        await store.fetchSettings();
+
+        expect(store.settings.data.errorMessage).toBe('Custom API error');
+      });
+
+      it('should leave error message empty when api read fails', async () => {
+        nexusaiAPI.router.tunings.getProgressiveFeedback.mockResolvedValue({
+          progressiveFeedback: false,
+        });
+        nexusaiAPI.router.tunings.getComponents.mockResolvedValue({
+          components: false,
+        });
+        nexusaiAPI.router.tunings.apiErrorMessage.read.mockRejectedValue(
+          new Error('Read failed'),
+        );
+
+        await store.fetchSettings();
+
+        expect(store.settings.status).toBe('success');
+        expect(store.settings.data.errorMessage).toBe('');
       });
 
       it('should handle fetch settings error', async () => {
@@ -400,11 +447,13 @@ describe('Tunings Store', () => {
           components: true,
           progressiveFeedback: true,
           manager: 'manager-2.6',
+          errorMessage: backendDefaultErrorMessage,
         };
         store.initialSettings = {
           components: false,
           progressiveFeedback: false,
           manager: 'manager-2.5',
+          errorMessage: backendDefaultErrorMessage,
         };
       });
 
@@ -507,6 +556,62 @@ describe('Tunings Store', () => {
         await nextTick();
 
         expect(store.settings.data.manager).toBe('manager-2.7');
+      });
+
+      it('should save changed error message independently', async () => {
+        store.settings.data = cloneDeep(store.initialSettings);
+        store.settings.data.errorMessage = 'Updated error message';
+        nexusaiAPI.router.tunings.apiErrorMessage.edit.mockResolvedValue({
+          errorMessage: 'Updated error message',
+        });
+
+        const result = await store.saveSettings();
+
+        expect(
+          nexusaiAPI.router.tunings.apiErrorMessage.edit,
+        ).toHaveBeenCalledWith({
+          projectUuid: 'test-project-uuid',
+          data: { errorMessage: 'Updated error message' },
+          requestOptions: { hideGenericErrorAlert: true },
+        });
+        expect(result).toBe(true);
+        expect(store.settings.data.errorMessage).toBe('Updated error message');
+      });
+
+      it('should reset to default after clearing error message', async () => {
+        store.settings.data = cloneDeep(store.initialSettings);
+        store.initialSettings.errorMessage = 'Custom saved message';
+        store.settings.data.errorMessage = '';
+        nexusaiAPI.router.tunings.apiErrorMessage.edit.mockResolvedValue({
+          errorMessage: backendDefaultErrorMessage,
+        });
+
+        const result = await store.saveSettings();
+
+        expect(result).toBe(true);
+        expect(store.settings.data.errorMessage).toBe(
+          backendDefaultErrorMessage,
+        );
+      });
+
+      it('should keep other settings saved when only error message save fails', async () => {
+        store.settings.data.errorMessage = 'Updated error message';
+        nexusaiAPI.router.tunings.editProgressiveFeedback.mockResolvedValue();
+        nexusaiAPI.router.tunings.editComponents.mockResolvedValue();
+        nexusaiAPI.router.tunings.apiErrorMessage.edit.mockRejectedValue(
+          new Error('Save failed'),
+        );
+        vi.spyOn(managerSelectorStore, 'saveManager').mockResolvedValue(true);
+
+        const result = await store.saveSettings();
+
+        expect(result).toBe(false);
+        expect(store.lastErrorMessageSaveFailed).toBe(true);
+        expect(store.settings.status).toBe('success');
+        expect(store.initialSettings.components).toBe(true);
+        expect(store.initialSettings.errorMessage).toBe(
+          backendDefaultErrorMessage,
+        );
       });
     });
 
