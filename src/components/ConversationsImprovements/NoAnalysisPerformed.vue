@@ -1,15 +1,25 @@
 <template>
-  <section class="conversations-improvements__no-analysis-performed">
+  <section
+    class="conversations-improvements__no-analysis-performed"
+    data-testid="no-analysis-performed"
+  >
     <header class="no-analysis-performed__header">
-      <h2 class="no-analysis-performed__title">
+      <h2
+        class="no-analysis-performed__title"
+        data-testid="no-analysis-performed-title"
+      >
         {{ $t('audit.improvements.no_analysis.title') }}
       </h2>
-      <p class="no-analysis-performed__description">
+      <p
+        class="no-analysis-performed__description"
+        data-testid="no-analysis-performed-description"
+      >
         {{ $t('audit.improvements.no_analysis.description') }}
       </p>
     </header>
 
     <UnnnicButton
+      data-testid="no-analysis-performed-run-button"
       type="primary"
       :text="$t('audit.improvements.no_analysis.run_analysis')"
       @click="improvementsStore.runAnalysis"
