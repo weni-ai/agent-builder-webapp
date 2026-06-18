@@ -467,6 +467,11 @@
       }
     },
     "improvements": {
+      "no_analysis": {
+        "description": "Ejecuta el primer análisis para identificar oportunidades de mejora en las conversaciones de ayer",
+        "run_analysis": "Ejecutar análisis",
+        "title": "Aún no se ha ejecutado ningún análisis"
+      },
       "title": "Backlog de mejoras"
     }
   },
