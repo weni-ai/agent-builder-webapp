@@ -10,7 +10,7 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
   const currentProjectUuid = computed(() => useProjectStore().uuid || '');
 
   const activeFeatures = ref([]);
-  const isLoadingFeatureFlags = ref(false);
+  const featureFlagsLoaded = ref(false);
 
   const getListAtEnv = (key) => {
     return env(key)?.split(',') || [];
@@ -27,8 +27,6 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
 
   async function getFeatureFlags() {
     try {
-      isLoadingFeatureFlags.value = true;
-
       const { data } = await nexusaiAPI.feature_flags.read({
         projectUuid: currentProjectUuid.value,
       });
@@ -38,19 +36,22 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
       console.error('Error getting feature flags', error);
       activeFeatures.value = [];
     } finally {
-      isLoadingFeatureFlags.value = false;
+      featureFlagsLoaded.value = true;
     }
   }
 
   const flags = computed(() => ({
     supervisorExport: isProjectEnabledForFlag('FF_SUPERVISOR_EXPORT'),
     settingsAgentVoice: isFeatureFlagEnabled('settings_agent_voice'),
+    categorizationOfInstructions: isFeatureFlagEnabled(
+      'categorization_of_instructions',
+    ),
   }));
 
   return {
     flags,
     activeFeatures,
-    isLoadingFeatureFlags,
+    featureFlagsLoaded,
     getFeatureFlags,
     isFeatureFlagEnabled,
   };

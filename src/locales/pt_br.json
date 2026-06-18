@@ -200,11 +200,12 @@
       },
       "remove_instruction": {
         "title": "Excluir instrução",
-        "modal_description": "Tem certeza de que deseja excluir a instrução?",
-        "remove": "Excluir",
+        "modal_description": "Esta instrução será removida permanentemente e o agente Manager deixará de segui-la. Essa ação não pode ser desfeita.",
+        "remove": "Excluir instrução",
         "cancel": "Cancelar",
-        "success_alert": "Instrução personalizada excluída",
-        "error_alert": "Erro ao excluir instrução personalizada"
+        "success_alert": "Instrução excluída",
+        "error_alert": "Não foi possível excluir a instrução",
+        "error_alert_description": "Algo deu errado e nada foi alterado. Tente novamente."
       }
     },
     "traces": {
@@ -428,7 +429,89 @@
     },
     "instructions": {
       "title": "Instruções",
-      "description": "Escreva regras rápidas para moldar o comportamento do agente"
+      "description": "Defina as regras que orientam como o Manager responde, se comunica e toma decisões",
+      "export_instructions": {
+        "title": "Exportar instruções",
+        "cancel_button": "Cancelar",
+        "export_button": "Exportar",
+        "modal_description": "As instruções serão baixadas em um arquivo CSV, compatível com Excel, Google Sheets e ferramentas similares",
+        "modal_title": "Exportar instruções",
+        "success_alert_description": "O arquivo CSV está pronto na pasta de downloads",
+        "success_alert_title": "Instruções exportadas"
+      },
+      "new_instruction": "Nova instrução",
+      "delete_category": {
+        "modal_title": "Excluir categoria",
+        "modal_description": "{count} de {name} para Sem categoria. Nada será excluído, apenas o rótulo da categoria é removido.",
+        "instructions_count": "{count, plural, one {{count} instrução será movida} other {{count} instruções serão movidas}}",
+        "cancel": "Cancelar",
+        "confirm": "Excluir categoria",
+        "success_title": "Categoria excluída",
+        "success_description": "{count, plural, one {{count} instrução movida para Sem categoria} other {{count} instruções movidas para Sem categoria}}",
+        "error_title": "Não foi possível excluir a categoria",
+        "error_description": "Algo deu errado e nada foi alterado. Tente novamente."
+      },
+      "view": {
+        "default_instruction": "Instrução padrão",
+        "default_instructions": "Instruções padrão",
+        "delete_category": "Excluir categoria",
+        "empty_category": "Ainda não há instruções nesta categoria",
+        "list_columns": {
+          "category": "Categoria",
+          "instruction": "Instrução"
+        },
+        "locked_tooltip": "As instruções padrão não podem ser editadas nem removidas",
+        "results_count": "{count, plural, =0 {Nenhuma instrução encontrada} one {{count} instrução encontrada} other {{count} instruções encontradas}}",
+        "search_placeholder": "Buscar...",
+        "segmented": {
+          "categories": "Categorias",
+          "list": "Lista"
+        },
+        "uncategorized": "Sem categoria"
+      },
+      "new_instruction_drawer": {
+        "title": "Nova instrução",
+        "edit_title": "Editar instrução",
+        "category_label": "Categoria",
+        "re_validate": "Revalidar",
+        "validate": "Validar",
+        "save": "Salvar",
+        "cancel": "Cancelar",
+        "ai_analysis": {
+          "error": "Não foi possível validar a instrução. Tente novamente.",
+          "title": "Análise de IA",
+          "validating": "Validando instrução...",
+          "suggested_category": "Categoria sugerida",
+          "issues": "Problemas encontrados",
+          "issues_types": {
+            "duplicate": "Duplicado",
+            "conflicts": "Conflitos",
+            "ambiguity": "Ambiguidade",
+            "lack_of_clarity": "Clareza",
+            "no_issues_found": "Tudo certo. Nenhum problema encontrado."
+          },
+          "suggested_rewrite": "Reescrita sugerida",
+          "suggestion_applied": "Sugestão aplicada",
+          "undo_button": "Desfazer",
+          "apply_button": "Aplicar",
+          "category": {
+            "new_badge": "Nova",
+            "suggested_category": "Categoria sugerida",
+            "other_categories": "Outras categorias",
+            "create_action": "Nova categoria",
+            "create_title": "Criar categoria",
+            "name_label": "Nome da categoria",
+            "name_placeholder": "Nome",
+            "placeholder": "Selecionar...",
+            "cancel": "Cancelar",
+            "create": "Criar",
+            "validation": {
+              "required": "Preencha este campo",
+              "invalid_chars": "Use apenas letras, números, espaços e hifens"
+            }
+          }
+        }
+      }
     },
     "profile": {
       "tone_of_voice": {

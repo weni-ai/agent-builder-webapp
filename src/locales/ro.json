@@ -200,11 +200,12 @@
       },
       "remove_instruction": {
         "title": "Șterge instrucțiunea",
-        "modal_description": "Ești sigur că vrei să ștergi această instrucțiune?",
-        "remove": "Ștergere",
+        "modal_description": "Această instrucțiune va fi eliminată definitiv, iar agentul Manager nu o va mai urma. Această acțiune nu poate fi anulată.",
+        "remove": "Șterge instrucțiunea",
         "cancel": "Anulează",
-        "success_alert": "Instrucțiune personalizată ștearsă",
-        "error_alert": "Eroare la ștergerea instrucțiunii personalizate"
+        "success_alert": "Instrucțiune ștearsă",
+        "error_alert": "Instrucțiunea nu a putut fi ștearsă",
+        "error_alert_description": "Ceva nu a funcționat și nimic nu a fost modificat. Încearcă din nou."
       }
     },
     "traces": {
@@ -427,7 +428,89 @@
     },
     "instructions": {
       "title": "Instrucțiuni",
-      "description": "Scrie reguli rapide pentru a modela comportamentul agentului"
+      "description": "Definește regulile care ghidează modul în care Manager răspunde, comunică și ia decizii",
+      "export_instructions": {
+        "title": "Exportă instrucțiuni",
+        "cancel_button": "Anulează",
+        "export_button": "Exportă",
+        "modal_description": "Instrucțiunile vor fi descărcate într-un fișier CSV, compatibil cu Excel, Google Sheets și instrumente similare",
+        "modal_title": "Exportă instrucțiuni",
+        "success_alert_description": "Fișierul CSV este gata în folderul de descărcări",
+        "success_alert_title": "Instrucțiuni exportate"
+      },
+      "new_instruction": "Instrucțiune nouă",
+      "delete_category": {
+        "modal_title": "Șterge categoria",
+        "modal_description": "{count} din {name} în Fără categorie. Nu se șterge nimic, se elimină doar eticheta categoriei.",
+        "instructions_count": "{count, plural, one {{count} instrucțiune va fi mutată} other {{count} instrucțiuni vor fi mutate}}",
+        "cancel": "Anulează",
+        "confirm": "Șterge categoria",
+        "success_title": "Categorie ștearsă",
+        "success_description": "{count, plural, one {{count} instrucțiune mutată în Fără categorie} other {{count} instrucțiuni mutate în Fără categorie}}",
+        "error_title": "Categoria nu a putut fi ștearsă",
+        "error_description": "Ceva nu a funcționat și nimic nu a fost modificat. Încearcă din nou."
+      },
+      "view": {
+        "default_instruction": "Instrucțiune implicită",
+        "default_instructions": "Instrucțiuni implicite",
+        "delete_category": "Șterge categoria",
+        "empty_category": "Încă nu există instrucțiuni în această categorie",
+        "list_columns": {
+          "category": "Categorie",
+          "instruction": "Instrucțiune"
+        },
+        "locked_tooltip": "Instrucțiunile implicite nu pot fi editate sau eliminate",
+        "results_count": "{count, plural, =0 {Nu s-au găsit instrucțiuni} one {{count} instrucțiune găsită} few {{count} instrucțiuni găsite} other {{count} de instrucțiuni găsite}}",
+        "search_placeholder": "Caută...",
+        "segmented": {
+          "categories": "Categorii",
+          "list": "Listă"
+        },
+        "uncategorized": "Fără categorie"
+      },
+      "new_instruction_drawer": {
+        "title": "Instrucțiune nouă",
+        "edit_title": "Editare instrucțiune",
+        "category_label": "Categorie",
+        "re_validate": "Revalidează",
+        "validate": "Validează",
+        "save": "Salvează",
+        "cancel": "Anulează",
+        "ai_analysis": {
+          "error": "Instrucțiunea nu a putut fi validată. Încearcă din nou.",
+          "title": "Analiză AI",
+          "validating": "Se validează instrucțiunea...",
+          "suggested_category": "Categorie sugerată",
+          "issues": "Probleme găsite",
+          "issues_types": {
+            "duplicate": "Duplicat",
+            "conflicts": "Conflicte",
+            "ambiguity": "Ambiguitate",
+            "lack_of_clarity": "Claritate",
+            "no_issues_found": "Totul în regulă. Nicio problemă găsită."
+          },
+          "suggested_rewrite": "Rescriere sugerată",
+          "suggestion_applied": "Sugestie aplicată",
+          "undo_button": "Anulează",
+          "apply_button": "Aplică",
+          "category": {
+            "new_badge": "Nouă",
+            "suggested_category": "Categorie sugerată",
+            "other_categories": "Alte categorii",
+            "create_action": "Nouă categorie",
+            "create_title": "Creează categorie",
+            "name_label": "Numele categoriei",
+            "name_placeholder": "Nume",
+            "placeholder": "Selectează...",
+            "cancel": "Anulează",
+            "create": "Creează",
+            "validation": {
+              "required": "Completează acest câmp",
+              "invalid_chars": "Folosește doar litere, cifre, spații și cratime"
+            }
+          }
+        }
+      }
     },
     "profile": {
       "tone_of_voice": {

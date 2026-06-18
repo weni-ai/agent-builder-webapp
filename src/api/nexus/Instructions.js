@@ -1,5 +1,7 @@
 import nexusRequest from '../nexusaiRequest';
 import { InstructionAdapter } from '../adapters/instructions/instruction';
+import { InstructionClassificationAdapter } from '../adapters/instructions/classification';
+import { InstructionsGroupedAdapter } from '../adapters/instructions/grouped';
 import { useInstructionsStore } from '@/store/Instructions';
 
 import i18n from '@/utils/plugins/i18n';
@@ -7,6 +9,49 @@ import i18n from '@/utils/plugins/i18n';
 const request = nexusRequest;
 
 export const Instructions = {
+  async listGrouped({ projectUuid }) {
+    const response = await request.$http.get(
+      `api/${projectUuid}/instructions/`,
+    );
+
+    return InstructionsGroupedAdapter.fromApi(response.data);
+  },
+
+  async create({ projectUuid, instruction, category }) {
+    const response = await request.$http.post(
+      `api/${projectUuid}/instructions/`,
+      InstructionsGroupedAdapter.toCreateApi({ text: instruction, category }),
+      {
+        hideGenericErrorAlert: true,
+      },
+    );
+
+    return InstructionsGroupedAdapter.fromApi(response.data);
+  },
+
+  async update({ projectUuid, id, instruction, category }) {
+    const response = await request.$http.patch(
+      `api/${projectUuid}/instructions/`,
+      InstructionsGroupedAdapter.toUpdateApi({
+        id,
+        text: instruction,
+        category,
+      }),
+    );
+
+    return InstructionsGroupedAdapter.fromApi(response.data);
+  },
+
+  async deleteInstruction({ projectUuid, id }) {
+    await request.$http.delete(`api/${projectUuid}/instructions/?id=${id}`);
+  },
+
+  async deleteCategory({ projectUuid, id }) {
+    await request.$http.delete(
+      `api/${projectUuid}/instructions/categories/${id}/`,
+    );
+  },
+
   async addInstruction({ projectUuid, instruction }) {
     const instructionsStore = useInstructionsStore();
     const body = {
@@ -60,7 +105,11 @@ export const Instructions = {
     await request.$http.delete(`api/${projectUuid}/customization/?id=${id}`);
   },
 
-  async getSuggestionByAI({ projectUuid, instruction }) {
+  async getSuggestionByAI({
+    projectUuid,
+    instruction,
+    instructionsCategories = [],
+  }) {
     const languageMap = {
       en: 'English',
       'pt-br': 'Portuguese',
@@ -73,9 +122,18 @@ export const Instructions = {
       `api/${projectUuid}/instructions-classification/`,
       {
         instruction,
+        instructions_categories: instructionsCategories,
         language,
       },
     );
-    return response;
+    return InstructionClassificationAdapter.fromApi(response.data);
+  },
+
+  async export({ projectUuid }) {
+    const response = await request.$http.get(
+      `api/${projectUuid}/instructions/export/`,
+    );
+
+    return response.data;
   },
 };

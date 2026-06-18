@@ -200,11 +200,12 @@
       },
       "remove_instruction": {
         "title": "Delete instruction",
-        "modal_description": "Are you sure you want to delete this instruction?",
-        "remove": "Delete",
+        "modal_description": "This instruction will be permanently removed and the Manager agent will stop following it. This can't be undone.",
+        "remove": "Delete instruction",
         "cancel": "Cancel",
-        "success_alert": "Custom instruction deleted",
-        "error_alert": "Error deleting custom instruction"
+        "success_alert": "Instruction deleted",
+        "error_alert": "Couldn't delete instruction",
+        "error_alert_description": "Something went wrong and nothing was changed. Try again."
       }
     },
     "traces": {
@@ -428,7 +429,89 @@
     },
     "instructions": {
       "title": "Instructions",
-      "description": "Write quick rules to shape agent behavior"
+      "description": "Define the rules that guide how Manager responds, communicates, and makes decisions",
+      "new_instruction": "New instruction",
+      "export_instructions": {
+        "title": "Export instructions",
+        "cancel_button": "Cancel",
+        "export_button": "Export",
+        "modal_description": "Instructions will be downloaded as a CSV file, compatible with Excel, Google Sheets, and similar tools",
+        "modal_title": "Export instructions",
+        "success_alert_description": "The CSV file is ready in the downloads folder",
+        "success_alert_title": "Instructions exported"
+      },
+      "delete_category": {
+        "modal_title": "Delete category",
+        "modal_description": "{count} from {name} to Uncategorized. Nothing will be deleted, only the category label is removed.",
+        "instructions_count": "{count, plural, one {{count} instruction will be moved} other {{count} instructions will be moved}}",
+        "cancel": "Cancel",
+        "confirm": "Delete category",
+        "success_title": "Category deleted",
+        "success_description": "{count, plural, one {{count} instruction moved to Uncategorized} other {{count} instructions moved to Uncategorized}}",
+        "error_title": "Couldn't delete category",
+        "error_description": "Something went wrong and nothing was changed. Try again."
+      },
+      "view": {
+        "default_instruction": "Default instruction",
+        "default_instructions": "Default instructions",
+        "delete_category": "Delete category",
+        "empty_category": "No instructions in this category yet",
+        "list_columns": {
+          "category": "Category",
+          "instruction": "Instruction"
+        },
+        "locked_tooltip": "Default instructions can't be edited or removed",
+        "results_count": "{count, plural, =0 {No instructions found} one {{count} instruction found} other {{count} instructions found}}",
+        "search_placeholder": "Search...",
+        "segmented": {
+          "categories": "Categories",
+          "list": "List"
+        },
+        "uncategorized": "Uncategorized"
+      },
+      "new_instruction_drawer": {
+        "title": "New instruction",
+        "edit_title": "Edit instruction",
+        "category_label": "Category",
+        "re_validate": "Re-validate",
+        "validate": "Validate",
+        "save": "Save",
+        "cancel": "Cancel",
+        "ai_analysis": {
+          "error": "The instruction couldn't be validated. Try again.",
+          "title": "AI analysis",
+          "validating": "Validating instruction...",
+          "suggested_category": "Suggested category",
+          "issues": "Issues found",
+          "issues_types": {
+            "duplicate": "Duplicate",
+            "conflicts": "Conflicts",
+            "ambiguity": "Ambiguity",
+            "lack_of_clarity": "Clarity",
+            "no_issues_found": "Looks good. No issues found."
+          },
+          "suggested_rewrite": "Suggested rewrite",
+          "suggestion_applied": "Suggestion applied",
+          "undo_button": "Undo",
+          "apply_button": "Apply",
+          "category": {
+            "new_badge": "New",
+            "suggested_category": "Suggested category",
+            "other_categories": "Other categories",
+            "create_action": "New category",
+            "create_title": "Create category",
+            "name_label": "Category name",
+            "name_placeholder": "Name",
+            "placeholder": "Select...",
+            "cancel": "Cancel",
+            "create": "Create",
+            "validation": {
+              "required": "Complete this field",
+              "invalid_chars": "Use only letters, numbers, spaces, and hyphens"
+            }
+          }
+        }
+      }
     },
     "profile": {
       "tone_of_voice": {

@@ -1,43 +1,62 @@
 <template>
-  <UnnnicModalDialog
-    :modelValue="modelValue"
+  <UnnnicDialog
     data-testid="modal"
-    class="modal-remove-instruction"
-    showCloseIcon
-    icon="warning"
-    iconScheme="red-10"
-    :title="$t('agent_builder.instructions.remove_instruction.title')"
-    size="sm"
-    :secondaryButtonProps="{
-      text: $t('agent_builder.instructions.remove_instruction.cancel'),
-    }"
-    :primaryButtonProps="{
-      text: $t('agent_builder.instructions.remove_instruction.remove'),
-      loading: instruction.status === 'loading',
-      type: 'warning',
-    }"
-    @secondary-button-click="close"
-    @primary-button-click="removeInstruction"
-    @update:model-value="close"
+    :open="modelValue"
+    lazyMount
+    @update:open="onUpdateOpen"
   >
-    <p
-      class="modal-remove-instruction__description"
-      data-testid="description"
-    >
-      {{
-        $t('agent_builder.instructions.remove_instruction.modal_description')
-      }}
-    </p>
-  </UnnnicModalDialog>
+    <UnnnicDialogContent>
+      <UnnnicDialogHeader type="warning">
+        <UnnnicDialogTitle>
+          {{ $t('agent_builder.instructions.remove_instruction.title') }}
+        </UnnnicDialogTitle>
+      </UnnnicDialogHeader>
+
+      <section class="modal-remove-instruction">
+        <p
+          class="modal-remove-instruction__description"
+          data-testid="description"
+        >
+          {{
+            $t(
+              'agent_builder.instructions.remove_instruction.modal_description',
+            )
+          }}
+        </p>
+
+        <p
+          class="modal-remove-instruction__snippet"
+          data-testid="instruction-snippet"
+        >
+          {{ instruction.text }}
+        </p>
+      </section>
+
+      <UnnnicDialogFooter>
+        <UnnnicDialogClose>
+          <UnnnicButton
+            data-testid="cancel-button"
+            :text="$t('agent_builder.instructions.remove_instruction.cancel')"
+            type="tertiary"
+            @click="close"
+          />
+        </UnnnicDialogClose>
+        <UnnnicButton
+          data-testid="remove-button"
+          :text="$t('agent_builder.instructions.remove_instruction.remove')"
+          :loading="instruction.status === 'loading'"
+          type="warning"
+          @click="removeInstruction"
+        />
+      </UnnnicDialogFooter>
+    </UnnnicDialogContent>
+  </UnnnicDialog>
 </template>
 
 <script setup>
 import { useInstructionsStore } from '@/store/Instructions';
-import { ref } from 'vue';
 
 const instructionsStore = useInstructionsStore();
-
-const emit = defineEmits(['update:modelValue']);
 
 const props = defineProps({
   instruction: {
@@ -46,10 +65,17 @@ const props = defineProps({
   },
 });
 
-const modelValue = ref(false);
+const modelValue = defineModel('modelValue', {
+  type: Boolean,
+  required: true,
+});
 
 function close() {
-  emit('update:modelValue', false);
+  modelValue.value = false;
+}
+
+function onUpdateOpen(open) {
+  if (!open) close();
 }
 
 async function removeInstruction() {
@@ -57,23 +83,34 @@ async function removeInstruction() {
     props.instruction.id,
   );
 
-  if (status === 'complete') close();
+  if (status !== 'error') close();
 }
 </script>
 
 <style lang="scss" scoped>
 .modal-remove-instruction {
-  :deep(.unnnic-modal-dialog__container__content) {
-    padding-bottom: $unnnic-spacing-xs;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: $unnnic-space-2;
+
+  padding: $unnnic-space-6;
 
   &__description {
-    color: $unnnic-color-neutral-cloudy;
+    margin: 0;
 
-    font-family: $unnnic-font-family-secondary;
-    font-size: $unnnic-font-size-body-gt;
-    font-weight: $unnnic-font-weight-regular;
-    line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
+    color: $unnnic-color-fg-base;
+    font: $unnnic-font-body;
+  }
+
+  &__snippet {
+    margin: 0;
+    padding: $unnnic-space-3;
+
+    border-radius: $unnnic-radius-2;
+    background-color: $unnnic-color-bg-base-soft;
+
+    color: $unnnic-color-fg-base;
+    font: $unnnic-font-caption-2;
   }
 }
 </style>

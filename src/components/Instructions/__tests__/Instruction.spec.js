@@ -204,4 +204,17 @@ describe('Instruction.vue', () => {
       });
     });
   });
+
+  describe('Drawer edit mode', () => {
+    it('emits edit and stays out of inline edit when emitEditOnClick is true', async () => {
+      await wrapper.setProps({ emitEditOnClick: true });
+
+      const [editAction] = findComponent('actions').props('actions');
+      editAction.onClick();
+      await wrapper.vm.$nextTick();
+
+      expect(wrapper.emitted('edit')).toEqual([[wrapper.props('instruction')]]);
+      expect(wrapper.vm.isEditing).toBe(false);
+    });
+  });
 });
