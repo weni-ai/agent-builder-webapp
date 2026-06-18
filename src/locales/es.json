@@ -472,6 +472,10 @@
         "run_analysis": "Ejecutar análisis",
         "title": "Aún no se ha ejecutado ningún análisis"
       },
+      "running_analysis": {
+        "description": "Esto puede tardar unos minutos. Puedes cerrar esta pantalla.",
+        "title": "Analizando {count} conversaciones de ayer"
+      },
       "title": "Backlog de mejoras"
     }
   },

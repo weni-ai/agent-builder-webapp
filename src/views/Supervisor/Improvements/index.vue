@@ -4,6 +4,9 @@
     data-testid="conversations-improvements"
   >
     <NoAnalysisPerformed v-if="!analysis.task" />
+    <RunningAnalysis
+      v-else-if="analysis.task?.isRunning && !improvements.data.length"
+    />
   </section>
 </template>
 
@@ -14,9 +17,10 @@ import { storeToRefs } from 'pinia';
 import { useImprovementsStore } from '@/store/Improvements';
 
 import NoAnalysisPerformed from '@/components/ConversationsImprovements/NoAnalysisPerformed.vue';
+import RunningAnalysis from '@/components/ConversationsImprovements/RunningAnalysis.vue';
 
 const improvementsStore = useImprovementsStore();
-const { analysis } = storeToRefs(improvementsStore);
+const { analysis, improvements } = storeToRefs(improvementsStore);
 
 onMounted(() => {
   improvementsStore.fetchImprovements();
