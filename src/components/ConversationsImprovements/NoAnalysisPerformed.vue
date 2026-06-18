@@ -1,6 +1,6 @@
 <template>
   <section
-    class="conversations-improvements__no-analysis-performed"
+    class="no-analysis-performed"
     data-testid="no-analysis-performed"
   >
     <header class="no-analysis-performed__header">
@@ -22,6 +22,7 @@
       data-testid="no-analysis-performed-run-button"
       type="primary"
       :text="$t('audit.improvements.no_analysis.run_analysis')"
+      :loading="improvementsStore.analysis.status === 'loading'"
       @click="improvementsStore.runAnalysis"
     />
   </section>
@@ -34,7 +35,7 @@ const improvementsStore = useImprovementsStore();
 </script>
 
 <style scoped lang="scss">
-.conversations-improvements__no-analysis-performed {
+.no-analysis-performed {
   height: 100%;
 
   display: flex;
@@ -42,9 +43,7 @@ const improvementsStore = useImprovementsStore();
   align-items: center;
   justify-content: center;
   gap: $unnnic-space-4;
-}
 
-.no-analysis-performed {
   &__header {
     display: flex;
     flex-direction: column;
