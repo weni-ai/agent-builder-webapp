@@ -468,8 +468,12 @@
     },
 
     "improvements": {
+      "no_analysis": {
+        "description": "Run your first analysis to identify opportunities for improvement in yesterday's conversations",
+        "run_analysis": "Run analysis",
+        "title": "No analysis has been run yet"
+      },
       "title": "Improvement backlog"
-
     }
   },
   "router": {

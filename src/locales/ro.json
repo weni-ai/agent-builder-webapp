@@ -466,6 +466,11 @@
       }
     },
     "improvements": {
+      "no_analysis": {
+        "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire în conversațiile de ieri",
+        "run_analysis": "Rulează analiza",
+        "title": "Nicio analiză nu a fost executată încă"
+      },
       "title": "Backlog de îmbunătățiri"
     }
   },
