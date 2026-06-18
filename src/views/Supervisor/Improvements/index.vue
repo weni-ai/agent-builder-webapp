@@ -1,5 +1,8 @@
 <template>
-  <section class="conversations-improvements">
+  <section
+    class="conversations-improvements"
+    data-testid="conversations-improvements"
+  >
     <NoAnalysisPerformed v-if="!analysis.task" />
   </section>
 </template>
