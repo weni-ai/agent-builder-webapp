@@ -11,7 +11,35 @@ import type {
   ImprovementsTask,
 } from './types/Improvements.types';
 
-const POLL_INTERVAL_MS = 1000;
+const POLL_INTERVALS_MS = {
+  fast: 5_000,
+  medium: 10_000,
+  slow: 15_000,
+  minute: 60_000,
+} as const;
+
+const POLL_PHASE_LIMITS = {
+  fast: 10,
+  medium: 20,
+  slow: 30,
+  minute: 50,
+} as const;
+
+function getPollIntervalMs(completedPollCount: number) {
+  if (completedPollCount < POLL_PHASE_LIMITS.fast) {
+    return POLL_INTERVALS_MS.fast;
+  }
+
+  if (completedPollCount < POLL_PHASE_LIMITS.medium) {
+    return POLL_INTERVALS_MS.medium;
+  }
+
+  if (completedPollCount < POLL_PHASE_LIMITS.slow) {
+    return POLL_INTERVALS_MS.slow;
+  }
+
+  return POLL_INTERVALS_MS.minute;
+}
 
 function wait(ms: number) {
   return new Promise((resolve) => {
@@ -44,21 +72,21 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     improvements.data = response.improvements;
   }
 
-  async function pollAnalysisUntilComplete() {
-    let response = await supervisorApi.improvements.getAnalysis({
-      projectUuid: projectUuid.value,
-    });
+  async function pollAnalysisUntilComplete(
+    initialResponse: ImprovementsAnalysis,
+  ) {
+    let response = initialResponse;
+    let pollCount = 0;
 
-    applyAnalysisResponse(response);
-
-    while (response.task.isRunning) {
-      await wait(POLL_INTERVAL_MS);
+    while (response.task.isRunning && pollCount < POLL_PHASE_LIMITS.minute) {
+      await wait(getPollIntervalMs(pollCount));
 
       response = await supervisorApi.improvements.getAnalysis({
         projectUuid: projectUuid.value,
       });
 
       applyAnalysisResponse(response);
+      pollCount += 1;
     }
 
     return response;
@@ -78,7 +106,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
       applyAnalysisResponse(initialResponse);
 
       if (initialResponse.task.isRunning) {
-        await pollAnalysisUntilComplete();
+        await pollAnalysisUntilComplete(initialResponse);
       }
 
       analysis.status = 'complete';
