@@ -467,6 +467,12 @@
       }
     },
     "improvements": {
+      "analysis_complete": {
+        "no_improvements_description": "Nenhuma melhoria identificada nas conversas de {date}",
+        "ready_description": "As melhorias de {date} estão prontas no backlog.",
+        "title": "Análise concluída",
+        "title_with_count": "{count, plural, one {Análise concluída ({count} melhoria encontrada)} other {Análise concluída ({count} melhorias encontradas)}}"
+      },
       "no_analysis": {
         "description": "Execute a primeira análise para identificar oportunidades de melhoria nas conversas de ontem",
         "run_analysis": "Executar análise",
