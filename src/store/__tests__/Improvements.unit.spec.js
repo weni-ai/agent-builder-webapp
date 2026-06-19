@@ -260,10 +260,13 @@ describe('Improvements Store', () => {
       improvementsApi.getAnalysis.mockRejectedValue(new Error('poll failed'));
 
       const promise = store.runAnalysis();
-      const assertion = await expect(promise).rejects.toThrow('poll failed');
 
-      await vi.advanceTimersByTimeAsync(POLL_INTERVALS_MS.fast);
-      await assertion;
+      await Promise.resolve();
+
+      await Promise.all([
+        vi.advanceTimersByTimeAsync(POLL_INTERVALS_MS.fast),
+        expect(promise).rejects.toThrow('poll failed'),
+      ]);
 
       expect(store.analysis.status).toBe('error');
       expect(store.improvements.status).toBe('error');
