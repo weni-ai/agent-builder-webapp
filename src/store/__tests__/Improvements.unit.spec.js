@@ -1,12 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
-import { subDays } from 'date-fns';
 
 import { useImprovementsStore } from '@/store/Improvements';
 import { useAlertStore } from '@/store/Alert';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
-import { formatMonthDayDate } from '@/utils/formatters';
 
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
@@ -79,10 +77,6 @@ describe('Improvements Store', () => {
   let improvementsApi;
   let consoleErrorSpy;
   let alertStore;
-
-  const getYesterdayFormattedDate = () =>
-    formatMonthDayDate(subDays(new Date(), 1).toISOString());
-
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-06-18T12:00:00'));
@@ -393,7 +387,7 @@ describe('Improvements Store', () => {
         text: i18n.global.t('audit.improvements.analysis_complete.title'),
         description: i18n.global.t(
           'audit.improvements.analysis_complete.no_improvements_description',
-          { date: getYesterdayFormattedDate() },
+          { date: store.getYesterdayFormattedDate() },
         ),
       });
     });
@@ -422,7 +416,7 @@ describe('Improvements Store', () => {
         ),
         description: i18n.global.t(
           'audit.improvements.analysis_complete.ready_description',
-          { date: getYesterdayFormattedDate() },
+          { date: store.getYesterdayFormattedDate() },
         ),
       });
     });
