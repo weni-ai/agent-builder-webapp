@@ -3,6 +3,7 @@ import {
   formatListToReadable,
   formatWhatsappUrn,
   formatLongDate,
+  formatMonthDayDate,
   formatTime,
 } from '@/utils/formatters';
 import i18n from '@/utils/plugins/i18n';
@@ -120,6 +121,27 @@ describe('formatters', () => {
 
     it('returns an empty string for an invalid date', () => {
       expect(formatLongDate('not-a-date')).toBe('');
+    });
+  });
+
+  describe('formatMonthDayDate', () => {
+    const TIMESTAMP = '2026-05-18T15:15:00';
+
+    afterEach(() => {
+      i18n.global.locale.value = 'en';
+    });
+
+    it('formats the month and day without the year', () => {
+      expect(formatMonthDayDate(TIMESTAMP)).toBe('May 18');
+    });
+
+    it('falls back to the en pattern for an unmapped locale', () => {
+      i18n.global.locale.value = 'unmapped';
+      expect(formatMonthDayDate(TIMESTAMP)).toBe('May 18');
+    });
+
+    it('returns an empty string for an invalid date', () => {
+      expect(formatMonthDayDate('not-a-date')).toBe('');
     });
   });
 
