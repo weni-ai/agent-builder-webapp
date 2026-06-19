@@ -23,6 +23,31 @@ vi.mock('@/store/Project', () => ({
   })),
 }));
 
+const POLL_INTERVALS_MS = {
+  fast: 5_000,
+  medium: 10_000,
+  slow: 15_000,
+  minute: 60_000,
+};
+
+const MAX_POLL_REQUESTS = 50;
+
+const getPollIntervalMs = (completedPollCount) => {
+  if (completedPollCount < 10) {
+    return POLL_INTERVALS_MS.fast;
+  }
+
+  if (completedPollCount < 20) {
+    return POLL_INTERVALS_MS.medium;
+  }
+
+  if (completedPollCount < 30) {
+    return POLL_INTERVALS_MS.slow;
+  }
+
+  return POLL_INTERVALS_MS.minute;
+};
+
 const buildImprovement = (overrides = {}) => ({
   uuid: 'improvement-uuid-1',
   text: 'Sample improvement',
@@ -30,6 +55,13 @@ const buildImprovement = (overrides = {}) => ({
   conversationsCount: 10,
   ...overrides,
 });
+
+const advancePollingTimers = async (pollCount = MAX_POLL_REQUESTS) => {
+  for (let index = 0; index < pollCount; index += 1) {
+    await vi.advanceTimersByTimeAsync(getPollIntervalMs(index));
+    await Promise.resolve();
+  }
+};
 
 describe('Improvements Store', () => {
   let store;
@@ -143,7 +175,7 @@ describe('Improvements Store', () => {
 
       const promise = store.runAnalysis();
 
-      await vi.runAllTimersAsync();
+      await advancePollingTimers(3);
       await promise;
 
       expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(3);
@@ -173,23 +205,12 @@ describe('Improvements Store', () => {
 
       const promise = store.runAnalysis();
 
-      for (let pollCount = 0; pollCount < 50; pollCount += 1) {
-        const expectedInterval =
-          pollCount < 10
-            ? 5_000
-            : pollCount < 20
-              ? 10_000
-              : pollCount < 30
-                ? 15_000
-                : 60_000;
-
-        await vi.advanceTimersByTimeAsync(expectedInterval);
-        await Promise.resolve();
-      }
-
+      await advancePollingTimers();
       await promise;
 
-      expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(50);
+      expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(
+        MAX_POLL_REQUESTS,
+      );
     });
 
     it('stops polling after reaching the maximum number of requests', async () => {
@@ -205,10 +226,12 @@ describe('Improvements Store', () => {
 
       const promise = store.runAnalysis();
 
-      await vi.runAllTimersAsync();
+      await advancePollingTimers();
       await promise;
 
-      expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(50);
+      expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(
+        MAX_POLL_REQUESTS,
+      );
       expect(store.analysis.status).toBe('complete');
       expect(store.improvements.status).toBe('complete');
       expect(store.analysis.task).toEqual({
@@ -239,7 +262,7 @@ describe('Improvements Store', () => {
       const promise = store.runAnalysis();
       const assertion = await expect(promise).rejects.toThrow('poll failed');
 
-      await vi.advanceTimersByTimeAsync(5_000);
+      await vi.advanceTimersByTimeAsync(POLL_INTERVALS_MS.fast);
       await assertion;
 
       expect(store.analysis.status).toBe('error');
