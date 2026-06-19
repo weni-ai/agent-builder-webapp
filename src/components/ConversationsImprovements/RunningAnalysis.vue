@@ -3,7 +3,11 @@
     class="running-analysis"
     data-testid="running-analysis"
   >
-    <UnnnicIconLoading size="md" />
+    <UnnnicIconLoading
+      size="md"
+      stroke-width="3"
+      scheme="fg-muted"
+    />
     <hgroup class="running-analysis__content">
       <h2
         class="running-analysis__title"
