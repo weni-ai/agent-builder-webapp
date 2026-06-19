@@ -272,13 +272,24 @@ describe('Supervisor.js', () => {
       for (let step = 1; step <= 5; step += 1) {
         result = await pollMockAnalysis();
 
-        if (step < 5) {
-          expect(result.task).toEqual({
-            isRunning: true,
-            progress: step,
-            total: 5,
-          });
+        expect(result.task).toEqual({
+          isRunning: step < 5,
+          progress: step,
+          total: 5,
+        });
+
+        if (step < 4) {
           expect(result.improvements).toEqual([]);
+        } else if (step === 4) {
+          expect(result.improvements).toHaveLength(3);
+          expect(result.improvements[0]).toMatchObject({
+            uuid: 'improvement-uuid-1',
+            type: 'brand_voice_mismatch',
+          });
+          expect(result.improvements[2]).toMatchObject({
+            uuid: 'improvement-uuid-3',
+            type: 'missing_static_knowledge',
+          });
         }
       }
 

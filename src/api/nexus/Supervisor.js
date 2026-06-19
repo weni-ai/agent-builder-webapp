@@ -71,16 +71,18 @@ function advanceMockAnalysisState(state) {
     return state;
   }
 
-  const nextProgress = Math.min(
-    state.improvements_task.progress + 1,
-    state.improvements_task.total,
-  );
+  const { total } = state.improvements_task;
+  const nextProgress = Math.min(state.improvements_task.progress + 1, total);
+  const allImprovements = mockImprovementsResponse.improvements;
+  const halfCount = Math.ceil(allImprovements.length / 2);
 
   state.improvements_task.progress = nextProgress;
 
-  if (nextProgress >= state.improvements_task.total) {
+  if (nextProgress === total - 1) {
+    state.improvements = allImprovements.slice(0, halfCount);
+  } else if (nextProgress >= total) {
     state.improvements_task.is_running = false;
-    state.improvements = mockImprovementsResponse.improvements;
+    state.improvements = allImprovements;
   }
 
   return state;
