@@ -183,6 +183,8 @@ export const useImprovementsStore = defineStore('Improvements', () => {
   }
 
   return {
+    getYesterdayFormattedDate,
+
     analysis,
     improvements,
     fetchImprovements,
