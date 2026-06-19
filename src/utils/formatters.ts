@@ -119,6 +119,21 @@ export function formatLongDate(timestamp: string) {
   );
 }
 
+export function formatMonthDayDate(timestamp: string) {
+  const FALLBACK_PATTERN = 'MMMM d';
+
+  return formatWithLocalePattern(
+    timestamp,
+    {
+      en: FALLBACK_PATTERN,
+      es: "d 'de' MMMM",
+      'pt-br': "d 'de' MMMM",
+      ro: 'd MMMM',
+    },
+    FALLBACK_PATTERN,
+  );
+}
+
 export function formatTime(timestamp: string) {
   const FALLBACK_PATTERN = 'h:mm aaaa';
 
