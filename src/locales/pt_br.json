@@ -467,6 +467,7 @@
       }
     },
     "improvements": {
+      "analysis_in_progress_disclaimer": "Análise em andamento: {progress} de {total} conversas processadas. Novos itens podem aparecer em breve.",
       "analysis_complete": {
         "no_improvements_description": "Nenhuma melhoria identificada nas conversas de {date}",
         "ready_description": "As melhorias de {date} estão prontas no backlog.",
