@@ -830,10 +830,10 @@
     }
   },
   "time": {
-    "time_ago_minutes": "{count, plural, one {Acum {count} minut} few {Acum {count} minute} other {Acum {count} de minute}}",
-    "time_ago_hours": "{count, plural, one {Acum {count} oră} few {Acum {count} ore} other {Acum {count} de ore}}",
-    "time_ago_days": "{count, plural, one {Acum {count} zi} few {Acum {count} zile} other {Acum {count} de zile}}",
-    "time_ago_months": "{count, plural, one {Acum {count} lună} few {Acum {count} luni} other {Acum {count} de luni}}"
+    "time_ago_minutes": "{count, plural, one {{count} minut în urmă} few {{count} minute în urmă} other {{count} de minute în urmă}}",
+    "time_ago_hours": "{count, plural, one {{count} oră în urmă} few {{count} ore în urmă} other {{count} de ore în urmă}}",
+    "time_ago_days": "{count, plural, one {{count} zi în urmă} few {{count} zile în urmă} other {{count} de zile în urmă}}",
+    "time_ago_months": "{count, plural, one {{count} lună în urmă} few {{count} luni în urmă} other {{count} de luni în urmă}}"
   },
   "audio_recorder": {
     "discard_button": "Renunță"
