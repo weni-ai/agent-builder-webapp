@@ -295,7 +295,7 @@
     }
   },
   "agents": {
-    "title": "My Agents",
+    "title": "My agents",
     "description": "Manage your digital workforce, instructions and behaviors",
     "assign_agents_button": "Assign new agents",
     "assigned_agents": {
@@ -303,7 +303,7 @@
       "new_agent": "New agent",
       "manager": {
         "name": "Manager",
-        "edit_manager": "Edit Manager",
+        "edit_manager": "Edit manager",
         "edit_instructions": "Edit instructions"
       },
       "no_agents": {
