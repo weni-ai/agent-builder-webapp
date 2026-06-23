@@ -474,6 +474,13 @@
         "title": "Análise concluída",
         "title_with_count": "{count, plural, one {Análise concluída ({count} melhoria encontrada)} other {Análise concluída ({count} melhorias encontradas)}}"
       },
+      "header": {
+        "custom_analysis": "Análise personalizada",
+        "description": "Executado em {date} às {time}",
+        "description_today": "Executado hoje às {time}",
+        "run_analysis": "Executar análise",
+        "title": "{count, plural, one {Análise das conversas de {date} · {count} melhoria identificada} other {Análise das conversas de {date} · {count} melhorias identificadas}}"
+      },
       "no_analysis": {
         "description": "Execute a primeira análise para identificar oportunidades de melhoria nas conversas de ontem",
         "run_analysis": "Executar análise",
