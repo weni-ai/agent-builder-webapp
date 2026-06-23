@@ -1,10 +1,11 @@
 export type ImprovementType =
-  | 'brand_voice_mismatch'
+  | 'custom_analysis'
   | 'many_questions_before_answering'
   | 'missing_static_knowledge'
-  | 'instruction_non_compliance'
-  | 'catalog_search_mismatch'
-  | 'amazing_conversation';
+  | 'personality_deviation'
+  | 'poor_product_search_results'
+  | 'repetitive_response'
+  | 'wrong_behavior_due_to_instructions';
 
 export type ImprovementsStatus = null | 'loading' | 'complete' | 'error';
 
@@ -12,6 +13,7 @@ export interface ImprovementsTask {
   isRunning: boolean;
   progress: number;
   total: number;
+  createdAt: string | null;
 }
 
 export interface Improvement {
@@ -22,6 +24,7 @@ export interface Improvement {
 }
 
 export interface ImprovementsAnalysis {
+  conversationsCount: number;
   task: ImprovementsTask;
   improvements: Improvement[];
 }

@@ -48,10 +48,17 @@ const getPollIntervalMs = (completedPollCount) => {
   return POLL_INTERVALS_MS.minute;
 };
 
+const buildAnalysisResponse = (overrides = {}) => ({
+  conversationsCount: 10,
+  task: { isRunning: false, progress: 1, total: 1, createdAt: null },
+  improvements: [],
+  ...overrides,
+});
+
 const buildImprovement = (overrides = {}) => ({
   uuid: 'improvement-uuid-1',
   text: 'Sample improvement',
-  type: 'brand_voice_mismatch',
+  type: 'personality_deviation',
   conversationsCount: 10,
   ...overrides,
 });
@@ -85,11 +92,75 @@ describe('Improvements Store', () => {
       expect(store.analysis).toEqual({
         status: null,
         task: null,
+        conversationsCount: 0,
       });
       expect(store.improvements).toEqual({
         data: [],
         status: null,
       });
+    });
+  });
+
+  describe('fetchImprovements', () => {
+    it('loads improvements from the API and sets complete status', async () => {
+      const improvements = [buildImprovement()];
+
+      improvementsApi.getAnalysis.mockResolvedValue(
+        buildAnalysisResponse({
+          conversationsCount: 25,
+          task: { isRunning: false, progress: 5, total: 5, createdAt: null },
+          improvements,
+        }),
+      );
+
+      await store.fetchImprovements();
+
+      expect(improvementsApi.getAnalysis).toHaveBeenCalledWith({
+        projectUuid: 'test-project-uuid',
+      });
+      expect(store.analysis.status).toBe('complete');
+      expect(store.improvements.status).toBe('complete');
+      expect(store.analysis.conversationsCount).toBe(25);
+      expect(store.improvements.data).toEqual(improvements);
+    });
+
+    it('polls getAnalysis when the task is still running', async () => {
+      const improvements = [buildImprovement({ uuid: 'final-uuid' })];
+
+      improvementsApi.getAnalysis
+        .mockResolvedValueOnce(
+          buildAnalysisResponse({
+            task: { isRunning: true, progress: 0, total: 3, createdAt: null },
+          }),
+        )
+        .mockResolvedValueOnce(
+          buildAnalysisResponse({
+            task: { isRunning: true, progress: 2, total: 3, createdAt: null },
+          }),
+        )
+        .mockResolvedValueOnce(
+          buildAnalysisResponse({
+            task: { isRunning: false, progress: 3, total: 3, createdAt: null },
+            improvements,
+          }),
+        );
+
+      const promise = store.fetchImprovements();
+
+      await advancePollingTimers(2);
+      await promise;
+
+      expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(3);
+      expect(store.improvements.data).toEqual(improvements);
+    });
+
+    it('sets error status and rethrows when the request fails', async () => {
+      improvementsApi.getAnalysis.mockRejectedValue(new Error('fetch failed'));
+
+      await expect(store.fetchImprovements()).rejects.toThrow('fetch failed');
+
+      expect(store.analysis.status).toBe('error');
+      expect(store.improvements.status).toBe('error');
     });
   });
 
@@ -101,31 +172,39 @@ describe('Improvements Store', () => {
           resolveRunAnalysis = resolve;
         }),
       );
+      improvementsApi.getAnalysis.mockResolvedValue(
+        buildAnalysisResponse({
+          improvements: [buildImprovement()],
+        }),
+      );
 
       const promise = store.runAnalysis();
 
       expect(store.analysis.status).toBe('loading');
       expect(store.improvements.status).toBe('loading');
       expect(store.analysis.task).toBeNull();
+      expect(store.analysis.conversationsCount).toBe(0);
       expect(store.improvements.data).toEqual([]);
 
-      resolveRunAnalysis({
-        task: { isRunning: false, progress: 1, total: 1 },
-        improvements: [buildImprovement()],
-      });
+      resolveRunAnalysis();
 
       await promise;
     });
 
-    it('calls runAnalysis with the current project uuid', async () => {
-      improvementsApi.runAnalysis.mockResolvedValue({
-        task: { isRunning: false, progress: 1, total: 1 },
-        improvements: [buildImprovement()],
-      });
+    it('calls runAnalysis and getAnalysis with the current project uuid', async () => {
+      improvementsApi.runAnalysis.mockResolvedValue();
+      improvementsApi.getAnalysis.mockResolvedValue(
+        buildAnalysisResponse({
+          improvements: [buildImprovement()],
+        }),
+      );
 
       await store.runAnalysis();
 
       expect(improvementsApi.runAnalysis).toHaveBeenCalledWith({
+        projectUuid: 'test-project-uuid',
+      });
+      expect(improvementsApi.getAnalysis).toHaveBeenCalledWith({
         projectUuid: 'test-project-uuid',
       });
     });
@@ -133,20 +212,24 @@ describe('Improvements Store', () => {
     it('completes immediately when the initial response is already finished', async () => {
       const improvements = [buildImprovement()];
 
-      improvementsApi.runAnalysis.mockResolvedValue({
-        task: { isRunning: false, progress: 5, total: 5 },
-        improvements,
-      });
+      improvementsApi.runAnalysis.mockResolvedValue();
+      improvementsApi.getAnalysis.mockResolvedValue(
+        buildAnalysisResponse({
+          task: { isRunning: false, progress: 5, total: 5, createdAt: null },
+          improvements,
+        }),
+      );
 
       await store.runAnalysis();
 
-      expect(improvementsApi.getAnalysis).not.toHaveBeenCalled();
+      expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(1);
       expect(store.analysis.status).toBe('complete');
       expect(store.improvements.status).toBe('complete');
       expect(store.analysis.task).toEqual({
         isRunning: false,
         progress: 5,
         total: 5,
+        createdAt: null,
       });
       expect(store.improvements.data).toEqual(improvements);
     });
@@ -154,28 +237,28 @@ describe('Improvements Store', () => {
     it('polls getAnalysis until the task is no longer running', async () => {
       const improvements = [buildImprovement({ uuid: 'final-uuid' })];
 
-      improvementsApi.runAnalysis.mockResolvedValue({
-        task: { isRunning: true, progress: 0, total: 3 },
-        improvements: [],
-      });
-
+      improvementsApi.runAnalysis.mockResolvedValue();
       improvementsApi.getAnalysis
-        .mockResolvedValueOnce({
-          task: { isRunning: true, progress: 1, total: 3 },
-          improvements: [],
-        })
-        .mockResolvedValueOnce({
-          task: { isRunning: true, progress: 2, total: 3 },
-          improvements: [],
-        })
-        .mockResolvedValueOnce({
-          task: { isRunning: false, progress: 3, total: 3 },
-          improvements,
-        });
+        .mockResolvedValueOnce(
+          buildAnalysisResponse({
+            task: { isRunning: true, progress: 0, total: 3, createdAt: null },
+          }),
+        )
+        .mockResolvedValueOnce(
+          buildAnalysisResponse({
+            task: { isRunning: true, progress: 2, total: 3, createdAt: null },
+          }),
+        )
+        .mockResolvedValueOnce(
+          buildAnalysisResponse({
+            task: { isRunning: false, progress: 3, total: 3, createdAt: null },
+            improvements,
+          }),
+        );
 
       const promise = store.runAnalysis();
 
-      await advancePollingTimers(3);
+      await advancePollingTimers(2);
       await promise;
 
       expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(3);
@@ -188,20 +271,18 @@ describe('Improvements Store', () => {
         isRunning: false,
         progress: 3,
         total: 3,
+        createdAt: null,
       });
       expect(store.improvements.data).toEqual(improvements);
     });
 
     it('uses progressive polling intervals before each getAnalysis request', async () => {
-      improvementsApi.runAnalysis.mockResolvedValue({
-        task: { isRunning: true, progress: 0, total: 1 },
-        improvements: [],
-      });
-
-      improvementsApi.getAnalysis.mockResolvedValue({
-        task: { isRunning: true, progress: 0, total: 1 },
-        improvements: [],
-      });
+      improvementsApi.runAnalysis.mockResolvedValue();
+      improvementsApi.getAnalysis.mockResolvedValue(
+        buildAnalysisResponse({
+          task: { isRunning: true, progress: 0, total: 1, createdAt: null },
+        }),
+      );
 
       const promise = store.runAnalysis();
 
@@ -209,20 +290,17 @@ describe('Improvements Store', () => {
       await promise;
 
       expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(
-        MAX_POLL_REQUESTS,
+        MAX_POLL_REQUESTS + 1,
       );
     });
 
     it('stops polling after reaching the maximum number of requests', async () => {
-      improvementsApi.runAnalysis.mockResolvedValue({
-        task: { isRunning: true, progress: 0, total: 1 },
-        improvements: [],
-      });
-
-      improvementsApi.getAnalysis.mockResolvedValue({
-        task: { isRunning: true, progress: 0, total: 1 },
-        improvements: [],
-      });
+      improvementsApi.runAnalysis.mockResolvedValue();
+      improvementsApi.getAnalysis.mockResolvedValue(
+        buildAnalysisResponse({
+          task: { isRunning: true, progress: 0, total: 1, createdAt: null },
+        }),
+      );
 
       const promise = store.runAnalysis();
 
@@ -230,7 +308,7 @@ describe('Improvements Store', () => {
       await promise;
 
       expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(
-        MAX_POLL_REQUESTS,
+        MAX_POLL_REQUESTS + 1,
       );
       expect(store.analysis.status).toBe('complete');
       expect(store.improvements.status).toBe('complete');
@@ -238,6 +316,7 @@ describe('Improvements Store', () => {
         isRunning: true,
         progress: 0,
         total: 1,
+        createdAt: null,
       });
     });
 
@@ -252,12 +331,14 @@ describe('Improvements Store', () => {
     });
 
     it('sets error status and rethrows when polling fails', async () => {
-      improvementsApi.runAnalysis.mockResolvedValue({
-        task: { isRunning: true, progress: 0, total: 2 },
-        improvements: [],
-      });
-
-      improvementsApi.getAnalysis.mockRejectedValue(new Error('poll failed'));
+      improvementsApi.runAnalysis.mockResolvedValue();
+      improvementsApi.getAnalysis
+        .mockResolvedValueOnce(
+          buildAnalysisResponse({
+            task: { isRunning: true, progress: 0, total: 2, createdAt: null },
+          }),
+        )
+        .mockRejectedValue(new Error('poll failed'));
 
       const promise = store.runAnalysis();
 
