@@ -115,6 +115,8 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
     if (response.task.isRunning) {
       await pollAnalysisUntilComplete(response);
+    } else {
+      setStatus('complete');
     }
   }
 
@@ -123,10 +125,9 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
     try {
       await loadImprovementsData();
-      setStatus('complete');
     } catch (error) {
       setStatus('error');
-      throw error;
+      console.error(error);
     }
   }
 
@@ -140,10 +141,9 @@ export const useImprovementsStore = defineStore('Improvements', () => {
       });
 
       await loadImprovementsData();
-      setStatus('complete');
     } catch (error) {
       setStatus('error');
-      throw error;
+      console.error(error);
     }
   }
 
