@@ -73,17 +73,20 @@ const advancePollingTimers = async (pollCount = MAX_POLL_REQUESTS) => {
 describe('Improvements Store', () => {
   let store;
   let improvementsApi;
+  let consoleErrorSpy;
 
   beforeEach(() => {
     vi.useFakeTimers();
     setActivePinia(createPinia());
     vi.clearAllMocks();
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     store = useImprovementsStore();
     improvementsApi = nexusaiAPI.agent_builder.supervisor.improvements;
   });
 
   afterEach(() => {
+    consoleErrorSpy.mockRestore();
     vi.useRealTimers();
   });
 
@@ -152,15 +155,19 @@ describe('Improvements Store', () => {
 
       expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(3);
       expect(store.improvements.data).toEqual(improvements);
+      expect(store.analysis.status).toBe('loading');
+      expect(store.improvements.status).toBe('loading');
     });
 
-    it('sets error status and rethrows when the request fails', async () => {
-      improvementsApi.getAnalysis.mockRejectedValue(new Error('fetch failed'));
+    it('sets error status and logs error when the request fails', async () => {
+      const error = new Error('fetch failed');
+      improvementsApi.getAnalysis.mockRejectedValue(error);
 
-      await expect(store.fetchImprovements()).rejects.toThrow('fetch failed');
+      await store.fetchImprovements();
 
       expect(store.analysis.status).toBe('error');
       expect(store.improvements.status).toBe('error');
+      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
     });
   });
 
@@ -265,8 +272,8 @@ describe('Improvements Store', () => {
       expect(improvementsApi.getAnalysis).toHaveBeenCalledWith({
         projectUuid: 'test-project-uuid',
       });
-      expect(store.analysis.status).toBe('complete');
-      expect(store.improvements.status).toBe('complete');
+      expect(store.analysis.status).toBe('loading');
+      expect(store.improvements.status).toBe('loading');
       expect(store.analysis.task).toEqual({
         isRunning: false,
         progress: 3,
@@ -310,8 +317,8 @@ describe('Improvements Store', () => {
       expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(
         MAX_POLL_REQUESTS + 1,
       );
-      expect(store.analysis.status).toBe('complete');
-      expect(store.improvements.status).toBe('complete');
+      expect(store.analysis.status).toBe('loading');
+      expect(store.improvements.status).toBe('loading');
       expect(store.analysis.task).toEqual({
         isRunning: true,
         progress: 0,
@@ -320,17 +327,21 @@ describe('Improvements Store', () => {
       });
     });
 
-    it('sets error status and rethrows when runAnalysis fails', async () => {
-      improvementsApi.runAnalysis.mockRejectedValue(new Error('boom'));
+    it('sets error status and logs error when runAnalysis fails', async () => {
+      const error = new Error('boom');
+      improvementsApi.runAnalysis.mockRejectedValue(error);
 
-      await expect(store.runAnalysis()).rejects.toThrow('boom');
+      await store.runAnalysis();
 
       expect(store.analysis.status).toBe('error');
       expect(store.improvements.status).toBe('error');
       expect(improvementsApi.getAnalysis).not.toHaveBeenCalled();
+      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
     });
 
-    it('sets error status and rethrows when polling fails', async () => {
+    it('sets error status and logs error when polling fails', async () => {
+      const error = new Error('poll failed');
+
       improvementsApi.runAnalysis.mockResolvedValue();
       improvementsApi.getAnalysis
         .mockResolvedValueOnce(
@@ -338,19 +349,16 @@ describe('Improvements Store', () => {
             task: { isRunning: true, progress: 0, total: 2, createdAt: null },
           }),
         )
-        .mockRejectedValue(new Error('poll failed'));
+        .mockRejectedValue(error);
 
       const promise = store.runAnalysis();
 
-      await Promise.resolve();
-
-      await Promise.all([
-        vi.advanceTimersByTimeAsync(POLL_INTERVALS_MS.fast),
-        expect(promise).rejects.toThrow('poll failed'),
-      ]);
+      await vi.advanceTimersByTimeAsync(POLL_INTERVALS_MS.fast);
+      await promise;
 
       expect(store.analysis.status).toBe('error');
       expect(store.improvements.status).toBe('error');
+      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
     });
   });
 });
