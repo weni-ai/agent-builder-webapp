@@ -475,6 +475,13 @@
         "title": "Analysis complete",
         "title_with_count": "{count, plural, one {Analysis complete ({count} improvement found)} other {Analysis complete ({count} improvements found)}}"
       },
+      "header": {
+        "custom_analysis": "Custom analysis",
+        "description": "Ran on {date} at {time}",
+        "description_today": "Ran today at {time}",
+        "run_analysis": "Run analysis",
+        "title": "{count, plural, one {Analysis of conversations from {date} · {count} improvement identified} other {Analysis of conversations from {date} · {count} improvements identified}}"
+      },
       "no_analysis": {
         "description": "Run your first analysis to identify opportunities for improvement in yesterday's conversations",
         "run_analysis": "Run analysis",
