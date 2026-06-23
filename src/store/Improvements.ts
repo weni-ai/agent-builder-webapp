@@ -54,9 +54,11 @@ export const useImprovementsStore = defineStore('Improvements', () => {
   const analysis = reactive<{
     status: ImprovementsStatus;
     task: ImprovementsTask | null;
+    conversationsCount: number;
   }>({
     status: null,
     task: null,
+    conversationsCount: 0,
   });
 
   const improvements = reactive<{
@@ -69,7 +71,19 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
   function applyAnalysisResponse(response: ImprovementsAnalysis) {
     analysis.task = response.task;
+    analysis.conversationsCount = response.conversationsCount;
     improvements.data = response.improvements;
+  }
+
+  function setStatus(status: ImprovementsStatus) {
+    analysis.status = status;
+    improvements.status = status;
+  }
+
+  function resetAnalysisState() {
+    analysis.task = null;
+    analysis.conversationsCount = 0;
+    improvements.data = [];
   }
 
   async function pollAnalysisUntilComplete(
@@ -92,28 +106,43 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     return response;
   }
 
-  async function runAnalysis() {
-    analysis.status = 'loading';
-    improvements.status = 'loading';
-    analysis.task = null;
-    improvements.data = [];
+  async function loadImprovementsData() {
+    const response = await supervisorApi.improvements.getAnalysis({
+      projectUuid: projectUuid.value,
+    });
+
+    applyAnalysisResponse(response);
+
+    if (response.task.isRunning) {
+      await pollAnalysisUntilComplete(response);
+    }
+  }
+
+  async function fetchImprovements() {
+    setStatus('loading');
 
     try {
-      const initialResponse = await supervisorApi.improvements.runAnalysis({
+      await loadImprovementsData();
+      setStatus('complete');
+    } catch (error) {
+      setStatus('error');
+      throw error;
+    }
+  }
+
+  async function runAnalysis() {
+    setStatus('loading');
+    resetAnalysisState();
+
+    try {
+      await supervisorApi.improvements.runAnalysis({
         projectUuid: projectUuid.value,
       });
 
-      applyAnalysisResponse(initialResponse);
-
-      if (initialResponse.task.isRunning) {
-        await pollAnalysisUntilComplete(initialResponse);
-      }
-
-      analysis.status = 'complete';
-      improvements.status = 'complete';
+      await loadImprovementsData();
+      setStatus('complete');
     } catch (error) {
-      analysis.status = 'error';
-      improvements.status = 'error';
+      setStatus('error');
       throw error;
     }
   }
@@ -121,6 +150,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
   return {
     analysis,
     improvements,
+    fetchImprovements,
     runAnalysis,
   };
 });

@@ -9,6 +9,7 @@ export interface ImprovementsTaskApi {
   is_running?: boolean;
   progress?: number;
   total?: number;
+  created_at?: string;
 }
 
 export interface ImprovementApi {
@@ -19,17 +20,19 @@ export interface ImprovementApi {
 }
 
 export interface ImprovementsAnalysisApi {
+  conversations_count?: number;
   improvements_task?: ImprovementsTaskApi;
   improvements?: ImprovementApi[];
 }
 
 const IMPROVEMENT_TYPES: ImprovementType[] = [
-  'brand_voice_mismatch',
+  'custom_analysis',
   'many_questions_before_answering',
   'missing_static_knowledge',
-  'instruction_non_compliance',
-  'catalog_search_mismatch',
-  'amazing_conversation',
+  'personality_deviation',
+  'poor_product_search_results',
+  'repetitive_response',
+  'wrong_behavior_due_to_instructions',
 ];
 
 function isImprovementType(value: unknown): value is ImprovementType {
@@ -41,6 +44,7 @@ function parseTask(task: ImprovementsTaskApi = {}): ImprovementsTask {
     isRunning: Boolean(task.is_running),
     progress: Number(task.progress) || 0,
     total: Number(task.total) || 0,
+    createdAt: task.created_at ?? null,
   };
 }
 
@@ -64,6 +68,7 @@ export const ImprovementsAdapter = {
       .filter((item): item is Improvement => item !== null);
 
     return {
+      conversationsCount: Number(apiData.conversations_count) || 0,
       task: parseTask(apiData.improvements_task),
       improvements,
     };

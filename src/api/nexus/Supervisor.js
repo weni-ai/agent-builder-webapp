@@ -9,11 +9,12 @@ const MOCK_ANALYSIS_DELAY_MS = 400;
 let mockAnalysisState = null;
 
 const mockImprovementsResponse = {
+  conversations_count: 54,
   improvements: [
     {
       uuid: 'improvement-uuid-1',
       text: 'The agent tone does not match the configured brand voice in refund conversations.',
-      type: 'brand_voice_mismatch',
+      type: 'personality_deviation',
       conversations_count: 18,
     },
     {
@@ -31,19 +32,19 @@ const mockImprovementsResponse = {
     {
       uuid: 'improvement-uuid-4',
       text: 'The agent did not follow the instruction to always confirm the customer email.',
-      type: 'instruction_non_compliance',
+      type: 'wrong_behavior_due_to_instructions',
       conversations_count: 7,
     },
     {
       uuid: 'improvement-uuid-5',
       text: 'Catalog search results did not match the product the customer described.',
-      type: 'catalog_search_mismatch',
+      type: 'poor_product_search_results',
       conversations_count: 5,
     },
     {
       uuid: 'improvement-uuid-6',
-      text: 'The agent resolved a complex exchange request quickly while keeping a helpful tone.',
-      type: 'amazing_conversation',
+      text: 'The agent repeated the same response across multiple turns.',
+      type: 'repetitive_response',
       conversations_count: 3,
     },
   ],
@@ -57,12 +58,27 @@ function wait(ms) {
 
 function createMockAnalysisState() {
   return {
+    conversations_count: 0,
     improvements_task: {
       is_running: true,
       progress: 0,
       total: MOCK_ANALYSIS_TOTAL,
+      created_at: '2026-06-23T12:00:00Z',
     },
     improvements: [],
+  };
+}
+
+function getDefaultMockResponse() {
+  return {
+    conversations_count: mockImprovementsResponse.conversations_count,
+    improvements_task: {
+      is_running: false,
+      progress: MOCK_ANALYSIS_TOTAL,
+      total: MOCK_ANALYSIS_TOTAL,
+      created_at: '2026-06-01T10:00:00Z',
+    },
+    improvements: mockImprovementsResponse.improvements,
   };
 }
 
@@ -80,9 +96,11 @@ function advanceMockAnalysisState(state) {
 
   if (nextProgress === total - 1) {
     state.improvements = allImprovements.slice(0, halfCount);
+    state.conversations_count = mockImprovementsResponse.conversations_count;
   } else if (nextProgress >= total) {
     state.improvements_task.is_running = false;
     state.improvements = allImprovements;
+    state.conversations_count = mockImprovementsResponse.conversations_count;
   }
 
   return state;
@@ -155,19 +173,27 @@ export const Supervisor = {
   },
   improvements: {
     async runAnalysis({ projectUuid: _projectUuid }) {
+      // await nexusRequest.$http.post(
+      //   `/api/projects/${projectUuid}/improvements/run`,
+      // );
+
       mockAnalysisState = createMockAnalysisState();
 
       await wait(MOCK_ANALYSIS_DELAY_MS);
-
-      return ImprovementsAdapter.fromApi(mockAnalysisState);
     },
 
     async getAnalysis({ projectUuid: _projectUuid }) {
-      if (!mockAnalysisState) {
-        throw new Error('No improvements analysis task found.');
-      }
+      // const { data } = await nexusRequest.$http.get(
+      //   `/api/projects/${projectUuid}/improvements`,
+      // );
+      //
+      // return ImprovementsAdapter.fromApi(data);
 
       await wait(MOCK_ANALYSIS_DELAY_MS);
+
+      if (!mockAnalysisState) {
+        return ImprovementsAdapter.fromApi(getDefaultMockResponse());
+      }
 
       advanceMockAnalysisState(mockAnalysisState);
 

@@ -6,32 +6,36 @@ describe('Supervisor improvements adapter', () => {
   describe('fromApi', () => {
     it('transforms API data to frontend format', () => {
       const result = ImprovementsAdapter.fromApi({
+        conversations_count: 42,
         improvements_task: {
           is_running: true,
           progress: 2,
           total: 5,
+          created_at: '2026-06-23T12:00:00Z',
         },
         improvements: [
           {
             uuid: 'improvement-uuid-1',
             text: 'Sample improvement text',
-            type: 'brand_voice_mismatch',
+            type: 'personality_deviation',
             conversations_count: 12,
           },
         ],
       });
 
       expect(result).toEqual({
+        conversationsCount: 42,
         task: {
           isRunning: true,
           progress: 2,
           total: 5,
+          createdAt: '2026-06-23T12:00:00Z',
         },
         improvements: [
           {
             uuid: 'improvement-uuid-1',
             text: 'Sample improvement text',
-            type: 'brand_voice_mismatch',
+            type: 'personality_deviation',
             conversationsCount: 12,
           },
         ],
@@ -40,10 +44,12 @@ describe('Supervisor improvements adapter', () => {
 
     it('returns safe defaults when API fields are missing', () => {
       expect(ImprovementsAdapter.fromApi()).toEqual({
+        conversationsCount: 0,
         task: {
           isRunning: false,
           progress: 0,
           total: 0,
+          createdAt: null,
         },
         improvements: [],
       });
@@ -60,12 +66,12 @@ describe('Supervisor improvements adapter', () => {
           {
             uuid: 'valid-uuid',
             text: 'Valid improvement',
-            type: 'amazing_conversation',
+            type: 'repetitive_response',
             conversations_count: 3,
           },
           {
             uuid: 'missing-text',
-            type: 'brand_voice_mismatch',
+            type: 'personality_deviation',
             conversations_count: 1,
           },
           {
@@ -81,7 +87,7 @@ describe('Supervisor improvements adapter', () => {
         {
           uuid: 'valid-uuid',
           text: 'Valid improvement',
-          type: 'amazing_conversation',
+          type: 'repetitive_response',
           conversationsCount: 3,
         },
       ]);
@@ -93,7 +99,7 @@ describe('Supervisor improvements adapter', () => {
           {
             uuid: 'uuid-1',
             text: 'Improvement without count',
-            type: 'catalog_search_mismatch',
+            type: 'poor_product_search_results',
           },
         ],
       });

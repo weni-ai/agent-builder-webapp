@@ -6,6 +6,7 @@ vi.mock('@/api/nexusaiRequest', () => ({
   default: {
     $http: {
       get: vi.fn(),
+      post: vi.fn(),
     },
   },
 }));
@@ -211,6 +212,8 @@ describe('Supervisor.js', () => {
   });
 
   describe('improvements', () => {
+    const MOCK_ANALYSIS_DELAY_MS = 400;
+
     beforeEach(() => {
       vi.useFakeTimers();
     });
@@ -224,7 +227,7 @@ describe('Supervisor.js', () => {
         projectUuid: 'project-123',
       });
 
-      await vi.advanceTimersByTimeAsync(400);
+      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
 
       return promise;
     }
@@ -234,34 +237,47 @@ describe('Supervisor.js', () => {
         projectUuid: 'project-123',
       });
 
-      await vi.advanceTimersByTimeAsync(400);
+      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
 
       return promise;
     }
 
-    it('runAnalysis returns an initial running task with empty improvements', async () => {
-      const result = await startMockAnalysis();
+    it('runAnalysis initializes a running task without returning data', async () => {
+      await startMockAnalysis();
+
+      const result = await pollMockAnalysis();
 
       expect(result.task).toEqual({
         isRunning: true,
-        progress: 0,
+        progress: 1,
         total: 5,
+        createdAt: '2026-06-23T12:00:00Z',
       });
       expect(result.improvements).toEqual([]);
     });
 
-    it('getAnalysis throws when no analysis task was started', async () => {
+    it('getAnalysis returns default completed data when no task was started', async () => {
       vi.resetModules();
 
       const { Supervisor: FreshSupervisor } = await import(
         '@/api/nexus/Supervisor'
       );
 
-      await expect(
-        FreshSupervisor.improvements.getAnalysis({
-          projectUuid: 'project-123',
-        }),
-      ).rejects.toThrow('No improvements analysis task found.');
+      const promise = FreshSupervisor.improvements.getAnalysis({
+        projectUuid: 'project-123',
+      });
+
+      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
+
+      const result = await promise;
+
+      expect(result.task.isRunning).toBe(false);
+      expect(result.conversationsCount).toBe(54);
+      expect(result.improvements).toHaveLength(6);
+      expect(result.improvements[0]).toMatchObject({
+        uuid: 'improvement-uuid-1',
+        type: 'personality_deviation',
+      });
     });
 
     it('getAnalysis advances progress until improvements are returned', async () => {
@@ -276,6 +292,7 @@ describe('Supervisor.js', () => {
           isRunning: step < 5,
           progress: step,
           total: 5,
+          createdAt: '2026-06-23T12:00:00Z',
         });
 
         if (step < 4) {
@@ -284,7 +301,7 @@ describe('Supervisor.js', () => {
           expect(result.improvements).toHaveLength(3);
           expect(result.improvements[0]).toMatchObject({
             uuid: 'improvement-uuid-1',
-            type: 'brand_voice_mismatch',
+            type: 'personality_deviation',
           });
           expect(result.improvements[2]).toMatchObject({
             uuid: 'improvement-uuid-3',
@@ -297,16 +314,18 @@ describe('Supervisor.js', () => {
         isRunning: false,
         progress: 5,
         total: 5,
+        createdAt: '2026-06-23T12:00:00Z',
       });
+      expect(result.conversationsCount).toBe(54);
       expect(result.improvements).toHaveLength(6);
       expect(result.improvements[0]).toMatchObject({
         uuid: 'improvement-uuid-1',
-        type: 'brand_voice_mismatch',
+        type: 'personality_deviation',
         conversationsCount: 18,
       });
       expect(result.improvements[5]).toMatchObject({
         uuid: 'improvement-uuid-6',
-        type: 'amazing_conversation',
+        type: 'repetitive_response',
         conversationsCount: 3,
       });
     });
