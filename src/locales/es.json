@@ -13,10 +13,6 @@
   "unexpected_error": "Se produjo un error inesperado",
   "agent_builder": {
     "tabs": {
-      "conversations": {
-        "title": "Conversaciones",
-        "description": "Analiza y revisa conversaciones entre agentes y clientes."
-      },
       "knowledge": {
         "title": "Conocimientos",
         "description": "Agrega conocimiento mediante archivos, links o texto para que el agente pueda responder con precisión"
@@ -24,95 +20,6 @@
       "tunings": {
         "title": "Ajustes",
         "description": "Gestiona la configuración y consulta los cambios realizados"
-      }
-    },
-    "supervisor": {
-      "learn_details_conversations": "Aprende sobre los detalles de una conversación.",
-      "conversation_details": {
-        "title": "Sobre conversación",
-        "what_is_a_conversation": "¿Qué es una conversación?",
-        "what_is_a_conversation_description": "Consideramos todas las conversaciones dentro de 24 horas (reseteando a medianoche) como una única conversación.",
-        "optimized_resolution": "Atendido por IA",
-        "optimized_resolution_description": "Conversaciones finalizadas con una resolución clara y efectiva para el contacto.",
-        "other_conclusion": "No atendido",
-        "other_conclusion_description": "Conversaciones que finalizaron de otras maneras, como interacciones breves, saludos, abandono o casos que siguieron un flujo diferente sin una resolución directa.",
-        "transferred_to_human_support": "Transferidas a soporte humano",
-        "transferred_to_human_support_description": "Incluye conversaciones (Atendido por IA y No atendido) transferidas a un representante humano."
-      },
-      "conversations_count": "{count} conversaciones encontradas",
-      "unnamed_contact": "Contacto sin nombre",
-      "attended_by_agent": {
-        "title": "Atendido por el agente",
-        "tooltip": "Conversaciones resueltas por el agente"
-      },
-      "forwarded_human_support": {
-        "title": "Enviado a soporte humano",
-        "tooltip": "Conversaciones transferidas a soporte humano"
-      },
-      "conversation_start_finish": {
-        "start": "Conversación iniciada: {datetime}",
-        "finish": "Conversación finalizada: {datetime}"
-      },
-      "contact_urn": "URN del contacto",
-      "topic": "Tópico",
-      "conversation_details_collapse": "Detalles de la conversación",
-      "view_full_history": "Ver historico completo",
-      "view_logs": "Mostrar logs",
-      "hide_logs": "Ocultar logs",
-      "search": "Buscar",
-      "conversations_empty": "No se encontraron conversaciones",
-      "conversations_separator": "Las conversaciones a continuación se clasificaron utilizando el sistema heredado",
-      "conversations_v2_disclaimer": "Comenzando el {day} de marzo, las conversas se organizan en ventanas de 24 horas (reseteando a medianoche) usando nuestro nuevo sistema de clasificación",
-      "no_messages_found": {
-        "title": "No se encontraron mensajes en esta conversación",
-        "description": "Si el soporte humano envió el mensaje o activó una acción automática, lo puedes ver en {studio_link}.",
-        "studio_link": "Estudio"
-      },
-      "unclassified_status_tooltip": "Las conversaciones finalizadas antes del 8 de septiembre de 2025 no pueden clasificarse",
-      "export": {
-        "title": "Enviar exportación por email",
-        "description": "Vamos a preparar el archivo con los datos de IA y lo enviaremos a los siguientes emails:",
-        "token_label": "Token de API del proyecto",
-        "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
-        "token_help": "Puedes ver el token en la",
-        "project_settings": "configuración del proyecto",
-        "and_paste": "y pegarlo aquí",
-        "send": "Enviar exportación",
-        "success": "La exportación se enviará en breve a todos los emails listados",
-        "error": "Error al enviar exportación. Inténtalo de nuevo más tarde."
-      },
-      "filters": {
-        "filter_conversations": "Filtrar conversaciones",
-        "count_applied_filters": "{count, plural, one {(1 filtro aplicado)} other {({count} filtros aplicados)}}",
-        "filter_conversations_drawer": "Filtrar conversaciones",
-        "apply_filters": "Aplicar filtros",
-        "clear_filters": "Limpiar filtros",
-        "period": {
-          "label": "Periodo"
-        },
-        "status": {
-          "conversations": "Conversaciones",
-          "in_progress": "En progreso",
-          "optimized_resolution": "Atendido por IA",
-          "other_conclusion": "No atendido",
-          "unclassified": "No clasificado",
-          "transferred_to_human_support": "Encaminado a soporte humano"
-        },
-        "csat": {
-          "csat": "CSAT",
-          "very_satisfied": "🤩 Muy satisfecho",
-          "satisfied": "😃 Satisfecho",
-          "neutral": "😐 Neutral",
-          "dissatisfied": "😔 Insatisfecho",
-          "very_dissatisfied": "😡 Muy insatisfecho"
-        },
-        "topic": {
-          "topic": "Tópico",
-          "unclassified": "No clasificado"
-        }
-      },
-      "load_conversations": {
-        "error": "Error al cargar conversaciones"
       }
     },
     "instructions": {
@@ -463,6 +370,100 @@
           }
 
         }
+      }
+    }
+  },
+  "audit": {
+    "title": "Auditoría",
+    "description": "Analiza y revisa conversaciones entre agentes y clientes.",
+    "conversations": {
+      "title": "Conversaciones",
+      "learn_details_conversations": "Aprende sobre los detalles de una conversación.",
+      "conversation_details": {
+        "title": "Sobre conversación",
+        "what_is_a_conversation": "¿Qué es una conversación?",
+        "what_is_a_conversation_description": "Consideramos todas las conversaciones dentro de 24 horas (reseteando a medianoche) como una única conversación.",
+        "optimized_resolution": "Atendido por IA",
+        "optimized_resolution_description": "Conversaciones finalizadas con una resolución clara y efectiva para el contacto.",
+        "other_conclusion": "No atendido",
+        "other_conclusion_description": "Conversaciones que finalizaron de otras maneras, como interacciones breves, saludos, abandono o casos que siguieron un flujo diferente sin una resolución directa.",
+        "transferred_to_human_support": "Transferidas a soporte humano",
+        "transferred_to_human_support_description": "Incluye conversaciones (Atendido por IA y No atendido) transferidas a un representante humano."
+      },
+      "conversations_count": "{count} conversaciones encontradas",
+      "unnamed_contact": "Contacto sin nombre",
+      "attended_by_agent": {
+        "title": "Atendido por el agente",
+        "tooltip": "Conversaciones resueltas por el agente"
+      },
+      "forwarded_human_support": {
+        "title": "Enviado a soporte humano",
+        "tooltip": "Conversaciones transferidas a soporte humano"
+      },
+      "conversation_start_finish": {
+        "start": "Conversación iniciada: {datetime}",
+        "finish": "Conversación finalizada: {datetime}"
+      },
+      "contact_urn": "URN del contacto",
+      "topic": "Tópico",
+      "conversation_details_collapse": "Detalles de la conversación",
+      "view_full_history": "Ver historico completo",
+      "view_logs": "Mostrar logs",
+      "hide_logs": "Ocultar logs",
+      "search": "Buscar",
+      "conversations_empty": "No se encontraron conversaciones",
+      "conversations_separator": "Las conversaciones a continuación se clasificaron utilizando el sistema heredado",
+      "conversations_v2_disclaimer": "Comenzando el {day} de marzo, las conversas se organizan en ventanas de 24 horas (reseteando a medianoche) usando nuestro nuevo sistema de clasificación",
+      "no_messages_found": {
+        "title": "No se encontraron mensajes en esta conversación",
+        "description": "Si el soporte humano envió el mensaje o activó una acción automática, lo puedes ver en {studio_link}.",
+        "studio_link": "Estudio"
+      },
+      "unclassified_status_tooltip": "Las conversaciones finalizadas antes del 8 de septiembre de 2025 no pueden clasificarse",
+      "export": {
+        "title": "Enviar exportación por email",
+        "description": "Vamos a preparar el archivo con los datos de IA y lo enviaremos a los siguientes emails:",
+        "token_label": "Token de API del proyecto",
+        "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
+        "token_help": "Puedes ver el token en la",
+        "project_settings": "configuración del proyecto",
+        "and_paste": "y pegarlo aquí",
+        "send": "Enviar exportación",
+        "success": "La exportación se enviará en breve a todos los emails listados",
+        "error": "Error al enviar exportación. Inténtalo de nuevo más tarde."
+      },
+      "filters": {
+        "filter_conversations": "Filtrar conversaciones",
+        "count_applied_filters": "{count, plural, one {(1 filtro aplicado)} other {({count} filtros aplicados)}}",
+        "filter_conversations_drawer": "Filtrar conversaciones",
+        "apply_filters": "Aplicar filtros",
+        "clear_filters": "Limpiar filtros",
+        "period": {
+          "label": "Periodo"
+        },
+        "status": {
+          "conversations": "Conversaciones",
+          "in_progress": "En progreso",
+          "optimized_resolution": "Atendido por IA",
+          "other_conclusion": "No atendido",
+          "unclassified": "No clasificado",
+          "transferred_to_human_support": "Encaminado a soporte humano"
+        },
+        "csat": {
+          "csat": "CSAT",
+          "very_satisfied": "🤩 Muy satisfecho",
+          "satisfied": "😃 Satisfecho",
+          "neutral": "😐 Neutral",
+          "dissatisfied": "😔 Insatisfecho",
+          "very_dissatisfied": "😡 Muy insatisfecho"
+        },
+        "topic": {
+          "topic": "Tópico",
+          "unclassified": "No clasificado"
+        }
+      },
+      "load_conversations": {
+        "error": "Error al cargar conversaciones"
       }
     }
   },

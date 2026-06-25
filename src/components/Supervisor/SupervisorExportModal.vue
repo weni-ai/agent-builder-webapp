@@ -4,13 +4,13 @@
     showCloseIcon
     showActionsDivider
     size="md"
-    :title="$t('agent_builder.supervisor.export.title')"
+    :title="$t('audit.conversations.export.title')"
     :secondaryButtonProps="{
       text: $t('cancel'),
       'data-test': 'cancel-button',
     }"
     :primaryButtonProps="{
-      text: $t('agent_builder.supervisor.export.send'),
+      text: $t('audit.conversations.export.send'),
       loading: isSending,
       disabled: !token,
       'data-test': 'send-export-button',
@@ -28,7 +28,7 @@
       size="body-gt"
       weight="regular"
     >
-      {{ $t('agent_builder.supervisor.export.description') }}
+      {{ $t('audit.conversations.export.description') }}
     </UnnnicIntelligenceText>
 
     <ul class="supervisor-export-modal__email-list">
@@ -52,12 +52,12 @@
     <UnnnicDivider ySpacing="sm" />
 
     <UnnnicFormElement
-      :label="$t('agent_builder.supervisor.export.token_label')"
+      :label="$t('audit.conversations.export.token_label')"
       class="supervisor-export-modal__form-element"
     >
       <UnnnicInput
         v-model="token"
-        :placeholder="$t('agent_builder.supervisor.export.token_placeholder')"
+        :placeholder="$t('audit.conversations.export.token_placeholder')"
         data-test="token-input"
       />
     </UnnnicFormElement>
@@ -70,15 +70,15 @@
       weight="regular"
       class="supervisor-export-modal__help-text"
     >
-      {{ $t('agent_builder.supervisor.export.token_help') }}
+      {{ $t('audit.conversations.export.token_help') }}
       <a
         :href="`${env('CONNECT_URL')}/projects/${projectStore.uuid}/settings`"
         class="help-text__link"
         target="_blank"
       >
-        {{ $t('agent_builder.supervisor.export.project_settings') }}
+        {{ $t('audit.conversations.export.project_settings') }}
       </a>
-      {{ $t('agent_builder.supervisor.export.and_paste') }}
+      {{ $t('audit.conversations.export.and_paste') }}
     </UnnnicIntelligenceText>
   </UnnnicModalDialog>
 </template>

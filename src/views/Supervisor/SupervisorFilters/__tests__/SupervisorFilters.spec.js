@@ -79,18 +79,15 @@ describe('SupervisorFilters.vue', () => {
 
     it('not show count of applied filters when no filters are applied', () => {
       expect(buttonFilter().props('text')).toBe(
-        i18n.global.t('agent_builder.supervisor.filters.filter_conversations'),
+        i18n.global.t('audit.conversations.filters.filter_conversations'),
       );
     });
 
     it('show count of applied filters when filters are applied', async () => {
       const countTranslation = (count) =>
-        i18n.global.t(
-          'agent_builder.supervisor.filters.count_applied_filters',
-          {
-            count,
-          },
-        );
+        i18n.global.t('audit.conversations.filters.count_applied_filters', {
+          count,
+        });
 
       store.filters.status = ['status'];
       await wrapper.vm.$nextTick();

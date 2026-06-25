@@ -440,7 +440,7 @@ describe('Supervisor Store', () => {
 
         expect(alertStore.add).toHaveBeenCalledWith({
           type: 'success',
-          text: 'agent_builder.supervisor.export.success',
+          text: 'audit.conversations.export.success',
         });
       });
 
@@ -453,7 +453,7 @@ describe('Supervisor Store', () => {
 
         expect(alertStore.add).toHaveBeenCalledWith({
           type: 'error',
-          text: 'agent_builder.supervisor.export.error',
+          text: 'audit.conversations.export.error',
         });
       });
 

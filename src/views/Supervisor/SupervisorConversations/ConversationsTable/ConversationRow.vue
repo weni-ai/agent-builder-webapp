@@ -31,7 +31,7 @@
         <UnnnicToolTip
           v-if="statusProps.text"
           side="top"
-          :text="$t('agent_builder.supervisor.unclassified_status_tooltip')"
+          :text="$t('audit.conversations.unclassified_status_tooltip')"
           :enabled="conversation.status === 'unclassified'"
         >
           <UnnnicTag
@@ -90,7 +90,7 @@ const statusProps = computed(() => {
   const status = props.conversation.status;
 
   const baseStatus = {
-    text: status ? t(`agent_builder.supervisor.filters.status.${status}`) : '',
+    text: status ? t(`audit.conversations.filters.status.${status}`) : '',
   };
 
   const mapStatus = {
@@ -122,7 +122,7 @@ const csatText = computed(() => {
 
   const csat = props.conversation.csat;
   const csatTranslation = i18n.global.t(
-    `agent_builder.supervisor.filters.csat.${csat.id}`,
+    `audit.conversations.filters.csat.${csat.id}`,
   );
 
   return `${csatTranslation} | CSAT: ${csat.score}`;

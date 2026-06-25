@@ -68,7 +68,7 @@ describe('NoMessagesFound.vue', () => {
       expect(description().exists()).toBe(true);
       expect(descriptionI18n().exists()).toBe(true);
       expect(descriptionI18n().props('keypath')).toBe(
-        'agent_builder.supervisor.no_messages_found.description',
+        'audit.conversations.no_messages_found.description',
       );
       expect(descriptionI18n().props('tag')).toBe('p');
     });

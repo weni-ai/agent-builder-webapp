@@ -63,7 +63,7 @@ describe('FilterText.vue', () => {
       expect(input().exists()).toBe(true);
       expect(input().props('iconLeft')).toBe('search');
       expect(input().props('placeholder')).toBe(
-        i18n.global.t('agent_builder.supervisor.search'),
+        i18n.global.t('audit.conversations.search'),
       );
     });
 

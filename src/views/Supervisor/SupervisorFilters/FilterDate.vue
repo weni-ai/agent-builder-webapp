@@ -1,7 +1,5 @@
 <template>
-  <UnnnicFormElement
-    :label="$t('agent_builder.supervisor.filters.period.label')"
-  >
+  <UnnnicFormElement :label="$t('audit.conversations.filters.period.label')">
     <UnnnicInputDatePicker
       v-model="dateFilter"
       position="right"

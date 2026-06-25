@@ -55,11 +55,9 @@ const { t } = i18n.global;
 
 const featureFlagsStore = useFeatureFlagsStore();
 
-const headerTitle = computed(() => t('agent_builder.tabs.conversations.title'));
+const headerTitle = computed(() => t('audit.title'));
 
-const headerDescription = computed(() =>
-  t('agent_builder.tabs.conversations.description'),
-);
+const headerDescription = computed(() => t('audit.description'));
 
 const showExport = computed(() => featureFlagsStore.flags.supervisorExport);
 

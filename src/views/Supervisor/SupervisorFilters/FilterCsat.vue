@@ -1,5 +1,5 @@
 <template>
-  <UnnnicFormElement :label="$t('agent_builder.supervisor.filters.csat.csat')">
+  <UnnnicFormElement :label="$t('audit.conversations.filters.csat.csat')">
     <UnnnicSelectSmart
       v-model:modelValue="csatFilter"
       data-testid="csat-select"
@@ -36,7 +36,7 @@ type SelectOption = {
 };
 
 const translateCsat = (filter: string) =>
-  i18n.global.t(`agent_builder.supervisor.filters.csat.${filter}`);
+  i18n.global.t(`audit.conversations.filters.csat.${filter}`);
 
 const csatOptions = computed<SelectOption[]>(() => [
   { label: translateCsat('csat'), value: '' },

@@ -21,7 +21,7 @@ const props = withDefaults(
   }>(),
   {
     username: '',
-    fallbackKey: 'agent_builder.supervisor.unnamed_contact',
+    fallbackKey: 'audit.conversations.unnamed_contact',
     font: 'action',
   },
 );

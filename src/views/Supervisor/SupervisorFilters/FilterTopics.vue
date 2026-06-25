@@ -1,7 +1,5 @@
 <template>
-  <UnnnicFormElement
-    :label="$t('agent_builder.supervisor.filters.topic.topic')"
-  >
+  <UnnnicFormElement :label="$t('audit.conversations.filters.topic.topic')">
     <UnnnicSelectSmart
       v-model:modelValue="topicFilter"
       data-testid="topic-select"
@@ -23,13 +21,13 @@ import { useSupervisorStore } from '@/store/Supervisor';
 const supervisorStore = useSupervisorStore();
 
 const UNCLASSIFIED_TOPIC = {
-  label: i18n.global.t('agent_builder.supervisor.filters.topic.unclassified'),
+  label: i18n.global.t('audit.conversations.filters.topic.unclassified'),
   value: 'unclassified',
 };
 
 const topicOptions = computed(() => [
   {
-    label: i18n.global.t(`agent_builder.supervisor.filters.topic.topic`),
+    label: i18n.global.t(`audit.conversations.filters.topic.topic`),
     value: '',
   },
   UNCLASSIFIED_TOPIC,

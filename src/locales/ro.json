@@ -13,10 +13,6 @@
   "unexpected_error": "A apărut o eroare neașteptată",
   "agent_builder": {
     "tabs": {
-      "conversations": {
-        "title": "Conversații",
-        "description": "Revizuiește și analizează conversațiile dintre agenți și clienți."
-      },
       "knowledge": {
         "title": "Cunoștințe",
         "description": "Adaugă cunoștințe prin fișiere, linkuri sau text pentru ca agentul să poată răspunde cu acuratețe"
@@ -24,95 +20,6 @@
       "tunings": {
         "title": "Setări",
         "description": "Gestionează setările și urmărește modificările făcute"
-      }
-    },
-    "supervisor": {
-      "learn_details_conversations": "Află detalii despre o conversație.",
-      "conversation_details": {
-        "title": "Despre conversație",
-        "what_is_a_conversation": "Ce este o conversație?",
-        "what_is_a_conversation_description": "Considerăm că toate mesajele schimbate în decurs de 24 de ore (cu resetare la miezul nopții) constituie o singură conversație.",
-        "optimized_resolution": "Asistat de IA",
-        "optimized_resolution_description": "Conversația s-a încheiat cu o rezoluție clară și eficientă pentru contact.",
-        "other_conclusion": "Neasistat",
-        "other_conclusion_description": "Conversații care s-au încheiat în alte moduri, cum ar fi interacțiuni scurte, salutări, abandonuri sau cazuri care au urmat un flux diferit fără o rezoluție directă.",
-        "transferred_to_human_support": "Transferat la asistență umană",
-        "transferred_to_human_support_description": "Include conversații (asistat de IA și neasistat) transferate către un reprezentant uman."
-      },
-      "conversations_count": "{count} conversații găsite",
-      "unnamed_contact": "Contact fără nume",
-      "attended_by_agent": {
-        "title": "Asistat de un agent",
-        "tooltip": "Conversații finalizate de un agent"
-      },
-      "forwarded_human_support": {
-        "title": "Transferat la asistență umană",
-        "tooltip": "Conversații transferate către asistență umană"
-      },
-      "conversation_start_finish": {
-        "start": "Conversație începută: {datetime}",
-        "finish": "Conversație încheiată: {datetime}"
-      },
-      "contact_urn": "URN contact",
-      "topic": "Subiect",
-      "conversation_details_collapse": "Detalii conversație",
-      "view_full_history": "Vezi istoricul complet",
-      "view_logs": "Afișează jurnalele",
-      "hide_logs": "Ascunde jurnalele",
-      "search": "Căutare",
-      "conversations_empty": "Nu s-au găsit conversații",
-      "conversations_separator": "Conversațiile de mai jos au fost clasificate folosind sistemul anterior",
-      "conversations_v2_disclaimer": "Începând cu {day} martie, conversațiile sunt organizate în ferestre de 24 de ore (cu resetare la miezul nopții) folosind noul nostru sistem de clasificare",
-      "no_messages_found": {
-        "title": "Nu s-au găsit mesaje în această conversație",
-        "description": "Dacă mesajul a fost trimis de asistența umană sau a declanșat o acțiune automată, îl poți găsi în {studio_link}.",
-        "studio_link": "Studio"
-      },
-      "unclassified_status_tooltip": "Conversațiile închise înainte de 8 septembrie 2025 nu pot fi clasificate",
-      "export": {
-        "title": "Exportă pe e-mail",
-        "description": "Vom pregăti fișierul cu informațiile AI și îl vom trimite la următoarele adrese de e-mail:",
-        "token_label": "Token API proiect",
-        "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
-        "token_help": "Poți găsi acest token în",
-        "project_settings": "setări proiect",
-        "and_paste": "și lipește-l aici",
-        "send": "Trimite exportul",
-        "success": "Exportul va fi trimis în curând către toate adresele de e-mail listate",
-        "error": "Eroare la trimiterea exportului. Încearcă din nou mai târziu."
-      },
-      "filters": {
-        "filter_conversations": "Filtrează conversațiile",
-        "count_applied_filters": "{count, plural, one {(1 filtru aplicat)} few {({count} filtre aplicate)} other {({count} de filtre aplicate)}}",
-        "filter_conversations_drawer": "Filtrează conversațiile",
-        "apply_filters": "Aplicare filtre",
-        "clear_filters": "Elimină filtrele",
-        "period": {
-          "label": "Perioadă"
-        },
-        "status": {
-          "conversations": "Conversații",
-          "in_progress": "În curs",
-          "optimized_resolution": "Asistat de IA",
-          "other_conclusion": "Neasistat",
-          "unclassified": "Neclasificat",
-          "transferred_to_human_support": "Transferat la asistență umană"
-        },
-        "csat": {
-          "csat": "CSAT",
-          "very_satisfied": "🤩 Foarte mulțumit",
-          "satisfied": "😃 Mulțumit",
-          "neutral": "😐 Neutru",
-          "dissatisfied": "😔 Nemulțumit",
-          "very_dissatisfied": "😡 Foarte nemulțumit"
-        },
-        "topic": {
-          "topic": "Subiect",
-          "unclassified": "Neclasificat"
-        }
-      },
-      "load_conversations": {
-        "error": "Eroare la încărcarea conversațiilor"
       }
     },
     "instructions": {
@@ -462,6 +369,100 @@
           }
 
         }
+      }
+    }
+  },
+  "audit": {
+    "title": "Audit",
+    "description": "Revizuiește și analizează conversațiile dintre agenți și clienți.",
+    "conversations": {
+      "title": "Conversații",
+      "learn_details_conversations": "Află detalii despre o conversație.",
+      "conversation_details": {
+        "title": "Despre conversație",
+        "what_is_a_conversation": "Ce este o conversație?",
+        "what_is_a_conversation_description": "Considerăm că toate mesajele schimbate în decurs de 24 de ore (cu resetare la miezul nopții) constituie o singură conversație.",
+        "optimized_resolution": "Asistat de IA",
+        "optimized_resolution_description": "Conversația s-a încheiat cu o rezoluție clară și eficientă pentru contact.",
+        "other_conclusion": "Neasistat",
+        "other_conclusion_description": "Conversații care s-au încheiat în alte moduri, cum ar fi interacțiuni scurte, salutări, abandonuri sau cazuri care au urmat un flux diferit fără o rezoluție directă.",
+        "transferred_to_human_support": "Transferat la asistență umană",
+        "transferred_to_human_support_description": "Include conversații (asistat de IA și neasistat) transferate către un reprezentant uman."
+      },
+      "conversations_count": "{count} conversații găsite",
+      "unnamed_contact": "Contact fără nume",
+      "attended_by_agent": {
+        "title": "Asistat de un agent",
+        "tooltip": "Conversații finalizate de un agent"
+      },
+      "forwarded_human_support": {
+        "title": "Transferat la asistență umană",
+        "tooltip": "Conversații transferate către asistență umană"
+      },
+      "conversation_start_finish": {
+        "start": "Conversație începută: {datetime}",
+        "finish": "Conversație încheiată: {datetime}"
+      },
+      "contact_urn": "URN contact",
+      "topic": "Subiect",
+      "conversation_details_collapse": "Detalii conversație",
+      "view_full_history": "Vezi istoricul complet",
+      "view_logs": "Afișează jurnalele",
+      "hide_logs": "Ascunde jurnalele",
+      "search": "Căutare",
+      "conversations_empty": "Nu s-au găsit conversații",
+      "conversations_separator": "Conversațiile de mai jos au fost clasificate folosind sistemul anterior",
+      "conversations_v2_disclaimer": "Începând cu {day} martie, conversațiile sunt organizate în ferestre de 24 de ore (cu resetare la miezul nopții) folosind noul nostru sistem de clasificare",
+      "no_messages_found": {
+        "title": "Nu s-au găsit mesaje în această conversație",
+        "description": "Dacă mesajul a fost trimis de asistența umană sau a declanșat o acțiune automată, îl poți găsi în {studio_link}.",
+        "studio_link": "Studio"
+      },
+      "unclassified_status_tooltip": "Conversațiile închise înainte de 8 septembrie 2025 nu pot fi clasificate",
+      "export": {
+        "title": "Exportă pe e-mail",
+        "description": "Vom pregăti fișierul cu informațiile AI și îl vom trimite la următoarele adrese de e-mail:",
+        "token_label": "Token API proiect",
+        "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
+        "token_help": "Poți găsi acest token în",
+        "project_settings": "setări proiect",
+        "and_paste": "și lipește-l aici",
+        "send": "Trimite exportul",
+        "success": "Exportul va fi trimis în curând către toate adresele de e-mail listate",
+        "error": "Eroare la trimiterea exportului. Încearcă din nou mai târziu."
+      },
+      "filters": {
+        "filter_conversations": "Filtrează conversațiile",
+        "count_applied_filters": "{count, plural, one {(1 filtru aplicat)} few {({count} filtre aplicate)} other {({count} de filtre aplicate)}}",
+        "filter_conversations_drawer": "Filtrează conversațiile",
+        "apply_filters": "Aplicare filtre",
+        "clear_filters": "Elimină filtrele",
+        "period": {
+          "label": "Perioadă"
+        },
+        "status": {
+          "conversations": "Conversații",
+          "in_progress": "În curs",
+          "optimized_resolution": "Asistat de IA",
+          "other_conclusion": "Neasistat",
+          "unclassified": "Neclasificat",
+          "transferred_to_human_support": "Transferat la asistență umană"
+        },
+        "csat": {
+          "csat": "CSAT",
+          "very_satisfied": "🤩 Foarte mulțumit",
+          "satisfied": "😃 Mulțumit",
+          "neutral": "😐 Neutru",
+          "dissatisfied": "😔 Nemulțumit",
+          "very_dissatisfied": "😡 Foarte nemulțumit"
+        },
+        "topic": {
+          "topic": "Subiect",
+          "unclassified": "Neclasificat"
+        }
+      },
+      "load_conversations": {
+        "error": "Eroare la încărcarea conversațiilor"
       }
     }
   },
