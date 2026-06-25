@@ -12,14 +12,25 @@
     :text="$t('agents.instructions.new_instruction')"
     @click="newInstruction"
   />
+
+  <NewInstructionDrawer
+    v-model="showNewInstructionDrawer"
+    data-testid="new-instruction-drawer"
+  />
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+
+import NewInstructionDrawer from '@/components/Instructions/NewInstructionDrawer/index.vue';
+
+const showNewInstructionDrawer = ref(false);
+
 function exportInstructions() {
   // TODO: Implement export instructions
 }
 
 function newInstruction() {
-  // TODO: Implement new instruction drawer
+  showNewInstructionDrawer.value = true;
 }
 </script>
