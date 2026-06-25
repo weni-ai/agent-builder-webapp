@@ -3,14 +3,17 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
 import NewInstructionDrawer from '../index.vue';
+import { useInstructionsStore } from '@/store/Instructions';
 import i18n from '@/utils/plugins/i18n';
 
 describe('NewInstructionDrawer/index.vue', () => {
   let wrapper;
+  let store;
 
   const SELECTORS = {
     title: '[data-testid="new-instruction-drawer-title"]',
     form: '[data-testid="new-instruction-drawer-form"]',
+    category: '[data-testid="new-instruction-drawer-category"]',
     cancelButton: '[data-testid="new-instruction-drawer-cancel-button"]',
     saveButton: '[data-testid="new-instruction-drawer-save-button"]',
   };
@@ -22,20 +25,33 @@ describe('NewInstructionDrawer/index.vue', () => {
   const translation = (key) =>
     i18n.global.t(`agents.instructions.new_instruction_drawer.${key}`);
 
-  const createWrapper = (props = {}) =>
-    mount(NewInstructionDrawer, {
-      props: {
-        modelValue: true,
-        ...props,
-      },
-      global: {
-        plugins: [createTestingPinia()],
-        stubs: {
-          UnnnicDrawerNext: false,
-          NewInstructionDrawerForm: true,
+  const createWrapper = (instructionsState = {}) => {
+    const pinia = createTestingPinia({
+      initialState: {
+        Instructions: {
+          isInstructionDrawerOpen: true,
+          instructionDrawerMode: 'create',
+          newInstruction: { text: '', category: null, status: null },
+          instructionSuggestedByAI: { status: null },
+          ...instructionsState,
         },
       },
     });
+
+    store = useInstructionsStore();
+
+    return mount(NewInstructionDrawer, {
+      global: {
+        plugins: [pinia],
+        stubs: {
+          UnnnicDrawerNext: false,
+          NewInstructionDrawerForm: true,
+          NewInstructionDrawerAIAnalysis: true,
+          SuggestedCategory: true,
+        },
+      },
+    });
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -46,34 +62,81 @@ describe('NewInstructionDrawer/index.vue', () => {
     wrapper?.unmount();
   });
 
-  describe('Component rendering', () => {
-    it('renders the title with the correct text', () => {
-      expect(find('title').exists()).toBe(true);
+  describe('Create mode', () => {
+    it('renders the create title and the instruction form', () => {
       expect(find('title').text()).toBe(translation('title'));
-    });
-
-    it('renders the instruction form inside the drawer section', () => {
-      expect(wrapper.find('.new-instruction-drawer').exists()).toBe(true);
       expect(find('form').exists()).toBe(true);
     });
 
-    it('renders the cancel and save buttons with the correct text', () => {
-      expect(findComponent('cancelButton').text()).toBe(translation('cancel'));
-      expect(findComponent('saveButton').text()).toBe(translation('save'));
+    it('does not render the standalone category section', () => {
+      expect(find('category').exists()).toBe(false);
+    });
+
+    it('disables save until the AI validation is complete', () => {
+      expect(findComponent('saveButton').props('disabled')).toBe(true);
+    });
+
+    it('adds the instruction when saving a validated instruction', async () => {
+      wrapper = createWrapper({
+        newInstruction: { text: 'New rule', category: null, status: null },
+        instructionSuggestedByAI: { status: 'complete' },
+      });
+
+      await findComponent('saveButton').trigger('click');
+
+      expect(store.addInstruction).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('User interaction', () => {
+  describe('Edit mode', () => {
+    const editState = {
+      instructionDrawerMode: 'edit',
+      editingInstructionId: 1,
+      newInstruction: { text: 'Be concise', category: null, status: null },
+    };
+
+    it('renders the edit title and the standalone category section', () => {
+      wrapper = createWrapper(editState);
+
+      expect(find('title').text()).toBe(translation('edit_title'));
+      expect(find('category').exists()).toBe(true);
+    });
+
+    it('enables save without requiring AI validation', () => {
+      wrapper = createWrapper(editState);
+
+      expect(findComponent('saveButton').props('disabled')).toBe(false);
+    });
+
+    it('updates the instruction when saving', async () => {
+      wrapper = createWrapper(editState);
+
+      await findComponent('saveButton').trigger('click');
+
+      expect(store.updateEditingInstruction).toHaveBeenCalledTimes(1);
+      expect(store.addInstruction).not.toHaveBeenCalled();
+    });
+
+    it('moves the category into the AI analysis once validated', () => {
+      wrapper = createWrapper({
+        ...editState,
+        instructionSuggestedByAI: { status: 'complete' },
+      });
+
+      expect(find('category').exists()).toBe(false);
+      expect(
+        wrapper
+          .find('[data-testid="new-instruction-drawer-ai-analysis"]')
+          .exists(),
+      ).toBe(true);
+    });
+  });
+
+  describe('Closing', () => {
     it('closes the drawer when the cancel button is clicked', async () => {
       await findComponent('cancelButton').trigger('click');
 
-      expect(wrapper.vm.modelValue).toBe(false);
-    });
-
-    it('keeps the drawer open when the save button is clicked', async () => {
-      await findComponent('saveButton').trigger('click');
-
-      expect(wrapper.vm.modelValue).toBe(true);
+      expect(store.closeInstructionDrawer).toHaveBeenCalled();
     });
   });
 });

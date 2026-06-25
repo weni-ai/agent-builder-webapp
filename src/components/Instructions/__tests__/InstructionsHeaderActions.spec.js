@@ -1,11 +1,14 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
 
 import InstructionsHeaderActions from '../InstructionsHeaderActions.vue';
+import { useInstructionsStore } from '@/store/Instructions';
 import i18n from '@/utils/plugins/i18n';
 
 describe('InstructionsHeaderActions.vue', () => {
   let wrapper;
+  let store;
 
   const findExportButton = () =>
     wrapper.findComponent('[data-testid="export-instructions-button"]');
@@ -15,7 +18,11 @@ describe('InstructionsHeaderActions.vue', () => {
     wrapper.findComponent('[data-testid="new-instruction-drawer"]');
 
   const createWrapper = () => {
-    wrapper = shallowMount(InstructionsHeaderActions);
+    const pinia = createTestingPinia();
+    store = useInstructionsStore();
+    wrapper = shallowMount(InstructionsHeaderActions, {
+      global: { plugins: [pinia] },
+    });
   };
 
   afterEach(() => {
@@ -69,18 +76,12 @@ describe('InstructionsHeaderActions.vue', () => {
       expect(findDrawer().exists()).toBe(true);
     });
 
-    it('is closed by default', () => {
-      createWrapper();
-
-      expect(findDrawer().props('modelValue')).toBe(false);
-    });
-
-    it('opens when the new instruction button is clicked', async () => {
+    it('opens the new instruction drawer through the store when clicked', async () => {
       createWrapper();
 
       await findNewInstructionButton().trigger('click');
 
-      expect(findDrawer().props('modelValue')).toBe(true);
+      expect(store.openNewInstructionDrawer).toHaveBeenCalledTimes(1);
     });
   });
 });
