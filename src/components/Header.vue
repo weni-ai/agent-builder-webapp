@@ -22,8 +22,6 @@
         data-testid="agent-builder-header-description"
       >
         {{ currentView?.description }}
-
-        <SupervisorHeaderDetails v-if="currentView.page === 'conversations'" />
       </h2>
     </section>
 
@@ -42,8 +40,6 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import useBuildViews from '@/composables/useBuildViews';
-
-import SupervisorHeaderDetails from './Supervisor/SupervisorHeaderDetails.vue';
 
 import i18n from '@/utils/plugins/i18n';
 
@@ -74,11 +70,6 @@ const currentView = computed(() => {
 
   const views = [
     ...useBuildViews().value,
-    {
-      title: t('agent_builder.tabs.conversations.title'),
-      description: t('agent_builder.tabs.conversations.description'),
-      page: 'conversations',
-    },
     {
       title: t('agent_builder.tabs.agents.title'),
       description: t('agent_builder.tabs.agents.description'),
