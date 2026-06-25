@@ -2,7 +2,7 @@
 
 exports[`InstructionsList.vue > should match snapshot 1`] = `
 "<section data-v-eb875822="" class="instructions-list" data-testid="instructions">
-  <instruction-stub data-v-eb875822="" instruction="[object Object]" tag="" showactions="false" data-testid="instruction-added"></instruction-stub>
-  <instruction-stub data-v-eb875822="" instruction="[object Object]" tag="" showactions="false" data-testid="instruction-added"></instruction-stub>
+  <instruction-stub data-v-eb875822="" instruction="[object Object]" tag="" showactions="false" emiteditonclick="false" data-testid="instruction-added"></instruction-stub>
+  <instruction-stub data-v-eb875822="" instruction="[object Object]" tag="" showactions="false" emiteditonclick="false" data-testid="instruction-added"></instruction-stub>
 </section>"
 `;
