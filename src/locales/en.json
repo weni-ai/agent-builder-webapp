@@ -480,7 +480,13 @@
         "description": "Ran on {date} at {time}",
         "description_today": "Ran today at {time}",
         "run_analysis": "Run analysis",
+        "run_analysis_already_run_today_tooltip": "Analysis already ran today\nReturn tomorrow to run a new analysis",
+        "run_analysis_insufficient_volume_tooltip": "Insufficient conversation volume to run analysis\nMinimum of 15 conversations required",
         "title": "{count, plural, one {Analysis of conversations from {date} · {count} improvement identified} other {Analysis of conversations from {date} · {count} improvements identified}}"
+      },
+      "insufficient_volume": {
+        "description": "Minimum of 15 conversations required to run analysis",
+        "title": "Insufficient conversation volume"
       },
       "no_analysis": {
         "description": "Run your first analysis to identify opportunities for improvement in yesterday's conversations",
