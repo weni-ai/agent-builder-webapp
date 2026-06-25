@@ -9,6 +9,11 @@ export type ImprovementType =
 
 export type ImprovementsStatus = null | 'loading' | 'complete' | 'error';
 
+export type RunAnalysisBlockReason =
+  | 'insufficient_volume'
+  | 'already_run_today'
+  | null;
+
 export interface ImprovementsTask {
   isRunning: boolean;
   progress: number;
@@ -24,7 +29,7 @@ export interface Improvement {
 }
 
 export interface ImprovementsAnalysis {
-  conversationsCount: number;
-  task: ImprovementsTask;
+  yesterdayConversationsCount: number;
+  task: ImprovementsTask | null;
   improvements: Improvement[];
 }

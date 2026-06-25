@@ -251,12 +251,12 @@ describe('Supervisor.js', () => {
         isRunning: true,
         progress: 1,
         total: 5,
-        createdAt: '2026-06-23T12:00:00Z',
+        createdAt: expect.any(String),
       });
       expect(result.improvements).toEqual([]);
     });
 
-    it('getAnalysis returns default completed data when no task was started', async () => {
+    it('getAnalysis returns insufficient volume default when no task was started', async () => {
       vi.resetModules();
 
       const { Supervisor: FreshSupervisor } = await import(
@@ -271,28 +271,29 @@ describe('Supervisor.js', () => {
 
       const result = await promise;
 
-      expect(result.task.isRunning).toBe(false);
-      expect(result.conversationsCount).toBe(54);
-      expect(result.improvements).toHaveLength(6);
-      expect(result.improvements[0]).toMatchObject({
-        uuid: 'improvement-uuid-1',
-        type: 'personality_deviation',
-      });
+      expect(result.task).toBeNull();
+      expect(result.yesterdayConversationsCount).toBe(10);
+      expect(result.improvements).toEqual([]);
     });
 
     it('getAnalysis advances progress until improvements are returned', async () => {
       await startMockAnalysis();
 
       let result;
+      let createdAt;
 
       for (let step = 1; step <= 5; step += 1) {
         result = await pollMockAnalysis();
+
+        if (step === 1) {
+          createdAt = result.task.createdAt;
+        }
 
         expect(result.task).toEqual({
           isRunning: step < 5,
           progress: step,
           total: 5,
-          createdAt: '2026-06-23T12:00:00Z',
+          createdAt,
         });
 
         if (step < 4) {
@@ -314,9 +315,9 @@ describe('Supervisor.js', () => {
         isRunning: false,
         progress: 5,
         total: 5,
-        createdAt: '2026-06-23T12:00:00Z',
+        createdAt,
       });
-      expect(result.conversationsCount).toBe(54);
+      expect(result.yesterdayConversationsCount).toBe(54);
       expect(result.improvements).toHaveLength(6);
       expect(result.improvements[0]).toMatchObject({
         uuid: 'improvement-uuid-1',

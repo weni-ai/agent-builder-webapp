@@ -9,7 +9,7 @@ const MOCK_ANALYSIS_DELAY_MS = 400;
 let mockAnalysisState = null;
 
 const mockImprovementsResponse = {
-  conversations_count: 54,
+  yesterday_conversations_count: 54,
   improvements: [
     {
       uuid: 'improvement-uuid-1',
@@ -58,12 +58,13 @@ function wait(ms) {
 
 function createMockAnalysisState() {
   return {
-    conversations_count: 0,
+    yesterday_conversations_count:
+      mockImprovementsResponse.yesterday_conversations_count,
     improvements_task: {
       is_running: true,
       progress: 0,
       total: MOCK_ANALYSIS_TOTAL,
-      created_at: '2026-06-23T12:00:00Z',
+      created_at: new Date().toISOString(),
     },
     improvements: [],
   };
@@ -71,7 +72,8 @@ function createMockAnalysisState() {
 
 function getDefaultMockResponse() {
   return {
-    conversations_count: mockImprovementsResponse.conversations_count,
+    yesterday_conversations_count:
+      mockImprovementsResponse.yesterday_conversations_count,
     improvements_task: {
       is_running: false,
       progress: MOCK_ANALYSIS_TOTAL,
@@ -96,11 +98,9 @@ function advanceMockAnalysisState(state) {
 
   if (nextProgress === total - 1) {
     state.improvements = allImprovements.slice(0, halfCount);
-    state.conversations_count = mockImprovementsResponse.conversations_count;
   } else if (nextProgress >= total) {
     state.improvements_task.is_running = false;
     state.improvements = allImprovements;
-    state.conversations_count = mockImprovementsResponse.conversations_count;
   }
 
   return state;

@@ -1,5 +1,7 @@
 import { computed, reactive } from 'vue';
 import { defineStore } from 'pinia';
+import { isToday } from 'date-fns';
+
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
 import { getYesterdayFormattedDate } from '@/utils/formatters';
@@ -11,7 +13,10 @@ import type {
   ImprovementsAnalysis,
   ImprovementsStatus,
   ImprovementsTask,
+  RunAnalysisBlockReason,
 } from './types/Improvements.types';
+
+export const MIN_CONVERSATIONS_FOR_ANALYSIS = 15;
 
 const POLL_INTERVALS_MS = {
   fast: 5_000,
@@ -82,11 +87,11 @@ export const useImprovementsStore = defineStore('Improvements', () => {
   const analysis = reactive<{
     status: ImprovementsStatus;
     task: ImprovementsTask | null;
-    conversationsCount: number;
+    yesterdayConversationsCount: number;
   }>({
     status: null,
     task: null,
-    conversationsCount: 0,
+    yesterdayConversationsCount: 0,
   });
 
   const improvements = reactive<{
@@ -99,9 +104,34 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
   function applyAnalysisResponse(response: ImprovementsAnalysis) {
     analysis.task = response.task;
-    analysis.conversationsCount = response.conversationsCount;
+    analysis.yesterdayConversationsCount = response.yesterdayConversationsCount;
     improvements.data = response.improvements;
   }
+
+  const runAnalysisBlockReason = computed<RunAnalysisBlockReason>(() => {
+    if (analysis.status !== 'complete') {
+      return null;
+    }
+
+    const createdAt = analysis.task?.createdAt;
+
+    if (createdAt && isToday(new Date(createdAt))) {
+      return 'already_run_today';
+    }
+
+    if (analysis.yesterdayConversationsCount < MIN_CONVERSATIONS_FOR_ANALYSIS) {
+      return 'insufficient_volume';
+    }
+
+    return null;
+  });
+
+  const isRunAnalysisDisabled = computed(
+    () =>
+      analysis.status === 'loading' ||
+      Boolean(analysis.task?.isRunning) ||
+      runAnalysisBlockReason.value !== null,
+  );
 
   function setStatus(status: ImprovementsStatus) {
     analysis.status = status;
@@ -110,7 +140,6 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
   function resetAnalysisState() {
     analysis.task = null;
-    analysis.conversationsCount = 0;
     improvements.data = [];
   }
 
@@ -120,7 +149,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     let response = initialResponse;
     let pollCount = 0;
 
-    while (response.task.isRunning && pollCount < POLL_PHASE_LIMITS.minute) {
+    while (response.task?.isRunning && pollCount < POLL_PHASE_LIMITS.minute) {
       await wait(getPollIntervalMs(pollCount));
 
       response = await supervisorApi.improvements.getAnalysis({
@@ -141,7 +170,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
     applyAnalysisResponse(response);
 
-    if (response.task.isRunning) {
+    if (response.task?.isRunning) {
       await pollAnalysisUntilComplete(response);
     } else {
       setStatus('complete');
@@ -160,6 +189,10 @@ export const useImprovementsStore = defineStore('Improvements', () => {
   }
 
   async function runAnalysis() {
+    if (isRunAnalysisDisabled.value) {
+      return;
+    }
+
     setStatus('loading');
     resetAnalysisState();
 
@@ -179,6 +212,8 @@ export const useImprovementsStore = defineStore('Improvements', () => {
   return {
     analysis,
     improvements,
+    runAnalysisBlockReason,
+    isRunAnalysisDisabled,
     fetchImprovements,
     runAnalysis,
   };
