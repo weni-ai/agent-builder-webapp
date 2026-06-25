@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount, shallowMount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
@@ -6,6 +6,7 @@ import i18n from '@/utils/plugins/i18n';
 import { useImprovementsStore } from '@/store/Improvements';
 
 import NoAnalysisPerformed from '../NoAnalysisPerformed.vue';
+import RunAnalysisButton from '../RunAnalysisButton.vue';
 
 describe('NoAnalysisPerformed.vue', () => {
   let wrapper;
@@ -15,12 +16,20 @@ describe('NoAnalysisPerformed.vue', () => {
     wrapper.find('[data-testid="no-analysis-performed-title"]');
   const findDescription = () =>
     wrapper.find('[data-testid="no-analysis-performed-description"]');
-  const findRunAnalysisButton = () =>
-    wrapper.findComponent('[data-testid="no-analysis-performed-run-button"]');
+  const findRunAnalysisButton = () => wrapper.findComponent(RunAnalysisButton);
 
   const createWrapper = () => {
     const pinia = createTestingPinia({
       createSpy: vi.fn,
+      initialState: {
+        Improvements: {
+          analysis: {
+            status: 'complete',
+            task: null,
+            yesterdayConversationsCount: 20,
+          },
+        },
+      },
     });
 
     wrapper = shallowMount(NoAnalysisPerformed, {
@@ -66,16 +75,39 @@ describe('NoAnalysisPerformed.vue', () => {
       const button = findRunAnalysisButton();
 
       expect(button.exists()).toBe(true);
-      expect(button.props('type')).toBe('primary');
-      expect(button.props('text')).toBe(
-        i18n.global.t('audit.improvements.no_analysis.run_analysis'),
+      expect(button.props('dataTestid')).toBe(
+        'no-analysis-performed-run-button',
+      );
+      expect(button.props('translationKey')).toBe(
+        'audit.improvements.no_analysis.run_analysis',
       );
     });
   });
 
   describe('User interactions', () => {
     it('calls runAnalysis when the run analysis button is clicked', async () => {
-      await findRunAnalysisButton().trigger('click');
+      wrapper.unmount();
+      const pinia = createTestingPinia({
+        createSpy: vi.fn,
+        initialState: {
+          Improvements: {
+            analysis: {
+              status: 'complete',
+              task: null,
+              yesterdayConversationsCount: 20,
+            },
+          },
+        },
+      });
+
+      wrapper = mount(NoAnalysisPerformed, {
+        global: {
+          plugins: [pinia],
+        },
+      });
+      improvementsStore = useImprovementsStore(pinia);
+
+      await wrapper.findComponent({ name: 'UnnnicButton' }).trigger('click');
 
       expect(improvementsStore.runAnalysis).toHaveBeenCalledOnce();
     });
