@@ -1,6 +1,6 @@
 import i18n from '@/utils/plugins/i18n';
 
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { enUS, es as esLocale, ptBR, ro as roLocale } from 'date-fns/locale';
 
 const DATE_FNS_LOCALE_MAP = {
@@ -117,6 +117,10 @@ export function formatLongDate(timestamp: string) {
     },
     FALLBACK_PATTERN,
   );
+}
+
+export function getYesterdayFormattedDate() {
+  return formatMonthDayDate(subDays(new Date(), 1).toISOString());
 }
 
 export function formatMonthDayDate(timestamp: string) {
