@@ -472,6 +472,10 @@ export const useInstructionsStore = defineStore('Instructions', () => {
           instructionsCategories: categories.value.map(
             (category) => category.name,
           ),
+          id:
+            instructionDrawerMode.value === 'edit'
+              ? editingInstructionId.value
+              : null,
         });
 
       const suggestedCategory = data.suggestedCategory ?? '';
