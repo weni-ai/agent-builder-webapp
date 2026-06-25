@@ -467,6 +467,10 @@ export const useInstructionsStore = defineStore('Instructions', () => {
           instructionsCategories: categories.value.map(
             (category) => category.name,
           ),
+          id:
+            instructionDrawerMode.value === 'edit'
+              ? editingInstructionId.value
+              : null,
         });
 
       const suggestedCategory = data.suggestedCategory ?? '';
@@ -480,7 +484,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       instructionSuggestedByAI.suggestionApplied = '';
       instructionSuggestedByAI.status = 'complete';
 
-      if (suggestedCategory) {
+      if (suggestedCategory && instructionDrawerMode.value !== 'edit') {
         const existing = categories.value.find(
           (category) => category.name === suggestedCategory,
         );

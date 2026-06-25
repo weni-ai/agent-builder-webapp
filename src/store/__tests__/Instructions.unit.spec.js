@@ -826,6 +826,29 @@ describe('Instructions Store', () => {
           name: 'Logistics',
         });
       });
+
+      it('does not overwrite the current category when revalidating in edit mode', async () => {
+        store.instructionDrawerMode = 'edit';
+        store.newInstruction.category = { id: 3, name: 'Tone' };
+        store.categories = [
+          { id: 3, name: 'Tone' },
+          { id: 10, name: 'Sales' },
+        ];
+        nexusaiAPI.agent_builder.instructions.getSuggestionByAI.mockResolvedValue(
+          {
+            classification: [],
+            suggestion: '',
+            suggestedCategory: 'Sales',
+          },
+        );
+
+        await store.getInstructionSuggestionByAI('Some instruction');
+
+        expect(store.newInstruction.category).toEqual({ id: 3, name: 'Tone' });
+        expect(store.instructionSuggestedByAI.data.suggestedCategory).toBe(
+          'Sales',
+        );
+      });
     });
   });
 
@@ -903,6 +926,38 @@ describe('Instructions Store', () => {
       expect(store.instructions.data).toEqual(updated.instructions);
       expect(store.categories).toEqual(updated.categories);
       expect(store.newInstruction.status).toBeNull();
+    });
+
+    it('updates only the category when the instruction text is unchanged', async () => {
+      featureFlagsState.categorizationOfInstructions = true;
+      store.instructions.data = [
+        { id: 7, text: 'Be concise', category: { id: 3, name: 'Tone' } },
+      ];
+      const updated = {
+        instructions: [
+          {
+            id: 7,
+            text: 'Be concise',
+            category: { id: 5, name: 'Personality' },
+          },
+        ],
+        categories: [
+          { id: 3, name: 'Tone' },
+          { id: 5, name: 'Personality' },
+        ],
+      };
+      nexusaiAPI.agent_builder.instructions.update.mockResolvedValue(updated);
+
+      store.startEditingInstruction({ id: 7 });
+      store.newInstruction.category = { id: 5, name: 'Personality' };
+
+      await store.updateEditingInstruction();
+
+      expect(store.instructions.data[0]).toEqual({
+        id: 7,
+        text: 'Be concise',
+        category: { id: 5, name: 'Personality' },
+      });
     });
   });
 

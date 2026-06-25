@@ -27,12 +27,16 @@ describe('NewInstructionDrawer/Form.vue', () => {
     const pinia = createTestingPinia({
       initialState: {
         Instructions: {
+          instructionDrawerMode: 'create',
           newInstruction: {
             text: '',
             status: null,
           },
           instructionSuggestedByAI: {
             status: null,
+            data: {
+              instruction: '',
+            },
           },
           ...initialState,
         },
@@ -67,6 +71,31 @@ describe('NewInstructionDrawer/Form.vue', () => {
     it('renders the validate button with the correct text', () => {
       expect(findComponent('validateButton').props('text')).toBe(
         translation('validate'),
+      );
+    });
+
+    it('renders Re-validate in edit mode before any validation', () => {
+      wrapper = createWrapper({
+        instructionDrawerMode: 'edit',
+        newInstruction: { text: 'Existing instruction', status: null },
+      });
+
+      expect(findComponent('validateButton').props('text')).toBe(
+        translation('re_validate'),
+      );
+    });
+
+    it('renders Re-validate after a completed validation in create mode', () => {
+      wrapper = createWrapper({
+        newInstruction: { text: 'Valid text', status: null },
+        instructionSuggestedByAI: {
+          status: 'complete',
+          data: { instruction: 'Valid text' },
+        },
+      });
+
+      expect(findComponent('validateButton').props('text')).toBe(
+        translation('re_validate'),
       );
     });
 
@@ -105,12 +134,26 @@ describe('NewInstructionDrawer/Form.vue', () => {
       expect(findComponent('validateButton').props('disabled')).toBe(true);
     });
 
-    it('disables the validate button when the suggestion status is complete', () => {
+    it('disables the validate button when the suggestion status is complete and the text matches the validated text', () => {
       wrapper = createWrapper({
         newInstruction: { text: 'Valid text', status: null },
-        instructionSuggestedByAI: { status: 'complete' },
+        instructionSuggestedByAI: {
+          status: 'complete',
+          data: { instruction: 'Valid text' },
+        },
       });
       expect(findComponent('validateButton').props('disabled')).toBe(true);
+    });
+
+    it('enables the validate button when the suggestion status is complete but the text changed', () => {
+      wrapper = createWrapper({
+        newInstruction: { text: 'Updated text', status: null },
+        instructionSuggestedByAI: {
+          status: 'complete',
+          data: { instruction: 'Valid text' },
+        },
+      });
+      expect(findComponent('validateButton').props('disabled')).toBe(false);
     });
 
     it('enables the validate button when the suggestion status is error and the text has content', () => {

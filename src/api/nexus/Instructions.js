@@ -105,6 +105,7 @@ export const Instructions = {
     projectUuid,
     instruction,
     instructionsCategories = [],
+    id = null,
   }) {
     const languageMap = {
       en: 'English',
@@ -120,6 +121,7 @@ export const Instructions = {
         instruction,
         instructions_categories: instructionsCategories,
         language,
+        ...(Boolean(id) && { id }),
       },
     );
     return InstructionClassificationAdapter.fromApi(response.data);
