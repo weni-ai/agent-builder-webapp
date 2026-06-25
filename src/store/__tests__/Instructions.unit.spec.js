@@ -327,6 +327,48 @@ describe('Instructions Store', () => {
         expect(store.instructions.data[1].text).toBe('Old text 2');
         expect(store.instructions.data[1].status).toBe('complete');
       });
+
+      it('updates a single instruction via the grouped endpoint when V2 is enabled', async () => {
+        featureFlagsState.categorizationOfInstructions = true;
+        store.instructions.data = [
+          {
+            id: 1,
+            text: 'Old text 1',
+            status: 'complete',
+            category: { id: 10, name: 'Sales' },
+          },
+          { id: 2, text: 'Old text 2', status: 'complete', category: null },
+        ];
+        const updated = {
+          instructions: [
+            {
+              id: 1,
+              text: 'Updated text',
+              category: { id: 10, name: 'Sales' },
+            },
+            { id: 2, text: 'Old text 2', category: null },
+          ],
+          categories: [{ id: 10, name: 'Sales' }],
+        };
+        nexusaiAPI.agent_builder.instructions.update.mockResolvedValue(updated);
+
+        const result = await store.editInstruction(1, 'Updated text');
+
+        expect(
+          nexusaiAPI.agent_builder.instructions.update,
+        ).toHaveBeenCalledWith({
+          projectUuid: 'test-project-uuid',
+          id: 1,
+          instruction: 'Updated text',
+          category: { id: 10 },
+        });
+        expect(
+          nexusaiAPI.agent_builder.instructions.edit,
+        ).not.toHaveBeenCalled();
+        expect(store.instructions.data).toEqual(updated.instructions);
+        expect(store.categories).toEqual(updated.categories);
+        expect(result).toEqual({ status: 'complete' });
+      });
     });
 
     describe('removeInstruction', () => {
@@ -921,7 +963,12 @@ describe('Instructions Store', () => {
       await store.updateEditingInstruction();
 
       expect(nexusaiAPI.agent_builder.instructions.update).toHaveBeenCalledWith(
-        expect.objectContaining({ projectUuid: 'test-project-uuid' }),
+        {
+          projectUuid: 'test-project-uuid',
+          id: 7,
+          instruction: 'New',
+          category: { id: 5 },
+        },
       );
       expect(store.instructions.data).toEqual(updated.instructions);
       expect(store.categories).toEqual(updated.categories);
@@ -953,11 +1000,79 @@ describe('Instructions Store', () => {
 
       await store.updateEditingInstruction();
 
+      expect(nexusaiAPI.agent_builder.instructions.update).toHaveBeenCalledWith(
+        {
+          projectUuid: 'test-project-uuid',
+          id: 7,
+          instruction: 'Be concise',
+          category: { id: 5 },
+        },
+      );
       expect(store.instructions.data[0]).toEqual({
         id: 7,
         text: 'Be concise',
         category: { id: 5, name: 'Personality' },
       });
+    });
+
+    it('creates a new category when editing an instruction with a custom category', async () => {
+      store.instructions.data = [
+        { id: 7, text: 'Be concise', category: { id: 3, name: 'Tone' } },
+      ];
+      const updated = {
+        instructions: [
+          {
+            id: 7,
+            text: 'Be concise',
+            category: { id: 9, name: 'Marketing' },
+          },
+        ],
+        categories: [
+          { id: 3, name: 'Tone' },
+          { id: 9, name: 'Marketing' },
+        ],
+      };
+      nexusaiAPI.agent_builder.instructions.update.mockResolvedValue(updated);
+
+      store.startEditingInstruction({ id: 7 });
+      store.newInstruction.category = { id: null, name: 'Marketing' };
+
+      await store.updateEditingInstruction();
+
+      expect(nexusaiAPI.agent_builder.instructions.update).toHaveBeenCalledWith(
+        {
+          projectUuid: 'test-project-uuid',
+          id: 7,
+          instruction: 'Be concise',
+          category: { name: 'Marketing' },
+        },
+      );
+      expect(store.instructions.data[0]).toEqual({
+        id: 7,
+        text: 'Be concise',
+        category: { id: 9, name: 'Marketing' },
+      });
+    });
+
+    it('preserves instruction state when the grouped update fails', async () => {
+      const originalInstruction = {
+        id: 7,
+        text: 'Old',
+        category: { id: 3, name: 'Tone' },
+      };
+      store.instructions.data = [originalInstruction];
+      nexusaiAPI.agent_builder.instructions.update.mockRejectedValue(
+        new Error('API Error'),
+      );
+
+      store.startEditingInstruction({ id: 7 });
+      store.newInstruction.text = 'New';
+      store.newInstruction.category = { id: 5, name: 'Personality' };
+
+      await store.updateEditingInstruction();
+
+      expect(store.instructions.data[0]).toEqual(originalInstruction);
+      expect(store.newInstruction.status).toBe('error');
     });
   });
 
@@ -968,7 +1083,7 @@ describe('Instructions Store', () => {
     const groupByKey = (key) =>
       store.groupedInstructions.find((group) => group.key === key);
 
-    it('groups custom categories ordered by the last added instruction', () => {
+    it('groups custom categories in alphabetical order', () => {
       store.categories = [
         { id: 10, name: 'Sales' },
         { id: 20, name: 'Support' },
@@ -979,7 +1094,7 @@ describe('Instructions Store', () => {
         { id: 3, text: 'Sales B', category: { id: 10, name: 'Sales' } },
       ];
 
-      expect(keysOf()).toEqual(['category-20', 'category-10', 'default']);
+      expect(keysOf()).toEqual(['category-10', 'category-20', 'default']);
     });
 
     it('orders instructions within a group by the last inserted first', () => {

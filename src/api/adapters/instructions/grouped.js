@@ -33,20 +33,36 @@ export const InstructionsGroupedAdapter = {
     return body;
   },
 
-  toUpdateApi({ categories = [], uncategorizedInstructions = [] } = {}) {
-    const toApiInstruction = ({ id, text }) => ({
+  toUpdateApi({ id, text, category }) {
+    const instructionItem = {
       id,
-      instruction: text,
-    });
+      instruction: text.trim(),
+    };
+
+    if (!category) {
+      return {
+        uncategorized_instructions: [instructionItem],
+      };
+    }
+
+    if (category.id != null) {
+      return {
+        categories: [
+          {
+            id: category.id,
+            instructions: [instructionItem],
+          },
+        ],
+      };
+    }
 
     return {
-      categories: categories.map((category) => ({
-        id: category.id,
-        name: category.name,
-        instructions: (category.instructions || []).map(toApiInstruction),
-      })),
-      uncategorized_instructions:
-        uncategorizedInstructions.map(toApiInstruction),
+      categories: [
+        {
+          name: category.name,
+          instructions: [instructionItem],
+        },
+      ],
     };
   },
 };
