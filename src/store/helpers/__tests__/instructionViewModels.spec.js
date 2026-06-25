@@ -55,6 +55,17 @@ describe('buildInstructionGroups', () => {
     ).toEqual(['Sales B', 'Sales A']);
   });
 
+  it('exposes the category id on custom groups', () => {
+    const groups = build({
+      categories: [{ id: 10, name: 'Sales' }],
+      instructions: [
+        { id: 1, text: 'Sales A', category: { id: 10, name: 'Sales' } },
+      ],
+    });
+
+    expect(byKey(groups, 'category-10').categoryId).toBe(10);
+  });
+
   it('keeps custom categories without instructions for the empty state', () => {
     const groups = build({ categories: [{ id: 10, name: 'Empty' }] });
 

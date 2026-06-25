@@ -347,6 +347,17 @@
       "description": "Define the rules that guide how Manager responds, communicates, and makes decisions",
       "export_instructions": "Export instructions",
       "new_instruction": "New instruction",
+      "delete_category": {
+        "modal_title": "Delete category",
+        "modal_description": "{count} from {name} to Uncategorized. Nothing will be deleted, only the category label is removed.",
+        "instructions_count": "{count, plural, one {{count} instruction will be moved} other {{count} instructions will be moved}}",
+        "cancel": "Cancel",
+        "confirm": "Delete category",
+        "success_title": "Category deleted",
+        "success_description": "{count, plural, one {{count} instruction moved to Uncategorized} other {{count} instructions moved to Uncategorized}}",
+        "error_title": "Couldn't delete category",
+        "error_description": "Something went wrong and nothing was changed. Try again."
+      },
       "view": {
         "default_instruction": "Default instruction",
         "default_instructions": "Default instructions",
