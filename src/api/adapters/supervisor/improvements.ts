@@ -39,7 +39,11 @@ function isImprovementType(value: unknown): value is ImprovementType {
   return IMPROVEMENT_TYPES.includes(value as ImprovementType);
 }
 
-function parseTask(task: ImprovementsTaskApi = {}): ImprovementsTask {
+function parseTask(task?: ImprovementsTaskApi | null): ImprovementsTask | null {
+  if (!task) {
+    return null;
+  }
+
   return {
     isRunning: Boolean(task.is_running),
     progress: Number(task.progress) || 0,
