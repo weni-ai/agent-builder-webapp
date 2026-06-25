@@ -465,6 +465,9 @@
       "load_conversations": {
         "error": "Erro ao carregar conversas"
       }
+    },
+    "improvements": {
+      "title": "Backlog de melhorias"
     }
   },
   "router": {

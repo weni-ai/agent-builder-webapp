@@ -15,7 +15,7 @@
         >
           {{ headerDescription }}
 
-          <SupervisorHeaderDetails />
+          <SupervisorHeaderDetails v-if="activeTab === 'conversations'" />
         </p>
       </section>
     </template>
@@ -38,10 +38,32 @@
         data-testid="export-modal"
       />
     </template>
+
+    <template
+      v-if="featureFlagsStore.flags.conversationsImprovements"
+      #tabs
+    >
+      <UnnnicTabs
+        :modelValue="activeTab"
+        @update:model-value="router.replace({ name: $event })"
+      >
+        <UnnnicTabsList>
+          <UnnnicTabsTrigger value="conversations">
+            {{ $t('audit.conversations.title') }}
+          </UnnnicTabsTrigger>
+          <UnnnicTabsTrigger value="improvements">
+            {{ $t('audit.improvements.title') }}
+          </UnnnicTabsTrigger>
+        </UnnnicTabsList>
+      </UnnnicTabs>
+    </template>
   </UnnnicPageHeader>
 </template>
 
 <script setup>
+import { computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
 import SupervisorExportModal from '@/components/Supervisor/SupervisorExportModal.vue';
 import SupervisorHeaderDetails from '@/components/Supervisor/SupervisorHeaderDetails.vue';
 
@@ -49,19 +71,18 @@ import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 import i18n from '@/utils/plugins/i18n';
 
-import { computed, ref } from 'vue';
-
 const { t } = i18n.global;
 
 const featureFlagsStore = useFeatureFlagsStore();
+const router = useRouter();
+const route = useRoute();
+
+const activeTab = computed(() => route.name || 'conversations');
+const isExportModalOpen = ref(false);
 
 const headerTitle = computed(() => t('audit.title'));
-
 const headerDescription = computed(() => t('audit.description'));
-
 const showExport = computed(() => featureFlagsStore.flags.supervisorExport);
-
-const isExportModalOpen = ref(false);
 
 function openExportModal() {
   isExportModalOpen.value = true;

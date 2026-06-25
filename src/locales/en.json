@@ -465,6 +465,11 @@
       "load_conversations": {
         "error": "Error loading conversations"
       }
+    },
+
+    "improvements": {
+      "title": "Improvement backlog"
+
     }
   },
   "router": {

@@ -464,6 +464,9 @@
       "load_conversations": {
         "error": "Eroare la încărcarea conversațiilor"
       }
+    },
+    "improvements": {
+      "title": "Backlog de îmbunătățiri"
     }
   },
   "router": {
