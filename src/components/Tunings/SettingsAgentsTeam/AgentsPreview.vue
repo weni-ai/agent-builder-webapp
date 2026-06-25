@@ -101,7 +101,7 @@ watch(isComponentsDisabled, (disabled) => {
   gap: $unnnic-space-3;
 
   &__title {
-    @include unnnic-font-body;
+    @include unnnic-font-action;
     color: $unnnic-color-fg-base;
   }
 

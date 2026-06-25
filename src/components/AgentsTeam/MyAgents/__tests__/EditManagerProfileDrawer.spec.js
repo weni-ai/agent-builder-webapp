@@ -14,6 +14,7 @@ const defaultSettingsData = {
   components: false,
   progressiveFeedback: false,
   manager: '',
+  errorMessage: '',
 };
 
 const pinia = createTestingPinia({
@@ -305,11 +306,42 @@ describe('EditManagerProfileDrawer.vue', () => {
       tuningsStore.initialSettings = { ...defaultSettingsData };
       tuningsStore.settings.data = { ...defaultSettingsData, manager: 'other' };
       tuningsStore.saveSettings.mockResolvedValue(false);
+      tuningsStore.lastErrorMessageSaveFailed = false;
       const alertSpy = vi.spyOn(alertStore, 'add');
 
       await wrapper.vm.save();
 
       expect(alertSpy).toHaveBeenCalledWith({
+        text: i18n.global.t('router.tunings.settings.save_error'),
+        type: 'error',
+      });
+      expect(wrapper.vm.modelValue).toBe(true);
+    });
+
+    it('shows dedicated error alert when only error message save fails', async () => {
+      profileStore.name.current = profileStore.name.old;
+      profileStore.role.current = profileStore.role.old;
+      profileStore.personality.current = profileStore.personality.old;
+      profileStore.goal.current = profileStore.goal.old;
+
+      tuningsStore.initialSettings = { ...defaultSettingsData };
+      tuningsStore.settings.data = {
+        ...defaultSettingsData,
+        errorMessage: 'Updated error message',
+      };
+      tuningsStore.saveSettings.mockResolvedValue(false);
+      tuningsStore.lastErrorMessageSaveFailed = true;
+      const alertSpy = vi.spyOn(alertStore, 'add');
+
+      await wrapper.vm.save();
+
+      expect(alertSpy).toHaveBeenCalledWith({
+        text: i18n.global.t(
+          'agent_builder.tunings.system_messages.error_message.save_error',
+        ),
+        type: 'error',
+      });
+      expect(alertSpy).not.toHaveBeenCalledWith({
         text: i18n.global.t('router.tunings.settings.save_error'),
         type: 'error',
       });
