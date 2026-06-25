@@ -14,6 +14,11 @@ vi.mock('@/api/nexusaiAPI', () => ({
         list: vi.fn(),
         edit: vi.fn(),
         delete: vi.fn(),
+        create: vi.fn(),
+        listGrouped: vi.fn(),
+        update: vi.fn(),
+        deleteInstruction: vi.fn(),
+        getSuggestionByAI: vi.fn(),
       },
     },
   },
@@ -21,6 +26,12 @@ vi.mock('@/api/nexusaiAPI', () => ({
 
 vi.mock('@/store/Project', () => ({
   useProjectStore: () => ({ uuid: 'test-project-uuid' }),
+}));
+
+const featureFlagsState = { categorizationOfInstructions: false };
+
+vi.mock('@/store/FeatureFlags', () => ({
+  useFeatureFlagsStore: () => ({ flags: featureFlagsState }),
 }));
 
 vi.mock('@/utils/storage', () => ({
@@ -35,6 +46,7 @@ describe('Instructions Store', () => {
   let alertStore;
 
   beforeEach(() => {
+    featureFlagsState.categorizationOfInstructions = false;
     setActivePinia(createPinia());
     store = useInstructionsStore();
     alertStore = useAlertStore();
@@ -54,6 +66,7 @@ describe('Instructions Store', () => {
     it('should have correct initial state for newInstruction', () => {
       expect(store.newInstruction).toEqual({
         text: '',
+        category: null,
         status: null,
       });
     });
@@ -101,6 +114,7 @@ describe('Instructions Store', () => {
         expect(store.instructions.data).toHaveLength(1);
         expect(store.instructions.data[0]).toEqual({
           text: 'New instruction text',
+          category: null,
           status: 'complete',
           id: 1,
         });
@@ -452,6 +466,7 @@ describe('Instructions Store', () => {
 
       expect(store.instructions.data[0]).toEqual({
         text: 'Updated instruction',
+        category: null,
         status: 'complete',
         id: 1,
       });
@@ -485,6 +500,168 @@ describe('Instructions Store', () => {
       await store.editInstruction(1, 'Updated instruction 1');
 
       expect(store.instructions.data[0].text).toBe('Updated instruction 1');
+    });
+  });
+
+  describe('Categorization flag (V2) branch', () => {
+    const groupedResponse = {
+      instructions: [
+        { id: 1, text: 'Instruction 1', category: { id: 10, name: 'Sales' } },
+        { id: 2, text: 'Instruction 2', category: null },
+      ],
+      categories: [{ id: 10, name: 'Sales' }],
+    };
+
+    beforeEach(() => {
+      featureFlagsState.categorizationOfInstructions = true;
+    });
+
+    describe('loadInstructions', () => {
+      it('loads grouped instructions and categories, replacing existing data', async () => {
+        store.instructions.data = [{ id: 99, text: 'Stale', category: null }];
+        nexusaiAPI.agent_builder.instructions.listGrouped.mockResolvedValue(
+          groupedResponse,
+        );
+
+        await store.loadInstructions();
+
+        expect(
+          nexusaiAPI.agent_builder.instructions.listGrouped,
+        ).toHaveBeenCalledWith({ projectUuid: 'test-project-uuid' });
+        expect(
+          nexusaiAPI.agent_builder.instructions.list,
+        ).not.toHaveBeenCalled();
+        expect(store.instructions.data).toEqual(groupedResponse.instructions);
+        expect(store.categories).toEqual(groupedResponse.categories);
+        expect(store.instructions.status).toBe('complete');
+      });
+    });
+
+    describe('addInstruction', () => {
+      beforeEach(() => {
+        store.newInstruction.text = 'New instruction text';
+        nexusaiAPI.agent_builder.instructions.create.mockResolvedValue(
+          groupedResponse,
+        );
+      });
+
+      it('sends the category id when an existing category is selected', async () => {
+        store.newInstruction.category = { id: 10, name: 'Sales' };
+
+        await store.addInstruction();
+
+        expect(
+          nexusaiAPI.agent_builder.instructions.create,
+        ).toHaveBeenCalledWith({
+          projectUuid: 'test-project-uuid',
+          instruction: 'New instruction text',
+          category: { id: 10 },
+        });
+        expect(store.instructions.data).toEqual(groupedResponse.instructions);
+        expect(store.categories).toEqual(groupedResponse.categories);
+        expect(store.newInstruction.text).toBe('');
+        expect(store.newInstruction.category).toBeNull();
+      });
+
+      it('sends the category name when a new category is selected', async () => {
+        store.newInstruction.category = { id: null, name: 'Marketing' };
+
+        await store.addInstruction();
+
+        expect(
+          nexusaiAPI.agent_builder.instructions.create,
+        ).toHaveBeenCalledWith({
+          projectUuid: 'test-project-uuid',
+          instruction: 'New instruction text',
+          category: { name: 'Marketing' },
+        });
+      });
+
+      it('omits the category when none is selected', async () => {
+        store.newInstruction.category = null;
+
+        await store.addInstruction();
+
+        expect(
+          nexusaiAPI.agent_builder.instructions.create,
+        ).toHaveBeenCalledWith({
+          projectUuid: 'test-project-uuid',
+          instruction: 'New instruction text',
+          category: undefined,
+        });
+      });
+
+      it('sets error status when the create request fails', async () => {
+        nexusaiAPI.agent_builder.instructions.create.mockRejectedValue(
+          new Error('API Error'),
+        );
+
+        await store.addInstruction();
+
+        expect(store.newInstruction.status).toBe('error');
+      });
+    });
+
+    describe('removeInstruction', () => {
+      beforeEach(() => {
+        store.instructions.data = [
+          { id: 1, text: 'Instruction 1', category: null },
+          { id: 2, text: 'Instruction 2', category: null },
+        ];
+      });
+
+      it('deletes a single instruction via the grouped endpoint', async () => {
+        nexusaiAPI.agent_builder.instructions.deleteInstruction.mockResolvedValue();
+
+        await store.removeInstruction(1);
+
+        expect(
+          nexusaiAPI.agent_builder.instructions.deleteInstruction,
+        ).toHaveBeenCalledWith({ projectUuid: 'test-project-uuid', id: 1 });
+        expect(
+          nexusaiAPI.agent_builder.instructions.delete,
+        ).not.toHaveBeenCalled();
+        expect(store.instructions.data).toHaveLength(1);
+        expect(store.instructions.data[0].id).toBe(2);
+      });
+    });
+
+    describe('getInstructionSuggestionByAI default category selection', () => {
+      it('attaches the existing category id when the suggestion matches a known category', async () => {
+        store.categories = [{ id: 10, name: 'Sales' }];
+        nexusaiAPI.agent_builder.instructions.getSuggestionByAI.mockResolvedValue(
+          {
+            classification: [],
+            suggestion: '',
+            suggestedCategory: 'Sales',
+          },
+        );
+
+        await store.getInstructionSuggestionByAI('Some instruction');
+
+        expect(store.newInstruction.category).toEqual({
+          id: 10,
+          name: 'Sales',
+        });
+      });
+
+      it('defaults to a new category when the suggestion is unknown', async () => {
+        store.categories = [{ id: 10, name: 'Sales' }];
+        nexusaiAPI.agent_builder.instructions.getSuggestionByAI.mockResolvedValue(
+          {
+            classification: [],
+            suggestion: '',
+            suggestedCategory: 'Logistics',
+          },
+        );
+
+        await store.getInstructionSuggestionByAI('Some instruction');
+
+        expect(store.newInstruction.category).toEqual({
+          id: null,
+          name: 'Logistics',
+        });
+      });
     });
   });
 });

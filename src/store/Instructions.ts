@@ -1,10 +1,15 @@
 import { reactive, ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 
-import type { InstructionSuggestedByAI } from './types/Instructions.types';
+import type {
+  InstructionSuggestedByAI,
+  InstructionCategory,
+  NewInstruction,
+} from './types/Instructions.types';
 
 import { useProjectStore } from './Project';
 import { useAlertStore } from './Alert';
+import { useFeatureFlagsStore } from './FeatureFlags';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 
@@ -21,16 +26,111 @@ function callAlert(type, alertText) {
 
 export const useInstructionsStore = defineStore('Instructions', () => {
   const projectUuid = computed(() => useProjectStore().uuid);
+  const featureFlags = useFeatureFlagsStore();
+  const useV2 = () => featureFlags.flags.categorizationOfInstructions;
 
   const instructions = reactive({
     data: [],
     status: null,
   });
 
-  const newInstruction = reactive({
+  const categories = ref<InstructionCategory[]>([]);
+  const sessionCategories = ref<string[]>([]);
+
+  const categoryOptions = computed<InstructionCategory[]>(() => {
+    const optionsByName = new Map<string, InstructionCategory>();
+
+    categories.value.forEach((category) => {
+      optionsByName.set(category.name, {
+        id: category.id,
+        name: category.name,
+      });
+    });
+
+    sessionCategories.value.forEach((name) => {
+      if (!optionsByName.has(name)) {
+        optionsByName.set(name, { id: null, name });
+      }
+    });
+
+    const suggested = instructionSuggestedByAI.data.suggestedCategory;
+    if (suggested && !optionsByName.has(suggested)) {
+      optionsByName.set(suggested, { id: null, name: suggested });
+    }
+
+    return [...optionsByName.values()];
+  });
+
+  const newInstruction = reactive<NewInstruction>({
     text: '',
+    category: null,
     status: null,
   });
+
+  const selectedCategoryIsNew = computed(
+    () => !!newInstruction.category && newInstruction.category.id === null,
+  );
+
+  const suggestedCategory = computed<InstructionCategory | null>(() => {
+    const name = instructionSuggestedByAI.data.suggestedCategory;
+    if (!name) return null;
+
+    return (
+      categoryOptions.value.find((category) => category.name === name) ?? {
+        id: null,
+        name,
+      }
+    );
+  });
+
+  const suggestedCategoryIsNew = computed(
+    () => !!suggestedCategory.value && suggestedCategory.value.id === null,
+  );
+
+  function createCategory(name: string) {
+    const trimmedName = name.trim();
+    if (!sessionCategories.value.includes(trimmedName)) {
+      sessionCategories.value.push(trimmedName);
+    }
+    newInstruction.category = { id: null, name: trimmedName };
+  }
+
+  function toCategoryPayload() {
+    const category = newInstruction.category;
+    if (!category) return undefined;
+    return category.id !== null ? { id: category.id } : { name: category.name };
+  }
+
+  function toGroupedPayload() {
+    type GroupedItem = { id: number; text: string };
+    const categoriesById = new Map<
+      number,
+      { id: number; name: string; instructions: GroupedItem[] }
+    >();
+    const uncategorizedInstructions: GroupedItem[] = [];
+
+    instructions.data.forEach((instruction) => {
+      const item = { id: instruction.id, text: instruction.text };
+
+      if (instruction.category) {
+        const { id, name } = instruction.category;
+        const group = categoriesById.get(id) ?? {
+          id,
+          name,
+          instructions: [],
+        };
+        group.instructions.push(item);
+        categoriesById.set(id, group);
+      } else {
+        uncategorizedInstructions.push(item);
+      }
+    });
+
+    return {
+      categories: [...categoriesById.values()],
+      uncategorizedInstructions,
+    };
+  }
 
   const storedValidation = moduleStorage.getItem('validateInstructionByAI');
 
@@ -41,6 +141,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       instruction: '',
       classification: [],
       suggestion: '',
+      suggestedCategory: '',
     },
     suggestionApplied: '',
     status: null,
@@ -53,19 +154,32 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     activeInstructionsListTab.value = 'custom';
 
     try {
-      const instructionResponse =
-        await nexusaiAPI.agent_builder.instructions.addInstruction({
+      if (useV2()) {
+        const response = await nexusaiAPI.agent_builder.instructions.create({
           projectUuid: projectUuid.value,
-          instruction: newInstruction,
+          instruction: newInstruction.text,
+          category: toCategoryPayload(),
         });
 
-      instructions.data.unshift({
-        ...newInstruction,
-        status: 'complete',
-        id: instructionResponse.id,
-      });
+        instructions.data = response.instructions;
+        categories.value = response.categories;
+      } else {
+        const instructionResponse =
+          await nexusaiAPI.agent_builder.instructions.addInstruction({
+            projectUuid: projectUuid.value,
+            instruction: newInstruction,
+          });
+
+        instructions.data.unshift({
+          ...newInstruction,
+          status: 'complete',
+          id: instructionResponse.id,
+        });
+      }
+
       newInstruction.status = null;
       newInstruction.text = '';
+      newInstruction.category = null;
 
       callAlert('success', 'new_instruction.success_alert');
     } catch (error) {
@@ -77,11 +191,22 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   async function loadInstructions() {
     instructions.status = 'loading';
     try {
-      const response = await nexusaiAPI.agent_builder.instructions.list({
-        projectUuid: projectUuid.value,
-      });
+      if (useV2()) {
+        const response =
+          await nexusaiAPI.agent_builder.instructions.listGrouped({
+            projectUuid: projectUuid.value,
+          });
 
-      instructions.data = [...instructions.data, ...response];
+        instructions.data = response.instructions;
+        categories.value = response.categories;
+      } else {
+        const response = await nexusaiAPI.agent_builder.instructions.list({
+          projectUuid: projectUuid.value,
+        });
+
+        instructions.data = [...instructions.data, ...response];
+      }
+
       instructions.status = 'complete';
     } catch (error) {
       instructions.status = 'error';
@@ -96,12 +221,30 @@ export const useInstructionsStore = defineStore('Instructions', () => {
 
     try {
       instruction.status = 'loading';
-      await nexusaiAPI.agent_builder.instructions.edit({
-        projectUuid: projectUuid.value,
-        id,
-        text,
-      });
-      instruction.text = text;
+
+
+      if (useV2()) {
+        const previousText = instruction.text;
+        try {
+          await nexusaiAPI.agent_builder.instructions.update({
+            projectUuid: projectUuid.value,
+            ...toGroupedPayload(),
+          });
+          instruction.text = text;
+        } catch (error) {
+          instruction.text = previousText;
+          throw error;
+        }
+      } else {
+        await nexusaiAPI.agent_builder.instructions.edit({
+          projectUuid: projectUuid.value,
+          id,
+          text,
+        });
+        instruction.text = text;
+      }
+
+
       instruction.status = 'complete';
 
       callAlert('success', 'edit_instruction.success_alert');
@@ -121,10 +264,17 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     instruction.status = 'loading';
 
     try {
-      await nexusaiAPI.agent_builder.instructions.delete({
-        projectUuid: projectUuid.value,
-        id,
-      });
+      if (useV2()) {
+        await nexusaiAPI.agent_builder.instructions.deleteInstruction({
+          projectUuid: projectUuid.value,
+          id,
+        });
+      } else {
+        await nexusaiAPI.agent_builder.instructions.delete({
+          projectUuid: projectUuid.value,
+          id,
+        });
+      }
       instructions.data = instructions.data.filter(
         (instruction) => instruction.id !== id,
       );
@@ -142,18 +292,35 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     instructionSuggestedByAI.status = 'loading';
 
     try {
-      const { data } =
+      const data =
         await nexusaiAPI.agent_builder.instructions.getSuggestionByAI({
           projectUuid: projectUuid.value,
           instruction,
+          instructionsCategories: categories.value.map(
+            (category) => category.name,
+          ),
         });
+
+      const suggestedCategory = data.suggestedCategory ?? '';
 
       instructionSuggestedByAI.data = {
         instruction,
-        ...data,
+        classification: data.classification ?? [],
+        suggestion: data.suggestion ?? '',
+        suggestedCategory,
       };
       instructionSuggestedByAI.suggestionApplied = '';
       instructionSuggestedByAI.status = 'complete';
+
+      if (suggestedCategory) {
+        const existing = categories.value.find(
+          (category) => category.name === suggestedCategory,
+        );
+        newInstruction.category = {
+          id: existing ? existing.id : null,
+          name: suggestedCategory,
+        };
+      }
     } catch (error) {
       instructionSuggestedByAI.status = 'error';
       callAlert(
@@ -173,15 +340,24 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       instruction: '',
       classification: [],
       suggestion: '',
+      suggestedCategory: '',
     };
+    instructionSuggestedByAI.status = null;
   }
 
   return {
     instructions,
+    categories,
+    sessionCategories,
+    categoryOptions,
     newInstruction,
+    selectedCategoryIsNew,
+    suggestedCategory,
+    suggestedCategoryIsNew,
     validateInstructionByAI,
     instructionSuggestedByAI,
     activeInstructionsListTab,
+    createCategory,
     addInstruction,
     loadInstructions,
     editInstruction,
