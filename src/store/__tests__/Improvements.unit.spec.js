@@ -5,6 +5,7 @@ import { useImprovementsStore } from '@/store/Improvements';
 import { useAlertStore } from '@/store/Alert';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
+import { getYesterdayFormattedDate } from '@/utils/formatters';
 
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
@@ -387,7 +388,7 @@ describe('Improvements Store', () => {
         text: i18n.global.t('audit.improvements.analysis_complete.title'),
         description: i18n.global.t(
           'audit.improvements.analysis_complete.no_improvements_description',
-          { date: store.getYesterdayFormattedDate() },
+          { date: getYesterdayFormattedDate() },
         ),
       });
     });
@@ -412,11 +413,11 @@ describe('Improvements Store', () => {
         type: 'success',
         text: i18n.global.t(
           'audit.improvements.analysis_complete.title_with_count',
-          { count: 25 },
+          { count: improvements.length },
         ),
         description: i18n.global.t(
           'audit.improvements.analysis_complete.ready_description',
-          { date: store.getYesterdayFormattedDate() },
+          { date: getYesterdayFormattedDate() },
         ),
       });
     });
