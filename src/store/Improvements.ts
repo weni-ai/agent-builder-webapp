@@ -1,10 +1,8 @@
 import { computed, reactive } from 'vue';
 import { defineStore } from 'pinia';
-import { subDays } from 'date-fns';
-
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
-import { formatMonthDayDate } from '@/utils/formatters';
+import { getYesterdayFormattedDate } from '@/utils/formatters';
 import { useProjectStore } from './Project';
 import { useAlertStore } from './Alert';
 
@@ -49,10 +47,6 @@ function wait(ms: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
-}
-
-function getYesterdayFormattedDate() {
-  return formatMonthDayDate(subDays(new Date(), 1).toISOString());
 }
 
 function notifyAnalysisComplete(
@@ -175,7 +169,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
       });
 
       await loadImprovementsData();
-      notifyAnalysisComplete(alertStore, analysis.conversationsCount);
+      notifyAnalysisComplete(alertStore, improvements.data.length);
     } catch (error) {
       setStatus('error');
       console.error(error);
@@ -183,8 +177,6 @@ export const useImprovementsStore = defineStore('Improvements', () => {
   }
 
   return {
-    getYesterdayFormattedDate,
-
     analysis,
     improvements,
     fetchImprovements,
