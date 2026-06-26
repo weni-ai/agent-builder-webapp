@@ -1,6 +1,12 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
+import { afterEach, describe, expect, it } from 'vitest';
 
 import ConversationRow from '@/views/Supervisor/SupervisorConversations/ConversationsTable/ConversationRow.vue';
+import ConversationInfos from '@/views/Supervisor/SupervisorConversations/ConversationsTable/ConversationInfos.vue';
+import {
+  formatConversationDate,
+  formatConversationTime,
+} from '@/utils/formatters';
 
 describe('ConversationRow.vue', () => {
   let wrapper;
@@ -14,35 +20,104 @@ describe('ConversationRow.vue', () => {
   };
 
   const createWrapper = (props = {}) => {
-    wrapper = shallowMount(ConversationRow, {
+    wrapper = mount(ConversationRow, {
       props: {
         conversation: baseConversation,
         ...props,
       },
+      global: {
+        stubs: {
+          UnnnicTableRow: {
+            template: '<tr v-bind="$attrs"><slot /></tr>',
+          },
+          UnnnicTableCell: {
+            template: '<td><slot /></td>',
+          },
+          UnnnicToolTip: {
+            template: '<div><slot /></div>',
+          },
+        },
+      },
     });
+  };
+
+  const elements = {
+    row: () => wrapper.find('[data-testid="conversation-row"]'),
+    feedback: () => wrapper.find('[data-testid="conversation-row-feedback"]'),
+    date: () => wrapper.find('[data-testid="conversation-row-date"]'),
+    time: () => wrapper.find('[data-testid="conversation-row-time"]'),
+    conversationInfos: () => wrapper.findComponent(ConversationInfos),
+    statusTag: () => wrapper.findComponent({ name: 'UnnnicTag' }),
   };
 
   afterEach(() => {
     wrapper?.unmount();
   });
 
-  const findRow = () => wrapper.find('[data-testid="conversation-row"]');
+  it('renders the row', () => {
+    createWrapper();
 
-  it('adds the divider class when showDivider is true', () => {
-    createWrapper({ showDivider: true });
-
-    const row = findRow();
-
-    expect(row.exists()).toBe(true);
-    expect(row.classes()).toContain('conversation-row--with-divider');
+    expect(elements.row().exists()).toBe(true);
   });
 
-  it('does not add the divider class when showDivider is false', () => {
-    createWrapper({ showDivider: false });
+  it('adds the selected class when isSelected is true', () => {
+    createWrapper({ isSelected: true });
 
-    const row = findRow();
+    expect(elements.row().classes()).toContain('conversation-row--selected');
+  });
 
-    expect(row.exists()).toBe(true);
-    expect(row.classes()).not.toContain('conversation-row--with-divider');
+  it('does not add the selected class when isSelected is false', () => {
+    createWrapper({ isSelected: false });
+
+    expect(elements.row().classes()).not.toContain(
+      'conversation-row--selected',
+    );
+  });
+
+  it('passes contact data to ConversationInfos', () => {
+    createWrapper();
+
+    const conversationInfos = elements.conversationInfos();
+
+    expect(conversationInfos.props('username')).toBe(baseConversation.username);
+    expect(conversationInfos.props('urn')).toBe(baseConversation.urn);
+  });
+
+  it('renders the status tag', () => {
+    createWrapper();
+
+    expect(elements.statusTag().props('scheme')).toBe('blue');
+    expect(elements.statusTag().props('text')).toBe('In progress');
+  });
+
+  it('renders "-" when there is no csat feedback', () => {
+    createWrapper();
+
+    expect(elements.feedback().text()).toBe('-');
+  });
+
+  it('renders csat feedback when csat is available', () => {
+    createWrapper({
+      conversation: {
+        ...baseConversation,
+        csat: {
+          id: 'satisfied',
+          score: 4,
+        },
+      },
+    });
+
+    expect(elements.feedback().text()).toBe('😃 Satisfied | CSAT: 4');
+  });
+
+  it('renders formatted date and time', () => {
+    createWrapper();
+
+    expect(elements.date().text()).toBe(
+      formatConversationDate(baseConversation.start),
+    );
+    expect(elements.time().text()).toBe(
+      formatConversationTime(baseConversation.start),
+    );
   });
 });
