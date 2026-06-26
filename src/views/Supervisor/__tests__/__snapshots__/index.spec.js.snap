@@ -1,6 +1,16 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Supervisor view > matches snapshot 1`] = `
+exports[`Supervisor view > improvements route > matches snapshot on improvements route 1`] = `
+"<section data-v-8a19bad7="" class="supervisor">
+  <section data-v-8a19bad7="" class="supervisor__content">
+    <supervisor-header-stub data-v-8a19bad7="" class="supervisor__header" data-testid="header"></supervisor-header-stub>
+    <router-view-stub data-v-8a19bad7="" name="default"></router-view-stub>
+  </section>
+  <!--v-if-->
+</section>"
+`;
+
+exports[`Supervisor view > matches snapshot on conversations route 1`] = `
 "<section data-v-8a19bad7="" class="supervisor">
   <section data-v-8a19bad7="" class="supervisor__content">
     <supervisor-header-stub data-v-8a19bad7="" class="supervisor__header" data-testid="header"></supervisor-header-stub>

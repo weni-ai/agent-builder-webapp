@@ -190,9 +190,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
       console.error('Error loading conversations:', error);
       alertStore.add({
         type: 'error',
-        text: i18n.global.t(
-          'agent_builder.supervisor.load_conversations.error',
-        ),
+        text: i18n.global.t('audit.conversations.load_conversations.error'),
       });
     } finally {
       conversationsAbortController = null;
@@ -300,12 +298,12 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
 
       alertStore.add({
         type: 'success',
-        text: i18n.global.t('agent_builder.supervisor.export.success'),
+        text: i18n.global.t('audit.conversations.export.success'),
       });
     } catch {
       alertStore.add({
         type: 'error',
-        text: i18n.global.t('agent_builder.supervisor.export.error'),
+        text: i18n.global.t('audit.conversations.export.error'),
       });
     }
   }

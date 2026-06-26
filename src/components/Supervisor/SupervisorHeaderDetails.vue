@@ -3,7 +3,7 @@
     class="supervisor-header-details"
     @click="handleDetailsModal"
   >
-    {{ $t('agent_builder.supervisor.learn_details_conversations') }}
+    {{ $t('audit.conversations.learn_details_conversations') }}
   </p>
 
   <UnnnicModalDialog
@@ -11,7 +11,7 @@
     showCloseIcon
     showActionsDivider
     size="md"
-    :title="$t('agent_builder.supervisor.conversation_details.title')"
+    :title="$t('audit.conversations.conversation_details.title')"
     class="supervisor-header-details__modal"
     @update:model-value="handleDetailsModal"
   >
@@ -21,13 +21,11 @@
       class="modal__topic"
     >
       <p class="topic__title">
-        {{ $t(`agent_builder.supervisor.conversation_details.${topic}`) }}
+        {{ $t(`audit.conversations.conversation_details.${topic}`) }}
       </p>
       <p class="topic__description">
         {{
-          $t(
-            `agent_builder.supervisor.conversation_details.${topic}_description`,
-          )
+          $t(`audit.conversations.conversation_details.${topic}_description`)
         }}
       </p>
     </section>

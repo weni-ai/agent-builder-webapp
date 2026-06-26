@@ -2,7 +2,10 @@
   <section
     :class="[
       'supervisor',
-      { 'supervisor--with-conversation': selectedConversation },
+      {
+        'supervisor--with-conversation':
+          isConversationsRoute && selectedConversation,
+      },
     ]"
   >
     <section
@@ -15,13 +18,16 @@
         data-testid="header"
       />
       <SupervisorConversations
+        v-if="isConversationsRoute"
         ref="supervisorConversations"
         class="supervisor__conversations"
         data-testid="supervisor-conversations"
       />
+
+      <RouterView v-else />
     </section>
     <Conversation
-      v-if="selectedConversation"
+      v-if="isConversationsRoute && selectedConversation"
       class="supervisor__conversation"
       data-testid="supervisor-conversation"
     />
@@ -30,15 +36,13 @@
 
 <script setup>
 import { computed, onBeforeMount, watch, ref, nextTick } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter, useRoute, RouterView } from 'vue-router';
 
 import SupervisorHeader from './SupervisorHeader.vue';
 import SupervisorConversations from './SupervisorConversations/index.vue';
 import Conversation from './SupervisorConversations/Conversation/index.vue';
 
-import {
-  hasMoreToLoad,
-} from '@/api/adapters/supervisor/conversationSources';
+import { hasMoreToLoad } from '@/api/adapters/supervisor/conversationSources';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { cleanParams } from '@/utils/http';
 
@@ -53,6 +57,8 @@ const isCheckingScroll = ref(false);
 const selectedConversation = computed(() => {
   return supervisorStore.selectedConversation;
 });
+
+const isConversationsRoute = computed(() => route.name === 'conversations');
 
 const conversations = computed(() => supervisorStore.conversations);
 

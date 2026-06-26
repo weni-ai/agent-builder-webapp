@@ -7,14 +7,14 @@
       type="secondary"
       @click="goToStudio"
     >
-      {{ $t('agent_builder.supervisor.view_full_history') }}
+      {{ $t('audit.conversations.view_full_history') }}
     </UnnnicButton>
 
     <button
       class="conversation-details__collapse-button"
       @click="isCollapsed = !isCollapsed"
     >
-      {{ $t('agent_builder.supervisor.conversation_details_collapse') }}
+      {{ $t('audit.conversations.conversation_details_collapse') }}
       <UnnnicIcon
         icon="keyboard_arrow_up"
         :class="[

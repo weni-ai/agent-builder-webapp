@@ -26,7 +26,7 @@ const props = defineProps({
 
 const text = computed(() => {
   return i18n.global.t(
-    `agent_builder.supervisor.conversation_start_finish.${props.type}`,
+    `audit.conversations.conversation_start_finish.${props.type}`,
     {
       datetime: format(props.datetime, 'dd/MM/yy HH:mm'),
     },

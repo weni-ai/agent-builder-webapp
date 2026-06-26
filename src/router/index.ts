@@ -33,6 +33,13 @@ const conversationsRoutes: RouteRecordRaw[] = [
     path: MODULE_PATHS.conversations,
     name: 'conversations',
     component: () => import('@/views/Supervisor/index.vue'),
+    children: [
+      {
+        path: 'improvements',
+        name: 'improvements',
+        component: () => import('@/views/Supervisor/Improvements/index.vue'),
+      },
+    ],
   },
 ];
 

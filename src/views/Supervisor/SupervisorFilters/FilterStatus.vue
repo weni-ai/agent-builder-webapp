@@ -1,6 +1,6 @@
 <template>
   <UnnnicFormElement
-    :label="$t('agent_builder.supervisor.filters.status.conversations')"
+    :label="$t('audit.conversations.filters.status.conversations')"
   >
     <UnnnicSelectSmart
       v-model:modelValue="statusFilter"
@@ -23,7 +23,7 @@ import { useSupervisorStore } from '@/store/Supervisor';
 const supervisorStore = useSupervisorStore();
 
 const getStatusTranslation = (filter) =>
-  i18n.global.t(`agent_builder.supervisor.filters.status.${filter}`);
+  i18n.global.t(`audit.conversations.filters.status.${filter}`);
 
 const statusOptions = computed(() => [
   { label: getStatusTranslation('conversations'), value: '' },

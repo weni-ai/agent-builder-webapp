@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+import { reactive } from 'vue';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 import { useRouter } from 'vue-router';
@@ -6,17 +7,20 @@ import { useRouter } from 'vue-router';
 import Supervisor from '@/views/Supervisor/index.vue';
 import { useSupervisorStore } from '@/store/Supervisor';
 
+const mockRoute = reactive({
+  name: 'conversations',
+  query: {
+    started_day: '2024-01-01',
+    ended_day: '2024-01-31',
+  },
+});
+
 vi.mock('vue-router', async () => {
   const actual = await vi.importActual('vue-router');
 
   return {
     ...actual,
-    useRoute: vi.fn(() => ({
-      query: {
-        started_day: '2024-01-01',
-        ended_day: '2024-01-31',
-      },
-    })),
+    useRoute: vi.fn(() => mockRoute),
     useRouter: vi.fn(() => ({
       replace: vi.fn(),
     })),
@@ -27,7 +31,16 @@ describe('Supervisor view', () => {
   let wrapper;
   let supervisorStore;
 
+  const findHeader = () => wrapper.findComponent('[data-testid="header"]');
+  const findConversations = () =>
+    wrapper.findComponent('[data-testid="supervisor-conversations"]');
+  const findConversation = () =>
+    wrapper.findComponent('[data-testid="supervisor-conversation"]');
+  const findRouterView = () => wrapper.findComponent({ name: 'RouterView' });
+
   beforeEach(() => {
+    mockRoute.name = 'conversations';
+
     const pinia = createTestingPinia();
 
     supervisorStore = useSupervisorStore();
@@ -42,30 +55,26 @@ describe('Supervisor view', () => {
   });
 
   afterEach(() => {
+    wrapper?.unmount();
     vi.clearAllMocks();
     vi.restoreAllMocks();
   });
 
-  it('matches snapshot', () => {
+  it('matches snapshot on conversations route', () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
   it('renders SupervisorHeader component', () => {
-    expect(wrapper.findComponent('[data-testid="header"]').exists()).toBe(true);
+    expect(findHeader().exists()).toBe(true);
   });
 
-  it('renders SupervisorConversations component', () => {
-    expect(
-      wrapper
-        .findComponent('[data-testid="supervisor-conversations"]')
-        .exists(),
-    ).toBe(true);
+  it('renders SupervisorConversations component on conversations route', () => {
+    expect(findConversations().exists()).toBe(true);
+    expect(findRouterView().exists()).toBe(false);
   });
 
   it('renders Conversation component when selectedConversation is present', async () => {
-    expect(
-      wrapper.findComponent('[data-testid="supervisor-conversation"]').exists(),
-    ).toBe(false);
+    expect(findConversation().exists()).toBe(false);
 
     supervisorStore.selectedConversation = {
       id: 1,
@@ -75,9 +84,43 @@ describe('Supervisor view', () => {
     await wrapper.vm.$nextTick();
 
     expect(wrapper.classes()).toContain('supervisor--with-conversation');
-    expect(
-      wrapper.findComponent('[data-testid="supervisor-conversation"]').exists(),
-    ).toBe(true);
+    expect(findConversation().exists()).toBe(true);
+  });
+
+  describe('improvements route', () => {
+    beforeEach(async () => {
+      mockRoute.name = 'improvements';
+      await wrapper.unmount();
+
+      wrapper = shallowMount(Supervisor, {
+        global: {
+          plugins: [createTestingPinia()],
+        },
+      });
+
+      supervisorStore = useSupervisorStore();
+    });
+
+    it('matches snapshot on improvements route', () => {
+      expect(wrapper.html()).toMatchSnapshot();
+    });
+
+    it('renders RouterView instead of SupervisorConversations', () => {
+      expect(findConversations().exists()).toBe(false);
+      expect(findRouterView().exists()).toBe(true);
+    });
+
+    it('does not render Conversation panel even when a conversation is selected', async () => {
+      supervisorStore.selectedConversation = {
+        id: 1,
+        title: 'Test Conversation',
+      };
+
+      await wrapper.vm.$nextTick();
+
+      expect(wrapper.classes()).not.toContain('supervisor--with-conversation');
+      expect(findConversation().exists()).toBe(false);
+    });
   });
 
   describe('Auto-load conversations without scrollbar', () => {

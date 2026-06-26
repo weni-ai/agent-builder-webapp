@@ -123,19 +123,18 @@ async function save() {
     const settingsSaved = await tuningsStore.saveSettings();
     if (!settingsSaved) {
       hasError = true;
+      let errorText = i18n.global.t('router.tunings.settings.save_error');
+
       if (tuningsStore.lastErrorMessageSaveFailed) {
-        alertStore.add({
-          text: i18n.global.t(
-            'agent_builder.tunings.system_messages.error_message.save_error',
-          ),
-          type: 'error',
-        });
-      } else {
-        alertStore.add({
-          text: i18n.global.t('router.tunings.settings.save_error'),
-          type: 'error',
-        });
+        errorText = i18n.global.t(
+          'agent_builder.tunings.system_messages.error_message.save_error',
+        );
       }
+
+      alertStore.add({
+        text: errorText,
+        type: 'error',
+      });
     }
   }
 

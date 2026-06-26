@@ -37,8 +37,8 @@
       >
         {{
           active
-            ? $t('agent_builder.supervisor.hide_logs')
-            : $t('agent_builder.supervisor.view_logs')
+            ? $t('audit.conversations.hide_logs')
+            : $t('audit.conversations.view_logs')
         }}
       </UnnnicIntelligenceText>
     </section>

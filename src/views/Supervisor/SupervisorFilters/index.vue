@@ -14,14 +14,10 @@
       data-testid="drawer-filter"
       :modelValue="isFilterDrawerOpen"
       class="supervisor-filters__drawer"
-      :title="
-        $t('agent_builder.supervisor.filters.filter_conversations_drawer')
-      "
-      :primaryButtonText="$t('agent_builder.supervisor.filters.apply_filters')"
+      :title="$t('audit.conversations.filters.filter_conversations_drawer')"
+      :primaryButtonText="$t('audit.conversations.filters.apply_filters')"
       :disabledPrimaryButton="filterDrawerApplyButtonDisabled"
-      :secondaryButtonText="
-        $t('agent_builder.supervisor.filters.clear_filters')
-      "
+      :secondaryButtonText="$t('audit.conversations.filters.clear_filters')"
       :disabledSecondaryButton="filterDrawerClearButtonDisabled"
       @close="closeFilterDrawer"
       @primary-button-click="applyFilters"
@@ -74,13 +70,10 @@ const filterButtonText = computed(() => {
   const { t } = i18n.global;
   const count = countAppliedFilters.value;
 
-  const text = t('agent_builder.supervisor.filters.filter_conversations');
-  const countText = t(
-    'agent_builder.supervisor.filters.count_applied_filters',
-    {
-      count,
-    },
-  );
+  const text = t('audit.conversations.filters.filter_conversations');
+  const countText = t('audit.conversations.filters.count_applied_filters', {
+    count,
+  });
 
   return count > 0 ? `${text} ${countText}` : text;
 });

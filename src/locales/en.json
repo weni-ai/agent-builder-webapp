@@ -13,10 +13,6 @@
   "unexpected_error": "An unexpected error occurred",
   "agent_builder": {
     "tabs": {
-      "conversations": {
-        "title": "Conversations",
-        "description": "Review and analyze conversations between agents and customers."
-      },
       "knowledge": {
         "title": "Knowledge",
         "description": "Add knowledge through files, links, or text so the agent can reply accurately"
@@ -24,95 +20,6 @@
       "tunings": {
         "title": "Settings",
         "description": "Manage the settings and track the changes made"
-      }
-    },
-    "supervisor": {
-      "learn_details_conversations": "Learn about the details of a conversation.",
-      "conversation_details": {
-        "title": "About conversation",
-        "what_is_a_conversation": "What is a conversation?",
-        "what_is_a_conversation_description": "We consider all messages exchanged within 24 hours (resetting at midnight) as a single conversation.",
-        "optimized_resolution": "AI-assisted",
-        "optimized_resolution_description": "Conversations ended with a clear, effective resolution for the contact.",
-        "other_conclusion": "Not assisted",
-        "other_conclusion_description": "Conversations that ended in other ways, such as brief interactions, greetings, abandonment, or cases that followed a different flow without a direct resolution.",
-        "transferred_to_human_support": "Transferred to human support",
-        "transferred_to_human_support_description": "Includes conversations (AI-assisted and not assisted) transferred to a human representative."
-      },
-      "conversations_count": "{count} conversations found",
-      "unnamed_contact": "Unnamed contact",
-      "attended_by_agent": {
-        "title": "Assisted by an agent",
-        "tooltip": "Conversations completed by an agent"
-      },
-      "forwarded_human_support": {
-        "title": "Transferred to human support",
-        "tooltip": "Conversations transferred to human support"
-      },
-      "conversation_start_finish": {
-        "start": "Conversation started: {datetime}",
-        "finish": "Conversation ended: {datetime}"
-      },
-      "contact_urn": "Contact URN",
-      "topic": "Topic",
-      "conversation_details_collapse": "Conversation details",
-      "view_full_history": "View full history",
-      "view_logs": "Show logs",
-      "hide_logs": "Hide logs",
-      "search": "Search",
-      "conversations_empty": "No conversations found",
-      "conversations_separator": "Conversations below were classified using the legacy system",
-      "conversations_v2_disclaimer": "Starting on March {day}, conversations are organized into 24-hour windows (resetting at midnight) powered by our new classification system",
-      "no_messages_found": {
-        "title": "No messages found in this conversation",
-        "description": "If the message was sent by human support or triggered an automatic action, you can find it in {studio_link}.",
-        "studio_link": "Studio"
-      },
-      "unclassified_status_tooltip": "Conversations closed before September 8, 2025 can't be classified",
-      "export": {
-        "title": "Export to email",
-        "description": "We'll prepare the file with the AI information and send it to the following emails:",
-        "token_label": "Project API token",
-        "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
-        "token_help": "You can find this token in the",
-        "project_settings": "project settings",
-        "and_paste": "and paste it here",
-        "send": "Send export",
-        "success": "The export will be sent to all listed emails soon",
-        "error": "Error sending export. Try again later."
-      },
-      "filters": {
-        "filter_conversations": "Filter conversations",
-        "count_applied_filters": "{count, plural, one {(1 filter applied)} other {({count} filters applied)}}",
-        "filter_conversations_drawer": "Filter conversations",
-        "apply_filters": "Apply filters",
-        "clear_filters": "Clear filters",
-        "period": {
-          "label": "Period"
-        },
-        "status": {
-          "conversations": "Conversations",
-          "in_progress": "In progress",
-          "optimized_resolution": "AI-Assisted",
-          "other_conclusion": "Not Assisted",
-          "unclassified": "Not classified",
-          "transferred_to_human_support": "Transferred to human support"
-        },
-        "csat": {
-          "csat": "CSAT",
-          "very_satisfied": "🤩 Very satisfied",
-          "satisfied": "😃 Satisfied",
-          "neutral": "😐 Neutral",
-          "dissatisfied": "😔 Dissatisfied",
-          "very_dissatisfied": "😡 Very dissatisfied"
-        },
-        "topic": {
-          "topic": "Topic",
-          "unclassified": "Not classified"
-        }
-      },
-      "load_conversations": {
-        "error": "Error loading conversations"
       }
     },
     "instructions": {
@@ -304,7 +211,7 @@
     }
   },
   "agents": {
-    "title": "My Agents",
+    "title": "My agents",
     "description": "Manage your digital workforce, instructions and behaviors",
     "assign_agents_button": "Assign new agents",
     "assigned_agents": {
@@ -312,7 +219,7 @@
       "new_agent": "New agent",
       "manager": {
         "name": "Manager",
-        "edit_manager": "Edit Manager",
+        "edit_manager": "Edit manager",
         "edit_instructions": "Edit instructions"
       },
       "no_agents": {
@@ -547,6 +454,105 @@
 
         }
       }
+    }
+  },
+  "audit": {
+    "title": "Audit",
+    "description": "Review and analyze conversations between agents and customers.",
+    "conversations": {
+      "title": "Conversations",
+      "learn_details_conversations": "Learn about the details of a conversation.",
+      "conversation_details": {
+        "title": "About conversation",
+        "what_is_a_conversation": "What is a conversation?",
+        "what_is_a_conversation_description": "We consider all messages exchanged within 24 hours (resetting at midnight) as a single conversation.",
+        "optimized_resolution": "AI-assisted",
+        "optimized_resolution_description": "Conversations ended with a clear, effective resolution for the contact.",
+        "other_conclusion": "Not assisted",
+        "other_conclusion_description": "Conversations that ended in other ways, such as brief interactions, greetings, abandonment, or cases that followed a different flow without a direct resolution.",
+        "transferred_to_human_support": "Transferred to human support",
+        "transferred_to_human_support_description": "Includes conversations (AI-assisted and not assisted) transferred to a human representative."
+      },
+      "conversations_count": "{count} conversations found",
+      "unnamed_contact": "Unnamed contact",
+      "attended_by_agent": {
+        "title": "Assisted by an agent",
+        "tooltip": "Conversations completed by an agent"
+      },
+      "forwarded_human_support": {
+        "title": "Transferred to human support",
+        "tooltip": "Conversations transferred to human support"
+      },
+      "conversation_start_finish": {
+        "start": "Conversation started: {datetime}",
+        "finish": "Conversation ended: {datetime}"
+      },
+      "contact_urn": "Contact URN",
+      "topic": "Topic",
+      "conversation_details_collapse": "Conversation details",
+      "view_full_history": "View full history",
+      "view_logs": "Show logs",
+      "hide_logs": "Hide logs",
+      "search": "Search",
+      "conversations_empty": "No conversations found",
+      "conversations_separator": "Conversations below were classified using the legacy system",
+      "conversations_v2_disclaimer": "Starting on March {day}, conversations are organized into 24-hour windows (resetting at midnight) powered by our new classification system",
+      "no_messages_found": {
+        "title": "No messages found in this conversation",
+        "description": "If the message was sent by human support or triggered an automatic action, you can find it in {studio_link}.",
+        "studio_link": "Studio"
+      },
+      "unclassified_status_tooltip": "Conversations closed before September 8, 2025 can't be classified",
+      "export": {
+        "title": "Export to email",
+        "description": "We'll prepare the file with the AI information and send it to the following emails:",
+        "token_label": "Project API token",
+        "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
+        "token_help": "You can find this token in the",
+        "project_settings": "project settings",
+        "and_paste": "and paste it here",
+        "send": "Send export",
+        "success": "The export will be sent to all listed emails soon",
+        "error": "Error sending export. Try again later."
+      },
+      "filters": {
+        "filter_conversations": "Filter conversations",
+        "count_applied_filters": "{count, plural, one {(1 filter applied)} other {({count} filters applied)}}",
+        "filter_conversations_drawer": "Filter conversations",
+        "apply_filters": "Apply filters",
+        "clear_filters": "Clear filters",
+        "period": {
+          "label": "Period"
+        },
+        "status": {
+          "conversations": "Conversations",
+          "in_progress": "In progress",
+          "optimized_resolution": "AI-Assisted",
+          "other_conclusion": "Not Assisted",
+          "unclassified": "Not classified",
+          "transferred_to_human_support": "Transferred to human support"
+        },
+        "csat": {
+          "csat": "CSAT",
+          "very_satisfied": "🤩 Very satisfied",
+          "satisfied": "😃 Satisfied",
+          "neutral": "😐 Neutral",
+          "dissatisfied": "😔 Dissatisfied",
+          "very_dissatisfied": "😡 Very dissatisfied"
+        },
+        "topic": {
+          "topic": "Topic",
+          "unclassified": "Not classified"
+        }
+      },
+      "load_conversations": {
+        "error": "Error loading conversations"
+      }
+    },
+
+    "improvements": {
+      "title": "Improvement backlog"
+
     }
   },
   "router": {

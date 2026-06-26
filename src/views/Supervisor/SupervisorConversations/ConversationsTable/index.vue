@@ -15,7 +15,7 @@
             data-testid="conversations-separator"
           >
             <td class="conversations-table__separator-text">
-              {{ $t('agent_builder.supervisor.conversations_separator') }}
+              {{ $t('audit.conversations.conversations_separator') }}
             </td>
           </tr>
           <ConversationRow
@@ -51,7 +51,7 @@
       />
 
       <p class="conversations-table__empty-title">
-        {{ $t('agent_builder.supervisor.conversations_empty') }}
+        {{ $t('audit.conversations.conversations_empty') }}
       </p>
     </section>
   </table>

@@ -2,18 +2,18 @@
   <table class="details__table">
     <tbody>
       <Row
-        :label="$t('agent_builder.supervisor.contact_urn')"
+        :label="$t('audit.conversations.contact_urn')"
         :data="formattedUrn"
       />
 
       <Row
-        :label="$t('agent_builder.supervisor.topic')"
+        :label="$t('audit.conversations.topic')"
         :data="formattedTopics"
       />
 
       <template v-if="!isCollapsed">
         <Row
-          :label="$t('agent_builder.supervisor.filters.csat.csat')"
+          :label="$t('audit.conversations.filters.csat.csat')"
           :data="formattedCsat"
         />
       </template>
@@ -52,7 +52,7 @@ const formattedCsat = computed(() => {
 
   if (!csat) return '-';
   return `${i18n.global.t(
-    `agent_builder.supervisor.filters.csat.${csat.id}`,
+    `audit.conversations.filters.csat.${csat.id}`,
   )} | CSAT: ${csat.score}`;
 });
 </script>

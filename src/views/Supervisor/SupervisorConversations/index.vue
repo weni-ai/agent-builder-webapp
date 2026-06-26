@@ -9,7 +9,7 @@
     <UnnnicDisclaimer
       type="informational"
       :description="
-        $t('agent_builder.supervisor.conversations_v2_disclaimer', {
+        $t('audit.conversations.conversations_v2_disclaimer', {
           day: conversationsSwitchDay,
         })
       "

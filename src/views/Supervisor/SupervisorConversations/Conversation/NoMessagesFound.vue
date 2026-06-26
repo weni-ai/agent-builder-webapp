@@ -12,7 +12,7 @@
       class="no-messages-found__title"
       data-testid="no-messages-title"
     >
-      {{ $t('agent_builder.supervisor.no_messages_found.title') }}
+      {{ $t('audit.conversations.no_messages_found.title') }}
     </p>
 
     <p
@@ -20,7 +20,7 @@
       data-testid="no-messages-description"
     >
       <i18n-t
-        keypath="agent_builder.supervisor.no_messages_found.description"
+        keypath="audit.conversations.no_messages_found.description"
         tag="p"
         data-testid="no-messages-description-i18n"
       >
@@ -31,7 +31,7 @@
             target="_blank"
             data-testid="studio-link"
           >
-            {{ $t('agent_builder.supervisor.no_messages_found.studio_link') }}
+            {{ $t('audit.conversations.no_messages_found.studio_link') }}
           </a>
         </template>
       </i18n-t>
