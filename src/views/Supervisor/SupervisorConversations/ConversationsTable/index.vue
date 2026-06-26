@@ -14,6 +14,7 @@
               v-for="column in columns"
               :key="`conversation-table-head-${column}`"
               :class="`conversations-table__col conversations-table__col--${column}`"
+              :data-testid="`conversation-table-head-${column}`"
             >
               {{ $t(`audit.conversations.columns.${column}`) }}
             </UnnnicTableHead>
@@ -51,6 +52,7 @@
     <section
       v-else
       class="conversations-table__empty"
+      data-testid="conversations-table-empty"
     >
       <UnnnicIcon
         icon="chat_bubble"
