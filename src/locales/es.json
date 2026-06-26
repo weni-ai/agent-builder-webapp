@@ -405,6 +405,13 @@
         "finish": "Conversación finalizada: {datetime}"
       },
       "contact_urn": "URN del contacto",
+      "columns": {
+        "contact": "Contacto",
+        "date": "Fecha",
+        "feedback": "Feedback",
+        "hour": "Hora",
+        "status": "Estado"
+      },
       "topic": "Tópico",
       "conversation_details_collapse": "Detalles de la conversación",
       "view_full_history": "Ver historico completo",
