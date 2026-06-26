@@ -104,6 +104,32 @@ export function formatTimestamp(timestamp: string) {
   );
 }
 
+export function formatConversationDate(timestamp: string) {
+  return formatWithLocalePattern(
+    timestamp,
+    {
+      en: 'MM/dd/yy',
+      es: 'dd/MM/yy',
+      'pt-br': 'dd/MM/yy',
+      ro: 'dd/MM/yy',
+    },
+    'MM/dd/yy',
+  );
+}
+
+export function formatConversationTime(timestamp: string) {
+  return formatWithLocalePattern(
+    timestamp,
+    {
+      en: 'HH:mm',
+      es: 'HH:mm',
+      'pt-br': 'HH:mm',
+      ro: 'HH:mm',
+    },
+    'HH:mm',
+  );
+}
+
 export function formatLongDate(timestamp: string) {
   const FALLBACK_PATTERN = 'MMMM d, yyyy';
 

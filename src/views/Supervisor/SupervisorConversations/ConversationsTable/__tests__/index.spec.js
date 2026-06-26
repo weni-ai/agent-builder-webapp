@@ -1,10 +1,11 @@
-import { flushPromises, shallowMount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { vi } from 'vitest';
 import { nextTick } from 'vue';
 
 import ConversationsTable from '../index.vue';
+import ConversationRow from '../ConversationRow.vue';
 import { NEW_SOURCE } from '@/api/adapters/supervisor/conversationSources';
 
 vi.mock('@/api/nexusaiAPI', () => ({
@@ -54,12 +55,14 @@ const mockResultsWithSource = [
     uuid: '1',
     urn: 'conversation-123',
     last_message: 'This is the last message',
+    start: '2023-05-15T14:30:00Z',
     source: NEW_SOURCE,
   },
   {
     uuid: '2',
     urn: 'conversation-456',
     last_message: 'Another message',
+    start: '2023-05-16T10:00:00Z',
     source: NEW_SOURCE,
   },
 ];
@@ -74,23 +77,29 @@ describe('ConversationsTable.vue', () => {
 
   const table = () => wrapper.find('[data-testid="conversations-table"]');
 
-  const conversationRows = () =>
-    wrapper.findAllComponents('[data-testid="conversation-row"]');
+  const conversationRows = () => wrapper.findAllComponents(ConversationRow);
+
+  afterEach(() => {
+    wrapper?.unmount();
+  });
 
   beforeEach(async () => {
     vi.clearAllMocks();
 
-    wrapper = shallowMount(ConversationsTable, {
+    supervisorStore = useSupervisorStore();
+    supervisorStore.filters.start = '2023-01-01';
+    supervisorStore.filters.end = '2023-01-31';
+    supervisorStore.conversations.data.results = mockResultsWithSource;
+    supervisorStore.conversations.data.newNext = null;
+    supervisorStore.conversations.data.legacyNext = null;
+    supervisorStore.conversations.status = 'complete';
+
+    wrapper = mount(ConversationsTable, {
       global: {
         plugins: [pinia],
       },
     });
 
-    supervisorStore = useSupervisorStore();
-    supervisorStore.filters.start = '2023-01-01';
-    supervisorStore.filters.end = '2023-01-31';
-
-    await supervisorStore.loadConversations();
     await flushPromises();
 
     supervisorStore.conversations.data.results = mockResultsWithSource;

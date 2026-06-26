@@ -5,16 +5,12 @@
       data-testid="conversation-username"
     />
 
-    <UnnnicIntelligenceText
+    <p
       data-testid="conversation-urn"
       class="conversation-infos__urn"
-      tag="p"
-      color="neutral-cloudy"
-      family="secondary"
-      size="body-md"
     >
       {{ formattedUrn }}
-    </UnnnicIntelligenceText>
+    </p>
   </section>
 </template>
 
@@ -44,6 +40,9 @@ const formattedUrn = computed(() => formatWhatsappUrn(props.urn));
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    @include unnnic-font-caption-2;
+    color: $unnnic-color-fg-muted;
   }
 }
 </style>
