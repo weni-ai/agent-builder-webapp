@@ -26,6 +26,7 @@
       >
         <UnnnicTag
           class="cell__status"
+          data-testid="conversation-row-status"
           :scheme="statusProps.scheme"
           :text="statusProps.text"
         />
@@ -35,7 +36,10 @@
     <UnnnicTableCell
       class="conversations-table__col conversations-table__col--feedback"
     >
-      <p class="conversation-row__feedback">
+      <p
+        class="conversation-row__feedback"
+        data-testid="conversation-row-feedback"
+      >
         {{ feedbackText }}
       </p>
     </UnnnicTableCell>
@@ -43,7 +47,10 @@
     <UnnnicTableCell
       class="conversations-table__col conversations-table__col--date"
     >
-      <p class="conversation-row__date">
+      <p
+        class="conversation-row__date"
+        data-testid="conversation-row-date"
+      >
         {{ formatConversationDate(conversation.start) }}
       </p>
     </UnnnicTableCell>
@@ -51,7 +58,10 @@
     <UnnnicTableCell
       class="conversations-table__col conversations-table__col--hour"
     >
-      <p class="conversation-row__time">
+      <p
+        class="conversation-row__time"
+        data-testid="conversation-row-time"
+      >
         {{ formatConversationTime(conversation.start) }}
       </p>
     </UnnnicTableCell>
