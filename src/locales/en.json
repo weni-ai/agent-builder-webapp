@@ -228,7 +228,7 @@
       },
       "agent_details": {
         "about": "About",
-        "last_updated": "Updated on {date}, at {time}",
+        "last_updated": "Updated on {date} at {time}",
         "mcp": "MCP",
         "system": "System",
         "view_options": "View options",
@@ -288,7 +288,7 @@
       },
       "setup": {
         "about": "About",
-        "last_updated": "Updated on {date}, at {time}",
+        "last_updated": "Updated on {date} at {time}",
         "view_documentation": "View documentation",
         "mcps_available": {
           "title": "MCPs available"
@@ -658,37 +658,37 @@
       "save": "Save"
     },
     "new_text": {
-      "description": "Write text content the agent will use to answer questions",
-      "supporting_text": "Organize your content into separate texts by topic for more accurate responses",
+      "description": "Manually write the content the agent will use to answer questions",
+      "supporting_text": "Organize your content into texts separated by topic for more precise answers",
       "button_add_new_text": "New text",
       "default_title": "Untitled text",
       "edit_name": "Edit name",
-      "edit_name_hint": "Press ENTER to confirm or ESC to cancel",
+      "edit_name_hint": "Press Enter to confirm or Esc to cancel",
       "save_changes": "Save changes",
-      "save_error": "Something went wrong while saving the changes",
-      "save_error_hint": "Try saving the changes again",
+      "save_error": "Couldn't save changes",
+      "save_error_hint": "Try saving again",
       "save_success": "Changes saved successfully",
       "search_placeholder": "Search",
       "no_results": "No results found",
-      "write_or_paste_placeholder": "Write or paste your content here…",
+      "write_or_paste_placeholder": "Write or paste your content here...",
       "empty_state": {
-        "title": "No texts added yet",
-        "description": "Write content the agent will use as a knowledge source"
+        "title": "No text added",
+        "description": "Write the content the agent will use as the knowledge source"
       },
       "unsaved": {
         "title": "You have unsaved changes",
-        "description": "If you go back now, all changes made will be discarded. This action can't be undone",
+        "description": "If you go back now, all changes will be discarded. This action can't be undone.",
         "keep": "Keep editing",
         "discard": "Discard and go back"
       },
       "delete": {
-        "title": "Remove text",
-        "description": "Are you sure you want to remove {name}? The agent will no longer use this content to answer questions. This action cannot be undone.",
-        "confirm": "Remove",
+        "title": "Delete text",
+        "description": "Are you sure you want to delete {name}? The agent will no longer use this content to answer questions. This action can't be undone.",
+        "confirm": "Delete",
         "cancel": "Cancel",
-        "success": "Text removed successfully",
-        "error": "Something went wrong while removing text",
-        "error_hint": "Try removing the text again"
+        "success": "Text deleted successfully",
+        "error": "Couldn't delete text",
+        "error_hint": "Try deleting the text again"
       }
     },
     "file_with_error": "File with error. Delete and add it again.",
@@ -701,7 +701,7 @@
       "remove_file": "Remove file",
       "edit_action": "Edit action",
       "remove_action": "Remove action",
-      "remove_text": "Remove text"
+      "remove_text": "Delete text"
     },
     "files": {
       "upload_content": "Upload content from files",

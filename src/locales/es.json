@@ -228,7 +228,7 @@
       },
       "agent_details": {
         "about": "Sobre",
-        "last_updated": "Actualizado el {date}, a las {time}",
+        "last_updated": "Actualizado el {date} a las {time}",
         "mcp": "MCP",
         "system": "Sistema",
         "view_options": "Ver opciones",
@@ -288,7 +288,7 @@
       },
       "setup": {
         "about": "Sobre",
-        "last_updated": "Actualizado el {date}, a las {time}",
+        "last_updated": "Actualizado el {date} a las {time}",
         "view_documentation": "Ver documentación",
         "mcps_available": {
           "title": "MCPs disponibles"
@@ -656,37 +656,37 @@
       "save": "Guardar"
     },
     "new_text": {
-      "description": "Escribe el contenido que el agente utilizará para responder a las preguntas",
-      "supporting_text": "Organiza tu contenido en textos separados por tema para respuestas más precisas",
+      "description": "Ingresa los contenidos que el agente utilizará para responder a las preguntas",
+      "supporting_text": "Organiza tus contenidos en textos separados por tema para generar respuestas más precisas",
       "button_add_new_text": "Nuevo texto",
       "default_title": "Texto sin título",
       "edit_name": "Editar nombre",
-      "edit_name_hint": "Pulsa ENTER para confirmar o ESC para cancelar",
+      "edit_name_hint": "Presiona Enter para confirmar o Esc para cancelar",
       "save_changes": "Guardar cambios",
       "save_error": "No se pudieron guardar los cambios",
       "save_error_hint": "Inténtalo de nuevo",
       "save_success": "Cambios guardados con éxito",
       "search_placeholder": "Buscar",
-      "no_results": "Sin resultados",
-      "write_or_paste_placeholder": "Escribe o pega tu contenido aquí…",
+      "no_results": "No se encontraron resultados",
+      "write_or_paste_placeholder": "Ingresa o pega tus contenidos aquí…",
       "empty_state": {
-        "title": "Sin textos agregados",
-        "description": "Escribe el contenido que el agente utilizará como fuente de conocimiento"
+        "title": "Ningún texto agregado",
+        "description": "Ingresa los contenidos que el agente utilizará como fuente de conocimiento"
       },
       "unsaved": {
         "title": "Tienes cambios sin guardar",
-        "description": "Si vuelves ahora, todos los cambios realizados se descartarán. Esta acción no se puede deshacer",
-        "keep": "Seguir editando",
+        "description": "Si vuelves atrás ahora todos los cambios realizados se descartarán. Esta acción no se puede deshacer.",
+        "keep": "Continuar editando",
         "discard": "Descartar y volver"
       },
       "delete": {
-        "title": "Remover texto",
-        "description": "¿Realmente deseas remover {name}? El agente ya no usará este contenido para responder preguntas. Esta acción no se puede deshacer.",
-        "confirm": "Remover",
+        "title": "Eliminar texto",
+        "description": "¿Realmente deseas eliminar {name}? El agente ya no utilizará este contenido para responder preguntas. Esta acción no se puede deshacer.",
+        "confirm": "Eliminar",
         "cancel": "Cancelar",
-        "success": "Texto removido con éxito",
-        "error": "No se pudo remover el texto",
-        "error_hint": "Inténtalo de nuevo"
+        "success": "Texto eliminado con éxito",
+        "error": "No se pudo eliminar el texto",
+        "error_hint": "Intenta eliminar el texto de nuevo"
       }
     },
     "file_with_error": "El archivo contiene errores. Elimínalo y agrégalo de nuevo.",
@@ -699,7 +699,7 @@
       "remove_file": "Remover archivo",
       "edit_action": "Editar acción",
       "remove_action": "Remover acción",
-      "remove_text": "Remover texto"
+      "remove_text": "Eliminar texto"
     },
     "files": {
       "upload_content": "Cargar contenido de archivos",
