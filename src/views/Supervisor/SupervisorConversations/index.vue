@@ -51,7 +51,7 @@ defineExpose({
 .conversations {
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: $unnnic-spacing-sm;
+  gap: $unnnic-space-6;
   align-items: start;
 
   &--empty {
