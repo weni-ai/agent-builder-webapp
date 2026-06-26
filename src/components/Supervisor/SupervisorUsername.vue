@@ -17,12 +17,12 @@ const props = withDefaults(
   defineProps<{
     username?: string;
     fallbackKey?: string;
-    font?: 'action' | 'display-2';
+    font?: 'emphasis' | 'display-2';
   }>(),
   {
     username: '',
     fallbackKey: 'audit.conversations.unnamed_contact',
-    font: 'action',
+    font: 'emphasis',
   },
 );
 
@@ -39,12 +39,12 @@ const displayName = computed(() => {
 
   color: $unnnic-color-fg-emphasized;
 
-  &--action {
-    font: $unnnic-font-action;
+  &--emphasis {
+    @include unnnic-font-emphasis;
   }
 
   &--display-2 {
-    font: $unnnic-font-display-2;
+    @include unnnic-font-display-2;
   }
 }
 </style>

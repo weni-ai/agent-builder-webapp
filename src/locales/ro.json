@@ -487,6 +487,13 @@
         "finish": "Conversație încheiată: {datetime}"
       },
       "contact_urn": "URN contact",
+      "columns": {
+        "contact": "Contact",
+        "date": "Dată",
+        "feedback": "Feedback",
+        "hour": "Oră",
+        "status": "Status"
+      },
       "topic": "Subiect",
       "conversation_details_collapse": "Detalii conversație",
       "view_full_history": "Vezi istoricul complet",
@@ -549,6 +556,35 @@
       }
     },
     "improvements": {
+      "analysis_in_progress_disclaimer": "Analiză în curs: {progress} din {total} conversații procesate. Pot apărea elemente noi în curând.",
+      "analysis_complete": {
+        "no_improvements_description": "Nu s-au identificat îmbunătățiri în conversațiile din {date}",
+        "ready_description": "Îmbunătățirile din {date} sunt gata în backlog.",
+        "title": "Analiză finalizată",
+        "title_with_count": "{count, plural, one {Analiză finalizată ({count} îmbunătățire găsită)} other {Analiză finalizată ({count} îmbunătățiri găsite)}}"
+      },
+      "header": {
+        "custom_analysis": "Analiză personalizată",
+        "description": "Rulat pe {date} la {time}",
+        "description_today": "Rulat astăzi la {time}",
+        "run_analysis": "Rulează analiza",
+        "run_analysis_already_run_today_tooltip": "Analiza a fost deja executată astăzi\nO nouă execuție va fi disponibilă mâine",
+        "run_analysis_insufficient_volume_tooltip": "Volum insuficient de conversații pentru executarea analizei\nMinimum 15 conversații necesare",
+        "title": "{count, plural, one {Analiza conversațiilor din {date} · {count} îmbunătățire identificată} other {Analiza conversațiilor din {date} · {count} îmbunătățiri identificate}}"
+      },
+      "insufficient_volume": {
+        "description": "Minimum 15 conversații necesare pentru executarea analizei",
+        "title": "Volum insuficient de conversații"
+      },
+      "no_analysis": {
+        "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire în conversațiile de ieri",
+        "run_analysis": "Rulează analiza",
+        "title": "Nicio analiză nu a fost executată încă"
+      },
+      "running_analysis": {
+        "description": "Acest proces poate dura câteva minute. Poți închide acest ecran.",
+        "title": "Se analizează {count} conversații de ieri"
+      },
       "title": "Backlog de îmbunătățiri"
     }
   },

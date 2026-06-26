@@ -488,6 +488,13 @@
         "finish": "Conversación finalizada: {datetime}"
       },
       "contact_urn": "URN del contacto",
+      "columns": {
+        "contact": "Contacto",
+        "date": "Fecha",
+        "feedback": "Feedback",
+        "hour": "Hora",
+        "status": "Estado"
+      },
       "topic": "Tópico",
       "conversation_details_collapse": "Detalles de la conversación",
       "view_full_history": "Ver historico completo",
@@ -550,6 +557,35 @@
       }
     },
     "improvements": {
+      "analysis_in_progress_disclaimer": "Análisis en curso: {progress} de {total} conversaciones procesadas. Pueden aparecer nuevos ítems en breve.",
+      "analysis_complete": {
+        "no_improvements_description": "No se identificaron mejoras en las conversaciones del {date}",
+        "ready_description": "Las mejoras del {date} están listas en el backlog.",
+        "title": "Análisis completo",
+        "title_with_count": "{count, plural, one {Análisis completo ({count} mejora encontrada)} other {Análisis completo ({count} mejoras encontradas)}}"
+      },
+      "header": {
+        "custom_analysis": "Análisis personalizado",
+        "description": "Ejecutado el {date} a las {time}",
+        "description_today": "Ejecutado hoy a las {time}",
+        "run_analysis": "Ejecutar análisis",
+        "run_analysis_already_run_today_tooltip": "Análisis ya ejecutado hoy\nNueva ejecución disponible mañana",
+        "run_analysis_insufficient_volume_tooltip": "Volumen insuficiente de conversaciones para ejecutar el análisis\nMínimo de 15 conversaciones necesarias",
+        "title": "{count, plural, one {Análisis de conversaciones del {date} · {count} mejora identificada} other {Análisis de conversaciones del {date} · {count} mejoras identificadas}}"
+      },
+      "insufficient_volume": {
+        "description": "Mínimo de 15 conversaciones necesarias para ejecutar el análisis",
+        "title": "Volumen insuficiente de conversaciones"
+      },
+      "no_analysis": {
+        "description": "Ejecuta el primer análisis para identificar oportunidades de mejora en las conversaciones de ayer",
+        "run_analysis": "Ejecutar análisis",
+        "title": "Aún no se ha ejecutado ningún análisis"
+      },
+      "running_analysis": {
+        "description": "Esto puede tardar unos minutos. Puedes cerrar esta pantalla.",
+        "title": "Analizando {count} conversaciones de ayer"
+      },
       "title": "Backlog de mejoras"
     }
   },
