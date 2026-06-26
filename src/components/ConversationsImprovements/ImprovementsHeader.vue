@@ -39,7 +39,11 @@ import { isToday } from 'date-fns';
 import { storeToRefs } from 'pinia';
 
 import { useImprovementsStore } from '@/store/Improvements';
-import { formatMonthDayDate, formatTime } from '@/utils/formatters';
+import {
+  formatMonthDayDate,
+  formatTime,
+  getYesterdayFormattedDate,
+} from '@/utils/formatters';
 
 const { t } = useI18n();
 const improvementsStore = useImprovementsStore();
@@ -47,7 +51,7 @@ const { analysis, improvements } = storeToRefs(improvementsStore);
 
 const headerTitle = computed(() =>
   t('audit.improvements.header.title', {
-    date: improvementsStore.getYesterdayFormattedDate(),
+    date: getYesterdayFormattedDate(),
     count: improvements.value.data.length,
   }),
 );
