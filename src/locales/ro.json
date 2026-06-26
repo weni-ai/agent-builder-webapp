@@ -404,6 +404,13 @@
         "finish": "Conversație încheiată: {datetime}"
       },
       "contact_urn": "URN contact",
+      "columns": {
+        "contact": "Contact",
+        "date": "Dată",
+        "feedback": "Feedback",
+        "hour": "Oră",
+        "status": "Status"
+      },
       "topic": "Subiect",
       "conversation_details_collapse": "Detalii conversație",
       "view_full_history": "Vezi istoricul complet",
