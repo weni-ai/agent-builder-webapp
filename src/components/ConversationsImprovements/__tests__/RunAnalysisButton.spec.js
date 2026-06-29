@@ -9,6 +9,7 @@ import {
 } from '@/store/Improvements';
 
 import RunAnalysisButton from '../RunAnalysisButton.vue';
+import RunAnalysisDialog from '../RunAnalysisDialog.vue';
 
 describe('RunAnalysisButton.vue', () => {
   let wrapper;
@@ -28,6 +29,11 @@ describe('RunAnalysisButton.vue', () => {
             yesterdayConversationsCount: 20,
             ...(stateOverrides.analysis || {}),
           },
+          improvements: {
+            data: [],
+            status: 'complete',
+            ...(stateOverrides.improvements || {}),
+          },
         },
       },
     });
@@ -36,6 +42,12 @@ describe('RunAnalysisButton.vue', () => {
       attachTo: document.body,
       global: {
         plugins: [pinia],
+        stubs: {
+          RunAnalysisDialog: {
+            template: '<div data-testid="run-analysis-dialog-stub" />',
+            props: ['open'],
+          },
+        },
       },
       props,
     });
@@ -144,10 +156,34 @@ describe('RunAnalysisButton.vue', () => {
   });
 
   describe('User interactions', () => {
-    it('calls runAnalysis when the button is clicked and enabled', async () => {
+    const findDialog = () => wrapper.findComponent(RunAnalysisDialog);
+
+    it('calls runAnalysis when there are no improvements', async () => {
       await findButton().trigger('click');
 
       expect(improvementsStore.runAnalysis).toHaveBeenCalledOnce();
+      expect(findDialog().props('open')).toBe(false);
+    });
+
+    it('opens the dialog when there are improvements', async () => {
+      wrapper.unmount();
+      createWrapper({
+        improvements: {
+          data: [
+            {
+              uuid: 'improvement-1',
+              text: 'Improve response time',
+              type: 'repetitive_response',
+              conversationsCount: 3,
+            },
+          ],
+        },
+      });
+
+      await findButton().trigger('click');
+
+      expect(improvementsStore.runAnalysis).not.toHaveBeenCalled();
+      expect(findDialog().props('open')).toBe(true);
     });
 
     it('does not call runAnalysis when the button is disabled', async () => {

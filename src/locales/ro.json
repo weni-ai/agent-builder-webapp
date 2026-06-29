@@ -498,6 +498,12 @@
         "run_analysis": "Rulează analiza",
         "title": "Nicio analiză nu a fost executată încă"
       },
+      "run_analysis_dialog": {
+        "cancel": "Anulează",
+        "description": "Încă există {count, plural, one {# îmbunătățire nerezolvată} few {# îmbunătățiri nerezolvate} other {# îmbunătățiri nerezolvate}} din {current_date}. O nouă analiză va înlocui această listă cu conversațiile din {new_date}. Îmbunătățirile actuale vor fi pierdute.",
+        "run": "Rulează",
+        "title": "Rulează analiza"
+      },
       "running_analysis": {
         "description": "Acest proces poate dura câteva minute. Poți închide acest ecran.",
         "title": "Se analizează {count} conversații de ieri"
