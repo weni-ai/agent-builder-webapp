@@ -228,7 +228,7 @@
       },
       "agent_details": {
         "about": "Sobre",
-        "last_updated": "Atualizado em {date}, às {time}",
+        "last_updated": "Atualizado em {date} às {time}",
         "mcp": "MCP",
         "system": "Sistema",
         "view_options": "Ver opções",
@@ -288,7 +288,7 @@
       },
       "setup": {
         "about": "Sobre",
-        "last_updated": "Atualizado em {date}, às {time}",
+        "last_updated": "Atualizado em {date} às {time}",
         "view_documentation": "Ver documentação",
         "mcps_available": {
           "title": "MCPs disponíveis"
@@ -657,11 +657,11 @@
     },
     "new_text": {
       "description": "Escreva o conteúdo que o agente usará para responder às perguntas",
-      "supporting_text": "Organize seu conteúdo em textos separados por tópico para respostas mais precisas",
+      "supporting_text": "Organize seu conteúdo em textos separados por assunto para gerar respostas mais precisas",
       "button_add_new_text": "Novo texto",
       "default_title": "Texto sem título",
       "edit_name": "Editar nome",
-      "edit_name_hint": "Pressione ENTER para confirmar ou ESC para cancelar",
+      "edit_name_hint": "Pressione Enter para confirmar ou Esc para cancelar",
       "save_changes": "Salvar alterações",
       "save_error": "Não foi possível salvar as alterações",
       "save_error_hint": "Tente salvar novamente",
@@ -671,22 +671,22 @@
       "write_or_paste_placeholder": "Escreva ou cole seu conteúdo aqui…",
       "empty_state": {
         "title": "Nenhum texto adicionado",
-        "description": "Escreva o conteúdo que o agente usará como fonte de conhecimento"
+        "description": "Escreva o conteúdo que o agente irá usar como fonte de conhecimento"
       },
       "unsaved": {
         "title": "Você tem alterações não salvas",
-        "description": "Se você voltar agora, todas as alterações feitas serão descartadas. Essa ação não pode ser desfeita",
+        "description": "Se você voltar agora, todas as alterações feitas serão descartadas. Essa ação não poderá ser desfeita.",
         "keep": "Continuar editando",
         "discard": "Descartar e voltar"
       },
       "delete": {
-        "title": "Remover texto",
-        "description": "Tem certeza de que deseja remover {name}? O agente não usará mais esse conteúdo para responder perguntas. Essa ação não pode ser desfeita.",
-        "confirm": "Remover",
+        "title": "Excluir texto",
+        "description": "Tem certeza de que deseja excluir {name}? O agente não usará mais esse conteúdo para responder perguntas. Essa ação não poderá ser desfeita.",
+        "confirm": "Excluir",
         "cancel": "Cancelar",
-        "success": "Texto removido com sucesso",
-        "error": "Não foi possível remover o texto",
-        "error_hint": "Tente remover o texto novamente"
+        "success": "Texto excluído com sucesso",
+        "error": "Não foi possível excluir o texto",
+        "error_hint": "Tente excluir o texto novamente"
       }
     },
     "file_with_error": "Arquivo com erro. Exclua e adicione-o novamente.",
@@ -699,7 +699,7 @@
       "remove_file": "Remover arquivo",
       "edit_action": "Editar ação",
       "remove_action": "Remover ação",
-      "remove_text": "Remover texto"
+      "remove_text": "Excluir texto"
     },
     "files": {
       "upload_content": "Carregar conteúdo de arquivos",

@@ -227,7 +227,7 @@
       },
       "agent_details": {
         "about": "Despre",
-        "last_updated": "Actualizat pe {date}, la {time}",
+        "last_updated": "Actualizat pe {date} la {time}",
         "mcp": "MCP",
         "system": "Sistem",
         "view_options": "Vizualizare opțiuni",
@@ -287,7 +287,7 @@
       },
       "setup": {
         "about": "Despre",
-        "last_updated": "Actualizat pe {date}, la {time}",
+        "last_updated": "Actualizat pe {date} la {time}",
         "view_documentation": "Vizualizează documentația",
         "mcps_available": {
           "title": "MCP-uri disponibile"
@@ -638,6 +638,9 @@
     "time_ago_minutes": "Adăugat acum {minutes} minute",
     "time_ago_hours": "Adăugat acum {hours} ore",
     "time_ago_days": "Adăugat acum {days} zile",
+    "time_ago_edited_minutes": "Editat acum {minutes} minute",
+    "time_ago_edited_hours": "Editat acum {hours} ore",
+    "time_ago_edited_days": "Editat acum {days} zile",
     "time_ago_created_minutes": "Creat acum {minutes} minute",
     "time_ago_created_hours": "Creat acum {hours} ore",
     "time_ago_created_days": "Creat acum {days} zile",
@@ -652,8 +655,8 @@
       "save": "Salvează"
     },
     "new_text": {
-      "description": "Scrie conținut text pe care agentul îl va folosi pentru a răspunde la întrebări",
-      "supporting_text": "Organizează conținutul în texte separate pe subiecte pentru răspunsuri mai precise",
+      "description": "Scrie manual conținutul pe care agentul îl va folosi pentru a răspunde la întrebări",
+      "supporting_text": "Organizează-ți conținutul în texte separate pe teme pentru răspunsuri mai precise",
       "button_add_new_text": "Text nou",
       "default_title": "Text fără titlu",
       "edit_name": "Editează numele",
@@ -662,7 +665,7 @@
       "save_error": "Nu s-au putut salva modificările",
       "save_error_hint": "Încearcă să salvezi din nou",
       "save_success": "Modificări salvate cu succes",
-      "search_placeholder": "Caută",
+      "search_placeholder": "Căutare",
       "no_results": "Niciun rezultat găsit",
       "write_or_paste_placeholder": "Scrie sau lipește conținutul aici…",
       "empty_state": {
@@ -671,18 +674,18 @@
       },
       "unsaved": {
         "title": "Ai modificări nesalvate",
-        "description": "Dacă te întorci acum, toate modificările făcute vor fi pierdute. Această acțiune nu poate fi anulată",
+        "description": "Dacă te întorci acum, toate modificările vor fi pierdute. Această acțiune nu poate fi anulată.",
         "keep": "Continuă editarea",
         "discard": "Renunță și întoarce-te"
       },
       "delete": {
-        "title": "Elimină textul",
-        "description": "Sigur dorești să elimini {name}? Agentul nu va mai folosi acest conținut pentru a răspunde la întrebări. Această acțiune nu poate fi anulată.",
-        "confirm": "Elimină",
+        "title": "Șterge textul",
+        "description": "Sigur dorești să ștergi {name}? Agentul nu va mai folosi acest conținut pentru a răspunde la întrebări. Această acțiune nu poate fi anulată.",
+        "confirm": "Șterge",
         "cancel": "Anulează",
-        "success": "Text eliminat cu succes",
-        "error": "Nu s-a putut elimina textul",
-        "error_hint": "Încearcă să elimini textul din nou"
+        "success": "Text șters cu succes",
+        "error": "Nu s-a putut șterge textul",
+        "error_hint": "Încearcă să ștergi din nou textul"
       }
     },
     "file_with_error": "Fișier cu eroare. Șterge-l și adaugă-l din nou.",
@@ -695,7 +698,7 @@
       "remove_file": "Ștergere fișier",
       "edit_action": "Editează acțiunea",
       "remove_action": "Elimină acțiunea",
-      "remove_text": "Elimină textul"
+      "remove_text": "Șterge textul"
     },
     "files": {
       "upload_content": "Încarcă conținutul din fișiere",
