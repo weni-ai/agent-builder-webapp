@@ -10,6 +10,7 @@ import { useAlertStore } from './Alert';
 
 import type {
   Improvement,
+  ImprovementDetail,
   ImprovementStatus,
   ImprovementsAnalysis,
   ImprovementsStatus,
@@ -118,6 +119,14 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     status: ImprovementsStatus;
   }>({
     data: [],
+    status: null,
+  });
+
+  const improvementDetail = reactive<{
+    data: ImprovementDetail | null;
+    status: ImprovementsStatus;
+  }>({
+    data: null,
     status: null,
   });
 
@@ -254,12 +263,36 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     }
   }
 
+  function resetImprovementDetail() {
+    improvementDetail.data = null;
+    improvementDetail.status = null;
+  }
+
+  async function fetchImprovementDetail(improvementUuid: string) {
+    improvementDetail.status = 'loading';
+    improvementDetail.data = null;
+
+    try {
+      improvementDetail.data = await supervisorApi.improvements.getById({
+        projectUuid: projectUuid.value,
+        improvementUuid,
+      });
+      improvementDetail.status = 'complete';
+    } catch (error) {
+      improvementDetail.status = 'error';
+      console.error(error);
+    }
+  }
+
   return {
     analysis,
     improvements,
+    improvementDetail,
     runAnalysisBlockReason,
     isRunAnalysisDisabled,
     fetchImprovements,
+    fetchImprovementDetail,
+    resetImprovementDetail,
     runAnalysis,
     updateImprovementStatus,
   };

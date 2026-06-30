@@ -291,5 +291,50 @@ describe('Supervisor.js', () => {
         Supervisor.improvements.getAnalysis({ projectUuid }),
       ).rejects.toThrow('API Error');
     });
+
+    it('getById returns improvement detail from mock data', async () => {
+      const promise = Supervisor.improvements.getById({
+        projectUuid: 'project-123',
+        improvementUuid: 'improvement-uuid-1',
+      });
+
+      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
+
+      const result = await promise;
+
+      expect(nexusRequest.$http.get).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        uuid: 'improvement-uuid-1',
+        text: 'The agent tone does not match the configured brand voice in refund conversations.',
+        type: 'personality_deviation',
+        description:
+          'In refund conversations, the agent uses informal language that conflicts with the configured brand voice.',
+        suggestedChange:
+          'Update the tone instruction to reinforce formal and empathetic language during refund interactions.',
+        status: 'pending',
+        affectedInstructions: [
+          {
+            instructionId: 12,
+            changeType: 'fix',
+            wasChanged: false,
+          },
+        ],
+      });
+    });
+
+    it('getById throws when improvement uuid is not found', async () => {
+      const promise = Supervisor.improvements.getById({
+        projectUuid: 'project-123',
+        improvementUuid: 'unknown-uuid',
+      });
+
+      const expectation = await expect(promise).rejects.toThrow(
+        'Improvement not found',
+      );
+
+      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
+
+      await expectation;
+    });
   });
 });

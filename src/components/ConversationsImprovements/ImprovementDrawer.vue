@@ -63,10 +63,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ImprovementStatusDialog from '@/components/ConversationsImprovements/ImprovementStatusDialog.vue';
+import { useImprovementsStore } from '@/store/Improvements';
 import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTag';
 
 import type {
@@ -83,6 +84,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const improvementsStore = useImprovementsStore();
 
 const isStatusDialogOpen = ref(false);
 const statusDialogStatus = ref<ImprovementStatus>('ignored');
@@ -95,6 +97,21 @@ function openStatusDialog(status: ImprovementStatus) {
 function handleStatusUpdateSuccess() {
   drawerOpen.value = false;
 }
+
+watch(
+  () => [drawerOpen.value, props.improvement?.uuid] as const,
+  ([open, improvementUuid]) => {
+    if (open && improvementUuid) {
+      improvementsStore.fetchImprovementDetail(improvementUuid);
+      return;
+    }
+
+    if (!open) {
+      improvementsStore.resetImprovementDetail();
+    }
+  },
+  { immediate: true },
+);
 
 const typeTag = computed(() => {
   const { category, scheme } = getImprovementTypeTag(props.improvement?.type);
