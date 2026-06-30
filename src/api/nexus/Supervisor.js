@@ -84,19 +84,25 @@ export const Supervisor = {
       return ImprovementsAdapter.fromApi(data);
     },
 
-    async updateStatus({ projectUuid: _projectUuid, improvementUuid, status }) {
-      // await nexusRequest.$http.patch(
-      //   `/api/projects/${projectUuid}/improvements/${improvementUuid}`,
-      //   { status },
-      // );
+    async updateStatus({ projectUuid, improvementUuid, status }) {
+      await conversationsRequest.$http.patch(
+        `/api/v1/projects/${projectUuid}/improvements/${improvementUuid}/`,
+        { status },
+      );
+    },
 
-      await wait(MOCK_ANALYSIS_DELAY_MS);
+    async getById({ projectUuid, improvementUuid }) {
+      const { data } = await conversationsRequest.$http.get(
+        `/api/v1/projects/${projectUuid}/improvements/${improvementUuid}/`,
+      );
 
-      if (mockAnalysisState) {
-        mockAnalysisState.improvements = mockAnalysisState.improvements.filter(
-          (item) => item.uuid !== improvementUuid,
-        );
+      const detail = ImprovementsAdapter.fromDetailApi(data);
+
+      if (!detail) {
+        throw new Error('Invalid improvement detail response');
       }
+
+      return detail;
     },
   },
 };
