@@ -482,6 +482,11 @@
         "title": "Analysis complete",
         "title_with_count": "{count, plural, one {Analysis complete ({count} improvement found)} other {Analysis complete ({count} improvements found)}}"
       },
+      "columns": {
+        "affected_conversations": "Affected conversations",
+        "improvement": "Improvement",
+        "type": "Type"
+      },
       "header": {
         "custom_analysis": "Custom analysis",
         "description": "Ran on {date} at {time}",
@@ -509,6 +514,12 @@
       "running_analysis": {
         "description": "This may take a few minutes. You can close this screen.",
         "title": "Analyzing {count} conversations from yesterday"
+      },
+      "types": {
+        "behavior": "Behavior",
+        "custom_analysis": "Custom analysis",
+        "knowledge": "Knowledge",
+        "technical_issue": "Technical issue"
       },
       "title": "Improvement backlog"
     }
