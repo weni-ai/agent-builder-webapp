@@ -14,6 +14,7 @@ vi.mock('@/api/nexusaiAPI', () => ({
         improvements: {
           runAnalysis: vi.fn(),
           getAnalysis: vi.fn(),
+          updateStatus: vi.fn(),
         },
       },
     },
@@ -514,6 +515,62 @@ describe('Improvements Store', () => {
       await store.runAnalysis();
 
       expect(alertStore.add).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('updateImprovementStatus', () => {
+    it('calls updateStatus with ignored status and removes the improvement from the list', async () => {
+      const improvement = buildImprovement();
+      store.improvements.data = [improvement];
+      improvementsApi.updateStatus.mockResolvedValue();
+
+      const result = await store.updateImprovementStatus(
+        improvement.uuid,
+        'ignored',
+      );
+
+      expect(improvementsApi.updateStatus).toHaveBeenCalledWith({
+        projectUuid: 'test-project-uuid',
+        improvementUuid: improvement.uuid,
+        status: 'ignored',
+      });
+      expect(store.improvements.data).toEqual([]);
+      expect(result).toEqual({ status: 'complete' });
+    });
+
+    it('calls updateStatus with resolved status and removes the improvement from the list', async () => {
+      const improvement = buildImprovement({ uuid: 'improvement-uuid-2' });
+      store.improvements.data = [improvement];
+      improvementsApi.updateStatus.mockResolvedValue();
+
+      const result = await store.updateImprovementStatus(
+        improvement.uuid,
+        'resolved',
+      );
+
+      expect(improvementsApi.updateStatus).toHaveBeenCalledWith({
+        projectUuid: 'test-project-uuid',
+        improvementUuid: improvement.uuid,
+        status: 'resolved',
+      });
+      expect(store.improvements.data).toEqual([]);
+      expect(result).toEqual({ status: 'complete' });
+    });
+
+    it('returns error status and keeps the improvement when the request fails', async () => {
+      const improvement = buildImprovement();
+      const error = new Error('update failed');
+      store.improvements.data = [improvement];
+      improvementsApi.updateStatus.mockRejectedValue(error);
+
+      const result = await store.updateImprovementStatus(
+        improvement.uuid,
+        'ignored',
+      );
+
+      expect(store.improvements.data).toEqual([improvement]);
+      expect(result).toEqual({ status: 'error' });
+      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
     });
   });
 });

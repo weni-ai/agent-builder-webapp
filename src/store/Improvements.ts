@@ -10,6 +10,7 @@ import { useAlertStore } from './Alert';
 
 import type {
   Improvement,
+  ImprovementStatus,
   ImprovementsAnalysis,
   ImprovementsStatus,
   ImprovementsTask,
@@ -210,6 +211,28 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     }
   }
 
+  async function updateImprovementStatus(
+    improvementUuid: string,
+    status: ImprovementStatus,
+  ) {
+    try {
+      await supervisorApi.improvements.updateStatus({
+        projectUuid: projectUuid.value,
+        improvementUuid,
+        status,
+      });
+
+      improvements.data = improvements.data.filter(
+        (item) => item.uuid !== improvementUuid,
+      );
+
+      return { status: 'complete' as const };
+    } catch (error) {
+      console.error(error);
+      return { status: 'error' as const };
+    }
+  }
+
   return {
     analysis,
     improvements,
@@ -217,5 +240,6 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     isRunAnalysisDisabled,
     fetchImprovements,
     runAnalysis,
+    updateImprovementStatus,
   };
 });

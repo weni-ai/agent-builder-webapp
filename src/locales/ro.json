@@ -520,7 +520,7 @@
       },
       "status_dialog": {
         "cancel": "Anulează",
-        "ignore": {
+        "ignored": {
           "description": "Această problemă va fi eliminată din backlog și nu va mai apărea în sugestiile de îmbunătățire.",
           "title": "Ignoră îmbunătățirea"
         },
