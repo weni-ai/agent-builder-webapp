@@ -486,6 +486,9 @@
         "improvement": "Mejora",
         "type": "Tipo"
       },
+      "drawer": {
+        "affected_conversations_count": "{count, plural, one {# conversación afectada} other {# conversaciones afectadas}}"
+      },
       "header": {
         "custom_analysis": "Análisis personalizado",
         "description": "Ejecutado el {date} a las {time}",

@@ -485,6 +485,9 @@
         "improvement": "Îmbunătățire",
         "type": "Tip"
       },
+      "drawer": {
+        "affected_conversations_count": "{count, plural, one {# conversație afectată} few {# conversații afectate} other {# conversații afectate}}"
+      },
       "header": {
         "custom_analysis": "Analiză personalizată",
         "description": "Rulat pe {date} la {time}",
