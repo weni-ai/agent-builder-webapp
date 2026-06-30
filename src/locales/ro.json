@@ -486,7 +486,9 @@
         "type": "Tip"
       },
       "drawer": {
-        "affected_conversations_count": "{count, plural, one {# conversație afectată} few {# conversații afectate} other {# conversații afectate}}"
+        "affected_conversations_count": "{count, plural, one {# conversație afectată} few {# conversații afectate} other {# conversații afectate}}",
+        "ignore_improvement": "Ignoră îmbunătățirea",
+        "mark_as_resolved": "Marchează ca rezolvată"
       },
       "header": {
         "custom_analysis": "Analiză personalizată",
