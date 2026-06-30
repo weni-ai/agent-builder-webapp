@@ -16,6 +16,26 @@ export type RunAnalysisBlockReason =
 
 export type ImprovementStatus = 'ignored' | 'resolved';
 
+export type ImprovementDetailStatus = 'pending' | 'resolved' | 'ignored';
+
+export type InstructionChangeType = 'fix' | 'add' | 'remove';
+
+export interface AffectedInstruction {
+  instructionId: number;
+  changeType: InstructionChangeType;
+  wasChanged: boolean;
+}
+
+export interface ImprovementDetail {
+  uuid: string;
+  text: string;
+  type: ImprovementType;
+  description: string;
+  suggestedChange: string | null;
+  status: ImprovementDetailStatus;
+  affectedInstructions: AffectedInstruction[];
+}
+
 export interface ImprovementsTask {
   isRunning: boolean;
   progress: number;
