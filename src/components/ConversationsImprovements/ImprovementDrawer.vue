@@ -34,7 +34,24 @@
         class="improvement-drawer"
         data-testid="improvement-drawer-content"
       >
-        <!-- TODO: Implement improvement detail drawer in next branch -->
+        <ImprovementDrawerSection
+          testId="diagnosis"
+          :title="$t('audit.improvements.drawer.diagnosis_title')"
+        >
+          <p data-testid="improvement-drawer-diagnosis-description">
+            {{ improvementDetail?.description }}
+          </p>
+        </ImprovementDrawerSection>
+
+        <ImprovementDrawerSection
+          testId="suggested-solution"
+          :title="$t('audit.improvements.drawer.suggested_solution_title')"
+        />
+
+        <ImprovementDrawerSection
+          testId="affected-conversations"
+          :title="$t('audit.improvements.drawer.affected_conversations_title')"
+        />
       </section>
 
       <UnnnicDrawerFooter>
@@ -66,6 +83,7 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import ImprovementDrawerSection from '@/components/ConversationsImprovements/ImprovementDrawerSection.vue';
 import ImprovementStatusDialog from '@/components/ConversationsImprovements/ImprovementStatusDialog.vue';
 import { useImprovementsStore } from '@/store/Improvements';
 import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTag';
@@ -85,6 +103,9 @@ const props = defineProps<{
 
 const { t } = useI18n();
 const improvementsStore = useImprovementsStore();
+const improvementDetail = computed(
+  () => improvementsStore.improvementDetail.data,
+);
 
 const isStatusDialogOpen = ref(false);
 const statusDialogStatus = ref<ImprovementStatus>('ignored');
@@ -125,6 +146,14 @@ const typeTag = computed(() => {
 
 <style scoped lang="scss">
 .improvement-drawer {
+  padding: $unnnic-space-6;
+
+  display: flex;
+  flex-direction: column;
+  gap: $unnnic-space-6;
+
+  overflow-y: auto;
+
   &__header-info {
     margin-top: $unnnic-space-1;
 
@@ -135,6 +164,11 @@ const typeTag = computed(() => {
 
   &__conversations-count {
     @include unnnic-font-caption-1;
+    color: $unnnic-color-fg-base;
+  }
+
+  &__section-description {
+    @include unnnic-font-body;
     color: $unnnic-color-fg-base;
   }
 }

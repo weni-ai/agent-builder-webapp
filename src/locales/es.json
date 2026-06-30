@@ -488,8 +488,11 @@
       },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# conversación afectada} other {# conversaciones afectadas}}",
+        "affected_conversations_title": "Conversaciones afectadas",
+        "diagnosis_title": "Diagnóstico",
         "ignore_improvement": "Ignorar mejora",
-        "mark_as_resolved": "Marcar como resuelta"
+        "mark_as_resolved": "Marcar como resuelta",
+        "suggested_solution_title": "Solución sugerida"
       },
       "header": {
         "custom_analysis": "Análisis personalizado",
