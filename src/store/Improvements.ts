@@ -79,6 +79,24 @@ function notifyAnalysisComplete(
   });
 }
 
+function notifyStatusUpdate(
+  alertStore: ReturnType<typeof useAlertStore>,
+  status: ImprovementStatus,
+  outcome: 'success' | 'error',
+) {
+  const prefix = `audit.improvements.status_update.${outcome}`;
+
+  alertStore.add({
+    type: outcome,
+    text: i18n.global.t(`${prefix}.${status}.title`),
+    description: i18n.global.t(
+      outcome === 'success'
+        ? `${prefix}.description`
+        : `${prefix}.${status}.description`,
+    ),
+  });
+}
+
 export const useImprovementsStore = defineStore('Improvements', () => {
   const alertStore = useAlertStore();
 
@@ -226,9 +244,12 @@ export const useImprovementsStore = defineStore('Improvements', () => {
         (item) => item.uuid !== improvementUuid,
       );
 
+      notifyStatusUpdate(alertStore, status, 'success');
+
       return { status: 'complete' as const };
     } catch (error) {
       console.error(error);
+      notifyStatusUpdate(alertStore, status, 'error');
       return { status: 'error' as const };
     }
   }

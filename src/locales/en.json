@@ -531,6 +531,27 @@
           "title": "Mark as resolved"
         }
       },
+      "status_update": {
+        "error": {
+          "ignored": {
+            "description": "Due to a technical issue",
+            "title": "Improvement couldn't be ignored"
+          },
+          "resolved": {
+            "description": "Due to a technical issue",
+            "title": "Improvement couldn't be marked as resolved"
+          }
+        },
+        "success": {
+          "description": "The item was removed from the improvements backlog",
+          "ignored": {
+            "title": "Improvement ignored"
+          },
+          "resolved": {
+            "title": "Improvement marked as resolved"
+          }
+        }
+      },
       "types": {
         "behavior": "Behavior",
         "custom_analysis": "Custom analysis",

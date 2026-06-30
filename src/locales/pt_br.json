@@ -530,6 +530,27 @@
           "title": "Marcar como resolvida"
         }
       },
+      "status_update": {
+        "error": {
+          "ignored": {
+            "description": "Devido a um problema técnico",
+            "title": "Não foi possível ignorar a melhoria"
+          },
+          "resolved": {
+            "description": "Devido a um problema técnico",
+            "title": "Não foi possível marcar como resolvida"
+          }
+        },
+        "success": {
+          "description": "O item foi removido do backlog de melhorias",
+          "ignored": {
+            "title": "Melhoria ignorada"
+          },
+          "resolved": {
+            "title": "Melhoria marcada como resolvida"
+          }
+        }
+      },
       "types": {
         "behavior": "Comportamento",
         "custom_analysis": "Análise personalizada",
