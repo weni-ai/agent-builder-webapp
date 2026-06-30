@@ -45,36 +45,9 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type {
-  Improvement,
-  ImprovementType,
-} from '@/store/types/Improvements.types';
+import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTag';
 
-type ImprovementTagCategory =
-  | 'behavior'
-  | 'custom_analysis'
-  | 'knowledge'
-  | 'technical_issue';
-
-const IMPROVEMENT_TYPE_CATEGORY_MAP: Record<
-  ImprovementType,
-  ImprovementTagCategory
-> = {
-  many_questions_before_answering: 'behavior',
-  wrong_behavior_due_to_instructions: 'behavior',
-  missing_static_knowledge: 'knowledge',
-  personality_deviation: 'behavior',
-  poor_product_search_results: 'technical_issue',
-  repetitive_response: 'behavior',
-  custom_analysis: 'custom_analysis',
-};
-
-const IMPROVEMENT_TAG_SCHEME_MAP: Record<ImprovementTagCategory, string> = {
-  behavior: 'blue',
-  knowledge: 'purple',
-  technical_issue: 'orange',
-  custom_analysis: 'yellow',
-};
+import type { Improvement } from '@/store/types/Improvements.types';
 
 const props = withDefaults(
   defineProps<{
@@ -89,10 +62,10 @@ const props = withDefaults(
 const { t } = useI18n();
 
 const typeTag = computed(() => {
-  const category = IMPROVEMENT_TYPE_CATEGORY_MAP[props.improvement.type];
+  const { category, scheme } = getImprovementTypeTag(props.improvement.type);
 
   return {
-    scheme: IMPROVEMENT_TAG_SCHEME_MAP[category],
+    scheme,
     text: t(`audit.improvements.types.${category}`),
   };
 });
