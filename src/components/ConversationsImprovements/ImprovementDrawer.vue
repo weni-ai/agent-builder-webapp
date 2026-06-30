@@ -40,11 +40,13 @@
       <UnnnicDrawerFooter>
         <UnnnicDrawerClose>
           <UnnnicButton
+            data-testid="improvement-drawer-ignore-button"
             :text="$t('audit.improvements.drawer.ignore_improvement')"
             type="tertiary"
           />
         </UnnnicDrawerClose>
         <UnnnicButton
+          data-testid="improvement-drawer-mark-resolved-button"
           :text="$t('audit.improvements.drawer.mark_as_resolved')"
           type="primary"
         />
