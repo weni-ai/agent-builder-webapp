@@ -487,7 +487,9 @@
         "type": "Tipo"
       },
       "drawer": {
-        "affected_conversations_count": "{count, plural, one {# conversación afectada} other {# conversaciones afectadas}}"
+        "affected_conversations_count": "{count, plural, one {# conversación afectada} other {# conversaciones afectadas}}",
+        "ignore_improvement": "Ignorar mejora",
+        "mark_as_resolved": "Marcar como resuelta"
       },
       "header": {
         "custom_analysis": "Análisis personalizado",

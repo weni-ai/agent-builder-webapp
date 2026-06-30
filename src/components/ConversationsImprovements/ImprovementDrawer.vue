@@ -36,6 +36,19 @@
       >
         <!-- TODO: Implement improvement detail drawer in next branch -->
       </section>
+
+      <UnnnicDrawerFooter>
+        <UnnnicDrawerClose>
+          <UnnnicButton
+            :text="$t('audit.improvements.drawer.ignore_improvement')"
+            type="tertiary"
+          />
+        </UnnnicDrawerClose>
+        <UnnnicButton
+          :text="$t('audit.improvements.drawer.mark_as_resolved')"
+          type="primary"
+        />
+      </UnnnicDrawerFooter>
     </UnnnicDrawerContent>
   </UnnnicDrawerNext>
 </template>
