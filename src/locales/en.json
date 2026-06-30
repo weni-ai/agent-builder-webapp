@@ -489,8 +489,11 @@
       },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# affected conversation} other {# affected conversations}}",
+        "affected_conversations_title": "Affected conversations",
+        "diagnosis_title": "Diagnosis",
         "ignore_improvement": "Ignore improvement",
-        "mark_as_resolved": "Mark as resolved"
+        "mark_as_resolved": "Mark as resolved",
+        "suggested_solution_title": "Suggested solution"
       },
       "header": {
         "custom_analysis": "Custom analysis",
