@@ -1,0 +1,856 @@
+{
+  "and": " y ",
+  "delete": "Eliminar",
+  "cancel": "Cancelar",
+  "back": "Atrás",
+  "next": "Siguiente",
+  "finish": "Finalizar",
+  "speed": "Velocidad",
+  "new": "Nuevo",
+  "save_changes": "Guardar cambios",
+  "unauthorized": "No tienes permiso para realizar esta acción",
+  "internal_server_error": "Error interno del servidor",
+  "unexpected_error": "Se produjo un error inesperado",
+  "agent_builder": {
+    "tabs": {
+      "knowledge": {
+        "title": "Conocimientos",
+        "description": "Agrega conocimiento mediante archivos, links o texto para que el agente pueda responder con precisión"
+      },
+      "tunings": {
+        "title": "Ajustes",
+        "description": "Gestiona la configuración y consulta los cambios realizados"
+      }
+    },
+    "instructions": {
+      "new_instruction": {
+        "title": "Nueva instrucción personalizada",
+        "validate_instruction_by_ai": {
+          "switch": "Validar instrucción por IA",
+          "button": "Validar instrucción",
+          "modal_title": "Validar instrucción",
+          "re-validate_button": "Re-validar",
+          "cancel_button": "Cancelar",
+          "publish_button": "Publicar",
+          "error_alert": "Error al obtener sugestión de instrucción por IA",
+          "results": {
+            "title": "Resultados de la validación",
+            "duplicate": "Duplicado",
+            "conflicts": "Conflicto",
+            "ambiguity": "Ambigüedad",
+            "lack_of_clarity": "Claridad",
+            "no_problems_found": "No se encontraron problemas. Listo para publicar!"
+          },
+          "see_ai_suggestion": {
+            "trigger": "Ver sugestión de IA",
+            "title": "Sugestión de IA",
+            "apply_button": "Aplicar sugestión de IA",
+            "suggestion_applied": "Sugestión de IA aplicada",
+            "no_ai_suggestion_tooltip": "No hay sugestión de IA"
+          }
+        },
+        "textarea": {
+          "placeholder": "Eres gracioso, pero no haces bromas",
+          "description": "Mantén las instrucciones claras, directas y en forma imperativa."
+        },
+        "publish_instruction": "Publicar instrucción",
+        "success_alert": "Instrucción personalizada agregada",
+        "error_alert": "Error al agregar la instrucción personalizada"
+      },
+      "instructions_list": {
+        "title": "Lista de instrucciones",
+        "tabs": {
+          "default": "Instrucciones predeterminadas",
+          "safety_topics": "Temas de seguridad",
+          "custom": "Instrucciones personalizadas",
+          "default_description": "Reglas básicas definidas por el sistema. Son de solo lectura y se aplican a todas las conversaciones con este agente.",
+          "safety_topics_description": "El agente no maneja estos temas. Se configuran automáticamente y no se pueden editar.",
+          "custom_description": "Tus instrucciones personalizadas para este agente. Puedes editarlas o eliminarlas."
+        },
+        "default_instruction": "Instrucción predeterminada",
+        "default_instructions": [
+          "Si es necesario, solicita ayuda a miembros especializados del equipo.",
+          "NUNCA debes, bajo NINGUNA CIRCUNSTANCIA, discutir temas que estén fuera de tu área de especialización.",
+          "Asegúrate de optimizar la comunicación al contactar con MÚLTIPLES agentes simultáneamente, cuando sea posible.",
+          "Mantén tu comunicación con otros agentes concisa y objetiva, sin conversaciones paralelas.",
+          "Comunícate solo con los agentes necesarios para atender la solicitud del usuario.",
+          "Responde únicamente basándote en la información del bloque de la base de conocimiento. No uses suposiciones, conocimientos externos u otras fuentes.",
+          "No infieras detalles que no fueron mencionados, no generalices más allá de lo escrito y no rellenes vacíos o especules, incluso si el tema parece obvio."
+        ],
+        "safety_topics": [
+          "Política",
+          "Salud física",
+          "Violencia física o moral",
+          "Contenido sexual",
+          "Sesgo",
+          "Odio",
+          "Religión",
+          "Suicidio",
+          "Autolesión",
+          "Creencias",
+          "Identidad de género",
+          "Relaciones sexuales"
+        ],
+        "no_custom_instructions": "No se agregaron instrucciones personalizadas",
+        "no_custom_instructions_found": "No se encontraron instrucciones personalizadas",
+        "search_placeholder": "Buscar",
+        "copy_instructions": "Copiar instrucciones",
+        "copy_success": "Instrucciones personalizadas copiadas",
+        "copy_error": "Error al copiar instrucciones"
+      },
+      "edit_instruction": {
+        "title": "Editar instrucción",
+        "success_alert": "Instrucción personalizada editada",
+        "error_alert": "Error al editar la instrucción personalizada",
+        "save": "Guardar",
+        "cancel": "Cancelar"
+      },
+      "remove_instruction": {
+        "title": "Eliminar instrucción",
+        "modal_description": "¿Realmente deseas eliminar esta instrucción?",
+        "remove": "Eliminar",
+        "cancel": "Cancelar",
+        "success_alert": "Instrucción personalizada eliminada",
+        "error_alert": "Error al eliminar la instrucción personalizada"
+      }
+    },
+    "traces": {
+      "search_result_received": "Resultado de búsqueda recibido",
+      "searching_knowledge_base": "Buscando información en la base de conocimientos",
+      "invoking_model": "Accionando el modelo",
+      "model_response_received": "Respuesta del modelo recibida",
+      "thinking": "Pensando",
+      "delegating_to_agent": "Asignando tarea al agente",
+      "forwarding_to_manager": "Enviando al manager",
+      "executing_tool": "Ejecutando herramienta {function}",
+      "tool_result_received": "Resultado de la herramienta recibido",
+      "forwarding_to_human_support": "Enviando a soporte humano",
+      "sending_response_for_manager": "Enviando respuesta al manager",
+      "sending_final_response": "Enviando respuesta final",
+      "applying_safety_rules": "Aplicando reglas de seguridad",
+      "processing_message": "Procesando mensaje",
+      "filter_logs": {
+        "title": "Filtrar logs",
+        "placeholder": "Buscar log",
+        "categories": {
+          "placeholder": "Categorías",
+          "knowledge": "Conocimientos",
+          "thinking": "Pensando",
+          "delegating_to_agent": "Asignando tarea al agente",
+          "forwarding_to_manager": "Enviando al manager",
+          "forwarding_to_human_support": "Enviando a soporte humano",
+          "tool": "Herramienta",
+          "sending_response_for_manager": "Enviando al manager",
+          "sending_final_response": "Enviando respuesta final",
+          "applying_guardrails": "Aplicando reglas de seguridad"
+        },
+        "no_logs_found": "No se econtraron logs"
+      }
+    },
+    "tunings": {
+      "project_details": "Detalles del proyecto",
+      "agents_backend": "Backend de agentes:",
+      "agent_model": "Modelo de {agent}:",
+      "characters_usage": "Uso de caracteres:",
+      "characters_usage_description": "Este es el número promedio de caracteres que tu agente está utilizando en todas las áreas: instrucciones, base de conocimiento y cualquier otra configuración.",
+      "voice_settings": {
+        "title": "Configuración de voz",
+        "switch": {
+          "text": "Usar voz",
+          "description": "Con esta función habilitada, el agente puede manejar llamadas de WhatsApp."
+        },
+        "change_voice": {
+          "title": "Elige la voz para las respuestas del agente",
+          "description": "Haz clic para escuchar las voces y elegir la que mejor se adapte a tu agente"
+        }
+      },
+      "manager": {
+        "title": "Versión del manager",
+        "new": "Nuevo",
+        "recommended": "Recomendado",
+        "legacy_model": "Modelo legado",
+        "load_error": "No fue posible cargar los managers",
+        "only_new_manager_description": "Este proyecto usa {manager_name}. Versiones más antiguas del Manager no están disponibles.",
+        "upgrade_banner": {
+          "title": "💡 {manager_name} ya está disponible",
+          "disclaimer_title": "Actualiza para {manager_name}",
+          "disclaimer_title_with_date": "Actualiza para {manager_name} hasta {date}",
+          "auto_upgrade_success_title": "{manager_name} ya está activo",
+          "auto_upgrade_success_description": "Este proyecto ha sido actualizado para el {manager_name} para mejor coordinación y respuestas más consistentes.",
+          "manager_2_dot_6_description": "Actualiza para obtener respuestas más confiables mientras el Manager coordina a tus agentes.",
+          "manager_2_dot_6_highlights": [
+            "Mejor rendimiento en conversaciones complejas",
+            "Orquestación más estable entre los agentes"
+          ],
+          "manager_2_dot_6_disclaimer_description": "Manager 2.5 será descontinuado por breve tiempo. Actualizar Manager 2.6 para respuestas más confiáveis ​​enquanto o Manager coordina sus agentes."
+        },
+        "no_components_support": "{manager_name} aún no admite el formato de múltiples mensajes"
+      },
+      "engine_source": {
+        "title": "Fuente del motor",
+        "native": "Nativo",
+        "own_api_key": "Clave de API propia",
+        "provider": "Proveedor",
+        "model": "Modelo",
+        "load_error": "No se pudo cargar la configuración de la fuente del motor",
+        "no_components_support": "{provider_name} aún no admite el formato de múltiples mensajes",
+        "placeholder": {
+          "provider": "Selecciona un proveedor",
+          "model": "Selecciona un modelo"
+        }
+      },
+      "system_messages": {
+        "title": "System messages",
+        "error_message": {
+          "label": "Error message",
+          "save_error": "Error message couldn't be saved due to a technical issue",
+          "tooltip": "This message is displayed to the contact when the agent is unable to generate a response.\nFor example, in cases of technical instability, processing errors, or exceeded response times.\nCustomize it to maintain your brand’s tone of voice even in error situations."
+        }
+      }
+    }
+  },
+  "agents": {
+    "title": "Mis agentes",
+    "description": "Gestiona tu equipo digital, instrucciones y comportamientos",
+    "assign_agents_button": "Asignar nuevos agentes",
+    "assigned_agents": {
+      "title": "Agentes asignados",
+      "new_agent": "Nuevo agente",
+      "manager": {
+        "name": "Manager",
+        "edit_manager": "Editar manager",
+        "edit_instructions": "Editar instrucciones"
+      },
+      "no_agents": {
+        "title": "No hay agentes asignados aún",
+        "description": "Clique en {assign_new_agents} y agregue su primer agente",
+        "assign_new_agents": "asignar nuevos agentes"
+      },
+      "agent_details": {
+        "about": "Sobre",
+        "last_updated": "Updated on {date} at {time}",
+        "mcp": "MCP",
+        "system": "Sistema",
+        "view_options": "Ver opciones",
+        "remove_agent": "Eliminar agente"
+      }
+    },
+    "assign_agents": {
+      "title": "Asignar nuevos agentes",
+      "description": "Los agentes son especialistas listos para proporcionar soporte personalizado y resolver demandas complejas, actúan como consultores verdaderos, garantizando una experiencia humana y de alta calidad para sus clientes.",
+      "header": {
+        "all_systems": "Todos los sistemas",
+        "all_custom_agents": "Todos los agentes personalizados",
+        "system_title": "Agentes {system}",
+        "agents_available": "{count, plural, =0 {No hay agentes disponibles} one {{count} agente disponible} other {{count} agentes disponibles}}"
+      },
+      "sidebar": {
+        "official_title": "Agentes oficiales",
+        "custom_title": "Agentes personalizados",
+        "all_systems": "Todos los sistemas",
+        "all_custom_agents": "Todos los agentes personalizados"
+      },
+      "assign_button": "Asignar agente",
+      "already_assigned": "Agente ya asignado",
+      "view_details": "Ver detalles",
+      "filters": {
+        "search": {
+          "placeholder": "Buscar"
+        },
+        "category": {
+          "placeholder": "Categorías",
+          "product_discovery_and_recommendations": "Descubrimiento y recomendaciones de productos",
+          "orders_status_and_tracking": "Estado y seguimiento de pedidos",
+          "returns_exchanges_and_cancellations": "Devoluciones, trocas y cancelaciones",
+          "payments_and_checkout": "Pagos y finalización de compra",
+          "crm_and_lead_capture": "CRM y captura de leads",
+          "feedback_and_surveys": "Comentarios y encuestas",
+          "utilities_and_monitoring": "Utilidades y monitoreo",
+          "b2b": "B2B",
+          "others": "Otros"
+        }
+      },
+      "empty_states": {
+        "search": {
+          "title": "No se encontraron resultados",
+          "description": "Tu búsqueda no retornó ningún resultado."
+        },
+        "filters": {
+          "title": "No se encontraron resultados",
+          "description": "Tus filtros no retornaron ningún resultado."
+        },
+        "custom": {
+          "title": "No se encontraron agentes personalizados",
+          "description": "Agentes personalizados son creados usando el Weni CLI.",
+          "see_documentation": "Vea la {weni_cli_documentation} para instrucciones detalladas",
+          "weni_cli_documentation": "Documentación de Weni CLI"
+        }
+      },
+      "setup": {
+        "about": "Sobre",
+        "last_updated": "Updated on {date} at {time}",
+        "view_documentation": "Ver documentación",
+        "mcps_available": {
+          "title": "MCPs disponibles"
+        },
+        "conversation_example": {
+          "title": "Ejemplo de conversación",
+          "customer_label": "Cliente"
+        },
+        "system_selection": {
+          "title": "Selección de sistema",
+          "description": "Seleccione el sistema de origen de los datos",
+          "mcp_count": "{count, plural, one {{count} MCP disponible} other {{count} MCPs disponibles}}"
+        },
+        "mcp_selection": {
+          "title": "Selección de MCP",
+          "description": "MCP es un conjunto de herramientas que habilita las capacidades del agente"
+        },
+        "mcp_config": {
+          "optional": "opcional",
+          "placeholder_title": "Selecciona un MCP en la lista al lado",
+          "placeholder_description": "Selecciona el MCP que mejor se adapte a tu escenario y configúralo",
+          "title": "Configurar MCP {mcp}",
+          "description": "Este MCP no requiere configuración"
+        },
+        "constants": {
+          "optional": "opcional",
+          "title": "Configurar {agent}"
+        },
+        "custom_credentials": {
+          "title": "Ingresar credenciales"
+        },
+        "third_step": {
+          "title": "Revisa la configuración e ingresa las credenciales",
+          "description": "Revisa la configuración e ingresa tus credenciales para finalizar la configuración del agente",
+          "system_card_title": "Sistema seleccionado",
+          "mcp_card_title": "MCP seleccionado",
+          "credentials": {
+            "disclaimer_title": "Este agente usa credenciais já inseridas neste projeto",
+            "not_required": "Este agente no requiere credenciales"
+          }
+        },
+        "start_button": "Iniciar configuración",
+        "step": {
+          "title": "Asignar {agent}",
+          "tag": "Paso {step} de {total}"
+        },
+        "cancel_button": "Cancelar",
+        "back_button": "Volver",
+        "next_button": "Siguiente",
+        "finish_button": "Finalizar"
+      }
+    },
+    "instructions": {
+      "title": "Instrucciones",
+      "description": "Escribe reglas rápidas para configurar el comportamiento del agente"
+    },
+    "profile": {
+      "tone_of_voice": {
+        "tones": {
+          "friendly": {
+            "name": "Amigable",
+            "tooltip": "Amigable y empático, enfocado en parceria y ayuda"
+          },
+          "systematic": {
+            "name": "Sistemático",
+            "tooltip": "Directo, bien organizado, enfocado en procesos claros y lógica"
+          },
+          "analytical": {
+            "name": "Analítico",
+            "tooltip": "Lógico, metodológico, y objetivo, usando lenguaje preciso y evitando suposiciones"
+          },
+          "creative": {
+            "name": "Creativo",
+            "tooltip": "Pensamiento avanzado e imaginativo, priorizando soluciones originales"
+          },
+          "casual": {
+            "name": "Informal",
+            "tooltip": "Leve, energético, y informal para un tom más accesible y humano"
+          }
+        }
+      }
+    }
+  },
+  "audit": {
+    "title": "Audit",
+    "description": "Review and analyze conversations between agents and customers.",
+    "conversations": {
+      "title": "Conversations",
+      "learn_details_conversations": "Learn about the details of a conversation.",
+      "conversation_details": {
+        "title": "About conversation",
+        "what_is_a_conversation": "What is a conversation?",
+        "what_is_a_conversation_description": "We consider all messages exchanged within 24 hours (resetting at midnight) as a single conversation.",
+        "optimized_resolution": "AI-assisted",
+        "optimized_resolution_description": "Conversations ended with a clear, effective resolution for the contact.",
+        "other_conclusion": "Not assisted",
+        "other_conclusion_description": "Conversations that ended in other ways, such as brief interactions, greetings, abandonment, or cases that followed a different flow without a direct resolution.",
+        "transferred_to_human_support": "Transferred to human support",
+        "transferred_to_human_support_description": "Includes conversations (AI-assisted and not assisted) transferred to a human representative."
+      },
+      "conversations_count": "{count} conversations found",
+      "unnamed_contact": "Unnamed contact",
+      "attended_by_agent": {
+        "title": "Assisted by an agent",
+        "tooltip": "Conversations completed by an agent"
+      },
+      "forwarded_human_support": {
+        "title": "Transferred to human support",
+        "tooltip": "Conversations transferred to human support"
+      },
+      "conversation_start_finish": {
+        "start": "Conversation started: {datetime}",
+        "finish": "Conversation ended: {datetime}"
+      },
+      "contact_urn": "Contact URN",
+      "topic": "Topic",
+      "conversation_details_collapse": "Conversation details",
+      "view_full_history": "View full history",
+      "view_logs": "Show logs",
+      "hide_logs": "Hide logs",
+      "search": "Search",
+      "conversations_empty": "No conversations found",
+      "conversations_separator": "Conversations below were classified using the legacy system",
+      "conversations_v2_disclaimer": "Starting on March {day}, conversations are organized into 24-hour windows (resetting at midnight) powered by our new classification system",
+      "no_messages_found": {
+        "title": "No messages found in this conversation",
+        "description": "If the message was sent by human support or triggered an automatic action, you can find it in {studio_link}.",
+        "studio_link": "Studio"
+      },
+      "unclassified_status_tooltip": "Conversations closed before September 8, 2025 can't be classified",
+      "export": {
+        "title": "Export to email",
+        "description": "We'll prepare the file with the AI information and send it to the following emails:",
+        "token_label": "Project API token",
+        "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
+        "token_help": "You can find this token in the",
+        "project_settings": "project settings",
+        "and_paste": "and paste it here",
+        "send": "Send export",
+        "success": "The export will be sent to all listed emails soon",
+        "error": "Error sending export. Try again later."
+      },
+      "filters": {
+        "filter_conversations": "Filter conversations",
+        "count_applied_filters": "{count, plural, one {(1 filter applied)} other {({count} filters applied)}}",
+        "filter_conversations_drawer": "Filter conversations",
+        "apply_filters": "Apply filters",
+        "clear_filters": "Clear filters",
+        "period": {
+          "label": "Period"
+        },
+        "status": {
+          "conversations": "Conversations",
+          "in_progress": "In progress",
+          "optimized_resolution": "AI-Assisted",
+          "other_conclusion": "Not Assisted",
+          "unclassified": "Not classified",
+          "transferred_to_human_support": "Transferred to human support"
+        },
+        "csat": {
+          "csat": "CSAT",
+          "very_satisfied": "🤩 Very satisfied",
+          "satisfied": "😃 Satisfied",
+          "neutral": "😐 Neutral",
+          "dissatisfied": "😔 Dissatisfied",
+          "very_dissatisfied": "😡 Very dissatisfied"
+        },
+        "topic": {
+          "topic": "Topic",
+          "unclassified": "Not classified"
+        }
+      },
+      "load_conversations": {
+        "error": "Error loading conversations"
+      }
+    },
+    "improvements": {
+      "title": "Improvement backlog"
+    }
+  },
+  "router": {
+    "agents_team": {
+      "card": {
+        "assign": "Asignar al equipo",
+        "assigned": "Asignado",
+        "success_assign_alert": "{agent} asignado",
+        "success_assign_alert_description": "El agente está listo para usar",
+        "success_unassign_alert": "{agent} removido del equipo con éxito",
+        "info_unassign_alert": "{agent} removido",
+        "error_alert": "Error al actualizar equipo",
+        "official": "Oficial",
+        "custom": "Personalizado",
+        "remove_agent": "Remover agente del equipo",
+        "delete_agent": "Eliminar agente"
+      },
+      "drawer": {
+        "title": "Asignar {name} al equipo",
+        "description": "Ingresa las credenciales para asignar el agente",
+        "use_credentials": "Utilizar credenciales configuradas en Ajustes",
+        "assign": "Asignar",
+        "credentials_used_by_this_agent": "Credenciales utilizadas por este agente",
+        "credentials_shared_with_all_agents": "Las credenciales se compartirán para que todos los agentes tengan acceso"
+      },
+      "active_team": {
+        "title": "Equipo activo",
+        "no_team": "No hay agentes asignados al equipo",
+        "no_team_description": "Navega a {assign_agents} para ver la galería y asignar agentes al equipo"
+      },
+      "gallery": {
+        "title": "Galería de agentes",
+        "search_placeholder": "Buscar agente o habilidad",
+        "official_agents": "Agentes oficiales",
+        "custom_agents": "Agentes personalizados",
+        "no_agent_found": "Ningún agente encontrado",
+        "custom_agents_description": "Los agentes personalizados se crean a través de Weni CLI",
+        "weni_cli_documentation": "Documentación de Weni CLI",
+        "weni_cli_documentation_description": "Consulta {weni_cli_documentation} para ver instrucciones detalladas"
+      },
+      "create_agent": "Crear agente",
+      "modal_delete_agent": {
+        "title": "Eliminar {agent_name}",
+        "description": "¿Estás seguro de querer eliminar el agente {agent_name}? Esta acción no puede ser desfeita.",
+        "delete": "Eliminar",
+        "cancel": "Cancelar",
+        "success_alert": "Agente {agent_name} eliminado",
+        "error_alert": "Error al eliminar agente {agent_name}"
+      }
+    },
+    "content": {
+      "fields": {
+        "search_placeholder": "Buscar"
+      }
+    },
+    "tunings": {
+      "save_changes": "Guardar cambios",
+      "changes_saved": "Cambios guardados",
+      "description": "Gestiona la configuración y consulta los cambios realizados",
+      "tabs": {
+        "config": "Configuración",
+        "credentials": "Credenciales",
+        "history": "Historial de cambios"
+      },
+      "history": {
+        "no_changes": "No se han realizado cambios en Agent Builder",
+        "description": "Consulta el historial de cambios en Agent Builder",
+        "sub_description": "Abre la lista completa o filtra por tipo de cambio",
+        "fields": {
+          "change": "Cambio",
+          "date": "Fecha",
+          "all-changes": "Todos los cambios",
+          "instructions-changes": "Cambios de instrucciones",
+          "content-changes": "Cambios de contenido",
+          "settings-changes": "Cambios de configuración",
+          "changes": "realizó {value} cambios",
+          "update-personality": "cambió la personalidad ({value})",
+          "update-goal": "cambió el objetivo ({value})",
+          "update-name": "cambió el nombre ({value})",
+          "update-role": "cambió la función ({value})",
+          "add-instruction": "agregó una instrucción ({value})",
+          "remove-instruction": "removió una instrucción ({value})",
+          "update-instruction": "cambió una instrucción ({value})",
+          "add-content": "agregó un contenido ({value})",
+          "update-content": "cambió un contenido ({value})",
+          "remove-content": "removió un contenido ({value})"
+        }
+      },
+      "credentials": {
+        "no_credentials": "No se han ingresado las credenciales",
+        "used_by_official_agents": "Credenciales utilizadas por los agentes oficiales",
+        "used_by_customized_agents": "Credenciales utilizadas por los agentes personalizados",
+        "used_by": "Utilizadas por",
+        "no_agents_using": "Ningún agente las utiliza",
+        "credentials_updated_successfully": "Credenciales actualizadas con éxito",
+        "get_error": "Error al solicitar credenciales",
+        "save_error": "Error al guardar credenciales"
+      },
+      "settings": {
+        "save_error": "Error al guardar configuración",
+        "agents_preview": {
+          "title": "Vista previa de los agentes",
+          "agents_progressive_feedback": {
+            "title": "Feedback progresivo de los agentes (Solo disponible para el Shopping Assistant)",
+            "description": "El agente puede proporcionar actualizaciones breves mientras formula la respuesta final. Esto ayuda al contacto a seguir el proceso en tiempo real."
+          },
+          "multiple_message_format": {
+            "title": "Formato de mensaje múltiple",
+            "description": "El agente puede enviar varios mensajes formateados, como respuestas rápidas, listas, CTAs y catálogos."
+          }
+        },
+        "human_support": {
+          "title": "Soporte humano",
+          "description": "El agente puede enviar la conversación a soporte humano."
+        }
+      },
+      "save_success": "Configuración guardada con éxito"
+    },
+    "preview": {
+      "trigger": "Prueba tus agentes",
+      "title": "Vista previa del agente",
+      "active": "Agent Builder activo",
+      "no_logs_registered": "No hay logs",
+      "see_full_details": "Ver detalles",
+      "manager_task": "Coordinando las tareas del equipo",
+      "visual_flow": "Flujo visual",
+      "logs": "Logs",
+      "test_your_agents": "Prueba tus agentes",
+      "options": {
+        "refresh": "Limpiar conversaciones",
+        "export": "Exportar conversaciones"
+      },
+      "preview_tests_placeholder": "Escribe un mensaje",
+      "preview_tests_attachments": {
+        "photos_or_videos": "Fotos y videos",
+        "photos": "Fotos",
+        "file": "Archivo",
+        "location": "Ubicación"
+      },
+      "placeholder": "Inicia una conversación con el agente para probarlo",
+      "manager_selected": "Ahora usando {name} para esta conversación",
+      "manager_version": "Versión del Manager",
+      "manager_version_tooltip": "Selecciona qué versión del Manager coordena esta conversación",
+      "standby": "Modo de espera",
+      "catalog": {
+        "title": "Catálogo de productos",
+        "view_cart": "{count, plural, one {Ver carrito ({count} ítem)} other {Ver carrito ({count} ítems)}}",
+        "add_to_cart": "Agregar al carrito",
+        "subtotal": "Subtotal",
+        "place_order": "Finalizar compra",
+        "your_cart": "Carrito",
+        "order_summary": "Resumen del pedido",
+        "order_details": "Detalles del pedido",
+        "view_order_details": "Ver detalles del pedido",
+        "items": "{count, plural, one {ítem} other {ítems}}",
+        "remove": "Remover"
+      }
+    }
+  },
+  "content_bases": {
+    "description": "Agrega información mediante archivos, links o texto para que el agente pueda responder con precisión",
+    "quick_test": "Prueba rápida",
+    "sidebar_quick_test_title": "Prueba rápida de la base {name}",
+    "sidebar_quick_test_description": "Envía un mensaje para probar esta base de contenido y descubre las preguntas que es capaz de responder",
+    "write_content": "Escribir contenido",
+    "write_content_placeholder": "Ingresa el contenido aquí",
+    "write_content_help": "¿Deseas saber cómo agregar contenido a la base de conocimientos de la IA? <a href=\"#\" target=\"_blank\">Consulta la documentación</a>",
+    "changes_saved": "Cambios guardados",
+    "time_ago_minutes": "Agregado hace {minutes} minutos",
+    "time_ago_hours": "Agregado hace {hours} horas",
+    "time_ago_days": "Agregado hace {days} días",
+    "time_ago_edited_minutes": "Editado hace {minutes} minutos",
+    "time_ago_edited_hours": "Editado hace {hours} horas",
+    "time_ago_edited_days": "Editado hace {days} días",
+    "time_ago_created_minutes": "Creado hace {minutes} minutos",
+    "time_ago_created_hours": "Creado hace {hours} horas",
+    "time_ago_created_days": "Creado hace {days} días",
+    "tabs": {
+      "files": "Archivos",
+      "sites": "Sitios web",
+      "text": "Texto"
+    },
+    "text": {
+      "description": "Escribe manualmente el contenido que el agente utilizará para responder a las preguntas",
+      "error": "Error al cargar archivo",
+      "save": "Guardar"
+    },
+    "new_text": {
+      "description": "Manually write the content the agent will use to answer questions",
+      "supporting_text": "Organize your content into texts separated by topic for more precise answers",
+      "button_add_new_text": "Nuevo texto",
+      "default_title": "Texto sin título",
+      "edit_name": "Editar nombre",
+      "edit_name_hint": "Press Enter to confirm or Esc to cancel",
+      "save_changes": "Guardar cambios",
+      "save_error": "Couldn't save changes",
+      "save_error_hint": "Try saving again",
+      "save_success": "Cambios guardados con éxito",
+      "search_placeholder": "Buscar",
+      "no_results": "Sin resultados",
+      "write_or_paste_placeholder": "Write or paste your content here...",
+      "empty_state": {
+        "title": "No text added",
+        "description": "Write the content the agent will use as the knowledge source"
+      },
+      "unsaved": {
+        "title": "Tienes cambios sin guardar",
+        "description": "If you go back now, all changes will be discarded. This action can't be undone.",
+        "keep": "Seguir editando",
+        "discard": "Descartar y volver"
+      },
+      "delete": {
+        "title": "Delete text",
+        "description": "Are you sure you want to delete {name}? The agent will no longer use this content to answer questions. This action can't be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancelar",
+        "success": "Text deleted successfully",
+        "error": "Couldn't delete text",
+        "error_hint": "Try deleting the text again"
+      }
+    },
+    "file_with_error": "El archivo contiene errores. Elimínalo y agrégalo de nuevo.",
+    "site_with_error": "El sitio web contiene errores. Elimínalo y agrégalo de nuevo.",
+    "actions": {
+      "see_details": "Ver detalles",
+      "download_file": "Descargar archivo",
+      "access_site": "Acceder al sitio web",
+      "remove_site": "Remover sitio web",
+      "remove_file": "Remover archivo",
+      "edit_action": "Editar acción",
+      "remove_action": "Remover acción",
+      "remove_text": "Delete text"
+    },
+    "files": {
+      "upload_content": "Cargar contenido de archivos",
+      "drag_and_drop_your_file_here": "Arrastra y suelta tu archivo aquí para agregar el contenido a la base de conocimientos de la IA",
+      "supported_files": "Formatos admitidos: {suportedFormats}.<br /> Límite de {limitMB} MB por archivo.",
+      "sup_files": "{suportedFormats}.<br /> Límite de {limitMB} MB por archivo.",
+      "description": "Carga los documentos y archivos que el agente utilizará para generar las respuestas",
+      "file_error": "El archivo contiene errores. Elimínalo y agrégalo de nuevo.",
+      "browse_file": "Agregar archivo",
+      "uploaded_files": "Archivos cargados",
+      "status": {
+        "uploading": "Cargando contenido",
+        "uploaded": "Contenido cargado",
+        "processing": "Procesando contenido"
+      },
+      "content_of_the_files_has_been_added": "El contenido de los archivos se agregó a la base",
+      "file_removed_from_base": "{name} removido de la base de contenido",
+      "unsupported_format": "El formato del archivo no es compatible",
+      "exceeds_limit": "El tamaño del archivo excede el límite de {limitMB} MB",
+      "delete_file": {
+        "title": "Eliminar archivo",
+        "description": "¿Realmente deseas eliminar el archivo <b>{name}</b>?<br />El contenido de este archivo se removerá de la base de la IA.",
+        "cancel": "Cancelar",
+        "delete": "Eliminar"
+      },
+      "preview": {
+        "title": "Información del archivo",
+        "name": "Archivo:",
+        "date": "Fecha del contenido:",
+        "content_added_to_the_agent": "Contenido del archivo agregado al agente:",
+        "not_found": {
+          "title": "No se pudo ver el contenido del archivo",
+          "description": "No se pudo encontrar el contenido del archivo.<br />Elimina el archivo e intenta agregarlo nuevamente."
+        },
+        "bedrock": {
+          "title": "La vista del contenido no está disponible"
+        }
+      }
+    },
+    "sites": {
+      "title": "Ingresa las URLs de los sitios web que el agente puede utilizar para extraer información",
+      "description": "Asegúrate de que los sitios sean confiables y contengan datos relevantes",
+      "modal": {
+        "description": "Introduce la URL del sitio web para extraer contenido",
+        "fields": {
+          "link": {
+            "label": "URL del sitio web"
+          }
+        },
+        "buttons": {
+          "cancel": "Cancelar",
+          "finish": "Finalizar"
+        }
+      },
+      "uploaded_sites": "Sitios web agregados",
+      "content_of_the_sites_has_been_added": "El contenido de los sitios web se agregó a la base",
+      "sidebar_add": {
+        "title": "Cargar contenido del sitio web",
+        "description": "Agrega el contenido de los sitios web a la base de conocimientos de la IA",
+        "fields": {
+          "link": {
+            "label": "Link del sitio web",
+            "placeholder": "www.ejemplo.com"
+          }
+        },
+        "button_more_one": "Agregar otro sitio web",
+        "button_load_content": "Cargar contenido"
+      },
+      "add_site": "Agregar sitio web",
+      "delete_site": {
+        "title": "Eliminar sitio web",
+        "description": "¿Realmente deseas eliminar el sitio web <b>{name}</b>?<br />El contenido de este sitio web se removerá de la base de la IA.",
+        "cancel": "Cancelar",
+        "delete": "Eliminar"
+      },
+      "preview": {
+        "title": "Información del sitio web",
+        "name": "Sitio web:",
+        "content_added_to_the_agent": "Contenido del sitio web agregado al agente:"
+      }
+    }
+  },
+  "profile": {
+    "tabs": {
+      "profile": "Perfil",
+      "settings": "Motor"
+    },
+    "edit_manager_profile": "Editar manager",
+    "description": "Personaliza la información básica y el comportamiento del agente",
+    "save_btn": "Guardar cambios",
+    "save_success": "Cambios guardados con éxito",
+    "save_error": "Error al guardar cambios",
+    "invalid_field": "Campo obligatorio",
+    "invalid_get_data": "Error al intentar buscar los datos",
+    "fields": {
+      "name": {
+        "title": "¿Qué nombre usa el agente para presentarse?",
+        "description": "Este es el nombre mostrado durante las interacciones con los usuarios",
+        "placeholder": "Tatiana"
+      },
+      "occupation": {
+        "title": "¿Cuál es la función principal del agente?",
+        "placeholder": "Asistente de soporte al cliente",
+        "description": "Define la función principal del agente para que los usuarios sepan cómo los puede ayudar"
+      },
+      "goal": {
+        "title": "¿Cuál es el objetivo principal del agente?",
+        "placeholder": "Responder preguntas de los clientes",
+        "description": "Esto ayuda a definir el objetivo del agente durante las interacciones"
+      },
+      "personality": {
+        "title": "¿Cuál es el tono de voz del agente?",
+        "description": "Selecciona el estilo de comunicación del agente con los usuarios"
+      }
+    },
+    "instructions": {
+      "title": "Instrucciones generales",
+      "sub_title": "Define el comportamiento del agente",
+      "instruction": {
+        "title": "Instrucción",
+        "placeholder": "Eres gracioso, pero no haces bromas"
+      },
+      "modals": {
+        "title": "Eliminar instrucción",
+        "description": "¿Realmente deseas eliminar la instrucción?",
+        "success_message": "Instrucción eliminada",
+        "error_message": "Error al eliminar instrucción",
+        "back_btn": "Cancelar",
+        "remove_btn": "Remover"
+      }
+    },
+    "human_support": {
+      "title": "Soporte humano",
+      "switch": {
+        "enabled": "Activo",
+        "disabled": "Inactivo"
+      },
+      "fields": {
+        "rules": {
+          "title": "¿Cuándo debe el agente transferir la conversación a una persona?",
+          "placeholder": "Si el usuario solicita soporte humano, el agente debe transferirlo al soporte humano."
+        }
+      }
+    }
+  },
+  "time": {
+    "time_ago_minutes": "{count, plural, one {Hace {count} minuto} other {Hace {count} minutos}}",
+    "time_ago_hours": "{count, plural, one {Hace {count} hora} other {Hace {count} horas}}",
+    "time_ago_days": "{count, plural, one {Hace {count} día} other {Hace {count} días}}",
+    "time_ago_months": "{count, plural, one {Hace {count} mes} other {Hace {count} meses}}"
+  },
+  "audio_recorder": {
+    "discard_button": "Descartar"
+  }
+}
