@@ -536,6 +536,15 @@ describe('Improvements Store', () => {
       });
       expect(store.improvements.data).toEqual([]);
       expect(result).toEqual({ status: 'complete' });
+      expect(alertStore.add).toHaveBeenCalledWith({
+        type: 'success',
+        text: i18n.global.t(
+          'audit.improvements.status_update.success.ignored.title',
+        ),
+        description: i18n.global.t(
+          'audit.improvements.status_update.success.description',
+        ),
+      });
     });
 
     it('calls updateStatus with resolved status and removes the improvement from the list', async () => {
@@ -555,6 +564,15 @@ describe('Improvements Store', () => {
       });
       expect(store.improvements.data).toEqual([]);
       expect(result).toEqual({ status: 'complete' });
+      expect(alertStore.add).toHaveBeenCalledWith({
+        type: 'success',
+        text: i18n.global.t(
+          'audit.improvements.status_update.success.resolved.title',
+        ),
+        description: i18n.global.t(
+          'audit.improvements.status_update.success.description',
+        ),
+      });
     });
 
     it('returns error status and keeps the improvement when the request fails', async () => {
@@ -571,6 +589,15 @@ describe('Improvements Store', () => {
       expect(store.improvements.data).toEqual([improvement]);
       expect(result).toEqual({ status: 'error' });
       expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+      expect(alertStore.add).toHaveBeenCalledWith({
+        type: 'error',
+        text: i18n.global.t(
+          'audit.improvements.status_update.error.ignored.title',
+        ),
+        description: i18n.global.t(
+          'audit.improvements.status_update.error.ignored.description',
+        ),
+      });
     });
   });
 });
