@@ -521,7 +521,7 @@
       },
       "status_dialog": {
         "cancel": "Cancelar",
-        "ignore": {
+        "ignored": {
           "description": "Este problema se eliminará del backlog y ya no aparecerá en las sugerencias de mejora.",
           "title": "Ignorar mejora"
         },

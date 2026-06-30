@@ -83,5 +83,20 @@ export const Supervisor = {
 
       return ImprovementsAdapter.fromApi(data);
     },
+
+    async updateStatus({ projectUuid: _projectUuid, improvementUuid, status }) {
+      // await nexusRequest.$http.patch(
+      //   `/api/projects/${projectUuid}/improvements/${improvementUuid}`,
+      //   { status },
+      // );
+
+      await wait(MOCK_ANALYSIS_DELAY_MS);
+
+      if (mockAnalysisState) {
+        mockAnalysisState.improvements = mockAnalysisState.improvements.filter(
+          (item) => item.uuid !== improvementUuid,
+        );
+      }
+    },
   },
 };

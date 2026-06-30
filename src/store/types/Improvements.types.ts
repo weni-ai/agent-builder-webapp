@@ -14,6 +14,8 @@ export type RunAnalysisBlockReason =
   | 'already_run_today'
   | null;
 
+export type ImprovementStatus = 'ignored' | 'resolved';
+
 export interface ImprovementsTask {
   isRunning: boolean;
   progress: number;
