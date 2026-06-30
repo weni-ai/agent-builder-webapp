@@ -38,30 +38,41 @@
       </section>
 
       <UnnnicDrawerFooter>
-        <UnnnicDrawerClose>
-          <UnnnicButton
-            data-testid="improvement-drawer-ignore-button"
-            :text="$t('audit.improvements.drawer.ignore_improvement')"
-            type="tertiary"
-          />
-        </UnnnicDrawerClose>
+        <UnnnicButton
+          data-testid="improvement-drawer-ignore-button"
+          :text="$t('audit.improvements.drawer.ignore_improvement')"
+          type="tertiary"
+          @click="openStatusDialog('ignored')"
+        />
         <UnnnicButton
           data-testid="improvement-drawer-mark-resolved-button"
           :text="$t('audit.improvements.drawer.mark_as_resolved')"
           type="primary"
+          @click="openStatusDialog('resolved')"
         />
       </UnnnicDrawerFooter>
     </UnnnicDrawerContent>
+
+    <ImprovementStatusDialog
+      v-model:open="isStatusDialogOpen"
+      :status="statusDialogStatus"
+      :improvementUuid="improvement?.uuid ?? null"
+      @success="handleStatusUpdateSuccess"
+    />
   </UnnnicDrawerNext>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import ImprovementStatusDialog from '@/components/ConversationsImprovements/ImprovementStatusDialog.vue';
 import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTag';
 
-import type { Improvement } from '@/store/types/Improvements.types';
+import type {
+  Improvement,
+  ImprovementStatus,
+} from '@/store/types/Improvements.types';
 
 const drawerOpen = defineModel<boolean>('open', {
   required: true,
@@ -72,6 +83,18 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+
+const isStatusDialogOpen = ref(false);
+const statusDialogStatus = ref<ImprovementStatus>('ignored');
+
+function openStatusDialog(status: ImprovementStatus) {
+  statusDialogStatus.value = status;
+  isStatusDialogOpen.value = true;
+}
+
+function handleStatusUpdateSuccess() {
+  drawerOpen.value = false;
+}
 
 const typeTag = computed(() => {
   const { category, scheme } = getImprovementTypeTag(props.improvement?.type);
