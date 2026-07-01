@@ -14,6 +14,7 @@ vi.mock('@/api/nexusaiAPI', () => ({
         improvements: {
           runAnalysis: vi.fn(),
           getAnalysis: vi.fn(),
+          getById: vi.fn(),
           updateStatus: vi.fn(),
         },
       },
@@ -64,6 +65,23 @@ const buildImprovement = (overrides = {}) => ({
   text: 'Sample improvement',
   type: 'personality_deviation',
   conversationsCount: 10,
+  ...overrides,
+});
+
+const buildImprovementDetail = (overrides = {}) => ({
+  uuid: 'improvement-uuid-1',
+  text: 'Sample improvement',
+  type: 'personality_deviation',
+  description: 'Sample diagnosis',
+  suggestedChange: 'Update the tone instruction',
+  status: 'pending',
+  affectedInstructions: [
+    {
+      instructionId: 42,
+      changeType: 'fix',
+      wasChanged: false,
+    },
+  ],
   ...overrides,
 });
 
@@ -598,6 +616,45 @@ describe('Improvements Store', () => {
           'audit.improvements.status_update.error.ignored.description',
         ),
       });
+    });
+  });
+
+  describe('fetchImprovementDetail', () => {
+    it('loads improvement detail and sets complete status', async () => {
+      const detail = buildImprovementDetail();
+      improvementsApi.getById.mockResolvedValue(detail);
+
+      await store.fetchImprovementDetail(detail.uuid);
+
+      expect(improvementsApi.getById).toHaveBeenCalledWith({
+        projectUuid: 'test-project-uuid',
+        improvementUuid: detail.uuid,
+      });
+      expect(store.improvementDetail.status).toBe('complete');
+      expect(store.improvementDetail.data).toEqual(detail);
+    });
+
+    it('sets error status when the request fails', async () => {
+      const error = new Error('detail failed');
+      improvementsApi.getById.mockRejectedValue(error);
+
+      await store.fetchImprovementDetail('improvement-uuid-1');
+
+      expect(store.improvementDetail.status).toBe('error');
+      expect(store.improvementDetail.data).toBeNull();
+      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe('resetImprovementDetail', () => {
+    it('clears improvement detail state', () => {
+      store.improvementDetail.data = buildImprovementDetail();
+      store.improvementDetail.status = 'complete';
+
+      store.resetImprovementDetail();
+
+      expect(store.improvementDetail.data).toBeNull();
+      expect(store.improvementDetail.status).toBeNull();
     });
   });
 });

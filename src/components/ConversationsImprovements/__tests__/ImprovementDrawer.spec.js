@@ -1,13 +1,16 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
+import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
+import { useImprovementsStore } from '@/store/Improvements';
 
 import ImprovementDrawer from '../ImprovementDrawer.vue';
 
 describe('ImprovementDrawer.vue', () => {
   let wrapper;
+  let improvementsStore;
 
   const baseImprovement = {
     uuid: 'improvement-uuid-1',
@@ -17,6 +20,14 @@ describe('ImprovementDrawer.vue', () => {
   };
 
   const createWrapper = (props = {}) => {
+    const pinia = createTestingPinia({
+      stubActions: false,
+    });
+
+    improvementsStore = useImprovementsStore(pinia);
+    vi.spyOn(improvementsStore, 'fetchImprovementDetail').mockResolvedValue();
+    vi.spyOn(improvementsStore, 'resetImprovementDetail');
+
     wrapper = mount(ImprovementDrawer, {
       props: {
         open: true,
@@ -24,6 +35,7 @@ describe('ImprovementDrawer.vue', () => {
         ...props,
       },
       global: {
+        plugins: [pinia],
         stubs: {
           ImprovementStatusDialog: {
             template:
@@ -49,6 +61,10 @@ describe('ImprovementDrawer.vue', () => {
     });
   };
 
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   const elements = {
     drawer: () => wrapper.find('[data-testid="improvement-drawer"]'),
     title: () => wrapper.find('[data-testid="improvement-drawer-title"]'),
@@ -69,6 +85,35 @@ describe('ImprovementDrawer.vue', () => {
 
   afterEach(() => {
     wrapper?.unmount();
+  });
+
+  describe('detail loading', () => {
+    it('fetches improvement detail when the drawer opens', async () => {
+      createWrapper();
+
+      await nextTick();
+
+      expect(improvementsStore.fetchImprovementDetail).toHaveBeenCalledWith(
+        baseImprovement.uuid,
+      );
+    });
+
+    it('resets improvement detail when the drawer closes', async () => {
+      createWrapper();
+
+      await wrapper.setProps({ open: false });
+      await nextTick();
+
+      expect(improvementsStore.resetImprovementDetail).toHaveBeenCalled();
+    });
+
+    it('does not fetch improvement detail when improvement is null', async () => {
+      createWrapper({ improvement: null });
+
+      await nextTick();
+
+      expect(improvementsStore.fetchImprovementDetail).not.toHaveBeenCalled();
+    });
   });
 
   describe('header', () => {
