@@ -1,61 +1,71 @@
 <template>
-  <UnnnicSkeletonLoading
-    v-if="isLoading"
-    tag="div"
-    width="100%"
-    height="58px"
-  />
-
-  <tr
-    v-else
+  <UnnnicTableRow
     data-testid="conversation-row"
     class="conversation-row"
     :class="{
       'conversation-row--selected': isSelected,
-      'conversation-row--with-divider': showDivider,
     }"
   >
-    <section class="conversation-row__main-infos">
-      <td class="main-infos__avatar">
-        <AvatarLetter :text="conversation?.username" />
-      </td>
+    <UnnnicTableCell
+      class="conversations-table__col conversations-table__col--contact"
+    >
+      <ConversationInfos
+        :username="conversation.username"
+        :urn="conversation.urn"
+      />
+    </UnnnicTableCell>
 
-      <td class="main-infos__user-data">
-        <ConversationInfos
-          :username="conversation.username"
-          :urn="conversation.urn"
-        />
-      </td>
-
-      <td class="main-infos__status">
-        <UnnnicToolTip
-          v-if="statusProps.text"
-          side="top"
-          :text="$t('audit.conversations.unclassified_status_tooltip')"
-          :enabled="conversation.status === 'unclassified'"
-        >
-          <UnnnicTag
-            class="cell__status"
-            :scheme="statusProps.scheme"
-            :text="statusProps.text"
-          />
-        </UnnnicToolTip>
-      </td>
-    </section>
-
-    <section class="conversation-row__secondary-infos">
-      <td
-        v-if="csatText"
-        class="secondary-infos__csat"
+    <UnnnicTableCell
+      class="conversations-table__col conversations-table__col--status"
+    >
+      <UnnnicToolTip
+        v-if="statusProps.text"
+        side="top"
+        :text="$t('audit.conversations.unclassified_status_tooltip')"
+        :enabled="conversation.status === 'unclassified'"
       >
-        <UnnnicTag :text="csatText" />
-      </td>
+        <UnnnicTag
+          class="cell__status"
+          data-testid="conversation-row-status"
+          :scheme="statusProps.scheme"
+          :text="statusProps.text"
+        />
+      </UnnnicToolTip>
+    </UnnnicTableCell>
 
-      <td class="secondary-infos__date">
-        <ConversationDate :date="conversation.start" />
-      </td>
-    </section>
-  </tr>
+    <UnnnicTableCell
+      class="conversations-table__col conversations-table__col--feedback"
+    >
+      <p
+        class="conversation-row__feedback"
+        data-testid="conversation-row-feedback"
+      >
+        {{ feedbackText }}
+      </p>
+    </UnnnicTableCell>
+
+    <UnnnicTableCell
+      class="conversations-table__col conversations-table__col--date"
+    >
+      <p
+        class="conversation-row__date"
+        data-testid="conversation-row-date"
+      >
+        {{ formatConversationDate(conversation.start) }}
+      </p>
+    </UnnnicTableCell>
+
+    <UnnnicTableCell
+      class="conversations-table__col conversations-table__col--hour"
+    >
+      <p
+        class="conversation-row__time"
+        data-testid="conversation-row-time"
+      >
+        {{ formatConversationTime(conversation.start) }}
+      </p>
+    </UnnnicTableCell>
+  </UnnnicTableRow>
 </template>
 
 <script setup lang="ts">
@@ -63,9 +73,11 @@ import { computed } from 'vue';
 
 import i18n from '@/utils/plugins/i18n';
 
-import ConversationDate from './ConversationDate.vue';
+import {
+  formatConversationDate,
+  formatConversationTime,
+} from '@/utils/formatters';
 import ConversationInfos from './ConversationInfos.vue';
-import AvatarLetter from '@/components/Supervisor/AvatarLetter.vue';
 
 import type { Conversation } from '@/store/types/Conversations.types';
 
@@ -73,14 +85,10 @@ const props = withDefaults(
   defineProps<{
     conversation?: Conversation;
     isSelected?: boolean;
-    isLoading?: boolean;
-    showDivider?: boolean;
   }>(),
   {
     conversation: undefined,
     isSelected: false,
-    isLoading: false,
-    showDivider: false,
   },
 );
 
@@ -117,8 +125,8 @@ const statusProps = computed(() => {
   };
 });
 
-const csatText = computed(() => {
-  if (!props.conversation.csat) return '';
+const feedbackText = computed(() => {
+  if (!props.conversation.csat) return '-';
 
   const csat = props.conversation.csat;
   const csatTranslation = i18n.global.t(
@@ -131,83 +139,23 @@ const csatText = computed(() => {
 
 <style lang="scss" scoped>
 .conversation-row {
-  overflow: hidden;
-
-  position: relative;
-
-  border-radius: $unnnic-border-radius-md;
-
-  padding: $unnnic-spacing-xs $unnnic-spacing-sm;
-
-  display: flex;
-  gap: $unnnic-spacing-sm;
-  align-items: center;
-  justify-content: space-between;
-
-  cursor: pointer;
-
-  &--selected,
-  &:hover {
-    background-color: $unnnic-color-background-sky;
+  &--selected {
+    background-color: $unnnic-color-bg-base-soft;
   }
 
-  &--with-divider::after {
-    content: '';
-    background-color: $unnnic-color-neutral-light;
-
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-
-    width: calc(100% - $unnnic-spacing-sm * 2);
-    height: $unnnic-border-width-thinner;
+  &__feedback {
+    @include unnnic-font-body;
+    color: $unnnic-color-fg-base;
   }
 
-  td {
-    padding: 0;
+  &__date,
+  &__time {
+    @include unnnic-font-body;
+    color: $unnnic-color-fg-base;
   }
 
-  &__main-infos,
-  &__secondary-infos {
-    display: flex;
-    gap: $unnnic-spacing-sm;
-    align-items: center;
-  }
-
-  .main-infos__status,
-  .secondary-infos__date,
-  .secondary-infos__csat {
+  .cell__status {
     white-space: nowrap;
-
-    :deep(.unnnic-tag),
-    :deep(.unnnic-tag__label) {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-  }
-
-  &__main-infos {
-    .main-infos__status {
-      overflow: hidden;
-
-      display: flex;
-      gap: $unnnic-spacing-nano;
-    }
-  }
-
-  &__secondary-infos {
-    .secondary-infos__csat {
-      :deep(.unnnic-tag) {
-        background-color: transparent;
-        border: 1px solid $unnnic-color-neutral-cleanest;
-      }
-
-      :deep(.unnnic-tag__label) {
-        color: $unnnic-color-neutral-cloudy;
-      }
-    }
   }
 }
 </style>

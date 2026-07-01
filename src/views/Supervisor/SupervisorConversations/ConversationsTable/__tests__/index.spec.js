@@ -1,10 +1,11 @@
-import { flushPromises, shallowMount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
 import { useSupervisorStore } from '@/store/Supervisor';
-import { vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
 
 import ConversationsTable from '../index.vue';
+import ConversationRow from '../ConversationRow.vue';
 import { NEW_SOURCE } from '@/api/adapters/supervisor/conversationSources';
 
 vi.mock('@/api/nexusaiAPI', () => ({
@@ -17,14 +18,14 @@ vi.mock('@/api/nexusaiAPI', () => ({
               {
                 uuid: '1',
                 urn: 'conversation-123',
-                created_on: '2023-05-15T14:30:00Z',
+                start: '2023-05-15T14:30:00Z',
                 last_message: 'This is the last message',
                 human_support: false,
               },
               {
                 uuid: '2',
                 urn: 'conversation-456',
-                created_on: '2023-05-16T10:00:00Z',
+                start: '2023-05-16T10:00:00Z',
                 last_message: 'Another message',
                 human_support: true,
               },
@@ -54,12 +55,14 @@ const mockResultsWithSource = [
     uuid: '1',
     urn: 'conversation-123',
     last_message: 'This is the last message',
+    start: '2023-05-15T14:30:00Z',
     source: NEW_SOURCE,
   },
   {
     uuid: '2',
     urn: 'conversation-456',
     last_message: 'Another message',
+    start: '2023-05-16T10:00:00Z',
     source: NEW_SOURCE,
   },
 ];
@@ -72,38 +75,60 @@ describe('ConversationsTable.vue', () => {
     stubActions: false,
   });
 
-  const table = () => wrapper.find('[data-testid="conversations-table"]');
+  const setConversations = (results) => {
+    supervisorStore.conversations.data.results = [...results];
+    supervisorStore.conversations.data.count = results.length;
+    supervisorStore.conversations.data.newNext = null;
+    supervisorStore.conversations.data.legacyNext = null;
+    supervisorStore.conversations.status = 'complete';
+  };
 
-  const conversationRows = () =>
-    wrapper.findAllComponents('[data-testid="conversation-row"]');
+  const createWrapper = async () => {
+    supervisorStore = useSupervisorStore();
+    supervisorStore.filters.start = '2023-01-01';
+    supervisorStore.filters.end = '2023-01-31';
+    setConversations(mockResultsWithSource);
 
-  beforeEach(async () => {
-    vi.clearAllMocks();
-
-    wrapper = shallowMount(ConversationsTable, {
+    wrapper = mount(ConversationsTable, {
       global: {
         plugins: [pinia],
       },
     });
 
-    supervisorStore = useSupervisorStore();
-    supervisorStore.filters.start = '2023-01-01';
-    supervisorStore.filters.end = '2023-01-31';
-
-    await supervisorStore.loadConversations();
     await flushPromises();
-
-    supervisorStore.conversations.data.results = mockResultsWithSource;
-    supervisorStore.conversations.data.newNext = null;
-    supervisorStore.conversations.data.legacyNext = null;
-    supervisorStore.conversations.status = 'complete';
-
+    setConversations(mockResultsWithSource);
     await nextTick();
+  };
+
+  const elements = {
+    table: () => wrapper.find('[data-testid="conversations-table"]'),
+    emptyState: () => wrapper.find('[data-testid="conversations-table-empty"]'),
+    conversationRows: () => wrapper.findAll('[data-testid="conversation-row"]'),
+    conversationRowComponents: () => wrapper.findAllComponents(ConversationRow),
+    columnHeader: (column) =>
+      wrapper.find(`[data-testid="conversation-table-head-${column}"]`),
+  };
+
+  beforeEach(async () => {
+    vi.clearAllMocks();
+    await createWrapper();
   });
 
-  it('renders the component correctly', () => {
-    expect(table().exists()).toBe(true);
-    expect(conversationRows()).toHaveLength(2);
+  afterEach(() => {
+    wrapper?.unmount();
+  });
+
+  it('renders the table with conversation rows', () => {
+    expect(elements.table().exists()).toBe(true);
+    expect(elements.conversationRows()).toHaveLength(2);
+  });
+
+  it('renders the column headers', () => {
+    expect(elements.columnHeader('contact').text()).toBe('Contact');
+    expect(elements.columnHeader('status').text()).toBe('Status');
+    expect(elements.columnHeader('feedback').text()).toBe('Feedback');
+    expect(elements.columnHeader('date').text()).toBe('Date');
+    expect(elements.columnHeader('hour').text()).toBe('Hour');
   });
 
   it('loads conversations on mount', () => {
@@ -111,17 +136,17 @@ describe('ConversationsTable.vue', () => {
   });
 
   it('passes correct props to ConversationRow component', () => {
-    const conversationRow = conversationRows()[0];
+    const conversationRow = elements.conversationRowComponents()[0];
 
-    expect(conversationRow.props().conversation.uuid).toBe('1');
-    expect(conversationRow.props().conversation.last_message).toBe(
+    expect(conversationRow.props('conversation').uuid).toBe('1');
+    expect(conversationRow.props('conversation').last_message).toBe(
       'This is the last message',
     );
-    expect(conversationRow.props().isSelected).toBe(false);
+    expect(conversationRow.props('isSelected')).toBe(false);
   });
 
-  it('correctly handles row click', async () => {
-    const conversationRow = conversationRows()[0];
+  it('selects the conversation when a row is clicked', async () => {
+    const conversationRow = elements.conversationRowComponents()[0];
 
     await conversationRow.trigger('click');
 
@@ -130,39 +155,11 @@ describe('ConversationsTable.vue', () => {
     });
   });
 
-  describe('showDivider', () => {
-    const setConversations = async (results) => {
-      supervisorStore.conversations.status = 'complete';
-      supervisorStore.conversations.data.results = [...results];
-      supervisorStore.conversations.data.count = results.length;
-      await nextTick();
-    };
+  it('renders the empty state when there are no conversations', async () => {
+    setConversations([]);
+    await nextTick();
 
-    it('sets showDivider for all but the last row when there is no separator', async () => {
-      await setConversations([
-        { uuid: '1', source: NEW_SOURCE },
-        { uuid: '2', source: NEW_SOURCE },
-        { uuid: '3', source: NEW_SOURCE },
-      ]);
-
-      const rows = conversationRows();
-      const showDividerValues = rows.map((row) => row.props('showDivider'));
-
-      expect(showDividerValues).toEqual([true, true, false]);
-    });
-
-    it('skips the divider on the row before the separator', async () => {
-      await setConversations([
-        { uuid: '1', source: NEW_SOURCE },
-        { uuid: '2', source: NEW_SOURCE },
-        { uuid: '3', source: 'legacy' },
-        { uuid: '4', source: 'legacy' },
-      ]);
-
-      const rows = conversationRows();
-      const showDividerValues = rows.map((row) => row.props('showDivider'));
-
-      expect(showDividerValues).toEqual([true, false, true, false]);
-    });
+    expect(elements.emptyState().exists()).toBe(true);
+    expect(elements.conversationRows()).toHaveLength(0);
   });
 });
