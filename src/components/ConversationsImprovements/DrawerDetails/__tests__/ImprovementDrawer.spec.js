@@ -24,7 +24,7 @@ describe('ImprovementDrawer.vue', () => {
     text: baseImprovement.text,
     type: baseImprovement.type,
     description: 'The agent tone does not match the configured brand voice.',
-    suggestedChange: 'Update the tone instruction in refund conversations.',
+    suggestedSolution: 'Update the tone instruction in refund conversations.',
     status: 'pending',
     affectedInstructions: [],
   };
