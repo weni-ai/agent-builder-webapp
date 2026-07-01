@@ -473,6 +473,13 @@
         "title": "Analiză finalizată",
         "title_with_count": "{count, plural, one {Analiză finalizată ({count} îmbunătățire găsită)} other {Analiză finalizată ({count} îmbunătățiri găsite)}}"
       },
+      "header": {
+        "custom_analysis": "Analiză personalizată",
+        "description": "Rulat pe {date} la {time}",
+        "description_today": "Rulat astăzi la {time}",
+        "run_analysis": "Rulează analiza",
+        "title": "{count, plural, one {Analiza conversațiilor din {date} · {count} îmbunătățire identificată} other {Analiza conversațiilor din {date} · {count} îmbunătățiri identificate}}"
+      },
       "no_analysis": {
         "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire în conversațiile de ieri",
         "run_analysis": "Rulează analiza",
