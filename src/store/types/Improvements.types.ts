@@ -21,7 +21,7 @@ export type ImprovementDetailStatus = 'pending' | 'resolved' | 'ignored';
 export type InstructionChangeType = 'fix' | 'add' | 'remove';
 
 export interface AffectedInstruction {
-  instructionId: number;
+  id: number;
   changeType: InstructionChangeType;
   wasChanged: boolean;
 }
@@ -31,7 +31,7 @@ export interface ImprovementDetail {
   text: string;
   type: ImprovementType;
   description: string;
-  suggestedChange: string | null;
+  suggestedSolution: string | null;
   status: ImprovementDetailStatus;
   affectedInstructions: AffectedInstruction[];
 }
