@@ -45,8 +45,8 @@ import { storeToRefs } from 'pinia';
 
 import { useImprovementsStore } from '@/store/Improvements';
 
-import ImprovementDrawer from '@/components/ConversationsImprovements/ImprovementDrawer.vue';
-import ImprovementRow from '@/components/ConversationsImprovements/ImprovementRow.vue';
+import ImprovementDrawer from './DrawerDetails/ImprovementDrawer.vue';
+import ImprovementRow from './ImprovementRow.vue';
 
 import type { Improvement } from '@/store/types/Improvements.types';
 

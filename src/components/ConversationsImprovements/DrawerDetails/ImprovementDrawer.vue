@@ -43,10 +43,7 @@
           </p>
         </ImprovementDrawerSection>
 
-        <ImprovementDrawerSection
-          testId="suggested-solution"
-          :title="$t('audit.improvements.drawer.suggested_solution_title')"
-        />
+        <SuggestedSolutionSection />
 
         <ImprovementDrawerSection
           testId="affected-conversations"
@@ -83,10 +80,12 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import ImprovementDrawerSection from '@/components/ConversationsImprovements/ImprovementDrawerSection.vue';
-import ImprovementStatusDialog from '@/components/ConversationsImprovements/ImprovementStatusDialog.vue';
 import { useImprovementsStore } from '@/store/Improvements';
 import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTag';
+
+import ImprovementStatusDialog from './ImprovementStatusDialog.vue';
+import SuggestedSolutionSection from './SuggestedSolutionSection.vue';
+import ImprovementDrawerSection from './ImprovementDrawerSection.vue';
 
 import type {
   Improvement,
