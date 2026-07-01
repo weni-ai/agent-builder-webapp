@@ -112,14 +112,14 @@ function isInstructionChangeType(
 function parseAffectedInstruction(
   item: AffectedInstructionApi = {},
 ): AffectedInstruction | null {
-  const instructionId = Number(item.instruction_id);
+  const id = Number(item.instruction_id);
 
-  if (!instructionId || !isInstructionChangeType(item.change_type)) {
+  if (!id || !isInstructionChangeType(item.change_type)) {
     return null;
   }
 
   return {
-    instructionId,
+    id,
     changeType: item.change_type,
     wasChanged: Boolean(item.was_changed),
   };
@@ -137,7 +137,7 @@ function parseImprovementDetail(
     text: apiData.text,
     type: apiData.type,
     description: apiData.description ?? '',
-    suggestedChange: apiData.suggested_change ?? null,
+    suggestedSolution: apiData.suggested_change ?? null,
     status: isImprovementDetailStatus(apiData.status)
       ? apiData.status
       : 'pending',
