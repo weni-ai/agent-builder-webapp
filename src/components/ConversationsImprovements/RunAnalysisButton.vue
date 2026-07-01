@@ -10,17 +10,21 @@
       :disabled="improvementsStore.isRunAnalysisDisabled"
       :loading="improvementsStore.analysis.status === 'loading'"
       :data-testid="dataTestid"
-      @click="improvementsStore.runAnalysis"
+      @click="handleRunAnalysisClick"
     />
   </UnnnicToolTip>
+
+  <RunAnalysisDialog v-model:open="isRunAnalysisDialogOpen" />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 
 import { useImprovementsStore } from '@/store/Improvements';
+
+import RunAnalysisDialog from './RunAnalysisDialog.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -35,7 +39,9 @@ const props = withDefaults(
 
 const { t } = useI18n();
 const improvementsStore = useImprovementsStore();
-const { runAnalysisBlockReason } = storeToRefs(improvementsStore);
+const { runAnalysisBlockReason, improvements } = storeToRefs(improvementsStore);
+
+const isRunAnalysisDialogOpen = ref(false);
 
 const buttonText = computed(() => t(props.translationKey));
 
@@ -54,4 +60,13 @@ const tooltipText = computed(() => {
 
   return '';
 });
+
+const handleRunAnalysisClick = () => {
+  if (improvements.value.data.length > 0) {
+    isRunAnalysisDialogOpen.value = true;
+    return;
+  }
+
+  improvementsStore.runAnalysis();
+};
 </script>
