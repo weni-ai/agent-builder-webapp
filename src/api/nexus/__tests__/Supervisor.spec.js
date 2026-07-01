@@ -1,8 +1,18 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import nexusRequest from '@/api/nexusaiRequest';
+import conversationsRequest from '@/api/conversationsRequest';
 import { Supervisor } from '@/api/nexus/Supervisor';
 
 vi.mock('@/api/nexusaiRequest', () => ({
+  default: {
+    $http: {
+      get: vi.fn(),
+      post: vi.fn(),
+    },
+  },
+}));
+
+vi.mock('@/api/conversationsRequest', () => ({
   default: {
     $http: {
       get: vi.fn(),
@@ -212,137 +222,74 @@ describe('Supervisor.js', () => {
   });
 
   describe('improvements', () => {
-    const MOCK_ANALYSIS_DELAY_MS = 400;
+    const projectUuid = 'project-123';
 
-    beforeEach(() => {
-      vi.useFakeTimers();
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
-    });
-
-    async function startMockAnalysis() {
-      const promise = Supervisor.improvements.runAnalysis({
-        projectUuid: 'project-123',
-      });
-
-      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
-
-      return promise;
-    }
-
-    async function pollMockAnalysis() {
-      const promise = Supervisor.improvements.getAnalysis({
-        projectUuid: 'project-123',
-      });
-
-      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
-
-      return promise;
-    }
-
-    it('runAnalysis initializes a running task without returning data', async () => {
-      await startMockAnalysis();
-
-      const result = await pollMockAnalysis();
-
-      expect(result.task).toEqual({
-        isRunning: true,
-        progress: 1,
-        total: 5,
-        createdAt: '2026-06-23T12:00:00Z',
-      });
-      expect(result.improvements).toEqual([]);
-    });
-
-    it('getAnalysis returns default completed data when no task was started', async () => {
-      vi.resetModules();
-
-      const { Supervisor: FreshSupervisor } = await import(
-        '@/api/nexus/Supervisor'
-      );
-
-      const promise = FreshSupervisor.improvements.getAnalysis({
-        projectUuid: 'project-123',
-      });
-
-      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
-
-      const result = await promise;
-
-      expect(result.task.isRunning).toBe(false);
-      expect(result.conversationsCount).toBe(54);
-      expect(result.improvements).toHaveLength(6);
-      expect(result.improvements[0]).toMatchObject({
-        uuid: 'improvement-uuid-1',
-        type: 'personality_deviation',
-      });
-    });
-
-    it('getAnalysis advances progress until improvements are returned', async () => {
-      await startMockAnalysis();
-
-      let result;
-
-      for (let step = 1; step <= 5; step += 1) {
-        result = await pollMockAnalysis();
-
-        expect(result.task).toEqual({
-          isRunning: step < 5,
-          progress: step,
-          total: 5,
-          createdAt: '2026-06-23T12:00:00Z',
-        });
-
-        if (step < 4) {
-          expect(result.improvements).toEqual([]);
-        } else if (step === 4) {
-          expect(result.improvements).toHaveLength(3);
-          expect(result.improvements[0]).toMatchObject({
-            uuid: 'improvement-uuid-1',
-            type: 'personality_deviation',
-          });
-          expect(result.improvements[2]).toMatchObject({
-            uuid: 'improvement-uuid-3',
-            type: 'missing_static_knowledge',
-          });
-        }
-      }
-
-      expect(result.task).toEqual({
-        isRunning: false,
+    const mockApiResponse = {
+      yesterday_conversations_count: 30,
+      improvements_task: {
+        is_running: false,
         progress: 5,
         total: 5,
-        createdAt: '2026-06-23T12:00:00Z',
+        created_at: '2026-06-01T10:00:00Z',
+      },
+      improvements: [
+        {
+          uuid: 'improvement-uuid-1',
+          text: 'Sample improvement',
+          type: 'personality_deviation',
+          conversations_count: 12,
+        },
+      ],
+    };
+
+    it('runAnalysis calls the run endpoint', async () => {
+      conversationsRequest.$http.post.mockResolvedValue({ data: {} });
+
+      await Supervisor.improvements.runAnalysis({ projectUuid });
+
+      expect(conversationsRequest.$http.post).toHaveBeenCalledWith(
+        `/api/v1/projects/${projectUuid}/improvements/run/`,
+      );
+      expect(nexusRequest.$http.post).not.toHaveBeenCalled();
+    });
+
+    it('getAnalysis calls the improvements endpoint and adapts the response', async () => {
+      conversationsRequest.$http.get.mockResolvedValue({
+        data: mockApiResponse,
       });
-      expect(result.conversationsCount).toBe(54);
-      expect(result.improvements).toHaveLength(6);
-      expect(result.improvements[0]).toMatchObject({
-        uuid: 'improvement-uuid-1',
-        type: 'personality_deviation',
-        conversationsCount: 18,
-      });
-      expect(result.improvements[5]).toMatchObject({
-        uuid: 'improvement-uuid-6',
-        type: 'repetitive_response',
-        conversationsCount: 3,
+
+      const result = await Supervisor.improvements.getAnalysis({ projectUuid });
+
+      expect(conversationsRequest.$http.get).toHaveBeenCalledWith(
+        `/api/v1/projects/${projectUuid}/improvements/`,
+      );
+      expect(nexusRequest.$http.get).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        yesterdayConversationsCount: 30,
+        task: {
+          isRunning: false,
+          progress: 5,
+          total: 5,
+          createdAt: '2026-06-01T10:00:00Z',
+        },
+        improvements: [
+          {
+            uuid: 'improvement-uuid-1',
+            text: 'Sample improvement',
+            type: 'personality_deviation',
+            conversationsCount: 12,
+          },
+        ],
       });
     });
 
-    it('getAnalysis keeps returning completed data without changing progress', async () => {
-      await startMockAnalysis();
+    it('propagates errors from getAnalysis', async () => {
+      const error = new Error('API Error');
+      conversationsRequest.$http.get.mockRejectedValue(error);
 
-      let completedResult;
-
-      for (let step = 0; step < 5; step += 1) {
-        completedResult = await pollMockAnalysis();
-      }
-
-      const result = await pollMockAnalysis();
-
-      expect(result.task).toEqual(completedResult.task);
-      expect(result.improvements).toEqual(completedResult.improvements);
+      await expect(
+        Supervisor.improvements.getAnalysis({ projectUuid }),
+      ).rejects.toThrow('API Error');
     });
   });
 });

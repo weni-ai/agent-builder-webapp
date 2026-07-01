@@ -54,11 +54,11 @@ export const useImprovementsStore = defineStore('Improvements', () => {
   const analysis = reactive<{
     status: ImprovementsStatus;
     task: ImprovementsTask | null;
-    conversationsCount: number;
+    yesterdayConversationsCount: number;
   }>({
     status: null,
     task: null,
-    conversationsCount: 0,
+    yesterdayConversationsCount: 0,
   });
 
   const improvements = reactive<{
@@ -71,7 +71,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
   function applyAnalysisResponse(response: ImprovementsAnalysis) {
     analysis.task = response.task;
-    analysis.conversationsCount = response.conversationsCount;
+    analysis.yesterdayConversationsCount = response.yesterdayConversationsCount;
     improvements.data = response.improvements;
   }
 
@@ -82,7 +82,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
   function resetAnalysisState() {
     analysis.task = null;
-    analysis.conversationsCount = 0;
+    analysis.yesterdayConversationsCount = 0;
     improvements.data = [];
   }
 

@@ -24,7 +24,7 @@ export interface Improvement {
 }
 
 export interface ImprovementsAnalysis {
-  conversationsCount: number;
+  yesterdayConversationsCount: number;
   task: ImprovementsTask;
   improvements: Improvement[];
 }

@@ -49,7 +49,7 @@ const getPollIntervalMs = (completedPollCount) => {
 };
 
 const buildAnalysisResponse = (overrides = {}) => ({
-  conversationsCount: 10,
+  yesterdayConversationsCount: 10,
   task: { isRunning: false, progress: 1, total: 1, createdAt: null },
   improvements: [],
   ...overrides,
@@ -95,7 +95,7 @@ describe('Improvements Store', () => {
       expect(store.analysis).toEqual({
         status: null,
         task: null,
-        conversationsCount: 0,
+        yesterdayConversationsCount: 0,
       });
       expect(store.improvements).toEqual({
         data: [],
@@ -110,7 +110,7 @@ describe('Improvements Store', () => {
 
       improvementsApi.getAnalysis.mockResolvedValue(
         buildAnalysisResponse({
-          conversationsCount: 25,
+          yesterdayConversationsCount: 25,
           task: { isRunning: false, progress: 5, total: 5, createdAt: null },
           improvements,
         }),
@@ -123,7 +123,7 @@ describe('Improvements Store', () => {
       });
       expect(store.analysis.status).toBe('complete');
       expect(store.improvements.status).toBe('complete');
-      expect(store.analysis.conversationsCount).toBe(25);
+      expect(store.analysis.yesterdayConversationsCount).toBe(25);
       expect(store.improvements.data).toEqual(improvements);
     });
 
@@ -190,7 +190,7 @@ describe('Improvements Store', () => {
       expect(store.analysis.status).toBe('loading');
       expect(store.improvements.status).toBe('loading');
       expect(store.analysis.task).toBeNull();
-      expect(store.analysis.conversationsCount).toBe(0);
+      expect(store.analysis.yesterdayConversationsCount).toBe(0);
       expect(store.improvements.data).toEqual([]);
 
       resolveRunAnalysis();
