@@ -20,7 +20,7 @@ export interface ImprovementApi {
 }
 
 export interface ImprovementsAnalysisApi {
-  conversations_count?: number;
+  yesterday_conversations_count?: number;
   improvements_task?: ImprovementsTaskApi;
   improvements?: ImprovementApi[];
 }
@@ -68,7 +68,8 @@ export const ImprovementsAdapter = {
       .filter((item): item is Improvement => item !== null);
 
     return {
-      conversationsCount: Number(apiData.conversations_count) || 0,
+      yesterdayConversationsCount:
+        Number(apiData.yesterday_conversations_count) || 0,
       task: parseTask(apiData.improvements_task),
       improvements,
     };

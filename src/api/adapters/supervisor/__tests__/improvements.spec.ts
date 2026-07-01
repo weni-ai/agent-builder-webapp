@@ -6,7 +6,7 @@ describe('Supervisor improvements adapter', () => {
   describe('fromApi', () => {
     it('transforms API data to frontend format', () => {
       const result = ImprovementsAdapter.fromApi({
-        conversations_count: 42,
+        yesterday_conversations_count: 42,
         improvements_task: {
           is_running: true,
           progress: 2,
@@ -24,7 +24,7 @@ describe('Supervisor improvements adapter', () => {
       });
 
       expect(result).toEqual({
-        conversationsCount: 42,
+        yesterdayConversationsCount: 42,
         task: {
           isRunning: true,
           progress: 2,
@@ -44,7 +44,7 @@ describe('Supervisor improvements adapter', () => {
 
     it('returns safe defaults when API fields are missing', () => {
       expect(ImprovementsAdapter.fromApi()).toEqual({
-        conversationsCount: 0,
+        yesterdayConversationsCount: 0,
         task: {
           isRunning: false,
           progress: 0,
@@ -93,7 +93,7 @@ describe('Supervisor improvements adapter', () => {
       ]);
     });
 
-    it('defaults conversationsCount to zero when count is missing', () => {
+    it('defaults yesterdayConversationsCount to zero when count is missing', () => {
       const result = ImprovementsAdapter.fromApi({
         improvements: [
           {
