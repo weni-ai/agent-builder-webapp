@@ -126,11 +126,11 @@ describe('Supervisor improvements adapter', () => {
         text: 'Sample improvement text',
         type: 'personality_deviation',
         description: 'Sample diagnosis',
-        suggestedChange: 'Update the tone instruction',
+        suggestedSolution: 'Update the tone instruction',
         status: 'pending',
         affectedInstructions: [
           {
-            instructionId: 42,
+            id: 42,
             changeType: 'fix',
             wasChanged: true,
           },
@@ -179,11 +179,11 @@ describe('Supervisor improvements adapter', () => {
         text: 'Sample improvement text',
         type: 'personality_deviation',
         description: 'Sample diagnosis',
-        suggestedChange: null,
+        suggestedSolution: null,
         status: 'pending',
         affectedInstructions: [
           {
-            instructionId: 42,
+            id: 42,
             changeType: 'fix',
             wasChanged: false,
           },
