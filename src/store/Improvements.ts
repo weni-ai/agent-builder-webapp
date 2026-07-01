@@ -10,6 +10,7 @@ import { useAlertStore } from './Alert';
 
 import type {
   Improvement,
+  ImprovementStatus,
   ImprovementsAnalysis,
   ImprovementsStatus,
   ImprovementsTask,
@@ -75,6 +76,24 @@ function notifyAnalysisComplete(
     type: 'success',
     text: alertText,
     description: alertDescription,
+  });
+}
+
+function notifyStatusUpdate(
+  alertStore: ReturnType<typeof useAlertStore>,
+  status: ImprovementStatus,
+  outcome: 'success' | 'error',
+) {
+  const prefix = `audit.improvements.status_update.${outcome}`;
+
+  alertStore.add({
+    type: outcome,
+    text: i18n.global.t(`${prefix}.${status}.title`),
+    description: i18n.global.t(
+      outcome === 'success'
+        ? `${prefix}.description`
+        : `${prefix}.${status}.description`,
+    ),
   });
 }
 
@@ -210,6 +229,31 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     }
   }
 
+  async function updateImprovementStatus(
+    improvementUuid: string,
+    status: ImprovementStatus,
+  ) {
+    try {
+      await supervisorApi.improvements.updateStatus({
+        projectUuid: projectUuid.value,
+        improvementUuid,
+        status,
+      });
+
+      improvements.data = improvements.data.filter(
+        (item) => item.uuid !== improvementUuid,
+      );
+
+      notifyStatusUpdate(alertStore, status, 'success');
+
+      return { status: 'complete' as const };
+    } catch (error) {
+      console.error(error);
+      notifyStatusUpdate(alertStore, status, 'error');
+      return { status: 'error' as const };
+    }
+  }
+
   return {
     analysis,
     improvements,
@@ -217,5 +261,6 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     isRunAnalysisDisabled,
     fetchImprovements,
     runAnalysis,
+    updateImprovementStatus,
   };
 });

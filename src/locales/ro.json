@@ -518,6 +518,38 @@
         "description": "Acest proces poate dura câteva minute. Poți închide acest ecran.",
         "title": "Se analizează {count} conversații de ieri"
       },
+      "status_dialog": {
+        "cancel": "Anulează",
+        "ignored": {
+          "description": "Această problemă va fi eliminată din backlog și nu va mai apărea în sugestiile de îmbunătățire.",
+          "title": "Ignoră îmbunătățirea"
+        },
+        "resolved": {
+          "description": "Confirmă doar după aplicarea soluției sugerate. Problema va fi eliminată din backlog și va face loc pentru noi îmbunătățiri.",
+          "title": "Marchează ca rezolvată"
+        }
+      },
+      "status_update": {
+        "error": {
+          "ignored": {
+            "description": "Din cauza unei probleme tehnice",
+            "title": "Nu s-a putut ignora îmbunătățirea"
+          },
+          "resolved": {
+            "description": "Din cauza unei probleme tehnice",
+            "title": "Nu s-a putut marca ca rezolvată"
+          }
+        },
+        "success": {
+          "description": "Elementul a fost eliminat din backlog-ul de îmbunătățiri",
+          "ignored": {
+            "title": "Îmbunătățire ignorată"
+          },
+          "resolved": {
+            "title": "Îmbunătățire marcată ca rezolvată"
+          }
+        }
+      },
       "types": {
         "behavior": "Comportament",
         "custom_analysis": "Analiză personalizată",

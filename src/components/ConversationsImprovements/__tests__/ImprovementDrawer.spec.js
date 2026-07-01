@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it } from 'vitest';
+import { nextTick } from 'vue';
 
 import i18n from '@/utils/plugins/i18n';
 
@@ -24,6 +25,12 @@ describe('ImprovementDrawer.vue', () => {
       },
       global: {
         stubs: {
+          ImprovementStatusDialog: {
+            template:
+              '<div data-testid="improvement-status-dialog-stub" :data-status="status" :data-open="String(open)"><button data-testid="emit-success" @click="$emit(\'success\')" /></div>',
+            props: ['status', 'improvementUuid', 'open'],
+            emits: ['success'],
+          },
           UnnnicDrawerContent: {
             template: '<div><slot /></div>',
           },
@@ -36,9 +43,6 @@ describe('ImprovementDrawer.vue', () => {
           UnnnicDrawerFooter: {
             template:
               '<div data-testid="improvement-drawer-footer"><slot /></div>',
-          },
-          UnnnicDrawerClose: {
-            template: '<div><slot /></div>',
           },
         },
       },
@@ -59,6 +63,8 @@ describe('ImprovementDrawer.vue', () => {
         '[data-testid="improvement-drawer-mark-resolved-button"]',
       ),
     footer: () => wrapper.find('[data-testid="improvement-drawer-footer"]'),
+    statusDialog: () =>
+      wrapper.find('[data-testid="improvement-status-dialog-stub"]'),
   };
 
   afterEach(() => {
@@ -192,6 +198,37 @@ describe('ImprovementDrawer.vue', () => {
       expect(markResolvedButton.props('text')).toBe(
         i18n.global.t('audit.improvements.drawer.mark_as_resolved'),
       );
+    });
+
+    it('opens the ignore status dialog when the ignore button is clicked', async () => {
+      createWrapper();
+
+      await elements.ignoreButton().trigger('click');
+
+      const statusDialog = elements.statusDialog();
+
+      expect(statusDialog.attributes('data-open')).toBe('true');
+      expect(statusDialog.attributes('data-status')).toBe('ignored');
+    });
+
+    it('opens the resolved status dialog when the mark as resolved button is clicked', async () => {
+      createWrapper();
+
+      await elements.markResolvedButton().trigger('click');
+
+      const statusDialog = elements.statusDialog();
+
+      expect(statusDialog.attributes('data-open')).toBe('true');
+      expect(statusDialog.attributes('data-status')).toBe('resolved');
+    });
+
+    it('closes the drawer when the status dialog emits success', async () => {
+      createWrapper();
+
+      await wrapper.find('[data-testid="emit-success"]').trigger('click');
+      await nextTick();
+
+      expect(wrapper.emitted('update:open')).toEqual([[false]]);
     });
   });
 });

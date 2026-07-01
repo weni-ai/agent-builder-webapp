@@ -519,6 +519,38 @@
         "description": "Isso pode levar alguns minutos. É possível fechar esta tela.",
         "title": "Analisando {count} conversas de ontem"
       },
+      "status_dialog": {
+        "cancel": "Cancelar",
+        "ignored": {
+          "description": "Este problema será removido do backlog e não aparecerá mais nas sugestões de melhoria.",
+          "title": "Ignorar melhoria"
+        },
+        "resolved": {
+          "description": "Confirme apenas após aplicar a solução sugerida. O problema será removido do backlog e abrirá espaço para novas melhorias.",
+          "title": "Marcar como resolvida"
+        }
+      },
+      "status_update": {
+        "error": {
+          "ignored": {
+            "description": "Devido a um problema técnico",
+            "title": "Não foi possível ignorar a melhoria"
+          },
+          "resolved": {
+            "description": "Devido a um problema técnico",
+            "title": "Não foi possível marcar como resolvida"
+          }
+        },
+        "success": {
+          "description": "O item foi removido do backlog de melhorias",
+          "ignored": {
+            "title": "Melhoria ignorada"
+          },
+          "resolved": {
+            "title": "Melhoria marcada como resolvida"
+          }
+        }
+      },
       "types": {
         "behavior": "Comportamento",
         "custom_analysis": "Análise personalizada",
