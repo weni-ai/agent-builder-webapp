@@ -162,6 +162,7 @@ describe('Improvements Store', () => {
 
       expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(3);
       expect(store.improvements.data).toEqual(improvements);
+      expect(store.analysis.task.isRunning).toBe(false);
       expect(store.analysis.status).toBe('loading');
       expect(store.improvements.status).toBe('loading');
       expect(alertStore.add).not.toHaveBeenCalled();
@@ -180,7 +181,94 @@ describe('Improvements Store', () => {
     });
   });
 
+  describe('runAnalysisBlockReason', () => {
+    it('returns null while status is loading', () => {
+      store.analysis.status = 'loading';
+      store.analysis.yesterdayConversationsCount = 5;
+
+      expect(store.runAnalysisBlockReason).toBeNull();
+    });
+
+    it('returns insufficient_volume when yesterday count is below minimum', () => {
+      store.analysis.status = 'complete';
+      store.analysis.yesterdayConversationsCount = 14;
+      store.analysis.task = null;
+
+      expect(store.runAnalysisBlockReason).toBe('insufficient_volume');
+    });
+
+    it('returns null when yesterday count meets minimum', () => {
+      store.analysis.status = 'complete';
+      store.analysis.yesterdayConversationsCount = 15;
+      store.analysis.task = null;
+
+      expect(store.runAnalysisBlockReason).toBeNull();
+    });
+
+    it('returns already_run_today when task was created today', () => {
+      store.analysis.status = 'complete';
+      store.analysis.yesterdayConversationsCount = 50;
+      store.analysis.task = {
+        isRunning: false,
+        progress: 5,
+        total: 5,
+        createdAt: '2026-06-18T08:00:00Z',
+      };
+
+      expect(store.runAnalysisBlockReason).toBe('already_run_today');
+    });
+
+    it('prioritizes already_run_today over insufficient_volume', () => {
+      store.analysis.status = 'complete';
+      store.analysis.yesterdayConversationsCount = 5;
+      store.analysis.task = {
+        isRunning: false,
+        progress: 5,
+        total: 5,
+        createdAt: '2026-06-18T08:00:00Z',
+      };
+
+      expect(store.runAnalysisBlockReason).toBe('already_run_today');
+    });
+  });
+
+  describe('isRunAnalysisDisabled', () => {
+    it('is true while status is loading', () => {
+      store.analysis.status = 'loading';
+
+      expect(store.isRunAnalysisDisabled).toBe(true);
+    });
+
+    it('is true when task is running', () => {
+      store.analysis.status = 'complete';
+      store.analysis.task = {
+        isRunning: true,
+        progress: 1,
+        total: 5,
+        createdAt: null,
+      };
+
+      expect(store.isRunAnalysisDisabled).toBe(true);
+    });
+
+    it('is true when run analysis is blocked', () => {
+      store.analysis.status = 'complete';
+      store.analysis.yesterdayConversationsCount = 10;
+
+      expect(store.isRunAnalysisDisabled).toBe(true);
+    });
+  });
+
   describe('runAnalysis', () => {
+    it('does not call API when run analysis is disabled', async () => {
+      store.analysis.status = 'complete';
+      store.analysis.yesterdayConversationsCount = 5;
+
+      await store.runAnalysis();
+
+      expect(improvementsApi.runAnalysis).not.toHaveBeenCalled();
+    });
+
     it('sets loading state and clears previous data before the request resolves', async () => {
       let resolveRunAnalysis;
       improvementsApi.runAnalysis.mockReturnValue(
@@ -376,7 +464,6 @@ describe('Improvements Store', () => {
       improvementsApi.runAnalysis.mockResolvedValue();
       improvementsApi.getAnalysis.mockResolvedValue(
         buildAnalysisResponse({
-          conversationsCount: 0,
           improvements: [],
         }),
       );
@@ -402,7 +489,6 @@ describe('Improvements Store', () => {
       improvementsApi.runAnalysis.mockResolvedValue();
       improvementsApi.getAnalysis.mockResolvedValue(
         buildAnalysisResponse({
-          conversationsCount: 25,
           improvements,
         }),
       );

@@ -8,6 +8,7 @@ import AnalysisInProgressDisclaimer from '@/components/ConversationsImprovements
 import ImprovementsHeader from '@/components/ConversationsImprovements/ImprovementsHeader.vue';
 import ImprovementsList from '@/components/ConversationsImprovements/ImprovementsList.vue';
 import NoAnalysisPerformed from '@/components/ConversationsImprovements/NoAnalysisPerformed.vue';
+import InsufficientConversationsVolume from '@/components/ConversationsImprovements/InsufficientConversationsVolume.vue';
 import RunningAnalysis from '@/components/ConversationsImprovements/RunningAnalysis.vue';
 
 import Improvements from '@/views/Supervisor/Improvements/index.vue';
@@ -20,6 +21,8 @@ describe('Improvements view', () => {
     wrapper.find('[data-testid="conversations-improvements"]');
   const findNoAnalysisPerformed = () =>
     wrapper.findComponent(NoAnalysisPerformed);
+  const findInsufficientConversationsVolume = () =>
+    wrapper.findComponent(InsufficientConversationsVolume);
   const findRunningAnalysis = () => wrapper.findComponent(RunningAnalysis);
   const findAnalysisInProgressDisclaimer = () =>
     wrapper.findComponent(AnalysisInProgressDisclaimer);
@@ -35,7 +38,7 @@ describe('Improvements view', () => {
           analysis: {
             status: null,
             task: null,
-            conversationsCount: 0,
+            yesterdayConversationsCount: 0,
             ...(stateOverrides.analysis || {}),
           },
           improvements: {
@@ -70,6 +73,36 @@ describe('Improvements view', () => {
   describe('on mount', () => {
     it('loads improvements when the view mounts', () => {
       expect(improvementsStore.fetchImprovements).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('InsufficientConversationsVolume state', () => {
+    it('renders InsufficientConversationsVolume when volume is below minimum and there is no task', () => {
+      wrapper.unmount();
+      createWrapper({
+        analysis: {
+          status: 'complete',
+          task: null,
+          yesterdayConversationsCount: 10,
+        },
+      });
+
+      expect(findInsufficientConversationsVolume().exists()).toBe(true);
+      expect(findNoAnalysisPerformed().exists()).toBe(false);
+    });
+
+    it('does not render InsufficientConversationsVolume when volume meets minimum', () => {
+      wrapper.unmount();
+      createWrapper({
+        analysis: {
+          status: 'complete',
+          task: null,
+          yesterdayConversationsCount: 15,
+        },
+      });
+
+      expect(findInsufficientConversationsVolume().exists()).toBe(false);
+      expect(findNoAnalysisPerformed().exists()).toBe(true);
     });
   });
 
@@ -231,7 +264,7 @@ describe('Improvements view', () => {
       });
 
       expect(findAnalysisInProgressDisclaimer().exists()).toBe(true);
-      expect(findImprovementsHeader().exists()).toBe(true);
+      expect(findImprovementsHeader().exists()).toBe(false);
       expect(findImprovementsList().exists()).toBe(true);
       expect(findRunningAnalysis().exists()).toBe(false);
     });
@@ -275,7 +308,7 @@ describe('Improvements view', () => {
       await wrapper.vm.$nextTick();
 
       expect(findAnalysisInProgressDisclaimer().exists()).toBe(true);
-      expect(findImprovementsHeader().exists()).toBe(true);
+      expect(findImprovementsHeader().exists()).toBe(false);
       expect(findImprovementsList().exists()).toBe(true);
       expect(findRunningAnalysis().exists()).toBe(false);
     });

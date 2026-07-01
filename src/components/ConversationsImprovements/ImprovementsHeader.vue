@@ -24,10 +24,8 @@
       :text="$t('audit.improvements.header.custom_analysis')"
       @click="openCustomAnalysisModal"
     />
-    <UnnnicButton
-      type="primary"
-      :text="$t('audit.improvements.header.run_analysis')"
-      @click="improvementsStore.runAnalysis"
+    <RunAnalysisButton
+      data-testid="conversations-improvements-header-run-button"
     />
   </header>
 </template>
@@ -44,6 +42,7 @@ import {
   formatTime,
   getYesterdayFormattedDate,
 } from '@/utils/formatters';
+import RunAnalysisButton from '@/components/ConversationsImprovements/RunAnalysisButton.vue';
 
 const { t } = useI18n();
 const improvementsStore = useImprovementsStore();
