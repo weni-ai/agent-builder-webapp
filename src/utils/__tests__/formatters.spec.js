@@ -1,9 +1,11 @@
-import { afterEach, describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 import {
   formatListToReadable,
   formatWhatsappUrn,
   formatLongDate,
+  formatMonthDayDate,
   formatTime,
+  getYesterdayFormattedDate,
 } from '@/utils/formatters';
 import i18n from '@/utils/plugins/i18n';
 
@@ -120,6 +122,56 @@ describe('formatters', () => {
 
     it('returns an empty string for an invalid date', () => {
       expect(formatLongDate('not-a-date')).toBe('');
+    });
+  });
+
+  describe('formatMonthDayDate', () => {
+    const TIMESTAMP = '2026-05-18T15:15:00';
+
+    afterEach(() => {
+      i18n.global.locale.value = 'en';
+    });
+
+    it('formats the month and day without the year', () => {
+      expect(formatMonthDayDate(TIMESTAMP)).toBe('May 18');
+    });
+
+    it('falls back to the en pattern for an unmapped locale', () => {
+      i18n.global.locale.value = 'unmapped';
+      expect(formatMonthDayDate(TIMESTAMP)).toBe('May 18');
+    });
+
+    it('returns an empty string for an invalid date', () => {
+      expect(formatMonthDayDate('not-a-date')).toBe('');
+    });
+  });
+
+  describe('getYesterdayFormattedDate', () => {
+    afterEach(() => {
+      vi.useRealTimers();
+      i18n.global.locale.value = 'en';
+    });
+
+    it('formats yesterday relative to the current date', () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date('2026-05-18T15:15:00'));
+
+      expect(getYesterdayFormattedDate()).toBe('May 17');
+    });
+
+    it('formats yesterday across month boundaries', () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date('2026-05-01T15:15:00'));
+
+      expect(getYesterdayFormattedDate()).toBe('April 30');
+    });
+
+    it('falls back to the en pattern for an unmapped locale', () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date('2026-05-18T15:15:00'));
+      i18n.global.locale.value = 'unmapped';
+
+      expect(getYesterdayFormattedDate()).toBe('May 17');
     });
   });
 

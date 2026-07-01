@@ -468,6 +468,12 @@
     },
 
     "improvements": {
+      "analysis_complete": {
+        "no_improvements_description": "No improvements identified in the conversations from {date}",
+        "ready_description": "Improvements from {date} are ready in your backlog.",
+        "title": "Analysis complete",
+        "title_with_count": "{count, plural, one {Analysis complete ({count} improvement found)} other {Analysis complete ({count} improvements found)}}"
+      },
       "no_analysis": {
         "description": "Run your first analysis to identify opportunities for improvement in yesterday's conversations",
         "run_analysis": "Run analysis",

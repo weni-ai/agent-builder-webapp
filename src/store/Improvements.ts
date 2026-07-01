@@ -1,8 +1,10 @@
 import { computed, reactive } from 'vue';
 import { defineStore } from 'pinia';
-
 import nexusaiAPI from '@/api/nexusaiAPI';
+import i18n from '@/utils/plugins/i18n';
+import { getYesterdayFormattedDate } from '@/utils/formatters';
 import { useProjectStore } from './Project';
+import { useAlertStore } from './Alert';
 
 import type {
   Improvement,
@@ -47,7 +49,33 @@ function wait(ms: number) {
   });
 }
 
+function notifyAnalysisComplete(
+  alertStore: ReturnType<typeof useAlertStore>,
+  improvementCount: number,
+) {
+  const date = getYesterdayFormattedDate();
+
+  const analysisT = (field: string, params?: Record<string, string | number>) =>
+    i18n.global.t(`audit.improvements.analysis_complete.${field}`, params);
+
+  let alertText = analysisT('title');
+  let alertDescription = analysisT('no_improvements_description', { date });
+
+  if (improvementCount > 0) {
+    alertText = analysisT('title_with_count', { count: improvementCount });
+    alertDescription = analysisT('ready_description', { date });
+  }
+
+  alertStore.add({
+    type: 'success',
+    text: alertText,
+    description: alertDescription,
+  });
+}
+
 export const useImprovementsStore = defineStore('Improvements', () => {
+  const alertStore = useAlertStore();
+
   const projectUuid = computed(() => useProjectStore().uuid);
   const supervisorApi = nexusaiAPI.agent_builder.supervisor;
 
@@ -141,6 +169,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
       });
 
       await loadImprovementsData();
+      notifyAnalysisComplete(alertStore, improvements.data.length);
     } catch (error) {
       setStatus('error');
       console.error(error);
