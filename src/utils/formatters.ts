@@ -1,6 +1,6 @@
 import i18n from '@/utils/plugins/i18n';
 
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { enUS, es as esLocale, ptBR, ro as roLocale } from 'date-fns/locale';
 
 const DATE_FNS_LOCALE_MAP = {
@@ -104,6 +104,32 @@ export function formatTimestamp(timestamp: string) {
   );
 }
 
+export function formatConversationDate(timestamp: string) {
+  return formatWithLocalePattern(
+    timestamp,
+    {
+      en: 'MM/dd/yy',
+      es: 'dd/MM/yy',
+      'pt-br': 'dd/MM/yy',
+      ro: 'dd/MM/yy',
+    },
+    'MM/dd/yy',
+  );
+}
+
+export function formatConversationTime(timestamp: string) {
+  return formatWithLocalePattern(
+    timestamp,
+    {
+      en: 'HH:mm',
+      es: 'HH:mm',
+      'pt-br': 'HH:mm',
+      ro: 'HH:mm',
+    },
+    'HH:mm',
+  );
+}
+
 export function formatLongDate(timestamp: string) {
   const FALLBACK_PATTERN = 'MMMM d, yyyy';
 
@@ -114,6 +140,25 @@ export function formatLongDate(timestamp: string) {
       es: "d 'de' MMMM 'de' yyyy",
       'pt-br': "d 'de' MMMM 'de' yyyy",
       ro: 'd MMMM yyyy',
+    },
+    FALLBACK_PATTERN,
+  );
+}
+
+export function getYesterdayFormattedDate() {
+  return formatMonthDayDate(subDays(new Date(), 1).toISOString());
+}
+
+export function formatMonthDayDate(timestamp: string) {
+  const FALLBACK_PATTERN = 'MMMM d';
+
+  return formatWithLocalePattern(
+    timestamp,
+    {
+      en: FALLBACK_PATTERN,
+      es: "d 'de' MMMM",
+      'pt-br': "d 'de' MMMM",
+      ro: 'd MMMM',
     },
     FALLBACK_PATTERN,
   );

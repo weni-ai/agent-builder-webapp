@@ -1,11 +1,22 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import nexusRequest from '@/api/nexusaiRequest';
+import conversationsRequest from '@/api/conversationsRequest';
 import { Supervisor } from '@/api/nexus/Supervisor';
 
 vi.mock('@/api/nexusaiRequest', () => ({
   default: {
     $http: {
       get: vi.fn(),
+      post: vi.fn(),
+    },
+  },
+}));
+
+vi.mock('@/api/conversationsRequest', () => ({
+  default: {
+    $http: {
+      get: vi.fn(),
+      post: vi.fn(),
     },
   },
 }));
@@ -207,6 +218,123 @@ describe('Supervisor.js', () => {
           uuid,
         }),
       ).rejects.toThrow('API Error');
+    });
+  });
+
+  describe('improvements', () => {
+    const projectUuid = 'project-123';
+
+    const mockApiResponse = {
+      yesterday_conversations_count: 30,
+      improvements_task: {
+        is_running: false,
+        progress: 5,
+        total: 5,
+        created_at: '2026-06-01T10:00:00Z',
+      },
+      improvements: [
+        {
+          uuid: 'improvement-uuid-1',
+          text: 'Sample improvement',
+          type: 'personality_deviation',
+          conversations_count: 12,
+        },
+      ],
+    };
+
+    it('runAnalysis calls the run endpoint', async () => {
+      conversationsRequest.$http.post.mockResolvedValue({ data: {} });
+
+      await Supervisor.improvements.runAnalysis({ projectUuid });
+
+      expect(conversationsRequest.$http.post).toHaveBeenCalledWith(
+        `/api/v1/projects/${projectUuid}/improvements/run/`,
+      );
+      expect(nexusRequest.$http.post).not.toHaveBeenCalled();
+    });
+
+    it('getAnalysis calls the improvements endpoint and adapts the response', async () => {
+      conversationsRequest.$http.get.mockResolvedValue({
+        data: mockApiResponse,
+      });
+
+      const result = await Supervisor.improvements.getAnalysis({ projectUuid });
+
+      expect(conversationsRequest.$http.get).toHaveBeenCalledWith(
+        `/api/v1/projects/${projectUuid}/improvements/`,
+      );
+      expect(nexusRequest.$http.get).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        yesterdayConversationsCount: 30,
+        task: {
+          isRunning: false,
+          progress: 5,
+          total: 5,
+          createdAt: '2026-06-01T10:00:00Z',
+        },
+        improvements: [
+          {
+            uuid: 'improvement-uuid-1',
+            text: 'Sample improvement',
+            type: 'personality_deviation',
+            conversationsCount: 12,
+          },
+        ],
+      });
+    });
+
+    it('propagates errors from getAnalysis', async () => {
+      const error = new Error('API Error');
+      conversationsRequest.$http.get.mockRejectedValue(error);
+
+      await expect(
+        Supervisor.improvements.getAnalysis({ projectUuid }),
+      ).rejects.toThrow('API Error');
+    });
+
+    it('getById returns improvement detail from mock data', async () => {
+      const promise = Supervisor.improvements.getById({
+        projectUuid: 'project-123',
+        improvementUuid: 'improvement-uuid-1',
+      });
+
+      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
+
+      const result = await promise;
+
+      expect(nexusRequest.$http.get).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        uuid: 'improvement-uuid-1',
+        text: 'The agent tone does not match the configured brand voice in refund conversations.',
+        type: 'personality_deviation',
+        description:
+          'In refund conversations, the agent uses informal language that conflicts with the configured brand voice.',
+        suggestedSolution:
+          'Update the tone instruction to reinforce formal and empathetic language during refund interactions.',
+        status: 'pending',
+        affectedInstructions: [
+          {
+            id: 12,
+            changeType: 'fix',
+            wasChanged: false,
+          },
+        ],
+      });
+    });
+
+    it('getById throws when improvement uuid is not found', async () => {
+      const promise = Supervisor.improvements.getById({
+        projectUuid: 'project-123',
+        improvementUuid: 'unknown-uuid',
+      });
+
+      const expectation = await expect(promise).rejects.toThrow(
+        'Improvement not found',
+      );
+
+      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
+
+      await expectation;
     });
   });
 });

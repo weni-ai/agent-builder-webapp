@@ -32,8 +32,8 @@ export const useProfileStore = defineStore('profile', () => {
   });
 
   const instructions = reactive({
-    current: '',
-    old: '',
+    current: [],
+    old: [],
   });
 
   const errorRequiredFields = reactive({

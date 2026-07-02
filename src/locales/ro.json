@@ -487,6 +487,13 @@
         "finish": "Conversație încheiată: {datetime}"
       },
       "contact_urn": "URN contact",
+      "columns": {
+        "contact": "Contact",
+        "date": "Dată",
+        "feedback": "Feedback",
+        "hour": "Oră",
+        "status": "Status"
+      },
       "topic": "Subiect",
       "conversation_details_collapse": "Detalii conversație",
       "view_full_history": "Vezi istoricul complet",
@@ -549,6 +556,100 @@
       }
     },
     "improvements": {
+      "analysis_in_progress_disclaimer": "Analiză în curs: {progress} din {total} conversații procesate. Pot apărea elemente noi în curând.",
+      "analysis_complete": {
+        "no_improvements_description": "Nu s-au identificat îmbunătățiri în conversațiile din {date}",
+        "ready_description": "Îmbunătățirile din {date} sunt gata în backlog.",
+        "title": "Analiză finalizată",
+        "title_with_count": "{count, plural, one {Analiză finalizată ({count} îmbunătățire găsită)} other {Analiză finalizată ({count} îmbunătățiri găsite)}}"
+      },
+      "columns": {
+        "affected_conversations": "Conversații afectate",
+        "improvement": "Îmbunătățire",
+        "type": "Tip"
+      },
+      "drawer": {
+        "affected_conversations_count": "{count, plural, one {# conversație afectată} few {# conversații afectate} other {# conversații afectate}}",
+        "affected_conversations_title": "Conversații afectate",
+        "affected_instructions_title": "Editează și aceste instrucțiuni existente:",
+        "contact_technical_support": "Contactează suportul tehnic",
+        "diagnosis_title": "Diagnostic",
+        "go_to_instructions": "Accesează instrucțiunile",
+        "go_to_knowledge_base": "Accesează baza de cunoștințe",
+        "ignore_improvement": "Ignoră îmbunătățirea",
+        "instruction_updated_disclaimer": "{count, plural, one {# instrucțiune actualizată de la analiză} few {# instrucțiuni actualizate de la analiză} other {# de instrucțiuni actualizate de la analiză}}",
+        "mark_as_resolved": "Marchează ca rezolvată",
+        "suggested_solution_behavior_title": "Adaugă această instrucțiune la Manager:",
+        "suggested_solution_knowledge_title": "Conținut nou pentru baza de cunoștințe",
+        "suggested_solution_technical_issue_title": "Acțiune recomandată",
+        "suggested_solution_title": "Soluție sugerată"
+      },
+      "header": {
+        "custom_analysis": "Analiză personalizată",
+        "description": "Rulat pe {date} la {time}",
+        "description_today": "Rulat astăzi la {time}",
+        "run_analysis": "Rulează analiza",
+        "run_analysis_already_run_today_tooltip": "Analiza a fost deja executată astăzi\nO nouă execuție va fi disponibilă mâine",
+        "run_analysis_insufficient_volume_tooltip": "Volum insuficient de conversații pentru executarea analizei\nMinimum 15 conversații necesare",
+        "title": "{count, plural, one {Analiza conversațiilor din {date} · {count} îmbunătățire identificată} other {Analiza conversațiilor din {date} · {count} îmbunătățiri identificate}}"
+      },
+      "insufficient_volume": {
+        "description": "Minimum 15 conversații necesare pentru executarea analizei",
+        "title": "Volum insuficient de conversații"
+      },
+      "no_analysis": {
+        "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire în conversațiile de ieri",
+        "run_analysis": "Rulează analiza",
+        "title": "Nicio analiză nu a fost executată încă"
+      },
+      "run_analysis_dialog": {
+        "cancel": "Anulează",
+        "description": "Încă există {count, plural, one {# îmbunătățire nerezolvată} few {# îmbunătățiri nerezolvate} other {# îmbunătățiri nerezolvate}} din {current_date}. O nouă analiză va înlocui această listă cu conversațiile din {new_date}. Îmbunătățirile actuale vor fi pierdute.",
+        "run": "Rulează",
+        "title": "Rulează analiza"
+      },
+      "running_analysis": {
+        "description": "Acest proces poate dura câteva minute. Poți închide acest ecran.",
+        "title": "Se analizează {count} conversații de ieri"
+      },
+      "status_dialog": {
+        "cancel": "Anulează",
+        "ignored": {
+          "description": "Această problemă va fi eliminată din backlog și nu va mai apărea în sugestiile de îmbunătățire.",
+          "title": "Ignoră îmbunătățirea"
+        },
+        "resolved": {
+          "description": "Confirmă doar după aplicarea soluției sugerate. Problema va fi eliminată din backlog și va face loc pentru noi îmbunătățiri.",
+          "title": "Marchează ca rezolvată"
+        }
+      },
+      "status_update": {
+        "error": {
+          "ignored": {
+            "description": "Din cauza unei probleme tehnice",
+            "title": "Nu s-a putut ignora îmbunătățirea"
+          },
+          "resolved": {
+            "description": "Din cauza unei probleme tehnice",
+            "title": "Nu s-a putut marca ca rezolvată"
+          }
+        },
+        "success": {
+          "description": "Elementul a fost eliminat din backlog-ul de îmbunătățiri",
+          "ignored": {
+            "title": "Îmbunătățire ignorată"
+          },
+          "resolved": {
+            "title": "Îmbunătățire marcată ca rezolvată"
+          }
+        }
+      },
+      "types": {
+        "behavior": "Comportament",
+        "custom_analysis": "Analiză personalizată",
+        "knowledge": "Cunoștințe",
+        "technical_issue": "Problemă tehnică"
+      },
       "title": "Backlog de îmbunătățiri"
     }
   },

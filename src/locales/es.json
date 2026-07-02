@@ -488,6 +488,13 @@
         "finish": "Conversación finalizada: {datetime}"
       },
       "contact_urn": "URN del contacto",
+      "columns": {
+        "contact": "Contacto",
+        "date": "Fecha",
+        "feedback": "Feedback",
+        "hour": "Hora",
+        "status": "Estado"
+      },
       "topic": "Tópico",
       "conversation_details_collapse": "Detalles de la conversación",
       "view_full_history": "Ver historico completo",
@@ -550,6 +557,100 @@
       }
     },
     "improvements": {
+      "analysis_in_progress_disclaimer": "Análisis en curso: {progress} de {total} conversaciones procesadas. Pueden aparecer nuevos ítems en breve.",
+      "analysis_complete": {
+        "no_improvements_description": "No se identificaron mejoras en las conversaciones del {date}",
+        "ready_description": "Las mejoras del {date} están listas en el backlog.",
+        "title": "Análisis completo",
+        "title_with_count": "{count, plural, one {Análisis completo ({count} mejora encontrada)} other {Análisis completo ({count} mejoras encontradas)}}"
+      },
+      "columns": {
+        "affected_conversations": "Conversaciones afectadas",
+        "improvement": "Mejora",
+        "type": "Tipo"
+      },
+      "drawer": {
+        "affected_conversations_count": "{count, plural, one {# conversación afectada} other {# conversaciones afectadas}}",
+        "affected_conversations_title": "Conversaciones afectadas",
+        "affected_instructions_title": "Edita también estas instrucciones existentes:",
+        "contact_technical_support": "Comunícate con el soporte técnico",
+        "diagnosis_title": "Diagnóstico",
+        "go_to_instructions": "Accede a las instrucciones",
+        "go_to_knowledge_base": "Accede a la base de conocimiento",
+        "ignore_improvement": "Ignorar mejora",
+        "instruction_updated_disclaimer": "{count, plural, one {# instrucción actualizada desde el análisis} other {# instrucciones actualizadas desde el análisis}}",
+        "mark_as_resolved": "Marcar como resuelta",
+        "suggested_solution_behavior_title": "Agrega esta instrucción al Manager:",
+        "suggested_solution_knowledge_title": "Nuevo contenido para la base de conocimiento",
+        "suggested_solution_technical_issue_title": "Acción recomendada",
+        "suggested_solution_title": "Solución sugerida"
+      },
+      "header": {
+        "custom_analysis": "Análisis personalizado",
+        "description": "Ejecutado el {date} a las {time}",
+        "description_today": "Ejecutado hoy a las {time}",
+        "run_analysis": "Ejecutar análisis",
+        "run_analysis_already_run_today_tooltip": "Análisis ya ejecutado hoy\nNueva ejecución disponible mañana",
+        "run_analysis_insufficient_volume_tooltip": "Volumen insuficiente de conversaciones para ejecutar el análisis\nMínimo de 15 conversaciones necesarias",
+        "title": "{count, plural, one {Análisis de conversaciones del {date} · {count} mejora identificada} other {Análisis de conversaciones del {date} · {count} mejoras identificadas}}"
+      },
+      "insufficient_volume": {
+        "description": "Mínimo de 15 conversaciones necesarias para ejecutar el análisis",
+        "title": "Volumen insuficiente de conversaciones"
+      },
+      "no_analysis": {
+        "description": "Ejecuta el primer análisis para identificar oportunidades de mejora en las conversaciones de ayer",
+        "run_analysis": "Ejecutar análisis",
+        "title": "Aún no se ha ejecutado ningún análisis"
+      },
+      "run_analysis_dialog": {
+        "cancel": "Cancelar",
+        "description": "Aún hay {count, plural, one {# mejora sin resolver} other {# mejoras sin resolver}} del {current_date}. Un nuevo análisis reemplazará esta lista con las conversaciones del {new_date}. Las mejoras actuales se perderán.",
+        "run": "Ejecutar",
+        "title": "Ejecutar análisis"
+      },
+      "running_analysis": {
+        "description": "Esto puede tardar unos minutos. Puedes cerrar esta pantalla.",
+        "title": "Analizando {count} conversaciones de ayer"
+      },
+      "status_dialog": {
+        "cancel": "Cancelar",
+        "ignored": {
+          "description": "Este problema se eliminará del backlog y ya no aparecerá en las sugerencias de mejora.",
+          "title": "Ignorar mejora"
+        },
+        "resolved": {
+          "description": "Confirma solo después de aplicar la solución sugerida. El problema se eliminará del backlog y abrirá espacio para nuevas mejoras.",
+          "title": "Marcar como resuelta"
+        }
+      },
+      "status_update": {
+        "error": {
+          "ignored": {
+            "description": "Debido a un problema técnico",
+            "title": "No se pudo ignorar la mejora"
+          },
+          "resolved": {
+            "description": "Debido a un problema técnico",
+            "title": "No se pudo marcar como resuelta"
+          }
+        },
+        "success": {
+          "description": "El ítem se eliminó del backlog de mejoras",
+          "ignored": {
+            "title": "Mejora ignorada"
+          },
+          "resolved": {
+            "title": "Mejora marcada como resuelta"
+          }
+        }
+      },
+      "types": {
+        "behavior": "Comportamiento",
+        "custom_analysis": "Análisis personalizado",
+        "knowledge": "Conocimiento",
+        "technical_issue": "Problema técnico"
+      },
       "title": "Backlog de mejoras"
     }
   },

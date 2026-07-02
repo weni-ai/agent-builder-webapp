@@ -1,6 +1,8 @@
 import nexusRequest from '../nexusaiRequest';
+import conversationsRequest from '../conversationsRequest';
 import { fetchConversationList } from '../adapters/supervisor/conversationSources';
 import { ConversationMessageAdapter } from '../adapters/supervisor/conversationMessage';
+import { ImprovementsAdapter } from '../adapters/supervisor/improvements';
 
 export const Supervisor = {
   conversations: {
@@ -65,6 +67,42 @@ export const Supervisor = {
         `/api/reports?project_uuid=${projectUuid}`,
       );
       return data;
+    },
+  },
+  improvements: {
+    async runAnalysis({ projectUuid }) {
+      await conversationsRequest.$http.post(
+        `/api/v1/projects/${projectUuid}/improvements/run/`,
+      );
+    },
+
+    async getAnalysis({ projectUuid }) {
+      const { data } = await conversationsRequest.$http.get(
+        `/api/v1/projects/${projectUuid}/improvements/`,
+      );
+
+      return ImprovementsAdapter.fromApi(data);
+    },
+
+    async updateStatus({ projectUuid, improvementUuid, status }) {
+      await conversationsRequest.$http.patch(
+        `/api/v1/projects/${projectUuid}/improvements/${improvementUuid}/`,
+        { status },
+      );
+    },
+
+    async getById({ projectUuid, improvementUuid }) {
+      const { data } = await conversationsRequest.$http.get(
+        `/api/v1/projects/${projectUuid}/improvements/${improvementUuid}/`,
+      );
+
+      const detail = ImprovementsAdapter.fromDetailApi(data);
+
+      if (!detail) {
+        throw new Error('Invalid improvement detail response');
+      }
+
+      return detail;
     },
   },
 };
