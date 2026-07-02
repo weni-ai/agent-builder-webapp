@@ -25,7 +25,7 @@
           v-if="group.locked"
           side="top"
           :text="lockedTooltip"
-          enabled
+          :enabled="isDefaultGroup"
           data-testid="category-accordion-locked-tooltip"
         >
           <UnnnicTag
@@ -84,6 +84,7 @@ import { useI18n } from 'vue-i18n';
 
 import ContentItemActions from '@/components/ContentItemActions.vue';
 import Instruction from '@/components/Instructions/Instruction.vue';
+import { INSTRUCTION_GROUP_KEYS } from '@/store/helpers/instructionViewModels';
 
 const props = defineProps({
   group: {
@@ -116,6 +117,9 @@ watch(
 );
 
 const lockedTooltip = computed(() => viewT('locked_tooltip'));
+const isDefaultGroup = computed(
+  () => props.group.key === INSTRUCTION_GROUP_KEYS.default,
+);
 const emptyText = computed(() => viewT('empty_category'));
 
 const actions = computed(() => [

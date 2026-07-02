@@ -15,7 +15,7 @@
         v-if="instruction.categoryLocked"
         side="top"
         :text="lockedTooltip"
-        enabled
+        :enabled="instruction.locked"
         data-testid="list-instruction-row-locked-tooltip"
       >
         <UnnnicTag
