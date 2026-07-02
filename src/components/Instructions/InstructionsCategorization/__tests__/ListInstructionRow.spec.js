@@ -88,6 +88,7 @@ describe('ListInstructionRow.vue', () => {
 
     expect(find('tag').attributes('lefticon')).toBe('lock');
     expect(find('lockedTooltip').exists()).toBe(true);
+    expect(find('lockedTooltip').attributes('enabled')).toBe('true');
     expect(find('lockedTooltip').attributes('text')).toBe(
       i18n.global.t('agents.instructions.view.locked_tooltip'),
     );
@@ -100,6 +101,8 @@ describe('ListInstructionRow.vue', () => {
     );
 
     expect(find('tag').attributes('lefticon')).toBe('lock');
+    expect(find('lockedTooltip').exists()).toBe(true);
+    expect(find('lockedTooltip').attributes('enabled')).toBe('false');
     expect(find('actions').exists()).toBe(true);
   });
 

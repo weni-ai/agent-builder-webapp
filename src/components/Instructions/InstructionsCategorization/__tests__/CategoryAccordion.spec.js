@@ -26,6 +26,14 @@ const lockedGroup = (overrides = {}) => ({
   ...overrides,
 });
 
+const uncategorizedGroup = (overrides = {}) => ({
+  key: 'uncategorized',
+  label: viewT('uncategorized'),
+  locked: true,
+  instructions: [{ id: 1, text: 'Loose instruction' }],
+  ...overrides,
+});
+
 describe('CategoryAccordion.vue', () => {
   let wrapper;
 
@@ -95,15 +103,26 @@ describe('CategoryAccordion.vue', () => {
     expect(wrapper.emitted('delete-category')).toEqual([[group]]);
   });
 
-  it('renders a locked tag with tooltip and no menu for locked groups', () => {
+  it('renders a locked tag with tooltip and no menu for default groups', () => {
     wrapper = createWrapper(lockedGroup());
 
     expect(find('tag').attributes('lefticon')).toBe('lock');
     expect(find('lockedTooltip').exists()).toBe(true);
+    expect(find('lockedTooltip').attributes('enabled')).toBe('true');
     expect(find('lockedTooltip').attributes('text')).toBe(
       viewT('locked_tooltip'),
     );
     expect(find('actions').exists()).toBe(false);
+  });
+
+  it('renders a locked tag with disabled tooltip and keeps instruction actions for uncategorized groups', () => {
+    wrapper = createWrapper(uncategorizedGroup());
+
+    expect(find('tag').attributes('lefticon')).toBe('lock');
+    expect(find('lockedTooltip').exists()).toBe(true);
+    expect(find('lockedTooltip').attributes('enabled')).toBe('false');
+    expect(find('actions').exists()).toBe(false);
+    expect(wrapper.findComponent(Instruction).props('showActions')).toBe(true);
   });
 
   it('disables instruction actions for locked items', () => {
