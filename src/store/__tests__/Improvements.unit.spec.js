@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 
 import { useImprovementsStore } from '@/store/Improvements';
+import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
 import { useAlertStore } from '@/store/Alert';
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
@@ -119,7 +120,7 @@ describe('Improvements Store', () => {
     it('starts with empty analysis and improvements state', () => {
       expect(store.analysis).toEqual({
         status: null,
-        task: null,
+        task: { ...DEFAULT_IMPROVEMENTS_TASK },
         yesterdayConversationsCount: 0,
       });
       expect(store.improvements).toEqual({
@@ -211,7 +212,7 @@ describe('Improvements Store', () => {
     it('returns insufficient_volume when yesterday count is below minimum', () => {
       store.analysis.status = 'complete';
       store.analysis.yesterdayConversationsCount = 14;
-      store.analysis.task = null;
+      store.analysis.task = { ...DEFAULT_IMPROVEMENTS_TASK };
 
       expect(store.runAnalysisBlockReason).toBe('insufficient_volume');
     });
@@ -219,7 +220,7 @@ describe('Improvements Store', () => {
     it('returns null when yesterday count meets minimum', () => {
       store.analysis.status = 'complete';
       store.analysis.yesterdayConversationsCount = 15;
-      store.analysis.task = null;
+      store.analysis.task = { ...DEFAULT_IMPROVEMENTS_TASK };
 
       expect(store.runAnalysisBlockReason).toBeNull();
     });
@@ -305,7 +306,7 @@ describe('Improvements Store', () => {
 
       expect(store.analysis.status).toBe('loading');
       expect(store.improvements.status).toBe('loading');
-      expect(store.analysis.task).toBeNull();
+      expect(store.analysis.task).toEqual({ ...DEFAULT_IMPROVEMENTS_TASK });
       expect(store.analysis.yesterdayConversationsCount).toBe(0);
       expect(store.improvements.data).toEqual([]);
 

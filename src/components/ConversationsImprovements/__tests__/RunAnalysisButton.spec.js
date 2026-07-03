@@ -4,6 +4,7 @@ import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
 import { useImprovementsStore } from '@/store/Improvements';
+import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
 
 import RunAnalysisButton from '../RunAnalysisButton.vue';
 import RunAnalysisDialog from '../RunAnalysisDialog.vue';
@@ -22,7 +23,7 @@ describe('RunAnalysisButton.vue', () => {
         Improvements: {
           analysis: {
             status: 'complete',
-            task: null,
+            task: { ...DEFAULT_IMPROVEMENTS_TASK },
             yesterdayConversationsCount: 20,
             ...(stateOverrides.analysis || {}),
           },
@@ -98,7 +99,7 @@ describe('RunAnalysisButton.vue', () => {
         analysis: {
           status: 'complete',
           yesterdayConversationsCount: 10,
-          task: null,
+          task: { ...DEFAULT_IMPROVEMENTS_TASK },
         },
       });
 
@@ -142,7 +143,7 @@ describe('RunAnalysisButton.vue', () => {
         analysis: {
           status: 'loading',
           yesterdayConversationsCount: 20,
-          task: null,
+          task: { ...DEFAULT_IMPROVEMENTS_TASK },
         },
       });
 
@@ -188,7 +189,7 @@ describe('RunAnalysisButton.vue', () => {
         analysis: {
           status: 'complete',
           yesterdayConversationsCount: 10,
-          task: null,
+          task: { ...DEFAULT_IMPROVEMENTS_TASK },
         },
       });
 

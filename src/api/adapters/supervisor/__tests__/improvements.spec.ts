@@ -45,8 +45,32 @@ describe('Supervisor improvements adapter', () => {
     it('returns safe defaults when API fields are missing', () => {
       expect(ImprovementsAdapter.fromApi()).toEqual({
         yesterdayConversationsCount: 0,
-        task: null,
+        task: {
+          isRunning: false,
+          progress: 0,
+          total: 0,
+          createdAt: null,
+        },
         improvements: [],
+      });
+    });
+
+    it('maps null created_at when no analysis has been performed', () => {
+      const result = ImprovementsAdapter.fromApi({
+        yesterday_conversations_count: 10,
+        improvements_task: {
+          is_running: false,
+          progress: 0,
+          total: 0,
+          created_at: null,
+        },
+      });
+
+      expect(result.task).toEqual({
+        isRunning: false,
+        progress: 0,
+        total: 0,
+        createdAt: null,
       });
     });
 

@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
+import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
 
 import InsufficientConversationsVolume from '../InsufficientConversationsVolume.vue';
 import RunAnalysisButton from '../RunAnalysisButton.vue';
@@ -25,7 +26,7 @@ describe('InsufficientConversationsVolume.vue', () => {
         Improvements: {
           analysis: {
             status: 'complete',
-            task: null,
+            task: { ...DEFAULT_IMPROVEMENTS_TASK },
             yesterdayConversationsCount: 10,
           },
         },

@@ -8,12 +8,13 @@ import type {
   ImprovementsTask,
   InstructionChangeType,
 } from '@/store/types/Improvements.types';
+import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
 
 export interface ImprovementsTaskApi {
   is_running?: boolean;
   progress?: number;
   total?: number;
-  created_at?: string;
+  created_at?: string | null;
 }
 
 export interface ImprovementApi {
@@ -59,9 +60,9 @@ function isImprovementType(value: unknown): value is ImprovementType {
   return IMPROVEMENT_TYPES.includes(value as ImprovementType);
 }
 
-function parseTask(task?: ImprovementsTaskApi | null): ImprovementsTask | null {
+function parseTask(task?: ImprovementsTaskApi | null): ImprovementsTask {
   if (!task) {
-    return null;
+    return { ...DEFAULT_IMPROVEMENTS_TASK };
   }
 
   return {
