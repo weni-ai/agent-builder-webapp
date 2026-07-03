@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
 import { useImprovementsStore } from '@/store/Improvements';
+import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
 
 import AnalysisInProgressDisclaimer from '@/components/ConversationsImprovements/AnalysisInProgressDisclaimer.vue';
 import ImprovementsHeader from '@/components/ConversationsImprovements/ImprovementsHeader.vue';
@@ -37,7 +38,7 @@ describe('Improvements view', () => {
         Improvements: {
           analysis: {
             status: null,
-            task: null,
+            task: { ...DEFAULT_IMPROVEMENTS_TASK },
             yesterdayConversationsCount: 0,
             ...(stateOverrides.analysis || {}),
           },
@@ -77,12 +78,12 @@ describe('Improvements view', () => {
   });
 
   describe('InsufficientConversationsVolume state', () => {
-    it('renders InsufficientConversationsVolume when volume is below minimum and there is no task', () => {
+    it('renders InsufficientConversationsVolume when volume is below minimum and no analysis was performed', () => {
       wrapper.unmount();
       createWrapper({
         analysis: {
           status: 'complete',
-          task: null,
+          task: { ...DEFAULT_IMPROVEMENTS_TASK },
           yesterdayConversationsCount: 10,
         },
       });
@@ -96,7 +97,7 @@ describe('Improvements view', () => {
       createWrapper({
         analysis: {
           status: 'complete',
-          task: null,
+          task: { ...DEFAULT_IMPROVEMENTS_TASK },
           yesterdayConversationsCount: 15,
         },
       });
@@ -111,30 +112,35 @@ describe('Improvements view', () => {
       expect(findSection().exists()).toBe(true);
     });
 
-    it('renders NoAnalysisPerformed when there is no analysis task', () => {
+    it('renders NoAnalysisPerformed when no analysis was performed', () => {
       expect(findNoAnalysisPerformed().exists()).toBe(true);
     });
 
-    it('does not render NoAnalysisPerformed when an analysis task exists', () => {
+    it('does not render NoAnalysisPerformed when analysis was performed', () => {
       wrapper.unmount();
       createWrapper({
         analysis: {
           status: 'complete',
-          task: { isRunning: false, progress: 5, total: 5, createdAt: null },
+          task: {
+            isRunning: false,
+            progress: 5,
+            total: 5,
+            createdAt: '2026-06-18T08:00:00Z',
+          },
         },
       });
 
       expect(findNoAnalysisPerformed().exists()).toBe(false);
     });
 
-    it('hides NoAnalysisPerformed after the analysis task is set', async () => {
+    it('hides NoAnalysisPerformed after analysis is performed', async () => {
       expect(findNoAnalysisPerformed().exists()).toBe(true);
 
       improvementsStore.analysis.task = {
         isRunning: true,
         progress: 0,
         total: 3,
-        createdAt: null,
+        createdAt: '2026-06-18T08:00:00Z',
       };
 
       await wrapper.vm.$nextTick();
@@ -149,7 +155,12 @@ describe('Improvements view', () => {
       createWrapper({
         analysis: {
           status: 'loading',
-          task: { isRunning: true, progress: 0, total: 437, createdAt: null },
+          task: {
+            isRunning: true,
+            progress: 0,
+            total: 437,
+            createdAt: '2026-06-18T08:00:00Z',
+          },
         },
       });
 
@@ -157,7 +168,7 @@ describe('Improvements view', () => {
       expect(findNoAnalysisPerformed().exists()).toBe(false);
     });
 
-    it('does not render RunningAnalysis when there is no analysis task', () => {
+    it('does not render RunningAnalysis when no analysis was performed', () => {
       expect(findRunningAnalysis().exists()).toBe(false);
     });
 
@@ -170,7 +181,7 @@ describe('Improvements view', () => {
             isRunning: false,
             progress: 437,
             total: 437,
-            createdAt: null,
+            createdAt: '2026-06-18T08:00:00Z',
           },
         },
       });
@@ -183,7 +194,12 @@ describe('Improvements view', () => {
       createWrapper({
         analysis: {
           status: 'loading',
-          task: { isRunning: true, progress: 10, total: 437, createdAt: null },
+          task: {
+            isRunning: true,
+            progress: 10,
+            total: 437,
+            createdAt: '2026-06-18T08:00:00Z',
+          },
         },
         improvements: {
           data: [
@@ -201,14 +217,12 @@ describe('Improvements view', () => {
       expect(findRunningAnalysis().exists()).toBe(false);
     });
 
-    it('shows RunningAnalysis after the analysis task starts running', async () => {
-      expect(findRunningAnalysis().exists()).toBe(false);
-
+    it('shows RunningAnalysis after the analysis starts running', async () => {
       improvementsStore.analysis.task = {
         isRunning: true,
         progress: 0,
         total: 437,
-        createdAt: null,
+        createdAt: '2026-06-18T08:00:00Z',
       };
 
       await wrapper.vm.$nextTick();
@@ -235,7 +249,7 @@ describe('Improvements view', () => {
             isRunning: false,
             progress: 437,
             total: 437,
-            createdAt: null,
+            createdAt: '2026-06-18T08:00:00Z',
           },
         },
         improvements: {
@@ -255,7 +269,12 @@ describe('Improvements view', () => {
       createWrapper({
         analysis: {
           status: 'loading',
-          task: { isRunning: true, progress: 10, total: 437, createdAt: null },
+          task: {
+            isRunning: true,
+            progress: 10,
+            total: 437,
+            createdAt: '2026-06-18T08:00:00Z',
+          },
         },
         improvements: {
           data: [improvementItem],
@@ -278,7 +297,7 @@ describe('Improvements view', () => {
             isRunning: false,
             progress: 437,
             total: 437,
-            createdAt: null,
+            createdAt: '2026-06-18T08:00:00Z',
           },
         },
         improvements: {
@@ -301,7 +320,7 @@ describe('Improvements view', () => {
         isRunning: true,
         progress: 5,
         total: 437,
-        createdAt: null,
+        createdAt: '2026-06-18T08:00:00Z',
       };
       improvementsStore.improvements.data = [improvementItem];
 

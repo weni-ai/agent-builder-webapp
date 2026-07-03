@@ -4,15 +4,18 @@
     data-testid="conversations-improvements"
   >
     <InsufficientConversationsVolume
-      v-if="!analysis.task && runAnalysisBlockReason === 'insufficient_volume'"
+      v-if="
+        !analysis.task.createdAt &&
+        runAnalysisBlockReason === 'insufficient_volume'
+      "
     />
-    <NoAnalysisPerformed v-else-if="!analysis.task" />
+    <NoAnalysisPerformed v-else-if="!analysis.task.createdAt" />
     <RunningAnalysis
-      v-else-if="analysis.task?.isRunning && !improvements.data.length"
+      v-else-if="analysis.task.isRunning && !improvements.data.length"
     />
 
     <template v-else-if="improvements.data.length">
-      <AnalysisInProgressDisclaimer v-if="analysis.task?.isRunning" />
+      <AnalysisInProgressDisclaimer v-if="analysis.task.isRunning" />
 
       <ImprovementsHeader v-else />
 

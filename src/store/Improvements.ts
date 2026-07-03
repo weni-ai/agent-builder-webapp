@@ -14,9 +14,9 @@ import type {
   ImprovementStatus,
   ImprovementsAnalysis,
   ImprovementsStatus,
-  ImprovementsTask,
   RunAnalysisBlockReason,
 } from './types/Improvements.types';
+import { DEFAULT_IMPROVEMENTS_TASK } from './types/Improvements.types';
 
 export const MIN_CONVERSATIONS_FOR_ANALYSIS = 15;
 
@@ -106,11 +106,11 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
   const analysis = reactive<{
     status: ImprovementsStatus;
-    task: ImprovementsTask | null;
+    task: typeof DEFAULT_IMPROVEMENTS_TASK;
     yesterdayConversationsCount: number;
   }>({
     status: null,
-    task: null,
+    task: { ...DEFAULT_IMPROVEMENTS_TASK },
     yesterdayConversationsCount: 0,
   });
 
@@ -141,7 +141,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
       return null;
     }
 
-    const createdAt = analysis.task?.createdAt;
+    const createdAt = analysis.task.createdAt;
 
     if (createdAt && isToday(new Date(createdAt))) {
       return 'already_run_today';
@@ -157,7 +157,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
   const isRunAnalysisDisabled = computed(
     () =>
       analysis.status === 'loading' ||
-      Boolean(analysis.task?.isRunning) ||
+      analysis.task.isRunning ||
       runAnalysisBlockReason.value !== null,
   );
 
@@ -167,7 +167,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
   }
 
   function resetAnalysisState() {
-    analysis.task = null;
+    analysis.task = { ...DEFAULT_IMPROVEMENTS_TASK };
     analysis.yesterdayConversationsCount = 0;
     improvements.data = [];
   }
@@ -178,7 +178,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     let response = initialResponse;
     let pollCount = 0;
 
-    while (response.task?.isRunning && pollCount < POLL_PHASE_LIMITS.minute) {
+    while (response.task.isRunning && pollCount < POLL_PHASE_LIMITS.minute) {
       await wait(getPollIntervalMs(pollCount));
 
       response = await supervisorApi.improvements.getAnalysis({
@@ -199,7 +199,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
     applyAnalysisResponse(response);
 
-    if (response.task?.isRunning) {
+    if (response.task.isRunning) {
       await pollAnalysisUntilComplete(response);
     } else {
       setStatus('complete');
