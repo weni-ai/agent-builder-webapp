@@ -496,6 +496,21 @@ export const useInstructionsStore = defineStore('Instructions', () => {
 
       const response = await nexusaiAPI.agent_builder.instructions.export({
         projectUuid: projectUuid.value,
+        columns: {
+          category: i18n.global.t(
+            'agents.instructions.view.list_columns.category',
+          ),
+          instruction: i18n.global.t(
+            'agents.instructions.view.list_columns.instruction',
+          ),
+        },
+        categoryLabels: {
+          uncategorized: groupT('uncategorized'),
+          default: groupT('default_instructions'),
+        },
+        defaultInstructions: defaultInstructionsMock.value.map(
+          (instruction) => instruction.text,
+        ),
       });
 
       const blob = new Blob([response], { type: 'text/csv' });
