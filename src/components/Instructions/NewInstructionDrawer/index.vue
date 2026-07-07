@@ -92,7 +92,11 @@ const saveDisabled = computed(() => {
   const aiStatus = instructionsStore.instructionSuggestedByAI.status;
 
   if (isEditing.value) {
-    return aiStatus === 'loading' || aiStatus === 'error';
+    return (
+      !instructionsStore.hasEditingInstructionChanges ||
+      aiStatus === 'loading' ||
+      aiStatus === 'error'
+    );
   }
 
   return aiStatus !== 'complete';
