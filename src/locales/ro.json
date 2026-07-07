@@ -381,7 +381,8 @@
           "categories": "Categorii",
           "list": "Listă"
         },
-        "uncategorized": "Fără categorie"
+        "uncategorized": "Fără categorie",
+        "uncategorized_tooltip": "Instrucțiunile fără categorie apar aici\nAcest grup nu poate fi eliminat"
       },
       "new_instruction_drawer": {
         "title": "Instrucțiune nouă",

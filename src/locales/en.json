@@ -382,7 +382,8 @@
           "categories": "Categories",
           "list": "List"
         },
-        "uncategorized": "Uncategorized"
+        "uncategorized": "Uncategorized",
+        "uncategorized_tooltip": "Instructions without a category appear here\nThis group can't be removed"
       },
       "new_instruction_drawer": {
         "title": "New instruction",

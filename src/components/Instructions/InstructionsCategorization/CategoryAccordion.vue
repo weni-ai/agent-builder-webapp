@@ -25,7 +25,7 @@
           v-if="group.locked"
           side="top"
           :text="lockedTooltip"
-          :enabled="isDefaultGroup"
+          enabled
           data-testid="category-accordion-locked-tooltip"
         >
           <UnnnicTag
@@ -116,10 +116,14 @@ watch(
   { immediate: true },
 );
 
-const lockedTooltip = computed(() => viewT('locked_tooltip'));
-const isDefaultGroup = computed(
-  () => props.group.key === INSTRUCTION_GROUP_KEYS.default,
-);
+const lockedTooltip = computed(() => {
+  const tooltips = {
+    [INSTRUCTION_GROUP_KEYS.uncategorized]: viewT('uncategorized_tooltip'),
+    [INSTRUCTION_GROUP_KEYS.default]: viewT('locked_tooltip'),
+  };
+
+  return tooltips[props.group.key];
+});
 const emptyText = computed(() => viewT('empty_category'));
 
 const actions = computed(() => [
