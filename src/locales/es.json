@@ -358,11 +358,13 @@
       "delete_category": {
         "modal_title": "Eliminar categoría",
         "modal_description": "{count} de {name} a Sin categoría. No se eliminará nada, solo se quita la etiqueta de la categoría.",
+        "modal_description_empty": "{name} no tiene instrucciones. Eliminarla solo la quitará de tu lista",
         "instructions_count": "{count, plural, one {{count} instrucción se moverá} other {{count} instrucciones se moverán}}",
         "cancel": "Cancelar",
         "confirm": "Eliminar categoría",
         "success_title": "Categoría eliminada",
         "success_description": "{count, plural, one {{count} instrucción movida a Sin categoría} other {{count} instrucciones movidas a Sin categoría}}",
+        "success_description_empty": "Eliminada de tu lista",
         "error_title": "No se pudo eliminar la categoría",
         "error_description": "Algo salió mal y no se cambió nada. Inténtalo de nuevo."
       },

@@ -406,7 +406,10 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       alertStore.add({
         type: 'informational',
         text: categoryT('success_title'),
-        description: categoryT('success_description', { count: movedCount }),
+        description:
+          movedCount === 0
+            ? categoryT('success_description_empty')
+            : categoryT('success_description', { count: movedCount }),
       });
 
       return { status: null };

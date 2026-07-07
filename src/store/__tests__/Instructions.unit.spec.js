@@ -611,6 +611,25 @@ describe('Instructions Store', () => {
         });
       });
 
+      it('shows a success toast without moved count when the category is empty', async () => {
+        store.instructions.data = [
+          { id: 3, text: 'C', category: { id: 20, name: 'Support' } },
+        ];
+        nexusaiAPI.agent_builder.instructions.deleteCategory.mockResolvedValue();
+
+        await store.deleteCategory(10);
+
+        expect(alertStore.add).toHaveBeenCalledWith({
+          type: 'informational',
+          text: i18n.global.t(
+            'agents.instructions.delete_category.success_title',
+          ),
+          description: i18n.global.t(
+            'agents.instructions.delete_category.success_description_empty',
+          ),
+        });
+      });
+
       it('keeps state and shows an error toast on failure', async () => {
         nexusaiAPI.agent_builder.instructions.deleteCategory.mockRejectedValue(
           new Error('API Error'),
