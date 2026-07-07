@@ -45,9 +45,10 @@
 
         <SuggestedSolutionSection />
 
-        <ImprovementDrawerSection
-          testId="affected-conversations"
-          :title="$t('audit.improvements.drawer.affected_conversations_title')"
+        <AffectedConversationsSection
+          :open="drawerOpen"
+          :improvementUuid="improvement?.uuid ?? null"
+          @close-drawer="drawerOpen = false"
         />
       </section>
 
@@ -85,6 +86,7 @@ import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTa
 
 import ImprovementStatusDialog from './ImprovementStatusDialog.vue';
 import SuggestedSolutionSection from './SuggestedSolutionSection.vue';
+import AffectedConversationsSection from './AffectedConversationsSection.vue';
 import ImprovementDrawerSection from './ImprovementDrawerSection.vue';
 
 import type {

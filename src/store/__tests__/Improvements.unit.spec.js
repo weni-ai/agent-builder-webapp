@@ -17,6 +17,7 @@ vi.mock('@/api/nexusaiAPI', () => ({
           getAnalysis: vi.fn(),
           getById: vi.fn(),
           updateStatus: vi.fn(),
+          getAffectedConversations: vi.fn(),
         },
       },
     },
@@ -81,6 +82,27 @@ const buildImprovementDetail = (overrides = {}) => ({
       id: 42,
       changeType: 'fix',
       wasChanged: false,
+    },
+  ],
+  ...overrides,
+});
+
+const buildAffectedConversationsResponse = (overrides = {}) => ({
+  count: 25,
+  results: [
+    {
+      uuid: 'conversation-uuid-1',
+      contactUrn: 'whatsapp:5511999999999',
+      contactName: 'Alessandra',
+      messages: [
+        {
+          uuid: 'message-uuid-1',
+          id: '1',
+          text: 'Hello',
+          source: 'incoming',
+          createdAt: '2026-06-23T09:44:26-03:00',
+        },
+      ],
     },
   ],
   ...overrides,
@@ -656,6 +678,52 @@ describe('Improvements Store', () => {
 
       expect(store.improvementDetail.data).toBeNull();
       expect(store.improvementDetail.status).toBeNull();
+    });
+  });
+
+  describe('fetchAffectedConversations', () => {
+    it('loads affected conversations and sets complete status', async () => {
+      const response = buildAffectedConversationsResponse();
+      improvementsApi.getAffectedConversations.mockResolvedValue(response);
+
+      await store.fetchAffectedConversations('improvement-uuid-1', 2);
+
+      expect(improvementsApi.getAffectedConversations).toHaveBeenCalledWith({
+        projectUuid: 'test-project-uuid',
+        improvementUuid: 'improvement-uuid-1',
+        page: 2,
+        pageSize: 10,
+      });
+      expect(store.affectedConversations.status).toBe('complete');
+      expect(store.affectedConversations.page).toBe(2);
+      expect(store.affectedConversations.data).toEqual(response);
+    });
+
+    it('sets error status when the request fails', async () => {
+      const error = new Error('affected conversations failed');
+      improvementsApi.getAffectedConversations.mockRejectedValue(error);
+
+      await store.fetchAffectedConversations('improvement-uuid-1');
+
+      expect(store.affectedConversations.status).toBe('error');
+      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe('resetAffectedConversations', () => {
+    it('clears affected conversations state', () => {
+      store.affectedConversations.data = buildAffectedConversationsResponse();
+      store.affectedConversations.status = 'complete';
+      store.affectedConversations.page = 3;
+
+      store.resetAffectedConversations();
+
+      expect(store.affectedConversations.data).toEqual({
+        count: 0,
+        results: [],
+      });
+      expect(store.affectedConversations.status).toBeNull();
+      expect(store.affectedConversations.page).toBe(1);
     });
   });
 });

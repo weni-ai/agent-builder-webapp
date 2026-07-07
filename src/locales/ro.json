@@ -499,7 +499,8 @@
         "suggested_solution_behavior_title": "Adaugă această instrucțiune la Manager:",
         "suggested_solution_knowledge_title": "Conținut nou pentru baza de cunoștințe",
         "suggested_solution_technical_issue_title": "Acțiune recomandată",
-        "suggested_solution_title": "Soluție sugerată"
+        "suggested_solution_title": "Soluție sugerată",
+        "view_full_conversation": "Vezi conversația completă"
       },
       "header": {
         "custom_analysis": "Analiză personalizată",
