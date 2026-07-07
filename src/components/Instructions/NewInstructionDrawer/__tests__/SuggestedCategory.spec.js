@@ -47,6 +47,8 @@ const categoryT = (key) =>
     `agents.instructions.new_instruction_drawer.ai_analysis.category.${key}`,
   );
 
+const viewT = (key) => i18n.global.t(`agents.instructions.view.${key}`);
+
 describe('NewInstructionDrawer/SuggestedCategory.vue', () => {
   let wrapper;
   let store;
@@ -148,7 +150,7 @@ describe('NewInstructionDrawer/SuggestedCategory.vue', () => {
       expect(find('newTag').text()).toBe(categoryT('new_badge'));
     });
 
-    it('falls back to the placeholder when no category is selected', () => {
+    it('shows uncategorized when no category is selected', () => {
       wrapper = createWrapper({
         newInstruction: {
           text: 'My instruction',
@@ -157,7 +159,7 @@ describe('NewInstructionDrawer/SuggestedCategory.vue', () => {
         },
       });
 
-      expect(find('value').text()).toBe(categoryT('placeholder'));
+      expect(find('value').text()).toBe(viewT('uncategorized'));
     });
   });
 
@@ -229,15 +231,39 @@ describe('NewInstructionDrawer/SuggestedCategory.vue', () => {
   });
 
   describe('Other categories section', () => {
-    it('renders the categories excluding the suggested one', () => {
+    it('renders uncategorized and the categories excluding the suggested one', () => {
       const options = wrapper.findAll(
         '[data-testid^="suggested-category-option-"]',
       );
 
       expect(options.map((option) => option.text())).toEqual([
+        viewT('uncategorized'),
         'Sales',
         'Support',
       ]);
+    });
+
+    it('marks uncategorized as active when no category is selected', () => {
+      wrapper = createWrapper({
+        newInstruction: {
+          text: 'My instruction',
+          category: null,
+          status: null,
+        },
+      });
+
+      expect(findOption(viewT('uncategorized')).attributes('data-active')).toBe(
+        'true',
+      );
+    });
+
+    it('sets category to null when uncategorized is selected', async () => {
+      await findOption('Support').trigger('click');
+      expect(store.newInstruction.category).toEqual({ id: 2, name: 'Support' });
+
+      await findOption(viewT('uncategorized')).trigger('click');
+
+      expect(store.newInstruction.category).toBeNull();
     });
 
     it('marks an option as active when it is the selected category', () => {
