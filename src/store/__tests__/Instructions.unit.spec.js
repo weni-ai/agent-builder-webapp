@@ -487,7 +487,30 @@ describe('Instructions Store', () => {
 
         expect(
           nexusaiAPI.agent_builder.instructions.export,
-        ).toHaveBeenCalledWith({ projectUuid: 'test-project-uuid' });
+        ).toHaveBeenCalledWith({
+          projectUuid: 'test-project-uuid',
+          columns: {
+            category: i18n.global.t(
+              'agents.instructions.view.list_columns.category',
+            ),
+            instruction: i18n.global.t(
+              'agents.instructions.view.list_columns.instruction',
+            ),
+          },
+          categoryLabels: {
+            uncategorized: i18n.global.t(
+              'agents.instructions.view.uncategorized',
+            ),
+            default: i18n.global.t(
+              'agents.instructions.view.default_instructions',
+            ),
+          },
+          defaultInstructions: i18n.global
+            .tm(
+              'agent_builder.instructions.instructions_list.default_instructions',
+            )
+            .map(String),
+        });
         expect(window.URL.createObjectURL).toHaveBeenCalled();
         expect(mockClick).toHaveBeenCalled();
         expect(window.URL.revokeObjectURL).toHaveBeenCalledWith(
@@ -584,6 +607,25 @@ describe('Instructions Store', () => {
           description: i18n.global.t(
             'agents.instructions.delete_category.success_description',
             { count: 2 },
+          ),
+        });
+      });
+
+      it('shows a success toast without moved count when the category is empty', async () => {
+        store.instructions.data = [
+          { id: 3, text: 'C', category: { id: 20, name: 'Support' } },
+        ];
+        nexusaiAPI.agent_builder.instructions.deleteCategory.mockResolvedValue();
+
+        await store.deleteCategory(10);
+
+        expect(alertStore.add).toHaveBeenCalledWith({
+          type: 'informational',
+          text: i18n.global.t(
+            'agents.instructions.delete_category.success_title',
+          ),
+          description: i18n.global.t(
+            'agents.instructions.delete_category.success_description_empty',
           ),
         });
       });
@@ -920,6 +962,19 @@ describe('Instructions Store', () => {
       expect(store.editingInstructionId).toBe(7);
       expect(store.newInstruction.text).toBe('Be concise');
       expect(store.newInstruction.category).toEqual({ id: 3, name: 'Tone' });
+      expect(store.hasEditingInstructionChanges).toBe(false);
+    });
+
+    it('flags edits once the instruction text or category changes', () => {
+      store.instructions.data = [
+        { id: 7, text: 'Be concise', category: { id: 3, name: 'Tone' } },
+      ];
+
+      store.startEditingInstruction({ id: 7 });
+      expect(store.hasEditingInstructionChanges).toBe(false);
+
+      store.newInstruction.text = 'Be very concise';
+      expect(store.hasEditingInstructionChanges).toBe(true);
     });
 
     it('does not open the drawer for an unknown instruction', () => {
@@ -939,6 +994,7 @@ describe('Instructions Store', () => {
       expect(store.isInstructionDrawerOpen).toBe(false);
       expect(store.instructionDrawerMode).toBe('create');
       expect(store.editingInstructionId).toBeNull();
+      expect(store.hasEditingInstructionChanges).toBe(false);
       expect(store.newInstruction.text).toBe('');
     });
 

@@ -35,6 +35,19 @@ function callAlert(type, alertText, descriptionKey?: string) {
   });
 }
 
+function categoriesEqual(
+  current: InstructionCategory | null,
+  original: InstructionCategory | null,
+) {
+  if (current === original) return true;
+  if (!current || !original) return false;
+  if (current.id !== null && original.id !== null) {
+    return current.id === original.id;
+  }
+
+  return current.name === original.name;
+}
+
 export const useInstructionsStore = defineStore('Instructions', () => {
   const projectUuid = computed(() => useProjectStore().uuid);
   const featureFlags = useFeatureFlagsStore();
@@ -133,6 +146,23 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   const isInstructionDrawerOpen = ref(false);
   const instructionDrawerMode = ref<'create' | 'edit'>('create');
   const editingInstructionId = ref<number | string | null>(null);
+
+  const editingInstruction = computed<Instruction | null>(
+    () =>
+      instructions.data.find(
+        (item) => item.id === editingInstructionId.value,
+      ) ?? null,
+  );
+
+  const hasEditingInstructionChanges = computed(() => {
+    const original = editingInstruction.value;
+    if (instructionDrawerMode.value !== 'edit' || !original) return false;
+
+    return (
+      newInstruction.text !== original.text ||
+      !categoriesEqual(newInstruction.category, original.category ?? null)
+    );
+  });
 
   const isSearching = computed(() => searchTerm.value.trim().length > 0);
 
@@ -406,7 +436,10 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       alertStore.add({
         type: 'informational',
         text: categoryT('success_title'),
-        description: categoryT('success_description', { count: movedCount }),
+        description:
+          movedCount === 0
+            ? categoryT('success_description_empty')
+            : categoryT('success_description', { count: movedCount }),
       });
 
       return { status: null };
@@ -491,6 +524,21 @@ export const useInstructionsStore = defineStore('Instructions', () => {
 
       const response = await nexusaiAPI.agent_builder.instructions.export({
         projectUuid: projectUuid.value,
+        columns: {
+          category: i18n.global.t(
+            'agents.instructions.view.list_columns.category',
+          ),
+          instruction: i18n.global.t(
+            'agents.instructions.view.list_columns.instruction',
+          ),
+        },
+        categoryLabels: {
+          uncategorized: groupT('uncategorized'),
+          default: groupT('default_instructions'),
+        },
+        defaultInstructions: defaultInstructionsMock.value.map(
+          (instruction) => instruction.text,
+        ),
       });
 
       const blob = new Blob([response], { type: 'text/csv' });
@@ -538,6 +586,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     isInstructionDrawerOpen,
     instructionDrawerMode,
     editingInstructionId,
+    hasEditingInstructionChanges,
     groupedInstructions,
     flatInstructions,
     createCategory,

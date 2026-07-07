@@ -110,7 +110,16 @@ describe('NewInstructionDrawer/index.vue', () => {
     const editState = {
       instructionDrawerMode: 'edit',
       editingInstructionId: 1,
+      instructions: {
+        data: [{ id: 1, text: 'Be concise', category: null }],
+        status: 'complete',
+      },
       newInstruction: { text: 'Be concise', category: null, status: null },
+    };
+
+    const editStateWithChanges = {
+      ...editState,
+      newInstruction: { text: 'Updated rule', category: null, status: null },
     };
 
     it('renders the edit title and the standalone category section', () => {
@@ -120,8 +129,14 @@ describe('NewInstructionDrawer/index.vue', () => {
       expect(find('category').exists()).toBe(true);
     });
 
-    it('enables save without requiring AI validation', () => {
+    it('disables save when no edits were made', () => {
       wrapper = createWrapper(editState);
+
+      expect(findComponent('saveButton').props('disabled')).toBe(true);
+    });
+
+    it('enables save without requiring AI validation when edits were made', () => {
+      wrapper = createWrapper(editStateWithChanges);
 
       expect(findComponent('saveButton').props('disabled')).toBe(false);
     });
@@ -145,7 +160,7 @@ describe('NewInstructionDrawer/index.vue', () => {
     });
 
     it('updates the instruction when saving', async () => {
-      wrapper = createWrapper(editState);
+      wrapper = createWrapper(editStateWithChanges);
 
       await findComponent('saveButton').trigger('click');
 

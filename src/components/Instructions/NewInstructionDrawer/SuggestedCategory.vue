@@ -120,6 +120,7 @@ import { UnnnicPopoverOption } from '@weni/unnnic-system';
 const { t } = useI18n();
 const categoryT = (key: string) =>
   t(`agents.instructions.new_instruction_drawer.ai_analysis.category.${key}`);
+const viewT = (key: string) => t(`agents.instructions.view.${key}`);
 
 const instructionsStore = useInstructionsStore();
 
@@ -139,23 +140,47 @@ const suggestedCategoryIsNew = computed(
 );
 
 const selectedLabel = computed(
-  () => selectedCategory.value?.name ?? categoryT('placeholder'),
+  () => selectedCategory.value?.name ?? viewT('uncategorized'),
 );
 
-const otherCategories = computed(() =>
-  categoryOptions.value.filter(
-    (option) => option.name !== suggestedCategory.value?.name,
-  ),
-);
+const uncategorizedOption = computed<InstructionCategory>(() => ({
+  id: null,
+  name: viewT('uncategorized'),
+}));
+
+const otherCategories = computed(() => {
+  const uncategorizedName = uncategorizedOption.value.name;
+
+  const filtered = categoryOptions.value.filter(
+    (option) =>
+      option.name !== suggestedCategory.value?.name &&
+      option.name !== uncategorizedName,
+  );
+
+  return [uncategorizedOption.value, ...filtered];
+});
+
+function isUncategorizedOption(option: InstructionCategory) {
+  return option.name === uncategorizedOption.value.name;
+}
 
 function isActive(option: InstructionCategory | null) {
+  if (!option) return false;
+
+  if (isUncategorizedOption(option)) {
+    return selectedCategory.value === null;
+  }
+
   const selected = selectedCategory.value;
-  return !!selected && !!option && selected.name === option.name;
+  return !!selected && selected.name === option.name;
 }
 
 function selectCategory(option: InstructionCategory | null) {
   if (!option) return;
-  instructionsStore.newInstruction.category = { ...option };
+
+  instructionsStore.newInstruction.category = isUncategorizedOption(option)
+    ? null
+    : { ...option };
   isOpen.value = false;
 }
 
@@ -175,7 +200,7 @@ function handleOpenChange(open: boolean) {
   padding: 0;
 
   width: 320px;
-  height: 300px;
+  height: 240px;
 }
 </style>
 
