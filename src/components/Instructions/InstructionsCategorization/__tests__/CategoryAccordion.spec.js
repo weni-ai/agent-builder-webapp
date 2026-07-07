@@ -115,12 +115,15 @@ describe('CategoryAccordion.vue', () => {
     expect(find('actions').exists()).toBe(false);
   });
 
-  it('renders a locked tag with disabled tooltip and keeps instruction actions for uncategorized groups', () => {
+  it('renders a locked tag with uncategorized tooltip and keeps instruction actions for uncategorized groups', () => {
     wrapper = createWrapper(uncategorizedGroup());
 
     expect(find('tag').attributes('lefticon')).toBe('lock');
     expect(find('lockedTooltip').exists()).toBe(true);
-    expect(find('lockedTooltip').attributes('enabled')).toBe('false');
+    expect(find('lockedTooltip').attributes('enabled')).toBe('true');
+    expect(find('lockedTooltip').attributes('text')).toBe(
+      viewT('uncategorized_tooltip'),
+    );
     expect(find('actions').exists()).toBe(false);
     expect(wrapper.findComponent(Instruction).props('showActions')).toBe(true);
   });
