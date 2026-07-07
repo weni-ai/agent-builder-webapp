@@ -131,9 +131,25 @@ export const Instructions = {
     return InstructionClassificationAdapter.fromApi(response.data);
   },
 
-  async export({ projectUuid }) {
-    const response = await request.$http.get(
+  async export({
+    projectUuid,
+    columns,
+    categoryLabels,
+    defaultInstructions = [],
+  }) {
+    const response = await request.$http.post(
       `api/${projectUuid}/instructions/export/`,
+      {
+        columns,
+        category_labels: categoryLabels,
+        default_instructions: defaultInstructions,
+      },
+      {
+        headers: {
+          Accept: 'text/csv',
+        },
+        responseType: 'text',
+      },
     );
 
     return response.data;

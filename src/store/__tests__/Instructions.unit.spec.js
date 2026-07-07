@@ -487,7 +487,30 @@ describe('Instructions Store', () => {
 
         expect(
           nexusaiAPI.agent_builder.instructions.export,
-        ).toHaveBeenCalledWith({ projectUuid: 'test-project-uuid' });
+        ).toHaveBeenCalledWith({
+          projectUuid: 'test-project-uuid',
+          columns: {
+            category: i18n.global.t(
+              'agents.instructions.view.list_columns.category',
+            ),
+            instruction: i18n.global.t(
+              'agents.instructions.view.list_columns.instruction',
+            ),
+          },
+          categoryLabels: {
+            uncategorized: i18n.global.t(
+              'agents.instructions.view.uncategorized',
+            ),
+            default: i18n.global.t(
+              'agents.instructions.view.default_instructions',
+            ),
+          },
+          defaultInstructions: i18n.global
+            .tm(
+              'agent_builder.instructions.instructions_list.default_instructions',
+            )
+            .map(String),
+        });
         expect(window.URL.createObjectURL).toHaveBeenCalled();
         expect(mockClick).toHaveBeenCalled();
         expect(window.URL.revokeObjectURL).toHaveBeenCalledWith(
