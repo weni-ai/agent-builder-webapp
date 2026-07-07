@@ -89,6 +89,18 @@ describe('ModalRemoveCategory.vue', () => {
       );
     });
 
+    it('renders the empty category description when the category has no instructions', () => {
+      wrapper.unmount();
+      wrapper = createWrapper([
+        { id: 3, text: 'C', category: { id: 20, name: 'Support' } },
+      ]);
+
+      expect(find('description').attributes('keypath')).toBe(
+        'agents.instructions.delete_category.modal_description_empty',
+      );
+      expect(find('name').text()).toBe(category.name);
+    });
+
     it('renders cancel and confirm buttons with the correct labels', () => {
       expect(findComponent('cancel').props('text')).toBe(categoryT('cancel'));
       expect(findComponent('confirm').props('text')).toBe(categoryT('confirm'));
