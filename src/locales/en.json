@@ -420,7 +420,6 @@
             "create_title": "Create category",
             "name_label": "Category name",
             "name_placeholder": "Name",
-            "placeholder": "Select...",
             "cancel": "Cancel",
             "create": "Create",
             "validation": {
