@@ -175,7 +175,7 @@ function handleOpenChange(open: boolean) {
   padding: 0;
 
   width: 320px;
-  height: 300px;
+  height: 240px;
 }
 </style>
 
