@@ -35,6 +35,19 @@ function callAlert(type, alertText, descriptionKey?: string) {
   });
 }
 
+function categoriesEqual(
+  current: InstructionCategory | null,
+  original: InstructionCategory | null,
+) {
+  if (current === original) return true;
+  if (!current || !original) return false;
+  if (current.id !== null && original.id !== null) {
+    return current.id === original.id;
+  }
+
+  return current.name === original.name;
+}
+
 export const useInstructionsStore = defineStore('Instructions', () => {
   const projectUuid = computed(() => useProjectStore().uuid);
   const featureFlags = useFeatureFlagsStore();
@@ -133,6 +146,23 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   const isInstructionDrawerOpen = ref(false);
   const instructionDrawerMode = ref<'create' | 'edit'>('create');
   const editingInstructionId = ref<number | string | null>(null);
+
+  const editingInstruction = computed<Instruction | null>(
+    () =>
+      instructions.data.find(
+        (item) => item.id === editingInstructionId.value,
+      ) ?? null,
+  );
+
+  const hasEditingInstructionChanges = computed(() => {
+    const original = editingInstruction.value;
+    if (instructionDrawerMode.value !== 'edit' || !original) return false;
+
+    return (
+      newInstruction.text !== original.text ||
+      !categoriesEqual(newInstruction.category, original.category ?? null)
+    );
+  });
 
   const isSearching = computed(() => searchTerm.value.trim().length > 0);
 
@@ -561,6 +591,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     isInstructionDrawerOpen,
     instructionDrawerMode,
     editingInstructionId,
+    hasEditingInstructionChanges,
     groupedInstructions,
     flatInstructions,
     createCategory,

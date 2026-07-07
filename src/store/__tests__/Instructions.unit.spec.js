@@ -962,6 +962,19 @@ describe('Instructions Store', () => {
       expect(store.editingInstructionId).toBe(7);
       expect(store.newInstruction.text).toBe('Be concise');
       expect(store.newInstruction.category).toEqual({ id: 3, name: 'Tone' });
+      expect(store.hasEditingInstructionChanges).toBe(false);
+    });
+
+    it('flags edits once the instruction text or category changes', () => {
+      store.instructions.data = [
+        { id: 7, text: 'Be concise', category: { id: 3, name: 'Tone' } },
+      ];
+
+      store.startEditingInstruction({ id: 7 });
+      expect(store.hasEditingInstructionChanges).toBe(false);
+
+      store.newInstruction.text = 'Be very concise';
+      expect(store.hasEditingInstructionChanges).toBe(true);
     });
 
     it('does not open the drawer for an unknown instruction', () => {
@@ -981,6 +994,7 @@ describe('Instructions Store', () => {
       expect(store.isInstructionDrawerOpen).toBe(false);
       expect(store.instructionDrawerMode).toBe('create');
       expect(store.editingInstructionId).toBeNull();
+      expect(store.hasEditingInstructionChanges).toBe(false);
       expect(store.newInstruction.text).toBe('');
     });
 
