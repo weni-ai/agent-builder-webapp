@@ -382,7 +382,8 @@
           "categories": "Categorias",
           "list": "Lista"
         },
-        "uncategorized": "Sem categoria"
+        "uncategorized": "Sem categoria",
+        "uncategorized_tooltip": "Instruções sem categoria aparecem aqui\nEste grupo não pode ser removido"
       },
       "new_instruction_drawer": {
         "title": "Nova instrução",

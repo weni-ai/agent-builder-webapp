@@ -15,7 +15,7 @@
         v-if="instruction.categoryLocked"
         side="top"
         :text="lockedTooltip"
-        :enabled="instruction.locked"
+        enabled
         data-testid="list-instruction-row-locked-tooltip"
       >
         <UnnnicTag
@@ -56,6 +56,7 @@ import { useInstructionsStore } from '@/store/Instructions';
 
 import ContentItemActions from '@/components/ContentItemActions.vue';
 import ModalRemoveInstruction from '@/components/Instructions/ModalRemoveInstruction.vue';
+import { INSTRUCTION_GROUP_KEYS } from '@/store/helpers/instructionViewModels';
 
 const props = defineProps({
   instruction: {
@@ -67,6 +68,7 @@ const props = defineProps({
 const emit = defineEmits(['edit']);
 
 const { t } = useI18n();
+const viewT = (key) => t(`agents.instructions.view.${key}`);
 
 const instructionsStore = useInstructionsStore();
 
@@ -85,9 +87,18 @@ const removeTarget = computed(() => ({
   status: status.value,
 }));
 
-const lockedTooltip = computed(() =>
-  t('agents.instructions.view.locked_tooltip'),
-);
+const lockedTooltip = computed(() => {
+  const tooltips = {
+    [INSTRUCTION_GROUP_KEYS.uncategorized]: viewT('uncategorized_tooltip'),
+    [INSTRUCTION_GROUP_KEYS.default]: viewT('locked_tooltip'),
+  };
+
+  const key = props.instruction.locked
+    ? INSTRUCTION_GROUP_KEYS.default
+    : INSTRUCTION_GROUP_KEYS.uncategorized;
+
+  return tooltips[key];
+});
 
 const actions = computed(() => [
   {
