@@ -62,3 +62,25 @@ export interface ImprovementsAnalysis {
   task: ImprovementsTask;
   improvements: Improvement[];
 }
+
+export type AffectedConversationMessageSource = 'incoming' | 'outgoing';
+
+export interface AffectedConversationMessage {
+  uuid: string;
+  id: string;
+  text: string;
+  source: AffectedConversationMessageSource;
+  createdAt: string;
+}
+
+export interface AffectedConversation {
+  uuid: string;
+  contactUrn: string;
+  contactName: string;
+  messages: AffectedConversationMessage[];
+}
+
+export interface AffectedConversationsResponse {
+  count: number;
+  results: AffectedConversation[];
+}

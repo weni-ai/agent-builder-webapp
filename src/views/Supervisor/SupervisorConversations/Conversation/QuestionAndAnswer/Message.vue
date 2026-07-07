@@ -64,7 +64,13 @@ const props = defineProps({
   scheme: {
     type: String,
     default: 'neutral',
-    validator: (value) => ['neutral', 'success'].includes(value),
+    validator: (value) =>
+      [
+        'neutral',
+        'success',
+        'improvement-incoming',
+        'improvement-outgoing',
+      ].includes(value),
   },
 });
 
@@ -153,13 +159,29 @@ const treatedMessage = computed(() => {
   gap: $unnnic-space-2;
 
   &--neutral {
-    background-color: $unnnic-color-bg-soft;
+    background-color: $unnnic-color-bg-base-soft;
     color: $unnnic-color-fg-emphasized;
   }
 
   &--success {
-    background-color: $unnnic-color-fg-active;
-    color: $unnnic-color-fg-inverted;
+    background-color: $unnnic-color-fg-accent;
+    color: $unnnic-color-fg-on-primary;
+  }
+
+  &--improvement-incoming,
+  &--improvement-outgoing {
+    box-shadow: $unnnic-shadow-1;
+    font: $unnnic-font-caption-2;
+  }
+
+  &--improvement-incoming {
+    background-color: $unnnic-color-bg-base;
+    color: $unnnic-color-fg-emphasized;
+  }
+
+  &--improvement-outgoing {
+    background-color: $unnnic-color-bg-accent-plain;
+    color: $unnnic-color-fg-emphasized;
   }
 
   .message__image {

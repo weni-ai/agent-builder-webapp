@@ -292,17 +292,37 @@ describe('Supervisor.js', () => {
       ).rejects.toThrow('API Error');
     });
 
-    it('getById returns improvement detail from mock data', async () => {
-      const promise = Supervisor.improvements.getById({
+    it('getById calls the improvement detail endpoint and adapts the response', async () => {
+      const mockDetailResponse = {
+        uuid: 'improvement-uuid-1',
+        text: 'The agent tone does not match the configured brand voice in refund conversations.',
+        type: 'personality_deviation',
+        description:
+          'In refund conversations, the agent uses informal language that conflicts with the configured brand voice.',
+        suggested_change:
+          'Update the tone instruction to reinforce formal and empathetic language during refund interactions.',
+        status: 'pending',
+        affected_instructions: [
+          {
+            instruction_id: 12,
+            change_type: 'fix',
+            was_changed: false,
+          },
+        ],
+      };
+
+      conversationsRequest.$http.get.mockResolvedValue({
+        data: mockDetailResponse,
+      });
+
+      const result = await Supervisor.improvements.getById({
         projectUuid: 'project-123',
         improvementUuid: 'improvement-uuid-1',
       });
 
-      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
-
-      const result = await promise;
-
-      expect(nexusRequest.$http.get).not.toHaveBeenCalled();
+      expect(conversationsRequest.$http.get).toHaveBeenCalledWith(
+        '/api/v1/projects/project-123/improvements/improvement-uuid-1/',
+      );
       expect(result).toEqual({
         uuid: 'improvement-uuid-1',
         text: 'The agent tone does not match the configured brand voice in refund conversations.',
@@ -322,19 +342,78 @@ describe('Supervisor.js', () => {
       });
     });
 
-    it('getById throws when improvement uuid is not found', async () => {
-      const promise = Supervisor.improvements.getById({
-        projectUuid: 'project-123',
-        improvementUuid: 'unknown-uuid',
+    it('getById throws when improvement detail response is invalid', async () => {
+      conversationsRequest.$http.get.mockResolvedValue({
+        data: {
+          uuid: 'improvement-uuid-1',
+        },
       });
 
-      const expectation = await expect(promise).rejects.toThrow(
-        'Improvement not found',
+      await expect(
+        Supervisor.improvements.getById({
+          projectUuid: 'project-123',
+          improvementUuid: 'improvement-uuid-1',
+        }),
+      ).rejects.toThrow('Invalid improvement detail response');
+    });
+
+    it('getAffectedConversations calls the endpoint and adapts the response', async () => {
+      const mockAffectedConversationsResponse = {
+        count: 25,
+        next: 'https://api.example.com/page=2',
+        previous: null,
+        results: [
+          {
+            uuid: 'conversation-uuid-1',
+            contact_urn: 'whatsapp:5511999999999',
+            contact_name: 'Alessandra',
+            messages: [
+              {
+                uuid: 'message-uuid-1',
+                id: '1',
+                text: 'Hello',
+                source: 'incoming',
+                created_at: '2026-06-23T09:44:26-03:00',
+              },
+            ],
+          },
+        ],
+      };
+
+      conversationsRequest.$http.get.mockResolvedValue({
+        data: mockAffectedConversationsResponse,
+      });
+
+      const result = await Supervisor.improvements.getAffectedConversations({
+        projectUuid,
+        improvementUuid: 'improvement-uuid-1',
+        page: 2,
+        pageSize: 10,
+      });
+
+      expect(conversationsRequest.$http.get).toHaveBeenCalledWith(
+        `/api/v1/projects/${projectUuid}/improvements/improvement-uuid-1/affected_conversations`,
+        { params: { page: 2, page_size: 10 } },
       );
-
-      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
-
-      await expectation;
+      expect(result).toEqual({
+        count: 25,
+        results: [
+          {
+            uuid: 'conversation-uuid-1',
+            contactUrn: 'whatsapp:5511999999999',
+            contactName: 'Alessandra',
+            messages: [
+              {
+                uuid: 'message-uuid-1',
+                id: '1',
+                text: 'Hello',
+                source: 'incoming',
+                createdAt: '2026-06-23T09:44:26-03:00',
+              },
+            ],
+          },
+        ],
+      });
     });
   });
 });

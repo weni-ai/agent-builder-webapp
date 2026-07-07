@@ -3,6 +3,7 @@ import conversationsRequest from '../conversationsRequest';
 import { fetchConversationList } from '../adapters/supervisor/conversationSources';
 import { ConversationMessageAdapter } from '../adapters/supervisor/conversationMessage';
 import { ImprovementsAdapter } from '../adapters/supervisor/improvements';
+import { AffectedConversationsAdapter } from '../adapters/supervisor/affectedConversations';
 
 export const Supervisor = {
   conversations: {
@@ -103,6 +104,20 @@ export const Supervisor = {
       }
 
       return detail;
+    },
+
+    async getAffectedConversations({
+      projectUuid,
+      improvementUuid,
+      page = 1,
+      pageSize = 10,
+    }) {
+      const { data } = await conversationsRequest.$http.get(
+        `/api/v1/projects/${projectUuid}/improvements/${improvementUuid}/affected_conversations`,
+        { params: { page, page_size: pageSize } },
+      );
+
+      return AffectedConversationsAdapter.fromApi(data);
     },
   },
 };
