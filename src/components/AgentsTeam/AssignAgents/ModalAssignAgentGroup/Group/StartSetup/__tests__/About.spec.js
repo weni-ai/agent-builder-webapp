@@ -82,7 +82,7 @@ describe('StartSetup About', () => {
 
     expect(findLastUpdated().exists()).toBe(true);
     expect(findLastUpdated().text()).toBe(
-      'Updated on May 13, 2026, at 3:15 p.m.',
+      'Updated on May 13, 2026 at 3:15 p.m.',
     );
   });
 
