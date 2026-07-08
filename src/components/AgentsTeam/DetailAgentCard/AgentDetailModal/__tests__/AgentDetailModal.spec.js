@@ -88,7 +88,7 @@ describe('AgentDetailModal', () => {
     );
 
     expect(aboutSection.props('lastUpdated')).toBe(
-      'Updated on May 13, 2026, at 3:15 p.m.',
+      'Updated on May 13, 2026 at 3:15 p.m.',
     );
   });
 
