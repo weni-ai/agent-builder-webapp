@@ -232,13 +232,16 @@ watch(isDeleteDialogOpen, (isOpen) => {
   }
 
   &__empty {
+    margin: auto 0;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: $unnnic-space-2;
-    min-height: 100px;
+    gap: $unnnic-space-1;
+
     text-align: center;
+    min-height: 100px;
   }
 
   &__empty-title {
