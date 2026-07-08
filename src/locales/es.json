@@ -492,7 +492,10 @@
         "create": {
           "error": "No se pudo guardar el análisis personalizado debido a un problema técnico",
           "limit_error": "No se pudo guardar el análisis personalizado debido al límite de 10 análisis personalizados",
-          "success": "Análisis personalizado agregado con éxito"
+          "success": {
+            "title": "Análisis personalizado agregado",
+            "description": "El problema será monitoreado en los próximos análisis"
+          }
         },
         "delete": {
           "cancel": "Cancelar",
@@ -501,7 +504,7 @@
           "error": "No se pudo eliminar el análisis personalizado debido a un problema técnico",
           "success": {
             "description": "Este problema no se monitoreará en los próximos análisis.",
-            "title": "Análisis personalizado eliminado con éxito"
+            "title": "Análisis personalizado eliminado"
           },
           "title": "Eliminar análisis personalizado"
         },

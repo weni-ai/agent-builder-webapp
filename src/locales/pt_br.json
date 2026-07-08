@@ -492,7 +492,10 @@
         "create": {
           "error": "Não foi possível salvar a análise personalizada devido a um problema técnico",
           "limit_error": "Não foi possível salvar a análise personalizada devido ao limite de 10 análises personalizadas",
-          "success": "Análise personalizada adicionada com sucesso"
+          "success": {
+            "title": "Análise personalizada adicionada",
+            "description": "O problema será monitorado nas próximas análises"
+          }
         },
         "delete": {
           "cancel": "Cancelar",
@@ -501,7 +504,7 @@
           "error": "Não foi possível excluir a análise personalizada devido a um problema técnico",
           "success": {
             "description": "Este problema não será monitorado nas próximas análises.",
-            "title": "Análise personalizada excluída com sucesso"
+            "title": "Análise personalizada excluída"
           },
           "title": "Excluir análise personalizada"
         },

@@ -493,7 +493,10 @@
         "create": {
           "error": "Custom analysis couldn't be saved due to a technical issue",
           "limit_error": "Custom analysis couldn't be saved due to the 10 custom analysis limit",
-          "success": "Custom analysis added successfully"
+          "success": {
+            "title": "Custom analysis added",
+            "description": "Issue will be monitored in upcoming analyses"
+          }
         },
         "delete": {
           "cancel": "Cancel",
@@ -502,7 +505,7 @@
           "error": "Custom analysis couldn't be deleted due to a technical issue",
           "success": {
             "description": "This issue will not be monitored in upcoming analyses.",
-            "title": "Custom analysis deleted successfully"
+            "title": "Custom analysis deleted"
           },
           "title": "Delete custom analysis"
         },

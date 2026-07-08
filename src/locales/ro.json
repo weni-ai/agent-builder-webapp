@@ -491,7 +491,10 @@
         "create": {
           "error": "Analiza personalizată nu a putut fi salvată din cauza unei probleme tehnice",
           "limit_error": "Analiza personalizată nu a putut fi salvată din cauza limitei de 10 analize personalizate",
-          "success": "Analiza personalizată a fost adăugată cu succes"
+          "success": {
+            "title": "Analiză personalizată adăugată",
+            "description": "Problema va fi monitorizată în analizele viitoare"
+          }
         },
         "delete": {
           "cancel": "Anulează",
@@ -500,7 +503,7 @@
           "error": "Analiza personalizată nu a putut fi ștearsă din cauza unei probleme tehnice",
           "success": {
             "description": "Această problemă nu va fi monitorizată în analizele viitoare.",
-            "title": "Analiza personalizată a fost ștearsă cu succes"
+            "title": "Analiza personalizată ștearsă"
           },
           "title": "Șterge analiza personalizată"
         },
