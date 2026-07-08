@@ -486,6 +486,35 @@
         "improvement": "Mejora",
         "type": "Tipo"
       },
+      "custom_analysis_modal": {
+        "add": "Agregar",
+        "affected_conversations": "{count, plural, one {# conversación afectada} other {# conversaciones afectadas}}",
+        "create": {
+          "error": "No se pudo guardar el análisis personalizado debido a un problema técnico",
+          "limit_error": "No se pudo guardar el análisis personalizado debido al límite de 10 análisis personalizados",
+          "success": "Análisis personalizado agregado con éxito"
+        },
+        "delete": {
+          "cancel": "Cancelar",
+          "confirm": "Eliminar",
+          "description": "La IA dejará de buscar {name} en las conversaciones. Esta acción no se puede deshacer.",
+          "error": "No se pudo eliminar el análisis personalizado debido a un problema técnico",
+          "success": {
+            "description": "Este problema no se monitoreará en los próximos análisis.",
+            "title": "Análisis personalizado eliminado con éxito"
+          },
+          "title": "Eliminar análisis personalizado"
+        },
+        "description": "Describe un comportamiento o problema que la IA debe monitorear en las conversaciones. Cuando se identifica, aparece automáticamente en el backlog de mejoras",
+        "empty_description": "Usa el campo de arriba para empezar a monitorear problemas específicos",
+        "empty_title": "No se agregó ningún análisis personalizado",
+        "input_helper": "Cuanto más específico seas, mejor podrá la IA identificar el problema en las conversaciones",
+        "input_label": "¿Qué quieres monitorear?",
+        "input_placeholder": "Por ejemplo: El agente está proporcionando plazos de entrega poco realistas",
+        "list_heading": "{count, plural, one {# análisis personalizado} other {# análisis personalizados}}",
+        "no_affected_conversations": "No hay conversaciones afectadas",
+        "title": "Análisis personalizado"
+      },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# conversación afectada} other {# conversaciones afectadas}}",
         "affected_conversations_title": "Conversaciones afectadas",

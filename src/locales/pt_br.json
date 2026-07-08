@@ -486,6 +486,35 @@
         "improvement": "Melhoria",
         "type": "Tipo"
       },
+      "custom_analysis_modal": {
+        "add": "Adicionar",
+        "affected_conversations": "{count, plural, one {# conversa afetada} other {# conversas afetadas}}",
+        "create": {
+          "error": "Não foi possível salvar a análise personalizada devido a um problema técnico",
+          "limit_error": "Não foi possível salvar a análise personalizada devido ao limite de 10 análises personalizadas",
+          "success": "Análise personalizada adicionada com sucesso"
+        },
+        "delete": {
+          "cancel": "Cancelar",
+          "confirm": "Excluir",
+          "description": "A IA deixará de buscar {name} nas conversas. Esta ação não pode ser desfeita.",
+          "error": "Não foi possível excluir a análise personalizada devido a um problema técnico",
+          "success": {
+            "description": "Este problema não será monitorado nas próximas análises.",
+            "title": "Análise personalizada excluída com sucesso"
+          },
+          "title": "Excluir análise personalizada"
+        },
+        "description": "Descreva um comportamento ou problema que a IA deve monitorar nas conversas. Quando identificado, aparece automaticamente no backlog de melhorias",
+        "empty_description": "Use o campo acima para começar a monitorar problemas específicos",
+        "empty_title": "Nenhuma análise personalizada adicionada",
+        "input_helper": "Quanto mais específico você for, melhor a IA conseguirá identificar o problema nas conversas",
+        "input_label": "O que você quer monitorar?",
+        "input_placeholder": "Por exemplo: O agente está fornecendo prazos de entrega irrealistas",
+        "list_heading": "{count, plural, one {# análise personalizada} other {# análises personalizadas}}",
+        "no_affected_conversations": "Nenhuma conversa afetada",
+        "title": "Análise personalizada"
+      },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# conversa afetada} other {# conversas afetadas}}",
         "affected_conversations_title": "Conversas afetadas",

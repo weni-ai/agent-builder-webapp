@@ -27,11 +27,13 @@
     <RunAnalysisButton
       data-testid="conversations-improvements-header-run-button"
     />
+
+    <CustomAnalysisModal v-model:open="isCustomAnalysisModalOpen" />
   </header>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { isToday } from 'date-fns';
 import { storeToRefs } from 'pinia';
@@ -43,8 +45,10 @@ import {
   getYesterdayFormattedDate,
 } from '@/utils/formatters';
 import RunAnalysisButton from '@/components/ConversationsImprovements/RunAnalysisButton.vue';
+import CustomAnalysisModal from '@/components/ConversationsImprovements/CustomAnalysisModal/CustomAnalysisModal.vue';
 
 const { t } = useI18n();
+const isCustomAnalysisModalOpen = ref(false);
 const improvementsStore = useImprovementsStore();
 const { analysis, improvements } = storeToRefs(improvementsStore);
 
@@ -75,7 +79,7 @@ const headerDescription = computed(() => {
 });
 
 const openCustomAnalysisModal = () => {
-  console.log('openCustomAnalysisModal');
+  isCustomAnalysisModalOpen.value = true;
 };
 </script>
 
