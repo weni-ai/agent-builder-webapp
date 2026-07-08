@@ -487,6 +487,35 @@
         "improvement": "Improvement",
         "type": "Type"
       },
+      "custom_analysis_modal": {
+        "add": "Add",
+        "affected_conversations": "{count, plural, one {# affected conversation} other {# affected conversations}}",
+        "create": {
+          "error": "Custom analysis couldn't be saved due to a technical issue",
+          "limit_error": "Custom analysis couldn't be saved due to the 10 custom analysis limit",
+          "success": "Custom analysis added successfully"
+        },
+        "delete": {
+          "cancel": "Cancel",
+          "confirm": "Delete",
+          "description": "The AI will stop searching for {name} in conversations. This action can't be undone.",
+          "error": "Custom analysis couldn't be deleted due to a technical issue",
+          "success": {
+            "description": "This issue will not be monitored in upcoming analyses.",
+            "title": "Custom analysis deleted successfully"
+          },
+          "title": "Delete custom analysis"
+        },
+        "description": "Describe a behavior or issue that the AI should monitor in conversations. When identified, it automatically appears in the improvement backlog",
+        "empty_description": "Use the field above to start monitoring specific issues",
+        "empty_title": "No custom analysis added",
+        "input_helper": "The more specific you are, the better the AI can identify the issue in conversations",
+        "input_label": "What do you want to monitor?",
+        "input_placeholder": "For example: The agent is providing unrealistic delivery deadlines",
+        "list_heading": "{count, plural, one {# custom analysis} other {# custom analyses}}",
+        "no_affected_conversations": "No affected conversations",
+        "title": "Custom analysis"
+      },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# affected conversation} other {# affected conversations}}",
         "affected_conversations_title": "Affected conversations",
