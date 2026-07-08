@@ -14,7 +14,11 @@
         class="insufficient-conversations-volume__description"
         data-testid="insufficient-conversations-volume-description"
       >
-        {{ $t('audit.improvements.insufficient_volume.description') }}
+        {{
+          $t('audit.improvements.insufficient_volume.description', {
+            min: MIN_CONVERSATIONS_FOR_ANALYSIS,
+          })
+        }}
       </p>
     </header>
 
@@ -26,6 +30,7 @@
 
 <script setup lang="ts">
 import RunAnalysisButton from '@/components/ConversationsImprovements/RunAnalysisButton.vue';
+import { MIN_CONVERSATIONS_FOR_ANALYSIS } from '@/store/Improvements';
 </script>
 
 <style scoped lang="scss">

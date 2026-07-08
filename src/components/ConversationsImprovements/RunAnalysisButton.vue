@@ -20,7 +20,10 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 
-import { useImprovementsStore } from '@/store/Improvements';
+import {
+  MIN_CONVERSATIONS_FOR_ANALYSIS,
+  useImprovementsStore,
+} from '@/store/Improvements';
 
 const props = withDefaults(
   defineProps<{
@@ -49,6 +52,7 @@ const tooltipText = computed(() => {
   if (runAnalysisBlockReason.value === 'insufficient_volume') {
     return t(
       'audit.improvements.header.run_analysis_insufficient_volume_tooltip',
+      { min: MIN_CONVERSATIONS_FOR_ANALYSIS },
     );
   }
 

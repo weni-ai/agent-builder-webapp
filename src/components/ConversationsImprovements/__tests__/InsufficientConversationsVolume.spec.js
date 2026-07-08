@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
+import { MIN_CONVERSATIONS_FOR_ANALYSIS } from '@/store/Improvements';
 
 import InsufficientConversationsVolume from '../InsufficientConversationsVolume.vue';
 import RunAnalysisButton from '../RunAnalysisButton.vue';
@@ -67,7 +68,9 @@ describe('InsufficientConversationsVolume.vue', () => {
 
     it('renders the description with the correct translation', () => {
       expect(findDescription().text()).toBe(
-        i18n.global.t('audit.improvements.insufficient_volume.description'),
+        i18n.global.t('audit.improvements.insufficient_volume.description', {
+          min: MIN_CONVERSATIONS_FOR_ANALYSIS,
+        }),
       );
     });
 

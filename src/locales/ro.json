@@ -479,11 +479,11 @@
         "description_today": "Rulat astăzi la {time}",
         "run_analysis": "Rulează analiza",
         "run_analysis_already_run_today_tooltip": "Analiza a fost deja executată astăzi\nO nouă execuție va fi disponibilă mâine",
-        "run_analysis_insufficient_volume_tooltip": "Volum insuficient de conversații pentru executarea analizei\nMinimum 15 conversații necesare",
+        "run_analysis_insufficient_volume_tooltip": "Volum insuficient de conversații pentru executarea analizei\nMinimum {min} conversații necesare",
         "title": "{count, plural, one {Analiza conversațiilor din {date} · {count} îmbunătățire identificată} other {Analiza conversațiilor din {date} · {count} îmbunătățiri identificate}}"
       },
       "insufficient_volume": {
-        "description": "Minimum 15 conversații necesare pentru executarea analizei",
+        "description": "Minimum {min} conversații necesare pentru executarea analizei",
         "title": "Volum insuficient de conversații"
       },
       "no_analysis": {

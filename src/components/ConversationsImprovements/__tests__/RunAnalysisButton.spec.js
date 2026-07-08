@@ -3,7 +3,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
-import { useImprovementsStore } from '@/store/Improvements';
+import {
+  MIN_CONVERSATIONS_FOR_ANALYSIS,
+  useImprovementsStore,
+} from '@/store/Improvements';
 
 import RunAnalysisButton from '../RunAnalysisButton.vue';
 
@@ -95,6 +98,7 @@ describe('RunAnalysisButton.vue', () => {
       expect(findTooltip().props('text')).toBe(
         i18n.global.t(
           'audit.improvements.header.run_analysis_insufficient_volume_tooltip',
+          { min: MIN_CONVERSATIONS_FOR_ANALYSIS },
         ),
       );
       expect(findTooltip().props('side')).toBe('left');
