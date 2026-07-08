@@ -3,6 +3,7 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { nextTick } from 'vue';
 
 import TextDetailHeader from '@/components/Knowledge/NewContentText/TextDetailHeader.vue';
+import i18n from '@/utils/plugins/i18n';
 
 const DEFAULT_TITLE = 'Untitled text';
 
@@ -120,7 +121,7 @@ describe('TextDetailHeader.vue', () => {
       expect(actions[0]).toMatchObject({
         scheme: 'red-10',
         icon: 'delete',
-        text: 'Remove text',
+        text: i18n.global.t('content_bases.actions.remove_text'),
       });
     });
 
@@ -167,7 +168,7 @@ describe('TextDetailHeader.vue', () => {
       await wrapper.find(elements.titleWrapper).trigger('click');
 
       expect(wrapper.find(elements.hint).text()).toBe(
-        'Press ENTER to confirm or ESC to cancel',
+        i18n.global.t('content_bases.new_text.edit_name_hint'),
       );
     });
 
