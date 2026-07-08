@@ -89,7 +89,10 @@ export const useCustomAnalysisImprovementsStore = defineStore(
         createCustomAnalysis.status = 'complete';
         alertStore.add({
           type: 'success',
-          text: i18n.global.t(`${I18N_PREFIX}.create.success`),
+          text: i18n.global.t(`${I18N_PREFIX}.create.success.title`),
+          description: i18n.global.t(
+            `${I18N_PREFIX}.create.success.description`,
+          ),
         });
 
         return { status: 'complete' as const };
