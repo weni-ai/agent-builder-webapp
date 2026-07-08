@@ -212,7 +212,7 @@ describe('Improvements Store', () => {
         isRunning: false,
         progress: 5,
         total: 5,
-        createdAt: '2026-06-18T08:00:00Z',
+        createdAt: new Date().toISOString(),
       };
 
       expect(store.runAnalysisBlockReason).toBe('already_run_today');
@@ -225,7 +225,7 @@ describe('Improvements Store', () => {
         isRunning: false,
         progress: 5,
         total: 5,
-        createdAt: '2026-06-18T08:00:00Z',
+        createdAt: new Date().toISOString(),
       };
 
       expect(store.runAnalysisBlockReason).toBe('already_run_today');
