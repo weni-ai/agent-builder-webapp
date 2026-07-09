@@ -42,6 +42,14 @@ describe('Message.vue', () => {
   });
 
   describe('Component rendering', () => {
+    it('renders with neutral scheme', () => {
+      createWrapper({ scheme: 'neutral' });
+
+      expect(
+        wrapper.find('.question-and-answer__message--neutral').exists(),
+      ).toBe(true);
+    });
+
     it('renders with success scheme', () => {
       createWrapper({ scheme: 'success' });
 
@@ -51,6 +59,26 @@ describe('Message.vue', () => {
       expect(
         wrapper.find('.question-and-answer__message--neutral').exists(),
       ).toBe(false);
+    });
+
+    it('renders with improvement-incoming scheme', () => {
+      createWrapper({ scheme: 'improvement-incoming' });
+
+      expect(
+        wrapper
+          .find('.question-and-answer__message--improvement-incoming')
+          .exists(),
+      ).toBe(true);
+    });
+
+    it('renders with improvement-outgoing scheme', () => {
+      createWrapper({ scheme: 'improvement-outgoing' });
+
+      expect(
+        wrapper
+          .find('.question-and-answer__message--improvement-outgoing')
+          .exists(),
+      ).toBe(true);
     });
 
     it('renders MessageDisplay when there is text content', () => {
@@ -329,16 +357,19 @@ describe('Message.vue', () => {
     });
 
     it('validates scheme prop correctly', () => {
-      // Test valid schemes
-      createWrapper({ scheme: 'neutral' });
-      expect(
-        wrapper.find('.question-and-answer__message--neutral').exists(),
-      ).toBe(true);
+      const schemes = [
+        'neutral',
+        'success',
+        'improvement-incoming',
+        'improvement-outgoing',
+      ];
 
-      createWrapper({ scheme: 'success' });
-      expect(
-        wrapper.find('.question-and-answer__message--success').exists(),
-      ).toBe(true);
+      schemes.forEach((scheme) => {
+        createWrapper({ scheme });
+        expect(
+          wrapper.find(`.question-and-answer__message--${scheme}`).exists(),
+        ).toBe(true);
+      });
     });
   });
 });

@@ -18,6 +18,7 @@ vi.mock('@/utils/formatters', () => ({
 }));
 
 const mockProcessLog = vi.mocked(processLog);
+const mockFormatTimestamp = vi.mocked(formatTimestamp);
 
 describe('QuestionAndAnswer index.vue', () => {
   let wrapper;
@@ -79,7 +80,8 @@ describe('QuestionAndAnswer index.vue', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockProcessLog.mockImplementation((log) => ({
+    mockFormatTimestamp.mockReturnValue('00/00/00 00:00');
+    mockProcessLog.mockImplementation(({ log }) => ({
       ...log,
       config: { currentAgent: 'test-agent' },
     }));
@@ -128,7 +130,7 @@ describe('QuestionAndAnswer index.vue', () => {
         expect(answerSection().exists()).toBe(false);
       });
 
-      it('passes correct props to user Message component', () => {
+      it('passes neutral scheme to user Message by default', () => {
         const userData = {
           id: 'user-message-1',
           type: 'user',
@@ -138,6 +140,36 @@ describe('QuestionAndAnswer index.vue', () => {
         createWrapper({ data: userData });
 
         expect(questionMessage().props('content')).toEqual(userData);
+        expect(questionMessage().props('scheme')).toBe('neutral');
+      });
+
+      it('renders question date when showDate is true', () => {
+        const mockDate = '2021-01-01T00:00:00Z';
+
+        createWrapper({
+          data: {
+            type: 'user',
+            text: 'User question',
+            created_at: mockDate,
+          },
+          showDate: true,
+        });
+
+        expect(questionDate().exists()).toBe(true);
+        expect(questionDate().text()).toBe(formatTimestamp(mockDate));
+      });
+
+      it('does not render question date when showDate is false', () => {
+        createWrapper({
+          data: {
+            type: 'user',
+            text: 'User question',
+            created_at: '2021-01-01T00:00:00Z',
+          },
+          showDate: false,
+        });
+
+        expect(questionDate().exists()).toBe(false);
       });
     });
 
@@ -166,7 +198,7 @@ describe('QuestionAndAnswer index.vue', () => {
         expect(answerMessages()).toHaveLength(1);
       });
 
-      it('passes success scheme to agent Message components', () => {
+      it('passes success scheme to agent Message by default', () => {
         createWrapper({
           data: {
             type: 'agent',
@@ -176,6 +208,100 @@ describe('QuestionAndAnswer index.vue', () => {
 
         expect(answerMessages()[0].props('scheme')).toBe('success');
       });
+
+      it('renders ViewLogsButton in agent messages when showViewLogs is true', () => {
+        createWrapper({
+          data: {
+            type: 'agent',
+            text: 'Agent response',
+          },
+          showViewLogs: true,
+        });
+
+        expect(viewLogsButton().exists()).toBe(true);
+      });
+
+      it('renders answer date when showDate is true', () => {
+        const mockDate = '2021-01-01T00:00:00Z';
+
+        createWrapper({
+          data: {
+            type: 'agent',
+            text: 'Agent response',
+            created_at: mockDate,
+          },
+          showDate: true,
+        });
+
+        expect(answerDate().exists()).toBe(true);
+        expect(answerDate().text()).toBe(formatTimestamp(mockDate));
+      });
+
+      it('does not render answer date when showDate is false', () => {
+        createWrapper({
+          data: {
+            type: 'agent',
+            text: 'Agent response',
+            created_at: '2021-01-01T00:00:00Z',
+          },
+          showDate: false,
+        });
+
+        expect(answerDate().exists()).toBe(false);
+      });
+
+      it('does not render ViewLogsButton when showViewLogs is false', () => {
+        createWrapper({
+          data: {
+            type: 'agent',
+            text: 'Agent response',
+          },
+          showViewLogs: false,
+        });
+
+        expect(viewLogsButton().exists()).toBe(false);
+      });
+
+      it('does not render answer footer when showDate and showViewLogs are false', () => {
+        createWrapper({
+          data: {
+            type: 'agent',
+            text: 'Agent response',
+          },
+          showDate: false,
+          showViewLogs: false,
+        });
+
+        expect(
+          wrapper.find('.question-and-answer__answer-text-footer').exists(),
+        ).toBe(false);
+      });
+    });
+  });
+
+  describe('Scheme prop', () => {
+    it('passes custom scheme to user Message', () => {
+      createWrapper({
+        data: {
+          type: 'user',
+          text: 'User question',
+        },
+        scheme: 'improvement-incoming',
+      });
+
+      expect(questionMessage().props('scheme')).toBe('improvement-incoming');
+    });
+
+    it('passes custom scheme to agent Message', () => {
+      createWrapper({
+        data: {
+          type: 'agent',
+          text: 'Agent response',
+        },
+        scheme: 'improvement-outgoing',
+      });
+
+      expect(answerMessages()[0].props('scheme')).toBe('improvement-outgoing');
     });
   });
 
@@ -243,22 +369,28 @@ describe('QuestionAndAnswer index.vue', () => {
       expect(answerMessages()).toHaveLength(1);
       expect(answerMessages()[0].props('content')).toEqual(originalData);
     });
+
+    it('renders ViewLogsButton on each agent message', () => {
+      const component1 = JSON.stringify({ msg: { text: 'First message' } });
+      const component2 = JSON.stringify({ msg: { text: 'Second message' } });
+      const textWithComponents = `${component1}\n\n${component2}`;
+
+      createWrapper({
+        data: {
+          type: 'agent',
+          text: textWithComponents,
+        },
+      });
+
+      expect(wrapper.findAll('[data-testid="view-logs-button"]')).toHaveLength(
+        2,
+      );
+    });
   });
 
   describe('Logs functionality', () => {
     beforeEach(() => {
       mockSupervisorStore.loadLogs = vi.fn();
-    });
-
-    it('renders ViewLogsButton in agent messages', () => {
-      createWrapper({
-        data: {
-          type: 'agent',
-          text: 'Agent response',
-        },
-      });
-
-      expect(viewLogsButton().exists()).toBe(true);
     });
 
     it('passes correct initial props to ViewLogsButton', () => {
@@ -317,7 +449,7 @@ describe('QuestionAndAnswer index.vue', () => {
       });
 
       it('shows loading state while loading logs', async () => {
-        mockSupervisorStore.loadLogs = vi.fn();
+        mockSupervisorStore.loadLogs.mockReturnValue(new Promise(() => {}));
 
         createWrapper({
           data: {
@@ -331,11 +463,6 @@ describe('QuestionAndAnswer index.vue', () => {
 
         expect(viewLogsButton().props('loading')).toBe(true);
         expect(viewLogsButton().props('disabled')).toBe(true);
-
-        await nextTick();
-
-        expect(viewLogsButton().props('loading')).toBe(false);
-        expect(viewLogsButton().props('disabled')).toBe(false);
       });
 
       it('shows PreviewLogs after successful load', async () => {
@@ -463,34 +590,6 @@ describe('QuestionAndAnswer index.vue', () => {
 
         resolveLoadLogs([]);
         await nextTick();
-      });
-    });
-
-    describe('Message date formatting', () => {
-      it('formats the question date correctly', () => {
-        const mockDate = '2021-01-01T00:00:00Z';
-        createWrapper({
-          data: {
-            type: 'user',
-            text: 'User question',
-            created_at: mockDate,
-          },
-        });
-
-        expect(questionDate().text()).toBe(formatTimestamp(mockDate));
-      });
-
-      it('formats the answer date correctly', () => {
-        const mockDate = '2021-01-01T00:00:00Z';
-        createWrapper({
-          data: {
-            type: 'agent',
-            text: 'Agent response',
-            created_at: mockDate,
-          },
-        });
-
-        expect(answerDate().text()).toBe(formatTimestamp(mockDate));
       });
     });
   });

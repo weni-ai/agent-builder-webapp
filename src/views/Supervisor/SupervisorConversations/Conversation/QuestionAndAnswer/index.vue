@@ -28,12 +28,13 @@
         v-if="data?.type === 'user'"
         class="question-and-answer__question"
       >
-        <AvatarLetter :text="data?.username" />
         <Message
           data-testid="question"
+          :scheme="scheme || 'neutral'"
           :content="data"
         >
           <p
+            v-if="showDate"
             class="question-and-answer__question-date"
             data-testid="question-date"
           >
@@ -48,7 +49,7 @@
         data-testid="answer"
       >
         <PreviewLogs
-          v-if="showLogs"
+          v-if="showViewLogs && showLogs"
           :logs="logs"
           logsSide="right"
           data-testid="preview-logs"
@@ -60,17 +61,22 @@
           class="question-and-answer__answer-text"
           data-testid="answer-text"
           :content="content"
-          scheme="success"
+          :scheme="scheme || 'success'"
         >
-          <footer class="question-and-answer__answer-text-footer">
+          <footer
+            v-if="showDate || showViewLogs"
+            class="question-and-answer__answer-text-footer"
+          >
             <p
+              v-if="showDate"
               class="question-and-answer__answer-date"
               data-testid="answer-date"
             >
-              {{ formatTimestamp(content?.created_at) }}
+              {{ formatTimestamp(data.created_at) }}
             </p>
 
             <ViewLogsButton
+              v-if="showViewLogs"
               :disabled="loadingLogs"
               :loading="loadingLogs"
               :active="showLogs"
@@ -94,7 +100,6 @@ import { formatTimestamp } from '@/utils/formatters';
 import Message from './Message.vue';
 import PreviewLogs from '@/components/Preview/PreviewLogs.vue';
 import ForwardedHumanSupport from './ConversationStartFinish.vue';
-import AvatarLetter from '@/components/Supervisor/AvatarLetter.vue';
 import ViewLogsButton from './ViewLogsButton.vue';
 import { processLog } from '@/utils/previewLogs';
 
@@ -106,6 +111,25 @@ const props = defineProps({
   data: {
     type: Object,
     required: true,
+  },
+  scheme: {
+    type: String,
+    default: '',
+    validator: (value) =>
+      [
+        'neutral',
+        'success',
+        'improvement-incoming',
+        'improvement-outgoing',
+      ].includes(value),
+  },
+  showViewLogs: {
+    type: Boolean,
+    default: true,
+  },
+  showDate: {
+    type: Boolean,
+    default: true,
   },
 });
 
@@ -201,7 +225,7 @@ watch(
 
 <style lang="scss" scoped>
 .question-and-answer {
-  margin-bottom: $unnnic-spacing-xs;
+  margin-bottom: $unnnic-space-2;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -241,8 +265,6 @@ watch(
     &-text {
       justify-self: flex-end;
       padding: $unnnic-spacing-ant;
-      background-color: $unnnic-color-weni-600;
-      color: $unnnic-color-neutral-white;
 
       &-footer {
         display: flex;
