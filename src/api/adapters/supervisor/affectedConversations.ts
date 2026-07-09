@@ -73,7 +73,7 @@ export function mapMessageToQuestionAndAnswer(
     uuid: message.uuid,
     text: message.text,
     type: message.source === 'incoming' ? 'user' : 'agent',
-    created_at: message.createdAt,
+    createdAt: message.createdAt,
     username,
   };
 }

@@ -12,7 +12,7 @@ interface ConversationMessage {
   uuid: string;
   text: string;
   type: 'user' | 'agent';
-  created_at: string;
+  createdAt: string;
 }
 
 interface ConversationMessagesResponseV2 {
@@ -65,7 +65,7 @@ export const ConversationMessageAdapter = {
       text: result.text,
       type:
         result.source_type || (result.source === 'incoming' ? 'user' : 'agent'),
-      created_at: result.created_at,
+      createdAt: result.created_at,
     }));
 
     return { results, next };

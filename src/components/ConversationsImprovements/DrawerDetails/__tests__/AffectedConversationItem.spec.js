@@ -117,7 +117,7 @@ describe('AffectedConversationItem.vue', () => {
       uuid: 'message-uuid-1',
       text: 'Do you deliver to my ZIP code?',
       type: 'user',
-      created_at: '2026-06-23T09:44:26-03:00',
+      createdAt: '2026-06-23T09:44:26-03:00',
       username: 'Alessandra',
     });
     expect(messages[1].props('data')).toEqual({
@@ -125,7 +125,7 @@ describe('AffectedConversationItem.vue', () => {
       uuid: 'message-uuid-2',
       text: 'I need your CPF first.',
       type: 'agent',
-      created_at: '2026-06-23T09:45:00-03:00',
+      createdAt: '2026-06-23T09:45:00-03:00',
       username: 'Alessandra',
     });
     expect(

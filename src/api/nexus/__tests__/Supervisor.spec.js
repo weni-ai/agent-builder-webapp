@@ -118,14 +118,14 @@ describe('Supervisor.js', () => {
         uuid: 'msg-1',
         text: 'Hello',
         type: 'user',
-        created_at: '2023-01-15T12:30:00Z',
+        createdAt: '2023-01-15T12:30:00Z',
       });
       expect(result.results[1]).toMatchObject({
         id: 2,
         uuid: 'msg-2',
         text: 'Hi there!',
         type: 'agent',
-        created_at: '2023-01-15T12:31:00Z',
+        createdAt: '2023-01-15T12:31:00Z',
       });
       expect(result.next).toBeNull();
     });
@@ -201,7 +201,7 @@ describe('Supervisor.js', () => {
         uuid: 'msg-1',
         text: 'Hello',
         type: 'user',
-        created_at: '2023-01-15T12:30:00Z',
+        createdAt: '2023-01-15T12:30:00Z',
       });
       expect(result.next).toBeNull();
     });

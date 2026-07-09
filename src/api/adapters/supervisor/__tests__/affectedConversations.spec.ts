@@ -139,7 +139,7 @@ describe('Supervisor affected conversations adapter', () => {
         uuid: 'message-uuid-1',
         text: 'Hello',
         type: 'user',
-        created_at: '2026-06-23T09:44:26-03:00',
+        createdAt: '2026-06-23T09:44:26-03:00',
         username: 'Alessandra',
       });
     });
@@ -161,7 +161,7 @@ describe('Supervisor affected conversations adapter', () => {
         uuid: 'message-uuid-2',
         text: 'Hi there',
         type: 'agent',
-        created_at: '2026-06-23T09:45:00-03:00',
+        createdAt: '2026-06-23T09:45:00-03:00',
         username: 'Alessandra',
       });
     });

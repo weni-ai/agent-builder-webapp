@@ -38,7 +38,7 @@
             class="question-and-answer__question-date"
             data-testid="question-date"
           >
-            {{ formatTimestamp(data.created_at) }}
+            {{ formatTimestamp(data.createdAt) }}
           </p>
         </Message>
       </section>
@@ -72,7 +72,7 @@
               class="question-and-answer__answer-date"
               data-testid="answer-date"
             >
-              {{ formatTimestamp(data.created_at) }}
+              {{ formatTimestamp(data.createdAt) }}
             </p>
 
             <ViewLogsButton
