@@ -2,7 +2,17 @@
   <section class="conversations-improvements"></section>
 </template>
 
-<script setup></script>
+<script setup>
+import { onMounted } from 'vue';
+
+import { useImprovementsStore } from '@/store/Improvements';
+
+const improvementsStore = useImprovementsStore();
+
+onMounted(() => {
+  improvementsStore.fetchImprovements();
+});
+</script>
 
 <style scoped lang="scss">
 .conversations-improvements {

@@ -1,11 +1,22 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import nexusRequest from '@/api/nexusaiRequest';
+import conversationsRequest from '@/api/conversationsRequest';
 import { Supervisor } from '@/api/nexus/Supervisor';
 
 vi.mock('@/api/nexusaiRequest', () => ({
   default: {
     $http: {
       get: vi.fn(),
+      post: vi.fn(),
+    },
+  },
+}));
+
+vi.mock('@/api/conversationsRequest', () => ({
+  default: {
+    $http: {
+      get: vi.fn(),
+      post: vi.fn(),
     },
   },
 }));
@@ -206,6 +217,78 @@ describe('Supervisor.js', () => {
           projectUuid,
           uuid,
         }),
+      ).rejects.toThrow('API Error');
+    });
+  });
+
+  describe('improvements', () => {
+    const projectUuid = 'project-123';
+
+    const mockApiResponse = {
+      yesterday_conversations_count: 30,
+      improvements_task: {
+        is_running: false,
+        progress: 5,
+        total: 5,
+        created_at: '2026-06-01T10:00:00Z',
+      },
+      improvements: [
+        {
+          uuid: 'improvement-uuid-1',
+          text: 'Sample improvement',
+          type: 'personality_deviation',
+          conversations_count: 12,
+        },
+      ],
+    };
+
+    it('runAnalysis calls the run endpoint', async () => {
+      conversationsRequest.$http.post.mockResolvedValue({ data: {} });
+
+      await Supervisor.improvements.runAnalysis({ projectUuid });
+
+      expect(conversationsRequest.$http.post).toHaveBeenCalledWith(
+        `/api/v1/projects/${projectUuid}/improvements/run/`,
+      );
+      expect(nexusRequest.$http.post).not.toHaveBeenCalled();
+    });
+
+    it('getAnalysis calls the improvements endpoint and adapts the response', async () => {
+      conversationsRequest.$http.get.mockResolvedValue({
+        data: mockApiResponse,
+      });
+
+      const result = await Supervisor.improvements.getAnalysis({ projectUuid });
+
+      expect(conversationsRequest.$http.get).toHaveBeenCalledWith(
+        `/api/v1/projects/${projectUuid}/improvements/`,
+      );
+      expect(nexusRequest.$http.get).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        yesterdayConversationsCount: 30,
+        task: {
+          isRunning: false,
+          progress: 5,
+          total: 5,
+          createdAt: '2026-06-01T10:00:00Z',
+        },
+        improvements: [
+          {
+            uuid: 'improvement-uuid-1',
+            text: 'Sample improvement',
+            type: 'personality_deviation',
+            conversationsCount: 12,
+          },
+        ],
+      });
+    });
+
+    it('propagates errors from getAnalysis', async () => {
+      const error = new Error('API Error');
+      conversationsRequest.$http.get.mockRejectedValue(error);
+
+      await expect(
+        Supervisor.improvements.getAnalysis({ projectUuid }),
       ).rejects.toThrow('API Error');
     });
   });
