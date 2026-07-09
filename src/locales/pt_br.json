@@ -490,7 +490,7 @@
         "affected_conversations_count": "{count, plural, one {# conversa afetada} other {# conversas afetadas}}",
         "affected_conversations_title": "Conversas afetadas",
         "affected_instructions_title": "Edite também estas instruções existentes:",
-        "contact_technical_support": "Entre em contato com o suporte técnico",
+        "contact_technical_support": "Falar com o suporte",
         "diagnosis_title": "Diagnóstico",
         "go_to_instructions": "Acessar instruções",
         "go_to_knowledge_base": "Acessar base de conhecimento",
