@@ -405,6 +405,13 @@
         "finish": "Conversation ended: {datetime}"
       },
       "contact_urn": "Contact URN",
+      "columns": {
+        "contact": "Contact",
+        "date": "Date",
+        "feedback": "Feedback",
+        "hour": "Hour",
+        "status": "Status"
+      },
       "topic": "Topic",
       "conversation_details_collapse": "Conversation details",
       "view_full_history": "View full history",

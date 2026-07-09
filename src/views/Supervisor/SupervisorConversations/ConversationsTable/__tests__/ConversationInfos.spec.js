@@ -11,7 +11,7 @@ describe('ConversationInfos.vue', () => {
   const conversationsUsername = () =>
     wrapper.findComponent('[data-testid="conversation-username"]');
   const conversationsUrn = () =>
-    wrapper.findComponent('[data-testid="conversation-urn"]');
+    wrapper.find('[data-testid="conversation-urn"]');
 
   beforeEach(() => {
     wrapper = mount(ConversationInfos, {
