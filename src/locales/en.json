@@ -390,6 +390,10 @@
         "transferred_to_human_support": "Transferred to human support",
         "transferred_to_human_support_description": "Includes conversations (AI-assisted and not assisted) transferred to a human representative."
       },
+      "amazing_conversation": {
+        "description": "This conversation shows the agent's ability to address multiple customer questions effectively. The clear resolution and attentive follow-up resulted in a satisfied customer.",
+        "title": "Amazing conversation"
+      },
       "conversations_count": "{count} conversations found",
       "unnamed_contact": "Unnamed contact",
       "attended_by_agent": {
