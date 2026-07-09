@@ -674,7 +674,7 @@
         "agents_preview": {
           "title": "Agent preview",
           "agents_progressive_feedback": {
-            "title": "Agent progressive feedback (Only available for Shopping Assistant)",
+            "title": "Agent progressive feedback (only available for Shopping Assistant)",
             "description": "The agent can provide brief updates while formulating the final response, helping the contact follow the process in real time."
           },
           "multiple_message_format": {
