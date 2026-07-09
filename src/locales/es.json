@@ -474,6 +474,13 @@
         "title": "Análisis completo",
         "title_with_count": "{count, plural, one {Análisis completo ({count} mejora encontrada)} other {Análisis completo ({count} mejoras encontradas)}}"
       },
+      "header": {
+        "custom_analysis": "Análisis personalizado",
+        "description": "Ejecutado el {date} a las {time}",
+        "description_today": "Ejecutado hoy a las {time}",
+        "run_analysis": "Ejecutar análisis",
+        "title": "{count, plural, one {Análisis de conversaciones del {date} · {count} mejora identificada} other {Análisis de conversaciones del {date} · {count} mejoras identificadas}}"
+      },
       "no_analysis": {
         "description": "Ejecuta el primer análisis para identificar oportunidades de mejora en las conversaciones de ayer",
         "run_analysis": "Ejecutar análisis",
