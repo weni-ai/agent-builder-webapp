@@ -107,11 +107,12 @@
       },
       "remove_instruction": {
         "title": "Eliminar instrucción",
-        "modal_description": "¿Realmente deseas eliminar esta instrucción?",
-        "remove": "Eliminar",
+        "modal_description": "Esta instrucción se eliminará de forma permanente y el agente Manager dejará de seguirla. Esta acción no se puede deshacer.",
+        "remove": "Eliminar instrucción",
         "cancel": "Cancelar",
-        "success_alert": "Instrucción personalizada eliminada",
-        "error_alert": "Error al eliminar la instrucción personalizada"
+        "success_alert": "Instrucción eliminada",
+        "error_alert": "No se pudo eliminar la instrucción",
+        "error_alert_description": "Algo salió mal y no se cambió nada. Inténtalo de nuevo."
       }
     },
     "traces": {
@@ -343,7 +344,91 @@
     },
     "instructions": {
       "title": "Instrucciones",
-      "description": "Escribe reglas rápidas para configurar el comportamiento del agente"
+      "description": "Define las reglas que guían cómo el Manager responde, se comunica y toma decisiones",
+      "export_instructions": {
+        "title": "Exportar instrucciones",
+        "cancel_button": "Cancelar",
+        "export_button": "Exportar",
+        "modal_description": "Las instrucciones se descargarán en un archivo CSV, compatible con Excel, Google Sheets y herramientas similares",
+        "modal_title": "Exportar instrucciones",
+        "success_alert_description": "El archivo CSV está listo en la carpeta de descargas",
+        "success_alert_title": "Instrucciones exportadas"
+      },
+      "new_instruction": "Nueva instrucción",
+      "delete_category": {
+        "modal_title": "Eliminar categoría",
+        "modal_description": "{count} de {name} a Sin categoría. No se eliminará nada, solo se quita la etiqueta de la categoría.",
+        "modal_description_empty": "{name} no tiene instrucciones. Eliminarla solo la quitará de tu lista",
+        "instructions_count": "{count, plural, one {{count} instrucción se moverá} other {{count} instrucciones se moverán}}",
+        "cancel": "Cancelar",
+        "confirm": "Eliminar categoría",
+        "success_title": "Categoría eliminada",
+        "success_description": "{count, plural, one {{count} instrucción movida a Sin categoría} other {{count} instrucciones movidas a Sin categoría}}",
+        "success_description_empty": "Eliminada de tu lista",
+        "error_title": "No se pudo eliminar la categoría",
+        "error_description": "Algo salió mal y no se cambió nada. Inténtalo de nuevo."
+      },
+      "view": {
+        "default_instruction": "Instrucción predeterminada",
+        "default_instructions": "Instrucciones predeterminadas",
+        "delete_category": "Eliminar categoría",
+        "empty_category": "Aún no hay instrucciones en esta categoría",
+        "list_columns": {
+          "category": "Categoría",
+          "instruction": "Instrucción"
+        },
+        "locked_tooltip": "Las instrucciones predeterminadas no se pueden editar ni eliminar",
+        "results_count": "{count, plural, =0 {No se encontraron instrucciones} one {{count} instrucción encontrada} other {{count} instrucciones encontradas}}",
+        "search_placeholder": "Buscar...",
+        "segmented": {
+          "categories": "Categorías",
+          "list": "Lista"
+        },
+        "uncategorized": "Sin categoría",
+        "uncategorized_tooltip": "Las instrucciones sin categoría aparecen aquí\nEste grupo no se puede eliminar"
+      },
+      "new_instruction_drawer": {
+        "title": "Nueva instrucción",
+        "edit_title": "Editar instrucción",
+        "category_label": "Categoría",
+        "re_validate": "Revalidar",
+        "validate": "Validar",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "ai_analysis": {
+          "error": "No se pudo validar la instrucción. Inténtalo de nuevo.",
+          "title": "Análisis de IA",
+          "validating": "Validando instrucción...",
+          "suggested_category": "Categoría sugerida",
+          "issues": "Problemas encontrados",
+          "issues_types": {
+            "duplicate": "Duplicado",
+            "conflicts": "Conflicto",
+            "ambiguity": "Ambigüedad",
+            "lack_of_clarity": "Claridad",
+            "no_issues_found": "Todo bien. No se encontraron problemas."
+          },
+          "suggested_rewrite": "Reescritura sugerida",
+          "suggestion_applied": "Sugerencia aplicada",
+          "undo_button": "Deshacer",
+          "apply_button": "Aplicar",
+          "category": {
+            "new_badge": "Nueva",
+            "suggested_category": "Categoría sugerida",
+            "other_categories": "Otras categorías",
+            "create_action": "Nueva categoría",
+            "create_title": "Crear categoría",
+            "name_label": "Nombre de la categoría",
+            "name_placeholder": "Nombre",
+            "cancel": "Cancelar",
+            "create": "Crear",
+            "validation": {
+              "required": "Completa este campo",
+              "invalid_chars": "Usa solo letras, números, espacios y guiones"
+            }
+          }
+        }
+      }
     },
     "profile": {
       "tone_of_voice": {
