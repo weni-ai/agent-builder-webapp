@@ -13,40 +13,78 @@
       </UnnnicDialogHeader>
 
       <section class="custom-analysis-modal__body">
-        <p
-          class="custom-analysis-modal__description"
-          data-testid="custom-analysis-modal-description"
-        >
-          {{ t('audit.improvements.custom_analysis_modal.description') }}
-        </p>
+        <form class="custom-analysis-modal__form">
+          <p
+            class="custom-analysis-modal__description"
+            data-testid="custom-analysis-modal-description"
+          >
+            {{ t('audit.improvements.custom_analysis_modal.description') }}
+          </p>
 
-        <section
-          class="custom-analysis-modal__form"
-          data-testid="custom-analysis-modal-form"
-        >
-          <UnnnicTextArea
-            v-model="inputText"
-            data-testid="custom-analysis-modal-textarea"
-            :label="t('audit.improvements.custom_analysis_modal.input_label')"
-            :placeholder="
-              t('audit.improvements.custom_analysis_modal.input_placeholder')
-            "
-            :message="
-              t('audit.improvements.custom_analysis_modal.input_helper')
-            "
-            maxLength="512"
-          />
+          <section
+            class="custom-analysis-modal__form-fields"
+            data-testid="custom-analysis-modal-form"
+          >
+            <UnnnicDisclaimer
+              v-if="isLimitReached"
+              type="attention"
+              :description="
+                t('audit.improvements.custom_analysis_modal.limit_disclaimer')
+              "
+              data-testid="custom-analysis-modal-limit-disclaimer"
+            />
 
-          <UnnnicButton
-            class="custom-analysis-modal__add-button"
-            data-testid="custom-analysis-modal-add-button"
-            type="secondary"
-            :text="t('audit.improvements.custom_analysis_modal.add')"
-            :disabled="!inputText.trim()"
-            :loading="createCustomAnalysis.status === 'loading'"
-            @click="handleAdd"
-          />
-        </section>
+            <UnnnicFormElement
+              :label="t('audit.improvements.custom_analysis_modal.title_label')"
+              :message="
+                t('audit.improvements.custom_analysis_modal.title_helper')
+              "
+            >
+              <UnnnicInput
+                v-model="titleText"
+                data-testid="custom-analysis-modal-title-input"
+                :placeholder="
+                  t(
+                    'audit.improvements.custom_analysis_modal.title_placeholder',
+                  )
+                "
+                :disabled="isLimitReached"
+                :maxlength="TITLE_MAX_LENGTH"
+              />
+              <template #rightMessage
+                >{{ titleText.length }}/{{ TITLE_MAX_LENGTH }}</template
+              >
+            </UnnnicFormElement>
+
+            <UnnnicTextArea
+              v-model="definitionText"
+              data-testid="custom-analysis-modal-definition-textarea"
+              :label="
+                t('audit.improvements.custom_analysis_modal.definition_label')
+              "
+              :placeholder="
+                t(
+                  'audit.improvements.custom_analysis_modal.definition_placeholder',
+                )
+              "
+              :message="
+                t('audit.improvements.custom_analysis_modal.definition_helper')
+              "
+              :disabled="isLimitReached"
+              maxLength="512"
+            />
+
+            <UnnnicButton
+              class="custom-analysis-modal__add-button"
+              data-testid="custom-analysis-modal-add-button"
+              type="secondary"
+              :text="t('audit.improvements.custom_analysis_modal.add')"
+              :disabled="!canSubmit || isLimitReached"
+              :loading="createCustomAnalysis.status === 'loading'"
+              @click="handleAdd"
+            />
+          </section>
+        </form>
 
         <section
           class="custom-analysis-modal__list-section"
@@ -64,16 +102,28 @@
           </template>
 
           <template v-else-if="hasCustomAnalysisItems">
-            <h3
-              class="custom-analysis-modal__list-heading"
-              data-testid="custom-analysis-modal-list-heading"
-            >
-              {{
-                t('audit.improvements.custom_analysis_modal.list_heading', {
-                  count: customAnalysis.data.length,
-                })
-              }}
-            </h3>
+            <header class="custom-analysis-modal__list-heading">
+              <h3
+                class="custom-analysis-modal__list-title"
+                data-testid="custom-analysis-modal-list-title"
+              >
+                {{ t('audit.improvements.custom_analysis_modal.list_heading') }}
+              </h3>
+              <UnnnicTag
+                data-testid="custom-analysis-modal-list-heading-count"
+                :text="
+                  t(
+                    'audit.improvements.custom_analysis_modal.list_heading_count',
+                    {
+                      count: customAnalysis.data.length,
+                      max: MAX_CUSTOM_ANALYSIS,
+                    },
+                  )
+                "
+                size="small"
+                scheme="neutral"
+              />
+            </header>
 
             <CustomAnalysisImprovementRow
               v-for="item in customAnalysis.data"
@@ -121,6 +171,7 @@ import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 
 import { useCustomAnalysisImprovementsStore } from '@/store/CustomAnalysisImprovements';
+import { MAX_CUSTOM_ANALYSIS } from '@/store/types/CustomAnalysisImprovements.types';
 
 import CustomAnalysisImprovementRow from './CustomAnalysisImprovementRow.vue';
 import DeleteCustomAnalysisDialog from './DeleteCustomAnalysisDialog.vue';
@@ -129,18 +180,29 @@ const open = defineModel<boolean>('open', {
   required: true,
 });
 
+const TITLE_MAX_LENGTH = 128;
+
 const { t } = useI18n();
 const customAnalysisImprovementsStore = useCustomAnalysisImprovementsStore();
 const { customAnalysis, createCustomAnalysis } = storeToRefs(
   customAnalysisImprovementsStore,
 );
 
-const inputText = ref('');
+const titleText = ref('');
+const definitionText = ref('');
 const deleteTarget = ref<{ uuid: string; title: string } | null>(null);
 const isDeleteDialogOpen = ref(false);
 
 const hasCustomAnalysisItems = computed(
   () => customAnalysis.value.data.length > 0,
+);
+
+const isLimitReached = computed(
+  () => customAnalysis.value.data.length >= MAX_CUSTOM_ANALYSIS,
+);
+
+const canSubmit = computed(
+  () => titleText.value.trim() && definitionText.value.trim(),
 );
 
 function handleOpenChange(value: boolean) {
@@ -162,14 +224,18 @@ function openDeleteDialog(customAnalysisUuid: string) {
 }
 
 async function handleAdd() {
-  const text = inputText.value.trim();
-  if (!text) return;
+  const title = titleText.value.trim();
+  const definition = definitionText.value.trim();
+  if (!title || !definition || isLimitReached.value) return;
 
-  const result =
-    await customAnalysisImprovementsStore.submitCustomAnalysis(text);
+  const result = await customAnalysisImprovementsStore.submitCustomAnalysis({
+    title,
+    definition,
+  });
 
   if (result.status === 'complete') {
-    inputText.value = '';
+    titleText.value = '';
+    definitionText.value = '';
   }
 }
 
@@ -181,7 +247,8 @@ watch(
       return;
     }
 
-    inputText.value = '';
+    titleText.value = '';
+    definitionText.value = '';
     deleteTarget.value = null;
     isDeleteDialogOpen.value = false;
   },
@@ -196,11 +263,13 @@ watch(isDeleteDialogOpen, (isOpen) => {
 
 <style scoped lang="scss">
 .custom-analysis-modal {
+  overflow: hidden;
+
   &__body {
     display: flex;
     flex-direction: column;
-    gap: $unnnic-space-6;
-    padding: $unnnic-space-6;
+
+    overflow-y: auto;
   }
 
   &__description {
@@ -211,7 +280,15 @@ watch(isDeleteDialogOpen, (isOpen) => {
   &__form {
     display: flex;
     flex-direction: column;
-    gap: $unnnic-space-2;
+    gap: $unnnic-space-4;
+
+    padding: $unnnic-space-6;
+  }
+
+  &__form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-space-3;
   }
 
   &__add-button {
@@ -219,16 +296,27 @@ watch(isDeleteDialogOpen, (isOpen) => {
   }
 
   &__list-section {
+    border-top: 1px solid $unnnic-color-border-base;
+
     display: flex;
     flex-direction: column;
+
+    padding: $unnnic-space-6;
   }
 
   &__list-heading {
-    font: $unnnic-font-action;
-    color: $unnnic-color-fg-emphasized;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $unnnic-space-2;
 
     border-bottom: 1px solid $unnnic-color-border-base;
     padding-bottom: $unnnic-space-3;
+  }
+
+  &__list-title {
+    font: $unnnic-font-action;
+    color: $unnnic-color-fg-emphasized;
   }
 
   &__empty {

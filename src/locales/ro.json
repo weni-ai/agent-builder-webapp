@@ -502,20 +502,25 @@
           "description": "AI-ul va înceta să caute {name} în conversații. Această acțiune nu poate fi anulată.",
           "error": "Analiza personalizată nu a putut fi ștearsă din cauza unei probleme tehnice",
           "success": {
-            "description": "Această problemă nu va fi monitorizată în analizele viitoare.",
-            "title": "Analiza personalizată ștearsă"
+            "description": "Această problemă nu va fi monitorizată în analizele viitoare",
+            "title": "Analiză personalizată ștearsă"
           },
           "title": "Șterge analiza personalizată"
         },
+        "definition_helper": "Cu cât descrierea este mai specifică, cu atât mai bine poate AI-ul să identifice problema în conversații",
+        "definition_label": "Ce dorești să monitorizezi?",
+        "definition_placeholder": "De exemplu: Agentul oferă termene de livrare nerealiste",
         "description": "Descrie un comportament sau o problemă pe care AI-ul ar trebui să o monitorizeze în conversații. Când este identificată, apare automat în backlog-ul de îmbunătățiri",
-        "empty_description": "Folosește câmpul de mai sus pentru a începe monitorizarea problemelor specifice",
+        "empty_description": "Folosește câmpul de mai sus pentru a începe să monitorizezi probleme specifice",
         "empty_title": "Nicio analiză personalizată adăugată",
-        "input_helper": "Cu cât ești mai specific, cu atât mai bine poate AI-ul să identifice problema în conversații",
-        "input_label": "Ce vrei să monitorizezi?",
-        "input_placeholder": "De exemplu: Agentul oferă termene de livrare nerealiste",
-        "list_heading": "{count, plural, one {# analiză personalizată} other {# analize personalizate}}",
+        "limit_disclaimer": "Limita de 10 analize personalizate a fost atinsă. Șterge una pentru a adăuga una nouă",
+        "list_heading": "Analize personalizate",
+        "list_heading_count": "{count} din {max}",
         "no_affected_conversations": "Nicio conversație afectată",
-        "title": "Analiză personalizată"
+        "title": "Analiză personalizată",
+        "title_helper": "Etichetă scurtă pentru a identifica această analiză în listă",
+        "title_label": "Titlu",
+        "title_placeholder": "De exemplu: Termene de livrare nerealiste"
       },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# instrucțiune actualizată de la analiză} few {# instrucțiuni actualizate de la analiză} other {# de instrucțiuni actualizate de la analiză}}",
