@@ -466,6 +466,12 @@
       }
     },
     "improvements": {
+      "analysis_complete": {
+        "no_improvements_description": "Nu s-au identificat îmbunătățiri în conversațiile din {date}",
+        "ready_description": "Îmbunătățirile din {date} sunt gata în backlog.",
+        "title": "Analiză finalizată",
+        "title_with_count": "{count, plural, one {Analiză finalizată ({count} îmbunătățire găsită)} other {Analiză finalizată ({count} îmbunătățiri găsite)}}"
+      },
       "no_analysis": {
         "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire în conversațiile de ieri",
         "run_analysis": "Rulează analiza",

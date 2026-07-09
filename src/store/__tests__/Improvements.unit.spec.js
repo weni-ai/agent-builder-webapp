@@ -2,7 +2,10 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 
 import { useImprovementsStore } from '@/store/Improvements';
+import { useAlertStore } from '@/store/Alert';
 import nexusaiAPI from '@/api/nexusaiAPI';
+import i18n from '@/utils/plugins/i18n';
+import { getYesterdayFormattedDate } from '@/utils/formatters';
 
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
@@ -74,14 +77,17 @@ describe('Improvements Store', () => {
   let store;
   let improvementsApi;
   let consoleErrorSpy;
-
+  let alertStore;
   beforeEach(() => {
     vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-06-18T12:00:00'));
     setActivePinia(createPinia());
     vi.clearAllMocks();
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     store = useImprovementsStore();
+    alertStore = useAlertStore();
+    vi.spyOn(alertStore, 'add');
     improvementsApi = nexusaiAPI.agent_builder.supervisor.improvements;
   });
 
@@ -125,6 +131,7 @@ describe('Improvements Store', () => {
       expect(store.improvements.status).toBe('complete');
       expect(store.analysis.yesterdayConversationsCount).toBe(25);
       expect(store.improvements.data).toEqual(improvements);
+      expect(alertStore.add).not.toHaveBeenCalled();
     });
 
     it('polls getAnalysis when the task is still running', async () => {
@@ -157,6 +164,7 @@ describe('Improvements Store', () => {
       expect(store.improvements.data).toEqual(improvements);
       expect(store.analysis.status).toBe('loading');
       expect(store.improvements.status).toBe('loading');
+      expect(alertStore.add).not.toHaveBeenCalled();
     });
 
     it('sets error status and logs error when the request fails', async () => {
@@ -168,6 +176,7 @@ describe('Improvements Store', () => {
       expect(store.analysis.status).toBe('error');
       expect(store.improvements.status).toBe('error');
       expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+      expect(alertStore.add).not.toHaveBeenCalled();
     });
   });
 
@@ -337,6 +346,7 @@ describe('Improvements Store', () => {
       expect(store.improvements.status).toBe('error');
       expect(improvementsApi.getAnalysis).not.toHaveBeenCalled();
       expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+      expect(alertStore.add).not.toHaveBeenCalled();
     });
 
     it('sets error status and logs error when polling fails', async () => {
@@ -359,6 +369,65 @@ describe('Improvements Store', () => {
       expect(store.analysis.status).toBe('error');
       expect(store.improvements.status).toBe('error');
       expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+      expect(alertStore.add).not.toHaveBeenCalled();
+    });
+
+    it('shows a success alert when analysis completes without improvements', async () => {
+      improvementsApi.runAnalysis.mockResolvedValue();
+      improvementsApi.getAnalysis.mockResolvedValue(
+        buildAnalysisResponse({
+          conversationsCount: 0,
+          improvements: [],
+        }),
+      );
+
+      await store.runAnalysis();
+
+      expect(alertStore.add).toHaveBeenCalledWith({
+        type: 'success',
+        text: i18n.global.t('audit.improvements.analysis_complete.title'),
+        description: i18n.global.t(
+          'audit.improvements.analysis_complete.no_improvements_description',
+          { date: getYesterdayFormattedDate() },
+        ),
+      });
+    });
+
+    it('shows a success alert when analysis completes with improvements', async () => {
+      const improvements = [
+        buildImprovement(),
+        buildImprovement({ uuid: 'improvement-uuid-2' }),
+      ];
+
+      improvementsApi.runAnalysis.mockResolvedValue();
+      improvementsApi.getAnalysis.mockResolvedValue(
+        buildAnalysisResponse({
+          conversationsCount: 25,
+          improvements,
+        }),
+      );
+
+      await store.runAnalysis();
+
+      expect(alertStore.add).toHaveBeenCalledWith({
+        type: 'success',
+        text: i18n.global.t(
+          'audit.improvements.analysis_complete.title_with_count',
+          { count: improvements.length },
+        ),
+        description: i18n.global.t(
+          'audit.improvements.analysis_complete.ready_description',
+          { date: getYesterdayFormattedDate() },
+        ),
+      });
+    });
+
+    it('does not show a success alert when analysis fails', async () => {
+      improvementsApi.runAnalysis.mockRejectedValue(new Error('boom'));
+
+      await store.runAnalysis();
+
+      expect(alertStore.add).not.toHaveBeenCalled();
     });
   });
 });
