@@ -487,6 +487,11 @@
         "improvement": "Improvement",
         "type": "Type"
       },
+      "drawer": {
+        "affected_conversations_count": "{count, plural, one {# affected conversation} other {# affected conversations}}",
+        "ignore_improvement": "Ignore improvement",
+        "mark_as_resolved": "Mark as resolved"
+      },
       "header": {
         "custom_analysis": "Custom analysis",
         "description": "Ran on {date} at {time}",
