@@ -43,6 +43,13 @@ export interface ImprovementsTask {
   createdAt: string | null;
 }
 
+export const DEFAULT_IMPROVEMENTS_TASK: ImprovementsTask = {
+  isRunning: false,
+  progress: 0,
+  total: 0,
+  createdAt: null,
+};
+
 export interface Improvement {
   uuid: string;
   text: string;
@@ -52,6 +59,6 @@ export interface Improvement {
 
 export interface ImprovementsAnalysis {
   yesterdayConversationsCount: number;
-  task: ImprovementsTask | null;
+  task: ImprovementsTask;
   improvements: Improvement[];
 }

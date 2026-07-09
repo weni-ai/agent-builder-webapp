@@ -4,6 +4,7 @@ import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
 import { useImprovementsStore } from '@/store/Improvements';
+import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
 
 import RunningAnalysis from '../RunningAnalysis.vue';
 
@@ -82,12 +83,12 @@ describe('RunningAnalysis.vue', () => {
       );
     });
 
-    it('renders the title with zero when there is no analysis task', () => {
+    it('renders the title with zero when task total is missing', () => {
       wrapper.unmount();
       createWrapper({
         analysis: {
           status: 'loading',
-          task: null,
+          task: { ...DEFAULT_IMPROVEMENTS_TASK },
         },
       });
 

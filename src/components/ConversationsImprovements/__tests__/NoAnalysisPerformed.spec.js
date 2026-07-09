@@ -4,6 +4,7 @@ import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
 import { useImprovementsStore } from '@/store/Improvements';
+import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
 
 import NoAnalysisPerformed from '../NoAnalysisPerformed.vue';
 import RunAnalysisButton from '../RunAnalysisButton.vue';
@@ -25,7 +26,7 @@ describe('NoAnalysisPerformed.vue', () => {
         Improvements: {
           analysis: {
             status: 'complete',
-            task: null,
+            task: { ...DEFAULT_IMPROVEMENTS_TASK },
             yesterdayConversationsCount: 20,
           },
         },
@@ -93,7 +94,7 @@ describe('NoAnalysisPerformed.vue', () => {
           Improvements: {
             analysis: {
               status: 'complete',
-              task: null,
+              task: { ...DEFAULT_IMPROVEMENTS_TASK },
               yesterdayConversationsCount: 20,
             },
           },

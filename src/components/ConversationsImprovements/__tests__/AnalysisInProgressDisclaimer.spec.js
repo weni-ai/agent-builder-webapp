@@ -4,6 +4,7 @@ import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
 import { useImprovementsStore } from '@/store/Improvements';
+import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
 
 import AnalysisInProgressDisclaimer from '../AnalysisInProgressDisclaimer.vue';
 
@@ -101,12 +102,12 @@ describe('AnalysisInProgressDisclaimer.vue', () => {
       expect(findDisclaimer().exists()).toBe(false);
     });
 
-    it('does not render the disclaimer when there is no analysis task', () => {
+    it('does not render the disclaimer when no analysis was performed', () => {
       wrapper.unmount();
       createWrapper({
         analysis: {
           status: null,
-          task: null,
+          task: { ...DEFAULT_IMPROVEMENTS_TASK },
         },
       });
 
