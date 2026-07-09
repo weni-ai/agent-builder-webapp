@@ -45,12 +45,7 @@ describe('Supervisor improvements adapter', () => {
     it('returns safe defaults when API fields are missing', () => {
       expect(ImprovementsAdapter.fromApi()).toEqual({
         yesterdayConversationsCount: 0,
-        task: {
-          isRunning: false,
-          progress: 0,
-          total: 0,
-          createdAt: null,
-        },
+        task: null,
         improvements: [],
       });
     });
@@ -93,7 +88,7 @@ describe('Supervisor improvements adapter', () => {
       ]);
     });
 
-    it('defaults yesterdayConversationsCount to zero when count is missing', () => {
+    it('defaults improvement conversationsCount to zero when count is missing', () => {
       const result = ImprovementsAdapter.fromApi({
         improvements: [
           {

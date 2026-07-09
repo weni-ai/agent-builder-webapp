@@ -1,36 +1,40 @@
 <template>
   <section
-    class="no-analysis-performed"
-    data-testid="no-analysis-performed"
+    class="insufficient-conversations-volume"
+    data-testid="insufficient-conversations-volume"
   >
-    <header class="no-analysis-performed__header">
+    <header class="insufficient-conversations-volume__header">
       <h2
-        class="no-analysis-performed__title"
-        data-testid="no-analysis-performed-title"
+        class="insufficient-conversations-volume__title"
+        data-testid="insufficient-conversations-volume-title"
       >
-        {{ $t('audit.improvements.no_analysis.title') }}
+        {{ $t('audit.improvements.insufficient_volume.title') }}
       </h2>
       <p
-        class="no-analysis-performed__description"
-        data-testid="no-analysis-performed-description"
+        class="insufficient-conversations-volume__description"
+        data-testid="insufficient-conversations-volume-description"
       >
-        {{ $t('audit.improvements.no_analysis.description') }}
+        {{
+          $t('audit.improvements.insufficient_volume.description', {
+            min: MIN_CONVERSATIONS_FOR_ANALYSIS,
+          })
+        }}
       </p>
     </header>
 
     <RunAnalysisButton
-      data-testid="no-analysis-performed-run-button"
-      translationKey="audit.improvements.no_analysis.run_analysis"
+      data-testid="insufficient-conversations-volume-run-button"
     />
   </section>
 </template>
 
 <script setup lang="ts">
 import RunAnalysisButton from '@/components/ConversationsImprovements/RunAnalysisButton.vue';
+import { MIN_CONVERSATIONS_FOR_ANALYSIS } from '@/store/Improvements';
 </script>
 
 <style scoped lang="scss">
-.no-analysis-performed {
+.insufficient-conversations-volume {
   height: 100%;
 
   display: flex;
