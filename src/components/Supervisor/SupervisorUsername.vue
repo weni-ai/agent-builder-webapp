@@ -11,9 +11,11 @@
       v-if="isAmazing"
       v-model:open="isPopoverOpen"
       class="is-amazing-popover"
+      data-testid="amazing-conversation-popover"
     >
       <UnnnicPopoverTrigger
         class="supervisor-username__is-amazing"
+        data-testid="amazing-conversation-trigger"
         @mouseenter="isPopoverOpen = true"
         @mouseleave="isPopoverOpen = false"
       >
@@ -23,6 +25,7 @@
           filled
           scheme="fg-accent"
           size="sm"
+          data-testid="amazing-conversation-icon"
         />
       </UnnnicPopoverTrigger>
       <UnnnicPopoverContent
@@ -30,12 +33,19 @@
         side="top"
         size="large"
         :align="font === 'emphasis' ? 'start' : 'end'"
+        data-testid="amazing-conversation-content"
         @close-auto-focus.prevent
       >
-        <p class="is-amazing-popover__title">
+        <p
+          class="is-amazing-popover__title"
+          data-testid="amazing-conversation-title"
+        >
           {{ $t('audit.conversations.amazing_conversation.title') }}
         </p>
-        <p class="is-amazing-popover__description">
+        <p
+          class="is-amazing-popover__description"
+          data-testid="amazing-conversation-description"
+        >
           {{ $t('audit.conversations.amazing_conversation.description') }}
         </p>
       </UnnnicPopoverContent>

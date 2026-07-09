@@ -17,6 +17,7 @@ describe('ConversationRow.vue', () => {
     status: 'in_progress',
     start: '2026-02-05T10:30:00Z',
     csat: null,
+    is_amazing: false,
   };
 
   const createWrapper = (props = {}) => {
@@ -81,6 +82,20 @@ describe('ConversationRow.vue', () => {
 
     expect(conversationInfos.props('username')).toBe(baseConversation.username);
     expect(conversationInfos.props('urn')).toBe(baseConversation.urn);
+    expect(conversationInfos.props('isAmazing')).toBe(
+      baseConversation.is_amazing,
+    );
+  });
+
+  it('passes isAmazing as true when conversation is amazing', () => {
+    createWrapper({
+      conversation: {
+        ...baseConversation,
+        is_amazing: true,
+      },
+    });
+
+    expect(elements.conversationInfos().props('isAmazing')).toBe(true);
   });
 
   it('renders the status tag', () => {
