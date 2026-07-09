@@ -90,5 +90,19 @@ export const Supervisor = {
         { status },
       );
     },
+
+    async getById({ projectUuid, improvementUuid }) {
+      const { data } = await conversationsRequest.$http.get(
+        `/api/v1/projects/${projectUuid}/improvements/${improvementUuid}/`,
+      );
+
+      const detail = ImprovementsAdapter.fromDetailApi(data);
+
+      if (!detail) {
+        throw new Error('Invalid improvement detail response');
+      }
+
+      return detail;
+    },
   },
 };

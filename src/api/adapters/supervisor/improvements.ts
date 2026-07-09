@@ -1,8 +1,12 @@
 import type {
+  AffectedInstruction,
   Improvement,
+  ImprovementDetail,
+  ImprovementDetailStatus,
   ImprovementType,
   ImprovementsAnalysis,
   ImprovementsTask,
+  InstructionChangeType,
 } from '@/store/types/Improvements.types';
 
 export interface ImprovementsTaskApi {
@@ -23,6 +27,22 @@ export interface ImprovementsAnalysisApi {
   yesterday_conversations_count?: number;
   improvements_task?: ImprovementsTaskApi;
   improvements?: ImprovementApi[];
+}
+
+export interface AffectedInstructionApi {
+  instruction_id?: number;
+  change_type?: string;
+  was_changed?: boolean;
+}
+
+export interface ImprovementDetailApi {
+  uuid?: string;
+  text?: string;
+  type?: string;
+  description?: string;
+  suggested_change?: string | null;
+  status?: string;
+  affected_instructions?: AffectedInstructionApi[];
 }
 
 const IMPROVEMENT_TYPES: ImprovementType[] = [
@@ -65,6 +85,68 @@ function parseImprovement(item: ImprovementApi = {}): Improvement | null {
   };
 }
 
+const IMPROVEMENT_DETAIL_STATUSES: ImprovementDetailStatus[] = [
+  'pending',
+  'resolved',
+  'ignored',
+];
+
+const INSTRUCTION_CHANGE_TYPES: InstructionChangeType[] = [
+  'fix',
+  'add',
+  'remove',
+];
+
+function isImprovementDetailStatus(
+  value: unknown,
+): value is ImprovementDetailStatus {
+  return IMPROVEMENT_DETAIL_STATUSES.includes(value as ImprovementDetailStatus);
+}
+
+function isInstructionChangeType(
+  value: unknown,
+): value is InstructionChangeType {
+  return INSTRUCTION_CHANGE_TYPES.includes(value as InstructionChangeType);
+}
+
+function parseAffectedInstruction(
+  item: AffectedInstructionApi = {},
+): AffectedInstruction | null {
+  const instructionId = Number(item.instruction_id);
+
+  if (!instructionId || !isInstructionChangeType(item.change_type)) {
+    return null;
+  }
+
+  return {
+    instructionId,
+    changeType: item.change_type,
+    wasChanged: Boolean(item.was_changed),
+  };
+}
+
+function parseImprovementDetail(
+  apiData: ImprovementDetailApi = {},
+): ImprovementDetail | null {
+  if (!apiData.uuid || !apiData.text || !isImprovementType(apiData.type)) {
+    return null;
+  }
+
+  return {
+    uuid: apiData.uuid,
+    text: apiData.text,
+    type: apiData.type,
+    description: apiData.description ?? '',
+    suggestedChange: apiData.suggested_change ?? null,
+    status: isImprovementDetailStatus(apiData.status)
+      ? apiData.status
+      : 'pending',
+    affectedInstructions: (apiData.affected_instructions ?? [])
+      .map(parseAffectedInstruction)
+      .filter((item): item is AffectedInstruction => item !== null),
+  };
+}
+
 export const ImprovementsAdapter = {
   fromApi(apiData: ImprovementsAnalysisApi = {}): ImprovementsAnalysis {
     const improvements = (apiData.improvements ?? [])
@@ -77,5 +159,9 @@ export const ImprovementsAdapter = {
       task: parseTask(apiData.improvements_task),
       improvements,
     };
+  },
+
+  fromDetailApi(apiData: ImprovementDetailApi = {}): ImprovementDetail | null {
+    return parseImprovementDetail(apiData);
   },
 };

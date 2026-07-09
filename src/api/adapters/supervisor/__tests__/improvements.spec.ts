@@ -102,4 +102,93 @@ describe('Supervisor improvements adapter', () => {
       expect(result.improvements[0].conversationsCount).toBe(0);
     });
   });
+
+  describe('fromDetailApi', () => {
+    it('transforms API detail data to frontend format', () => {
+      const result = ImprovementsAdapter.fromDetailApi({
+        uuid: 'improvement-uuid-1',
+        text: 'Sample improvement text',
+        type: 'personality_deviation',
+        description: 'Sample diagnosis',
+        suggested_change: 'Update the tone instruction',
+        status: 'pending',
+        affected_instructions: [
+          {
+            instruction_id: 42,
+            change_type: 'fix',
+            was_changed: true,
+          },
+        ],
+      });
+
+      expect(result).toEqual({
+        uuid: 'improvement-uuid-1',
+        text: 'Sample improvement text',
+        type: 'personality_deviation',
+        description: 'Sample diagnosis',
+        suggestedChange: 'Update the tone instruction',
+        status: 'pending',
+        affectedInstructions: [
+          {
+            instructionId: 42,
+            changeType: 'fix',
+            wasChanged: true,
+          },
+        ],
+      });
+    });
+
+    it('returns null when required fields are missing', () => {
+      expect(
+        ImprovementsAdapter.fromDetailApi({
+          uuid: 'improvement-uuid-1',
+          type: 'personality_deviation',
+        }),
+      ).toBeNull();
+    });
+
+    it('defaults status to pending and filters invalid affected instructions', () => {
+      const result = ImprovementsAdapter.fromDetailApi({
+        uuid: 'improvement-uuid-1',
+        text: 'Sample improvement text',
+        type: 'personality_deviation',
+        description: 'Sample diagnosis',
+        suggested_change: null,
+        status: 'unknown',
+        affected_instructions: [
+          {
+            instruction_id: 42,
+            change_type: 'fix',
+            was_changed: false,
+          },
+          {
+            instruction_id: 0,
+            change_type: 'fix',
+            was_changed: false,
+          },
+          {
+            instruction_id: 43,
+            change_type: 'invalid',
+            was_changed: false,
+          },
+        ],
+      });
+
+      expect(result).toEqual({
+        uuid: 'improvement-uuid-1',
+        text: 'Sample improvement text',
+        type: 'personality_deviation',
+        description: 'Sample diagnosis',
+        suggestedChange: null,
+        status: 'pending',
+        affectedInstructions: [
+          {
+            instructionId: 42,
+            changeType: 'fix',
+            wasChanged: false,
+          },
+        ],
+      });
+    });
+  });
 });
