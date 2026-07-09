@@ -97,17 +97,20 @@ describe('CustomAnalysisImprovements Store', () => {
   });
 
   describe('submitCustomAnalysis', () => {
+    const submitPayload = {
+      title: 'Unrealistic delivery deadlines',
+      definition: 'The agent is providing unrealistic delivery deadlines',
+    };
+
     it('creates custom analysis, prepends it to the list, and shows success alert', async () => {
       customAnalysisApi.create.mockResolvedValue(buildDetail());
 
-      const result = await store.submitCustomAnalysis(
-        'The agent is providing unrealistic delivery deadlines',
-      );
+      const result = await store.submitCustomAnalysis(submitPayload);
 
       expect(customAnalysisApi.create).toHaveBeenCalledWith({
         projectUuid: 'test-project-uuid',
-        title: 'The agent is providing unrealistic delivery deadlines',
-        definition: 'The agent is providing unrealistic delivery deadlines',
+        title: submitPayload.title,
+        definition: submitPayload.definition,
         exclusions: '',
       });
       expect(store.customAnalysis.data).toEqual([
@@ -121,8 +124,24 @@ describe('CustomAnalysisImprovements Store', () => {
       expect(result).toEqual({ status: 'complete' });
       expect(alertStore.add).toHaveBeenCalledWith({
         type: 'success',
-        text: i18n.global.t(`${I18N_PREFIX}.create.success`),
+        text: i18n.global.t(`${I18N_PREFIX}.create.success.title`),
+        description: i18n.global.t(`${I18N_PREFIX}.create.success.description`),
       });
+    });
+
+    it('returns error without calling API when the custom analysis limit is reached', async () => {
+      store.customAnalysis.data = Array.from({ length: 10 }, (_, index) =>
+        buildListItem({
+          uuid: `custom-analysis-uuid-${index + 1}`,
+          title: `Custom analysis ${index + 1}`,
+        }),
+      );
+
+      const result = await store.submitCustomAnalysis(submitPayload);
+
+      expect(customAnalysisApi.create).not.toHaveBeenCalled();
+      expect(result).toEqual({ status: 'error' });
+      expect(alertStore.add).not.toHaveBeenCalled();
     });
 
     it('shows generic error alert when create request fails', async () => {
@@ -131,7 +150,7 @@ describe('CustomAnalysisImprovements Store', () => {
         .mockImplementation(() => {});
       customAnalysisApi.create.mockRejectedValue(new Error('API Error'));
 
-      const result = await store.submitCustomAnalysis('Sample custom analysis');
+      const result = await store.submitCustomAnalysis(submitPayload);
 
       expect(store.createCustomAnalysis.status).toBe('error');
       expect(result).toEqual({ status: 'error' });
@@ -151,7 +170,7 @@ describe('CustomAnalysisImprovements Store', () => {
         response: { status: 400 },
       });
 
-      await store.submitCustomAnalysis('Sample custom analysis');
+      await store.submitCustomAnalysis(submitPayload);
 
       expect(alertStore.add).toHaveBeenCalledWith({
         type: 'error',
