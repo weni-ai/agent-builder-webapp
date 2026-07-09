@@ -490,9 +490,17 @@
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# affected conversation} other {# affected conversations}}",
         "affected_conversations_title": "Affected conversations",
+        "affected_instructions_title": "Also edit these existing instructions:",
+        "contact_technical_support": "Contact support",
         "diagnosis_title": "Diagnosis",
+        "go_to_instructions": "Go to instructions",
+        "go_to_knowledge_base": "Go to knowledge base",
         "ignore_improvement": "Ignore improvement",
+        "instruction_updated_disclaimer": "{count, plural, one {# instruction updated since the analysis} other {# instructions updated since the analysis}}",
         "mark_as_resolved": "Mark as resolved",
+        "suggested_solution_behavior_title": "Add this instruction to the Manager:",
+        "suggested_solution_knowledge_title": "New content for Knowledge Base",
+        "suggested_solution_technical_issue_title": "Recommended action",
         "suggested_solution_title": "Suggested solution"
       },
       "header": {

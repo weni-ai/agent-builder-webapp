@@ -6,7 +6,7 @@ import { nextTick } from 'vue';
 import i18n from '@/utils/plugins/i18n';
 
 import ImprovementsList from '../ImprovementsList.vue';
-import ImprovementDrawer from '../ImprovementDrawer.vue';
+import ImprovementDrawer from '../DrawerDetails/ImprovementDrawer.vue';
 import ImprovementRow from '../ImprovementRow.vue';
 
 describe('ImprovementsList.vue', () => {

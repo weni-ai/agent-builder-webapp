@@ -486,11 +486,19 @@
         "type": "Tip"
       },
       "drawer": {
-        "affected_conversations_count": "{count, plural, one {# conversație afectată} few {# conversații afectate} other {# conversații afectate}}",
+        "affected_conversations_count": "{count, plural, one {# instrucțiune actualizată de la analiză} few {# instrucțiuni actualizate de la analiză} other {# de instrucțiuni actualizate de la analiză}}",
         "affected_conversations_title": "Conversații afectate",
+        "affected_instructions_title": "Editează și aceste instrucțiuni existente:",
+        "contact_technical_support": "Contactează asistența",
         "diagnosis_title": "Diagnostic",
+        "go_to_instructions": "Accesează instrucțiunile",
+        "go_to_knowledge_base": "Accesează baza de cunoștințe",
         "ignore_improvement": "Ignoră îmbunătățirea",
+        "instruction_updated_disclaimer": "{count, plural, one {# instrucțiune actualizată de la analiză} few {# instrucțiuni actualizate de la analiză} other {# de instrucțiuni actualizate de la analiză}}",
         "mark_as_resolved": "Marchează ca rezolvată",
+        "suggested_solution_behavior_title": "Adaugă această instrucțiune la Manager:",
+        "suggested_solution_knowledge_title": "Conținut nou pentru baza de cunoștințe",
+        "suggested_solution_technical_issue_title": "Acțiune recomandată",
         "suggested_solution_title": "Soluție sugerată"
       },
       "header": {

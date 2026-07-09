@@ -331,12 +331,12 @@ describe('Supervisor.js', () => {
         type: 'personality_deviation',
         description:
           'In refund conversations, the agent uses informal language that conflicts with the configured brand voice.',
-        suggestedChange:
+        suggestedSolution:
           'Update the tone instruction to reinforce formal and empathetic language during refund interactions.',
         status: 'pending',
         affectedInstructions: [
           {
-            instructionId: 12,
+            id: 12,
             changeType: 'fix',
             wasChanged: false,
           },

@@ -73,11 +73,11 @@ const buildImprovementDetail = (overrides = {}) => ({
   text: 'Sample improvement',
   type: 'personality_deviation',
   description: 'Sample diagnosis',
-  suggestedChange: 'Update the tone instruction',
+  suggestedSolution: 'Update the tone instruction',
   status: 'pending',
   affectedInstructions: [
     {
-      instructionId: 42,
+      id: 42,
       changeType: 'fix',
       wasChanged: false,
     },

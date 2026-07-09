@@ -5,7 +5,7 @@ import { createTestingPinia } from '@pinia/testing';
 import i18n from '@/utils/plugins/i18n';
 import { useImprovementsStore } from '@/store/Improvements';
 
-import ImprovementStatusDialog from '../ImprovementStatusDialog.vue';
+import ImprovementStatusDialog from '../DrawerDetails/ImprovementStatusDialog.vue';
 
 describe('ImprovementStatusDialog.vue', () => {
   let wrapper;

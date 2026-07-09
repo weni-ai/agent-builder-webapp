@@ -24,7 +24,7 @@ describe('ImprovementDrawer.vue', () => {
     text: baseImprovement.text,
     type: baseImprovement.type,
     description: 'The agent tone does not match the configured brand voice.',
-    suggestedChange: 'Update the tone instruction in refund conversations.',
+    suggestedSolution: 'Update the tone instruction in refund conversations.',
     status: 'pending',
     affectedInstructions: [],
   };
@@ -271,6 +271,7 @@ describe('ImprovementDrawer.vue', () => {
         findSection: () => elements.suggestedSolutionSection(),
         findTitle: () => elements.suggestedSolutionTitle(),
         localeKey: 'audit.improvements.drawer.suggested_solution_title',
+        improvementDetail: baseImprovementDetail,
       },
       {
         section: 'affected conversations',
@@ -280,8 +281,8 @@ describe('ImprovementDrawer.vue', () => {
       },
     ])(
       'renders the $section section title',
-      ({ findSection, findTitle, localeKey }) => {
-        createWrapper();
+      ({ findSection, findTitle, localeKey, improvementDetail = null }) => {
+        createWrapper({}, { improvementDetail });
 
         expect(findSection().exists()).toBe(true);
         expect(findTitle().text()).toBe(i18n.global.t(localeKey));
