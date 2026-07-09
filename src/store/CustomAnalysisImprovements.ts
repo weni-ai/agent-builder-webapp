@@ -6,9 +6,10 @@ import i18n from '@/utils/plugins/i18n';
 import { useProjectStore } from './Project';
 import { useAlertStore } from './Alert';
 
-import type {
-  CustomAnalysisImprovement,
-  CustomAnalysisImprovementsStatus,
+import {
+  MAX_CUSTOM_ANALYSIS,
+  type CustomAnalysisImprovement,
+  type CustomAnalysisImprovementsStatus,
 } from './types/CustomAnalysisImprovements.types';
 
 const I18N_PREFIX = 'audit.improvements.custom_analysis_modal';
@@ -67,14 +68,24 @@ export const useCustomAnalysisImprovementsStore = defineStore(
       }
     }
 
-    async function submitCustomAnalysis(text: string) {
+    async function submitCustomAnalysis({
+      title,
+      definition,
+    }: {
+      title: string;
+      definition: string;
+    }) {
+      if (customAnalysis.data.length >= MAX_CUSTOM_ANALYSIS) {
+        return { status: 'error' as const };
+      }
+
       createCustomAnalysis.status = 'loading';
 
       try {
         const detail = await customAnalysisApi.create({
           projectUuid: projectUuid.value,
-          title: text,
-          definition: text,
+          title,
+          definition,
           exclusions: '',
         });
 

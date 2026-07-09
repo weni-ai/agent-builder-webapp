@@ -1,3 +1,5 @@
+export const MAX_CUSTOM_ANALYSIS = 10;
+
 export type CustomAnalysisImprovementsStatus =
   | 'idle'
   | 'loading'
