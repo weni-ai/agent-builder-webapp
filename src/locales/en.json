@@ -520,6 +520,38 @@
         "description": "This may take a few hours. You can close this screen.",
         "title": "Analyzing {count} conversations from yesterday"
       },
+      "status_dialog": {
+        "cancel": "Cancel",
+        "ignored": {
+          "description": "This issue will be removed from the backlog and will no longer appear in your improvement suggestions.",
+          "title": "Ignore improvement"
+        },
+        "resolved": {
+          "description": "Confirm only after applying the suggested solution. The issue will be removed from the backlog and make room for new improvements.",
+          "title": "Mark as resolved"
+        }
+      },
+      "status_update": {
+        "error": {
+          "ignored": {
+            "description": "Due to a technical issue",
+            "title": "Improvement couldn't be ignored"
+          },
+          "resolved": {
+            "description": "Due to a technical issue",
+            "title": "Improvement couldn't be marked as resolved"
+          }
+        },
+        "success": {
+          "description": "The item was removed from the improvements backlog",
+          "ignored": {
+            "title": "Improvement ignored"
+          },
+          "resolved": {
+            "title": "Improvement marked as resolved"
+          }
+        }
+      },
       "types": {
         "behavior": "Behavior",
         "custom_analysis": "Custom analysis",

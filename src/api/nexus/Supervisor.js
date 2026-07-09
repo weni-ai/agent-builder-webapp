@@ -83,5 +83,12 @@ export const Supervisor = {
 
       return ImprovementsAdapter.fromApi(data);
     },
+
+    async updateStatus({ projectUuid, improvementUuid, status }) {
+      await conversationsRequest.$http.patch(
+        `/api/v1/projects/${projectUuid}/improvements/${improvementUuid}/`,
+        { status },
+      );
+    },
   },
 };
