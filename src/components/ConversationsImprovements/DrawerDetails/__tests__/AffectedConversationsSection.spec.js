@@ -231,7 +231,6 @@ describe('AffectedConversationsSection.vue', () => {
     expect(supervisorStore.queryConversationUuid).toBe('conversation-uuid-1');
     expect(mockReplace).toHaveBeenCalledWith({
       name: 'conversations',
-      query: {},
     });
     expect(wrapper.emitted('close-drawer')).toEqual([[]]);
   });
