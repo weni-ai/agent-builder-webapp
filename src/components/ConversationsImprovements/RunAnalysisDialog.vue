@@ -25,7 +25,7 @@
           :text="$t('audit.improvements.run_analysis_dialog.run')"
           type="attention"
           :loading="improvementsStore.analysis.status === 'loading'"
-          @click="improvementsStore.runAnalysis"
+          @click="handleRunAnalysis"
         />
       </UnnnicDialogFooter>
     </UnnnicDialogContent>
@@ -51,6 +51,11 @@ const open = defineModel<boolean>('open', {
 const { t } = useI18n();
 const improvementsStore = useImprovementsStore();
 const { analysis, improvements } = storeToRefs(improvementsStore);
+
+const handleRunAnalysis = () => {
+  open.value = false;
+  improvementsStore.runAnalysis();
+};
 
 const dialogDescription = computed(() => {
   const createdAt = analysis.value.task?.createdAt;
