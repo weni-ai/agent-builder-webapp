@@ -480,6 +480,11 @@
         "title": "Analiză finalizată",
         "title_with_count": "{count, plural, one {Analiză finalizată ({count} îmbunătățire găsită)} other {Analiză finalizată ({count} îmbunătățiri găsite)}}"
       },
+      "columns": {
+        "affected_conversations": "Conversații afectate",
+        "improvement": "Îmbunătățire",
+        "type": "Tip"
+      },
       "header": {
         "custom_analysis": "Analiză personalizată",
         "description": "Rulat pe {date} la {time}",
@@ -507,6 +512,12 @@
       "running_analysis": {
         "description": "Acest proces poate dura câteva ore. Poți închide acest ecran.",
         "title": "Se analizează {count} conversații de ieri"
+      },
+      "types": {
+        "behavior": "Comportament",
+        "custom_analysis": "Analiză personalizată",
+        "knowledge": "Cunoștințe",
+        "technical_issue": "Problemă tehnică"
       },
       "title": "Backlog de îmbunătățiri"
     }

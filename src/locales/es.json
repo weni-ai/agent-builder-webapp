@@ -481,6 +481,11 @@
         "title": "Análisis completo",
         "title_with_count": "{count, plural, one {Análisis completo ({count} mejora encontrada)} other {Análisis completo ({count} mejoras encontradas)}}"
       },
+      "columns": {
+        "affected_conversations": "Conversaciones afectadas",
+        "improvement": "Mejora",
+        "type": "Tipo"
+      },
       "header": {
         "custom_analysis": "Análisis personalizado",
         "description": "Ejecutado el {date} a las {time}",
@@ -508,6 +513,12 @@
       "running_analysis": {
         "description": "Esto puede tardar unas horas. Puedes cerrar esta pantalla.",
         "title": "Analizando {count} conversaciones de ayer"
+      },
+      "types": {
+        "behavior": "Comportamiento",
+        "custom_analysis": "Análisis personalizado",
+        "knowledge": "Conocimiento",
+        "technical_issue": "Problema técnico"
       },
       "title": "Backlog de mejoras"
     }
