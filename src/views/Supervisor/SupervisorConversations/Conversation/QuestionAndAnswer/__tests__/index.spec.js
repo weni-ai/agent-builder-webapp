@@ -150,7 +150,7 @@ describe('QuestionAndAnswer index.vue', () => {
           data: {
             type: 'user',
             text: 'User question',
-            created_at: mockDate,
+            createdAt: mockDate,
           },
           showDate: true,
         });
@@ -164,7 +164,7 @@ describe('QuestionAndAnswer index.vue', () => {
           data: {
             type: 'user',
             text: 'User question',
-            created_at: '2021-01-01T00:00:00Z',
+            createdAt: '2021-01-01T00:00:00Z',
           },
           showDate: false,
         });
@@ -228,7 +228,7 @@ describe('QuestionAndAnswer index.vue', () => {
           data: {
             type: 'agent',
             text: 'Agent response',
-            created_at: mockDate,
+            createdAt: mockDate,
           },
           showDate: true,
         });
@@ -242,7 +242,7 @@ describe('QuestionAndAnswer index.vue', () => {
           data: {
             type: 'agent',
             text: 'Agent response',
-            created_at: '2021-01-01T00:00:00Z',
+            createdAt: '2021-01-01T00:00:00Z',
           },
           showDate: false,
         });

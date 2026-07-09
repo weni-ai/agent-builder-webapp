@@ -118,14 +118,14 @@ describe('Supervisor.js', () => {
         uuid: 'msg-1',
         text: 'Hello',
         type: 'user',
-        created_at: '2023-01-15T12:30:00Z',
+        createdAt: '2023-01-15T12:30:00Z',
       });
       expect(result.results[1]).toMatchObject({
         id: 2,
         uuid: 'msg-2',
         text: 'Hi there!',
         type: 'agent',
-        created_at: '2023-01-15T12:31:00Z',
+        createdAt: '2023-01-15T12:31:00Z',
       });
       expect(result.next).toBeNull();
     });
@@ -201,7 +201,7 @@ describe('Supervisor.js', () => {
         uuid: 'msg-1',
         text: 'Hello',
         type: 'user',
-        created_at: '2023-01-15T12:30:00Z',
+        createdAt: '2023-01-15T12:30:00Z',
       });
       expect(result.next).toBeNull();
     });
@@ -367,6 +367,65 @@ describe('Supervisor.js', () => {
           improvementUuid: 'improvement-uuid-1',
         }),
       ).rejects.toThrow('API Error');
+    });
+
+    it('getAffectedConversations calls the endpoint and adapts the response', async () => {
+      const mockAffectedConversationsResponse = {
+        count: 25,
+        next: 'https://api.example.com/page=2',
+        previous: null,
+        results: [
+          {
+            uuid: 'conversation-uuid-1',
+            contact_urn: 'whatsapp:5511999999999',
+            contact_name: 'Alessandra',
+            messages: [
+              {
+                uuid: 'message-uuid-1',
+                id: '1',
+                text: 'Hello',
+                source: 'incoming',
+                created_at: '2026-06-23T09:44:26-03:00',
+              },
+            ],
+          },
+        ],
+      };
+
+      conversationsRequest.$http.get.mockResolvedValue({
+        data: mockAffectedConversationsResponse,
+      });
+
+      const result = await Supervisor.improvements.getAffectedConversations({
+        projectUuid,
+        improvementUuid: 'improvement-uuid-1',
+        page: 2,
+        pageSize: 10,
+      });
+
+      expect(conversationsRequest.$http.get).toHaveBeenCalledWith(
+        `/api/v1/projects/${projectUuid}/improvements/improvement-uuid-1/affected_conversations`,
+        { params: { page: 2, page_size: 10 } },
+      );
+      expect(result).toEqual({
+        count: 25,
+        results: [
+          {
+            uuid: 'conversation-uuid-1',
+            contactUrn: 'whatsapp:5511999999999',
+            contactName: 'Alessandra',
+            messages: [
+              {
+                uuid: 'message-uuid-1',
+                id: '1',
+                text: 'Hello',
+                source: 'incoming',
+                createdAt: '2026-06-23T09:44:26-03:00',
+              },
+            ],
+          },
+        ],
+      });
     });
   });
 });

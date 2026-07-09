@@ -9,6 +9,7 @@ import { useProjectStore } from './Project';
 import { useAlertStore } from './Alert';
 
 import type {
+  AffectedConversationsResponse,
   Improvement,
   ImprovementDetail,
   ImprovementStatus,
@@ -17,6 +18,8 @@ import type {
   RunAnalysisBlockReason,
 } from './types/Improvements.types';
 import { DEFAULT_IMPROVEMENTS_TASK } from './types/Improvements.types';
+
+export const AFFECTED_CONVERSATIONS_PAGE_SIZE = 10;
 
 export const MIN_CONVERSATIONS_FOR_ANALYSIS = 15;
 
@@ -128,6 +131,21 @@ export const useImprovementsStore = defineStore('Improvements', () => {
   }>({
     data: null,
     status: null,
+  });
+
+  const affectedConversations = reactive<{
+    data: AffectedConversationsResponse;
+    status: ImprovementsStatus;
+    page: number;
+    pageSize: number;
+  }>({
+    data: {
+      count: 0,
+      results: [],
+    },
+    status: null,
+    page: 1,
+    pageSize: AFFECTED_CONVERSATIONS_PAGE_SIZE,
   });
 
   function applyAnalysisResponse(response: ImprovementsAnalysis) {
@@ -284,15 +302,46 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     }
   }
 
+  function resetAffectedConversations() {
+    affectedConversations.data = {
+      count: 0,
+      results: [],
+    };
+    affectedConversations.status = null;
+    affectedConversations.page = 1;
+  }
+
+  async function fetchAffectedConversations(improvementUuid: string, page = 1) {
+    affectedConversations.status = 'loading';
+    affectedConversations.page = page;
+
+    try {
+      affectedConversations.data =
+        await supervisorApi.improvements.getAffectedConversations({
+          projectUuid: projectUuid.value,
+          improvementUuid,
+          page,
+          pageSize: affectedConversations.pageSize,
+        });
+      affectedConversations.status = 'complete';
+    } catch (error) {
+      affectedConversations.status = 'error';
+      console.error(error);
+    }
+  }
+
   return {
     analysis,
     improvements,
     improvementDetail,
+    affectedConversations,
     runAnalysisBlockReason,
     isRunAnalysisDisabled,
     fetchImprovements,
     fetchImprovementDetail,
     resetImprovementDetail,
+    fetchAffectedConversations,
+    resetAffectedConversations,
     runAnalysis,
     updateImprovementStatus,
   };

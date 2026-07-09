@@ -500,7 +500,8 @@
         "suggested_solution_behavior_title": "Agrega esta instrucción al Manager:",
         "suggested_solution_knowledge_title": "Nuevo contenido para la base de conocimiento",
         "suggested_solution_technical_issue_title": "Acción recomendada",
-        "suggested_solution_title": "Solución sugerida"
+        "suggested_solution_title": "Solución sugerida",
+        "view_full_conversation": "Ver conversación completa"
       },
       "header": {
         "custom_analysis": "Análisis personalizado",

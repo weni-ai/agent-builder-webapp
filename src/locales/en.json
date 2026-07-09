@@ -501,7 +501,8 @@
         "suggested_solution_behavior_title": "Add this instruction to the Manager:",
         "suggested_solution_knowledge_title": "New content for Knowledge Base",
         "suggested_solution_technical_issue_title": "Recommended action",
-        "suggested_solution_title": "Suggested solution"
+        "suggested_solution_title": "Suggested solution",
+        "view_full_conversation": "View full conversation"
       },
       "header": {
         "custom_analysis": "Custom analysis",
