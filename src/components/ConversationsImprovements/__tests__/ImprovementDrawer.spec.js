@@ -19,7 +19,17 @@ describe('ImprovementDrawer.vue', () => {
     conversationsCount: 18,
   };
 
-  const createWrapper = (props = {}) => {
+  const baseImprovementDetail = {
+    uuid: 'improvement-uuid-1',
+    text: baseImprovement.text,
+    type: baseImprovement.type,
+    description: 'The agent tone does not match the configured brand voice.',
+    suggestedChange: 'Update the tone instruction in refund conversations.',
+    status: 'pending',
+    affectedInstructions: [],
+  };
+
+  const createWrapper = (props = {}, { improvementDetail = null } = {}) => {
     const pinia = createTestingPinia({
       stubActions: false,
     });
@@ -27,6 +37,11 @@ describe('ImprovementDrawer.vue', () => {
     improvementsStore = useImprovementsStore(pinia);
     vi.spyOn(improvementsStore, 'fetchImprovementDetail').mockResolvedValue();
     vi.spyOn(improvementsStore, 'resetImprovementDetail');
+
+    if (improvementDetail) {
+      improvementsStore.improvementDetail.data = improvementDetail;
+      improvementsStore.improvementDetail.status = 'complete';
+    }
 
     wrapper = mount(ImprovementDrawer, {
       props: {
@@ -81,6 +96,29 @@ describe('ImprovementDrawer.vue', () => {
     footer: () => wrapper.find('[data-testid="improvement-drawer-footer"]'),
     statusDialog: () =>
       wrapper.find('[data-testid="improvement-status-dialog-stub"]'),
+    content: () => wrapper.find('[data-testid="improvement-drawer-content"]'),
+    diagnosisSection: () =>
+      wrapper.find('[data-testid="improvement-drawer-diagnosis-section"]'),
+    diagnosisTitle: () =>
+      wrapper.find('[data-testid="improvement-drawer-diagnosis-title"]'),
+    diagnosisDescription: () =>
+      wrapper.find('[data-testid="improvement-drawer-diagnosis-description"]'),
+    suggestedSolutionSection: () =>
+      wrapper.find(
+        '[data-testid="improvement-drawer-suggested-solution-section"]',
+      ),
+    suggestedSolutionTitle: () =>
+      wrapper.find(
+        '[data-testid="improvement-drawer-suggested-solution-title"]',
+      ),
+    affectedConversationsSection: () =>
+      wrapper.find(
+        '[data-testid="improvement-drawer-affected-conversations-section"]',
+      ),
+    affectedConversationsTitle: () =>
+      wrapper.find(
+        '[data-testid="improvement-drawer-affected-conversations-title"]',
+      ),
   };
 
   afterEach(() => {
@@ -211,6 +249,57 @@ describe('ImprovementDrawer.vue', () => {
           );
         },
       );
+    });
+  });
+
+  describe('content sections', () => {
+    it('renders the drawer content container', () => {
+      createWrapper();
+
+      expect(elements.content().exists()).toBe(true);
+    });
+
+    it.each([
+      {
+        section: 'diagnosis',
+        findSection: () => elements.diagnosisSection(),
+        findTitle: () => elements.diagnosisTitle(),
+        localeKey: 'audit.improvements.drawer.diagnosis_title',
+      },
+      {
+        section: 'suggested solution',
+        findSection: () => elements.suggestedSolutionSection(),
+        findTitle: () => elements.suggestedSolutionTitle(),
+        localeKey: 'audit.improvements.drawer.suggested_solution_title',
+      },
+      {
+        section: 'affected conversations',
+        findSection: () => elements.affectedConversationsSection(),
+        findTitle: () => elements.affectedConversationsTitle(),
+        localeKey: 'audit.improvements.drawer.affected_conversations_title',
+      },
+    ])(
+      'renders the $section section title',
+      ({ findSection, findTitle, localeKey }) => {
+        createWrapper();
+
+        expect(findSection().exists()).toBe(true);
+        expect(findTitle().text()).toBe(i18n.global.t(localeKey));
+      },
+    );
+
+    it('renders the diagnosis description from improvement detail', () => {
+      createWrapper({}, { improvementDetail: baseImprovementDetail });
+
+      expect(elements.diagnosisDescription().text()).toBe(
+        baseImprovementDetail.description,
+      );
+    });
+
+    it('renders an empty diagnosis description when improvement detail is unavailable', () => {
+      createWrapper();
+
+      expect(elements.diagnosisDescription().text()).toBe('');
     });
   });
 
