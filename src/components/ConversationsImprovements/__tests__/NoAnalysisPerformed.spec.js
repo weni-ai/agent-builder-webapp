@@ -103,6 +103,12 @@ describe('NoAnalysisPerformed.vue', () => {
       wrapper = mount(NoAnalysisPerformed, {
         global: {
           plugins: [pinia],
+          stubs: {
+            RunAnalysisDialog: {
+              template: '<div data-testid="run-analysis-dialog-stub" />',
+              props: ['open'],
+            },
+          },
         },
       });
       improvementsStore = useImprovementsStore(pinia);
