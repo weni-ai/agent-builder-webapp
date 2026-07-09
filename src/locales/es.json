@@ -499,6 +499,12 @@
         "run_analysis": "Ejecutar análisis",
         "title": "Aún no se ha ejecutado ningún análisis"
       },
+      "run_analysis_dialog": {
+        "cancel": "Cancelar",
+        "description": "Aún hay {count, plural, one {# mejora sin resolver} other {# mejoras sin resolver}} del {current_date}. Un nuevo análisis reemplazará esta lista con las conversaciones del {new_date}. Las mejoras actuales se perderán.",
+        "run": "Ejecutar",
+        "title": "Ejecutar análisis"
+      },
       "running_analysis": {
         "description": "Esto puede tardar unas horas. Puedes cerrar esta pantalla.",
         "title": "Analizando {count} conversaciones de ayer"

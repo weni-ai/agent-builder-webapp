@@ -500,6 +500,12 @@
         "run_analysis": "Run analysis",
         "title": "No analysis has been run yet"
       },
+      "run_analysis_dialog": {
+        "cancel": "Cancel",
+        "description": "There are still {count, plural, one {# unresolved improvement} other {# unresolved improvements}} from {current_date}. A new analysis will replace this list with the conversations from {new_date}. The current improvements will be lost.",
+        "run": "Run",
+        "title": "Run analysis"
+      },
       "running_analysis": {
         "description": "This may take a few hours. You can close this screen.",
         "title": "Analyzing {count} conversations from yesterday"
