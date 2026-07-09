@@ -58,6 +58,11 @@ describe('ImprovementDrawer.vue', () => {
             props: ['status', 'improvementUuid', 'open'],
             emits: ['success'],
           },
+          ContactTechnicalSupportDialog: {
+            template:
+              '<div data-testid="contact-technical-support-dialog-stub" :data-open="String(open)" />',
+            props: ['improvementUuid', 'open'],
+          },
           AffectedConversationsSection: {
             template:
               '<section data-testid="improvement-drawer-affected-conversations-section"><h2 data-testid="improvement-drawer-affected-conversations-title">{{ $t(\'audit.improvements.drawer.affected_conversations_title\') }}</h2><button data-testid="emit-close-drawer" @click="$emit(\'close-drawer\')" /></section>',
@@ -117,6 +122,10 @@ describe('ImprovementDrawer.vue', () => {
       wrapper.find(
         '[data-testid="improvement-drawer-suggested-solution-title"]',
       ),
+    suggestedSolutionCta: () =>
+      wrapper.findComponent('[data-testid="suggested-solution-cta"]'),
+    contactSupportDialog: () =>
+      wrapper.find('[data-testid="contact-technical-support-dialog-stub"]'),
     affectedConversationsSection: () =>
       wrapper.find(
         '[data-testid="improvement-drawer-affected-conversations-section"]',
@@ -307,6 +316,31 @@ describe('ImprovementDrawer.vue', () => {
       createWrapper();
 
       expect(elements.diagnosisDescription().text()).toBe('');
+    });
+
+    it('opens the contact technical support dialog when the CTA is clicked for technical issues', async () => {
+      const technicalIssueImprovement = {
+        ...baseImprovement,
+        type: 'poor_product_search_results',
+      };
+      const technicalIssueDetail = {
+        ...baseImprovementDetail,
+        type: 'poor_product_search_results',
+        suggestedSolution: 'Review the search index configuration.',
+      };
+
+      createWrapper(
+        { improvement: technicalIssueImprovement },
+        { improvementDetail: technicalIssueDetail },
+      );
+
+      await elements.suggestedSolutionCta().trigger('click');
+      await nextTick();
+
+      const contactSupportDialog = elements.contactSupportDialog();
+
+      expect(contactSupportDialog.exists()).toBe(true);
+      expect(contactSupportDialog.attributes('data-open')).toBe('true');
     });
   });
 

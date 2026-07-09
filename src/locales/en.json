@@ -524,6 +524,20 @@
         "title_label": "Title",
         "title_placeholder": "For example: Unrealistic delivery deadlines"
       },
+      "contact_technical_support_dialog": {
+        "cancel": "Cancel",
+        "contact_support": "Get support",
+        "description": "An email will be sent to the support team ({support_email}) with the information below",
+        "error": "Technical support couldn't be contacted. Try again later",
+        "identified_on": "Identified on {date} by {email}",
+        "project_uuid": "Project UUID: {uuid}",
+        "success": {
+          "description": "Ticket opened for {improvement_title}",
+          "title": "Technical support notified"
+        },
+        "summary_type_and_count": "{type} · {count, plural, one {# affected conversation} other {# affected conversations}}",
+        "title": "Get technical support"
+      },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# affected conversation} other {# affected conversations}}",
         "affected_conversations_title": "Affected conversations",

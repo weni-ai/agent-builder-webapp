@@ -93,6 +93,12 @@ export const Supervisor = {
       );
     },
 
+    async contactSupport({ projectUuid, improvementUuid }) {
+      await conversationsRequest.$http.post(
+        `/api/v1/projects/${projectUuid}/improvements/${improvementUuid}/contact_support`,
+      );
+    },
+
     async getById({ projectUuid, improvementUuid }) {
       const { data } = await conversationsRequest.$http.get(
         `/api/v1/projects/${projectUuid}/improvements/${improvementUuid}/`,
