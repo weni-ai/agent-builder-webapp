@@ -17,6 +17,7 @@ vi.mock('@/api/conversationsRequest', () => ({
     $http: {
       get: vi.fn(),
       post: vi.fn(),
+      patch: vi.fn(),
     },
   },
 }));
@@ -292,16 +293,37 @@ describe('Supervisor.js', () => {
       ).rejects.toThrow('API Error');
     });
 
-    it('getById returns improvement detail from mock data', async () => {
-      const promise = Supervisor.improvements.getById({
-        projectUuid: 'project-123',
+    it('getById calls the detail endpoint and adapts the response', async () => {
+      const mockDetailApiResponse = {
+        uuid: 'improvement-uuid-1',
+        text: 'The agent tone does not match the configured brand voice in refund conversations.',
+        type: 'personality_deviation',
+        description:
+          'In refund conversations, the agent uses informal language that conflicts with the configured brand voice.',
+        suggested_change:
+          'Update the tone instruction to reinforce formal and empathetic language during refund interactions.',
+        status: 'pending',
+        affected_instructions: [
+          {
+            instruction_id: 12,
+            change_type: 'fix',
+            was_changed: false,
+          },
+        ],
+      };
+
+      conversationsRequest.$http.get.mockResolvedValue({
+        data: mockDetailApiResponse,
+      });
+
+      const result = await Supervisor.improvements.getById({
+        projectUuid,
         improvementUuid: 'improvement-uuid-1',
       });
 
-      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
-
-      const result = await promise;
-
+      expect(conversationsRequest.$http.get).toHaveBeenCalledWith(
+        `/api/v1/projects/${projectUuid}/improvements/improvement-uuid-1/`,
+      );
       expect(nexusRequest.$http.get).not.toHaveBeenCalled();
       expect(result).toEqual({
         uuid: 'improvement-uuid-1',
@@ -322,19 +344,29 @@ describe('Supervisor.js', () => {
       });
     });
 
-    it('getById throws when improvement uuid is not found', async () => {
-      const promise = Supervisor.improvements.getById({
-        projectUuid: 'project-123',
-        improvementUuid: 'unknown-uuid',
+    it('getById throws when the response is invalid', async () => {
+      conversationsRequest.$http.get.mockResolvedValue({
+        data: { uuid: 'unknown-uuid' },
       });
 
-      const expectation = await expect(promise).rejects.toThrow(
-        'Improvement not found',
-      );
+      await expect(
+        Supervisor.improvements.getById({
+          projectUuid,
+          improvementUuid: 'unknown-uuid',
+        }),
+      ).rejects.toThrow('Invalid improvement detail response');
+    });
 
-      await vi.advanceTimersByTimeAsync(MOCK_ANALYSIS_DELAY_MS);
+    it('propagates errors from getById', async () => {
+      const error = new Error('API Error');
+      conversationsRequest.$http.get.mockRejectedValue(error);
 
-      await expectation;
+      await expect(
+        Supervisor.improvements.getById({
+          projectUuid,
+          improvementUuid: 'improvement-uuid-1',
+        }),
+      ).rejects.toThrow('API Error');
     });
   });
 });
