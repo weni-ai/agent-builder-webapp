@@ -473,6 +473,10 @@
         "run_analysis": "Run analysis",
         "title": "No analysis has been run yet"
       },
+      "running_analysis": {
+        "description": "This may take a few hours. You can close this screen.",
+        "title": "Analyzing {count} conversations from yesterday"
+      },
       "title": "Improvement backlog"
     }
   },

@@ -471,6 +471,10 @@
         "run_analysis": "Rulează analiza",
         "title": "Nicio analiză nu a fost executată încă"
       },
+      "running_analysis": {
+        "description": "Acest proces poate dura câteva ore. Poți închide acest ecran.",
+        "title": "Se analizează {count} conversații de ieri"
+      },
       "title": "Backlog de îmbunătățiri"
     }
   },
