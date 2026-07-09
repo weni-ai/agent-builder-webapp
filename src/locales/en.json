@@ -504,20 +504,25 @@
           "description": "The AI will stop searching for {name} in conversations. This action can't be undone.",
           "error": "Custom analysis couldn't be deleted due to a technical issue",
           "success": {
-            "description": "This issue will not be monitored in upcoming analyses.",
+            "description": "This issue won't be monitored in upcoming analyses",
             "title": "Custom analysis deleted"
           },
           "title": "Delete custom analysis"
         },
+        "definition_helper": "The more specific the description, the better the AI can identify the issue in conversations",
+        "definition_label": "What do you want to monitor?",
+        "definition_placeholder": "For example: Agent is providing unrealistic delivery deadlines",
         "description": "Describe a behavior or issue that the AI should monitor in conversations. When identified, it automatically appears in the improvement backlog",
         "empty_description": "Use the field above to start monitoring specific issues",
         "empty_title": "No custom analysis added",
-        "input_helper": "The more specific you are, the better the AI can identify the issue in conversations",
-        "input_label": "What do you want to monitor?",
-        "input_placeholder": "For example: The agent is providing unrealistic delivery deadlines",
-        "list_heading": "{count, plural, one {# custom analysis} other {# custom analyses}}",
+        "limit_disclaimer": "The limit of 10 custom analyses has been reached. Delete one to add a new one",
+        "list_heading": "Custom analyses",
+        "list_heading_count": "{count} of {max}",
         "no_affected_conversations": "No affected conversations",
-        "title": "Custom analysis"
+        "title": "Custom analysis",
+        "title_helper": "A short label to identify this analysis in the list",
+        "title_label": "Title",
+        "title_placeholder": "For example: Unrealistic delivery deadlines"
       },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# affected conversation} other {# affected conversations}}",

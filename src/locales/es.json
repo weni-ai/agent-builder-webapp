@@ -494,7 +494,7 @@
           "limit_error": "No se pudo guardar el análisis personalizado debido al límite de 10 análisis personalizados",
           "success": {
             "title": "Análisis personalizado agregado",
-            "description": "El problema será monitoreado en los próximos análisis"
+            "description": "El problema se monitoreará en los próximos análisis"
           }
         },
         "delete": {
@@ -503,20 +503,25 @@
           "description": "La IA dejará de buscar {name} en las conversaciones. Esta acción no se puede deshacer.",
           "error": "No se pudo eliminar el análisis personalizado debido a un problema técnico",
           "success": {
-            "description": "Este problema no se monitoreará en los próximos análisis.",
+            "description": "Este problema no se monitoreará en los próximos análisis",
             "title": "Análisis personalizado eliminado"
           },
           "title": "Eliminar análisis personalizado"
         },
+        "definition_helper": "Cuanto más específica sea la descripción, mejor podrá la IA identificar el problema en las conversaciones",
+        "definition_label": "¿Qué deseas monitorear?",
+        "definition_placeholder": "Por ejemplo: Agente proporciona plazos de entrega poco realistas",
         "description": "Describe un comportamiento o problema que la IA debe monitorear en las conversaciones. Cuando se identifica, aparece automáticamente en el backlog de mejoras",
-        "empty_description": "Usa el campo de arriba para empezar a monitorear problemas específicos",
-        "empty_title": "No se agregó ningún análisis personalizado",
-        "input_helper": "Cuanto más específico seas, mejor podrá la IA identificar el problema en las conversaciones",
-        "input_label": "¿Qué quieres monitorear?",
-        "input_placeholder": "Por ejemplo: El agente está proporcionando plazos de entrega poco realistas",
-        "list_heading": "{count, plural, one {# análisis personalizado} other {# análisis personalizados}}",
-        "no_affected_conversations": "No hay conversaciones afectadas",
-        "title": "Análisis personalizado"
+        "empty_description": "Usa el campo de arriba para comenzar a monitorear problemas específicos",
+        "empty_title": "Ningún análisis personalizado agregado",
+        "limit_disclaimer": "Se alcanzó el límite de 10 análisis personalizados. Elimina uno para agregar uno nuevo",
+        "list_heading": "Análisis personalizados",
+        "list_heading_count": "{count} de {max}",
+        "no_affected_conversations": "Ninguna conversación afectada",
+        "title": "Análisis personalizado",
+        "title_helper": "Etiqueta breve para identificar este análisis en la lista",
+        "title_label": "Título",
+        "title_placeholder": "Por ejemplo: Plazos de entrega poco realistas"
       },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# conversación afectada} other {# conversaciones afectadas}}",
