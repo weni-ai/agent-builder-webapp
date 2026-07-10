@@ -585,6 +585,10 @@
         "description": "Acest proces poate dura câteva ore. Poți închide acest ecran.",
         "title": "Se analizează {count} conversații de ieri"
       },
+      "stale_analysis_disclaimer": {
+        "description": "Rulează o nouă analiză pentru a identifica oportunități de îmbunătățire",
+        "title": "{days, plural, one {Ultima analiză a fost executată acum # zi} few {Ultima analiză a fost executată acum # zile} other {Ultima analiză a fost executată acum # de zile}}"
+      },
       "status_dialog": {
         "cancel": "Anulează",
         "ignored": {

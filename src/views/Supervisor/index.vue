@@ -189,7 +189,7 @@ onBeforeMount(async () => {
   }
 
   :deep(.supervisor__header) {
-    padding: 0 $unnnic-spacing-sm $unnnic-spacing-md;
+    padding: 0 $unnnic-space-4 $unnnic-space-4;
   }
 
   &__conversations {

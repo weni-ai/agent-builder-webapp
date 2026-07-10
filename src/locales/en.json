@@ -587,6 +587,10 @@
         "description": "This may take a few hours. You can close this screen.",
         "title": "Analyzing {count} conversations from yesterday"
       },
+      "stale_analysis_disclaimer": {
+        "description": "Run a new analysis to identify opportunities for improvement",
+        "title": "{days, plural, one {The last analysis was run # day ago} other {The last analysis was run # days ago}}"
+      },
       "status_dialog": {
         "cancel": "Cancel",
         "ignored": {

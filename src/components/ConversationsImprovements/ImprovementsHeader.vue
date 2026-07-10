@@ -3,6 +3,21 @@
     class="conversations-improvements-header"
     data-testid="conversations-improvements-header"
   >
+    <UnnnicDisclaimer
+      v-if="isStaleAnalysis"
+      class="conversations-improvements-header__stale-disclaimer"
+      data-testid="stale-analysis-disclaimer"
+      type="informational"
+      :title="
+        $t('audit.improvements.stale_analysis_disclaimer.title', {
+          days: analysisDaysAgo,
+        })
+      "
+      :description="
+        $t('audit.improvements.stale_analysis_disclaimer.description')
+      "
+    />
+
     <hgroup class="conversations-improvements-header__content">
       <h2
         class="conversations-improvements-header__title"
@@ -35,7 +50,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { isToday } from 'date-fns';
+import { differenceInDays, isToday } from 'date-fns';
 import { storeToRefs } from 'pinia';
 
 import { useImprovementsStore } from '@/store/Improvements';
@@ -47,10 +62,26 @@ import {
 import RunAnalysisButton from '@/components/ConversationsImprovements/RunAnalysisButton.vue';
 import CustomAnalysisModal from '@/components/ConversationsImprovements/CustomAnalysisModal/CustomAnalysisModal.vue';
 
+const STALE_ANALYSIS_DAYS_THRESHOLD = 5;
+
 const { t } = useI18n();
 const isCustomAnalysisModalOpen = ref(false);
 const improvementsStore = useImprovementsStore();
 const { analysis, improvements } = storeToRefs(improvementsStore);
+
+const analysisDaysAgo = computed(() => {
+  const createdAt = analysis.value.task?.createdAt;
+
+  if (!createdAt) {
+    return 0;
+  }
+
+  return differenceInDays(new Date(), new Date(createdAt));
+});
+
+const isStaleAnalysis = computed(
+  () => analysisDaysAgo.value >= STALE_ANALYSIS_DAYS_THRESHOLD,
+);
 
 const headerTitle = computed(() =>
   t('audit.improvements.header.title', {
@@ -87,9 +118,14 @@ const openCustomAnalysisModal = () => {
 .conversations-improvements-header {
   display: grid;
   grid-template-columns: 1fr auto auto;
-  gap: $unnnic-space-4;
+  column-gap: $unnnic-space-4;
+  row-gap: $unnnic-space-6;
 
   width: 100%;
+
+  &__stale-disclaimer {
+    grid-column: 1 / -1;
+  }
 
   &__content {
     display: flex;
