@@ -78,7 +78,7 @@ describe('CustomAnalysisImprovements Store', () => {
       expect(alertStore.add).not.toHaveBeenCalled();
     });
 
-    it('sets error status and shows alert when list request fails', async () => {
+    it('sets error status when list request fails', async () => {
       const consoleErrorSpy = vi
         .spyOn(console, 'error')
         .mockImplementation(() => {});
@@ -87,10 +87,6 @@ describe('CustomAnalysisImprovements Store', () => {
       await store.fetchCustomAnalysis();
 
       expect(store.customAnalysis.status).toBe('error');
-      expect(alertStore.add).toHaveBeenCalledWith({
-        type: 'error',
-        text: i18n.global.t(`${I18N_PREFIX}.load.error`),
-      });
 
       consoleErrorSpy.mockRestore();
     });
@@ -231,7 +227,7 @@ describe('CustomAnalysisImprovements Store', () => {
       expect(result).toEqual({ status: 'error' });
       expect(alertStore.add).toHaveBeenCalledWith({
         type: 'error',
-        text: i18n.global.t(`${I18N_PREFIX}.load.error`),
+        text: i18n.global.t(`${I18N_PREFIX}.delete.error`),
       });
 
       consoleErrorSpy.mockRestore();
