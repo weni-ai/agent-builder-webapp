@@ -200,11 +200,11 @@
         }
       },
       "system_messages": {
-        "title": "System messages",
+        "title": "Mesaje de sistem",
         "error_message": {
-          "label": "Error message",
-          "save_error": "Error message couldn't be saved due to a technical issue",
-          "tooltip": "This message is displayed to the contact when the agent is unable to generate a response.\nFor example, in cases of technical instability, processing errors, or exceeded response times.\nCustomize it to maintain your brand’s tone of voice even in error situations."
+          "label": "Mesaj de eroare",
+          "save_error": "Mesajul de eroare nu a putut fi salvat din cauza unei probleme tehnice",
+          "tooltip": "Acest mesaj este afișat contactului când agentul nu poate genera un răspuns.\nDe exemplu, în cazuri de instabilitate tehnică, erori de procesare sau timpi de răspuns depășiți.\nPersonalizează-l pentru a menține tonul vocii brandului tău chiar și în situații de eroare."
         }
       }
     }
@@ -228,7 +228,7 @@
       },
       "agent_details": {
         "about": "Despre",
-        "last_updated": "Updated on {date} at {time}",
+        "last_updated": "Actualizat pe {date} la {time}",
         "mcp": "MCP",
         "system": "Sistem",
         "view_options": "Vizualizare opțiuni",
@@ -288,7 +288,7 @@
       },
       "setup": {
         "about": "Despre",
-        "last_updated": "Updated on {date} at {time}",
+        "last_updated": "Actualizat pe {date} la {time}",
         "view_documentation": "Vizualizează documentația",
         "mcps_available": {
           "title": "MCP-uri disponibile"
@@ -374,99 +374,201 @@
   },
   "audit": {
     "title": "Audit",
-    "description": "Review and analyze conversations between agents and customers.",
+    "description": "Revizuiește și analizează conversațiile dintre agenți și clienți.",
     "conversations": {
-      "title": "Conversations",
-      "learn_details_conversations": "Learn about the details of a conversation.",
+      "title": "Conversații",
+      "learn_details_conversations": "Află detalii despre o conversație.",
       "conversation_details": {
-        "title": "About conversation",
-        "what_is_a_conversation": "What is a conversation?",
-        "what_is_a_conversation_description": "We consider all messages exchanged within 24 hours (resetting at midnight) as a single conversation.",
-        "optimized_resolution": "AI-assisted",
-        "optimized_resolution_description": "Conversations ended with a clear, effective resolution for the contact.",
-        "other_conclusion": "Not assisted",
-        "other_conclusion_description": "Conversations that ended in other ways, such as brief interactions, greetings, abandonment, or cases that followed a different flow without a direct resolution.",
-        "transferred_to_human_support": "Transferred to human support",
-        "transferred_to_human_support_description": "Includes conversations (AI-assisted and not assisted) transferred to a human representative."
+        "title": "Despre conversație",
+        "what_is_a_conversation": "Ce este o conversație?",
+        "what_is_a_conversation_description": "Considerăm că toate mesajele schimbate în decurs de 24 de ore (cu resetare la miezul nopții) constituie o singură conversație.",
+        "optimized_resolution": "Asistat de IA",
+        "optimized_resolution_description": "Conversația s-a încheiat cu o rezoluție clară și eficientă pentru contact.",
+        "other_conclusion": "Neasistat",
+        "other_conclusion_description": "Conversații care s-au încheiat în alte moduri, cum ar fi interacțiuni scurte, salutări, abandonuri sau cazuri care au urmat un flux diferit fără o rezoluție directă.",
+        "transferred_to_human_support": "Transferat la asistență umană",
+        "transferred_to_human_support_description": "Include conversații (asistat de IA și neasistat) transferate către un reprezentant uman."
       },
-      "conversations_count": "{count} conversations found",
-      "unnamed_contact": "Unnamed contact",
+      "conversations_count": "{count} conversații găsite",
+      "unnamed_contact": "Contact fără nume",
       "attended_by_agent": {
-        "title": "Assisted by an agent",
-        "tooltip": "Conversations completed by an agent"
+        "title": "Asistat de un agent",
+        "tooltip": "Conversații finalizate de un agent"
       },
       "forwarded_human_support": {
-        "title": "Transferred to human support",
-        "tooltip": "Conversations transferred to human support"
+        "title": "Transferat la asistență umană",
+        "tooltip": "Conversații transferate către asistență umană"
       },
       "conversation_start_finish": {
-        "start": "Conversation started: {datetime}",
-        "finish": "Conversation ended: {datetime}"
+        "start": "Conversație începută: {datetime}",
+        "finish": "Conversație încheiată: {datetime}"
       },
-      "contact_urn": "Contact URN",
-      "topic": "Topic",
-      "conversation_details_collapse": "Conversation details",
-      "view_full_history": "View full history",
-      "view_logs": "Show logs",
-      "hide_logs": "Hide logs",
-      "search": "Search",
-      "conversations_empty": "No conversations found",
-      "conversations_separator": "Conversations below were classified using the legacy system",
-      "conversations_v2_disclaimer": "Starting on March {day}, conversations are organized into 24-hour windows (resetting at midnight) powered by our new classification system",
+      "contact_urn": "URN contact",
+      "columns": {
+        "contact": "Contact",
+        "date": "Date",
+        "feedback": "Feedback",
+        "hour": "Hour",
+        "status": "Status"
+      },
+      "topic": "Subiect",
+      "conversation_details_collapse": "Detalii conversație",
+      "view_full_history": "Vezi istoricul complet",
+      "view_logs": "Afișează jurnalele",
+      "hide_logs": "Ascunde jurnalele",
+      "search": "Căutare",
+      "conversations_empty": "Nu s-au găsit conversații",
+      "conversations_separator": "Conversațiile de mai jos au fost clasificate folosind sistemul anterior",
+      "conversations_v2_disclaimer": "Începând cu {day} martie, conversațiile sunt organizate în ferestre de 24 de ore (cu resetare la miezul nopții) folosind noul nostru sistem de clasificare",
       "no_messages_found": {
-        "title": "No messages found in this conversation",
-        "description": "If the message was sent by human support or triggered an automatic action, you can find it in {studio_link}.",
+        "title": "Nu s-au găsit mesaje în această conversație",
+        "description": "Dacă mesajul a fost trimis de asistența umană sau a declanșat o acțiune automată, îl poți găsi în {studio_link}.",
         "studio_link": "Studio"
       },
-      "unclassified_status_tooltip": "Conversations closed before September 8, 2025 can't be classified",
+      "unclassified_status_tooltip": "Conversațiile închise înainte de 8 septembrie 2025 nu pot fi clasificate",
       "export": {
-        "title": "Export to email",
-        "description": "We'll prepare the file with the AI information and send it to the following emails:",
-        "token_label": "Project API token",
+        "title": "Exportă pe e-mail",
+        "description": "Vom pregăti fișierul cu informațiile AI și îl vom trimite la următoarele adrese de e-mail:",
+        "token_label": "Token API proiect",
         "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
-        "token_help": "You can find this token in the",
-        "project_settings": "project settings",
-        "and_paste": "and paste it here",
-        "send": "Send export",
-        "success": "The export will be sent to all listed emails soon",
-        "error": "Error sending export. Try again later."
+        "token_help": "Poți găsi acest token în",
+        "project_settings": "setări proiect",
+        "and_paste": "și lipește-l aici",
+        "send": "Trimite exportul",
+        "success": "Exportul va fi trimis în curând către toate adresele de e-mail listate",
+        "error": "Eroare la trimiterea exportului. Încearcă din nou mai târziu."
       },
       "filters": {
-        "filter_conversations": "Filter conversations",
-        "count_applied_filters": "{count, plural, one {(1 filter applied)} other {({count} filters applied)}}",
-        "filter_conversations_drawer": "Filter conversations",
-        "apply_filters": "Apply filters",
-        "clear_filters": "Clear filters",
+        "filter_conversations": "Filtrează conversațiile",
+        "count_applied_filters": "{count, plural, one {(1 filtru aplicat)} few {({count} filtre aplicate)} other {({count} de filtre aplicate)}}",
+        "filter_conversations_drawer": "Filtrează conversațiile",
+        "apply_filters": "Aplicare filtre",
+        "clear_filters": "Elimină filtrele",
         "period": {
-          "label": "Period"
+          "label": "Perioadă"
         },
         "status": {
-          "conversations": "Conversations",
-          "in_progress": "In progress",
-          "optimized_resolution": "AI-Assisted",
-          "other_conclusion": "Not Assisted",
-          "unclassified": "Not classified",
-          "transferred_to_human_support": "Transferred to human support"
+          "conversations": "Conversații",
+          "in_progress": "În curs",
+          "optimized_resolution": "Asistat de IA",
+          "other_conclusion": "Neasistat",
+          "unclassified": "Neclasificat",
+          "transferred_to_human_support": "Transferat la asistență umană"
         },
         "csat": {
           "csat": "CSAT",
-          "very_satisfied": "🤩 Very satisfied",
-          "satisfied": "😃 Satisfied",
-          "neutral": "😐 Neutral",
-          "dissatisfied": "😔 Dissatisfied",
-          "very_dissatisfied": "😡 Very dissatisfied"
+          "very_satisfied": "🤩 Foarte mulțumit",
+          "satisfied": "😃 Mulțumit",
+          "neutral": "😐 Neutru",
+          "dissatisfied": "😔 Nemulțumit",
+          "very_dissatisfied": "😡 Foarte nemulțumit"
         },
         "topic": {
-          "topic": "Topic",
-          "unclassified": "Not classified"
+          "topic": "Subiect",
+          "unclassified": "Neclasificat"
         }
       },
       "load_conversations": {
-        "error": "Error loading conversations"
+        "error": "Eroare la încărcarea conversațiilor"
       }
     },
     "improvements": {
-      "title": "Improvement backlog"
+      "analysis_in_progress_disclaimer": "Analysis in progress: {progress} of {total} conversations processed. New items may appear shortly.",
+      "analysis_complete": {
+        "no_improvements_description": "No improvements identified in the conversations from {date}",
+        "ready_description": "Improvements from {date} are ready in your backlog.",
+        "title": "Analysis complete",
+        "title_with_count": "{count, plural, one {Analysis complete ({count} improvement found)} other {Analysis complete ({count} improvements found)}}"
+      },
+      "columns": {
+        "affected_conversations": "Affected conversations",
+        "improvement": "Improvement",
+        "type": "Type"
+      },
+      "drawer": {
+        "affected_conversations_count": "{count, plural, one {# affected conversation} other {# affected conversations}}",
+        "affected_conversations_title": "Affected conversations",
+        "affected_instructions_title": "Also edit these existing instructions:",
+        "contact_technical_support": "Contact support",
+        "diagnosis_title": "Diagnosis",
+        "go_to_instructions": "Go to instructions",
+        "go_to_knowledge_base": "Go to knowledge base",
+        "ignore_improvement": "Ignore improvement",
+        "instruction_updated_disclaimer": "{count, plural, one {# instruction updated since the analysis} other {# instructions updated since the analysis}}",
+        "mark_as_resolved": "Mark as resolved",
+        "suggested_solution_behavior_title": "Add this instruction to the Manager:",
+        "suggested_solution_knowledge_title": "New content for Knowledge Base",
+        "suggested_solution_technical_issue_title": "Recommended action",
+        "suggested_solution_title": "Suggested solution",
+        "view_full_conversation": "View full conversation"
+      },
+      "header": {
+        "custom_analysis": "Custom analysis",
+        "description": "Ran on {date} at {time}",
+        "description_today": "Ran today at {time}",
+        "run_analysis": "Run analysis",
+        "run_analysis_already_run_today_tooltip": "Analysis already ran today\nReturn tomorrow to run a new analysis",
+        "run_analysis_insufficient_volume_tooltip": "Insufficient conversation volume to run analysis\nMinimum of {min} conversations required",
+        "title": "{count, plural, one {Analysis of conversations from {date} · {count} improvement identified} other {Analysis of conversations from {date} · {count} improvements identified}}"
+      },
+      "insufficient_volume": {
+        "description": "Minimum of {min} conversations required to run analysis",
+        "title": "Insufficient conversation volume"
+      },
+      "no_analysis": {
+        "description": "Run your first analysis to identify opportunities for improvement in yesterday's conversations",
+        "run_analysis": "Run analysis",
+        "title": "No analysis has been run yet"
+      },
+      "run_analysis_dialog": {
+        "cancel": "Cancel",
+        "description": "There are still {count, plural, one {# unresolved improvement} other {# unresolved improvements}} from {current_date}. A new analysis will replace this list with the conversations from {new_date}. The current improvements will be lost.",
+        "run": "Run",
+        "title": "Run analysis"
+      },
+      "running_analysis": {
+        "description": "This may take a few hours. You can close this screen.",
+        "title": "Analyzing {count} conversations from yesterday"
+      },
+      "status_dialog": {
+        "cancel": "Cancel",
+        "ignored": {
+          "description": "This issue will be removed from the backlog and will no longer appear in your improvement suggestions.",
+          "title": "Ignore improvement"
+        },
+        "resolved": {
+          "description": "Confirm only after applying the suggested solution. The issue will be removed from the backlog and make room for new improvements.",
+          "title": "Mark as resolved"
+        }
+      },
+      "status_update": {
+        "error": {
+          "ignored": {
+            "description": "Due to a technical issue",
+            "title": "Improvement couldn't be ignored"
+          },
+          "resolved": {
+            "description": "Due to a technical issue",
+            "title": "Improvement couldn't be marked as resolved"
+          }
+        },
+        "success": {
+          "description": "The item was removed from the improvements backlog",
+          "ignored": {
+            "title": "Improvement ignored"
+          },
+          "resolved": {
+            "title": "Improvement marked as resolved"
+          }
+        }
+      },
+      "types": {
+        "behavior": "Behavior",
+        "custom_analysis": "Custom analysis",
+        "knowledge": "Knowledge",
+        "technical_issue": "Technical issue"
+      },
+      "title": "Backlog de îmbunătățiri"
     }
   },
   "router": {
@@ -570,7 +672,7 @@
         "agents_preview": {
           "title": "Previzualizare agent",
           "agents_progressive_feedback": {
-            "title": "Feedback progresiv agent (Disponibil doar pentru Shopping Assistant)",
+            "title": "Agent progressive feedback (only available for Shopping Assistant)",
             "description": "Agentul poate oferi actualizări sumare în timp ce formulează răspunsul final, ajutând contactul să urmărească procesul în timp real."
           },
           "multiple_message_format": {
@@ -638,9 +740,9 @@
     "time_ago_minutes": "Adăugat acum {minutes} minute",
     "time_ago_hours": "Adăugat acum {hours} ore",
     "time_ago_days": "Adăugat acum {days} zile",
-    "time_ago_edited_minutes": "Edited {minutes} minutes ago",
-    "time_ago_edited_hours": "Edited {hours} hours ago",
-    "time_ago_edited_days": "Edited {days} days ago",
+    "time_ago_edited_minutes": "Editat acum {minutes} minute",
+    "time_ago_edited_hours": "Editat acum {hours} ore",
+    "time_ago_edited_days": "Editat acum {days} zile",
     "time_ago_created_minutes": "Creat acum {minutes} minute",
     "time_ago_created_hours": "Creat acum {hours} ore",
     "time_ago_created_days": "Creat acum {days} zile",
@@ -655,37 +757,37 @@
       "save": "Salvează"
     },
     "new_text": {
-      "description": "Manually write the content the agent will use to answer questions",
-      "supporting_text": "Organize your content into texts separated by topic for more precise answers",
+      "description": "Scrie manual conținutul pe care agentul îl va folosi pentru a răspunde la întrebări",
+      "supporting_text": "Organizează-ți conținutul în texte separate pe teme pentru răspunsuri mai precise",
       "button_add_new_text": "Text nou",
       "default_title": "Text fără titlu",
       "edit_name": "Editează numele",
-      "edit_name_hint": "Press Enter to confirm or Esc to cancel",
+      "edit_name_hint": "Apasă ENTER pentru a confirma sau ESC pentru a anula",
       "save_changes": "Salvează modificările",
-      "save_error": "Couldn't save changes",
-      "save_error_hint": "Try saving again",
+      "save_error": "Nu s-au putut salva modificările",
+      "save_error_hint": "Încearcă să salvezi din nou",
       "save_success": "Modificări salvate cu succes",
-      "search_placeholder": "Caută",
+      "search_placeholder": "Căutare",
       "no_results": "Niciun rezultat găsit",
-      "write_or_paste_placeholder": "Write or paste your content here...",
+      "write_or_paste_placeholder": "Scrie sau lipește conținutul aici…",
       "empty_state": {
-        "title": "No text added",
-        "description": "Write the content the agent will use as the knowledge source"
+        "title": "Niciun text adăugat",
+        "description": "Scrie conținutul pe care agentul îl va folosi ca sursă de cunoaștere"
       },
       "unsaved": {
         "title": "Ai modificări nesalvate",
-        "description": "If you go back now, all changes will be discarded. This action can't be undone.",
+        "description": "Dacă te întorci acum, toate modificările vor fi pierdute. Această acțiune nu poate fi anulată.",
         "keep": "Continuă editarea",
         "discard": "Renunță și întoarce-te"
       },
       "delete": {
-        "title": "Delete text",
-        "description": "Are you sure you want to delete {name}? The agent will no longer use this content to answer questions. This action can't be undone.",
-        "confirm": "Delete",
+        "title": "Șterge textul",
+        "description": "Sigur dorești să ștergi {name}? Agentul nu va mai folosi acest conținut pentru a răspunde la întrebări. Această acțiune nu poate fi anulată.",
+        "confirm": "Șterge",
         "cancel": "Anulează",
-        "success": "Text deleted successfully",
-        "error": "Couldn't delete text",
-        "error_hint": "Try deleting the text again"
+        "success": "Text șters cu succes",
+        "error": "Nu s-a putut șterge textul",
+        "error_hint": "Încearcă să ștergi din nou textul"
       }
     },
     "file_with_error": "Fișier cu eroare. Șterge-l și adaugă-l din nou.",
@@ -698,7 +800,7 @@
       "remove_file": "Ștergere fișier",
       "edit_action": "Editează acțiunea",
       "remove_action": "Elimină acțiunea",
-      "remove_text": "Delete text"
+      "remove_text": "Șterge textul"
     },
     "files": {
       "upload_content": "Încarcă conținutul din fișiere",
