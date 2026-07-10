@@ -13,6 +13,7 @@ interface ApiDataLegacy {
     end_date: string;
     resolution: string;
     name: string;
+    is_amazing?: boolean;
   }[];
 }
 
@@ -31,6 +32,7 @@ interface ApiDataV2 {
     nps: string | null;
     created_at: string;
     classification: string | null;
+    is_amazing?: boolean;
   }[];
 }
 
@@ -101,6 +103,7 @@ export const ConversationAdapter = {
                   }
                 : null,
             topics: result.topic,
+            isAmazing: Boolean(result.is_amazing),
           }),
         ),
       };
