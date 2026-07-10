@@ -203,7 +203,7 @@
         "error_message": {
           "label": "Mesaj de eroare",
           "save_error": "Mesajul de eroare nu a putut fi salvat din cauza unei probleme tehnice",
-          "tooltip": "Acest mesaj este afișat contactului când agentul nu poate genera un răspuns.\nDe exemplu, în cazuri de instabilitate tehnică, erori de procesare sau timpi de răspuns depășiți.\nPersonalizează-l pentru a menține tonul vocii brandului tău chiar și în situații de eroare."
+          "tooltip": "Acest mesaj este afișat contactului atunci când agentul nu poate genera un răspuns, de exemplu în cazul unor probleme tehnice, erori de procesare sau expirări ale timpului de răspuns. Personalizează-l pentru a menține tonul de comunicare al mărcii tale chiar și în aceste situații."
         }
       }
     }
