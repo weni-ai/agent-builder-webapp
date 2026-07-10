@@ -200,11 +200,11 @@
         }
       },
       "system_messages": {
-        "title": "System messages",
+        "title": "Mensagens do sistema",
         "error_message": {
-          "label": "Error message",
-          "save_error": "Error message couldn't be saved due to a technical issue",
-          "tooltip": "This message is displayed to the contact when the agent is unable to generate a response.\nFor example, in cases of technical instability, processing errors, or exceeded response times.\nCustomize it to maintain your brand’s tone of voice even in error situations."
+          "label": "Mensagem de erro",
+          "save_error": "Não foi possível salvar a mensagem de erro devido a um problema técnico",
+          "tooltip": "Esta mensagem é exibida para o contato quando o agente não consegue gerar uma resposta.\nPor exemplo, em casos de instabilidade técnica, erros de processamento ou tempo de resposta excedido.\nPersonalize-a para manter o tom de voz da sua marca mesmo em situações de erro."
         }
       }
     }
@@ -228,7 +228,7 @@
       },
       "agent_details": {
         "about": "Sobre",
-        "last_updated": "Updated on {date} at {time}",
+        "last_updated": "Atualizado em {date} às {time}",
         "mcp": "MCP",
         "system": "Sistema",
         "view_options": "Ver opções",
@@ -288,7 +288,7 @@
       },
       "setup": {
         "about": "Sobre",
-        "last_updated": "Updated on {date} at {time}",
+        "last_updated": "Atualizado em {date} às {time}",
         "view_documentation": "Ver documentação",
         "mcps_available": {
           "title": "MCPs disponíveis"
@@ -373,100 +373,202 @@
     }
   },
   "audit": {
-    "title": "Audit",
-    "description": "Review and analyze conversations between agents and customers.",
+    "title": "Auditoria",
+    "description": "Analise e revise conversas entre agentes e clientes.",
     "conversations": {
-      "title": "Conversations",
-      "learn_details_conversations": "Learn about the details of a conversation.",
+      "title": "Conversas",
+      "learn_details_conversations": "Aprenda sobre os detalhes de uma conversa.",
       "conversation_details": {
-        "title": "About conversation",
-        "what_is_a_conversation": "What is a conversation?",
-        "what_is_a_conversation_description": "We consider all messages exchanged within 24 hours (resetting at midnight) as a single conversation.",
-        "optimized_resolution": "AI-assisted",
-        "optimized_resolution_description": "Conversations ended with a clear, effective resolution for the contact.",
-        "other_conclusion": "Not assisted",
-        "other_conclusion_description": "Conversations that ended in other ways, such as brief interactions, greetings, abandonment, or cases that followed a different flow without a direct resolution.",
-        "transferred_to_human_support": "Transferred to human support",
-        "transferred_to_human_support_description": "Includes conversations (AI-assisted and not assisted) transferred to a human representative."
+        "title": "Sobre conversa",
+        "what_is_a_conversation": "O que é uma conversa?",
+        "what_is_a_conversation_description": "Consideramos todas as mensagens trocadas dentro de 24 horas (resetando à meia-noite) como uma única conversa.",
+        "optimized_resolution": "Atendido por IA",
+        "optimized_resolution_description": "Conversas que terminaram com uma resolução clara e eficaz para o contato.",
+        "other_conclusion": "Não atendido",
+        "other_conclusion_description": "Conversas que terminaram de outras formas, como interações breves, saudações, desistências ou casos que seguiram um fluxo diferente sem uma resolução direta.",
+        "transferred_to_human_support": "Transferido para o atendimento humano",
+        "transferred_to_human_support_description": "Inclui conversas (Atendido por IA e Não atendido) encaminhadas a um atendente humano."
       },
-      "conversations_count": "{count} conversations found",
-      "unnamed_contact": "Unnamed contact",
+      "conversations_count": "{count} conversas encontradas",
+      "unnamed_contact": "Contato sem nome",
       "attended_by_agent": {
-        "title": "Assisted by an agent",
-        "tooltip": "Conversations completed by an agent"
+        "title": "Atendido pelo agente",
+        "tooltip": "Conversas resolvidas pelo agente"
       },
       "forwarded_human_support": {
-        "title": "Transferred to human support",
-        "tooltip": "Conversations transferred to human support"
+        "title": "Encaminhado para suporte humano",
+        "tooltip": "Conversas encaminhadas para suporte humano"
       },
       "conversation_start_finish": {
-        "start": "Conversation started: {datetime}",
-        "finish": "Conversation ended: {datetime}"
+        "start": "Conversa iniciada: {datetime}",
+        "finish": "Conversa finalizada: {datetime}"
       },
-      "contact_urn": "Contact URN",
-      "topic": "Topic",
-      "conversation_details_collapse": "Conversation details",
-      "view_full_history": "View full history",
-      "view_logs": "Show logs",
-      "hide_logs": "Hide logs",
-      "search": "Search",
-      "conversations_empty": "No conversations found",
-      "conversations_separator": "Conversations below were classified using the legacy system",
-      "conversations_v2_disclaimer": "Starting on March {day}, conversations are organized into 24-hour windows (resetting at midnight) powered by our new classification system",
+      "contact_urn": "URN do contato",
+      "columns": {
+        "contact": "Contact",
+        "date": "Date",
+        "feedback": "Feedback",
+        "hour": "Hour",
+        "status": "Status"
+      },
+      "topic": "Tópico",
+      "conversation_details_collapse": "Detalhes da conversa",
+      "view_full_history": "Ver histórico completo",
+      "view_logs": "Mostrar logs",
+      "hide_logs": "Ocultar logs",
+      "search": "Buscar",
+      "conversations_empty": "Nenhuma conversa encontrada",
+      "conversations_separator": "As conversas abaixo foram classificadas usando o sistema legado",
+      "conversations_v2_disclaimer": "Começando em {day} de março, as conversas são organizadas em janelas de 24 horas (resetando à meia-noite) usando nosso novo sistema de classificação",
       "no_messages_found": {
-        "title": "No messages found in this conversation",
-        "description": "If the message was sent by human support or triggered an automatic action, you can find it in {studio_link}.",
-        "studio_link": "Studio"
+        "title": "Nenhuma mensagem encontrada nesta conversa",
+        "description": "Se a mensagem foi enviada pelo suporte humano ou ativou uma ação automática, você pode encontrá-la no {studio_link}.",
+        "studio_link": "Estúdio"
       },
-      "unclassified_status_tooltip": "Conversations closed before September 8, 2025 can't be classified",
+      "unclassified_status_tooltip": "Conversas encerradas antes de 8 de setembro de 2025 não podem ser classificadas",
       "export": {
-        "title": "Export to email",
-        "description": "We'll prepare the file with the AI information and send it to the following emails:",
-        "token_label": "Project API token",
+        "title": "Enviar exportação por email",
+        "description": "Vamos preparar o arquivo com os dados de IA e enviá-lo para os seguintes emails:",
+        "token_label": "Token de API do projeto",
         "token_placeholder": "86d2ba6397cabd4b22f7da925ef89d78bfb2d90dd",
-        "token_help": "You can find this token in the",
-        "project_settings": "project settings",
-        "and_paste": "and paste it here",
-        "send": "Send export",
-        "success": "The export will be sent to all listed emails soon",
-        "error": "Error sending export. Try again later."
+        "token_help": "Você pode encontrar este token nas",
+        "project_settings": "configurações do projeto",
+        "and_paste": "e colá-lo aqui",
+        "send": "Enviar exportação",
+        "success": "A exportação será enviada para todos os emails listados em breve",
+        "error": "Erro ao enviar exportação. Tente novamente mais tarde."
       },
       "filters": {
-        "filter_conversations": "Filter conversations",
-        "count_applied_filters": "{count, plural, one {(1 filter applied)} other {({count} filters applied)}}",
-        "filter_conversations_drawer": "Filter conversations",
-        "apply_filters": "Apply filters",
-        "clear_filters": "Clear filters",
+        "filter_conversations": "Filtrar conversas",
+        "count_applied_filters": "{count, plural, one {(1 filtro aplicado)} other {({count} filtros aplicados)}}",
+        "filter_conversations_drawer": "Filtrar conversas",
+        "apply_filters": "Aplicar filtros",
+        "clear_filters": "Limpar filtros",
         "period": {
-          "label": "Period"
+          "label": "Período"
         },
         "status": {
-          "conversations": "Conversations",
-          "in_progress": "In progress",
-          "optimized_resolution": "AI-Assisted",
-          "other_conclusion": "Not Assisted",
-          "unclassified": "Not classified",
-          "transferred_to_human_support": "Transferred to human support"
+          "conversations": "Conversas",
+          "in_progress": "Em progresso",
+          "optimized_resolution": "Atendido por IA",
+          "other_conclusion": "Não atendido",
+          "unclassified": "Não classificado",
+          "transferred_to_human_support": "Encaminhado para suporte humano"
         },
         "csat": {
           "csat": "CSAT",
-          "very_satisfied": "🤩 Very satisfied",
-          "satisfied": "😃 Satisfied",
-          "neutral": "😐 Neutral",
-          "dissatisfied": "😔 Dissatisfied",
-          "very_dissatisfied": "😡 Very dissatisfied"
+          "very_satisfied": "🤩 Muito satisfeito",
+          "satisfied": "😃 Satisfeito",
+          "neutral": "😐 Neutro",
+          "dissatisfied": "😔 Insatisfeito",
+          "very_dissatisfied": "😡 Muito insatisfeito"
         },
         "topic": {
-          "topic": "Topic",
-          "unclassified": "Not classified"
+          "topic": "Tópico",
+          "unclassified": "Não classificado"
         }
       },
       "load_conversations": {
-        "error": "Error loading conversations"
+        "error": "Erro ao carregar conversas"
       }
     },
     "improvements": {
-      "title": "Improvement backlog"
+      "analysis_in_progress_disclaimer": "Analysis in progress: {progress} of {total} conversations processed. New items may appear shortly.",
+      "analysis_complete": {
+        "no_improvements_description": "No improvements identified in the conversations from {date}",
+        "ready_description": "Improvements from {date} are ready in your backlog.",
+        "title": "Analysis complete",
+        "title_with_count": "{count, plural, one {Analysis complete ({count} improvement found)} other {Analysis complete ({count} improvements found)}}"
+      },
+      "columns": {
+        "affected_conversations": "Affected conversations",
+        "improvement": "Improvement",
+        "type": "Type"
+      },
+      "drawer": {
+        "affected_conversations_count": "{count, plural, one {# affected conversation} other {# affected conversations}}",
+        "affected_conversations_title": "Affected conversations",
+        "affected_instructions_title": "Also edit these existing instructions:",
+        "contact_technical_support": "Contact support",
+        "diagnosis_title": "Diagnosis",
+        "go_to_instructions": "Go to instructions",
+        "go_to_knowledge_base": "Go to knowledge base",
+        "ignore_improvement": "Ignore improvement",
+        "instruction_updated_disclaimer": "{count, plural, one {# instruction updated since the analysis} other {# instructions updated since the analysis}}",
+        "mark_as_resolved": "Mark as resolved",
+        "suggested_solution_behavior_title": "Add this instruction to the Manager:",
+        "suggested_solution_knowledge_title": "New content for Knowledge Base",
+        "suggested_solution_technical_issue_title": "Recommended action",
+        "suggested_solution_title": "Suggested solution",
+        "view_full_conversation": "View full conversation"
+      },
+      "header": {
+        "custom_analysis": "Custom analysis",
+        "description": "Ran on {date} at {time}",
+        "description_today": "Ran today at {time}",
+        "run_analysis": "Run analysis",
+        "run_analysis_already_run_today_tooltip": "Analysis already ran today\nReturn tomorrow to run a new analysis",
+        "run_analysis_insufficient_volume_tooltip": "Insufficient conversation volume to run analysis\nMinimum of {min} conversations required",
+        "title": "{count, plural, one {Analysis of conversations from {date} · {count} improvement identified} other {Analysis of conversations from {date} · {count} improvements identified}}"
+      },
+      "insufficient_volume": {
+        "description": "Minimum of {min} conversations required to run analysis",
+        "title": "Insufficient conversation volume"
+      },
+      "no_analysis": {
+        "description": "Run your first analysis to identify opportunities for improvement in yesterday's conversations",
+        "run_analysis": "Run analysis",
+        "title": "No analysis has been run yet"
+      },
+      "run_analysis_dialog": {
+        "cancel": "Cancel",
+        "description": "There are still {count, plural, one {# unresolved improvement} other {# unresolved improvements}} from {current_date}. A new analysis will replace this list with the conversations from {new_date}. The current improvements will be lost.",
+        "run": "Run",
+        "title": "Run analysis"
+      },
+      "running_analysis": {
+        "description": "This may take a few hours. You can close this screen.",
+        "title": "Analyzing {count} conversations from yesterday"
+      },
+      "status_dialog": {
+        "cancel": "Cancel",
+        "ignored": {
+          "description": "This issue will be removed from the backlog and will no longer appear in your improvement suggestions.",
+          "title": "Ignore improvement"
+        },
+        "resolved": {
+          "description": "Confirm only after applying the suggested solution. The issue will be removed from the backlog and make room for new improvements.",
+          "title": "Mark as resolved"
+        }
+      },
+      "status_update": {
+        "error": {
+          "ignored": {
+            "description": "Due to a technical issue",
+            "title": "Improvement couldn't be ignored"
+          },
+          "resolved": {
+            "description": "Due to a technical issue",
+            "title": "Improvement couldn't be marked as resolved"
+          }
+        },
+        "success": {
+          "description": "The item was removed from the improvements backlog",
+          "ignored": {
+            "title": "Improvement ignored"
+          },
+          "resolved": {
+            "title": "Improvement marked as resolved"
+          }
+        }
+      },
+      "types": {
+        "behavior": "Behavior",
+        "custom_analysis": "Custom analysis",
+        "knowledge": "Knowledge",
+        "technical_issue": "Technical issue"
+      },
+      "title": "Backlog de melhorias"
     }
   },
   "router": {
@@ -570,7 +672,7 @@
         "agents_preview": {
           "title": "Prévia dos agentes",
           "agents_progressive_feedback": {
-            "title": "Feedback progressivo dos agentes (Apenas disponível para o Assistente de Compras)",
+            "title": "Agent progressive feedback (only available for Shopping Assistant)",
             "description": "O agente pode fornecer atualizações breves enquanto formula a resposta final, ajudando o contato a acompanhar o processo em tempo real."
           },
           "multiple_message_format": {
@@ -655,37 +757,37 @@
       "save": "Salvar"
     },
     "new_text": {
-      "description": "Manually write the content the agent will use to answer questions",
-      "supporting_text": "Organize your content into texts separated by topic for more precise answers",
+      "description": "Escreva o conteúdo que o agente usará para responder às perguntas",
+      "supporting_text": "Organize seu conteúdo em textos separados por assunto para gerar respostas mais precisas",
       "button_add_new_text": "Novo texto",
       "default_title": "Texto sem título",
       "edit_name": "Editar nome",
-      "edit_name_hint": "Press Enter to confirm or Esc to cancel",
+      "edit_name_hint": "Pressione Enter para confirmar ou Esc para cancelar",
       "save_changes": "Salvar alterações",
-      "save_error": "Couldn't save changes",
-      "save_error_hint": "Try saving again",
+      "save_error": "Não foi possível salvar as alterações",
+      "save_error_hint": "Tente salvar novamente",
       "save_success": "Alterações salvas com sucesso",
       "search_placeholder": "Buscar",
       "no_results": "Nenhum resultado encontrado",
-      "write_or_paste_placeholder": "Write or paste your content here...",
+      "write_or_paste_placeholder": "Escreva ou cole seu conteúdo aqui…",
       "empty_state": {
-        "title": "No text added",
-        "description": "Write the content the agent will use as the knowledge source"
+        "title": "Nenhum texto adicionado",
+        "description": "Escreva o conteúdo que o agente irá usar como fonte de conhecimento"
       },
       "unsaved": {
         "title": "Você tem alterações não salvas",
-        "description": "If you go back now, all changes will be discarded. This action can't be undone.",
+        "description": "Se você voltar agora, todas as alterações feitas serão descartadas. Essa ação não poderá ser desfeita.",
         "keep": "Continuar editando",
         "discard": "Descartar e voltar"
       },
       "delete": {
-        "title": "Delete text",
-        "description": "Are you sure you want to delete {name}? The agent will no longer use this content to answer questions. This action can't be undone.",
-        "confirm": "Delete",
+        "title": "Excluir texto",
+        "description": "Tem certeza de que deseja excluir {name}? O agente não usará mais esse conteúdo para responder perguntas. Essa ação não poderá ser desfeita.",
+        "confirm": "Excluir",
         "cancel": "Cancelar",
-        "success": "Text deleted successfully",
-        "error": "Couldn't delete text",
-        "error_hint": "Try deleting the text again"
+        "success": "Texto excluído com sucesso",
+        "error": "Não foi possível excluir o texto",
+        "error_hint": "Tente excluir o texto novamente"
       }
     },
     "file_with_error": "Arquivo com erro. Exclua e adicione-o novamente.",
@@ -698,7 +800,7 @@
       "remove_file": "Remover arquivo",
       "edit_action": "Editar ação",
       "remove_action": "Remover ação",
-      "remove_text": "Delete text"
+      "remove_text": "Excluir texto"
     },
     "files": {
       "upload_content": "Carregar conteúdo de arquivos",
