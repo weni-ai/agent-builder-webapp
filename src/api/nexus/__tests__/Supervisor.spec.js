@@ -8,6 +8,7 @@ vi.mock('@/api/nexusaiRequest', () => ({
     $http: {
       get: vi.fn(),
       post: vi.fn(),
+      delete: vi.fn(),
     },
   },
 }));
@@ -18,6 +19,7 @@ vi.mock('@/api/conversationsRequest', () => ({
       get: vi.fn(),
       post: vi.fn(),
       patch: vi.fn(),
+      delete: vi.fn(),
     },
   },
 }));
@@ -425,6 +427,115 @@ describe('Supervisor.js', () => {
             ],
           },
         ],
+      });
+    });
+
+    describe('customAnalysis', () => {
+      const mockListResponse = [
+        {
+          uuid: 'custom-analysis-uuid-1',
+          title: 'Unrealistic delivery deadlines',
+          conversations_count: 5,
+        },
+      ];
+
+      const mockDetailResponse = {
+        uuid: 'custom-analysis-uuid-2',
+        title: 'Unrealistic delivery deadlines',
+        definition: 'The agent is providing unrealistic delivery deadlines',
+        exclusions: '',
+        slug: 'unrealistic-delivery-deadlines',
+      };
+
+      it('list calls the custom analysis endpoint and adapts the response', async () => {
+        conversationsRequest.$http.get.mockResolvedValue({
+          data: mockListResponse,
+        });
+
+        const result = await Supervisor.improvements.customAnalysis.list({
+          projectUuid,
+        });
+
+        expect(conversationsRequest.$http.get).toHaveBeenCalledWith(
+          `/api/v1/projects/${projectUuid}/improvements/custom_analysis/`,
+        );
+        expect(nexusRequest.$http.get).not.toHaveBeenCalled();
+        expect(result).toEqual([
+          {
+            uuid: 'custom-analysis-uuid-1',
+            title: 'Unrealistic delivery deadlines',
+            conversationsCount: 5,
+          },
+        ]);
+      });
+
+      it('create calls the custom analysis endpoint and adapts the response', async () => {
+        conversationsRequest.$http.post.mockResolvedValue({
+          data: mockDetailResponse,
+        });
+
+        const result = await Supervisor.improvements.customAnalysis.create({
+          projectUuid,
+          title: 'Unrealistic delivery deadlines',
+          definition: 'The agent is providing unrealistic delivery deadlines',
+          exclusions: '',
+        });
+
+        expect(conversationsRequest.$http.post).toHaveBeenCalledWith(
+          `/api/v1/projects/${projectUuid}/improvements/custom_analysis/`,
+          {
+            title: 'Unrealistic delivery deadlines',
+            definition: 'The agent is providing unrealistic delivery deadlines',
+            exclusions: '',
+          },
+        );
+        expect(result).toEqual({
+          uuid: 'custom-analysis-uuid-2',
+          title: 'Unrealistic delivery deadlines',
+          definition: 'The agent is providing unrealistic delivery deadlines',
+          exclusions: '',
+          slug: 'unrealistic-delivery-deadlines',
+        });
+      });
+
+      it('create throws when custom analysis response is invalid', async () => {
+        conversationsRequest.$http.post.mockResolvedValue({
+          data: {
+            uuid: 'custom-analysis-uuid-2',
+          },
+        });
+
+        await expect(
+          Supervisor.improvements.customAnalysis.create({
+            projectUuid,
+            title: 'Unrealistic delivery deadlines',
+            definition: 'The agent is providing unrealistic delivery deadlines',
+            exclusions: '',
+          }),
+        ).rejects.toThrow('Invalid custom analysis response');
+      });
+
+      it('delete calls the custom analysis endpoint', async () => {
+        conversationsRequest.$http.delete.mockResolvedValue({});
+
+        await Supervisor.improvements.customAnalysis.delete({
+          projectUuid,
+          customAnalysisUuid: 'custom-analysis-uuid-1',
+        });
+
+        expect(conversationsRequest.$http.delete).toHaveBeenCalledWith(
+          `/api/v1/projects/${projectUuid}/improvements/custom_analysis/custom-analysis-uuid-1/`,
+        );
+        expect(nexusRequest.$http.delete).not.toHaveBeenCalled();
+      });
+
+      it('propagates errors from list', async () => {
+        const error = new Error('API Error');
+        conversationsRequest.$http.get.mockRejectedValue(error);
+
+        await expect(
+          Supervisor.improvements.customAnalysis.list({ projectUuid }),
+        ).rejects.toThrow('API Error');
       });
     });
   });

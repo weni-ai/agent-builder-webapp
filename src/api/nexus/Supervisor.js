@@ -4,6 +4,7 @@ import { fetchConversationList } from '../adapters/supervisor/conversationSource
 import { ConversationMessageAdapter } from '../adapters/supervisor/conversationMessage';
 import { ImprovementsAdapter } from '../adapters/supervisor/improvements';
 import { AffectedConversationsAdapter } from '../adapters/supervisor/affectedConversations';
+import { CustomAnalysisImprovementsAdapter } from '../adapters/supervisor/customAnalysisImprovements';
 
 export const Supervisor = {
   conversations: {
@@ -118,6 +119,41 @@ export const Supervisor = {
       );
 
       return AffectedConversationsAdapter.fromApi(data);
+    },
+
+    customAnalysis: {
+      async list({ projectUuid }) {
+        const { data } = await conversationsRequest.$http.get(
+          `/api/v1/projects/${projectUuid}/improvements/custom_analysis/`,
+        );
+
+        return CustomAnalysisImprovementsAdapter.fromApiList(data);
+      },
+
+      async create({ projectUuid, title, definition, exclusions }) {
+        const { data } = await conversationsRequest.$http.post(
+          `/api/v1/projects/${projectUuid}/improvements/custom_analysis/`,
+          CustomAnalysisImprovementsAdapter.toApiCreate({
+            title,
+            definition,
+            exclusions,
+          }),
+        );
+
+        const detail = CustomAnalysisImprovementsAdapter.fromApiDetail(data);
+
+        if (!detail) {
+          throw new Error('Invalid custom analysis response');
+        }
+
+        return detail;
+      },
+
+      async delete({ projectUuid, customAnalysisUuid }) {
+        await conversationsRequest.$http.delete(
+          `/api/v1/projects/${projectUuid}/improvements/custom_analysis/${customAnalysisUuid}/`,
+        );
+      },
     },
   },
 };
