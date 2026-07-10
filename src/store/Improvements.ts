@@ -256,6 +256,39 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     }
   }
 
+  async function contactTechnicalSupport(improvementUuid: string) {
+    try {
+      await supervisorApi.improvements.contactSupport({
+        projectUuid: projectUuid.value,
+        improvementUuid,
+      });
+
+      alertStore.add({
+        type: 'success',
+        text: i18n.global.t(
+          'audit.improvements.contact_technical_support_dialog.success.title',
+        ),
+        description: i18n.global.t(
+          'audit.improvements.contact_technical_support_dialog.success.description',
+          {
+            improvement_title: improvementDetail.data?.text ?? '',
+          },
+        ),
+      });
+
+      return { status: 'complete' as const };
+    } catch (error) {
+      console.error(error);
+      alertStore.add({
+        type: 'error',
+        text: i18n.global.t(
+          'audit.improvements.contact_technical_support_dialog.error',
+        ),
+      });
+      return { status: 'error' as const };
+    }
+  }
+
   async function updateImprovementStatus(
     improvementUuid: string,
     status: ImprovementStatus,
@@ -343,6 +376,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
     fetchAffectedConversations,
     resetAffectedConversations,
     runAnalysis,
+    contactTechnicalSupport,
     updateImprovementStatus,
   };
 });

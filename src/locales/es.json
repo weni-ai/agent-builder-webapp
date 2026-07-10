@@ -523,6 +523,20 @@
         "title_label": "Título",
         "title_placeholder": "Por ejemplo: Plazos de entrega poco realistas"
       },
+      "contact_technical_support_dialog": {
+        "cancel": "Cancelar",
+        "contact_support": "Contactar con soporte",
+        "description": "Enviaremos un correo electrónico a {support_email} con esta información:",
+        "error": "No se pudo contactar con soporte. Intenta nuevamente más tarde",
+        "identified_on": "Identificado el {date} por {email}",
+        "project_uuid": "UUID del proyecto: {uuid}",
+        "success": {
+          "description": "Ticket abierto para {improvement_title}",
+          "title": "Soporte notificado"
+        },
+        "summary_type_and_count": "{type} · {count, plural, one {# conversación afectada} other {# conversaciones afectadas}}",
+        "title": "Contactar con soporte"
+      },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# conversación afectada} other {# conversaciones afectadas}}",
         "affected_conversations_title": "Conversaciones afectadas",

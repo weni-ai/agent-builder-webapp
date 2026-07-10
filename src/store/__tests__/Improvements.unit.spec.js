@@ -17,6 +17,7 @@ vi.mock('@/api/nexusaiAPI', () => ({
           getAnalysis: vi.fn(),
           getById: vi.fn(),
           updateStatus: vi.fn(),
+          contactSupport: vi.fn(),
           getAffectedConversations: vi.fn(),
         },
       },
@@ -637,6 +638,53 @@ describe('Improvements Store', () => {
         ),
         description: i18n.global.t(
           'audit.improvements.status_update.error.ignored.description',
+        ),
+      });
+    });
+  });
+
+  describe('contactTechnicalSupport', () => {
+    it('calls contactSupport and shows a success alert', async () => {
+      const improvement = buildImprovement();
+      store.improvementDetail.data = buildImprovementDetail({
+        text: 'Poor product search results',
+      });
+      improvementsApi.contactSupport.mockResolvedValue();
+
+      const result = await store.contactTechnicalSupport(improvement.uuid);
+
+      expect(improvementsApi.contactSupport).toHaveBeenCalledWith({
+        projectUuid: 'test-project-uuid',
+        improvementUuid: improvement.uuid,
+      });
+      expect(result).toEqual({ status: 'complete' });
+      expect(alertStore.add).toHaveBeenCalledWith({
+        type: 'success',
+        text: i18n.global.t(
+          'audit.improvements.contact_technical_support_dialog.success.title',
+        ),
+        description: i18n.global.t(
+          'audit.improvements.contact_technical_support_dialog.success.description',
+          {
+            improvement_title: 'Poor product search results',
+          },
+        ),
+      });
+    });
+
+    it('returns error status and shows an error alert when the request fails', async () => {
+      const improvement = buildImprovement();
+      const error = new Error('contact support failed');
+      improvementsApi.contactSupport.mockRejectedValue(error);
+
+      const result = await store.contactTechnicalSupport(improvement.uuid);
+
+      expect(result).toEqual({ status: 'error' });
+      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+      expect(alertStore.add).toHaveBeenCalledWith({
+        type: 'error',
+        text: i18n.global.t(
+          'audit.improvements.contact_technical_support_dialog.error',
         ),
       });
     });

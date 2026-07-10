@@ -522,6 +522,20 @@
         "title_label": "Titlu",
         "title_placeholder": "De exemplu: Termene de livrare nerealiste"
       },
+      "contact_technical_support_dialog": {
+        "cancel": "Anulează",
+        "contact_support": "Contactează asistența",
+        "description": "Vom trimite un email la {support_email} cu aceste informații:",
+        "error": "Asistența nu a putut fi contactată. Încearcă din nou mai târziu",
+        "identified_on": "Identificat la {date} de {email}",
+        "project_uuid": "UUID-ul proiectului: {uuid}",
+        "success": {
+          "description": "Ticket deschis pentru {improvement_title}",
+          "title": "Asistență notificată"
+        },
+        "summary_type_and_count": "{type} · {count, plural, one {# conversație afectată} few {# conversații afectate} other {# de conversații afectate}}",
+        "title": "Contactează asistența"
+      },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# instrucțiune actualizată de la analiză} few {# instrucțiuni actualizate de la analiză} other {# de instrucțiuni actualizate de la analiză}}",
         "affected_conversations_title": "Conversații afectate",

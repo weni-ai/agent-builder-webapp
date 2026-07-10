@@ -39,6 +39,7 @@
 
       <UnnnicButton
         class="suggested-solution-content__cta"
+        data-testid="suggested-solution-cta"
         :text="ctaText"
         type="secondary"
         @click="handleCtaClick"
@@ -57,6 +58,10 @@ import ImprovementDrawerSection from './ImprovementDrawerSection.vue';
 import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTag';
 import { useProfileStore } from '@/store/Profile.js';
 import { UnnnicDisclaimer } from '@weni/unnnic-system';
+
+const emit = defineEmits<{
+  'open-contact-support': [];
+}>();
 
 const { t } = useI18n();
 
@@ -126,7 +131,7 @@ function handleCtaClick() {
       '*',
     );
   } else if (improvementCategory.value === 'technical_issue') {
-    console.log('contact technical support');
+    emit('open-contact-support');
   }
 }
 </script>

@@ -43,7 +43,9 @@
           </p>
         </ImprovementDrawerSection>
 
-        <SuggestedSolutionSection />
+        <SuggestedSolutionSection
+          @open-contact-support="openContactSupportDialog"
+        />
 
         <AffectedConversationsSection
           :open="drawerOpen"
@@ -74,6 +76,16 @@
       :improvementUuid="improvement?.uuid ?? null"
       @success="handleStatusUpdateSuccess"
     />
+
+    <ContactTechnicalSupportDialog
+      v-if="typeTag.category === 'technical_issue' && improvement?.uuid"
+      v-model:open="isContactSupportDialogOpen"
+      :conversationsCount="improvement.conversationsCount ?? 0"
+      :identifiedAt="improvementsStore.analysis.task.createdAt"
+      :improvementTitle="improvement.text"
+      :improvementTypeLabel="typeTag.text"
+      :improvementUuid="improvement.uuid"
+    />
   </UnnnicDrawerNext>
 </template>
 
@@ -85,6 +97,7 @@ import { useImprovementsStore } from '@/store/Improvements';
 import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTag';
 
 import ImprovementStatusDialog from './ImprovementStatusDialog.vue';
+import ContactTechnicalSupportDialog from './ContactTechnicalSupportDialog.vue';
 import SuggestedSolutionSection from './SuggestedSolutionSection.vue';
 import AffectedConversationsSection from './AffectedConversationsSection.vue';
 import ImprovementDrawerSection from './ImprovementDrawerSection.vue';
@@ -109,11 +122,16 @@ const improvementDetail = computed(
 );
 
 const isStatusDialogOpen = ref(false);
+const isContactSupportDialogOpen = ref(false);
 const statusDialogStatus = ref<ImprovementStatus>('ignored');
 
 function openStatusDialog(status: ImprovementStatus) {
   statusDialogStatus.value = status;
   isStatusDialogOpen.value = true;
+}
+
+function openContactSupportDialog() {
+  isContactSupportDialogOpen.value = true;
 }
 
 function handleStatusUpdateSuccess() {
@@ -141,6 +159,7 @@ const typeTag = computed(() => {
   return {
     scheme,
     text: t(`audit.improvements.types.${category}`),
+    category,
   };
 });
 </script>

@@ -256,6 +256,20 @@ describe('Supervisor.js', () => {
       expect(nexusRequest.$http.post).not.toHaveBeenCalled();
     });
 
+    it('contactSupport calls the contact support endpoint', async () => {
+      conversationsRequest.$http.post.mockResolvedValue({ data: {} });
+
+      await Supervisor.improvements.contactSupport({
+        projectUuid,
+        improvementUuid: 'improvement-uuid-1',
+      });
+
+      expect(conversationsRequest.$http.post).toHaveBeenCalledWith(
+        `/api/v1/projects/${projectUuid}/improvements/improvement-uuid-1/contact_support`,
+      );
+      expect(nexusRequest.$http.post).not.toHaveBeenCalled();
+    });
+
     it('getAnalysis calls the improvements endpoint and adapts the response', async () => {
       conversationsRequest.$http.get.mockResolvedValue({
         data: mockApiResponse,
