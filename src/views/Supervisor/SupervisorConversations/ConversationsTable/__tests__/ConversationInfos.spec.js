@@ -1,5 +1,6 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
 
 import ConversationInfos from '@/views/Supervisor/SupervisorConversations/ConversationsTable/ConversationInfos.vue';
 
@@ -14,6 +15,19 @@ describe('ConversationInfos.vue', () => {
         username: mockUsername,
         urn: mockUrn,
         ...props,
+      },
+      global: {
+        plugins: [
+          createTestingPinia({
+            createSpy: vi.fn,
+            stubActions: false,
+            initialState: {
+              FeatureFlags: {
+                activeFeatures: ['improvements'],
+              },
+            },
+          }),
+        ],
       },
     });
   };

@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
 import SupervisorUsername from '@/components/Supervisor/SupervisorUsername.vue';
@@ -7,11 +8,27 @@ import SupervisorUsername from '@/components/Supervisor/SupervisorUsername.vue';
 describe('SupervisorUsername.vue', () => {
   let wrapper;
 
-  const createWrapper = (props = {}) => {
+  const createWrapper = (
+    props = {},
+    { conversationsImprovements = true } = {},
+  ) => {
+    const pinia = createTestingPinia({
+      createSpy: vi.fn,
+      stubActions: false,
+      initialState: {
+        FeatureFlags: {
+          activeFeatures: conversationsImprovements ? ['improvements'] : [],
+        },
+      },
+    });
+
     wrapper = mount(SupervisorUsername, {
       props: {
         username: 'Jane Doe',
         ...props,
+      },
+      global: {
+        plugins: [pinia],
       },
     });
   };
@@ -59,7 +76,13 @@ describe('SupervisorUsername.vue', () => {
     expect(elements.popover().exists()).toBe(false);
   });
 
-  it('renders the amazing conversation popover when isAmazing is true', () => {
+  it('does not render the amazing conversation popover when the feature flag is disabled', () => {
+    createWrapper({ isAmazing: true }, { conversationsImprovements: false });
+
+    expect(elements.popover().exists()).toBe(false);
+  });
+
+  it('renders the amazing conversation popover when isAmazing is true and the feature flag is enabled', () => {
     createWrapper({ isAmazing: true });
 
     expect(elements.popover().exists()).toBe(true);

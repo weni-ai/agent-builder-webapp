@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { createTestingPinia } from '@pinia/testing';
 
 import ConversationRow from '@/views/Supervisor/SupervisorConversations/ConversationsTable/ConversationRow.vue';
 import ConversationInfos from '@/views/Supervisor/SupervisorConversations/ConversationsTable/ConversationInfos.vue';
@@ -27,6 +28,17 @@ describe('ConversationRow.vue', () => {
         ...props,
       },
       global: {
+        plugins: [
+          createTestingPinia({
+            createSpy: vi.fn,
+            stubActions: false,
+            initialState: {
+              FeatureFlags: {
+                activeFeatures: ['improvements'],
+              },
+            },
+          }),
+        ],
         stubs: {
           UnnnicTableRow: {
             template: '<tr v-bind="$attrs"><slot /></tr>',

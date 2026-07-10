@@ -8,7 +8,7 @@
       {{ displayName }}
     </h3>
     <UnnnicPopover
-      v-if="isAmazing"
+      v-if="isAmazing && featureFlagsStore.flags.conversationsImprovements"
       v-model:open="isPopoverOpen"
       class="is-amazing-popover"
       data-testid="amazing-conversation-popover"
@@ -55,6 +55,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 import i18n from '@/utils/plugins/i18n';
 
@@ -74,6 +75,8 @@ const props = withDefaults(
 );
 
 const isPopoverOpen = ref(false);
+
+const featureFlagsStore = useFeatureFlagsStore();
 
 const displayName = computed(() => {
   return props.username || `[${i18n.global.t(props.fallbackKey)}]`;
