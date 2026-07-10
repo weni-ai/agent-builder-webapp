@@ -120,6 +120,42 @@ const unnnicTooltipStub = {
   template: genericStub,
 };
 
+const unnnicPopoverStub = {
+  name: 'UnnnicPopover',
+  inheritAttrs: false,
+  props: Unnnic?.unnnicPopover?.props,
+  emits: Unnnic?.unnnicPopover?.emits,
+  template: genericStub,
+};
+
+const unnnicPopoverTriggerStub = {
+  name: 'UnnnicPopoverTrigger',
+  inheritAttrs: false,
+  props: Unnnic?.unnnicPopoverTrigger?.props,
+  emits: Unnnic?.unnnicPopoverTrigger?.emits,
+  template: genericStub,
+};
+
+const unnnicPopoverContentStub = {
+  name: 'UnnnicPopoverContent',
+  inheritAttrs: false,
+  props: Unnnic?.unnnicPopoverContent?.props,
+  emits: Unnnic?.unnnicPopoverContent?.emits,
+  template: genericStub,
+};
+
+const OverrideUnnnicPopoverPlugin = {
+  install(app) {
+    // Override Unnnic Popover after UnnnicSystemPlugin registers the real
+    // components. Mutating the app context avoids Vue's re-registration warning.
+    Object.assign(app._context.components, {
+      UnnnicPopover: unnnicPopoverStub,
+      UnnnicPopoverTrigger: unnnicPopoverTriggerStub,
+      UnnnicPopoverContent: unnnicPopoverContentStub,
+    });
+  },
+};
+
 const ContentItemActionsStub = {
   name: 'ContentItemActionsStub',
   props: {
@@ -143,7 +179,7 @@ const ContentItemActionsStub = {
   `,
 };
 
-config.global.plugins = [i18n, UnnnicSystemPlugin];
+config.global.plugins = [i18n, UnnnicSystemPlugin, OverrideUnnnicPopoverPlugin];
 config.global.components = {
   UnnnicDivider,
   UnnnicIntelligenceText,

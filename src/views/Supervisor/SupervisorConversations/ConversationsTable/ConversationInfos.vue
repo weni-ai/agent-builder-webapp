@@ -3,6 +3,7 @@
     <SupervisorUsername
       :username="username"
       data-testid="conversation-username"
+      :isAmazing="isAmazing"
     />
 
     <p
@@ -23,9 +24,11 @@ const props = withDefaults(
   defineProps<{
     username?: string;
     urn: string;
+    isAmazing?: boolean;
   }>(),
   {
     username: '',
+    isAmazing: false,
   },
 );
 

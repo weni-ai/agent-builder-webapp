@@ -474,6 +474,10 @@
         "transferred_to_human_support": "Transferat la asistență umană",
         "transferred_to_human_support_description": "Include conversații (asistat de IA și neasistat) transferate către un reprezentant uman."
       },
+      "amazing_conversation": {
+        "description": "Această conversație demonstrează capacitatea agentului de a răspunde eficient la multiple întrebări ale clientului. Rezolvarea clară și urmărirea atentă au avut ca rezultat un client mulțumit.",
+        "title": "Conversație extraordinară"
+      },
       "conversations_count": "{count} conversații găsite",
       "unnamed_contact": "Contact fără nume",
       "attended_by_agent": {
@@ -663,8 +667,12 @@
         "title": "Rulează analiza"
       },
       "running_analysis": {
-        "description": "Acest proces poate dura câteva minute. Poți închide acest ecran.",
+        "description": "Acest proces poate dura câteva ore. Poți închide acest ecran.",
         "title": "Se analizează {count} conversații de ieri"
+      },
+      "stale_analysis_disclaimer": {
+        "description": "Rulează o nouă analiză pentru a identifica oportunități de îmbunătățire",
+        "title": "{days, plural, one {Ultima analiză a fost executată acum # zi} few {Ultima analiză a fost executată acum # zile} other {Ultima analiză a fost executată acum # de zile}}"
       },
       "status_dialog": {
         "cancel": "Anulează",
@@ -808,7 +816,7 @@
         "agents_preview": {
           "title": "Previzualizare agent",
           "agents_progressive_feedback": {
-            "title": "Feedback progresiv agent (Disponibil doar pentru Shopping Assistant)",
+            "title": "Feedback progresiv agent (disponibil doar pentru Shopping Assistant)",
             "description": "Agentul poate oferi actualizări sumare în timp ce formulează răspunsul final, ajutând contactul să urmărească procesul în timp real."
           },
           "multiple_message_format": {

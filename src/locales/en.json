@@ -475,6 +475,10 @@
         "transferred_to_human_support": "Transferred to human support",
         "transferred_to_human_support_description": "Includes conversations (AI-assisted and not assisted) transferred to a human representative."
       },
+      "amazing_conversation": {
+        "description": "This conversation shows the agent's ability to address multiple customer questions effectively. The clear resolution and attentive follow-up resulted in a satisfied customer.",
+        "title": "Amazing conversation"
+      },
       "conversations_count": "{count} conversations found",
       "unnamed_contact": "Unnamed contact",
       "attended_by_agent": {
@@ -665,8 +669,12 @@
         "title": "Run analysis"
       },
       "running_analysis": {
-        "description": "This may take a few minutes. You can close this screen.",
+        "description": "This may take a few hours. You can close this screen.",
         "title": "Analyzing {count} conversations from yesterday"
+      },
+      "stale_analysis_disclaimer": {
+        "description": "Run a new analysis to identify opportunities for improvement",
+        "title": "{days, plural, one {The last analysis was run # day ago} other {The last analysis was run # days ago}}"
       },
       "status_dialog": {
         "cancel": "Cancel",
@@ -810,7 +818,7 @@
         "agents_preview": {
           "title": "Agent preview",
           "agents_progressive_feedback": {
-            "title": "Agent progressive feedback (Only available for Shopping Assistant)",
+            "title": "Agent progressive feedback (only available for Shopping Assistant)",
             "description": "The agent can provide brief updates while formulating the final response, helping the contact follow the process in real time."
           },
           "multiple_message_format": {

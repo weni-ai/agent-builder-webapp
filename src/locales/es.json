@@ -475,6 +475,10 @@
         "transferred_to_human_support": "Transferidas a soporte humano",
         "transferred_to_human_support_description": "Incluye conversaciones (Atendido por IA y No atendido) transferidas a un representante humano."
       },
+      "amazing_conversation": {
+        "description": "Esta conversación muestra la capacidad del agente para responder múltiples preguntas del cliente de manera efectiva. La resolución clara y el seguimiento atento dieron como resultado un cliente satisfecho.",
+        "title": "Conversación increíble"
+      },
       "conversations_count": "{count} conversaciones encontradas",
       "unnamed_contact": "Contacto sin nombre",
       "attended_by_agent": {
@@ -664,8 +668,12 @@
         "title": "Ejecutar análisis"
       },
       "running_analysis": {
-        "description": "Esto puede tardar unos minutos. Puedes cerrar esta pantalla.",
+        "description": "Esto puede tardar unas horas. Puedes cerrar esta pantalla.",
         "title": "Analizando {count} conversaciones de ayer"
+      },
+      "stale_analysis_disclaimer": {
+        "description": "Ejecuta un nuevo análisis para identificar oportunidades de mejora",
+        "title": "{days, plural, one {El último análisis se ejecutó hace # día} other {El último análisis se ejecutó hace # días}}"
       },
       "status_dialog": {
         "cancel": "Cancelar",
@@ -809,7 +817,7 @@
         "agents_preview": {
           "title": "Vista previa de los agentes",
           "agents_progressive_feedback": {
-            "title": "Feedback progresivo de los agentes (Solo disponible para el Shopping Assistant)",
+            "title": "Feedback progresivo de los agentes (disponible únicamente para Shopping Assistant)",
             "description": "El agente puede proporcionar actualizaciones breves mientras formula la respuesta final. Esto ayuda al contacto a seguir el proceso en tiempo real."
           },
           "multiple_message_format": {

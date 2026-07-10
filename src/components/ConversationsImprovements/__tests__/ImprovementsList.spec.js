@@ -145,10 +145,15 @@ describe('ImprovementsList.vue', () => {
     });
 
     it('clears the selection when the drawer is closed', async () => {
+      vi.useFakeTimers();
+
       await elements.rows()[0].trigger('click');
       await nextTick();
 
       await elements.drawer().setValue(false, 'open');
+      await nextTick();
+
+      vi.advanceTimersByTime(300);
       await nextTick();
 
       expect(elements.drawer().props('open')).toBe(false);
@@ -157,6 +162,8 @@ describe('ImprovementsList.vue', () => {
       expect(elements.list().classes()).not.toContain(
         'improvements-list--selected',
       );
+
+      vi.useRealTimers();
     });
   });
 });

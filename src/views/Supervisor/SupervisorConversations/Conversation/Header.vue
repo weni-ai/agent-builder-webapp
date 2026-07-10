@@ -4,6 +4,7 @@
       <SupervisorUsername
         :username="conversation?.username"
         font="display-2"
+        :isAmazing="conversation?.is_amazing"
       />
 
       <UnnnicButton

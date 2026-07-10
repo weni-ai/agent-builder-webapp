@@ -67,7 +67,9 @@ function handleRowClick(improvement: Improvement) {
 
 watch(isDrawerOpen, (open) => {
   if (!open) {
-    selectedImprovement.value = null;
+    setTimeout(() => {
+      selectedImprovement.value = null;
+    }, 300);
   }
 });
 </script>
