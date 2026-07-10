@@ -404,6 +404,13 @@
         "finish": "Conversation ended: {datetime}"
       },
       "contact_urn": "Contact URN",
+      "columns": {
+        "contact": "Contact",
+        "date": "Date",
+        "feedback": "Feedback",
+        "hour": "Hour",
+        "status": "Status"
+      },
       "topic": "Topic",
       "conversation_details_collapse": "Conversation details",
       "view_full_history": "View full history",
@@ -466,6 +473,101 @@
       }
     },
     "improvements": {
+      "analysis_in_progress_disclaimer": "Analysis in progress: {progress} of {total} conversations processed. New items may appear shortly.",
+      "analysis_complete": {
+        "no_improvements_description": "No improvements identified in the conversations from {date}",
+        "ready_description": "Improvements from {date} are ready in your backlog.",
+        "title": "Analysis complete",
+        "title_with_count": "{count, plural, one {Analysis complete ({count} improvement found)} other {Analysis complete ({count} improvements found)}}"
+      },
+      "columns": {
+        "affected_conversations": "Affected conversations",
+        "improvement": "Improvement",
+        "type": "Type"
+      },
+      "drawer": {
+        "affected_conversations_count": "{count, plural, one {# affected conversation} other {# affected conversations}}",
+        "affected_conversations_title": "Affected conversations",
+        "affected_instructions_title": "Also edit these existing instructions:",
+        "contact_technical_support": "Contact support",
+        "diagnosis_title": "Diagnosis",
+        "go_to_instructions": "Go to instructions",
+        "go_to_knowledge_base": "Go to knowledge base",
+        "ignore_improvement": "Ignore improvement",
+        "instruction_updated_disclaimer": "{count, plural, one {# instruction updated since the analysis} other {# instructions updated since the analysis}}",
+        "mark_as_resolved": "Mark as resolved",
+        "suggested_solution_behavior_title": "Add this instruction to the Manager:",
+        "suggested_solution_knowledge_title": "New content for Knowledge Base",
+        "suggested_solution_technical_issue_title": "Recommended action",
+        "suggested_solution_title": "Suggested solution",
+        "view_full_conversation": "View full conversation"
+      },
+      "header": {
+        "custom_analysis": "Custom analysis",
+        "description": "Ran on {date} at {time}",
+        "description_today": "Ran today at {time}",
+        "run_analysis": "Run analysis",
+        "run_analysis_already_run_today_tooltip": "Analysis already ran today\nReturn tomorrow to run a new analysis",
+        "run_analysis_insufficient_volume_tooltip": "Insufficient conversation volume to run analysis\nMinimum of {min} conversations required",
+        "title": "{count, plural, one {Analysis of conversations from {date} · {count} improvement identified} other {Analysis of conversations from {date} · {count} improvements identified}}"
+      },
+      "insufficient_volume": {
+        "description": "Minimum of {min} conversations required to run analysis",
+        "title": "Insufficient conversation volume"
+      },
+      "no_analysis": {
+        "description": "Run your first analysis to identify opportunities for improvement in yesterday's conversations",
+        "run_analysis": "Run analysis",
+        "title": "No analysis has been run yet"
+      },
+      "run_analysis_dialog": {
+        "cancel": "Cancel",
+        "description": "There are still {count, plural, one {# unresolved improvement} other {# unresolved improvements}} from {current_date}. A new analysis will replace this list with the conversations from {new_date}. The current improvements will be lost.",
+        "run": "Run",
+        "title": "Run analysis"
+      },
+      "running_analysis": {
+        "description": "This may take a few hours. You can close this screen.",
+        "title": "Analyzing {count} conversations from yesterday"
+      },
+      "status_dialog": {
+        "cancel": "Cancel",
+        "ignored": {
+          "description": "This issue will be removed from the backlog and will no longer appear in your improvement suggestions.",
+          "title": "Ignore improvement"
+        },
+        "resolved": {
+          "description": "Confirm only after applying the suggested solution. The issue will be removed from the backlog and make room for new improvements.",
+          "title": "Mark as resolved"
+        }
+      },
+      "status_update": {
+        "error": {
+          "ignored": {
+            "description": "Due to a technical issue",
+            "title": "Improvement couldn't be ignored"
+          },
+          "resolved": {
+            "description": "Due to a technical issue",
+            "title": "Improvement couldn't be marked as resolved"
+          }
+        },
+        "success": {
+          "description": "The item was removed from the improvements backlog",
+          "ignored": {
+            "title": "Improvement ignored"
+          },
+          "resolved": {
+            "title": "Improvement marked as resolved"
+          }
+        }
+      },
+      "types": {
+        "behavior": "Behavior",
+        "custom_analysis": "Custom analysis",
+        "knowledge": "Knowledge",
+        "technical_issue": "Technical issue"
+      },
       "title": "Improvement backlog"
     }
   },
@@ -570,7 +672,7 @@
         "agents_preview": {
           "title": "Agent preview",
           "agents_progressive_feedback": {
-            "title": "Agent progressive feedback (Only available for Shopping Assistant)",
+            "title": "Agent progressive feedback (only available for Shopping Assistant)",
             "description": "The agent can provide brief updates while formulating the final response, helping the contact follow the process in real time."
           },
           "multiple_message_format": {
