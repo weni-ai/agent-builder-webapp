@@ -486,6 +486,43 @@
         "improvement": "Melhoria",
         "type": "Tipo"
       },
+      "custom_analysis_modal": {
+        "add": "Adicionar",
+        "affected_conversations": "{count, plural, one {# conversa afetada} other {# conversas afetadas}}",
+        "create": {
+          "error": "Não foi possível salvar a análise personalizada devido a um problema técnico",
+          "limit_error": "Não foi possível salvar a análise personalizada devido ao limite de 10 análises personalizadas",
+          "success": {
+            "title": "Análise personalizada adicionada",
+            "description": "O problema será monitorado nas próximas análises"
+          }
+        },
+        "delete": {
+          "cancel": "Cancelar",
+          "confirm": "Excluir",
+          "description": "A IA deixará de buscar {name} nas conversas. Esta ação não pode ser desfeita.",
+          "error": "Não foi possível excluir a análise personalizada devido a um problema técnico",
+          "success": {
+            "description": "Este problema não será monitorado nas próximas análises",
+            "title": "Análise personalizada excluída"
+          },
+          "title": "Excluir análise personalizada"
+        },
+        "definition_helper": "Quanto mais específica a descrição, melhor a IA poderá identificar o problema nas conversas",
+        "definition_label": "O que você deseja monitorar?",
+        "definition_placeholder": "Por exemplo: Atendente fornece prazos de entrega irreais",
+        "description": "Descreva um comportamento ou problema que a IA deve monitorar nas conversas. Quando identificado, ele aparece automaticamente no backlog de melhorias",
+        "empty_description": "Use o campo acima para começar a monitorar problemas específicos",
+        "empty_title": "Nenhuma análise personalizada adicionada",
+        "limit_disclaimer": "O limite de 10 análises personalizadas foi atingido. Exclua uma para adicionar uma nova",
+        "list_heading": "Análises personalizadas",
+        "list_heading_count": "{count} de {max}",
+        "no_affected_conversations": "Nenhuma conversa afetada",
+        "title": "Análise personalizada",
+        "title_helper": "Rótulo curto para identificar esta análise na lista",
+        "title_label": "Título",
+        "title_placeholder": "Por exemplo: Prazos de entrega irreais"
+      },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# conversa afetada} other {# conversas afetadas}}",
         "affected_conversations_title": "Conversas afetadas",
