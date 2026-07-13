@@ -13,8 +13,9 @@
     <RunningAnalysis
       v-else-if="analysis.task.isRunning && !improvements.data.length"
     />
+    <NoImprovementIdentified v-else-if="!improvements.data.length" />
 
-    <template v-else-if="improvements.data.length">
+    <template v-else>
       <AnalysisInProgressDisclaimer v-if="analysis.task.isRunning" />
 
       <ImprovementsHeader v-else />
@@ -33,6 +34,7 @@ import { useImprovementsStore } from '@/store/Improvements';
 import NoAnalysisPerformed from '@/components/ConversationsImprovements/NoAnalysisPerformed.vue';
 import InsufficientConversationsVolume from '@/components/ConversationsImprovements/InsufficientConversationsVolume.vue';
 import RunningAnalysis from '@/components/ConversationsImprovements/RunningAnalysis.vue';
+import NoImprovementIdentified from '@/components/ConversationsImprovements/NoImprovementIdentified.vue';
 import ImprovementsHeader from '@/components/ConversationsImprovements/ImprovementsHeader.vue';
 import ImprovementsList from '@/components/ConversationsImprovements/ImprovementsList.vue';
 import AnalysisInProgressDisclaimer from '@/components/ConversationsImprovements/AnalysisInProgressDisclaimer.vue';

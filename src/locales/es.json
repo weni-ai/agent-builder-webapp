@@ -576,6 +576,10 @@
         "run_analysis": "Ejecutar análisis",
         "title": "Aún no se ha ejecutado ningún análisis"
       },
+      "no_improvement_identified": {
+        "description": "El análisis del {date} no identificó mejoras",
+        "title": "Ninguna mejora identificada"
+      },
       "run_analysis_dialog": {
         "cancel": "Cancelar",
         "description": "Aún hay {count, plural, one {# mejora sin resolver} other {# mejoras sin resolver}} del {current_date}. Un nuevo análisis reemplazará esta lista con las conversaciones del {new_date}. Las mejoras actuales se perderán.",

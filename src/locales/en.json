@@ -577,6 +577,10 @@
         "run_analysis": "Run analysis",
         "title": "No analysis has been run yet"
       },
+      "no_improvement_identified": {
+        "description": "The {date} analysis did not identify any improvements",
+        "title": "No improvement identified"
+      },
       "run_analysis_dialog": {
         "cancel": "Cancel",
         "description": "There are still {count, plural, one {# unresolved improvement} other {# unresolved improvements}} from {current_date}. A new analysis will replace this list with the conversations from {new_date}. The current improvements will be lost.",

@@ -9,6 +9,7 @@ import AnalysisInProgressDisclaimer from '@/components/ConversationsImprovements
 import ImprovementsHeader from '@/components/ConversationsImprovements/ImprovementsHeader.vue';
 import ImprovementsList from '@/components/ConversationsImprovements/ImprovementsList.vue';
 import NoAnalysisPerformed from '@/components/ConversationsImprovements/NoAnalysisPerformed.vue';
+import NoImprovementIdentified from '@/components/ConversationsImprovements/NoImprovementIdentified.vue';
 import InsufficientConversationsVolume from '@/components/ConversationsImprovements/InsufficientConversationsVolume.vue';
 import RunningAnalysis from '@/components/ConversationsImprovements/RunningAnalysis.vue';
 
@@ -22,6 +23,8 @@ describe('Improvements view', () => {
     wrapper.find('[data-testid="conversations-improvements"]');
   const findNoAnalysisPerformed = () =>
     wrapper.findComponent(NoAnalysisPerformed);
+  const findNoImprovementIdentified = () =>
+    wrapper.findComponent(NoImprovementIdentified);
   const findInsufficientConversationsVolume = () =>
     wrapper.findComponent(InsufficientConversationsVolume);
   const findRunningAnalysis = () => wrapper.findComponent(RunningAnalysis);
@@ -187,6 +190,7 @@ describe('Improvements view', () => {
       });
 
       expect(findRunningAnalysis().exists()).toBe(false);
+      expect(findNoImprovementIdentified().exists()).toBe(true);
     });
 
     it('does not render RunningAnalysis when improvements data is available', () => {
@@ -229,6 +233,60 @@ describe('Improvements view', () => {
 
       expect(findRunningAnalysis().exists()).toBe(true);
       expect(findNoAnalysisPerformed().exists()).toBe(false);
+    });
+  });
+
+  describe('NoImprovementIdentified state', () => {
+    it('renders NoImprovementIdentified when analysis finished with no improvements', () => {
+      wrapper.unmount();
+      createWrapper({
+        analysis: {
+          status: 'complete',
+          task: {
+            isRunning: false,
+            progress: 5,
+            total: 5,
+            createdAt: '2026-06-18T08:00:00Z',
+          },
+        },
+        improvements: {
+          data: [],
+          status: 'complete',
+        },
+      });
+
+      expect(findNoImprovementIdentified().exists()).toBe(true);
+      expect(findNoAnalysisPerformed().exists()).toBe(false);
+      expect(findRunningAnalysis().exists()).toBe(false);
+      expect(findImprovementsList().exists()).toBe(false);
+    });
+
+    it('does not render NoImprovementIdentified when improvements exist', () => {
+      wrapper.unmount();
+      createWrapper({
+        analysis: {
+          status: 'complete',
+          task: {
+            isRunning: false,
+            progress: 5,
+            total: 5,
+            createdAt: '2026-06-18T08:00:00Z',
+          },
+        },
+        improvements: {
+          data: [
+            {
+              uuid: 'improvement-1',
+              text: 'Improve response time',
+              type: 'wrong_behavior_due_to_instructions',
+              conversationsCount: 5,
+            },
+          ],
+          status: 'complete',
+        },
+      });
+
+      expect(findNoImprovementIdentified().exists()).toBe(false);
     });
   });
 
