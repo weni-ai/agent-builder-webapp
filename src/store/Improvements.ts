@@ -1,12 +1,13 @@
 import { computed, reactive } from 'vue';
 import { defineStore } from 'pinia';
-import { isToday } from 'date-fns';
+import { differenceInHours } from 'date-fns';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
 import { getYesterdayFormattedDate } from '@/utils/formatters';
 import { useProjectStore } from './Project';
 import { useAlertStore } from './Alert';
+import { useUserStore } from './User';
 
 import type {
   AffectedConversationsResponse,
@@ -103,8 +104,10 @@ function notifyStatusUpdate(
 
 export const useImprovementsStore = defineStore('Improvements', () => {
   const alertStore = useAlertStore();
+  const userStore = useUserStore();
 
   const projectUuid = computed(() => useProjectStore().uuid);
+  const projectName = computed(() => useProjectStore().project.name);
   const supervisorApi = nexusaiAPI.agent_builder.supervisor;
 
   const analysis = reactive<{
@@ -161,7 +164,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
     const createdAt = analysis.task.createdAt;
 
-    if (createdAt && isToday(new Date(createdAt))) {
+    if (createdAt && differenceInHours(new Date(), new Date(createdAt)) < 24) {
       return 'already_run_today';
     }
 
@@ -219,9 +222,9 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
     if (response.task.isRunning) {
       await pollAnalysisUntilComplete(response);
-    } else {
-      setStatus('complete');
     }
+
+    setStatus('complete');
   }
 
   async function fetchImprovements() {
@@ -261,6 +264,8 @@ export const useImprovementsStore = defineStore('Improvements', () => {
       await supervisorApi.improvements.contactSupport({
         projectUuid: projectUuid.value,
         improvementUuid,
+        projectName: projectName.value,
+        email: userStore.user.email ?? '',
       });
 
       alertStore.add({

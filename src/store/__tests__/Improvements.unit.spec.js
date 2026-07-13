@@ -28,6 +28,17 @@ vi.mock('@/api/nexusaiAPI', () => ({
 vi.mock('@/store/Project', () => ({
   useProjectStore: vi.fn(() => ({
     uuid: 'test-project-uuid',
+    project: {
+      name: 'Test Project',
+    },
+  })),
+}));
+
+vi.mock('@/store/User', () => ({
+  useUserStore: vi.fn(() => ({
+    user: {
+      email: 'user@example.com',
+    },
   })),
 }));
 
@@ -206,8 +217,8 @@ describe('Improvements Store', () => {
       expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(3);
       expect(store.improvements.data).toEqual(improvements);
       expect(store.analysis.task.isRunning).toBe(false);
-      expect(store.analysis.status).toBe('loading');
-      expect(store.improvements.status).toBe('loading');
+      expect(store.analysis.status).toBe('complete');
+      expect(store.improvements.status).toBe('complete');
       expect(alertStore.add).not.toHaveBeenCalled();
     });
 
@@ -248,7 +259,7 @@ describe('Improvements Store', () => {
       expect(store.runAnalysisBlockReason).toBeNull();
     });
 
-    it('returns already_run_today when task was created today', () => {
+    it('returns already_run_today when task was created less than 24 hours ago', () => {
       store.analysis.status = 'complete';
       store.analysis.yesterdayConversationsCount = 50;
       store.analysis.task = {
@@ -259,6 +270,19 @@ describe('Improvements Store', () => {
       };
 
       expect(store.runAnalysisBlockReason).toBe('already_run_today');
+    });
+
+    it('does not return already_run_today when task was created 24 hours ago or more', () => {
+      store.analysis.status = 'complete';
+      store.analysis.yesterdayConversationsCount = 50;
+      store.analysis.task = {
+        isRunning: false,
+        progress: 5,
+        total: 5,
+        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+      };
+
+      expect(store.runAnalysisBlockReason).toBeNull();
     });
 
     it('prioritizes already_run_today over insufficient_volume', () => {
@@ -412,8 +436,8 @@ describe('Improvements Store', () => {
       expect(improvementsApi.getAnalysis).toHaveBeenCalledWith({
         projectUuid: 'test-project-uuid',
       });
-      expect(store.analysis.status).toBe('loading');
-      expect(store.improvements.status).toBe('loading');
+      expect(store.analysis.status).toBe('complete');
+      expect(store.improvements.status).toBe('complete');
       expect(store.analysis.task).toEqual({
         isRunning: false,
         progress: 3,
@@ -457,8 +481,8 @@ describe('Improvements Store', () => {
       expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(
         MAX_POLL_REQUESTS + 1,
       );
-      expect(store.analysis.status).toBe('loading');
-      expect(store.improvements.status).toBe('loading');
+      expect(store.analysis.status).toBe('complete');
+      expect(store.improvements.status).toBe('complete');
       expect(store.analysis.task).toEqual({
         isRunning: true,
         progress: 0,
@@ -656,6 +680,8 @@ describe('Improvements Store', () => {
       expect(improvementsApi.contactSupport).toHaveBeenCalledWith({
         projectUuid: 'test-project-uuid',
         improvementUuid: improvement.uuid,
+        projectName: 'Test Project',
+        email: 'user@example.com',
       });
       expect(result).toEqual({ status: 'complete' });
       expect(alertStore.add).toHaveBeenCalledWith({

@@ -651,7 +651,7 @@
         "run_analysis": "Run analysis",
         "run_analysis_already_run_today_tooltip": "Analysis already ran today\nReturn tomorrow to run a new analysis",
         "run_analysis_insufficient_volume_tooltip": "Insufficient conversation volume to run analysis\nMinimum of {min} conversations required",
-        "title": "{count, plural, one {Analysis of conversations from {date} · {count} improvement identified} other {Analysis of conversations from {date} · {count} improvements identified}}"
+        "title": "{count, plural, =0 {Analysis of conversations from {date}} one {Analysis of conversations from {date} · {count} improvement identified} other {Analysis of conversations from {date} · {count} improvements identified}}"
       },
       "insufficient_volume": {
         "description": "Minimum of {min} conversations required to run analysis",
@@ -662,6 +662,10 @@
         "run_analysis": "Run analysis",
         "title": "No analysis has been run yet"
       },
+      "no_improvement_identified": {
+        "description": "No improvements were identified in this analysis",
+        "title": "Looking good!"
+      },
       "run_analysis_dialog": {
         "cancel": "Cancel",
         "description": "There are still {count, plural, one {# unresolved improvement} other {# unresolved improvements}} from {current_date}. A new analysis will replace this list with the conversations from {new_date}. The current improvements will be lost.",
@@ -670,7 +674,7 @@
       },
       "running_analysis": {
         "description": "This may take a few hours. You can close this screen.",
-        "title": "Analyzing {count} conversations from yesterday"
+        "title": "Analyzing conversations from yesterday"
       },
       "stale_analysis_disclaimer": {
         "description": "Run a new analysis to identify opportunities for improvement",

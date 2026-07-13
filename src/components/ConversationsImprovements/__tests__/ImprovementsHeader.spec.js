@@ -6,6 +6,7 @@ import { subDays } from 'date-fns';
 import i18n from '@/utils/plugins/i18n';
 import { useImprovementsStore } from '@/store/Improvements';
 import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
+import { getYesterdayFormattedDate } from '@/utils/formatters';
 
 import ImprovementsHeader from '../ImprovementsHeader.vue';
 
@@ -161,6 +162,26 @@ describe('ImprovementsHeader.vue', () => {
   describe('Header content', () => {
     it('renders the header title', () => {
       expect(findTitle().exists()).toBe(true);
+    });
+
+    it('renders the header title without count when there are no improvements', () => {
+      wrapper.unmount();
+      createWrapper({
+        improvements: {
+          data: [],
+          status: 'complete',
+        },
+      });
+
+      expect(findTitle().text()).toBe(
+        i18n.global.t('audit.improvements.header.title', {
+          date: getYesterdayFormattedDate(),
+          count: 0,
+        }),
+      );
+      expect(findTitle().text()).toBe(
+        `Analysis of conversations from ${getYesterdayFormattedDate()}`,
+      );
     });
 
     it('renders the header description when createdAt is present', () => {
