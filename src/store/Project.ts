@@ -13,6 +13,7 @@ interface ProjectDetails {
 
 interface ProjectInfo {
   status: null | 'loading' | 'success' | 'error';
+  name: string;
   wwcChannelUuid: string;
 }
 
@@ -24,6 +25,7 @@ export const useProjectStore = defineStore('Project', () => {
 
   const project = ref<ProjectInfo>({
     status: null,
+    name: '',
     wwcChannelUuid: '',
   });
 
@@ -35,6 +37,7 @@ export const useProjectStore = defineStore('Project', () => {
         projectUuid: uuid,
       });
 
+      project.value.name = data.name ?? '';
       project.value.wwcChannelUuid = data.default_channel_uuid;
       project.value.status = 'success';
     } catch (error) {

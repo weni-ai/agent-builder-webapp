@@ -77,9 +77,7 @@ describe('RunningAnalysis.vue', () => {
 
     it('renders the title with the conversation count from the store', () => {
       expect(findTitle().text()).toBe(
-        i18n.global.t('audit.improvements.running_analysis.title', {
-          count: 437,
-        }),
+        i18n.global.t('audit.improvements.running_analysis.title'),
       );
     });
 
@@ -93,29 +91,13 @@ describe('RunningAnalysis.vue', () => {
       });
 
       expect(findTitle().text()).toBe(
-        i18n.global.t('audit.improvements.running_analysis.title', {
-          count: 0,
-        }),
+        i18n.global.t('audit.improvements.running_analysis.title'),
       );
     });
 
     it('renders the description with the correct translation', () => {
       expect(findDescription().text()).toBe(
         i18n.global.t('audit.improvements.running_analysis.description'),
-      );
-    });
-  });
-
-  describe('Store reactivity', () => {
-    it('updates the title when the conversation count changes', async () => {
-      improvementsStore.analysis.task.total = 12;
-
-      await wrapper.vm.$nextTick();
-
-      expect(findTitle().text()).toBe(
-        i18n.global.t('audit.improvements.running_analysis.title', {
-          count: 12,
-        }),
       );
     });
   });

@@ -126,7 +126,7 @@ function handleCtaClick() {
     window.parent.postMessage(
       {
         event: 'redirect',
-        path: 'aiAgents:instructions',
+        path: 'aiAgents:agents/instructions',
       },
       '*',
     );

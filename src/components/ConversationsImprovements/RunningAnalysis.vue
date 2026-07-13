@@ -13,11 +13,7 @@
         class="running-analysis__title"
         data-testid="running-analysis-title"
       >
-        {{
-          $t('audit.improvements.running_analysis.title', {
-            count: improvementsStore.analysis.task?.total ?? 0,
-          })
-        }}
+        {{ $t('audit.improvements.running_analysis.title') }}
       </h2>
       <p
         class="running-analysis__description"
@@ -29,11 +25,7 @@
   </section>
 </template>
 
-<script setup lang="ts">
-import { useImprovementsStore } from '@/store/Improvements';
-
-const improvementsStore = useImprovementsStore();
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="scss">
 .running-analysis {
