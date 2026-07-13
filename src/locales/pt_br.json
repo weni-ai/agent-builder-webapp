@@ -584,7 +584,7 @@
       },
       "running_analysis": {
         "description": "Isso pode levar algumas horas. Você pode fechar esta tela.",
-        "title": "Analisando {count} conversas de ontem"
+        "title": "Analisando conversas de ontem"
       },
       "stale_analysis_disclaimer": {
         "description": "Execute uma nova análise para identificar oportunidades de melhoria",

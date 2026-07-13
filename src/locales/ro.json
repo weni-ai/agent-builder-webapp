@@ -583,7 +583,7 @@
       },
       "running_analysis": {
         "description": "Acest proces poate dura câteva ore. Poți închide acest ecran.",
-        "title": "Se analizează {count} conversații de ieri"
+        "title": "Se analizează conversații de ieri"
       },
       "stale_analysis_disclaimer": {
         "description": "Rulează o nouă analiză pentru a identifica oportunități de îmbunătățire",
