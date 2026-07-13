@@ -248,7 +248,7 @@ describe('Improvements Store', () => {
       expect(store.runAnalysisBlockReason).toBeNull();
     });
 
-    it('returns already_run_today when task was created today', () => {
+    it('returns already_run_today when task was created less than 24 hours ago', () => {
       store.analysis.status = 'complete';
       store.analysis.yesterdayConversationsCount = 50;
       store.analysis.task = {
@@ -259,6 +259,19 @@ describe('Improvements Store', () => {
       };
 
       expect(store.runAnalysisBlockReason).toBe('already_run_today');
+    });
+
+    it('does not return already_run_today when task was created 24 hours ago or more', () => {
+      store.analysis.status = 'complete';
+      store.analysis.yesterdayConversationsCount = 50;
+      store.analysis.task = {
+        isRunning: false,
+        progress: 5,
+        total: 5,
+        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+      };
+
+      expect(store.runAnalysisBlockReason).toBeNull();
     });
 
     it('prioritizes already_run_today over insufficient_volume', () => {

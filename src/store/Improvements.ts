@@ -1,6 +1,6 @@
 import { computed, reactive } from 'vue';
 import { defineStore } from 'pinia';
-import { isToday } from 'date-fns';
+import { differenceInHours } from 'date-fns';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
@@ -161,7 +161,7 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
     const createdAt = analysis.task.createdAt;
 
-    if (createdAt && isToday(new Date(createdAt))) {
+    if (createdAt && differenceInHours(new Date(), new Date(createdAt)) < 24) {
       return 'already_run_today';
     }
 
