@@ -4,7 +4,7 @@ interface Csat {
 }
 
 export interface Conversation {
-  is_amazing: boolean;
+  isAmazing: boolean;
   uuid: string;
   id: string;
   start: string;

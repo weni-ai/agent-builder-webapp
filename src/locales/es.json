@@ -205,7 +205,7 @@
         "error_message": {
           "label": "Mensaje de error",
           "save_error": "No se pudo guardar el mensaje de error debido a un problema técnico",
-          "tooltip": "Este mensaje se muestra al contacto cuando el agente no puede generar una respuesta.\nPor ejemplo, en casos de inestabilidad técnica, errores de procesamiento o tiempos de respuesta excedidos.\nPersonalízalo para mantener el tono de voz de tu marca incluso en situaciones de error."
+          "tooltip": "Este mensaje se muestra al contacto cuando el agente no puede generar una respuesta, por ejemplo, debido a problemas técnicos, errores de procesamiento o tiempos de espera agotados. Personalízalo para mantener el tono de voz de tu marca también en estas situaciones."
         }
       }
     }

@@ -12,7 +12,7 @@
       <ConversationInfos
         :username="conversation.username"
         :urn="conversation.urn"
-        :isAmazing="conversation.is_amazing"
+        :isAmazing="conversation.isAmazing"
       />
     </UnnnicTableCell>
 

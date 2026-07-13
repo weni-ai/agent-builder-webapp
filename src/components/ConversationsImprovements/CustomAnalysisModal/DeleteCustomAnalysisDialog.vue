@@ -79,7 +79,7 @@ function close() {
 
 function handleOpenChange(value: boolean) {
   if (isDeleting.value) return;
-  if (!value) close();
+  open.value = value;
 }
 
 async function onConfirm() {

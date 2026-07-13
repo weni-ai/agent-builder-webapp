@@ -18,7 +18,7 @@ describe('ConversationRow.vue', () => {
     status: 'in_progress',
     start: '2026-02-05T10:30:00Z',
     csat: null,
-    is_amazing: false,
+    isAmazing: false,
   };
 
   const createWrapper = (props = {}) => {
@@ -95,7 +95,7 @@ describe('ConversationRow.vue', () => {
     expect(conversationInfos.props('username')).toBe(baseConversation.username);
     expect(conversationInfos.props('urn')).toBe(baseConversation.urn);
     expect(conversationInfos.props('isAmazing')).toBe(
-      baseConversation.is_amazing,
+      baseConversation.isAmazing,
     );
   });
 
@@ -103,7 +103,7 @@ describe('ConversationRow.vue', () => {
     createWrapper({
       conversation: {
         ...baseConversation,
-        is_amazing: true,
+        isAmazing: true,
       },
     });
 
