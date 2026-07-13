@@ -565,7 +565,7 @@
         "run_analysis": "Ejecutar análisis",
         "run_analysis_already_run_today_tooltip": "Análisis ya ejecutado hoy\nNueva ejecución disponible mañana",
         "run_analysis_insufficient_volume_tooltip": "Volumen insuficiente de conversaciones para ejecutar el análisis\nMínimo de {min} conversaciones necesarias",
-        "title": "{count, plural, one {Análisis de conversaciones del {date} · {count} mejora identificada} other {Análisis de conversaciones del {date} · {count} mejoras identificadas}}"
+        "title": "{count, plural, =0 {Análisis de conversaciones del {date}} one {Análisis de conversaciones del {date} · {count} mejora identificada} other {Análisis de conversaciones del {date} · {count} mejoras identificadas}}"
       },
       "insufficient_volume": {
         "description": "Mínimo de {min} conversaciones necesarias para ejecutar el análisis",
@@ -575,6 +575,10 @@
         "description": "Ejecuta el primer análisis para identificar oportunidades de mejora en las conversaciones de ayer",
         "run_analysis": "Ejecutar análisis",
         "title": "Aún no se ha ejecutado ningún análisis"
+      },
+      "no_improvement_identified": {
+        "description": "No se identificaron mejoras en este análisis",
+        "title": "¡Todo bien!"
       },
       "run_analysis_dialog": {
         "cancel": "Cancelar",
