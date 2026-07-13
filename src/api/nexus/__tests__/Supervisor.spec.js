@@ -257,17 +257,27 @@ describe('Supervisor.js', () => {
     });
 
     it('contactSupport calls the contact support endpoint', async () => {
-      conversationsRequest.$http.post.mockResolvedValue({ data: {} });
+      conversationsRequest.$http.post.mockResolvedValue({
+        data: { status: 'sent' },
+      });
 
-      await Supervisor.improvements.contactSupport({
+      const result = await Supervisor.improvements.contactSupport({
         projectUuid,
         improvementUuid: 'improvement-uuid-1',
+        projectName: 'Test Project',
+        email: 'user@example.com',
       });
 
       expect(conversationsRequest.$http.post).toHaveBeenCalledWith(
-        `/api/v1/projects/${projectUuid}/improvements/improvement-uuid-1/contact_support`,
+        `/api/v1/projects/${projectUuid}/improvements/open-support-ticket/`,
+        {
+          improvement_uuid: 'improvement-uuid-1',
+          project_name: 'Test Project',
+          email: 'user@example.com',
+        },
       );
       expect(nexusRequest.$http.post).not.toHaveBeenCalled();
+      expect(result).toEqual({ status: 'sent' });
     });
 
     it('getAnalysis calls the improvements endpoint and adapts the response', async () => {

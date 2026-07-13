@@ -7,6 +7,7 @@ import i18n from '@/utils/plugins/i18n';
 import { getYesterdayFormattedDate } from '@/utils/formatters';
 import { useProjectStore } from './Project';
 import { useAlertStore } from './Alert';
+import { useUserStore } from './User';
 
 import type {
   AffectedConversationsResponse,
@@ -103,8 +104,10 @@ function notifyStatusUpdate(
 
 export const useImprovementsStore = defineStore('Improvements', () => {
   const alertStore = useAlertStore();
+  const userStore = useUserStore();
 
   const projectUuid = computed(() => useProjectStore().uuid);
+  const projectName = computed(() => useProjectStore().project.name);
   const supervisorApi = nexusaiAPI.agent_builder.supervisor;
 
   const analysis = reactive<{
@@ -261,6 +264,8 @@ export const useImprovementsStore = defineStore('Improvements', () => {
       await supervisorApi.improvements.contactSupport({
         projectUuid: projectUuid.value,
         improvementUuid,
+        projectName: projectName.value,
+        email: userStore.user.email ?? '',
       });
 
       alertStore.add({

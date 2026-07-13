@@ -28,6 +28,17 @@ vi.mock('@/api/nexusaiAPI', () => ({
 vi.mock('@/store/Project', () => ({
   useProjectStore: vi.fn(() => ({
     uuid: 'test-project-uuid',
+    project: {
+      name: 'Test Project',
+    },
+  })),
+}));
+
+vi.mock('@/store/User', () => ({
+  useUserStore: vi.fn(() => ({
+    user: {
+      email: 'user@example.com',
+    },
   })),
 }));
 
@@ -669,6 +680,8 @@ describe('Improvements Store', () => {
       expect(improvementsApi.contactSupport).toHaveBeenCalledWith({
         projectUuid: 'test-project-uuid',
         improvementUuid: improvement.uuid,
+        projectName: 'Test Project',
+        email: 'user@example.com',
       });
       expect(result).toEqual({ status: 'complete' });
       expect(alertStore.add).toHaveBeenCalledWith({

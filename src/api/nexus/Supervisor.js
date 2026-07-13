@@ -93,10 +93,17 @@ export const Supervisor = {
       );
     },
 
-    async contactSupport({ projectUuid, improvementUuid }) {
-      await conversationsRequest.$http.post(
-        `/api/v1/projects/${projectUuid}/improvements/${improvementUuid}/contact_support`,
+    async contactSupport({ projectUuid, improvementUuid, projectName, email }) {
+      const { data } = await nexusRequest.$http.post(
+        `/api/v1/projects/${projectUuid}/improvements/open-support-ticket/`,
+        {
+          improvement_uuid: improvementUuid,
+          project_name: projectName,
+          email,
+        },
       );
+
+      return data;
     },
 
     async getById({ projectUuid, improvementUuid }) {
