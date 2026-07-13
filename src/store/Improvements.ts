@@ -219,9 +219,9 @@ export const useImprovementsStore = defineStore('Improvements', () => {
 
     if (response.task.isRunning) {
       await pollAnalysisUntilComplete(response);
-    } else {
-      setStatus('complete');
     }
+
+    setStatus('complete');
   }
 
   async function fetchImprovements() {

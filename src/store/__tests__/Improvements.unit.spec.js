@@ -206,8 +206,8 @@ describe('Improvements Store', () => {
       expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(3);
       expect(store.improvements.data).toEqual(improvements);
       expect(store.analysis.task.isRunning).toBe(false);
-      expect(store.analysis.status).toBe('loading');
-      expect(store.improvements.status).toBe('loading');
+      expect(store.analysis.status).toBe('complete');
+      expect(store.improvements.status).toBe('complete');
       expect(alertStore.add).not.toHaveBeenCalled();
     });
 
@@ -425,8 +425,8 @@ describe('Improvements Store', () => {
       expect(improvementsApi.getAnalysis).toHaveBeenCalledWith({
         projectUuid: 'test-project-uuid',
       });
-      expect(store.analysis.status).toBe('loading');
-      expect(store.improvements.status).toBe('loading');
+      expect(store.analysis.status).toBe('complete');
+      expect(store.improvements.status).toBe('complete');
       expect(store.analysis.task).toEqual({
         isRunning: false,
         progress: 3,
@@ -470,8 +470,8 @@ describe('Improvements Store', () => {
       expect(improvementsApi.getAnalysis).toHaveBeenCalledTimes(
         MAX_POLL_REQUESTS + 1,
       );
-      expect(store.analysis.status).toBe('loading');
-      expect(store.improvements.status).toBe('loading');
+      expect(store.analysis.status).toBe('complete');
+      expect(store.improvements.status).toBe('complete');
       expect(store.analysis.task).toEqual({
         isRunning: true,
         progress: 0,
