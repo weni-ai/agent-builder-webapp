@@ -564,7 +564,7 @@
         "run_analysis": "Rulează analiza",
         "run_analysis_already_run_today_tooltip": "Analiza a fost deja executată astăzi\nO nouă execuție va fi disponibilă mâine",
         "run_analysis_insufficient_volume_tooltip": "Volum insuficient de conversații pentru executarea analizei\nMinimum {min} conversații necesare",
-        "title": "{count, plural, one {Analiza conversațiilor din {date} · {count} îmbunătățire identificată} other {Analiza conversațiilor din {date} · {count} îmbunătățiri identificate}}"
+        "title": "{count, plural, =0 {Analiza conversațiilor din {date}} one {Analiza conversațiilor din {date} · {count} îmbunătățire identificată} other {Analiza conversațiilor din {date} · {count} îmbunătățiri identificate}}"
       },
       "insufficient_volume": {
         "description": "Minimum {min} conversații necesare pentru executarea analizei",
@@ -576,8 +576,8 @@
         "title": "Nicio analiză nu a fost executată încă"
       },
       "no_improvement_identified": {
-        "description": "Analiza din {date} nu a identificat îmbunătățiri",
-        "title": "Nicio îmbunătățire identificată"
+        "description": "Nu au fost identificate îmbunătățiri în această analiză",
+        "title": "Totul arată bine!"
       },
       "run_analysis_dialog": {
         "cancel": "Anulează",

@@ -13,14 +13,14 @@
     <RunningAnalysis
       v-else-if="analysis.task.isRunning && !improvements.data.length"
     />
-    <NoImprovementIdentified v-else-if="!improvements.data.length" />
 
     <template v-else>
       <AnalysisInProgressDisclaimer v-if="analysis.task.isRunning" />
 
       <ImprovementsHeader v-else />
 
-      <ImprovementsList />
+      <NoImprovementIdentified v-if="!improvements.data.length" />
+      <ImprovementsList v-else />
     </template>
   </section>
 </template>

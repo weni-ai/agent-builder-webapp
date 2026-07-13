@@ -1,56 +1,22 @@
 import { shallowMount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
-import { formatMonthDayDate } from '@/utils/formatters';
 
 import NoImprovementIdentified from '../NoImprovementIdentified.vue';
 
 describe('NoImprovementIdentified.vue', () => {
   let wrapper;
 
-  const createdAt = '2026-05-18T12:00:00.000Z';
-
   const findTitle = () =>
     wrapper.find('[data-testid="no-improvement-identified-title"]');
+  const findTitleEmoji = () =>
+    wrapper.find('.no-improvement-identified__emoji');
   const findDescription = () =>
     wrapper.find('[data-testid="no-improvement-identified-description"]');
 
-  const createWrapper = () => {
-    const pinia = createTestingPinia({
-      createSpy: vi.fn,
-      initialState: {
-        Improvements: {
-          analysis: {
-            status: 'complete',
-            task: {
-              isRunning: false,
-              progress: 5,
-              total: 5,
-              createdAt,
-            },
-            yesterdayConversationsCount: 20,
-          },
-          improvements: {
-            data: [],
-            status: 'complete',
-          },
-        },
-      },
-    });
-
-    wrapper = shallowMount(NoImprovementIdentified, {
-      global: {
-        plugins: [pinia],
-      },
-    });
-
-    return wrapper;
-  };
-
   beforeEach(() => {
-    createWrapper();
+    wrapper = shallowMount(NoImprovementIdentified);
   });
 
   afterEach(() => {
@@ -65,19 +31,17 @@ describe('NoImprovementIdentified.vue', () => {
       ).toBe(true);
     });
 
-    it('renders the title with the correct translation', () => {
-      expect(findTitle().text()).toBe(
+    it('renders the title with the emoji and the correct translation', () => {
+      expect(findTitleEmoji().text()).toBe('🎉');
+      expect(findTitle().text()).toContain(
         i18n.global.t('audit.improvements.no_improvement_identified.title'),
       );
     });
 
-    it('renders the description with the analysis date', () => {
+    it('renders the description with the correct translation', () => {
       expect(findDescription().text()).toBe(
         i18n.global.t(
           'audit.improvements.no_improvement_identified.description',
-          {
-            date: formatMonthDayDate(createdAt),
-          },
         ),
       );
     });

@@ -237,7 +237,7 @@ describe('Improvements view', () => {
   });
 
   describe('NoImprovementIdentified state', () => {
-    it('renders NoImprovementIdentified when analysis finished with no improvements', () => {
+    it('renders header and NoImprovementIdentified when analysis finished with no improvements', () => {
       wrapper.unmount();
       createWrapper({
         analysis: {
@@ -255,6 +255,7 @@ describe('Improvements view', () => {
         },
       });
 
+      expect(findImprovementsHeader().exists()).toBe(true);
       expect(findNoImprovementIdentified().exists()).toBe(true);
       expect(findNoAnalysisPerformed().exists()).toBe(false);
       expect(findRunningAnalysis().exists()).toBe(false);
@@ -287,6 +288,7 @@ describe('Improvements view', () => {
       });
 
       expect(findNoImprovementIdentified().exists()).toBe(false);
+      expect(findImprovementsList().exists()).toBe(true);
     });
   });
 
