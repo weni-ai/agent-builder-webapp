@@ -6,7 +6,10 @@ import { subDays } from 'date-fns';
 import i18n from '@/utils/plugins/i18n';
 import { useImprovementsStore } from '@/store/Improvements';
 import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
-import { getYesterdayFormattedDate } from '@/utils/formatters';
+import {
+  formatMonthDayDate,
+  getYesterdayFormattedDate,
+} from '@/utils/formatters';
 
 import ImprovementsHeader from '../ImprovementsHeader.vue';
 
@@ -181,6 +184,32 @@ describe('ImprovementsHeader.vue', () => {
       );
       expect(findTitle().text()).toBe(
         `Analysis of conversations from ${getYesterdayFormattedDate()}`,
+      );
+    });
+
+    it('renders the header title with the conversations date one day before createdAt', () => {
+      const createdAt = subDays(new Date(), 5).toISOString();
+      const conversationsDate = formatMonthDayDate(
+        subDays(new Date(createdAt), 1).toISOString(),
+      );
+
+      wrapper.unmount();
+      createWrapper({
+        analysis: {
+          status: 'complete',
+          task: {
+            ...DEFAULT_IMPROVEMENTS_TASK,
+            createdAt,
+            isRunning: false,
+          },
+        },
+      });
+
+      expect(findTitle().text()).toBe(
+        i18n.global.t('audit.improvements.header.title', {
+          date: conversationsDate,
+          count: 1,
+        }),
       );
     });
 
