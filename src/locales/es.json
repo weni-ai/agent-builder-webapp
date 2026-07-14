@@ -572,7 +572,7 @@
         "title": "Volumen insuficiente de conversaciones"
       },
       "no_analysis": {
-        "description": "Ejecuta el primer análisis para identificar oportunidades de mejora en las conversaciones de ayer",
+        "description": "Ejecuta el primer análisis para identificar oportunidades de mejora en una muestra de las conversaciones de ayer",
         "run_analysis": "Ejecutar análisis",
         "title": "Aún no se ha ejecutado ningún análisis"
       },
@@ -588,7 +588,7 @@
       },
       "running_analysis": {
         "description": "Esto puede tardar unas horas. Puedes cerrar esta pantalla.",
-        "title": "Analizando conversaciones de ayer"
+        "title": "Analizando una muestra de conversaciones de ayer"
       },
       "stale_analysis_disclaimer": {
         "description": "Ejecuta un nuevo análisis para identificar oportunidades de mejora",
