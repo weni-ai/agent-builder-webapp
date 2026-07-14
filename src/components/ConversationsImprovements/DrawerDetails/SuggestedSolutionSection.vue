@@ -118,7 +118,7 @@ function handleCtaClick() {
     window.parent.postMessage(
       {
         event: 'redirect',
-        path: 'aiBuild',
+        path: 'aiBuild:knowledge',
       },
       '*',
     );
