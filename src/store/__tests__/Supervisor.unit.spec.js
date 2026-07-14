@@ -11,6 +11,7 @@ vi.mock('@/api/nexusaiAPI', () => ({
         conversations: {
           list: vi.fn(),
           getById: vi.fn(),
+          getTopics: vi.fn(),
           export: vi.fn(),
         },
       },
@@ -77,6 +78,11 @@ describe('Supervisor Store', () => {
 
     it('has the correct initial state for selectedConversation', () => {
       expect(store.selectedConversation).toBeNull();
+    });
+
+    it('has the correct initial state for topics', () => {
+      expect(store.topics).toEqual([]);
+      expect(store.topicsStatus).toBeNull();
     });
 
     it('has the correct initial state for filters', () => {
@@ -539,6 +545,57 @@ describe('Supervisor Store', () => {
           topics: [],
         },
       });
+    });
+  });
+
+  describe('getTopics', () => {
+    it('fetches topics and marks status as complete', async () => {
+      nexusaiAPI.agent_builder.supervisor.conversations.getTopics.mockResolvedValue(
+        [
+          { name: 'Billing', uuid: 'topic-1' },
+          { name: 'Support', uuid: 'topic-2' },
+        ],
+      );
+
+      await store.getTopics();
+
+      expect(
+        nexusaiAPI.agent_builder.supervisor.conversations.getTopics,
+      ).toHaveBeenCalledWith({
+        projectUuid: 'test-project-uuid',
+      });
+      expect(store.topics).toEqual([
+        { label: 'Billing', value: 'topic-1' },
+        { label: 'Support', value: 'topic-2' },
+      ]);
+      expect(store.topicsStatus).toBe('complete');
+    });
+
+    it('does not fetch topics again when already loaded', async () => {
+      nexusaiAPI.agent_builder.supervisor.conversations.getTopics.mockResolvedValue(
+        [{ name: 'Billing', uuid: 'topic-1' }],
+      );
+
+      await store.getTopics();
+      await store.getTopics();
+
+      expect(
+        nexusaiAPI.agent_builder.supervisor.conversations.getTopics,
+      ).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not fetch topics again while a request is in progress', async () => {
+      nexusaiAPI.agent_builder.supervisor.conversations.getTopics.mockReturnValue(
+        new Promise(() => {}),
+      );
+
+      store.getTopics();
+      await store.getTopics();
+
+      expect(
+        nexusaiAPI.agent_builder.supervisor.conversations.getTopics,
+      ).toHaveBeenCalledTimes(1);
+      expect(store.topicsStatus).toBe('loading');
     });
   });
 });

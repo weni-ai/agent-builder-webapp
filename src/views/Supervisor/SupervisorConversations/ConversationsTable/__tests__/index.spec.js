@@ -75,19 +75,19 @@ describe('ConversationsTable.vue', () => {
     stubActions: false,
   });
 
-  const setConversations = (results) => {
+  const setConversations = (results, status = 'complete') => {
     supervisorStore.conversations.data.results = [...results];
     supervisorStore.conversations.data.count = results.length;
     supervisorStore.conversations.data.newNext = null;
     supervisorStore.conversations.data.legacyNext = null;
-    supervisorStore.conversations.status = 'complete';
+    supervisorStore.conversations.status = status;
   };
 
-  const createWrapper = async () => {
+  const createWrapper = async ({ conversationsStatus = 'complete' } = {}) => {
     supervisorStore = useSupervisorStore();
     supervisorStore.filters.start = '2023-01-01';
     supervisorStore.filters.end = '2023-01-31';
-    setConversations(mockResultsWithSource);
+    setConversations(mockResultsWithSource, conversationsStatus);
 
     wrapper = mount(ConversationsTable, {
       global: {
@@ -131,7 +131,16 @@ describe('ConversationsTable.vue', () => {
     expect(elements.columnHeader('hour').text()).toBe('Hour');
   });
 
-  it('loads conversations on mount', () => {
+  it('does not reload conversations on mount when already loaded', () => {
+    expect(supervisorStore.loadConversations).not.toHaveBeenCalled();
+  });
+
+  it('loads conversations on mount when they have not been loaded yet', async () => {
+    wrapper?.unmount();
+    vi.clearAllMocks();
+
+    await createWrapper({ conversationsStatus: null });
+
     expect(supervisorStore.loadConversations).toHaveBeenCalled();
   });
 

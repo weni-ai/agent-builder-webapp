@@ -68,6 +68,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
   });
 
   const topics = ref([]);
+  const topicsStatus = ref(null);
 
   const queryConversationUuid = ref(query?.uuid || '');
 
@@ -278,14 +279,26 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
   }
 
   async function getTopics() {
-    const response = await supervisorApi.conversations.getTopics({
-      projectUuid: projectUuid.value,
-    });
+    if (topicsStatus.value === 'complete' || topicsStatus.value === 'loading') {
+      return;
+    }
 
-    topics.value = response.map((topic) => ({
-      label: topic.name,
-      value: topic.uuid,
-    }));
+    topicsStatus.value = 'loading';
+
+    try {
+      const response = await supervisorApi.conversations.getTopics({
+        projectUuid: projectUuid.value,
+      });
+
+      topics.value = response.map((topic) => ({
+        label: topic.name,
+        value: topic.uuid,
+      }));
+      topicsStatus.value = 'complete';
+    } catch (error) {
+      topicsStatus.value = 'error';
+      console.error('Error loading topics:', error);
+    }
   }
 
   async function exportSupervisorData({ token }) {
@@ -313,6 +326,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     defaultFilters,
     temporaryFilters,
     topics,
+    topicsStatus,
     resetFilters,
     updateFilters,
     getInitialSelectFilter,
