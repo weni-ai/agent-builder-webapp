@@ -147,8 +147,8 @@ describe('SupervisorFilters.vue', () => {
   });
 
   describe('Get topics', () => {
-    it('gets topics', async () => {
-      expect(store.getTopics).toHaveBeenCalled();
+    it('gets topics on mount', async () => {
+      expect(store.getTopics).toHaveBeenCalledTimes(1);
     });
   });
 });

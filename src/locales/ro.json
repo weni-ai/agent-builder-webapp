@@ -562,7 +562,7 @@
       }
     },
     "improvements": {
-      "analysis_in_progress_disclaimer": "Analiză în curs: {progress} din {total} conversații procesate. Pot apărea elemente noi în curând.",
+      "analysis_in_progress_disclaimer": "Analiză în curs: {percentage}% din conversații procesate. Pot apărea elemente noi în curând.",
       "analysis_complete": {
         "no_improvements_description": "Nu s-au identificat îmbunătățiri în conversațiile din {date}",
         "ready_description": "Îmbunătățirile din {date} sunt gata în backlog.",
@@ -656,7 +656,7 @@
         "title": "Volum insuficient de conversații"
       },
       "no_analysis": {
-        "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire în conversațiile de ieri",
+        "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire într-un eșantion din conversațiile de ieri",
         "run_analysis": "Rulează analiza",
         "title": "Nicio analiză nu a fost executată încă"
       },
@@ -672,7 +672,7 @@
       },
       "running_analysis": {
         "description": "Acest proces poate dura câteva ore. Poți închide acest ecran.",
-        "title": "Se analizează conversații de ieri"
+        "title": "Se analizează un eșantion de conversații de ieri"
       },
       "stale_analysis_disclaimer": {
         "description": "Rulează o nouă analiză pentru a identifica oportunități de îmbunătățire",

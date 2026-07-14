@@ -17,15 +17,19 @@ describe('ImprovementsList.vue', () => {
       uuid: 'improvement-uuid-1',
       text: 'The agent tone does not match the configured brand voice in refund conversations.',
       type: 'personality_deviation',
-      conversationsCount: 18,
+      conversationsCount: 12,
     },
     {
       uuid: 'improvement-uuid-2',
       text: 'The agent asks too many questions before providing an answer about order status.',
       type: 'many_questions_before_answering',
-      conversationsCount: 12,
+      conversationsCount: 18,
     },
   ];
+
+  const sortedMockImprovements = [...mockImprovements].sort(
+    (a, b) => b.conversationsCount - a.conversationsCount,
+  );
 
   const createWrapper = (stateOverrides = {}) => {
     const pinia = createTestingPinia({
@@ -106,8 +110,17 @@ describe('ImprovementsList.vue', () => {
       const rows = elements.rows();
 
       expect(rows).toHaveLength(mockImprovements.length);
-      expect(rows[0].props('improvement')).toEqual(mockImprovements[0]);
-      expect(rows[1].props('improvement')).toEqual(mockImprovements[1]);
+      expect(rows[0].props('improvement')).toEqual(sortedMockImprovements[0]);
+      expect(rows[1].props('improvement')).toEqual(sortedMockImprovements[1]);
+    });
+
+    it('sorts improvements by conversationsCount in descending order', () => {
+      const rows = elements.rows();
+
+      expect(rows[0].props('improvement').conversationsCount).toBe(18);
+      expect(rows[1].props('improvement').conversationsCount).toBe(12);
+      expect(rows[0].props('improvement').uuid).toBe('improvement-uuid-2');
+      expect(rows[1].props('improvement').uuid).toBe('improvement-uuid-1');
     });
 
     it('does not apply the selected modifier class initially', () => {
@@ -129,7 +142,7 @@ describe('ImprovementsList.vue', () => {
 
       expect(elements.drawer().props('open')).toBe(true);
       expect(elements.drawer().props('improvement')).toEqual(
-        mockImprovements[0],
+        sortedMockImprovements[0],
       );
     });
 

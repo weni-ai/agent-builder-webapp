@@ -564,7 +564,7 @@
     },
 
     "improvements": {
-      "analysis_in_progress_disclaimer": "Analysis in progress: {progress} of {total} conversations processed. New items may appear shortly.",
+      "analysis_in_progress_disclaimer": "Analysis in progress: {percentage}% of conversations processed. New items may appear shortly.",
       "analysis_complete": {
         "no_improvements_description": "No improvements identified in the conversations from {date}",
         "ready_description": "Improvements from {date} are ready in your backlog.",
@@ -658,7 +658,7 @@
         "title": "Insufficient conversation volume"
       },
       "no_analysis": {
-        "description": "Run your first analysis to identify opportunities for improvement in yesterday's conversations",
+        "description": "Run your first analysis to identify opportunities for improvement in a sample of yesterday's conversations",
         "run_analysis": "Run analysis",
         "title": "No analysis has been run yet"
       },
@@ -674,7 +674,7 @@
       },
       "running_analysis": {
         "description": "This may take a few hours. You can close this screen.",
-        "title": "Analyzing conversations from yesterday"
+        "title": "Analyzing a sample of conversations from yesterday"
       },
       "stale_analysis_disclaimer": {
         "description": "Run a new analysis to identify opportunities for improvement",

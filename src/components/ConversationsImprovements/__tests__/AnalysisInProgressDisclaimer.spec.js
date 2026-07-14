@@ -76,8 +76,7 @@ describe('AnalysisInProgressDisclaimer.vue', () => {
       expect(disclaimer.props('type')).toBe('informational');
       expect(disclaimer.props('description')).toBe(
         i18n.global.t('audit.improvements.analysis_in_progress_disclaimer', {
-          progress: 10,
-          total: 437,
+          percentage: 2,
         }),
       );
     });
@@ -114,7 +113,7 @@ describe('AnalysisInProgressDisclaimer.vue', () => {
       expect(findDisclaimer().exists()).toBe(false);
     });
 
-    it('uses zero for progress and total when task values are missing', () => {
+    it('uses zero for percentage when task values are missing', () => {
       wrapper.unmount();
       createWrapper({
         analysis: {
@@ -125,8 +124,7 @@ describe('AnalysisInProgressDisclaimer.vue', () => {
 
       expect(findDisclaimer().props('description')).toBe(
         i18n.global.t('audit.improvements.analysis_in_progress_disclaimer', {
-          progress: 0,
-          total: 0,
+          percentage: 0,
         }),
       );
     });
@@ -140,8 +138,7 @@ describe('AnalysisInProgressDisclaimer.vue', () => {
 
       expect(findDisclaimer().props('description')).toBe(
         i18n.global.t('audit.improvements.analysis_in_progress_disclaimer', {
-          progress: 25,
-          total: 437,
+          percentage: 6,
         }),
       );
     });

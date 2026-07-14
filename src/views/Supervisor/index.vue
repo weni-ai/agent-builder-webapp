@@ -10,7 +10,10 @@
   >
     <section
       ref="scrollContainer"
-      class="supervisor__content"
+      :class="[
+        'supervisor__content',
+        { 'supervisor__content--with-scroll': hasScroll },
+      ]"
       @scroll="loadConversations"
     >
       <SupervisorHeader
@@ -35,7 +38,15 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, watch, ref, nextTick } from 'vue';
+import {
+  computed,
+  onBeforeMount,
+  onBeforeUnmount,
+  onMounted,
+  watch,
+  ref,
+  nextTick,
+} from 'vue';
 import { useRouter, useRoute, RouterView } from 'vue-router';
 
 import SupervisorHeader from './SupervisorHeader.vue';
@@ -53,6 +64,7 @@ const route = useRoute();
 const supervisorConversations = ref(null);
 const scrollContainer = ref(null);
 const isCheckingScroll = ref(false);
+const hasScroll = ref(false);
 
 const selectedConversation = computed(() => {
   return supervisorStore.selectedConversation;
@@ -89,9 +101,13 @@ function isScrollReachedBottom() {
   return isInScrollBottom;
 }
 
-function hasScrollbar() {
+function updateHasScroll() {
   const container = scrollContainer.value;
-  return container.scrollHeight > container.clientHeight;
+  const next = !!container && container.scrollHeight > container.clientHeight;
+
+  if (hasScroll.value !== next) {
+    hasScroll.value = next;
+  }
 }
 
 async function checkAndLoadMoreIfNeeded() {
@@ -102,12 +118,14 @@ async function checkAndLoadMoreIfNeeded() {
   try {
     await nextTick();
 
+    updateHasScroll();
+
     if (!scrollContainer.value) return;
 
     if (!hasMoreConversationsToLoad()) return;
 
-    if (!hasScrollbar()) {
-      supervisorConversations.value?.loadMoreConversations();
+    if (!hasScroll.value) {
+      supervisorConversations.value?.loadMoreConversations?.();
     }
   } finally {
     isCheckingScroll.value = false;
@@ -120,7 +138,7 @@ function loadConversations() {
   const shouldLoadMore = isScrollReachedBottom();
 
   if (shouldLoadMore) {
-    supervisorConversations.value?.loadMoreConversations();
+    supervisorConversations.value?.loadMoreConversations?.();
   }
 }
 
@@ -150,6 +168,11 @@ watch(
   { immediate: true },
 );
 
+watch([isConversationsRoute, selectedConversation], async () => {
+  await nextTick();
+  updateHasScroll();
+});
+
 onBeforeMount(async () => {
   updateQuery();
 
@@ -158,6 +181,15 @@ onBeforeMount(async () => {
   if (queryConversationUuid && !selectedConversation) {
     supervisorStore.selectConversation(queryConversationUuid);
   }
+});
+
+onMounted(() => {
+  updateHasScroll();
+  window.addEventListener('resize', updateHasScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateHasScroll);
 });
 </script>
 
@@ -179,13 +211,16 @@ onBeforeMount(async () => {
     display: flex;
     flex-direction: column;
 
-    $scroll-margin: calc($unnnic-spacing-nano / 2 + $unnnic-spacing-nano);
-
     overflow-y: auto;
 
     margin: $unnnic-spacing-sm 0;
-    padding-right: $scroll-margin;
-    margin-right: $scroll-margin;
+
+    &--with-scroll {
+      $scroll-margin: calc($unnnic-spacing-nano / 2 + $unnnic-spacing-nano);
+
+      padding-right: $scroll-margin;
+      margin-right: $scroll-margin;
+    }
   }
 
   :deep(.supervisor__header) {
