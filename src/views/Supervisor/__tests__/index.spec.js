@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount, flushPromises } from '@vue/test-utils';
 import { reactive } from 'vue';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
@@ -129,6 +129,16 @@ describe('Supervisor view', () => {
     beforeEach(async () => {
       mockSpy = vi.fn();
 
+      supervisorStore.conversations = {
+        status: 'complete',
+        data: {
+          next: 'next-page-url',
+          results: [{ uuid: '1' }, { uuid: '2' }],
+        },
+      };
+
+      await flushPromises();
+
       wrapper.vm.scrollContainer = {
         scrollHeight: 500,
         clientHeight: 800,
@@ -140,14 +150,6 @@ describe('Supervisor view', () => {
       };
 
       wrapper.vm.isCheckingScroll = false;
-
-      supervisorStore.conversations = {
-        status: 'complete',
-        data: {
-          next: 'next-page-url',
-          results: [{ uuid: '1' }, { uuid: '2' }],
-        },
-      };
     });
 
     it('should call loadMoreConversations when there is no scrollbar', async () => {
@@ -219,6 +221,31 @@ describe('Supervisor view', () => {
 
       expect(wrapper.vm.isCheckingScroll).toBe(false);
     });
+
+    it('toggles scroll spacing class based on scrollbar presence', async () => {
+      const content = wrapper.find('.supervisor__content');
+
+      wrapper.vm.scrollContainer = {
+        scrollHeight: 500,
+        clientHeight: 800,
+        scrollTop: 0,
+      };
+
+      wrapper.vm.updateHasScroll();
+      await wrapper.vm.$nextTick();
+
+      expect(content.classes()).not.toContain(
+        'supervisor__content--with-scroll',
+      );
+      expect(wrapper.vm.hasScroll).toBe(false);
+
+      wrapper.vm.scrollContainer.scrollHeight = 1000;
+      wrapper.vm.updateHasScroll();
+      await wrapper.vm.$nextTick();
+
+      expect(content.classes()).toContain('supervisor__content--with-scroll');
+      expect(wrapper.vm.hasScroll).toBe(true);
+    });
   });
 
   describe('Scroll-based pagination', () => {
@@ -226,6 +253,16 @@ describe('Supervisor view', () => {
 
     beforeEach(async () => {
       mockSpy = vi.fn();
+
+      supervisorStore.conversations = {
+        status: 'complete',
+        data: {
+          next: 'next-page-url',
+          results: [{ uuid: '1' }, { uuid: '2' }],
+        },
+      };
+
+      await flushPromises();
 
       wrapper.vm.scrollContainer = {
         scrollHeight: 1000,
@@ -238,14 +275,6 @@ describe('Supervisor view', () => {
       };
 
       wrapper.vm.isCheckingScroll = false;
-
-      supervisorStore.conversations = {
-        status: 'complete',
-        data: {
-          next: 'next-page-url',
-          results: [{ uuid: '1' }, { uuid: '2' }],
-        },
-      };
     });
 
     it('should call loadMoreConversations when scrolled to bottom', async () => {

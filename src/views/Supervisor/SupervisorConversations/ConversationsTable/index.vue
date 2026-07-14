@@ -116,9 +116,17 @@ watch(
     () => supervisorStore.filters.topics,
   ],
   (newValue, oldValue) => {
+    const isInitialRun =
+      !oldValue || oldValue.every((value) => value === undefined);
     const hasFiltersChanged = !isEqual(newValue, oldValue);
+    const hasConversationsLoaded =
+      supervisorStore.conversations.status === 'complete';
 
-    if (!hasFiltersChanged) return;
+    if (isInitialRun) {
+      if (hasConversationsLoaded) return;
+    } else if (!hasFiltersChanged) {
+      return;
+    }
 
     pagination.value.page = 1;
     supervisorStore.loadConversations();

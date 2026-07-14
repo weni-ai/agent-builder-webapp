@@ -56,7 +56,11 @@ const { improvements } = storeToRefs(improvementsStore);
 const selectedImprovement = ref<Improvement | null>(null);
 const isDrawerOpen = ref(false);
 
-const improvementResults = computed(() => improvements.value.data);
+const improvementResults = computed(() =>
+  [...(improvements.value.data ?? [])].sort(
+    (a, b) => b.conversationsCount - a.conversationsCount,
+  ),
+);
 
 const columns = ['improvement', 'type', 'affected_conversations'] as const;
 
@@ -81,10 +85,12 @@ watch(isDrawerOpen, (open) => {
 
   height: 100%;
 
-  overflow: hidden;
-
   display: flex;
   flex-direction: column;
+
+  > * {
+    overflow: initial;
+  }
 
   :deep(.improvements-list__col--improvement) {
     width: calc(100% / 12 * 8);

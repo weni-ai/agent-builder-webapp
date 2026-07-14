@@ -50,15 +50,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { differenceInDays, isToday } from 'date-fns';
+import { differenceInDays, isToday, subDays } from 'date-fns';
 import { storeToRefs } from 'pinia';
 
 import { useImprovementsStore } from '@/store/Improvements';
-import {
-  formatMonthDayDate,
-  formatTime,
-  getYesterdayFormattedDate,
-} from '@/utils/formatters';
+import { formatMonthDayDate, formatTime } from '@/utils/formatters';
 import RunAnalysisButton from '@/components/ConversationsImprovements/RunAnalysisButton.vue';
 import CustomAnalysisModal from '@/components/ConversationsImprovements/CustomAnalysisModal/CustomAnalysisModal.vue';
 
@@ -83,9 +79,19 @@ const isStaleAnalysis = computed(
   () => analysisDaysAgo.value >= STALE_ANALYSIS_DAYS_THRESHOLD,
 );
 
+const conversationsDate = computed(() => {
+  const createdAt = analysis.value.task?.createdAt;
+
+  if (!createdAt) {
+    return '';
+  }
+
+  return formatMonthDayDate(subDays(new Date(createdAt), 1).toISOString());
+});
+
 const headerTitle = computed(() =>
   t('audit.improvements.header.title', {
-    date: getYesterdayFormattedDate(),
+    date: conversationsDate.value,
     count: improvements.value.data.length,
   }),
 );

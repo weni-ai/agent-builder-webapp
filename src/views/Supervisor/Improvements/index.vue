@@ -3,8 +3,9 @@
     class="conversations-improvements"
     data-testid="conversations-improvements"
   >
+    <ImprovementsSkeleton v-if="isLoadingImprovements" />
     <InsufficientConversationsVolume
-      v-if="
+      v-else-if="
         !analysis.task.createdAt &&
         runAnalysisBlockReason === 'insufficient_volume'
       "
@@ -26,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useImprovementsStore } from '@/store/Improvements';
@@ -38,10 +39,15 @@ import NoImprovementIdentified from '@/components/ConversationsImprovements/NoIm
 import ImprovementsHeader from '@/components/ConversationsImprovements/ImprovementsHeader.vue';
 import ImprovementsList from '@/components/ConversationsImprovements/ImprovementsList.vue';
 import AnalysisInProgressDisclaimer from '@/components/ConversationsImprovements/AnalysisInProgressDisclaimer.vue';
+import ImprovementsSkeleton from '@/components/ConversationsImprovements/ImprovementsSkeleton.vue';
 
 const improvementsStore = useImprovementsStore();
 const { analysis, improvements, runAnalysisBlockReason } =
   storeToRefs(improvementsStore);
+
+const isLoadingImprovements = computed(
+  () => analysis.value.status === 'loading' && !analysis.value.task.createdAt,
+);
 
 onMounted(() => {
   improvementsStore.fetchImprovements();

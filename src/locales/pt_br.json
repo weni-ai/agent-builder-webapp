@@ -478,7 +478,7 @@
       }
     },
     "improvements": {
-      "analysis_in_progress_disclaimer": "Análise em andamento: {progress} de {total} conversas processadas. Novos itens podem aparecer em breve.",
+      "analysis_in_progress_disclaimer": "Análise em andamento: {percentage}% das conversas processadas. Novos itens podem aparecer em breve.",
       "analysis_complete": {
         "no_improvements_description": "Nenhuma melhoria identificada nas conversas de {date}",
         "ready_description": "As melhorias de {date} estão prontas no backlog.",
@@ -572,7 +572,7 @@
         "title": "Volume insuficiente de conversas"
       },
       "no_analysis": {
-        "description": "Execute a primeira análise para identificar oportunidades de melhoria nas conversas de ontem",
+        "description": "Execute a primeira análise para identificar oportunidades de melhoria em uma amostra das conversas de ontem",
         "run_analysis": "Executar análise",
         "title": "Nenhuma análise foi executada ainda"
       },
@@ -588,7 +588,7 @@
       },
       "running_analysis": {
         "description": "Isso pode levar algumas horas. Você pode fechar esta tela.",
-        "title": "Analisando conversas de ontem"
+        "title": "Analisando uma amostra de conversas de ontem"
       },
       "stale_analysis_disclaimer": {
         "description": "Execute uma nova análise para identificar oportunidades de melhoria",

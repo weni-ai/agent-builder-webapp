@@ -8,6 +8,7 @@ import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
 import AnalysisInProgressDisclaimer from '@/components/ConversationsImprovements/AnalysisInProgressDisclaimer.vue';
 import ImprovementsHeader from '@/components/ConversationsImprovements/ImprovementsHeader.vue';
 import ImprovementsList from '@/components/ConversationsImprovements/ImprovementsList.vue';
+import ImprovementsSkeleton from '@/components/ConversationsImprovements/ImprovementsSkeleton.vue';
 import NoAnalysisPerformed from '@/components/ConversationsImprovements/NoAnalysisPerformed.vue';
 import NoImprovementIdentified from '@/components/ConversationsImprovements/NoImprovementIdentified.vue';
 import InsufficientConversationsVolume from '@/components/ConversationsImprovements/InsufficientConversationsVolume.vue';
@@ -21,6 +22,8 @@ describe('Improvements view', () => {
 
   const findSection = () =>
     wrapper.find('[data-testid="conversations-improvements"]');
+  const findImprovementsSkeleton = () =>
+    wrapper.findComponent(ImprovementsSkeleton);
   const findNoAnalysisPerformed = () =>
     wrapper.findComponent(NoAnalysisPerformed);
   const findNoImprovementIdentified = () =>
@@ -77,6 +80,54 @@ describe('Improvements view', () => {
   describe('on mount', () => {
     it('loads improvements when the view mounts', () => {
       expect(improvementsStore.fetchImprovements).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('ImprovementsSkeleton state', () => {
+    it('renders ImprovementsSkeleton while the initial fetch is loading', () => {
+      wrapper.unmount();
+      createWrapper({
+        analysis: {
+          status: 'loading',
+          task: { ...DEFAULT_IMPROVEMENTS_TASK },
+        },
+        improvements: {
+          data: [],
+          status: 'loading',
+        },
+      });
+
+      expect(findImprovementsSkeleton().exists()).toBe(true);
+      expect(findNoAnalysisPerformed().exists()).toBe(false);
+      expect(findInsufficientConversationsVolume().exists()).toBe(false);
+      expect(findRunningAnalysis().exists()).toBe(false);
+    });
+
+    it('does not render ImprovementsSkeleton after analysis has a createdAt', () => {
+      wrapper.unmount();
+      createWrapper({
+        analysis: {
+          status: 'loading',
+          task: {
+            isRunning: true,
+            progress: 0,
+            total: 437,
+            createdAt: '2026-06-18T08:00:00Z',
+          },
+        },
+        improvements: {
+          data: [],
+          status: 'loading',
+        },
+      });
+
+      expect(findImprovementsSkeleton().exists()).toBe(false);
+      expect(findRunningAnalysis().exists()).toBe(true);
+    });
+
+    it('does not render ImprovementsSkeleton when status is not loading', () => {
+      expect(findImprovementsSkeleton().exists()).toBe(false);
+      expect(findNoAnalysisPerformed().exists()).toBe(true);
     });
   });
 
