@@ -478,7 +478,7 @@
       }
     },
     "improvements": {
-      "analysis_in_progress_disclaimer": "Análisis en curso: {progress} de {total} conversaciones procesadas. Pueden aparecer nuevos ítems en breve.",
+      "analysis_in_progress_disclaimer": "Análisis en curso: {percentage}% de las conversaciones procesadas. Pueden aparecer nuevos ítems en breve.",
       "analysis_complete": {
         "no_improvements_description": "No se identificaron mejoras en las conversaciones del {date}",
         "ready_description": "Las mejoras del {date} están listas en el backlog.",

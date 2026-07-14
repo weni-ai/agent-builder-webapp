@@ -477,7 +477,7 @@
       }
     },
     "improvements": {
-      "analysis_in_progress_disclaimer": "Analiză în curs: {progress} din {total} conversații procesate. Pot apărea elemente noi în curând.",
+      "analysis_in_progress_disclaimer": "Analiză în curs: {percentage}% din conversații procesate. Pot apărea elemente noi în curând.",
       "analysis_complete": {
         "no_improvements_description": "Nu s-au identificat îmbunătățiri în conversațiile din {date}",
         "ready_description": "Îmbunătățirile din {date} sunt gata în backlog.",

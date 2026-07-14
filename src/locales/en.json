@@ -479,7 +479,7 @@
     },
 
     "improvements": {
-      "analysis_in_progress_disclaimer": "Analysis in progress: {progress} of {total} conversations processed. New items may appear shortly.",
+      "analysis_in_progress_disclaimer": "Analysis in progress: {percentage}% of conversations processed. New items may appear shortly.",
       "analysis_complete": {
         "no_improvements_description": "No improvements identified in the conversations from {date}",
         "ready_description": "Improvements from {date} are ready in your backlog.",
