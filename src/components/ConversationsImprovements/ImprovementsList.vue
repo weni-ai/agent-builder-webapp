@@ -85,10 +85,12 @@ watch(isDrawerOpen, (open) => {
 
   height: 100%;
 
-  overflow: hidden;
-
   display: flex;
   flex-direction: column;
+
+  > * {
+    overflow: initial;
+  }
 
   :deep(.improvements-list__col--improvement) {
     width: calc(100% / 12 * 8);
