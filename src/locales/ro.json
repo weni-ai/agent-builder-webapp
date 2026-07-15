@@ -344,7 +344,12 @@
       "title": "Instrucțiuni",
       "description": "Definește regulile care ghidează modul în care Manager răspunde, comunică și ia decizii",
       "export_instructions": "Exportă instrucțiuni",
-      "new_instruction": "Instrucțiune nouă"
+      "new_instruction": "Instrucțiune nouă",
+      "new_instruction_drawer": {
+        "title": "Instrucțiune nouă",
+        "save": "Salvează",
+        "cancel": "Anulează"
+      }
     },
     "profile": {
       "tone_of_voice": {
