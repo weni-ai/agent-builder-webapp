@@ -58,6 +58,8 @@ import { useI18n } from 'vue-i18n';
 
 import { UnnnicPopoverFooter } from '@weni/unnnic-system';
 
+import { useInstructionsStore } from '@/store/Instructions';
+
 import { useCategoryValidation } from './useCategoryValidation';
 
 const MAX_LENGTH = 50;
@@ -71,10 +73,16 @@ const { t } = useI18n();
 const categoryT = (key: string) =>
   t(`agents.instructions.new_instruction_drawer.ai_analysis.category.${key}`);
 
+const instructionsStore = useInstructionsStore();
+
 const name = ref('');
 const touched = ref(false);
 
-const { error, isValid } = useCategoryValidation(name);
+const existingNames = computed(() =>
+  instructionsStore.categoryOptions.map((category) => category.name),
+);
+
+const { error, isValid } = useCategoryValidation(name, existingNames);
 
 const displayedErrors = computed(() =>
   touched.value && error.value ? [error.value] : [],

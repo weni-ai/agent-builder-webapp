@@ -13,19 +13,23 @@ const validationT = (key: string) =>
 
 type ValidationResult = ReturnType<typeof useCategoryValidation>;
 
-const setup = (initialName = '') => {
+const setup = (initialName = '', existingNames: string[] = []) => {
   const name = ref(initialName);
+  const existing = ref(existingNames);
   let validation: ValidationResult;
 
   const wrapper = mount({
     template: '<div />',
     setup() {
-      validation = useCategoryValidation(name as Ref<string>);
+      validation = useCategoryValidation(
+        name as Ref<string>,
+        existing as Ref<string[]>,
+      );
       return {};
     },
   });
 
-  return { name, validation: validation!, wrapper };
+  return { name, existing, validation: validation!, wrapper };
 };
 
 describe('useCategoryValidation', () => {
@@ -73,5 +77,61 @@ describe('useCategoryValidation', () => {
 
     expect(validation.isValid.value).toBe(true);
     expect(validation.error.value).toBeNull();
+  });
+
+  it('returns the already exists message when the name matches an existing category', () => {
+    const { validation } = setup('Sales', ['Sales', 'Support']);
+
+    expect(validation.error.value).toBe(validationT('already_exists'));
+    expect(validation.isValid.value).toBe(false);
+  });
+
+  it('treats duplicate names as case-insensitive', () => {
+    const { validation } = setup('sales', ['Sales']);
+
+    expect(validation.error.value).toBe(validationT('already_exists'));
+    expect(validation.isValid.value).toBe(false);
+  });
+
+  it('is valid when the name does not match any existing category', () => {
+    const { validation } = setup('Logistics', ['Sales', 'Support']);
+
+    expect(validation.error.value).toBeNull();
+    expect(validation.isValid.value).toBe(true);
+  });
+
+  it('blocks the fixed uncategorized name in every locale', () => {
+    const reservedNames = i18n.global.availableLocales.map((locale) =>
+      String(
+        i18n.global.t('agents.instructions.view.uncategorized', {}, { locale }),
+      ),
+    );
+
+    expect(reservedNames).toEqual(
+      expect.arrayContaining([
+        'Uncategorized',
+        'Sem categoria',
+        'Sin categoría',
+        'Fără categorie',
+      ]),
+    );
+
+    reservedNames.forEach((reservedName) => {
+      const { validation } = setup(reservedName);
+
+      expect(validation.error.value).toBe(validationT('already_exists'));
+      expect(validation.isValid.value).toBe(false);
+    });
+  });
+
+  it('reacts when the existing names list changes', () => {
+    const { existing, validation } = setup('Sales', []);
+
+    expect(validation.isValid.value).toBe(true);
+
+    existing.value = ['Sales'];
+
+    expect(validation.error.value).toBe(validationT('already_exists'));
+    expect(validation.isValid.value).toBe(false);
   });
 });
