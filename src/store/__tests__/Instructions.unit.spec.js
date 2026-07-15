@@ -911,7 +911,7 @@ describe('Instructions Store', () => {
         });
       });
 
-      it('does not overwrite the current category when revalidating in edit mode', async () => {
+      it('overwrites the current category when revalidating in edit mode', async () => {
         store.instructionDrawerMode = 'edit';
         store.newInstruction.category = { id: 3, name: 'Tone' };
         store.categories = [
@@ -928,7 +928,10 @@ describe('Instructions Store', () => {
 
         await store.getInstructionSuggestionByAI('Some instruction');
 
-        expect(store.newInstruction.category).toEqual({ id: 3, name: 'Tone' });
+        expect(store.newInstruction.category).toEqual({
+          id: 10,
+          name: 'Sales',
+        });
         expect(store.instructionSuggestedByAI.data.suggestedCategory).toBe(
           'Sales',
         );

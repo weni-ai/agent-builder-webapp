@@ -482,7 +482,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       instructionSuggestedByAI.suggestionApplied = '';
       instructionSuggestedByAI.status = 'complete';
 
-      if (suggestedCategory && instructionDrawerMode.value !== 'edit') {
+      if (suggestedCategory) {
         const existing = categories.value.find(
           (category) => category.name === suggestedCategory,
         );
