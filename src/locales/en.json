@@ -354,6 +354,7 @@
         "ai_analysis": {
           "title": "AI analysis",
           "validating": "Validating instruction...",
+          "suggested_category": "Suggested category",
           "issues": "Issues found",
           "issues_types": {
             "duplicate": "Duplicate",
@@ -365,7 +366,22 @@
           "suggested_rewrite": "Suggested rewrite",
           "suggestion_applied": "Suggestion applied",
           "undo_button": "Undo",
-          "apply_button": "Apply"
+          "apply_button": "Apply",
+          "category": {
+            "new_badge": "New",
+            "suggested_category": "Suggested category",
+            "other_categories": "Other categories",
+            "create_action": "New category",
+            "create_title": "Create category",
+            "name_label": "Category name",
+            "name_placeholder": "Name",
+            "cancel": "Cancel",
+            "create": "Create",
+            "validation": {
+              "required": "Complete this field",
+              "invalid_chars": "Use only letters, numbers, spaces, and hyphens"
+            }
+          }
         }
       }
     },
