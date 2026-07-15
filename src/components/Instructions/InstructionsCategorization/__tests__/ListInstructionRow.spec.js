@@ -47,11 +47,6 @@ describe('ListInstructionRow.vue', () => {
 
   const find = (selector) => wrapper.find(SELECTORS[selector]);
 
-  const editT = (key) =>
-    i18n.global.t(`agent_builder.instructions.edit_instruction.${key}`);
-  const removeT = (key) =>
-    i18n.global.t(`agent_builder.instructions.remove_instruction.${key}`);
-
   const createWrapper = (instruction = customItem(), instructionsData = []) => {
     const pinia = createTestingPinia({
       initialState: {
@@ -112,7 +107,11 @@ describe('ListInstructionRow.vue', () => {
     const item = customItem();
     wrapper = createWrapper(item);
 
-    await wrapper.find(`[data-test="${editT('title')}"]`).trigger('click');
+    const [editAction] = wrapper
+      .findComponent(SELECTORS.actions)
+      .props('actions');
+    editAction.onClick();
+    await wrapper.vm.$nextTick();
 
     expect(wrapper.emitted('edit')).toEqual([[item]]);
   });
@@ -123,7 +122,11 @@ describe('ListInstructionRow.vue', () => {
     const modal = wrapper.findComponent(ModalRemoveInstruction);
     expect(modal.attributes('modelvalue')).not.toBe('true');
 
-    await wrapper.find(`[data-test="${removeT('title')}"]`).trigger('click');
+    const [, removeAction] = wrapper
+      .findComponent(SELECTORS.actions)
+      .props('actions');
+    removeAction.onClick();
+    await wrapper.vm.$nextTick();
 
     expect(modal.attributes('modelvalue')).toBe('true');
   });
