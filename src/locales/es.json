@@ -346,6 +346,13 @@
       "description": "Define las reglas que guían cómo el Manager responde, se comunica y toma decisiones",
       "export_instructions": "Exportar instrucciones",
       "new_instruction": "Nueva instrucción",
+      "view": {
+        "search_placeholder": "Buscar...",
+        "segmented": {
+          "categories": "Categorías",
+          "list": "Lista"
+        }
+      },
       "new_instruction_drawer": {
         "title": "Nueva instrucción",
         "validate": "Validar",
