@@ -3,6 +3,8 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import AgentsTeamView from '@/views/AgentsTeam/index.vue';
 import HomeHeaderActions from '@/components/AgentsTeam/HomeHeaderActions.vue';
+import InstructionsHeaderActions from '@/components/Instructions/InstructionsHeaderActions.vue';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import i18n from '@/utils/plugins/i18n';
 
 const mockRoute = {
@@ -18,6 +20,10 @@ vi.mock('vue-router', async () => {
   };
 });
 
+vi.mock('@/store/FeatureFlags', () => ({
+  useFeatureFlagsStore: vi.fn(),
+}));
+
 describe('AgentsTeam view', () => {
   let wrapper;
   let tSpy;
@@ -29,7 +35,12 @@ describe('AgentsTeam view', () => {
     actions: wrapper.vm.headerActions?.value ?? wrapper.vm.headerActions,
   });
 
-  const mountView = () => shallowMount(AgentsTeamView);
+  const createWrapper = ({ categorizationOfInstructions = false } = {}) => {
+    useFeatureFlagsStore.mockReturnValue({
+      flags: { categorizationOfInstructions },
+    });
+    wrapper = shallowMount(AgentsTeamView);
+  };
 
   beforeEach(() => {
     mockRoute.name = 'agents-team';
@@ -44,7 +55,7 @@ describe('AgentsTeam view', () => {
   });
 
   it('renders default header content for agents-team route', () => {
-    wrapper = mountView();
+    createWrapper();
 
     expect(wrapper.find('[data-testid="agents-header"]').exists()).toBe(true);
 
@@ -58,7 +69,7 @@ describe('AgentsTeam view', () => {
   it('updates header copy for assign route', () => {
     mockRoute.name = 'agents-assign';
 
-    wrapper = mountView();
+    createWrapper();
 
     const headerState = getHeaderState();
 
@@ -70,7 +81,7 @@ describe('AgentsTeam view', () => {
   it('injects header actions when they are available', () => {
     mockRoute.name = 'agents-team';
 
-    wrapper = mountView();
+    createWrapper();
 
     const headerState = getHeaderState();
 
@@ -78,8 +89,35 @@ describe('AgentsTeam view', () => {
   });
 
   it('always renders the nested router view outlet', () => {
-    wrapper = mountView();
+    createWrapper();
 
     expect(wrapper.find('[data-testid="router-view"]').exists()).toBe(true);
+  });
+
+  describe('instructions route', () => {
+    beforeEach(() => {
+      mockRoute.name = 'instructions';
+    });
+
+    it('sets the correct title and description', () => {
+      createWrapper();
+
+      const headerState = getHeaderState();
+
+      expect(headerState.title).toBe('agents.instructions.title');
+      expect(headerState.description).toBe('agents.instructions.description');
+    });
+
+    it('shows InstructionsHeaderActions when categorizationOfInstructions flag is on', () => {
+      createWrapper({ categorizationOfInstructions: true });
+
+      expect(getHeaderState().actions).toBe(InstructionsHeaderActions);
+    });
+
+    it('shows no header actions when categorizationOfInstructions flag is off', () => {
+      createWrapper({ categorizationOfInstructions: false });
+
+      expect(getHeaderState().actions).toBe(null);
+    });
   });
 });
