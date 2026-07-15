@@ -27,6 +27,7 @@ describe('InstructionsCategorization/index.vue', () => {
     segmented: '[data-testid="instructions-view-segmented"]',
     triggerCategories: '[data-testid="instructions-view-trigger-categories"]',
     triggerList: '[data-testid="instructions-view-trigger-list"]',
+    categoriesView: '[data-testid="instructions-categories-view"]',
     baselineList: '[data-testid="instructions-baseline-list"]',
   };
 
@@ -34,12 +35,12 @@ describe('InstructionsCategorization/index.vue', () => {
   const findComponent = (selector) =>
     wrapper.findComponent(SELECTORS[selector]);
 
-  const createWrapper = (instructionsState = {}) => {
+  const createWrapper = (instructionsState = {}, view = 'categories') => {
     const pinia = createTestingPinia({
       initialState: {
         Instructions: {
           instructions: { data: [], status: 'complete', ...instructionsState },
-          activeInstructionsView: 'categories',
+          activeInstructionsView: view,
           searchTerm: '',
         },
       },
@@ -86,8 +87,16 @@ describe('InstructionsCategorization/index.vue', () => {
       expect(find('triggerList').text()).toBe(viewT('segmented.list'));
     });
 
-    it('renders the baseline instructions list', () => {
+    it('renders the categories view by default', () => {
+      expect(find('categoriesView').exists()).toBe(true);
+      expect(find('baselineList').exists()).toBe(false);
+    });
+
+    it('renders the baseline list when the list view is active', () => {
+      wrapper = createWrapper({}, 'list');
+
       expect(find('baselineList').exists()).toBe(true);
+      expect(find('categoriesView').exists()).toBe(false);
     });
   });
 
@@ -118,8 +127,14 @@ describe('InstructionsCategorization/index.vue', () => {
       expect(instructionsStore.loadInstructions).not.toHaveBeenCalled();
     });
 
-    it('passes the loading state to the baseline list', () => {
+    it('passes the loading state to the categories view', () => {
       wrapper = createWrapper({ status: 'loading' });
+
+      expect(findComponent('categoriesView').props('isLoading')).toBe(true);
+    });
+
+    it('passes the loading state to the baseline list in the list view', () => {
+      wrapper = createWrapper({ status: 'loading' }, 'list');
 
       expect(findComponent('baselineList').props('isLoading')).toBe(true);
     });
