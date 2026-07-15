@@ -423,8 +423,9 @@
             "cancel": "Cancelar",
             "create": "Criar",
             "validation": {
-              "required": "Preencha este campo",
-              "invalid_chars": "Use apenas letras, números, espaços e hifens"
+              "already_exists": "Insira um nome de categoria que não exista",
+              "invalid_chars": "Use apenas letras, números, espaços e hifens",
+              "required": "Preencha este campo"
             }
           }
         }
