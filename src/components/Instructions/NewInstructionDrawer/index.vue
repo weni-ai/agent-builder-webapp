@@ -12,6 +12,11 @@
 
       <section class="new-instruction-drawer">
         <NewInstructionDrawerForm data-testid="new-instruction-drawer-form" />
+
+        <NewInstructionDrawerAIAnalysis
+          v-if="instructionsStore.instructionSuggestedByAI.status"
+          data-testid="new-instruction-drawer-ai-analysis"
+        />
       </section>
 
       <UnnnicDrawerFooter>
@@ -36,6 +41,11 @@
 
 <script setup>
 import NewInstructionDrawerForm from './Form.vue';
+import NewInstructionDrawerAIAnalysis from './AIAnalysis.vue';
+
+import { useInstructionsStore } from '@/store/Instructions';
+
+const instructionsStore = useInstructionsStore();
 
 const modelValue = defineModel({
   type: Boolean,
@@ -56,5 +66,9 @@ function save() {
   height: 100%;
 
   padding: $unnnic-space-6;
+
+  display: flex;
+  flex-direction: column;
+  gap: $unnnic-space-6;
 }
 </style>
