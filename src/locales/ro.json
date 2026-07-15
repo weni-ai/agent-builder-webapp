@@ -346,9 +346,14 @@
       "export_instructions": "Exportă instrucțiuni",
       "new_instruction": "Instrucțiune nouă",
       "view": {
+        "default_instruction": "Instrucțiune implicită",
         "default_instructions": "Instrucțiuni implicite",
         "delete_category": "Șterge categoria",
         "empty_category": "Încă nu există instrucțiuni în această categorie",
+        "list_columns": {
+          "category": "Categorie",
+          "instruction": "Instrucțiune"
+        },
         "locked_tooltip": "Instrucțiunile implicite nu pot fi editate sau eliminate",
         "results_count": "{count, plural, =0 {Nu s-au găsit instrucțiuni} one {{count} instrucțiune găsită} few {{count} instrucțiuni găsite} other {{count} de instrucțiuni găsite}}",
         "search_placeholder": "Caută...",

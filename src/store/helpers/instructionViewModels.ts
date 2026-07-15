@@ -1,19 +1,25 @@
 import type {
   InstructionCategory,
-  GroupedInstructionItem,
+  Instruction,
   InstructionGroup,
+  FlatInstruction,
 } from '../types/Instructions.types';
+
+import { includesNormalized } from '@/utils/strings';
 
 export const INSTRUCTION_GROUP_KEYS = {
   uncategorized: 'uncategorized',
   default: 'default',
 } as const;
 
-interface BuildInstructionGroupsParams {
-  instructions: GroupedInstructionItem[];
-  categories: InstructionCategory[];
-  defaultInstructions: GroupedInstructionItem[];
+interface BuildViewParams {
+  instructions: Instruction[];
+  defaultInstructions: Instruction[];
   searchTerm: string;
+}
+
+interface BuildInstructionGroupsParams extends BuildViewParams {
+  categories: InstructionCategory[];
   labels: {
     uncategorized: string;
     default: string;
@@ -23,15 +29,15 @@ interface BuildInstructionGroupsParams {
 interface CategoryWithInstructions {
   id: InstructionCategory['id'];
   name: string;
-  instructions: GroupedInstructionItem[];
+  instructions: Instruction[];
 }
 
-const recencyOf = (item: GroupedInstructionItem) => Number(item.id) || 0;
+const recencyOf = (item: Instruction) => Number(item.id) || 0;
 
-const newestFirst = (items: GroupedInstructionItem[]) =>
+const newestFirst = (items: Instruction[]) =>
   [...items].sort((a, b) => recencyOf(b) - recencyOf(a));
 
-const lastAddedId = (items: GroupedInstructionItem[]) =>
+const lastAddedId = (items: Instruction[]) =>
   items.reduce((newest, item) => Math.max(newest, recencyOf(item)), -Infinity);
 
 const createCategoryGroup = (category: InstructionCategory) => ({
@@ -41,7 +47,7 @@ const createCategoryGroup = (category: InstructionCategory) => ({
 });
 
 function partitionByCategory(
-  instructions: GroupedInstructionItem[],
+  instructions: Instruction[],
   categories: InstructionCategory[],
 ) {
   const byCategory = new Map<
@@ -56,7 +62,7 @@ function partitionByCategory(
     }
   });
 
-  const uncategorized: GroupedInstructionItem[] = [];
+  const uncategorized: Instruction[] = [];
 
   instructions.forEach((instruction) => {
     const { category } = instruction;
@@ -90,8 +96,8 @@ function toCustomGroups(
 
 // System groups are mocked and are always read-only.
 function buildSystemGroups(
-  uncategorized: GroupedInstructionItem[],
-  defaultInstructions: GroupedInstructionItem[],
+  uncategorized: Instruction[],
+  defaultInstructions: Instruction[],
   labels: BuildInstructionGroupsParams['labels'],
 ): InstructionGroup[] {
   return [
@@ -110,13 +116,11 @@ function buildSystemGroups(
   ];
 }
 
-// With an active search: keep only matching instructions and drop empty groups.
-// Without a search: keep every group, except an empty Uncategorized.
 function applySearch(
   groups: InstructionGroup[],
   searchTerm: string,
 ): InstructionGroup[] {
-  const term = searchTerm.trim().toLowerCase();
+  const term = searchTerm.trim();
 
   if (!term) {
     return groups.filter(
@@ -130,7 +134,7 @@ function applySearch(
     .map((group) => ({
       ...group,
       instructions: group.instructions.filter((item) =>
-        item.text.toLowerCase().includes(term),
+        includesNormalized(item.text, term),
       ),
     }))
     .filter((group) => group.instructions.length > 0);
@@ -154,4 +158,47 @@ export function buildInstructionGroups({
   ];
 
   return applySearch(groups, searchTerm);
+}
+
+interface BuildFlatInstructionsParams extends BuildViewParams {
+  labels: {
+    uncategorized: string;
+    defaultInstruction: string;
+  };
+}
+
+export function buildFlatInstructions({
+  instructions,
+  defaultInstructions,
+  searchTerm,
+  labels,
+}: BuildFlatInstructionsParams): FlatInstruction[] {
+  const customRows: FlatInstruction[] = newestFirst(instructions).map(
+    (instruction) => ({
+      id: instruction.id,
+      text: instruction.text,
+      categoryLabel: instruction.category
+        ? instruction.category.name
+        : labels.uncategorized,
+      categoryLocked: !instruction.category,
+      locked: false,
+    }),
+  );
+
+  const defaultRows: FlatInstruction[] = defaultInstructions.map(
+    (instruction) => ({
+      id: instruction.id,
+      text: instruction.text,
+      categoryLabel: labels.defaultInstruction,
+      categoryLocked: true,
+      locked: true,
+    }),
+  );
+
+  const rows = [...customRows, ...defaultRows];
+
+  const term = searchTerm.trim();
+  if (!term) return rows;
+
+  return rows.filter((row) => includesNormalized(row.text, term));
 }
