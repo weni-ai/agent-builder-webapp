@@ -482,7 +482,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       instructionSuggestedByAI.suggestionApplied = '';
       instructionSuggestedByAI.status = 'complete';
 
-      if (suggestedCategory && instructionDrawerMode.value !== 'edit') {
+      if (suggestedCategory) {
         const existing = categories.value.find(
           (category) => category.name === suggestedCategory,
         );
@@ -493,7 +493,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       }
     } catch (error) {
       instructionSuggestedByAI.status = 'error';
-      if (useV2()) {
+      if (!useV2()) {
         callAlert(
           'error',
           'new_instruction.validate_instruction_by_ai.error_alert',
