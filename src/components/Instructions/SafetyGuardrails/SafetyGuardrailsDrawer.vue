@@ -44,6 +44,11 @@
             </p>
           </div>
         </section>
+
+        <SafetyGuardrailsTopicList
+          :topics="draftTopics"
+          @update:topic-enabled="onTopicEnabledChange"
+        />
       </section>
 
       <UnnnicDrawerFooter>
@@ -59,6 +64,7 @@
           data-testid="safety-guardrails-drawer-save"
           :text="$t('agents.instructions.safety_guardrails.save')"
           type="primary"
+          :disabled="!isDirty"
           @click="close"
         />
       </UnnnicDrawerFooter>
@@ -67,10 +73,45 @@
 </template>
 
 <script setup>
+import { computed, ref, watch } from 'vue';
+
+import { getMockGuardrailsConfig } from '@/api/mocks/guardrailsConfig';
+
+import SafetyGuardrailsTopicList from './SafetyGuardrailsTopicList.vue';
+
 const modelValue = defineModel({
   type: Boolean,
   required: true,
 });
+
+const draftTopics = ref([]);
+const snapshotTopics = ref([]);
+
+const isDirty = computed(() => {
+  return draftTopics.value.some((topic, index) => {
+    return topic.enabled !== snapshotTopics.value[index]?.enabled;
+  });
+});
+
+watch(
+  modelValue,
+  (isOpen) => {
+    if (isOpen) loadDraftFromMock();
+  },
+  { immediate: true },
+);
+
+function loadDraftFromMock() {
+  const config = getMockGuardrailsConfig();
+
+  draftTopics.value = config.topics;
+  snapshotTopics.value = structuredClone(config.topics);
+}
+
+function onTopicEnabledChange({ id, enabled }) {
+  const topic = draftTopics.value.find((item) => item.id === id);
+  if (topic) topic.enabled = enabled;
+}
 
 function close() {
   modelValue.value = false;
