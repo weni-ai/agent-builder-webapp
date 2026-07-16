@@ -433,6 +433,11 @@
       "safety_guardrails": {
         "configure": "Configurar",
         "description": "Temas sensibles que Manager no discutirá",
+        "drawer": {
+          "description": "Cuando un tema está activado, Manager se niega a discutirlo. Desactiva para permitir",
+          "title": "Barreras de seguridad"
+        },
+        "save": "Guardar",
         "title": "Barreras de seguridad"
       }
     },
