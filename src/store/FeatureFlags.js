@@ -47,6 +47,7 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
     categorizationOfInstructions: isFeatureFlagEnabled(
       'categorization_of_instructions',
     ),
+    customGuardrails: isFeatureFlagEnabled('custom_guardrails'),
   }));
 
   return {
