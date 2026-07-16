@@ -433,6 +433,11 @@
       "safety_guardrails": {
         "configure": "Configure",
         "description": "Extra layer of blocks on sensitive topics, in addition to Manager's built-in safety",
+        "drawer": {
+          "description": "When a topic is on, Manager refuses to discuss it. Turn off to allow",
+          "title": "Safety guardrails"
+        },
+        "save": "Save",
         "title": "Extra safety guardrails"
       }
     },
