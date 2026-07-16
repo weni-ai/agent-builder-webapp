@@ -431,6 +431,8 @@
         }
       },
       "safety_guardrails": {
+        "allowed": "Allowed",
+        "blocked": "Blocked",
         "configure": "Configure",
         "description": "Sensitive topics Manager won't discuss",
         "drawer": {
@@ -438,7 +440,53 @@
           "title": "Safety guardrails"
         },
         "save": "Save",
-        "title": "Safety guardrails"
+        "title": "Safety guardrails",
+        "topics": {
+          "beliefs": {
+            "description": "Personal worldviews, ideologies, or philosophical convictions",
+            "name": "Beliefs"
+          },
+          "bias": {
+            "description": "Prejudiced statements about groups based on identity or background",
+            "name": "Bias"
+          },
+          "gender_identity": {
+            "description": "Gender identity, expression, or transition topics",
+            "name": "Gender identity"
+          },
+          "hate": {
+            "description": "Hateful or discriminatory speech toward people or groups",
+            "name": "Hate"
+          },
+          "physical_health": {
+            "description": "Diagnoses, symptoms, treatments, or medical advice",
+            "name": "Physical health"
+          },
+          "politics": {
+            "description": "Political opinions, parties, elections, or partisan topics",
+            "name": "Politics"
+          },
+          "religion": {
+            "description": "Religious doctrines, practices, or comparisons between faiths",
+            "name": "Religion"
+          },
+          "self_harm": {
+            "description": "Non-suicidal self-injury behaviors or methods",
+            "name": "Self-harm"
+          },
+          "sexual_content": {
+            "description": "Explicit or graphic sexual descriptions and imagery",
+            "name": "Sexual content"
+          },
+          "sexual_relations": {
+            "description": "Romantic or sexual relationships and behaviors",
+            "name": "Sexual relations"
+          },
+          "suicide": {
+            "description": "Suicidal ideation, methods, or related discussions",
+            "name": "Suicide"
+          }
+        }
       }
     },
     "profile": {

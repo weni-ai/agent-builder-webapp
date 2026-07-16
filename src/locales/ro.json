@@ -430,6 +430,8 @@
         }
       },
       "safety_guardrails": {
+        "allowed": "Permis",
+        "blocked": "Blocat",
         "configure": "Configurează",
         "description": "Subiecte sensibile pe care Manager refuză să le discute",
         "drawer": {
@@ -437,7 +439,53 @@
           "title": "Guardrails de siguranță"
         },
         "save": "Salva",
-        "title": "Guardrails de siguranță"
+        "title": "Guardrails de siguranță",
+        "topics": {
+          "beliefs": {
+            "description": "Viziuni personale asupra lumii, ideologii sau convingeri filosofice",
+            "name": "Convingeri"
+          },
+          "bias": {
+            "description": "Afirmații prejudecătoare despre grupuri pe baza identității sau originii",
+            "name": "Părtinire"
+          },
+          "gender_identity": {
+            "description": "Identitate de gen, expresie sau subiecte de tranziție",
+            "name": "Identitate de gen"
+          },
+          "hate": {
+            "description": "Discurs de ură sau discriminatoriu față de persoane sau grupuri",
+            "name": "Ură"
+          },
+          "physical_health": {
+            "description": "Diagnostice, simptome, tratamente sau sfaturi medicale",
+            "name": "Sănătate fizică"
+          },
+          "politics": {
+            "description": "Opinii politice, partide, alegeri sau subiecte partizane",
+            "name": "Politică"
+          },
+          "religion": {
+            "description": "Doctrine religioase, practici sau comparații între religii",
+            "name": "Religie"
+          },
+          "self_harm": {
+            "description": "Comportamente sau metode de auto-vătămare non-suicidală",
+            "name": "Auto-vătămare"
+          },
+          "sexual_content": {
+            "description": "Descrieri și imagini sexuale explicite sau grafice",
+            "name": "Conținut sexual"
+          },
+          "sexual_relations": {
+            "description": "Relații și comportamente romantice sau sexuale",
+            "name": "Relații sexuale"
+          },
+          "suicide": {
+            "description": "Ideatie suicidară, metode sau discuții conexe",
+            "name": "Sinucidere"
+          }
+        }
       }
     },
     "profile": {
