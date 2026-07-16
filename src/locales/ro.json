@@ -432,6 +432,11 @@
       "safety_guardrails": {
         "configure": "Configurează",
         "description": "Subiecte sensibile pe care Manager refuză să le discute",
+        "drawer": {
+          "description": "Când un subiect este activat, Manager refuză să îl discute. Dezactivează pentru a permite",
+          "title": "Guardrails de siguranță"
+        },
+        "save": "Salva",
         "title": "Guardrails de siguranță"
       }
     },
