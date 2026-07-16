@@ -1034,6 +1034,28 @@ describe('Instructions Store', () => {
       expect(store.newInstruction.status).toBeNull();
     });
 
+    it('rolls back text and category when the grouped update fails', async () => {
+      const originalCategory = { id: 3, name: 'Tone' };
+      store.instructions.data = [
+        { id: 7, text: 'Old', category: originalCategory },
+        { id: 8, text: 'Other', category: null },
+      ];
+      nexusaiAPI.agent_builder.instructions.update.mockRejectedValue(
+        new Error('network'),
+      );
+
+      store.startEditingInstruction({ id: 7 });
+      store.newInstruction.text = 'New';
+      store.newInstruction.category = { id: 5, name: 'Personality' };
+
+      await store.updateEditingInstruction();
+
+      const target = store.instructions.data.find((item) => item.id === 7);
+      expect(target.text).toBe('Old');
+      expect(target.category).toEqual(originalCategory);
+      expect(store.newInstruction.status).toBe('error');
+    });
+
     it('updates only the category when the instruction text is unchanged', async () => {
       featureFlagsState.categorizationOfInstructions = true;
       store.instructions.data = [
@@ -1067,6 +1089,16 @@ describe('Instructions Store', () => {
           category: { id: 5 },
         },
       );
+      expect(store.instructions.data[0]).toEqual({
+        id: 7,
+        text: 'Be concise',
+        category: { id: 5, name: 'Personality' },
+      });
+
+      store.newInstruction.category = { id: 5, name: 'Personality' };
+
+      await store.updateEditingInstruction();
+
       expect(store.instructions.data[0]).toEqual({
         id: 7,
         text: 'Be concise',

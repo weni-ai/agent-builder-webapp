@@ -129,6 +129,20 @@ describe('InstructionsCategorization/index.vue', () => {
         name: 'Sales',
       });
     });
+
+    it('unmounts the remove category modal when it closes', async () => {
+      await findComponent('categoriesView').vm.$emit('delete-category', {
+        key: 'category-10',
+        categoryId: 10,
+        label: 'Sales',
+      });
+
+      expect(removeModal().exists()).toBe(true);
+
+      await removeModal().vm.$emit('update:model-value', false);
+
+      expect(removeModal().exists()).toBe(false);
+    });
   });
 
   describe('View toggle', () => {

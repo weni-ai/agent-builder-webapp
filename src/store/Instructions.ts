@@ -289,6 +289,9 @@ export const useInstructionsStore = defineStore('Instructions', () => {
 
     newInstruction.status = 'loading';
 
+    const previousText = target.text;
+    const previousCategory = target.category;
+
     try {
       const response = await nexusaiAPI.agent_builder.instructions.update({
         projectUuid: projectUuid.value,
@@ -303,6 +306,8 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       newInstruction.status = null;
       callAlert('success', 'edit_instruction.success_alert');
     } catch {
+      target.text = previousText;
+      target.category = previousCategory;
       newInstruction.status = 'error';
       callAlert('error', 'edit_instruction.error_alert');
     }
