@@ -431,6 +431,10 @@
       },
       "safety_guardrails": {
         "allowed": "Blocarea extra dezactivată",
+        "block_message": {
+          "helper": "Afișat clienților când Manager refuză un subiect blocat",
+          "label": "Mesaj de blocare"
+        },
         "blocked": "Blocarea extra activată",
         "configure": "Configurează",
         "description": "Strat suplimentar de blocări pentru subiecte sensibile, pe lângă securitatea integrată a Manager",

@@ -432,6 +432,10 @@
       },
       "safety_guardrails": {
         "allowed": "Extra block off",
+        "block_message": {
+          "helper": "Displayed to customers when Manager refuses a blocked topic",
+          "label": "Block message"
+        },
         "blocked": "Extra block on",
         "configure": "Configure",
         "description": "Extra layer of blocks on sensitive topics, in addition to Manager's built-in safety",
