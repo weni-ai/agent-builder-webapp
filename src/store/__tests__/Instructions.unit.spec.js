@@ -740,6 +740,28 @@ describe('Instructions Store', () => {
       expect(store.categories).toEqual(updated.categories);
       expect(store.newInstruction.status).toBeNull();
     });
+
+    it('rolls back text and category when the grouped update fails', async () => {
+      const originalCategory = { id: 3, name: 'Tone' };
+      store.instructions.data = [
+        { id: 7, text: 'Old', category: originalCategory },
+        { id: 8, text: 'Other', category: null },
+      ];
+      nexusaiAPI.agent_builder.instructions.update.mockRejectedValue(
+        new Error('network'),
+      );
+
+      store.startEditingInstruction({ id: 7 });
+      store.newInstruction.text = 'New';
+      store.newInstruction.category = { id: 5, name: 'Personality' };
+
+      await store.updateEditingInstruction();
+
+      const target = store.instructions.data.find((item) => item.id === 7);
+      expect(target.text).toBe('Old');
+      expect(target.category).toEqual(originalCategory);
+      expect(store.newInstruction.status).toBe('error');
+    });
   });
 
   describe('groupedInstructions getter', () => {
