@@ -354,7 +354,7 @@ describe('Instructions Store', () => {
             'agent_builder.instructions.remove_instruction.success_alert',
           ),
           description: '',
-          type: 'default',
+          type: 'informational',
         });
         expect(result).toEqual({ status: null });
       });
