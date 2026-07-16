@@ -28,6 +28,34 @@
           :loading="guardrailsStore.isLoading"
           @update:topic-enabled="onTopicEnabledChange"
         />
+
+        <div
+          v-if="guardrailsStore.isLoading"
+          class="safety-guardrails-drawer__description-skeleton"
+          data-testid="safety-guardrails-drawer-description-skeleton"
+        >
+          <UnnnicSkeletonLoading
+            tag="div"
+            width="135px"
+            height="16px"
+          />
+          <UnnnicSkeletonLoading
+            tag="div"
+            width="100%"
+            height="90px"
+          />
+          <UnnnicSkeletonLoading
+            tag="div"
+            width="362px"
+            height="16px"
+          />
+        </div>
+
+        <SafetyGuardrailsBlockMessage
+          v-else
+          v-model="draftBlockMessage"
+          :maxLength="BLOCK_MESSAGE_MAX_LENGTH"
+        />
       </section>
 
       <UnnnicDrawerFooter>
@@ -58,7 +86,10 @@ import { computed, ref, watch } from 'vue';
 
 import { useGuardrailsConfigStore } from '@/store/GuardrailsConfig';
 
+import SafetyGuardrailsBlockMessage from './SafetyGuardrailsBlockMessage.vue';
 import SafetyGuardrailsTopicList from './SafetyGuardrailsTopicList.vue';
+
+const BLOCK_MESSAGE_MAX_LENGTH = 250;
 
 const modelValue = defineModel({
   type: Boolean,
@@ -68,9 +99,13 @@ const modelValue = defineModel({
 const guardrailsStore = useGuardrailsConfigStore();
 
 const draftTopics = ref([]);
+const draftBlockMessage = ref('');
 const snapshotTopics = ref([]);
+const snapshotBlockMessage = ref('');
 
 const isDirty = computed(() => {
+  if (draftBlockMessage.value !== snapshotBlockMessage.value) return true;
+
   return draftTopics.value.some((topic, index) => {
     return topic.enabled !== snapshotTopics.value[index]?.enabled;
   });
@@ -99,13 +134,17 @@ function cloneTopics(topics) {
 
 async function loadDraft() {
   draftTopics.value = [];
+  draftBlockMessage.value = '';
   snapshotTopics.value = [];
+  snapshotBlockMessage.value = '';
 
   try {
     await guardrailsStore.fetchConfig();
 
     draftTopics.value = cloneTopics(guardrailsStore.topics);
+    draftBlockMessage.value = guardrailsStore.blockingMessage;
     snapshotTopics.value = cloneTopics(guardrailsStore.topics);
+    snapshotBlockMessage.value = guardrailsStore.blockingMessage;
   } catch {
     close();
   }
@@ -125,10 +164,24 @@ async function save() {
     draftTopics.value,
     snapshotTopics.value,
   );
+  const blockingMessageChanged =
+    draftBlockMessage.value !== snapshotBlockMessage.value;
 
-  if (Object.keys(categoryStates).length === 0) return;
+  if (Object.keys(categoryStates).length === 0 && !blockingMessageChanged) {
+    return;
+  }
 
-  await guardrailsStore.updateConfig({ categoryStates });
+  const payload = {};
+
+  if (Object.keys(categoryStates).length > 0) {
+    payload.categoryStates = categoryStates;
+  }
+
+  if (blockingMessageChanged) {
+    payload.blockingMessage = draftBlockMessage.value;
+  }
+
+  await guardrailsStore.updateConfig(payload);
   close();
 }
 
@@ -158,6 +211,12 @@ function onOpenChange(open) {
 
     @include unnnic-font-body;
     color: $unnnic-color-fg-base;
+  }
+
+  &__description-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-spacing-nano;
   }
 }
 </style>
