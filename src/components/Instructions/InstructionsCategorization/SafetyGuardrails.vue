@@ -22,9 +22,20 @@
       type="secondary"
       :text="$t('agents.instructions.safety_guardrails.configure')"
       data-testid="safety-guardrails-configure"
+      @click="isDrawerOpen = true"
     />
+
+    <SafetyGuardrailsDrawer v-model="isDrawerOpen" />
   </section>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+
+import SafetyGuardrailsDrawer from '@/components/Instructions/SafetyGuardrails/SafetyGuardrailsDrawer.vue';
+
+const isDrawerOpen = ref(false);
+</script>
 
 <style lang="scss" scoped>
 .safety-guardrails {
