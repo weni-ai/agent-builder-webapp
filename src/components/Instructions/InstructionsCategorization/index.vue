@@ -60,6 +60,7 @@
       v-model="isRemoveCategoryModalOpen"
       :category="categoryToDelete"
       data-testid="instructions-remove-category-modal"
+      @update:model-value="onRemoveCategoryModalOpenChange"
     />
   </section>
 </template>
@@ -106,6 +107,12 @@ const showListView = computed(
 function onDeleteCategory(group) {
   categoryToDelete.value = { id: group.categoryId, name: group.label };
   isRemoveCategoryModalOpen.value = true;
+}
+
+function onRemoveCategoryModalOpenChange(open) {
+  if (!open) {
+    categoryToDelete.value = null;
+  }
 }
 </script>
 
