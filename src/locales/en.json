@@ -433,6 +433,11 @@
       "safety_guardrails": {
         "configure": "Configure",
         "description": "Sensitive topics Manager won't discuss",
+        "drawer": {
+          "description": "When a topic is on, Manager refuses to discuss it. Turn off to allow",
+          "title": "Safety guardrails"
+        },
+        "save": "Save",
         "title": "Safety guardrails"
       }
     },
