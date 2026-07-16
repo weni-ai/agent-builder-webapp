@@ -432,6 +432,10 @@
       },
       "safety_guardrails": {
         "allowed": "Allowed",
+        "block_message": {
+          "helper": "Displayed to customers when Manager refuses a blocked topic",
+          "label": "Block message"
+        },
         "blocked": "Blocked",
         "configure": "Configure",
         "description": "Sensitive topics Manager won't discuss",
