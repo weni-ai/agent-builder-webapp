@@ -428,6 +428,11 @@
             }
           }
         }
+      },
+      "safety_guardrails": {
+        "configure": "Configurează",
+        "description": "Subiecte sensibile pe care Manager refuză să le discute",
+        "title": "Guardrails de siguranță"
       }
     },
     "profile": {
