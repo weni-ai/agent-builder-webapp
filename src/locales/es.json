@@ -429,6 +429,11 @@
             }
           }
         }
+      },
+      "safety_guardrails": {
+        "configure": "Configurar",
+        "description": "Temas sensibles que Manager no discutirá",
+        "title": "Barreras de seguridad"
       }
     },
     "profile": {
