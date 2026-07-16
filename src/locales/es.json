@@ -432,6 +432,10 @@
       },
       "safety_guardrails": {
         "allowed": "Bloqueo extra desactivado",
+        "block_message": {
+          "helper": "Mostrado a los clientes cuando Manager rechaza un tema bloqueado",
+          "label": "Mensaje de bloqueo"
+        },
         "blocked": "Bloqueo extra activado",
         "configure": "Configurar",
         "description": "Capa extra de bloqueos para temas sensibles, además de la seguridad integrada de Manager",

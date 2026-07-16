@@ -432,6 +432,10 @@
       },
       "safety_guardrails": {
         "allowed": "Bloqueio extra desativado",
+        "block_message": {
+          "helper": "Exibida aos clientes quando o Manager recusa um tópico bloqueado",
+          "label": "Mensagem de bloqueio"
+        },
         "blocked": "Bloqueio extra ativado",
         "configure": "Configurar",
         "description": "Camada extra de bloqueios para tópicos sensíveis, além da segurança integrada do Manager",
