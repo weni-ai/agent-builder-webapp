@@ -440,6 +440,8 @@
           "title": "Safety guardrails"
         },
         "save": "Save",
+        "save_error": "Safety guardrails couldn't be updated due to a technical issue",
+        "save_success": "Safety guardrails updated",
         "title": "Safety guardrails",
         "topics": {
           "beliefs": {

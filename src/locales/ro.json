@@ -439,6 +439,8 @@
           "title": "Guardrails de siguranță"
         },
         "save": "Salva",
+        "save_error": "Barierele de siguranță nu au putut fi actualizate din cauza unei probleme tehnice",
+        "save_success": "Bariere de siguranță actualizate",
         "title": "Guardrails de siguranță",
         "topics": {
           "beliefs": {
