@@ -440,6 +440,8 @@
           "title": "Barreras de seguridad"
         },
         "save": "Guardar",
+        "save_error": "No se pudieron actualizar las barreras de seguridad debido a un problema técnico",
+        "save_success": "Barreras de seguridad actualizadas",
         "title": "Barreras de seguridad",
         "topics": {
           "beliefs": {
