@@ -444,6 +444,8 @@
           "title": "Extra safety guardrails"
         },
         "save": "Save",
+        "save_error": "Extra safety guardrails couldn't be updated due to a technical issue",
+        "save_success": "Extra safety guardrails updated",
         "title": "Extra safety guardrails",
         "topics": {
           "beliefs": {

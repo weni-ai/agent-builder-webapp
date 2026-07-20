@@ -65,4 +65,20 @@ describe('SafetyGuardrailsTopicList.vue', () => {
       [{ id: 'politics', enabled: false }],
     ]);
   });
+
+  it('renders skeleton placeholders while loading', () => {
+    wrapper = createWrapper({ loading: true });
+
+    expect(
+      wrapper
+        .find('[data-testid="safety-guardrails-topic-list-loading"]')
+        .exists(),
+    ).toBe(true);
+    expect(
+      wrapper.findAll('[data-testid^="safety-guardrails-topic-skeleton-"]'),
+    ).toHaveLength(11);
+    expect(
+      wrapper.find('[data-testid="safety-guardrails-topic-list"]').exists(),
+    ).toBe(false);
+  });
 });

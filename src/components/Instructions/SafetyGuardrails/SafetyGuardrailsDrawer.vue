@@ -47,6 +47,7 @@
 
         <SafetyGuardrailsTopicList
           :topics="draftTopics"
+          :loading="guardrailsStore.isLoading"
           @update:topic-enabled="onTopicEnabledChange"
         />
       </section>
@@ -57,6 +58,7 @@
             data-testid="safety-guardrails-drawer-cancel"
             :text="$t('cancel')"
             type="tertiary"
+            :disabled="guardrailsStore.isSaving"
             @click="close"
           />
         </UnnnicDrawerClose>
@@ -64,8 +66,9 @@
           data-testid="safety-guardrails-drawer-save"
           :text="$t('agents.instructions.safety_guardrails.save')"
           type="primary"
-          :disabled="!isDirty"
-          @click="close"
+          :disabled="!canSave"
+          :loading="guardrailsStore.isSaving"
+          @click="save"
         />
       </UnnnicDrawerFooter>
     </UnnnicDrawerContent>
@@ -75,7 +78,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 
-import { getMockGuardrailsConfig } from '@/api/mocks/guardrailsConfig';
+import { useGuardrailsConfigStore } from '@/store/GuardrailsConfig';
 
 import SafetyGuardrailsTopicList from './SafetyGuardrailsTopicList.vue';
 
@@ -83,6 +86,8 @@ const modelValue = defineModel({
   type: Boolean,
   required: true,
 });
+
+const guardrailsStore = useGuardrailsConfigStore();
 
 const draftTopics = ref([]);
 const snapshotTopics = ref([]);
@@ -93,24 +98,60 @@ const isDirty = computed(() => {
   });
 });
 
+const canSave = computed(() => {
+  return (
+    isDirty.value &&
+    guardrailsStore.writable &&
+    !guardrailsStore.isLoading &&
+    !guardrailsStore.isSaving
+  );
+});
+
 watch(
   modelValue,
   (isOpen) => {
-    if (isOpen) loadDraftFromMock();
+    if (isOpen) loadDraft();
   },
   { immediate: true },
 );
 
-function loadDraftFromMock() {
-  const config = getMockGuardrailsConfig();
+function cloneTopics(topics) {
+  return topics.map((topic) => ({ ...topic }));
+}
 
-  draftTopics.value = config.topics;
-  snapshotTopics.value = structuredClone(config.topics);
+async function loadDraft() {
+  draftTopics.value = [];
+  snapshotTopics.value = [];
+
+  try {
+    await guardrailsStore.fetchConfig();
+
+    draftTopics.value = cloneTopics(guardrailsStore.topics);
+    snapshotTopics.value = cloneTopics(guardrailsStore.topics);
+  } catch {
+    close();
+  }
 }
 
 function onTopicEnabledChange({ id, enabled }) {
+  if (!guardrailsStore.writable) return;
+
   const topic = draftTopics.value.find((item) => item.id === id);
   if (topic) topic.enabled = enabled;
+}
+
+async function save() {
+  if (!canSave.value) return;
+
+  const categoryStates = guardrailsStore.buildCategoryStatesDiff(
+    draftTopics.value,
+    snapshotTopics.value,
+  );
+
+  if (Object.keys(categoryStates).length === 0) return;
+
+  await guardrailsStore.updateConfig({ categoryStates });
+  close();
 }
 
 function close() {
