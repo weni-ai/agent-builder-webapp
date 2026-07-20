@@ -34,7 +34,7 @@ describe('SafetyGuardrailsAllowTopicsDialog.vue', () => {
   it('renders single-topic title and description', () => {
     wrapper = createWrapper();
 
-    expect(findTitle().text()).toBe('Allow Beliefs');
+    expect(findTitle().text()).toBe('Allow Manager to discuss Beliefs?');
     expect(findDescription().text()).toBe(
       'Manager will be able to answer questions about Beliefs. You can turn this guardrail back on at any time.',
     );
@@ -45,7 +45,7 @@ describe('SafetyGuardrailsAllowTopicsDialog.vue', () => {
       topicNames: ['Beliefs', 'Politics', 'Religion'],
     });
 
-    expect(findTitle().text()).toBe('Allow 3 topics');
+    expect(findTitle().text()).toBe('Allow Manager to discuss 3 topics?');
     expect(findDescription().text()).toBe(
       'Manager will be able to answer questions about Beliefs, Politics and Religion. You can turn these guardrails back on at any time.',
     );
