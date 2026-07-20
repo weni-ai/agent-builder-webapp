@@ -444,6 +444,8 @@
           "title": "Camadas extras de segurança"
         },
         "save": "Salvar",
+        "save_error": "Não foi possível atualizar as camadas extras de segurança devido a um problema técnico",
+        "save_success": "Camadas extras de segurança atualizadas",
         "title": "Camadas extras de segurança",
         "topics": {
           "beliefs": {

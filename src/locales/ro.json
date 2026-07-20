@@ -443,6 +443,8 @@
           "title": "Măsuri suplimentare de siguranță"
         },
         "save": "Salva",
+        "save_error": "Măsuri suplimentare de siguranță nu au putut fi actualizate din cauza unei probleme tehnice",
+        "save_success": "Măsuri suplimentare de siguranță actualizate",
         "title": "Măsuri suplimentare de siguranță",
         "topics": {
           "beliefs": {

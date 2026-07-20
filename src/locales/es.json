@@ -444,6 +444,8 @@
           "title": "Capas adicionales de seguridad"
         },
         "save": "Guardar",
+        "save_error": "No se pudieron actualizar las capas adicionales de seguridad debido a un problema técnico",
+        "save_success": "Capas adicionales de seguridad actualizadas",
         "title": "Capas adicionales de seguridad",
         "topics": {
           "beliefs": {
