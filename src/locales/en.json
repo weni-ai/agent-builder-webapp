@@ -431,6 +431,13 @@
         }
       },
       "safety_guardrails": {
+        "allow_topics": {
+          "allow": "Allow",
+          "description_multiple": "Manager will be able to answer questions about {topics}. You can turn these guardrails back on at any time.",
+          "description_single": "Manager will be able to answer questions about {topic}. You can turn this guardrail back on at any time.",
+          "title_multiple": "Allow {count} topics",
+          "title_single": "Allow {topic}"
+        },
         "allowed": "Allowed",
         "block_message": {
           "helper": "Displayed to customers when Manager refuses a blocked topic",

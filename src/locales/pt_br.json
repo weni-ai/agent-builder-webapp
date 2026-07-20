@@ -431,6 +431,13 @@
         }
       },
       "safety_guardrails": {
+        "allow_topics": {
+          "allow": "Permitir",
+          "description_multiple": "O Manager poderá responder perguntas sobre {topics}. Você pode reativar estas barreiras de segurança a qualquer momento.",
+          "description_single": "O Manager poderá responder perguntas sobre {topic}. Você pode reativar esta barreira de segurança a qualquer momento.",
+          "title_multiple": "Permitir {count} tópicos",
+          "title_single": "Permitir {topic}"
+        },
         "allowed": "Permitido",
         "block_message": {
           "helper": "Exibida aos clientes quando o Manager recusa um tópico bloqueado",
