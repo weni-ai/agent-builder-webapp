@@ -89,10 +89,7 @@
 <script setup>
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-const SKELETON_COUNT = Object.keys(
-  t('agents.instructions.safety_guardrails.topics'),
-).length;
+const { tm } = useI18n();
 
 defineProps({
   topics: {
@@ -106,6 +103,10 @@ defineProps({
 });
 
 const emit = defineEmits(['update:topic-enabled']);
+
+const SKELETON_COUNT = Object.keys(
+  tm('agents.instructions.safety_guardrails.topics'),
+).length;
 
 function onToggle(topicId, enabled) {
   emit('update:topic-enabled', { id: topicId, enabled });
