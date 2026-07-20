@@ -35,9 +35,55 @@ export function formatListToReadable(items: string[]): string {
 }
 
 /**
- * Formats a WhatsApp URN into a human-readable phone number format
+ * Formats a WhatsApp business-scoped user ID (BSUID) for display.
+ * BSUID format: ISO 3166 alpha-2 country code + "." + up to 128 alphanumeric chars
+ * (e.g. BR.27078165145141541). Parent BSUIDs include "ENT" between the country
+ * code and the identifier (e.g. US.ENT.11815799212886844830).
+ * @see https://developers.facebook.com/documentation/business-messaging/whatsapp/business-scoped-user-ids
+ */
+function formatWhatsappBsuid(identifier: string): string | null {
+  const BSUID_PATTERN = /^([a-zA-Z]{2})(?:\.(ENT))?\.([a-zA-Z0-9]{1,128})$/i;
+
+  const match = identifier.match(BSUID_PATTERN);
+
+  if (!match) {
+    return null;
+  }
+
+  const [, countryCode, parentScope, userId] = match;
+  const normalizedCountryCode = countryCode.toUpperCase();
+
+  return parentScope
+    ? `${normalizedCountryCode}.ENT.${userId}`
+    : `${normalizedCountryCode}.${userId}`;
+}
+
+/**
+ * Formats a WhatsApp phone number URN into a human-readable format
+ * (e.g. whatsapp:5511999887766 → +55 (11) 99988-7766)
+ */
+function formatWhatsappPhoneNumber(identifier: string): string | null {
+  if (!/^\d{12,}$/.test(identifier)) {
+    return null;
+  }
+
+  const ddi = identifier.substring(0, 2);
+  const ddd = identifier.substring(2, 4);
+  const number = identifier.substring(4);
+
+  const formattedNumber =
+    number.length === 9
+      ? number.replace(/(\d{5})(\d{4})/, '$1-$2') // 99999-9999
+      : number.replace(/(\d{4})(\d{4})/, '$1-$2'); // 9999-9999
+
+  return `+${ddi} (${ddd}) ${formattedNumber}`;
+}
+
+/**
+ * Formats a WhatsApp URN into a human-readable format.
+ * Supports phone numbers and business-scoped user IDs (BSUID).
  * @param {String} urn - The WhatsApp URN to format
- * @returns {String} Formatted phone number or original URN if not a valid WhatsApp URN
+ * @returns {String} Formatted value or original URN if not a recognized WhatsApp URN
  */
 export function formatWhatsappUrn(urn: string): string {
   const WHATSAPP_PREFIX = 'whatsapp:';
@@ -46,22 +92,13 @@ export function formatWhatsappUrn(urn: string): string {
     return urn;
   }
 
-  const phoneNumber = urn.replace(WHATSAPP_PREFIX, '');
+  const identifier = urn.slice(WHATSAPP_PREFIX.length);
 
-  if (phoneNumber.length < 12) {
-    return urn;
-  }
-
-  const ddi = phoneNumber.substring(0, 2);
-  const ddd = phoneNumber.substring(2, 4);
-  const number = phoneNumber.substring(4);
-
-  const formattedNumber =
-    number.length === 9
-      ? number.replace(/(\d{5})(\d{4})/, '$1-$2') // 99999-9999
-      : number.replace(/(\d{4})(\d{4})/, '$1-$2'); // 9999-9999
-
-  return `+${ddi} (${ddd}) ${formattedNumber}`;
+  return (
+    formatWhatsappBsuid(identifier) ??
+    formatWhatsappPhoneNumber(identifier) ??
+    urn
+  );
 }
 
 /**
