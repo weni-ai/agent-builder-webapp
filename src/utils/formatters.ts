@@ -8,7 +8,9 @@ const DATE_FNS_LOCALE_MAP = {
   es: esLocale,
   'pt-br': ptBR,
   ro: roLocale,
-};
+} as const;
+
+type DateFnsLocaleKey = keyof typeof DATE_FNS_LOCALE_MAP;
 
 /**
  * Formats an array of items into a human-readable string with proper conjunction
@@ -120,7 +122,10 @@ function formatWithLocalePattern(
   if (Number.isNaN(parsedDate.getTime())) return '';
 
   const { locale } = i18n.global;
-  const dateLocale = DATE_FNS_LOCALE_MAP[locale.value] || enUS;
+  const dateLocale =
+    locale.value in DATE_FNS_LOCALE_MAP
+      ? DATE_FNS_LOCALE_MAP[locale.value as DateFnsLocaleKey]
+      : enUS;
   const displayPattern = patternMap[locale.value] || fallbackPattern;
 
   return format(parsedDate, displayPattern, { locale: dateLocale });
