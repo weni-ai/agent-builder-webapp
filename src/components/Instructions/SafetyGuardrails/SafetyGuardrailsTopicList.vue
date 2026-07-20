@@ -1,5 +1,51 @@
 <template>
   <ul
+    v-if="loading"
+    class="safety-guardrails-topic-list"
+    data-testid="safety-guardrails-topic-list-loading"
+  >
+    <li
+      v-for="index in SKELETON_COUNT"
+      :key="index"
+      class="safety-guardrails-topic-list__item"
+      :data-testid="`safety-guardrails-topic-skeleton-${index}`"
+    >
+      <div class="safety-guardrails-topic-list__skeleton-content">
+        <div class="safety-guardrails-topic-list__skeleton-row">
+          <UnnnicSkeletonLoading
+            tag="div"
+            width="38px"
+            height="20px"
+          />
+          <UnnnicSkeletonLoading
+            tag="div"
+            width="150px"
+            height="20px"
+          />
+        </div>
+        <div class="safety-guardrails-topic-list__skeleton-row">
+          <span
+            class="safety-guardrails-topic-list__skeleton-spacer"
+            aria-hidden="true"
+          />
+          <UnnnicSkeletonLoading
+            tag="div"
+            width="300px"
+            height="16px"
+          />
+        </div>
+      </div>
+
+      <UnnnicSkeletonLoading
+        tag="div"
+        width="50px"
+        height="16px"
+      />
+    </li>
+  </ul>
+
+  <ul
+    v-else
     class="safety-guardrails-topic-list"
     data-testid="safety-guardrails-topic-list"
   >
@@ -41,10 +87,21 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+const SKELETON_COUNT = Object.keys(
+  t('agents.instructions.safety_guardrails.topics'),
+).length;
+
 defineProps({
   topics: {
     type: Array,
-    required: true,
+    default: () => [],
+  },
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -83,6 +140,30 @@ function onToggle(topicId, enabled) {
   &__status {
     font: $unnnic-font-caption-1;
     color: $unnnic-color-fg-muted;
+  }
+
+  &__skeleton-content {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-space-1;
+
+    * {
+      display: flex;
+    }
+  }
+
+  &__skeleton-row {
+    display: flex;
+    align-items: center;
+    gap: $unnnic-space-2;
+  }
+
+  &__skeleton-spacer {
+    flex-shrink: 0;
+    width: 38px;
+    height: 20px;
   }
 }
 </style>
