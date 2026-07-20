@@ -435,8 +435,8 @@
           "allow": "Permitir",
           "description_multiple": "Manager podrá responder preguntas sobre {topics}. Puedes reactivar estas barreras de seguridad en cualquier momento.",
           "description_single": "Manager podrá responder preguntas sobre {topic}. Puedes reactivar esta barrera de seguridad en cualquier momento.",
-          "title_multiple": "Permitir {count} temas",
-          "title_single": "Permitir {topic}"
+          "title_multiple": "¿Permitir que Manager discuta {count} temas?",
+          "title_single": "¿Permitir que Manager discuta {topic}?"
         },
         "allowed": "Permitido",
         "block_message": {
