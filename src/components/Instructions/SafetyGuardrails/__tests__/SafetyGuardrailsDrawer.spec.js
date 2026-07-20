@@ -30,38 +30,20 @@ vi.mock('@/store/Alert', () => ({
   }),
 }));
 
-const apiConfig = {
-  categories: [
-    {
-      slug: 'politics',
-      name: 'Politics',
-      description: 'Political topics',
-      blocked: true,
-    },
-    {
-      slug: 'hate',
-      name: 'Hate',
-      description: 'Hate speech',
-      blocked: false,
-    },
+const storeConfig = {
+  topics: [
+    { id: 'politics', enabled: true },
+    { id: 'hate', enabled: false },
   ],
-  blocking_message: 'Blocked message',
-  blocking_message_is_custom: false,
+  blockingMessage: 'Blocked message',
   writable: true,
 };
-
-const topics = [
-  { id: 'politics', enabled: true },
-  { id: 'hate', enabled: false },
-];
 
 describe('SafetyGuardrailsDrawer.vue', () => {
   let wrapper;
 
   const createWrapper = async (props = {}) => {
-    nexusaiAPI.router.guardrails_config.read.mockResolvedValue({
-      data: apiConfig,
-    });
+    nexusaiAPI.router.guardrails_config.read.mockResolvedValue(storeConfig);
 
     wrapper = mount(SafetyGuardrailsDrawer, {
       props: {
@@ -112,7 +94,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
       'When a topic is on, Manager refuses to discuss it. Turn off to allow',
     );
     expect(nexusaiAPI.router.guardrails_config.read).toHaveBeenCalled();
-    expect(findTopicList().props('topics')).toEqual(topics);
+    expect(findTopicList().props('topics')).toEqual(storeConfig.topics);
     expect(findTopicList().props('loading')).toBe(false);
   });
 
@@ -144,7 +126,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
 
     expect(findTopicList().props('loading')).toBe(true);
 
-    resolveFetch({ data: apiConfig });
+    resolveFetch(storeConfig);
     await flushPromises();
 
     expect(findTopicList().props('loading')).toBe(false);
@@ -166,9 +148,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
 
   it('saves changed category states and closes the drawer', async () => {
     await createWrapper();
-    nexusaiAPI.router.guardrails_config.update.mockResolvedValue({
-      data: apiConfig,
-    });
+    nexusaiAPI.router.guardrails_config.update.mockResolvedValue(storeConfig);
 
     findTopicList().vm.$emit('update:topic-enabled', {
       id: 'politics',
@@ -181,8 +161,8 @@ describe('SafetyGuardrailsDrawer.vue', () => {
 
     expect(nexusaiAPI.router.guardrails_config.update).toHaveBeenCalledWith({
       projectUuid: 'project-uuid',
-      payload: {
-        category_states: { politics: false },
+      data: {
+        categoryStates: { politics: false },
       },
     });
     expect(wrapper.emitted('update:modelValue')).toEqual([[false]]);
