@@ -6,6 +6,7 @@ import { nextTick } from 'vue';
 import SafetyGuardrailsDrawer from '../SafetyGuardrailsDrawer.vue';
 import SafetyGuardrailsTopicList from '../SafetyGuardrailsTopicList.vue';
 import SafetyGuardrailsBlockMessage from '../SafetyGuardrailsBlockMessage.vue';
+import SafetyGuardrailsAllowTopicsDialog from '../SafetyGuardrailsAllowTopicsDialog.vue';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
@@ -80,6 +81,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
           UnnnicDrawerNext: false,
           SafetyGuardrailsTopicList: true,
           SafetyGuardrailsBlockMessage: true,
+          SafetyGuardrailsAllowTopicsDialog: true,
         },
       },
     });
@@ -95,6 +97,8 @@ describe('SafetyGuardrailsDrawer.vue', () => {
   const findTopicList = () => wrapper.findComponent(SafetyGuardrailsTopicList);
   const findBlockMessage = () =>
     wrapper.findComponent(SafetyGuardrailsBlockMessage);
+  const findAllowTopicsDialog = () =>
+    wrapper.findComponent(SafetyGuardrailsAllowTopicsDialog);
   const findDescriptionSkeleton = () =>
     wrapper.find(
       '[data-testid="safety-guardrails-drawer-description-skeleton"]',
@@ -149,6 +153,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
           UnnnicDrawerNext: false,
           SafetyGuardrailsTopicList: true,
           SafetyGuardrailsBlockMessage: true,
+          SafetyGuardrailsAllowTopicsDialog: true,
         },
       },
     });
@@ -192,7 +197,24 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     expect(findSave().props('disabled')).toBe(false);
   });
 
-  it('saves changed category states and closes the drawer', async () => {
+  it('opens confirm dialog when saving with unblocked topics', async () => {
+    await createWrapper();
+
+    findTopicList().vm.$emit('update:topic-enabled', {
+      id: 'politics',
+      enabled: false,
+    });
+    await nextTick();
+
+    await findSave().trigger('click');
+    await nextTick();
+
+    expect(nexusaiAPI.router.guardrails_config.update).not.toHaveBeenCalled();
+    expect(findAllowTopicsDialog().props('open')).toBe(true);
+    expect(findAllowTopicsDialog().props('topicNames')).toEqual(['Politics']);
+  });
+
+  it('saves after confirming allow topics dialog', async () => {
     await createWrapper();
     nexusaiAPI.router.guardrails_config.update.mockResolvedValue({
       data: apiConfig,
@@ -205,12 +227,39 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     await nextTick();
 
     await findSave().trigger('click');
+    await nextTick();
+
+    findAllowTopicsDialog().vm.$emit('confirm');
     await flushPromises();
 
     expect(nexusaiAPI.router.guardrails_config.update).toHaveBeenCalledWith({
       projectUuid: 'project-uuid',
       payload: {
         category_states: { politics: false },
+      },
+    });
+    expect(wrapper.emitted('update:modelValue')).toEqual([[false]]);
+  });
+
+  it('saves blocked topics without confirmation', async () => {
+    await createWrapper();
+    nexusaiAPI.router.guardrails_config.update.mockResolvedValue({
+      data: apiConfig,
+    });
+
+    findTopicList().vm.$emit('update:topic-enabled', {
+      id: 'hate',
+      enabled: true,
+    });
+    await nextTick();
+
+    await findSave().trigger('click');
+    await flushPromises();
+
+    expect(nexusaiAPI.router.guardrails_config.update).toHaveBeenCalledWith({
+      projectUuid: 'project-uuid',
+      payload: {
+        category_states: { hate: true },
       },
     });
     expect(wrapper.emitted('update:modelValue')).toEqual([[false]]);
@@ -270,6 +319,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
           UnnnicDrawerNext: false,
           SafetyGuardrailsTopicList: true,
           SafetyGuardrailsBlockMessage: true,
+          SafetyGuardrailsAllowTopicsDialog: true,
         },
       },
     });
