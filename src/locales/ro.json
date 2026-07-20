@@ -430,6 +430,13 @@
         }
       },
       "safety_guardrails": {
+        "allow_topics": {
+          "confirm_button": "Elimină",
+          "description_multiple": "Manager va putea răspunde la întrebări despre {topics}. Poți reactiva aceste blocări suplimentare oricând",
+          "description_single": "Manager va putea răspunde la întrebări despre {topic}. Poți reactiva această blocare suplimentară oricând",
+          "title_multiple": "Elimină {count} blocări suplimentare",
+          "title_single": "Elimină blocarea suplimentară pentru {topic}"
+        },
         "allowed": "Blocarea extra dezactivată",
         "block_message": {
           "helper": "Afișat clienților când Manager refuză un subiect blocat",
