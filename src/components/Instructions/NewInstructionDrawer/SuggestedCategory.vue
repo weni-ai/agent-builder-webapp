@@ -248,6 +248,9 @@ function handleOpenChange(open: boolean) {
     gap: $unnnic-space-4;
 
     padding: $unnnic-space-4;
+
+    overflow: auto;
+    height: 100%;
   }
 
   &__category-section {
