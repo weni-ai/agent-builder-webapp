@@ -1,18 +1,25 @@
 import request from '@/api/nexusaiRequest';
+import { GuardrailsConfigAdapter } from '@/api/adapters/guardrails/guardrailsConfig';
 
 export const GuardrailsConfig = {
-  read({ projectUuid }) {
-    return request.$http.get(`api/${projectUuid}/guardrails-config/`);
+  async read({ projectUuid }) {
+    const response = await request.$http.get(
+      `api/${projectUuid}/guardrails-config/`,
+    );
+
+    return GuardrailsConfigAdapter.fromApi(response.data);
   },
 
-  update({ projectUuid, payload, requestOptions = {} }) {
-    return request.$http.patch(
+  async update({ projectUuid, data, requestOptions = {} }) {
+    const response = await request.$http.patch(
       `api/${projectUuid}/guardrails-config/`,
-      payload,
+      GuardrailsConfigAdapter.toApi(data),
       {
         hideGenericErrorAlert: true,
         ...requestOptions,
       },
     );
+
+    return GuardrailsConfigAdapter.fromApi(response.data);
   },
 };

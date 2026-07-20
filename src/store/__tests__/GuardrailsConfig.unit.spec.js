@@ -25,23 +25,12 @@ vi.mock('@/api/nexusaiAPI', () => ({
   },
 }));
 
-const apiConfig = {
-  categories: [
-    {
-      slug: 'politics',
-      name: 'Politics',
-      description: 'Political topics',
-      blocked: true,
-    },
-    {
-      slug: 'hate',
-      name: 'Hate',
-      description: 'Hate speech',
-      blocked: false,
-    },
+const storeConfig = {
+  topics: [
+    { id: 'politics', enabled: true },
+    { id: 'hate', enabled: false },
   ],
-  blocking_message: 'Blocked message',
-  blocking_message_is_custom: true,
+  blockingMessage: 'Blocked message',
   writable: true,
 };
 
@@ -59,30 +48,22 @@ describe('GuardrailsConfig store', () => {
 
   it('starts with empty config and null status', () => {
     expect(store.topics).toEqual([]);
-    expect(store.categories).toEqual([]);
     expect(store.blockingMessage).toBe('');
     expect(store.writable).toBe(false);
     expect(store.status).toBeNull();
   });
 
   describe('fetchConfig', () => {
-    it('loads config and maps categories to topics', async () => {
-      nexusaiAPI.router.guardrails_config.read.mockResolvedValue({
-        data: apiConfig,
-      });
+    it('loads normalized config into the store', async () => {
+      nexusaiAPI.router.guardrails_config.read.mockResolvedValue(storeConfig);
 
       await store.fetchConfig();
 
       expect(nexusaiAPI.router.guardrails_config.read).toHaveBeenCalledWith({
         projectUuid: 'project-uuid',
       });
-      expect(store.categories).toEqual(apiConfig.categories);
-      expect(store.topics).toEqual([
-        { id: 'politics', enabled: true },
-        { id: 'hate', enabled: false },
-      ]);
+      expect(store.topics).toEqual(storeConfig.topics);
       expect(store.blockingMessage).toBe('Blocked message');
-      expect(store.blockingMessageIsCustom).toBe(true);
       expect(store.writable).toBe(true);
       expect(store.status).toBe('success');
     });
@@ -103,15 +84,13 @@ describe('GuardrailsConfig store', () => {
   });
 
   describe('updateConfig', () => {
-    it('sends category_states and updates local state', async () => {
+    it('sends camelCase data and updates local state', async () => {
       nexusaiAPI.router.guardrails_config.update.mockResolvedValue({
-        data: {
-          ...apiConfig,
-          categories: [
-            { ...apiConfig.categories[0], blocked: false },
-            apiConfig.categories[1],
-          ],
-        },
+        ...storeConfig,
+        topics: [
+          { id: 'politics', enabled: false },
+          { id: 'hate', enabled: false },
+        ],
       });
 
       await store.updateConfig({
@@ -120,8 +99,8 @@ describe('GuardrailsConfig store', () => {
 
       expect(nexusaiAPI.router.guardrails_config.update).toHaveBeenCalledWith({
         projectUuid: 'project-uuid',
-        payload: {
-          category_states: { politics: false },
+        data: {
+          categoryStates: { politics: false },
         },
       });
       expect(store.topics).toEqual([

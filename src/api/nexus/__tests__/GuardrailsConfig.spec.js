@@ -12,33 +12,60 @@ vi.mock('@/api/nexusaiRequest', () => ({
   },
 }));
 
+const apiConfig = {
+  categories: [
+    {
+      slug: 'politics',
+      name: 'Politics',
+      description: 'Political topics',
+      blocked: true,
+    },
+  ],
+  blocking_message: 'Blocked message',
+  writable: true,
+};
+
 describe('GuardrailsConfig API', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('requests the guardrails config for the project', () => {
-    GuardrailsConfig.read({ projectUuid: 'project-uuid' });
+  it('requests and normalizes the guardrails config', async () => {
+    request.$http.get.mockResolvedValue({ data: apiConfig });
+
+    const result = await GuardrailsConfig.read({
+      projectUuid: 'project-uuid',
+    });
 
     expect(request.$http.get).toHaveBeenCalledWith(
       'api/project-uuid/guardrails-config/',
     );
+    expect(result).toEqual({
+      topics: [{ id: 'politics', enabled: true }],
+      blockingMessage: 'Blocked message',
+      writable: true,
+    });
   });
 
-  it('patches the guardrails config with the given payload', () => {
-    const payload = {
-      category_states: { politics: false },
-    };
+  it('patches with a snake_case payload and returns normalized config', async () => {
+    request.$http.patch.mockResolvedValue({ data: apiConfig });
 
-    GuardrailsConfig.update({
+    const result = await GuardrailsConfig.update({
       projectUuid: 'project-uuid',
-      payload,
+      data: {
+        categoryStates: { politics: false },
+        blockingMessage: 'Updated message',
+      },
     });
 
     expect(request.$http.patch).toHaveBeenCalledWith(
       'api/project-uuid/guardrails-config/',
-      payload,
+      {
+        category_states: { politics: false },
+        blocking_message: 'Updated message',
+      },
       { hideGenericErrorAlert: true },
     );
+    expect(result.topics).toEqual([{ id: 'politics', enabled: true }]);
   });
 });
