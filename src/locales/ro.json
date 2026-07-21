@@ -1021,7 +1021,7 @@
       "add_site": "Adaugă site",
       "delete_site": {
         "title": "Șterge site-ul",
-        "description": "Sigur dorești să ștergi site-ul <b>{name}</b>?<br /> Tot conținutul acestui site va fi eliminat din baza AI.",
+        "description": "Sigur dorești să ștergi site-ul {name}? Tot conținutul acestui site va fi eliminat din baza AI.",
         "cancel": "Anulează",
         "delete": "Ștergere"
       },

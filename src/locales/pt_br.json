@@ -1022,7 +1022,7 @@
       "add_site": "Adicionar site",
       "delete_site": {
         "title": "Excluir site",
-        "description": "Tem certeza de que deseja excluir o site <b>{name}</b>?<br />O conteúdo deste site será removido da base da IA.",
+        "description": "Tem certeza de que deseja excluir o site {name}? O conteúdo deste site será removido da base da IA.",
         "cancel": "Cancelar",
         "delete": "Excluir"
       },

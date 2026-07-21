@@ -333,7 +333,7 @@ export default {
         })
         .then(() => {
           this.alertStore.add({
-            type: 'default',
+            type: 'informational',
             text: this.$t('content_bases.files.file_removed_from_base', {
               name: this.modalDeleteFile.name,
             }),
