@@ -5,6 +5,7 @@ import { nextTick } from 'vue';
 
 import SafetyGuardrailsDrawer from '../SafetyGuardrailsDrawer.vue';
 import SafetyGuardrailsTopicList from '../SafetyGuardrailsTopicList.vue';
+import SafetyGuardrailsBlockMessage from '../SafetyGuardrailsBlockMessage.vue';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
@@ -60,6 +61,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
         stubs: {
           UnnnicDrawerNext: false,
           SafetyGuardrailsTopicList: true,
+          SafetyGuardrailsBlockMessage: true,
         },
       },
     });
@@ -73,6 +75,12 @@ describe('SafetyGuardrailsDrawer.vue', () => {
   const findDescription = () =>
     wrapper.find('[data-testid="safety-guardrails-drawer-description"]');
   const findTopicList = () => wrapper.findComponent(SafetyGuardrailsTopicList);
+  const findBlockMessage = () =>
+    wrapper.findComponent(SafetyGuardrailsBlockMessage);
+  const findDescriptionSkeleton = () =>
+    wrapper.find(
+      '[data-testid="safety-guardrails-drawer-description-skeleton"]',
+    );
   const findSave = () =>
     wrapper.findComponent('[data-testid="safety-guardrails-drawer-save"]');
   const findCancel = () =>
@@ -86,7 +94,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     wrapper?.unmount();
   });
 
-  it('renders drawer title, description, and topics from the store', async () => {
+  it('renders drawer title, description, topics, and block message from the store', async () => {
     await createWrapper();
 
     expect(findTitle().text()).toBe('Safety guardrails');
@@ -96,6 +104,10 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     expect(nexusaiAPI.router.guardrails_config.read).toHaveBeenCalled();
     expect(findTopicList().props('topics')).toEqual(storeConfig.topics);
     expect(findTopicList().props('loading')).toBe(false);
+    expect(findBlockMessage().props('modelValue')).toBe(
+      apiConfig.blocking_message,
+    );
+    expect(findBlockMessage().props('maxLength')).toBe(250);
   });
 
   it('passes loading true to the topic list while fetching', async () => {
@@ -118,6 +130,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
         stubs: {
           UnnnicDrawerNext: false,
           SafetyGuardrailsTopicList: true,
+          SafetyGuardrailsBlockMessage: true,
         },
       },
     });
@@ -125,11 +138,15 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     await nextTick();
 
     expect(findTopicList().props('loading')).toBe(true);
+    expect(findDescriptionSkeleton().exists()).toBe(true);
+    expect(findBlockMessage().exists()).toBe(false);
 
     resolveFetch(storeConfig);
     await flushPromises();
 
     expect(findTopicList().props('loading')).toBe(false);
+    expect(findDescriptionSkeleton().exists()).toBe(false);
+    expect(findBlockMessage().exists()).toBe(true);
   });
 
   it('keeps Save disabled until a draft change is made', async () => {
@@ -141,6 +158,17 @@ describe('SafetyGuardrailsDrawer.vue', () => {
       id: 'politics',
       enabled: false,
     });
+    await nextTick();
+
+    expect(findSave().props('disabled')).toBe(false);
+  });
+
+  it('enables Save when the block message draft changes', async () => {
+    await createWrapper();
+
+    expect(findSave().props('disabled')).toBe(true);
+
+    findBlockMessage().vm.$emit('update:modelValue', 'Updated block message');
     await nextTick();
 
     expect(findSave().props('disabled')).toBe(false);
@@ -163,6 +191,31 @@ describe('SafetyGuardrailsDrawer.vue', () => {
       projectUuid: 'project-uuid',
       data: {
         categoryStates: { politics: false },
+      },
+    });
+    expect(wrapper.emitted('update:modelValue')).toEqual([[false]]);
+  });
+
+  it('saves changed block message and closes the drawer', async () => {
+    await createWrapper();
+    nexusaiAPI.router.guardrails_config.update.mockResolvedValue({
+      data: {
+        ...apiConfig,
+        blocking_message: 'Updated block message',
+        blocking_message_is_custom: true,
+      },
+    });
+
+    findBlockMessage().vm.$emit('update:modelValue', 'Updated block message');
+    await nextTick();
+
+    await findSave().trigger('click');
+    await flushPromises();
+
+    expect(nexusaiAPI.router.guardrails_config.update).toHaveBeenCalledWith({
+      projectUuid: 'project-uuid',
+      payload: {
+        blocking_message: 'Updated block message',
       },
     });
     expect(wrapper.emitted('update:modelValue')).toEqual([[false]]);
@@ -196,6 +249,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
         stubs: {
           UnnnicDrawerNext: false,
           SafetyGuardrailsTopicList: true,
+          SafetyGuardrailsBlockMessage: true,
         },
       },
     });

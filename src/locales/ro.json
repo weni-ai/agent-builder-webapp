@@ -431,6 +431,10 @@
       },
       "safety_guardrails": {
         "allowed": "Permis",
+        "block_message": {
+          "helper": "Afișat clienților când Manager refuză un subiect blocat",
+          "label": "Mesaj de blocare"
+        },
         "blocked": "Blocat",
         "configure": "Configurează",
         "description": "Subiecte sensibile pe care Manager refuză să le discute",

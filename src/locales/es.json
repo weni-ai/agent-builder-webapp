@@ -432,6 +432,10 @@
       },
       "safety_guardrails": {
         "allowed": "Permitido",
+        "block_message": {
+          "helper": "Mostrado a los clientes cuando Manager rechaza un tema bloqueado",
+          "label": "Mensaje de bloqueo"
+        },
         "blocked": "Bloqueado",
         "configure": "Configurar",
         "description": "Temas sensibles que Manager no discutirá",
