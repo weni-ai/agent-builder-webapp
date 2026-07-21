@@ -35,10 +35,9 @@ describe('FilterStatus.vue', () => {
 
     store = useSupervisorStore();
 
-    store.getInitialSelectFilter = vi.fn().mockReturnValue([
-      { label: 'Optimized Resolution', value: 'optimized_resolution' },
-      { label: 'Other Conclusion', value: 'other_conclusion' },
-    ]);
+    store.getInitialSelectFilter = vi
+      .fn()
+      .mockReturnValue(['optimized_resolution', 'other_conclusion']);
 
     wrapper = mount(FilterStatus, {
       global: {
@@ -55,12 +54,7 @@ describe('FilterStatus.vue', () => {
   describe('Component rendering', () => {
     it('renders with correct props', () => {
       expect(statusSelect().exists()).toBe(true);
-      expect(statusSelect().props('orderedByIndex')).toBe(true);
-      expect(statusSelect().props('multiple')).toBe(true);
-      expect(
-        statusSelect().props('multipleWithoutSelectsMessage'),
-      ).toBeDefined();
-      expect(statusSelect().props('autocomplete')).toBe(true);
+      expect(statusSelect().props('clearable')).toBe(true);
     });
 
     it('initializes with store status values', () => {
@@ -75,16 +69,13 @@ describe('FilterStatus.vue', () => {
       const options = statusSelect().props('options');
       expect(options).toStrictEqual(wrapper.vm.statusOptions);
       expect(Array.isArray(options)).toBe(true);
-      expect(options.length).toBe(6); // 1 default + 5 status options
+      expect(options.length).toBe(5);
     });
   });
 
   describe('Status selection functionality', () => {
     it('updates local status filter when select changes', async () => {
-      const newStatusSelection = [
-        { label: 'Optimized Resolution', value: 'optimized_resolution' },
-        { label: 'In Progress', value: 'in_progress' },
-      ];
+      const newStatusSelection = ['optimized_resolution', 'in_progress'];
 
       await statusSelect().vm.$emit('update:modelValue', newStatusSelection);
       await nextTick();
@@ -94,11 +85,8 @@ describe('FilterStatus.vue', () => {
 
     it('updates store temporary filters when status changes', async () => {
       const newStatusSelection = [
-        {
-          label: 'Transferred to Human Support',
-          value: 'transferred_to_human_support',
-        },
-        { label: 'Unclassified', value: 'unclassified' },
+        'transferred_to_human_support',
+        'unclassified',
       ];
 
       await statusSelect().vm.$emit('update:modelValue', newStatusSelection);
@@ -111,20 +99,14 @@ describe('FilterStatus.vue', () => {
     });
 
     it('handles empty status selection', async () => {
-      const emptySelection = [];
-
-      await statusSelect().vm.$emit('update:modelValue', emptySelection);
+      await statusSelect().vm.$emit('update:modelValue', []);
       await nextTick();
 
       expect(store.temporaryFilters.status).toEqual([]);
     });
 
     it('handles single status selection', async () => {
-      const singleSelection = [
-        { label: 'Other Conclusion', value: 'other_conclusion' },
-      ];
-
-      await statusSelect().vm.$emit('update:modelValue', singleSelection);
+      await statusSelect().vm.$emit('update:modelValue', ['other_conclusion']);
       await nextTick();
 
       expect(store.temporaryFilters.status).toEqual(['other_conclusion']);
@@ -135,7 +117,6 @@ describe('FilterStatus.vue', () => {
     it('includes all expected status options', () => {
       const options = statusSelect().props('options');
       const expectedValues = [
-        '',
         'optimized_resolution',
         'other_conclusion',
         'transferred_to_human_support',
@@ -147,21 +128,6 @@ describe('FilterStatus.vue', () => {
       expectedValues.forEach((expectedValue) => {
         expect(actualValues).toContain(expectedValue);
       });
-    });
-
-    it('handles status options with empty values', async () => {
-      const selectionWithEmpty = [
-        { label: 'Conversations', value: '' },
-        { label: 'Optimized Resolution', value: 'optimized_resolution' },
-      ];
-
-      await statusSelect().vm.$emit('update:modelValue', selectionWithEmpty);
-      await nextTick();
-
-      expect(store.temporaryFilters.status).toEqual([
-        '',
-        'optimized_resolution',
-      ]);
     });
   });
 });
