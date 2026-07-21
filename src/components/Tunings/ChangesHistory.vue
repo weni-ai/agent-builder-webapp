@@ -27,12 +27,11 @@
         </UnnnicIntelligenceText>
       </section>
 
-      <UnnnicSelectSmart
+      <UnnnicSelect
         v-model:modelValue="currentFilterOption"
         class="select-filter"
         data-test="select-filter"
         :options="filterOptions"
-        orderedByIndex
       />
     </section>
     <UnnnicTableNext
@@ -95,11 +94,11 @@ const filterOptions = computed(() => [
   },
 ]);
 
-const currentFilterOption = ref(filterOptions.value[0].value.value);
+const currentFilterOption = ref('all');
 
 const noChangesDetected = computed(() => {
   const noRows = table.value.rows.length === 0;
-  const isAllFilterSelected = currentFilterOption.value?.[0].value === 'all';
+  const isAllFilterSelected = currentFilterOption.value === 'all';
 
   return noRows && isAllFilterSelected && !isLoading.value;
 });
@@ -160,11 +159,11 @@ const getChangesHistoryData = async (page = 1, filter = '') => {
 };
 
 watch(pagination, (newPage) => {
-  getChangesHistoryData(newPage, currentFilterOption.value[0].value);
+  getChangesHistoryData(newPage, currentFilterOption.value);
 });
 
 watch(currentFilterOption, (option) => {
-  getChangesHistoryData(1, option[0].value);
+  getChangesHistoryData(1, option);
   pagination.value = 1;
 });
 
@@ -219,9 +218,5 @@ function formatTimeSince(dateString) {
 }
 .select-filter {
   min-width: 260px;
-  :deep(.input:focus) {
-    outline-color: $unnnic-color-weni-600;
-    outline-width: 1.5px;
-  }
 }
 </style>

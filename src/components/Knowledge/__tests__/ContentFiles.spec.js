@@ -85,6 +85,11 @@ const setup = ({ files }) =>
     },
     global: {
       plugins: [pinia],
+      stubs: {
+        UnnnicDialogClose: {
+          template: '<div><slot /></div>',
+        },
+      },
     },
   });
 
@@ -110,9 +115,11 @@ describe('ContentFiles.vue', () => {
 
   describe('when the component is initialized', () => {
     it('does not show modal delete file', () => {
-      const modalDeleteFile = wrapper.find('[data-test="modal-remove-file"]');
+      const modalDeleteFile = wrapper.findComponent(
+        '[data-testid="modal-remove-file"]',
+      );
 
-      expect(modalDeleteFile.exists()).toBeFalsy();
+      expect(modalDeleteFile.props('open')).toBe(false);
     });
 
     it('registers events for drop files behavior', () => {
@@ -263,14 +270,16 @@ describe('ContentFiles.vue', () => {
     });
 
     it('shows modal delete file', async () => {
-      const modalRemoveFile = wrapper.find('[data-test="modal-remove-file"]');
+      const modalRemoveFile = wrapper.findComponent(
+        '[data-testid="modal-remove-file"]',
+      );
 
-      expect(modalRemoveFile.exists()).toBeTruthy();
+      expect(modalRemoveFile.props('open')).toBe(true);
     });
 
     describe('when user confirms', () => {
       it('should request to remove the file', async () => {
-        const buttonRemove = wrapper.find('[data-test="button-remove"]');
+        const buttonRemove = wrapper.find('[data-testid="button-remove"]');
 
         await buttonRemove.trigger('click');
 
