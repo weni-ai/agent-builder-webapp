@@ -665,6 +665,105 @@ describe('Instructions Store', () => {
     });
   });
 
+  describe('Instruction drawer (create/edit)', () => {
+    it('opens the drawer in create mode and resets the new instruction', () => {
+      store.newInstruction.text = 'leftover';
+      store.newInstruction.category = { id: 1, name: 'X' };
+
+      store.openNewInstructionDrawer();
+
+      expect(store.isInstructionDrawerOpen).toBe(true);
+      expect(store.instructionDrawerMode).toBe('create');
+      expect(store.editingInstructionId).toBeNull();
+      expect(store.newInstruction.text).toBe('');
+      expect(store.newInstruction.category).toBeNull();
+    });
+
+    it('opens the drawer in edit mode prefilled from the instruction', () => {
+      store.instructions.data = [
+        { id: 7, text: 'Be concise', category: { id: 3, name: 'Tone' } },
+      ];
+
+      store.startEditingInstruction({ id: 7 });
+
+      expect(store.isInstructionDrawerOpen).toBe(true);
+      expect(store.instructionDrawerMode).toBe('edit');
+      expect(store.editingInstructionId).toBe(7);
+      expect(store.newInstruction.text).toBe('Be concise');
+      expect(store.newInstruction.category).toEqual({ id: 3, name: 'Tone' });
+    });
+
+    it('does not open the drawer for an unknown instruction', () => {
+      store.instructions.data = [];
+
+      store.startEditingInstruction({ id: 999 });
+
+      expect(store.isInstructionDrawerOpen).toBe(false);
+    });
+
+    it('closes the drawer and resets state', () => {
+      store.instructions.data = [{ id: 7, text: 'x', category: null }];
+      store.startEditingInstruction({ id: 7 });
+
+      store.closeInstructionDrawer();
+
+      expect(store.isInstructionDrawerOpen).toBe(false);
+      expect(store.instructionDrawerMode).toBe('create');
+      expect(store.editingInstructionId).toBeNull();
+      expect(store.newInstruction.text).toBe('');
+    });
+
+    it('updates the edited instruction (text + category) via the grouped update', async () => {
+      store.instructions.data = [
+        { id: 7, text: 'Old', category: { id: 3, name: 'Tone' } },
+        { id: 8, text: 'Other', category: null },
+      ];
+      const updated = {
+        instructions: [
+          { id: 7, text: 'New', category: { id: 5, name: 'Personality' } },
+          { id: 8, text: 'Other', category: null },
+        ],
+        categories: [{ id: 5, name: 'Personality' }],
+      };
+      nexusaiAPI.agent_builder.instructions.update.mockResolvedValue(updated);
+
+      store.startEditingInstruction({ id: 7 });
+      store.newInstruction.text = 'New';
+      store.newInstruction.category = { id: 5, name: 'Personality' };
+
+      await store.updateEditingInstruction();
+
+      expect(nexusaiAPI.agent_builder.instructions.update).toHaveBeenCalledWith(
+        expect.objectContaining({ projectUuid: 'test-project-uuid' }),
+      );
+      expect(store.instructions.data).toEqual(updated.instructions);
+      expect(store.categories).toEqual(updated.categories);
+      expect(store.newInstruction.status).toBeNull();
+    });
+
+    it('rolls back text and category when the grouped update fails', async () => {
+      const originalCategory = { id: 3, name: 'Tone' };
+      store.instructions.data = [
+        { id: 7, text: 'Old', category: originalCategory },
+        { id: 8, text: 'Other', category: null },
+      ];
+      nexusaiAPI.agent_builder.instructions.update.mockRejectedValue(
+        new Error('network'),
+      );
+
+      store.startEditingInstruction({ id: 7 });
+      store.newInstruction.text = 'New';
+      store.newInstruction.category = { id: 5, name: 'Personality' };
+
+      await store.updateEditingInstruction();
+
+      const target = store.instructions.data.find((item) => item.id === 7);
+      expect(target.text).toBe('Old');
+      expect(target.category).toEqual(originalCategory);
+      expect(store.newInstruction.status).toBe('error');
+    });
+  });
+
   describe('groupedInstructions getter', () => {
     const viewT = (key) => i18n.global.t(`agents.instructions.view.${key}`);
 

@@ -44,11 +44,13 @@
       <CategoriesView
         v-if="showCategoriesView"
         data-testid="instructions-categories-view"
+        @edit="instructionsStore.startEditingInstruction"
       />
 
       <ListView
         v-if="showListView"
         data-testid="instructions-list-view"
+        @edit="instructionsStore.startEditingInstruction"
       />
     </template>
   </section>
