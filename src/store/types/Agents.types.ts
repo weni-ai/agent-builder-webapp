@@ -8,6 +8,7 @@ export type AgentCategory =
   | 'crm_and_lead_capture'
   | 'feedback_and_surveys'
   | 'utilities_and_monitoring'
+  | 'b2b'
   | 'others';
 
 export type AgentSystem = {
@@ -83,13 +84,8 @@ export interface Agent {
   last_updated?: string | null;
 }
 
-type SelectOption = {
-  label: string;
-  value: string;
-};
-
 export type AssignAgentsFilters = {
   search: string;
-  category: SelectOption[] | [];
+  category: string;
   system: string | 'ALL_OFFICIAL' | 'ALL_CUSTOM' | '';
 };

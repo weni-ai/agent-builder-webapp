@@ -22,7 +22,7 @@ describe('AssignAgentsSidebar', () => {
         AgentsTeam: {
           assignAgentsFilters: {
             search: '',
-            category: [],
+            category: '',
             system: 'ALL_OFFICIAL',
           },
           availableSystems,

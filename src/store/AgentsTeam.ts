@@ -41,7 +41,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
 
   const assignAgentsFilters = reactive<AssignAgentsFilters>({
     search: '',
-    category: [],
+    category: '',
     system: 'ALL_OFFICIAL',
   });
 
@@ -123,7 +123,7 @@ export const useAgentsTeamStore = defineStore('AgentsTeam', () => {
       const { agents } = await nexusaiAPI.router.agents_team.listOfficialAgents(
         {
           name: search,
-          category: category?.[0]?.value ?? '',
+          category,
           system: system === 'ALL_OFFICIAL' ? '' : system,
         },
       );
