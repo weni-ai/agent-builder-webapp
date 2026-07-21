@@ -430,6 +430,13 @@
         }
       },
       "safety_guardrails": {
+        "allow_topics": {
+          "allow": "Permite",
+          "description_multiple": "Manager va putea răspunde la întrebări despre {topics}. Poți reactiva aceste bariere de siguranță oricând.",
+          "description_single": "Manager va putea răspunde la întrebări despre {topic}. Poți reactiva această barieră de siguranță oricând.",
+          "title_multiple": "Permiți ca Manager să discute {count} subiecte?",
+          "title_single": "Permiți ca Manager să discute {topic}?"
+        },
         "allowed": "Permis",
         "block_message": {
           "helper": "Afișat clienților când Manager refuză un subiect blocat",

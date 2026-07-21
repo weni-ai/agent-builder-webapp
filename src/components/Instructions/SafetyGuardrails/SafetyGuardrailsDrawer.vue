@@ -79,13 +79,22 @@
       </UnnnicDrawerFooter>
     </UnnnicDrawerContent>
   </UnnnicDrawerNext>
+
+  <SafetyGuardrailsAllowTopicsDialog
+    v-model:open="isAllowTopicsDialogOpen"
+    :topicNames="unblockedTopicNames"
+    :loading="guardrailsStore.isSaving"
+    @confirm="onConfirmAllowTopics"
+  />
 </template>
 
 <script setup>
 import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { useGuardrailsConfigStore } from '@/store/GuardrailsConfig';
 
+import SafetyGuardrailsAllowTopicsDialog from './SafetyGuardrailsAllowTopicsDialog.vue';
 import SafetyGuardrailsBlockMessage from './SafetyGuardrailsBlockMessage.vue';
 import SafetyGuardrailsTopicList from './SafetyGuardrailsTopicList.vue';
 
@@ -96,12 +105,21 @@ const modelValue = defineModel({
   required: true,
 });
 
+const { t } = useI18n();
 const guardrailsStore = useGuardrailsConfigStore();
 
 const draftTopics = ref([]);
 const draftBlockMessage = ref('');
 const snapshotTopics = ref([]);
 const snapshotBlockMessage = ref('');
+const isAllowTopicsDialogOpen = ref(false);
+const unblockedTopicIds = ref([]);
+
+const unblockedTopicNames = computed(() => {
+  return unblockedTopicIds.value.map((id) =>
+    t(`agents.instructions.safety_guardrails.topics.${id}.name`),
+  );
+});
 
 const isDirty = computed(() => {
   if (draftBlockMessage.value !== snapshotBlockMessage.value) return true;
@@ -132,11 +150,24 @@ function cloneTopics(topics) {
   return topics.map((topic) => ({ ...topic }));
 }
 
+function getUnblockedTopicIds() {
+  return draftTopics.value
+    .filter((topic) => {
+      const previous = snapshotTopics.value.find(
+        (item) => item.id === topic.id,
+      );
+      return previous?.enabled === true && topic.enabled === false;
+    })
+    .map((topic) => topic.id);
+}
+
 async function loadDraft() {
   draftTopics.value = [];
   draftBlockMessage.value = '';
   snapshotTopics.value = [];
   snapshotBlockMessage.value = '';
+  isAllowTopicsDialogOpen.value = false;
+  unblockedTopicIds.value = [];
 
   try {
     await guardrailsStore.fetchConfig();
@@ -157,9 +188,7 @@ function onTopicEnabledChange({ id, enabled }) {
   if (topic) topic.enabled = enabled;
 }
 
-async function save() {
-  if (!canSave.value) return;
-
+async function persistChanges() {
   const categoryStates = guardrailsStore.buildCategoryStatesDiff(
     draftTopics.value,
     snapshotTopics.value,
@@ -185,7 +214,27 @@ async function save() {
   close();
 }
 
+async function save() {
+  if (!canSave.value) return;
+
+  const unblockedIds = getUnblockedTopicIds();
+
+  if (unblockedIds.length > 0) {
+    unblockedTopicIds.value = unblockedIds;
+    isAllowTopicsDialogOpen.value = true;
+    return;
+  }
+
+  await persistChanges();
+}
+
+async function onConfirmAllowTopics() {
+  await persistChanges();
+  isAllowTopicsDialogOpen.value = false;
+}
+
 function close() {
+  isAllowTopicsDialogOpen.value = false;
   modelValue.value = false;
 }
 
