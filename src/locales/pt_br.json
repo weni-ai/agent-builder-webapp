@@ -433,6 +433,11 @@
       "safety_guardrails": {
         "configure": "Configurar",
         "description": "Tópicos sensíveis que o Manager não discutirá",
+        "drawer": {
+          "description": "Quando um tópico está ativado, o Manager se recusa a discuti-lo. Desative para permitir",
+          "title": "Barreiras de segurança"
+        },
+        "save": "Salvar",
         "title": "Barreiras de segurança"
       }
     },
