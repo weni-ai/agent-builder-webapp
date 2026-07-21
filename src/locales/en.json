@@ -973,7 +973,7 @@
       "exceeds_limit": "File size exceeds the limit of {limitMB} MB",
       "delete_file": {
         "title": "Delete file",
-        "description": "Are you sure you want to delete the file <b>{name}</b>?<br /> The content of this file will be removed from the AI base.",
+        "description": "Are you sure you want to delete the file {name}? The content of this file will be removed from the AI base.",
         "cancel": "Cancel",
         "delete": "Delete"
       },

@@ -972,7 +972,7 @@
       "exceeds_limit": "O tamanho do arquivo excede o limite de {limitMB} MB",
       "delete_file": {
         "title": "Excluir arquivo",
-        "description": "Tem certeza de que deseja excluir o arquivo <b>{name}</b>?<br />O conteúdo deste arquivo será removido da base da IA.",
+        "description": "Tem certeza de que deseja excluir o arquivo {name}? O conteúdo deste arquivo será removido da base da IA.",
         "cancel": "Cancelar",
         "delete": "Excluir"
       },
