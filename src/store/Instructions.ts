@@ -520,6 +520,42 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     instructionSuggestedByAI.status = null;
   }
 
+  const isExportingInstructionsLoading = ref(false);
+  async function exportInstructions() {
+    try {
+      isExportingInstructionsLoading.value = true;
+
+      const response = await nexusaiAPI.agent_builder.instructions.export({
+        projectUuid: projectUuid.value,
+      });
+
+      const blob = new Blob([response], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'instructions.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
+
+      useAlertStore().add({
+        type: 'success',
+        text: i18n.global.t(
+          'agents.instructions.export_instructions.success_alert_title',
+        ),
+        description: i18n.global.t(
+          'agents.instructions.export_instructions.success_alert_description',
+        ),
+      });
+
+      return { status: 'success' };
+    } catch (error) {
+      console.error(error);
+      return { status: 'error' };
+    } finally {
+      isExportingInstructionsLoading.value = false;
+    }
+  }
+
   return {
     instructions,
     categories,
@@ -553,5 +589,8 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     getInstructionSuggestionByAI,
     updateValidateInstructionByAI,
     resetInstructionSuggestedByAI,
+
+    isExportingInstructionsLoading,
+    exportInstructions,
   };
 });
