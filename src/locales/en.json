@@ -429,6 +429,11 @@
             }
           }
         }
+      },
+      "safety_guardrails": {
+        "configure": "Configure",
+        "description": "Sensitive topics Manager won't discuss",
+        "title": "Safety guardrails"
       }
     },
     "profile": {
