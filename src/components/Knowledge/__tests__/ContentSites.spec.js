@@ -60,6 +60,11 @@ const setup = (items) =>
     },
     global: {
       plugins: [pinia],
+      stubs: {
+        UnnnicDialogClose: {
+          template: '<div><slot /></div>',
+        },
+      },
     },
   });
 
@@ -138,13 +143,15 @@ describe('ContentSites.vue', () => {
     });
 
     it('shows modal delete site', async () => {
-      const modalRemoveSite = wrapper.find('[data-test="modal-remove-site"]');
-      expect(modalRemoveSite.exists()).toBeTruthy();
+      const modalRemoveSite = wrapper.findComponent(
+        '[data-testid="modal-remove-site"]',
+      );
+      expect(modalRemoveSite.props('open')).toBe(true);
     });
 
     describe('when the user confirms removal', () => {
       it('should request to remove the file', async () => {
-        const buttonRemove = wrapper.find('[data-test="button-remove"]');
+        const buttonRemove = wrapper.find('[data-testid="button-remove"]');
         await buttonRemove.trigger('click');
         expect(nexusaiAPI.knowledge.sites.delete).toHaveBeenCalledWith({
           linkUuid: '2',
@@ -153,7 +160,7 @@ describe('ContentSites.vue', () => {
 
       it('removes the site from the items list', async () => {
         wrapper.vm.onRemove(items.data[2]);
-        const buttonRemove = wrapper.find('[data-test="button-remove"]');
+        const buttonRemove = wrapper.find('[data-testid="button-remove"]');
         await buttonRemove.trigger('click');
         expect(deleteRequest).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -181,12 +188,12 @@ describe('ContentSites.vue', () => {
       wrapper.vm.onRemove(items.data[2]);
       wrapper.vm.openDeleteSite('1', 'https://website.com/pathname1');
       await wrapper.vm.$nextTick();
-      const buttonRemove = wrapper.find('[data-test="button-remove"]');
+      const buttonRemove = wrapper.find('[data-testid="button-remove"]');
       await buttonRemove.trigger('click');
       await wrapper.vm.$nextTick();
 
       expect(alertStore.add).toHaveBeenCalledWith({
-        type: 'default',
+        type: 'informational',
         text: expect.any(String),
       });
     });
@@ -195,7 +202,7 @@ describe('ContentSites.vue', () => {
       wrapper.vm.onRemove(items.data[2]);
       wrapper.vm.openDeleteSite('1', 'https://website.com/pathname1');
       await wrapper.vm.$nextTick();
-      const buttonRemove = wrapper.find('[data-test="button-remove"]');
+      const buttonRemove = wrapper.find('[data-testid="button-remove"]');
       await buttonRemove.trigger('click');
       await wrapper.vm.$nextTick();
 
@@ -263,7 +270,7 @@ describe('ContentSites.vue', () => {
       wrapper.vm.openDeleteSite('1', 'https://website.com/pathname1');
       await wrapper.vm.$nextTick();
 
-      const buttonCancel = wrapper.find('[data-test="button-cancel"]');
+      const buttonCancel = wrapper.find('[data-testid="button-cancel"]');
       await buttonCancel.trigger('click');
 
       expect(wrapper.vm.modalDeleteSite).toBeNull();
