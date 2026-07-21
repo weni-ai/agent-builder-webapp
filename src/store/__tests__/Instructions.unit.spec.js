@@ -124,6 +124,7 @@ describe('Instructions Store', () => {
           text: i18n.global.t(
             'agent_builder.instructions.new_instruction.success_alert',
           ),
+          description: '',
           type: 'success',
         });
       });
@@ -162,6 +163,7 @@ describe('Instructions Store', () => {
           text: i18n.global.t(
             'agent_builder.instructions.new_instruction.error_alert',
           ),
+          description: '',
           type: 'error',
         });
         expect(store.instructions.data).toHaveLength(0);
@@ -265,6 +267,7 @@ describe('Instructions Store', () => {
           text: i18n.global.t(
             'agent_builder.instructions.edit_instruction.success_alert',
           ),
+          description: '',
           type: 'success',
         });
         expect(result).toEqual({ status: 'complete' });
@@ -290,6 +293,7 @@ describe('Instructions Store', () => {
           text: i18n.global.t(
             'agent_builder.instructions.edit_instruction.error_alert',
           ),
+          description: '',
           type: 'error',
         });
         expect(result).toEqual({ status: 'error' });
@@ -349,7 +353,8 @@ describe('Instructions Store', () => {
           text: i18n.global.t(
             'agent_builder.instructions.remove_instruction.success_alert',
           ),
-          type: 'default',
+          description: '',
+          type: 'informational',
         });
         expect(result).toEqual({ status: null });
       });
@@ -376,6 +381,9 @@ describe('Instructions Store', () => {
         expect(alertStore.add).toHaveBeenCalledWith({
           text: i18n.global.t(
             'agent_builder.instructions.remove_instruction.error_alert',
+          ),
+          description: i18n.global.t(
+            'agent_builder.instructions.remove_instruction.error_alert_description',
           ),
           type: 'error',
         });

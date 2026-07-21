@@ -107,11 +107,12 @@
       },
       "remove_instruction": {
         "title": "Eliminar instrucción",
-        "modal_description": "¿Realmente deseas eliminar esta instrucción?",
-        "remove": "Eliminar",
+        "modal_description": "Esta instrucción se eliminará de forma permanente y el agente Manager dejará de seguirla. Esta acción no se puede deshacer.",
+        "remove": "Eliminar instrucción",
         "cancel": "Cancelar",
-        "success_alert": "Instrucción personalizada eliminada",
-        "error_alert": "Error al eliminar la instrucción personalizada"
+        "success_alert": "Instrucción eliminada",
+        "error_alert": "No se pudo eliminar la instrucción",
+        "error_alert_description": "Algo salió mal y no se cambió nada. Inténtalo de nuevo."
       }
     },
     "traces": {
