@@ -431,6 +431,8 @@
         }
       },
       "safety_guardrails": {
+        "allowed": "Permitido",
+        "blocked": "Bloqueado",
         "configure": "Configurar",
         "description": "Tópicos sensíveis que o Manager não discutirá",
         "drawer": {
@@ -438,7 +440,55 @@
           "title": "Barreiras de segurança"
         },
         "save": "Salvar",
-        "title": "Barreiras de segurança"
+        "save_error": "Não foi possível atualizar as barreiras de segurança devido a um problema técnico",
+        "save_success": "Barreiras de segurança atualizadas",
+        "title": "Barreiras de segurança",
+        "topics": {
+          "beliefs": {
+            "description": "Visões de mundo pessoais, ideologias ou convicções filosóficas",
+            "name": "Crenças"
+          },
+          "bias": {
+            "description": "Afirmações preconceituosas sobre grupos com base em identidade ou origem",
+            "name": "Preconceito"
+          },
+          "gender_identity": {
+            "description": "Identidade de gênero, expressão ou temas de transição",
+            "name": "Identidade de gênero"
+          },
+          "hate": {
+            "description": "Discurso de ódio ou discriminatório contra pessoas ou grupos",
+            "name": "Ódio"
+          },
+          "physical_health": {
+            "description": "Diagnósticos, sintomas, tratamentos ou orientações médicas",
+            "name": "Saúde física"
+          },
+          "politics": {
+            "description": "Opiniões políticas, partidos, eleições ou temas partidários",
+            "name": "Política"
+          },
+          "religion": {
+            "description": "Doutrinas religiosas, práticas ou comparações entre religiões",
+            "name": "Religião"
+          },
+          "self_harm": {
+            "description": "Comportamentos ou métodos de autolesão não suicida",
+            "name": "Autolesão"
+          },
+          "sexual_content": {
+            "description": "Descrições e imagens sexuais explícitas ou gráficas",
+            "name": "Conteúdo sexual"
+          },
+          "sexual_relations": {
+            "description": "Relacionamentos e comportamentos românticos ou sexuais",
+            "name": "Relações sexuais"
+          },
+          "suicide": {
+            "description": "Ideação suicida, métodos ou discussões relacionadas",
+            "name": "Suicídio"
+          }
+        }
       }
     },
     "profile": {
