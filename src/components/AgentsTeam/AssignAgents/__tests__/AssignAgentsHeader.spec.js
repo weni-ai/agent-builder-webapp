@@ -19,7 +19,7 @@ const mountHeader = (stateOverrides = {}) => {
         },
         assignAgentsFilters: {
           search: '',
-          category: [],
+          category: '',
           system: 'ALL_OFFICIAL',
         },
         availableSystems: [],
@@ -53,7 +53,7 @@ describe('AssignAgentsHeader', () => {
     const { wrapper } = mountHeader({
       assignAgentsFilters: {
         search: '',
-        category: [],
+        category: '',
         system: 'vtex',
       },
       availableSystems: [
