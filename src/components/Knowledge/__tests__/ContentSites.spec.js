@@ -193,7 +193,7 @@ describe('ContentSites.vue', () => {
       await wrapper.vm.$nextTick();
 
       expect(alertStore.add).toHaveBeenCalledWith({
-        type: 'default',
+        type: 'informational',
         text: expect.any(String),
       });
     });
