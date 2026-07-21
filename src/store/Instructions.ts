@@ -35,6 +35,19 @@ function callAlert(type, alertText, descriptionKey?: string) {
   });
 }
 
+function categoriesEqual(
+  current: InstructionCategory | null,
+  original: InstructionCategory | null,
+) {
+  if (current === original) return true;
+  if (!current || !original) return false;
+  if (current.id !== null && original.id !== null) {
+    return current.id === original.id;
+  }
+
+  return current.name === original.name;
+}
+
 export const useInstructionsStore = defineStore('Instructions', () => {
   const projectUuid = computed(() => useProjectStore().uuid);
   const featureFlags = useFeatureFlagsStore();
@@ -106,41 +119,9 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     newInstruction.category = { id: null, name: trimmedName };
   }
 
-  function toCategoryPayload() {
-    const category = newInstruction.category;
+  function toCategoryPayload(category = newInstruction.category) {
     if (!category) return undefined;
     return category.id !== null ? { id: category.id } : { name: category.name };
-  }
-
-  function toGroupedPayload() {
-    type GroupedItem = { id: number; text: string };
-    const categoriesById = new Map<
-      number,
-      { id: number; name: string; instructions: GroupedItem[] }
-    >();
-    const uncategorizedInstructions: GroupedItem[] = [];
-
-    instructions.data.forEach((instruction) => {
-      const item = { id: instruction.id, text: instruction.text };
-
-      if (instruction.category) {
-        const { id, name } = instruction.category;
-        const group = categoriesById.get(id) ?? {
-          id,
-          name,
-          instructions: [],
-        };
-        group.instructions.push(item);
-        categoriesById.set(id, group);
-      } else {
-        uncategorizedInstructions.push(item);
-      }
-    });
-
-    return {
-      categories: [...categoriesById.values()],
-      uncategorizedInstructions,
-    };
   }
 
   const storedValidation = moduleStorage.getItem('validateInstructionByAI');
@@ -165,6 +146,23 @@ export const useInstructionsStore = defineStore('Instructions', () => {
   const isInstructionDrawerOpen = ref(false);
   const instructionDrawerMode = ref<'create' | 'edit'>('create');
   const editingInstructionId = ref<number | string | null>(null);
+
+  const editingInstruction = computed<Instruction | null>(
+    () =>
+      instructions.data.find(
+        (item) => item.id === editingInstructionId.value,
+      ) ?? null,
+  );
+
+  const hasEditingInstructionChanges = computed(() => {
+    const original = editingInstruction.value;
+    if (instructionDrawerMode.value !== 'edit' || !original) return false;
+
+    return (
+      newInstruction.text !== original.text ||
+      !categoriesEqual(newInstruction.category, original.category ?? null)
+    );
+  });
 
   const isSearching = computed(() => searchTerm.value.trim().length > 0);
 
@@ -295,12 +293,11 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     const previousCategory = target.category;
 
     try {
-      target.text = newInstruction.text;
-      target.category = newInstruction.category;
-
       const response = await nexusaiAPI.agent_builder.instructions.update({
         projectUuid: projectUuid.value,
-        ...toGroupedPayload(),
+        id: editingInstructionId.value,
+        instruction: newInstruction.text,
+        category: toCategoryPayload(),
       });
 
       instructions.data = response.instructions;
@@ -351,17 +348,15 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       instruction.status = 'loading';
 
       if (useV2()) {
-        const previousText = instruction.text;
-        try {
-          await nexusaiAPI.agent_builder.instructions.update({
-            projectUuid: projectUuid.value,
-            ...toGroupedPayload(),
-          });
-          instruction.text = text;
-        } catch (error) {
-          instruction.text = previousText;
-          throw error;
-        }
+        const response = await nexusaiAPI.agent_builder.instructions.update({
+          projectUuid: projectUuid.value,
+          id,
+          instruction: text,
+          category: toCategoryPayload(instruction.category ?? null),
+        });
+
+        instructions.data = response.instructions;
+        categories.value = response.categories;
       } else {
         await nexusaiAPI.agent_builder.instructions.edit({
           projectUuid: projectUuid.value,
@@ -446,7 +441,10 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       alertStore.add({
         type: 'informational',
         text: categoryT('success_title'),
-        description: categoryT('success_description', { count: movedCount }),
+        description:
+          movedCount === 0
+            ? categoryT('success_description_empty')
+            : categoryT('success_description', { count: movedCount }),
       });
 
       return { status: null };
@@ -489,7 +487,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
       instructionSuggestedByAI.suggestionApplied = '';
       instructionSuggestedByAI.status = 'complete';
 
-      if (suggestedCategory && instructionDrawerMode.value !== 'edit') {
+      if (suggestedCategory) {
         const existing = categories.value.find(
           (category) => category.name === suggestedCategory,
         );
@@ -531,6 +529,21 @@ export const useInstructionsStore = defineStore('Instructions', () => {
 
       const response = await nexusaiAPI.agent_builder.instructions.export({
         projectUuid: projectUuid.value,
+        columns: {
+          category: i18n.global.t(
+            'agents.instructions.view.list_columns.category',
+          ),
+          instruction: i18n.global.t(
+            'agents.instructions.view.list_columns.instruction',
+          ),
+        },
+        categoryLabels: {
+          uncategorized: groupT('uncategorized'),
+          default: groupT('default_instructions'),
+        },
+        defaultInstructions: defaultInstructionsMock.value.map(
+          (instruction) => instruction.text,
+        ),
       });
 
       const blob = new Blob([response], { type: 'text/csv' });
@@ -578,6 +591,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     isInstructionDrawerOpen,
     instructionDrawerMode,
     editingInstructionId,
+    hasEditingInstructionChanges,
     groupedInstructions,
     flatInstructions,
     createCategory,

@@ -15,10 +15,13 @@
       <i18n-t
         tag="p"
         class="modal-remove-category__description"
-        keypath="agents.instructions.delete_category.modal_description"
+        :keypath="modalDescriptionKey"
         data-testid="description"
       >
-        <template #count>
+        <template
+          v-if="instructionsCount > 0"
+          #count
+        >
           {{
             t('agents.instructions.delete_category.instructions_count', {
               count: instructionsCount,
@@ -85,6 +88,12 @@ const instructionsCount = computed(
     instructionsStore.instructions.data.filter(
       (instruction) => instruction.category?.id === props.category.id,
     ).length,
+);
+
+const modalDescriptionKey = computed(() =>
+  instructionsCount.value > 0
+    ? 'agents.instructions.delete_category.modal_description'
+    : 'agents.instructions.delete_category.modal_description_empty',
 );
 
 function close() {

@@ -84,6 +84,7 @@ import { useI18n } from 'vue-i18n';
 
 import ContentItemActions from '@/components/ContentItemActions.vue';
 import Instruction from '@/components/Instructions/Instruction.vue';
+import { INSTRUCTION_GROUP_KEYS } from '@/store/helpers/instructionViewModels';
 
 const props = defineProps({
   group: {
@@ -115,7 +116,14 @@ watch(
   { immediate: true },
 );
 
-const lockedTooltip = computed(() => viewT('locked_tooltip'));
+const lockedTooltip = computed(() => {
+  const tooltips = {
+    [INSTRUCTION_GROUP_KEYS.uncategorized]: viewT('uncategorized_tooltip'),
+    [INSTRUCTION_GROUP_KEYS.default]: viewT('locked_tooltip'),
+  };
+
+  return tooltips[props.group.key];
+});
 const emptyText = computed(() => viewT('empty_category'));
 
 const actions = computed(() => [

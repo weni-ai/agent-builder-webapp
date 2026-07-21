@@ -29,10 +29,14 @@ export const Instructions = {
     return InstructionsGroupedAdapter.fromApi(response.data);
   },
 
-  async update({ projectUuid, ...groupedPayload }) {
+  async update({ projectUuid, id, instruction, category }) {
     const response = await request.$http.patch(
       `api/${projectUuid}/instructions/`,
-      InstructionsGroupedAdapter.toUpdateApi(groupedPayload),
+      InstructionsGroupedAdapter.toUpdateApi({
+        id,
+        text: instruction,
+        category,
+      }),
     );
 
     return InstructionsGroupedAdapter.fromApi(response.data);
@@ -127,9 +131,25 @@ export const Instructions = {
     return InstructionClassificationAdapter.fromApi(response.data);
   },
 
-  async export({ projectUuid }) {
-    const response = await request.$http.get(
+  async export({
+    projectUuid,
+    columns,
+    categoryLabels,
+    defaultInstructions = [],
+  }) {
+    const response = await request.$http.post(
       `api/${projectUuid}/instructions/export/`,
+      {
+        columns,
+        category_labels: categoryLabels,
+        default_instructions: defaultInstructions,
+      },
+      {
+        headers: {
+          Accept: 'text/csv',
+        },
+        responseType: 'text',
+      },
     );
 
     return response.data;

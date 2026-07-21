@@ -357,11 +357,13 @@
       "delete_category": {
         "modal_title": "Șterge categoria",
         "modal_description": "{count} din {name} în Fără categorie. Nu se șterge nimic, se elimină doar eticheta categoriei.",
+        "modal_description_empty": "{name} nu are instrucțiuni. Ștergerea o va elimina doar din listă",
         "instructions_count": "{count, plural, one {{count} instrucțiune va fi mutată} other {{count} instrucțiuni vor fi mutate}}",
         "cancel": "Anulează",
         "confirm": "Șterge categoria",
         "success_title": "Categorie ștearsă",
         "success_description": "{count, plural, one {{count} instrucțiune mutată în Fără categorie} other {{count} instrucțiuni mutate în Fără categorie}}",
+        "success_description_empty": "Eliminată din listă",
         "error_title": "Categoria nu a putut fi ștearsă",
         "error_description": "Ceva nu a funcționat și nimic nu a fost modificat. Încearcă din nou."
       },
@@ -381,7 +383,8 @@
           "categories": "Categorii",
           "list": "Listă"
         },
-        "uncategorized": "Fără categorie"
+        "uncategorized": "Fără categorie",
+        "uncategorized_tooltip": "Instrucțiunile fără categorie apar aici\nAcest grup nu poate fi eliminat"
       },
       "new_instruction_drawer": {
         "title": "Instrucțiune nouă",
@@ -416,12 +419,12 @@
             "create_title": "Creează categorie",
             "name_label": "Numele categoriei",
             "name_placeholder": "Nume",
-            "placeholder": "Selectează...",
             "cancel": "Anulează",
             "create": "Creează",
             "validation": {
-              "required": "Completează acest câmp",
-              "invalid_chars": "Folosește doar litere, cifre, spații și cratime"
+              "already_exists": "Introdu un nume de categorie care nu există deja",
+              "invalid_chars": "Folosește doar litere, cifre, spații și cratime",
+              "required": "Completează acest câmp"
             }
           }
         }
