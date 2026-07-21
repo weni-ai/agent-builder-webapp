@@ -1,13 +1,12 @@
 <template>
   <UnnnicFormElement :label="$t('audit.conversations.filters.topic.topic')">
-    <UnnnicSelectSmart
+    <UnnnicMultiSelect
       v-model:modelValue="topicFilter"
       data-testid="topic-select"
       :options="topicOptions"
-      orderedByIndex
-      multiple
-      multipleWithoutSelectsMessage
-      autocomplete
+      :placeholder="$t('audit.conversations.filters.topic.topic')"
+      enableSearch
+      clearable
     />
   </UnnnicFormElement>
 </template>
@@ -26,26 +25,23 @@ const UNCLASSIFIED_TOPIC = {
 };
 
 const topicOptions = computed(() => [
-  {
-    label: i18n.global.t(`audit.conversations.filters.topic.topic`),
-    value: '',
-  },
   UNCLASSIFIED_TOPIC,
   ...supervisorStore.topics,
 ]);
+
 const topicFilter = ref(
   supervisorStore.getInitialSelectFilter('topics', topicOptions),
 );
 
 watch(
-  () => topicFilter.value,
-  () => {
-    supervisorStore.temporaryFilters.topics = topicFilter.value.map(
-      (subject) =>
-        subject?.value === UNCLASSIFIED_TOPIC.value
-          ? subject.value
-          : subject?.label || '',
-    );
+  topicFilter,
+  (selectedValues) => {
+    supervisorStore.temporaryFilters.topics = selectedValues.map((value) => {
+      if (value === UNCLASSIFIED_TOPIC.value) return value;
+
+      const option = topicOptions.value.find((topic) => topic.value === value);
+      return option?.label || '';
+    });
   },
   { immediate: true, deep: true },
 );
