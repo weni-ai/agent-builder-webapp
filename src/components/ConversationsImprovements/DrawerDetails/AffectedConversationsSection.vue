@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 
 import {
@@ -57,6 +57,7 @@ import { useSupervisorStore } from '@/store/Supervisor';
 import ImprovementDrawerSection from './ImprovementDrawerSection.vue';
 import AffectedConversationItem from './AffectedConversationItem.vue';
 
+import type { SelectedConversation } from '@/store/types/Conversations.types';
 import type { AffectedConversation } from '@/store/types/Improvements.types';
 
 const props = defineProps<{
@@ -68,7 +69,6 @@ const emit = defineEmits<{
   'close-drawer': [];
 }>();
 
-const route = useRoute();
 const router = useRouter();
 const improvementsStore = useImprovementsStore();
 const supervisorStore = useSupervisorStore();
@@ -110,12 +110,14 @@ function handlePageUpdate(newPage: number) {
 }
 
 async function handleViewFullConversation(conversation: AffectedConversation) {
-  supervisorStore.selectedConversation = {
+  const selectedConversation: SelectedConversation = {
     uuid: conversation.uuid,
     urn: conversation.contactUrn,
     username: conversation.contactName,
     data: { status: null },
   };
+
+  supervisorStore.selectedConversation = selectedConversation;
 
   emit('close-drawer');
 

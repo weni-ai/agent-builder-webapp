@@ -24,8 +24,6 @@ interface ConversationMessagesResponse {
 export const ConversationMessageAdapter = {
   /**
    * Transform API response data to frontend format
-   * @param {Object} apiData - Raw API response data
-   * @returns {Object} Transformed data for frontend use
    */
   fromApi(apiData: ConversationMessagesResponse): {
     results: ConversationMessage[];
@@ -34,7 +32,7 @@ export const ConversationMessageAdapter = {
     const messages = apiData.messages?.results ?? [];
     const next = apiData.messages?.next ?? null;
 
-    const results = messages.map((result) => ({
+    const results: ConversationMessage[] = messages.map((result) => ({
       id: result.id,
       uuid: result.uuid,
       text: result.text,

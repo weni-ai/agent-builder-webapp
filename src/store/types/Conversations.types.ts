@@ -15,3 +15,15 @@ export interface Conversation {
   csat: Csat | null;
   topics: string;
 }
+
+export interface SelectedConversationData {
+  status: 'loading' | 'complete' | 'error' | null;
+  results?: unknown[];
+  next?: string | null;
+  count?: number;
+}
+
+export type SelectedConversation = Partial<Conversation> & {
+  uuid: string;
+  data: SelectedConversationData;
+};
