@@ -83,23 +83,6 @@ describe('Supervisor.js', () => {
       },
     };
 
-    /** Legacy API shape: results + next (ConversationMessageAdapter.fromApi) */
-    const mockLegacyResponse = {
-      data: {
-        results: [
-          {
-            id: 1,
-            uuid: 'msg-1',
-            text: 'Hello',
-            source_type: 'user',
-            created_at: '2023-01-15T12:30:00Z',
-          },
-        ],
-        next: null,
-        previous: null,
-      },
-    };
-
     it('should get conversation by id (v2) without next param', async () => {
       nexusRequest.$http.get.mockResolvedValue(mockV2Response);
 
@@ -164,48 +147,11 @@ describe('Supervisor.js', () => {
       await Supervisor.conversations.getById({
         projectUuid,
         uuid,
-        source: 'v2',
-        timezone,
       });
 
       const callUrl = nexusRequest.$http.get.mock.calls[0][0];
       expect(callUrl).toContain(`/api/v2/${projectUuid}/conversations/${uuid}`);
       expect(callUrl).toContain(new URLSearchParams({ timezone }).toString());
-    });
-
-    it('should get conversation by id with source legacy', async () => {
-      nexusRequest.$http.get.mockResolvedValue(mockLegacyResponse);
-
-      const projectUuid = 'project-123';
-      const start = '01-01-2023';
-      const end = '15-01-2023';
-      const urn = 'tel:+123456789';
-
-      const result = await Supervisor.conversations.getById({
-        projectUuid,
-        source: 'legacy',
-        start,
-        end,
-        urn,
-      });
-
-      const expectedPath = `/api/${projectUuid}/conversations/`;
-      expect(nexusRequest.$http.get).toHaveBeenCalledWith(
-        expect.stringContaining(expectedPath),
-      );
-      const callUrl = nexusRequest.$http.get.mock.calls[0][0];
-      expect(callUrl).toContain('contact_urn=tel%3A%2B123456789');
-      expect(callUrl).toContain('start=01-01-2023');
-      expect(callUrl).toContain('end=15-01-2023');
-      expect(result.results).toHaveLength(1);
-      expect(result.results[0]).toMatchObject({
-        id: 1,
-        uuid: 'msg-1',
-        text: 'Hello',
-        type: 'user',
-        createdAt: '2023-01-15T12:30:00Z',
-      });
-      expect(result.next).toBeNull();
     });
 
     it('should handle error when getting conversation by id', async () => {

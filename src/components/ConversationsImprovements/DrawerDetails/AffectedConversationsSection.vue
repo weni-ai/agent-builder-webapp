@@ -114,7 +114,6 @@ async function handleViewFullConversation(conversation: AffectedConversation) {
     uuid: conversation.uuid,
     urn: conversation.contactUrn,
     username: conversation.contactName,
-    source: 'v2',
     data: { status: null },
   };
 

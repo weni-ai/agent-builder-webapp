@@ -225,7 +225,6 @@ describe('AffectedConversationsSection.vue', () => {
       uuid: 'conversation-uuid-1',
       urn: 'whatsapp:5511999999999',
       username: 'Alessandra',
-      source: 'v2',
       data: { status: null },
     });
     expect(supervisorStore.queryConversationUuid).toBe('conversation-uuid-1');

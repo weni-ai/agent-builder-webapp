@@ -69,9 +69,6 @@ describe('Supervisor Store', () => {
         data: {
           results: [],
           next: null,
-          newNext: null,
-          legacyNext: null,
-          legacyInitialAttempted: false,
         },
       });
     });
@@ -138,14 +135,15 @@ describe('Supervisor Store', () => {
             csat: [],
             topics: [],
           },
+          pagination: null,
         });
 
         expect(store.conversations.status).toBe('complete');
         expect(store.conversations.data).toEqual({
           ...mockApiResponse,
           count: 2,
-          legacyInitialAttempted: false,
           results: mockApiResponse.results,
+          next: null,
         });
       });
 
@@ -176,6 +174,7 @@ describe('Supervisor Store', () => {
             csat: [],
             topics: [],
           },
+          pagination: null,
         });
       });
 
@@ -206,6 +205,7 @@ describe('Supervisor Store', () => {
             csat: 'test csat',
             topics: 'test topics',
           },
+          pagination: null,
         });
       });
 
@@ -220,9 +220,6 @@ describe('Supervisor Store', () => {
         expect(store.conversations.data).toEqual({
           results: [],
           next: null,
-          newNext: null,
-          legacyNext: null,
-          legacyInitialAttempted: false,
         });
       });
     });
@@ -277,6 +274,7 @@ describe('Supervisor Store', () => {
       beforeEach(() => {
         store.selectedConversation = {
           id: 1,
+          uuid: 'conversation-uuid-1',
           created_on: '2023-01-01',
           urn: 'urn:test',
           start: '2023-01-01',
@@ -338,9 +336,7 @@ describe('Supervisor Store', () => {
           nexusaiAPI.agent_builder.supervisor.conversations.getById,
         ).toHaveBeenCalledWith({
           projectUuid: 'test-project-uuid',
-          start: '2023-01-01',
-          end: '2023-01-31',
-          urn: 'urn:test',
+          uuid: 'conversation-uuid-1',
           next: null,
         });
 
@@ -376,9 +372,7 @@ describe('Supervisor Store', () => {
           nexusaiAPI.agent_builder.supervisor.conversations.getById,
         ).toHaveBeenCalledWith({
           projectUuid: 'test-project-uuid',
-          start: '2023-01-01',
-          end: '2023-01-31',
-          urn: 'urn:test',
+          uuid: 'conversation-uuid-1',
           next: 'existing-token',
         });
 
@@ -544,6 +538,7 @@ describe('Supervisor Store', () => {
           csat: [],
           topics: [],
         },
+        pagination: null,
       });
     });
   });

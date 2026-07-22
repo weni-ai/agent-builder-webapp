@@ -508,8 +508,6 @@
       "hide_logs": "Ascunde jurnalele",
       "search": "Căutare",
       "conversations_empty": "Nu s-au găsit conversații",
-      "conversations_separator": "Conversațiile de mai jos au fost clasificate folosind sistemul anterior",
-      "conversations_v2_disclaimer": "Începând cu {day} martie, conversațiile sunt organizate în ferestre de 24 de ore (cu resetare la miezul nopții) folosind noul nostru sistem de clasificare",
       "no_messages_found": {
         "title": "Nu s-au găsit mesaje în această conversație",
         "description": "Dacă mesajul a fost trimis de asistența umană sau a declanșat o acțiune automată, îl poți găsi în {studio_link}.",

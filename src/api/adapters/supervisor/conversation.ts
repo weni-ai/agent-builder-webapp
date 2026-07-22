@@ -1,23 +1,7 @@
 import { isArray } from 'lodash';
 import { Conversation } from '@/store/types/Conversations.types';
 
-interface ApiDataLegacy {
-  results: {
-    urn: string;
-    uuid: string;
-    external_id: string | null;
-    csat: string | null;
-    nps: string | null;
-    topic: string | null;
-    start_date: string;
-    end_date: string;
-    resolution: string;
-    name: string;
-    is_amazing?: boolean;
-  }[];
-}
-
-interface ApiDataV2 {
+interface ApiData {
   results: {
     uuid: string;
     contact_urn: string;
@@ -32,12 +16,17 @@ interface ApiDataV2 {
     nps: string | null;
     created_at: string;
     classification: string | null;
+    topic?: string | null;
     is_amazing?: boolean;
   }[];
+  count?: number;
+  next?: string | null;
 }
 
 interface ConversationResponse {
   results: Conversation[];
+  count?: number;
+  next?: string | null;
 }
 
 interface FilterData {
@@ -66,7 +55,7 @@ export const ConversationAdapter = {
    * @param {Object} apiData - Raw API response data
    * @returns {Object} Transformed data for frontend use
    */
-  fromApi(apiData: ApiDataLegacy | ApiDataV2): ConversationResponse {
+  fromApi(apiData: ApiData): ConversationResponse {
     const statusMap = {
       0: 'optimized_resolution',
       1: 'other_conclusion',
@@ -89,11 +78,11 @@ export const ConversationAdapter = {
         results: apiData.results.map(
           (result): Conversation => ({
             uuid: result.uuid,
-            id: result.external_id || result.uuid,
+            id: result.uuid,
             start: result.start_date,
             end: result.end_date,
-            username: result.name || result.contact_name,
-            urn: result.urn || result.contact_urn,
+            username: result.contact_name,
+            urn: result.contact_urn,
             status: statusMap[result.resolution] || 'in_progress',
             csat:
               result.csat !== null
