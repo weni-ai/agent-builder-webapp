@@ -66,7 +66,7 @@ describe('FilterDate.vue', () => {
   describe('Component rendering', () => {
     it('renders UnnnicInputDatePicker with correct props', () => {
       const expectedToday = format(new Date(), 'yyyy-MM-dd');
-      const expectedMinDate = format(subDays(new Date(), 89), 'yyyy-MM-dd');
+      const expectedMinDate = format(subDays(new Date(), 90), 'yyyy-MM-dd');
 
       expect(datePicker().exists()).toBe(true);
       expect(datePicker().props('position')).toBe('right');

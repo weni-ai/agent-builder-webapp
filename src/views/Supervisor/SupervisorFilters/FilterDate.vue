@@ -36,7 +36,7 @@ const supervisorStore = useSupervisorStore();
 
 const today = format(new Date(), 'yyyy-MM-dd');
 const minDate = format(
-  subDays(new Date(), ARCHIVE_RETENTION_DAYS - 1),
+  subDays(new Date(), ARCHIVE_RETENTION_DAYS),
   'yyyy-MM-dd',
 );
 
