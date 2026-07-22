@@ -579,8 +579,6 @@
       "hide_logs": "Ascunde jurnalele",
       "search": "Căutare",
       "conversations_empty": "Nu s-au găsit conversații",
-      "conversations_separator": "Conversațiile de mai jos au fost clasificate folosind sistemul anterior",
-      "conversations_v2_disclaimer": "Începând cu {day} martie, conversațiile sunt organizate în ferestre de 24 de ore (cu resetare la miezul nopții) folosind noul nostru sistem de clasificare",
       "no_messages_found": {
         "title": "Nu s-au găsit mesaje în această conversație",
         "description": "Dacă mesajul a fost trimis de asistența umană sau a declanșat o acțiune automată, îl poți găsi în {studio_link}.",
@@ -606,7 +604,16 @@
         "apply_filters": "Aplicare filtre",
         "clear_filters": "Elimină filtrele",
         "period": {
-          "label": "Perioadă"
+          "disclaimer": "Conversațiile mai vechi de 90 de zile sunt arhivate și nu pot fi afișate. Pentru a le accesa, contactează asistența.",
+          "label": "Perioadă",
+          "options": {
+            "current_month": "Luna curentă",
+            "custom": "Personalizează",
+            "last_14_days": "Ultimele 14 zile",
+            "last_30_days": "Ultimele 30 de zile",
+            "last_7_days": "Ultimele 7 zile",
+            "last_90_days": "Ultimele 90 de zile"
+          }
         },
         "status": {
           "conversations": "Conversații",

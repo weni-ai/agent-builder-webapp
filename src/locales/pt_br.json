@@ -580,8 +580,6 @@
       "hide_logs": "Ocultar logs",
       "search": "Buscar",
       "conversations_empty": "Nenhuma conversa encontrada",
-      "conversations_separator": "As conversas abaixo foram classificadas usando o sistema legado",
-      "conversations_v2_disclaimer": "Começando em {day} de março, as conversas são organizadas em janelas de 24 horas (resetando à meia-noite) usando nosso novo sistema de classificação",
       "no_messages_found": {
         "title": "Nenhuma mensagem encontrada nesta conversa",
         "description": "Se a mensagem foi enviada pelo suporte humano ou ativou uma ação automática, você pode encontrá-la no {studio_link}.",
@@ -607,7 +605,16 @@
         "apply_filters": "Aplicar filtros",
         "clear_filters": "Limpar filtros",
         "period": {
-          "label": "Período"
+          "disclaimer": "Conversas com mais de 90 dias são arquivadas e não podem ser exibidas. Para acessá-las, entre em contato com o suporte.",
+          "label": "Período",
+          "options": {
+            "current_month": "Mês atual",
+            "custom": "Personalizar",
+            "last_14_days": "Últimos 14 dias",
+            "last_30_days": "Últimos 30 dias",
+            "last_7_days": "Últimos 7 dias",
+            "last_90_days": "Últimos 90 dias"
+          }
         },
         "status": {
           "conversations": "Conversas",

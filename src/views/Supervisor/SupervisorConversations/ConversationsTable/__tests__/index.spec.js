@@ -6,7 +6,6 @@ import { nextTick } from 'vue';
 
 import ConversationsTable from '../index.vue';
 import ConversationRow from '../ConversationRow.vue';
-import { NEW_SOURCE } from '@/api/adapters/supervisor/conversationSources';
 
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
@@ -50,20 +49,18 @@ vi.mock('vue-router', () => ({
   }),
 }));
 
-const mockResultsWithSource = [
+const mockResults = [
   {
     uuid: '1',
     urn: 'conversation-123',
     last_message: 'This is the last message',
     start: '2023-05-15T14:30:00Z',
-    source: NEW_SOURCE,
   },
   {
     uuid: '2',
     urn: 'conversation-456',
     last_message: 'Another message',
     start: '2023-05-16T10:00:00Z',
-    source: NEW_SOURCE,
   },
 ];
 
@@ -78,8 +75,7 @@ describe('ConversationsTable.vue', () => {
   const setConversations = (results, status = 'complete') => {
     supervisorStore.conversations.data.results = [...results];
     supervisorStore.conversations.data.count = results.length;
-    supervisorStore.conversations.data.newNext = null;
-    supervisorStore.conversations.data.legacyNext = null;
+    supervisorStore.conversations.data.next = null;
     supervisorStore.conversations.status = status;
   };
 
@@ -87,7 +83,7 @@ describe('ConversationsTable.vue', () => {
     supervisorStore = useSupervisorStore();
     supervisorStore.filters.start = '2023-01-01';
     supervisorStore.filters.end = '2023-01-31';
-    setConversations(mockResultsWithSource, conversationsStatus);
+    setConversations(mockResults, conversationsStatus);
 
     wrapper = mount(ConversationsTable, {
       global: {
@@ -96,7 +92,7 @@ describe('ConversationsTable.vue', () => {
     });
 
     await flushPromises();
-    setConversations(mockResultsWithSource);
+    setConversations(mockResults);
     await nextTick();
   };
 
