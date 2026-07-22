@@ -12,26 +12,16 @@ export const Supervisor = {
       return fetchConversationList(filterData);
     },
 
-    async getById({ projectUuid, start, end, urn, next, source, uuid }) {
-      const legacyParams = ConversationMessageAdapter.toApiLegacy({
-        start,
-        end,
-        urn,
-      });
-
+    async getById({ projectUuid, next, uuid }) {
       const timezone = Intl?.DateTimeFormat?.().resolvedOptions?.()?.timeZone;
-      const isLegacy = source === 'legacy';
 
-      let url = isLegacy
-        ? `/api/${projectUuid}/conversations/?${new URLSearchParams(legacyParams)}`
-        : `/api/v2/${projectUuid}/conversations/${uuid}`;
+      let url = `/api/v2/${projectUuid}/conversations/${uuid}`;
 
       if (next) {
         url = next.slice(next.indexOf('/api'));
       }
 
-      if (!isLegacy && !url.includes('timezone')) {
-        // Add timezone to url
+      if (!url.includes('timezone')) {
         const separator = url.includes('?') ? '&' : '?';
         url += `${separator}${new URLSearchParams({ timezone }).toString()}`;
       }

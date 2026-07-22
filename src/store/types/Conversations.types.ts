@@ -14,5 +14,16 @@ export interface Conversation {
   status: string;
   csat: Csat | null;
   topics: string;
-  source?: 'legacy' | 'v2';
 }
+
+export interface SelectedConversationData {
+  status: 'loading' | 'complete' | 'error' | null;
+  results?: unknown[];
+  next?: string | null;
+  count?: number;
+}
+
+export type SelectedConversation = Partial<Conversation> & {
+  uuid: string;
+  data: SelectedConversationData;
+};

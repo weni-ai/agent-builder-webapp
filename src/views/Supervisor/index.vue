@@ -87,7 +87,6 @@ function hasMoreConversationsToLoad() {
   return hasMoreToLoad(
     supervisorStore.conversations.data,
     supervisorStore.conversations.status,
-    supervisorStore.conversations.data.results,
   );
 }
 

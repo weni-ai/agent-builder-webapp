@@ -7,11 +7,7 @@ import { useProjectStore } from './Project';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 
-import {
-  getPaginationPayload,
-  getPaginationStateFromResponse,
-  normalizeConversationsBySource,
-} from '@/api/adapters/supervisor/conversationSources';
+import { getPaginationPayload } from '@/api/adapters/supervisor/conversationSources';
 
 import i18n from '@/utils/plugins/i18n';
 
@@ -29,9 +25,6 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     data: {
       results: [],
       next: null,
-      newNext: null,
-      legacyNext: null,
-      legacyInitialAttempted: false,
     },
   });
 
@@ -114,9 +107,6 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     if (page === 1) {
       conversations.data.results = [];
       conversations.data.next = null;
-      conversations.data.newNext = null;
-      conversations.data.legacyNext = null;
-      conversations.data.legacyInitialAttempted = false;
     }
 
     const formatDateParam = (date) =>
@@ -132,21 +122,15 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
       topics: filters.topics,
     };
 
-    const paginationPayload = getPaginationPayload(
-      page,
-      conversations.data,
-      conversations.data.results,
-    );
+    const pagination = getPaginationPayload(page, conversations.data);
 
     try {
-      const currentConversationsData = { ...conversations.data };
       const requestPayload = {
         projectUuid: projectUuid.value,
         signal: conversationsAbortController.signal,
         hideGenericErrorAlert: true,
-        filters: paginationPayload ? { ...baseFilters, page: 1 } : baseFilters,
-        pagination: paginationPayload?.pagination,
-        onlyLegacy: paginationPayload?.onlyLegacy,
+        filters: pagination ? { ...baseFilters, page: 1 } : baseFilters,
+        pagination,
       };
 
       const response = await supervisorApi.conversations.list(requestPayload);
@@ -158,32 +142,15 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         : [];
 
       const mergedResults = [...conversations.data.results, ...responseResults];
-      const normalizedResults = normalizeConversationsBySource(mergedResults);
-      const count = responseData?.count ?? normalizedResults.length;
+      const count = responseData?.count ?? mergedResults.length;
 
       conversations.status = 'complete';
       conversations.data = {
         ...responseData,
         count,
-        results: normalizedResults,
-        legacyInitialAttempted:
-          responseData.legacyInitialAttempted ||
-          currentConversationsData.legacyInitialAttempted,
+        results: mergedResults,
+        next: responseData.next ?? null,
       };
-
-      const paginationState = getPaginationStateFromResponse(
-        responseData,
-        currentConversationsData,
-      );
-      if (paginationState) {
-        conversations.data.next = paginationState.next;
-        conversations.data.newNext = paginationState.newNext;
-        conversations.data.legacyNext = paginationState.legacyNext;
-      }
-
-      if (paginationPayload?.onlyLegacy) {
-        conversations.data.legacyInitialAttempted = true;
-      }
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
 
@@ -210,10 +177,6 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
 
       const params = {
         projectUuid: projectUuid.value,
-        start: selectedConversation.value.start,
-        end: selectedConversation.value.end,
-        urn: selectedConversation.value.urn,
-        source: selectedConversation.value.source,
         uuid: selectedConversation.value.uuid,
         next: next ? selectedConversation.value.data.next : null,
       };
