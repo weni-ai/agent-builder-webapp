@@ -648,7 +648,7 @@
         "description": "Rulat pe {date} la {time}",
         "description_today": "Rulat astăzi la {time}",
         "run_analysis": "Rulează analiza",
-        "run_analysis_already_run_today_tooltip": "Analiza a fost deja executată astăzi\nO nouă execuție va fi disponibilă mâine",
+        "run_analysis_already_run_today_tooltip": "Analiza a fost deja executată în ultimele 24h.\nUrmătoarea analiză este disponibilă la {time}",
         "run_analysis_insufficient_volume_tooltip": "Volum insuficient de conversații pentru executarea analizei\nMinimum {min} conversații necesare",
         "title": "{count, plural, =0 {Analiza conversațiilor din {date}} one {Analiza conversațiilor din {date} · {count} îmbunătățire identificată} other {Analiza conversațiilor din {date} · {count} îmbunătățiri identificate}}"
       },

@@ -21,11 +21,13 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
+import { addHours } from 'date-fns';
 
 import {
   MIN_CONVERSATIONS_FOR_ANALYSIS,
   useImprovementsStore,
 } from '@/store/Improvements';
+import { formatTime } from '@/utils/formatters';
 
 import RunAnalysisDialog from './RunAnalysisDialog.vue';
 
@@ -42,7 +44,8 @@ const props = withDefaults(
 
 const { t } = useI18n();
 const improvementsStore = useImprovementsStore();
-const { runAnalysisBlockReason, improvements } = storeToRefs(improvementsStore);
+const { analysis, runAnalysisBlockReason, improvements } =
+  storeToRefs(improvementsStore);
 
 const isRunAnalysisDialogOpen = ref(false);
 
@@ -50,8 +53,14 @@ const buttonText = computed(() => t(props.translationKey));
 
 const tooltipText = computed(() => {
   if (runAnalysisBlockReason.value === 'already_run_today') {
+    const createdAt = analysis.value.task.createdAt;
+    const nextAvailableAt = createdAt
+      ? formatTime(addHours(new Date(createdAt), 24).toISOString())
+      : '';
+
     return t(
       'audit.improvements.header.run_analysis_already_run_today_tooltip',
+      { time: nextAvailableAt },
     );
   }
 

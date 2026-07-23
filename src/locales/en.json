@@ -650,7 +650,7 @@
         "description": "Ran on {date} at {time}",
         "description_today": "Ran today at {time}",
         "run_analysis": "Run analysis",
-        "run_analysis_already_run_today_tooltip": "Analysis already ran today\nReturn tomorrow to run a new analysis",
+        "run_analysis_already_run_today_tooltip": "Analysis already ran in the last 24h.\nNext analysis available at {time}",
         "run_analysis_insufficient_volume_tooltip": "Insufficient conversation volume to run analysis\nMinimum of {min} conversations required",
         "title": "{count, plural, =0 {Analysis of conversations from {date}} one {Analysis of conversations from {date} · {count} improvement identified} other {Analysis of conversations from {date} · {count} improvements identified}}"
       },
