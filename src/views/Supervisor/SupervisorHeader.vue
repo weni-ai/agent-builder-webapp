@@ -53,6 +53,12 @@
           </UnnnicTabsTrigger>
           <UnnnicTabsTrigger value="improvements">
             {{ $t('audit.improvements.title') }}
+            <span
+              class="supervisor-header__improvements-new-badge"
+              data-testid="improvements-new-badge"
+            >
+              {{ $t('new') }}
+            </span>
           </UnnnicTabsTrigger>
         </UnnnicTabsList>
       </UnnnicTabs>
@@ -112,6 +118,15 @@ function openExportModal() {
     align-items: center;
     gap: $unnnic-space-2;
     justify-content: flex-end;
+  }
+
+  &__improvements-new-badge {
+    background-color: $unnnic-color-bg-accent-plain;
+    color: $unnnic-color-fg-accent;
+    padding: $unnnic-space-05 $unnnic-space-1;
+    border-radius: $unnnic-radius-1;
+
+    @include unnnic-font-caption-1;
   }
 }
 </style>
