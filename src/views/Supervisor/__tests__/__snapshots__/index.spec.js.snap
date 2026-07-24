@@ -7,6 +7,7 @@ exports[`Supervisor view > improvements route > matches snapshot on improvements
     <router-view-stub data-v-8a19bad7="" name="default"></router-view-stub>
   </section>
   <!--v-if-->
+  <!--v-if-->
 </section>"
 `;
 
@@ -16,6 +17,7 @@ exports[`Supervisor view > matches snapshot on conversations route 1`] = `
     <supervisor-header-stub data-v-8a19bad7="" class="supervisor__header" data-testid="header"></supervisor-header-stub>
     <supervisor-conversations-stub data-v-8a19bad7="" class="supervisor__conversations" data-testid="supervisor-conversations"></supervisor-conversations-stub>
   </section>
+  <!--v-if-->
   <!--v-if-->
 </section>"
 `;

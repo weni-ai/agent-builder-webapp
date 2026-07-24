@@ -663,6 +663,28 @@
         "description": "Minimum of {min} conversations required to run analysis",
         "title": "Insufficient conversation volume"
       },
+      "intro_modal": {
+        "step_of": "Step {step} of {total}",
+        "steps": {
+          "1": {
+            "description": "Finding recurring failures in your agent used to mean opening conversations one by one. Now VTEX CX Platform reviews them for you and groups what it finds into a list you can act on.\n\nWe ran the first analysis: the items in your backlog came from a sample of yesterday's conversations. The sample is representative — it reveals recurring patterns without processing every conversation.",
+            "title": "New in Audit"
+          },
+          "2": {
+            "description": "Behavior: The agent didn't act the way it was supposed to in the conversation.\nKnowledge: The agent lacked information it should have had to answer.\nTechnical issue: Something failed for technical reasons, like an integration that didn't respond.\nCustom analysis: A behavior you defined yourself.",
+            "title": "What the analysis looks for"
+          },
+          "3": {
+            "description": "Open an item to see the diagnosis, a suggested solution, and the conversations where the problem appeared. The correction is applied by you, in Instructions or Knowledge Base — nothing changes in your agent automatically.",
+            "title": "Every item comes with evidence"
+          },
+          "4": {
+            "description": "Beyond the types above, you can define behaviors of your own to monitor, up to 10 per project. The more specific the definition, the better the AI identifies the problem.",
+            "title": "Monitor what matters to your operation"
+          }
+        },
+        "view_help_guide": "View guide"
+      },
       "no_analysis": {
         "description": "Run your first analysis to identify opportunities for improvement in a sample of yesterday's conversations",
         "run_analysis": "Run analysis",
@@ -724,7 +746,7 @@
         "knowledge": "Knowledge",
         "technical_issue": "Technical issue"
       },
-      "title": "Improvement backlog"
+      "title": "Improvements backlog"
     }
   },
   "router": {
