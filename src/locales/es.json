@@ -454,7 +454,6 @@
             "name": "Informal",
             "tooltip": "Leve, energético, y informal para un tom más accesible y humano"
           }
-
         }
       }
     }
@@ -500,7 +499,7 @@
         "date": "Fecha",
         "feedback": "Feedback",
         "hour": "Hora",
-        "status": "Estado"
+        "status": "Status"
       },
       "topic": "Tópico",
       "conversation_details_collapse": "Detalles de la conversación",
@@ -564,7 +563,7 @@
       }
     },
     "improvements": {
-      "analysis_in_progress_disclaimer": "Análisis en curso: {percentage}% de las conversaciones procesadas. Pueden aparecer nuevos ítems en breve.",
+      "analysis_in_progress_disclaimer": "Analizando conversaciones: {progress} de {total} procesadas. Es posible que se muestren nuevos ítems en breve.",
       "analysis_complete": {
         "no_improvements_description": "No se identificaron mejoras en las conversaciones del {date}",
         "ready_description": "Las mejoras del {date} están listas en el backlog.",
@@ -649,9 +648,11 @@
         "description": "Ejecutado el {date} a las {time}",
         "description_today": "Ejecutado hoy a las {time}",
         "run_analysis": "Ejecutar análisis",
-        "run_analysis_already_run_today_tooltip": "Análisis ya ejecutado en las últimas 24h.\nPróximo análisis disponible a las {time}",
-        "run_analysis_insufficient_volume_tooltip": "Volumen insuficiente de conversaciones para ejecutar el análisis\nMínimo de {min} conversaciones necesarias",
-        "title": "{count, plural, =0 {Análisis de conversaciones del {date}} one {Análisis de conversaciones del {date} · {count} mejora identificada} other {Análisis de conversaciones del {date} · {count} mejoras identificadas}}"
+        "run_analysis_already_run_today_tooltip": "Análisis ya ejecutado hoy\nPodrás realizar uno nuevo mañana",
+        "run_analysis_insufficient_volume_tooltip": "No hay suficientes conversaciones para ejecutar el análisis\nSe requiere un mínimo de {min} conversaciones",
+        "title": "{count, plural, one {Análisis de las conversaciones del {date} · {count} mejora identificada} other {Análisis de las conversaciones del {date} · {count} mejoras identificadas}}",
+        "run_analysis_insufficient_volume_tooltip.title": "Volumen de conversaciones insuficiente",
+        "run_analysis_insufficient_volume_tooltip.description": "Se requiere un mínimo de {min} conversaciones para ejecutar el análisis"
       },
       "insufficient_volume": {
         "description": "Mínimo de {min} conversaciones necesarias para ejecutar el análisis",
@@ -668,7 +669,7 @@
       },
       "run_analysis_dialog": {
         "cancel": "Cancelar",
-        "description": "Aún hay {count, plural, one {# mejora sin resolver} other {# mejoras sin resolver}} del {current_date}. Un nuevo análisis reemplazará esta lista con las conversaciones del {new_date}. Las mejoras actuales se perderán.",
+        "description": "Todavía hay {count, plural, one {# mejora pendiente} other {# mejoras pendientes}} del {current_date}. Un nuevo análisis reemplazará esta lista por las conversaciones del {new_date}. Las mejoras actuales se perderán.",
         "run": "Ejecutar",
         "title": "Ejecutar análisis"
       },
