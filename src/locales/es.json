@@ -657,6 +657,28 @@
         "description": "Mínimo de {min} conversaciones necesarias para ejecutar el análisis",
         "title": "Volumen insuficiente de conversaciones"
       },
+      "intro_modal": {
+        "step_of": "Paso {step} de {total}",
+        "steps": {
+          "1": {
+            "description": "Encontrar fallas recurrentes en tu agente solía significar abrir conversaciones una por una. Ahora VTEX CX Platform las revisa por ti y agrupa lo que encuentra en una lista para actuar.\n\nYa se ejecutó el primer análisis: los ítems del backlog provienen de una muestra de las conversaciones de ayer. La muestra es representativa — revela patrones recurrentes sin procesar todas las conversaciones.",
+            "title": "Nuevo en Auditoría"
+          },
+          "2": {
+            "description": "Comportamiento: el agente no actuó como debía en la conversación.\nConocimiento: al agente le faltaba información que debía tener para responder.\nProblema técnico: algo falló por motivos técnicos, como una integración que no respondió.\nAnálisis personalizado: un comportamiento que definiste tú mismo.",
+            "title": "Qué busca el análisis"
+          },
+          "3": {
+            "description": "Abre un ítem para ver el diagnóstico, una solución sugerida y las conversaciones en las que apareció el problema. La corrección la aplicas tú, en Instrucciones o Base de conocimiento — nada cambia automáticamente en tu agente.",
+            "title": "Cada ítem incluye evidencias"
+          },
+          "4": {
+            "description": "Además de los tipos anteriores, puedes definir comportamientos propios para monitorear, hasta 10 por proyecto. Cuanto más específica sea la definición, mejor identifica el problema la IA.",
+            "title": "Monitorea lo que importa para tu operación"
+          }
+        },
+        "view_help_guide": "Ver guía"
+      },
       "no_analysis": {
         "description": "Ejecuta el primer análisis para identificar oportunidades de mejora en una muestra de las conversaciones de ayer",
         "run_analysis": "Ejecutar análisis",

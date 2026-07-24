@@ -4,6 +4,11 @@ declare module '*.vue' {
   export default component;
 }
 
+declare module '*.png' {
+  const src: string;
+  export default src;
+}
+
 declare module 'connect/sharedStore' {
   interface SharedStore {
     auth: { token: string };

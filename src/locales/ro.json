@@ -656,6 +656,28 @@
         "description": "Minimum {min} conversații necesare pentru executarea analizei",
         "title": "Volum insuficient de conversații"
       },
+      "intro_modal": {
+        "step_of": "Pasul {step} din {total}",
+        "steps": {
+          "1": {
+            "description": "Găsirea eșecurilor recurente ale agentului însemna să deschizi conversațiile una câte una. Acum VTEX CX Platform le analizează pentru tine și grupează rezultatele într-o listă pe care o poți folosi.\n\nPrima analiză a fost deja rulată: elementele din backlog provin dintr-un eșantion al conversațiilor de ieri. Eșantionul este reprezentativ — evidențiază tipare recurente fără a procesa fiecare conversație.",
+            "title": "Nou în Audit"
+          },
+          "2": {
+            "description": "Comportament: agentul nu a acționat așa cum trebuia în conversație.\nCunoștințe: agentului îi lipseau informații pe care trebuia să le aibă pentru a răspunde.\nProblemă tehnică: ceva a eșuat din motive tehnice, cum ar fi o integrare care nu a răspuns.\nAnaliză personalizată: un comportament pe care l-ai definit tu.",
+            "title": "Ce caută analiza"
+          },
+          "3": {
+            "description": "Deschide un element pentru a vedea diagnosticul, o soluție sugerată și conversațiile în care a apărut problema. Corecția este aplicată de tine, în Instrucțiuni sau Baza de cunoștințe — nimic nu se schimbă automat în agentul tău.",
+            "title": "Fiecare element vine cu dovezi"
+          },
+          "4": {
+            "description": "Pe lângă tipurile de mai sus, poți defini comportamente proprii de monitorizat, până la 10 pe proiect. Cu cât definiția este mai specifică, cu atât AI-ul identifică mai bine problema.",
+            "title": "Monitorizează ce contează pentru operațiunea ta"
+          }
+        },
+        "view_help_guide": "Vezi ghidul"
+      },
       "no_analysis": {
         "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire într-un eșantion din conversațiile de ieri",
         "run_analysis": "Rulează analiza",
