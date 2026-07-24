@@ -34,6 +34,12 @@
       class="supervisor__conversation"
       data-testid="supervisor-conversation"
     />
+
+    <ImprovementsIntroModal
+      v-if="featureFlagsStore.flags.conversationsImprovements"
+      v-model:open="isIntroModalOpen"
+      data-testid="improvements-intro-modal"
+    />
   </section>
 </template>
 
@@ -52,12 +58,18 @@ import { useRouter, useRoute, RouterView } from 'vue-router';
 import SupervisorHeader from './SupervisorHeader.vue';
 import SupervisorConversations from './SupervisorConversations/index.vue';
 import Conversation from './SupervisorConversations/Conversation/index.vue';
+import ImprovementsIntroModal from '@/components/ConversationsImprovements/ImprovementsIntroModal/index.vue';
 
 import { hasMoreToLoad } from '@/api/adapters/supervisor/conversationSources';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useSupervisorStore } from '@/store/Supervisor';
 import { cleanParams } from '@/utils/http';
+import { moduleStorage } from '@/utils/storage';
+
+const IMPROVEMENTS_INTRO_MODAL_SEEN_KEY = 'improvements-intro-modal-seen';
 
 const supervisorStore = useSupervisorStore();
+const featureFlagsStore = useFeatureFlagsStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -65,6 +77,19 @@ const supervisorConversations = ref(null);
 const scrollContainer = ref(null);
 const isCheckingScroll = ref(false);
 const hasScroll = ref(false);
+
+function shouldShowIntroModal() {
+  return (
+    !!featureFlagsStore.flags.conversationsImprovements &&
+    !moduleStorage.getItem(IMPROVEMENTS_INTRO_MODAL_SEEN_KEY)
+  );
+}
+
+function markIntroModalAsSeen() {
+  moduleStorage.setItem(IMPROVEMENTS_INTRO_MODAL_SEEN_KEY, true);
+}
+
+const isIntroModalOpen = ref(shouldShowIntroModal());
 
 const selectedConversation = computed(() => {
   return supervisorStore.selectedConversation;
@@ -180,6 +205,12 @@ onBeforeMount(async () => {
 
   if (queryConversationUuid && !selectedConversation) {
     supervisorStore.selectConversation(queryConversationUuid);
+  }
+});
+
+watch(isIntroModalOpen, (isOpen, wasOpen) => {
+  if (wasOpen && !isOpen) {
+    markIntroModalAsSeen();
   }
 });
 
