@@ -535,7 +535,16 @@
         "apply_filters": "Aplicare filtre",
         "clear_filters": "Elimină filtrele",
         "period": {
-          "label": "Perioadă"
+          "disclaimer": "Conversațiile mai vechi de 90 de zile sunt arhivate și nu pot fi afișate. Pentru a le accesa, contactează asistența.",
+          "label": "Perioadă",
+          "options": {
+            "current_month": "Luna curentă",
+            "custom": "Personalizează",
+            "last_14_days": "Ultimele 14 zile",
+            "last_30_days": "Ultimele 30 de zile",
+            "last_7_days": "Ultimele 7 zile",
+            "last_90_days": "Ultimele 90 de zile"
+          }
         },
         "status": {
           "conversations": "Conversații",

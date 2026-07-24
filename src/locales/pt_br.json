@@ -536,7 +536,16 @@
         "apply_filters": "Aplicar filtros",
         "clear_filters": "Limpar filtros",
         "period": {
-          "label": "Período"
+          "disclaimer": "Conversas com mais de 90 dias são arquivadas e não podem ser exibidas. Para acessá-las, entre em contato com o suporte.",
+          "label": "Período",
+          "options": {
+            "current_month": "Mês atual",
+            "custom": "Personalizar",
+            "last_14_days": "Últimos 14 dias",
+            "last_30_days": "Últimos 30 dias",
+            "last_7_days": "Últimos 7 dias",
+            "last_90_days": "Últimos 90 dias"
+          }
         },
         "status": {
           "conversations": "Conversas",
