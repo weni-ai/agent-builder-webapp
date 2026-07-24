@@ -88,8 +88,9 @@ describe('PreviewLogs.vue', () => {
   });
 
   afterEach(() => {
-    wrapper.unmount();
+    wrapper?.unmount();
     vi.clearAllMocks();
+    vi.useRealTimers();
   });
 
   describe('Component rendering', () => {
@@ -134,6 +135,9 @@ describe('PreviewLogs.vue', () => {
 
       expect(leftWrapper.props('logsSide')).toBe('left');
       expect(rightWrapper.props('logsSide')).toBe('right');
+
+      leftWrapper.unmount();
+      rightWrapper.unmount();
     });
 
     it('applies correct CSS classes based on logsSide prop', async () => {

@@ -93,7 +93,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, computed, watch } from 'vue';
+import {
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  nextTick,
+  computed,
+  watch,
+} from 'vue';
 
 import PreviewLogsDetailsModal from './PreviewLogsDetailsModal.vue';
 
@@ -113,11 +120,13 @@ const props = defineProps({
   },
 });
 
+const logList = ref(null);
 const showDetailsModal = ref(false);
 const selectedLog = ref({
   summary: '',
   log: '',
 });
+const progressBarTimeoutIds = new Set();
 
 const processedLogs = computed(() => {
   return props.logs.reduce((logsByAgent, log) => {
@@ -179,6 +188,11 @@ onMounted(() => {
   });
 });
 
+onBeforeUnmount(() => {
+  progressBarTimeoutIds.forEach(clearTimeout);
+  progressBarTimeoutIds.clear();
+});
+
 function openModalLogFullDetails(summary, log) {
   selectedLog.value = { summary, log };
   showDetailsModal.value = true;
@@ -187,16 +201,18 @@ function openModalLogFullDetails(summary, log) {
 const logTranslateY = 24;
 
 function updateProgressBarHeight(type = 'agent') {
-  setTimeout(() => {
+  const timeoutId = setTimeout(() => {
+    progressBarTimeoutIds.delete(timeoutId);
+
     if (!['mount', 'agent', 'step'].includes(type)) {
       throw new Error('Invalid type passed to updateProgressHeight function');
     }
 
-    const logList = document.querySelector('.preview-logs');
-    if (!logList) return;
+    const logListEl = logList.value;
+    if (!logListEl) return;
 
-    const firstLog = logList.querySelector('.log__agent-name:first-child');
-    const lastLog = logList.querySelector(
+    const firstLog = logListEl.querySelector('.log__agent-name:first-child');
+    const lastLog = logListEl.querySelector(
       '.logs__log:last-child .steps__step:last-child p',
     );
 
@@ -214,6 +230,8 @@ function updateProgressBarHeight(type = 'agent') {
 
     emit('scroll-to-bottom');
   }, 200);
+
+  progressBarTimeoutIds.add(timeoutId);
 }
 
 watch(

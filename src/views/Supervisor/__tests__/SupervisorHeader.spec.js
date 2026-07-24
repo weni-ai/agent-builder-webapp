@@ -39,6 +39,8 @@ describe('SupervisorHeader', () => {
   const findExportButton = () => wrapper.find('[data-testid="export-button"]');
   const findExportModal = () => wrapper.find('[data-testid="export-modal"]');
   const findTabs = () => wrapper.findComponent({ name: 'UnnnicTabs' });
+  const findImprovementsNewBadge = () =>
+    wrapper.find('[data-testid="improvements-new-badge"]');
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -78,6 +80,8 @@ describe('SupervisorHeader', () => {
     expect(findTabs().exists()).toBe(true);
     expect(wrapper.text()).toContain(t('audit.conversations.title'));
     expect(wrapper.text()).toContain(t('audit.improvements.title'));
+    expect(findImprovementsNewBadge().exists()).toBe(true);
+    expect(findImprovementsNewBadge().text()).toBe(t('new'));
   });
 
   it('should not render tabs when conversationsImprovements flag is disabled', async () => {
@@ -91,6 +95,7 @@ describe('SupervisorHeader', () => {
     });
 
     expect(findTabs().exists()).toBe(false);
+    expect(findImprovementsNewBadge().exists()).toBe(false);
   });
 
   it('should show header details only on conversations tab', async () => {

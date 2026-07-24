@@ -2,12 +2,15 @@ import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
+import { addHours } from 'date-fns';
+
 import i18n from '@/utils/plugins/i18n';
 import {
   MIN_CONVERSATIONS_FOR_ANALYSIS,
   useImprovementsStore,
 } from '@/store/Improvements';
 import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
+import { formatTime } from '@/utils/formatters';
 
 import RunAnalysisButton from '../RunAnalysisButton.vue';
 import RunAnalysisDialog from '../RunAnalysisDialog.vue';
@@ -119,6 +122,8 @@ describe('RunAnalysisButton.vue', () => {
 
     it('disables the button and enables tooltip when analysis already ran today', () => {
       wrapper.unmount();
+      const createdAt = new Date().toISOString();
+
       createWrapper({
         analysis: {
           status: 'complete',
@@ -127,7 +132,7 @@ describe('RunAnalysisButton.vue', () => {
             isRunning: false,
             progress: 5,
             total: 5,
-            createdAt: new Date().toISOString(),
+            createdAt,
           },
         },
       });
@@ -137,6 +142,9 @@ describe('RunAnalysisButton.vue', () => {
       expect(findTooltip().props('text')).toBe(
         i18n.global.t(
           'audit.improvements.header.run_analysis_already_run_today_tooltip',
+          {
+            time: formatTime(addHours(new Date(createdAt), 24).toISOString()),
+          },
         ),
       );
     });
