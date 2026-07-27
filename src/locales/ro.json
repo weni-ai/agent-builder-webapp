@@ -971,7 +971,7 @@
       "exceeds_limit": "Dimensiunea fișierului depășește limita de {limitMB} MB",
       "delete_file": {
         "title": "Ștergere fișier",
-        "description": "Sigur dorești să ștergi fișierul <b>{name}</b>?<br /> Conținutul acestui fișier va fi eliminat din baza AI.",
+        "description": "Sigur dorești să ștergi fișierul {name}? Conținutul acestui fișier va fi eliminat din baza AI.",
         "cancel": "Anulează",
         "delete": "Ștergere"
       },
@@ -1021,7 +1021,7 @@
       "add_site": "Adaugă site",
       "delete_site": {
         "title": "Șterge site-ul",
-        "description": "Sigur dorești să ștergi site-ul <b>{name}</b>?<br /> Tot conținutul acestui site va fi eliminat din baza AI.",
+        "description": "Sigur dorești să ștergi site-ul {name}? Tot conținutul acestui site va fi eliminat din baza AI.",
         "cancel": "Anulează",
         "delete": "Ștergere"
       },

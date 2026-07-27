@@ -67,51 +67,49 @@
       @remove="onRemove"
     />
 
-    <UnnnicModal
-      v-if="modalDeleteFile"
-      :text="$t('content_bases.files.delete_file.title')"
-      :closeIcon="false"
-      class="delete-file-modal"
-      persistent
-      data-test="modal-remove-file"
+    <UnnnicDialog
+      data-testid="modal-remove-file"
+      :open="!!modalDeleteFile"
+      lazyMount
+      @update:open="onDeleteFileModalOpenUpdate"
     >
-      <template #icon>
-        <UnnnicIcon
-          icon="error"
-          size="md"
-          scheme="red-10"
-        />
-      </template>
+      <UnnnicDialogContent v-if="modalDeleteFile">
+        <UnnnicDialogHeader type="warning">
+          <UnnnicDialogTitle>
+            {{ $t('content_bases.files.delete_file.title') }}
+          </UnnnicDialogTitle>
+        </UnnnicDialogHeader>
 
-      <template #message>
-        <div
-          v-html="
-            $t('content_bases.files.delete_file.description', {
-              name: modalDeleteFile.name,
-            })
-          "
-        ></div>
-      </template>
-      <template #options>
-        <UnnnicButton
-          class="create-repository__container__button"
-          type="tertiary"
-          @click="modalDeleteFile = false"
+        <i18n-t
+          tag="p"
+          class="delete-file-modal__description"
+          keypath="content_bases.files.delete_file.description"
         >
-          {{ $t('content_bases.files.delete_file.cancel') }}
-        </UnnnicButton>
+          <template #name>
+            <b>{{ modalDeleteFile.name }}</b>
+          </template>
+        </i18n-t>
 
-        <UnnnicButton
-          class="create-repository__container__button attention-button"
-          type="warning"
-          :loading="modalDeleteFile.status === 'deleting'"
-          data-test="button-remove"
-          @click="remove"
-        >
-          {{ $t('content_bases.files.delete_file.delete') }}
-        </UnnnicButton>
-      </template>
-    </UnnnicModal>
+        <UnnnicDialogFooter>
+          <UnnnicDialogClose>
+            <UnnnicButton
+              :text="$t('content_bases.files.delete_file.cancel')"
+              type="tertiary"
+              :disabled="modalDeleteFile.status === 'deleting'"
+              @click="closeDeleteFileModal"
+            />
+          </UnnnicDialogClose>
+
+          <UnnnicButton
+            data-testid="button-remove"
+            :text="$t('content_bases.files.delete_file.delete')"
+            type="warning"
+            :loading="modalDeleteFile.status === 'deleting'"
+            @click="remove"
+          />
+        </UnnnicDialogFooter>
+      </UnnnicDialogContent>
+    </UnnnicDialog>
   </div>
 </template>
 
@@ -305,6 +303,15 @@ export default {
       };
     },
 
+    closeDeleteFileModal() {
+      if (this.modalDeleteFile?.status === 'deleting') return;
+      this.modalDeleteFile = null;
+    },
+
+    onDeleteFileModalOpenUpdate(open) {
+      if (!open) this.closeDeleteFileModal();
+    },
+
     onRemove($event) {
       if (['fail-upload'].includes($event.status)) {
         this.files.removeItem({ uuid: $event.uuid });
@@ -326,7 +333,7 @@ export default {
         })
         .then(() => {
           this.alertStore.add({
-            type: 'default',
+            type: 'informational',
             text: this.$t('content_bases.files.file_removed_from_base', {
               name: this.modalDeleteFile.name,
             }),
@@ -343,22 +350,15 @@ export default {
 
 <style lang="scss" scoped>
 .delete-file-modal {
-  :deep(.unnnic-modal-container-background-body-description-container) {
-    padding-bottom: $unnnic-spacing-xs;
-  }
+  &__description {
+    margin: $unnnic-space-6;
 
-  :deep(.unnnic-modal-container-background-body__icon-slot) {
-    display: flex;
-    justify-content: center;
-    margin-bottom: $unnnic-spacing-sm;
-  }
+    font: $unnnic-font-body;
+    color: $unnnic-color-fg-base;
 
-  :deep(.unnnic-modal-container-background-body-title) {
-    padding-bottom: $unnnic-spacing-sm;
-  }
-
-  :deep(.unnnic-modal-container-background-body) {
-    padding-top: $unnnic-spacing-giant;
+    :deep(b) {
+      font-weight: $unnnic-font-weight-bold;
+    }
   }
 }
 
