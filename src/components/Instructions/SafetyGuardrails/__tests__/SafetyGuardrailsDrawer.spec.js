@@ -240,9 +240,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
 
   it('saves blocked topics without confirmation', async () => {
     await createWrapper();
-    nexusaiAPI.router.guardrails_config.update.mockResolvedValue({
-      data: apiConfig,
-    });
+    nexusaiAPI.router.guardrails_config.update.mockResolvedValue(storeConfig);
 
     findTopicList().vm.$emit('update:topic-enabled', {
       id: 'hate',
@@ -255,8 +253,8 @@ describe('SafetyGuardrailsDrawer.vue', () => {
 
     expect(nexusaiAPI.router.guardrails_config.update).toHaveBeenCalledWith({
       projectUuid: 'project-uuid',
-      payload: {
-        category_states: { hate: true },
+      data: {
+        categoryStates: { hate: true },
       },
     });
     expect(wrapper.emitted('update:modelValue')).toEqual([[false]]);
