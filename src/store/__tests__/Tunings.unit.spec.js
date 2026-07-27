@@ -578,7 +578,7 @@ describe('Tunings Store', () => {
         expect(store.settings.data.errorMessage).toBe('Updated error message');
       });
 
-      it('should reset to default after clearing error message', async () => {
+      it('should use endpoint error message when local value is empty', async () => {
         store.settings.data = cloneDeep(store.initialSettings);
         store.initialSettings.errorMessage = 'Custom saved message';
         store.settings.data.errorMessage = '';
@@ -658,11 +658,13 @@ describe('Tunings Store', () => {
           components: true,
           progressiveFeedback: false,
           manager: 'manager-2.5',
+          errorMessage: backendDefaultErrorMessage,
         };
         store.initialSettings = {
           components: false,
           progressiveFeedback: false,
           manager: 'manager-2.5',
+          errorMessage: backendDefaultErrorMessage,
         };
         managerSelectorStore.options.currentManager = 'manager-2.5';
         managerSelectorStore.selectedManager = 'manager-2.5';
