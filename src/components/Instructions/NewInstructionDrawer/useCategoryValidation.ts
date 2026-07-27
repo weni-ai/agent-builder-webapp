@@ -6,14 +6,18 @@ import i18n from '@/utils/plugins/i18n';
 
 const ALLOWED_CHARS = /^[\p{L}\p{N}\s-]+$/u;
 const UNCATEGORIZED_KEY = 'agents.instructions.view.uncategorized';
+const DEFAULT_INSTRUCTIONS_KEY =
+  'agents.instructions.view.default_instructions';
 
 function namesMatch(a: string, b: string) {
   return a.localeCompare(b, undefined, { sensitivity: 'base' }) === 0;
 }
 
 function getReservedCategoryNames(): string[] {
-  return i18n.global.availableLocales.map((locale) =>
-    String(i18n.global.t(UNCATEGORIZED_KEY, {}, { locale })),
+  const reservedKeys = [UNCATEGORIZED_KEY, DEFAULT_INSTRUCTIONS_KEY];
+
+  return i18n.global.availableLocales.flatMap((locale) =>
+    reservedKeys.map((key) => String(i18n.global.t(key, {}, { locale }))),
   );
 }
 
