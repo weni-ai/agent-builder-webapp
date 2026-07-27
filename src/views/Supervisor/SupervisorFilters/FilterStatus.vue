@@ -2,14 +2,12 @@
   <UnnnicFormElement
     :label="$t('audit.conversations.filters.status.conversations')"
   >
-    <UnnnicSelectSmart
+    <UnnnicMultiSelect
       v-model:modelValue="statusFilter"
       data-testid="status-select"
       :options="statusOptions"
-      orderedByIndex
-      multiple
-      multipleWithoutSelectsMessage
-      autocomplete
+      :placeholder="$t('audit.conversations.filters.status.conversations')"
+      clearable
     />
   </UnnnicFormElement>
 </template>
@@ -25,9 +23,8 @@ const supervisorStore = useSupervisorStore();
 const getStatusTranslation = (filter) =>
   i18n.global.t(`audit.conversations.filters.status.${filter}`);
 
-const statusOptions = computed(() => [
-  { label: getStatusTranslation('conversations'), value: '' },
-  ...[
+const statusOptions = computed(() =>
+  [
     'optimized_resolution',
     'other_conclusion',
     'transferred_to_human_support',
@@ -37,18 +34,16 @@ const statusOptions = computed(() => [
     label: getStatusTranslation(value),
     value,
   })),
-]);
+);
 
 const statusFilter = ref(
   supervisorStore.getInitialSelectFilter('status', statusOptions),
 );
 
 watch(
-  () => statusFilter.value,
-  () => {
-    supervisorStore.temporaryFilters.status = statusFilter.value.map(
-      (status) => status?.value || '',
-    );
+  statusFilter,
+  (selected) => {
+    supervisorStore.temporaryFilters.status = [...selected];
   },
   { immediate: true, deep: true },
 );

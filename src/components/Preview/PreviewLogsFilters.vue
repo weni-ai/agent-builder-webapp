@@ -44,12 +44,14 @@
           class="search__input"
         />
 
-        <UnnnicSelectSmart
+        <UnnnicMultiSelect
           v-model:modelValue="selectedCategories"
           :options="categoryOptions"
-          autocomplete
-          autocompleteClearOnFocus
-          multiple
+          :placeholder="
+            $t('agent_builder.traces.filter_logs.categories.placeholder')
+          "
+          enableSearch
+          clearable
           data-testid="logs-category-filter"
         />
       </section>
@@ -88,22 +90,12 @@ const categoryOptions = computed(() => {
     'applying_guardrails',
   ];
 
-  const placeholder = {
-    value: '',
+  return categories.map((category) => ({
+    value: category,
     label: i18n.global.t(
-      'agent_builder.traces.filter_logs.categories.placeholder',
+      `agent_builder.traces.filter_logs.categories.${category}`,
     ),
-  };
-
-  return [
-    placeholder,
-    ...categories.map((category) => ({
-      value: category,
-      label: i18n.global.t(
-        `agent_builder.traces.filter_logs.categories.${category}`,
-      ),
-    })),
-  ];
+  }));
 });
 
 function toggleFilters() {
@@ -113,9 +105,7 @@ function toggleFilters() {
 function emitFiltersChanged() {
   emit('filters-changed', {
     searchTerm: searchTerm.value,
-    selectedCategories: selectedCategories.value.map(
-      (category) => category.value,
-    ),
+    selectedCategories: selectedCategories.value,
   });
 }
 
