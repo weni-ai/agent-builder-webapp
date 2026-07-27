@@ -406,7 +406,8 @@
             "conflicts": "Conflicts",
             "ambiguity": "Ambiguity",
             "lack_of_clarity": "Clarity",
-            "no_issues_found": "Looks good. No issues found."
+            "no_issues_found": "Looks good. No issues found.",
+            "problem_found": "Problem found"
           },
           "suggested_rewrite": "Suggested rewrite",
           "suggestion_applied": "Suggestion applied",
