@@ -216,7 +216,7 @@ function onOpenChange(open) {
   &__description-skeleton {
     display: flex;
     flex-direction: column;
-    gap: $unnnic-spacing-nano;
+    gap: $unnnic-space-1;
   }
 }
 </style>
