@@ -122,7 +122,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     expect(findTopicList().props('topics')).toEqual(storeConfig.topics);
     expect(findTopicList().props('loading')).toBe(false);
     expect(findBlockMessage().props('modelValue')).toBe(
-      apiConfig.blocking_message,
+      storeConfig.blockingMessage,
     );
     expect(findBlockMessage().props('maxLength')).toBe(250);
   });
@@ -216,11 +216,8 @@ describe('SafetyGuardrailsDrawer.vue', () => {
   it('saves changed block message and closes the drawer', async () => {
     await createWrapper();
     nexusaiAPI.router.guardrails_config.update.mockResolvedValue({
-      data: {
-        ...apiConfig,
-        blocking_message: 'Updated block message',
-        blocking_message_is_custom: true,
-      },
+      ...storeConfig,
+      blockingMessage: 'Updated block message',
     });
 
     findBlockMessage().vm.$emit('update:modelValue', 'Updated block message');
@@ -231,8 +228,8 @@ describe('SafetyGuardrailsDrawer.vue', () => {
 
     expect(nexusaiAPI.router.guardrails_config.update).toHaveBeenCalledWith({
       projectUuid: 'project-uuid',
-      payload: {
-        blocking_message: 'Updated block message',
+      data: {
+        blockingMessage: 'Updated block message',
       },
     });
     expect(wrapper.emitted('update:modelValue')).toEqual([[false]]);
