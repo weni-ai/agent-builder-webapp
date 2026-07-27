@@ -124,6 +124,34 @@ describe('useCategoryValidation', () => {
     });
   });
 
+  it('blocks the fixed default instructions name in every locale', () => {
+    const reservedNames = i18n.global.availableLocales.map((locale) =>
+      String(
+        i18n.global.t(
+          'agents.instructions.view.default_instructions',
+          {},
+          { locale },
+        ),
+      ),
+    );
+
+    expect(reservedNames).toEqual(
+      expect.arrayContaining([
+        'Default instructions',
+        'Instruções padrão',
+        'Instrucciones predeterminadas',
+        'Instrucțiuni implicite',
+      ]),
+    );
+
+    reservedNames.forEach((reservedName) => {
+      const { validation } = setup(reservedName);
+
+      expect(validation.error.value).toBe(validationT('already_exists'));
+      expect(validation.isValid.value).toBe(false);
+    });
+  });
+
   it('reacts when the existing names list changes', () => {
     const { existing, validation } = setup('Sales', []);
 

@@ -30,7 +30,7 @@ const classification = computed<{
       `agents.instructions.new_instruction_drawer.ai_analysis.issues_types.${key}`,
     );
 
-  const titleMappings = {
+  const titleMappings: Partial<Record<Classification['name'], string>> = {
     duplicate: getTranslation('duplicate'),
     conflicting: getTranslation('conflicts'),
     ambiguity: getTranslation('ambiguity'),
@@ -43,13 +43,13 @@ const classification = computed<{
     const resultList = results.map((result: Classification) => ({
       ...result,
       type: 'attention' as const,
-      name: titleMappings[result.name] || result.reason,
+      name: titleMappings[result.name] || '',
     }));
 
     return {
       type: 'attention' as const,
       name: formatListToReadable(
-        resultList.map((result: Classification) => result.name),
+        resultList.map((result) => result.name).filter(Boolean),
       ),
       reason: resultList[0].reason,
     };
