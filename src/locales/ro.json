@@ -39,8 +39,7 @@
             "conflicts": "Conflicte",
             "ambiguity": "Ambiguitate",
             "lack_of_clarity": "Claritate",
-            "no_problems_found": "Nu s-au găsit probleme. Gata de publicare!",
-            "problem_found": "Problemă găsită"
+            "no_problems_found": "Nu s-au găsit probleme. Gata de publicare!"
           },
           "see_ai_suggestion": {
             "trigger": "Vezi sugestia IA",

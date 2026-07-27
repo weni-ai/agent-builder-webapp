@@ -43,12 +43,14 @@ const classification = computed<{
     const resultList = results.map((result: Classification) => ({
       ...result,
       type: 'attention' as const,
-      name: titleMappings[result.name] || getTranslation('problem_found'),
+      name: titleMappings[result.name] || '',
     }));
 
     return {
       type: 'attention' as const,
-      name: formatListToReadable(resultList.map((result) => result.name)),
+      name: formatListToReadable(
+        resultList.map((result) => result.name).filter(Boolean),
+      ),
       reason: resultList[0].reason,
     };
   }

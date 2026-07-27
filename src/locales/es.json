@@ -406,8 +406,7 @@
             "conflicts": "Conflicto",
             "ambiguity": "Ambigüedad",
             "lack_of_clarity": "Claridad",
-            "no_issues_found": "Todo bien. No se encontraron problemas.",
-            "problem_found": "Problema encontrado"
+            "no_issues_found": "Todo bien. No se encontraron problemas."
           },
           "suggested_rewrite": "Reescritura sugerida",
           "suggestion_applied": "Sugerencia aplicada",
