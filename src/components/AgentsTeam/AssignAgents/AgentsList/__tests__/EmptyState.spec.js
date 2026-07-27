@@ -20,7 +20,7 @@ const mountEmptyState = (stateOverrides = {}) => {
         linkToCreateAgent: 'https://github.com/weni-ai/weni-cli',
         assignAgentsFilters: {
           search: '',
-          category: [],
+          category: '',
           system: 'ALL_OFFICIAL',
           ...assignAgentsFiltersOverrides,
         },

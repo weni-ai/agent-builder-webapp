@@ -40,7 +40,7 @@ describe('ChangesHistory.vue', () => {
         plugins: [createTestingPinia()],
         stubs: {
           UnnnicIntelligenceText: { template: '<p><slot /></p>' },
-          UnnnicSelectSmart: true,
+          UnnnicSelect: true,
           UnnnicTableNext: true,
         },
       },
@@ -51,7 +51,11 @@ describe('ChangesHistory.vue', () => {
     wrapper.unmount();
   });
 
-  test('renders the correct header and sub-description text', () => {
+  test('renders the correct header and sub-description text', async () => {
+    wrapper.vm.table.rows = [{ id: 1 }];
+    wrapper.vm.isLoading = false;
+    await nextTick();
+
     const descriptionText = wrapper.findAll('p');
     expect(descriptionText[0].text()).toContain(
       wrapper.vm.$t('router.tunings.history.description'),
@@ -73,7 +77,7 @@ describe('ChangesHistory.vue', () => {
     );
 
     wrapper.vm.pagination = 2;
-    wrapper.vm.currentFilterOption = [{ value: 'all' }];
+    wrapper.vm.currentFilterOption = 'all';
     await nextTick();
 
     expect(nexusaiAPI.router.tunings.historyChanges.read).toHaveBeenCalledWith({
@@ -146,7 +150,7 @@ describe('ChangesHistory.vue', () => {
   });
 
   test('computes noChangesDetected correctly and renders no changes message when noChangesDetected is true', async () => {
-    wrapper.vm.currentFilterOption = [{ value: 'all' }];
+    wrapper.vm.currentFilterOption = 'all';
 
     await nextTick();
 
@@ -162,7 +166,7 @@ describe('ChangesHistory.vue', () => {
   });
 
   test('computes noChangesDetected correctly when rows are present', async () => {
-    wrapper.vm.currentFilterOption = [{ value: 'all' }];
+    wrapper.vm.currentFilterOption = 'all';
     wrapper.vm.table.rows = [{}];
 
     await nextTick();
@@ -171,7 +175,7 @@ describe('ChangesHistory.vue', () => {
   });
 
   test('renders description and filter select when there are changes', async () => {
-    wrapper.vm.currentFilterOption = [{ value: 'Customization' }];
+    wrapper.vm.currentFilterOption = 'Customization';
     wrapper.vm.table.rows = [{ id: 1, content: 'Change 1' }];
     wrapper.vm.isLoading = false;
 
