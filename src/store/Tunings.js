@@ -277,20 +277,25 @@ export const useTuningsStore = defineStore('Tunings', () => {
         }
       }
 
+      const errorMessage = settings.data.errorMessage ?? '';
       const hasErrorMessageChanges =
-        initialSettings.value.errorMessage !== settings.data.errorMessage;
+        initialSettings.value.errorMessage !== errorMessage;
 
       if (hasErrorMessageChanges) {
         try {
-          await nexusaiAPI.router.tunings.apiErrorMessage.edit({
-            projectUuid: projectUuid.value,
-            data: {
-              errorMessage: settings.data.errorMessage,
-            },
-            requestOptions: {
-              hideGenericErrorAlert: true,
-            },
-          });
+          const { errorMessage: savedErrorMessage } =
+            await nexusaiAPI.router.tunings.apiErrorMessage.edit({
+              projectUuid: projectUuid.value,
+              data: {
+                errorMessage,
+              },
+              requestOptions: {
+                hideGenericErrorAlert: true,
+              },
+            });
+
+          settings.data.errorMessage =
+            errorMessage === '' ? savedErrorMessage : errorMessage;
         } catch {
           lastErrorMessageSaveFailed.value = true;
         }
