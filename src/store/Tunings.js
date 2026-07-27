@@ -282,18 +282,15 @@ export const useTuningsStore = defineStore('Tunings', () => {
 
       if (hasErrorMessageChanges) {
         try {
-          const { errorMessage: savedErrorMessage } =
-            await nexusaiAPI.router.tunings.apiErrorMessage.edit({
-              projectUuid: projectUuid.value,
-              data: {
-                errorMessage: settings.data.errorMessage,
-              },
-              requestOptions: {
-                hideGenericErrorAlert: true,
-              },
-            });
-
-          settings.data.errorMessage = savedErrorMessage ?? '';
+          await nexusaiAPI.router.tunings.apiErrorMessage.edit({
+            projectUuid: projectUuid.value,
+            data: {
+              errorMessage: settings.data.errorMessage,
+            },
+            requestOptions: {
+              hideGenericErrorAlert: true,
+            },
+          });
         } catch {
           lastErrorMessageSaveFailed.value = true;
         }

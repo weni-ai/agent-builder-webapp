@@ -578,7 +578,7 @@ describe('Tunings Store', () => {
         expect(store.settings.data.errorMessage).toBe('Updated error message');
       });
 
-      it('should reset to default after clearing error message', async () => {
+      it('should keep empty error message after clearing', async () => {
         store.settings.data = cloneDeep(store.initialSettings);
         store.initialSettings.errorMessage = 'Custom saved message';
         store.settings.data.errorMessage = '';
@@ -589,9 +589,7 @@ describe('Tunings Store', () => {
         const result = await store.saveSettings();
 
         expect(result).toBe(true);
-        expect(store.settings.data.errorMessage).toBe(
-          backendDefaultErrorMessage,
-        );
+        expect(store.settings.data.errorMessage).toBe('');
       });
 
       it('should keep other settings saved when only error message save fails', async () => {
