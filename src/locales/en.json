@@ -823,12 +823,14 @@
         "agents_preview": {
           "title": "Agent preview",
           "agents_progressive_feedback": {
+            "description": "The agent can provide brief updates while formulating the final response, helping the contact follow the process in real time.",
             "title": "Agent progressive feedback (only available for Shopping Assistant)",
-            "description": "The agent can provide brief updates while formulating the final response, helping the contact follow the process in real time."
+            "tooltip": "Disable Multiple message format to enable this feature"
           },
           "multiple_message_format": {
+            "description": "The agent can send multiple formatted messages, such as quick responses, lists, CTAs, and catalogs.",
             "title": "Multiple message format",
-            "description": "The agent can send multiple formatted messages, such as quick responses, lists, CTAs, and catalogs."
+            "tooltip": "Disable Agent progressive feedback to enable this feature"
           }
         },
         "human_support": {

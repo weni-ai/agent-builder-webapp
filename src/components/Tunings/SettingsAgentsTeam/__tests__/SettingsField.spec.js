@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import SettingsField from '../SettingsField.vue';
@@ -11,6 +11,8 @@ describe('SettingsField.vue', () => {
   const descriptionText = () =>
     wrapper.findComponent('[data-testid="description"]');
   const fieldContainer = () => wrapper.find('[data-testid="field"]');
+  const tooltipComponent = () =>
+    wrapper.findComponent({ name: 'UnnnicTooltip' });
 
   const defaultProps = {
     modelValue: false,
@@ -19,11 +21,21 @@ describe('SettingsField.vue', () => {
   };
 
   beforeEach(() => {
-    wrapper = shallowMount(SettingsField, {
+    wrapper = mount(SettingsField, {
       props: defaultProps,
       global: {
         stubs: {
           UnnnicIntelligenceText: Text,
+          UnnnicTooltip: {
+            name: 'UnnnicTooltip',
+            props: ['text', 'enabled', 'side', 'maxWidth'],
+            template: '<div data-testid="tooltip"><slot /></div>',
+          },
+          UnnnicToolTip: {
+            name: 'UnnnicTooltip',
+            props: ['text', 'enabled', 'side', 'maxWidth'],
+            template: '<div data-testid="tooltip"><slot /></div>',
+          },
         },
       },
     });
@@ -129,7 +141,7 @@ describe('SettingsField.vue', () => {
   });
 
   describe('Component integration', () => {
-    it('maintains proper component structure and hierarchy', () => {
+    it('renders switch and description inside the field', () => {
       const container = fieldContainer();
       const switchComp = switchComponent();
       const descriptionComp = descriptionText();
@@ -137,18 +149,24 @@ describe('SettingsField.vue', () => {
       expect(container.exists()).toBe(true);
       expect(switchComp.exists()).toBe(true);
       expect(descriptionComp.exists()).toBe(true);
-
       expect(container.element.contains(switchComp.element)).toBe(true);
       expect(container.element.contains(descriptionComp.element)).toBe(true);
     });
 
-    it('renders all components in the correct order', () => {
-      const container = fieldContainer();
-      const children = container.element.children;
+    it('passes tooltip props to UnnnicTooltip when disabled', async () => {
+      const tooltip = tooltipComponent();
 
-      expect(children).toHaveLength(2);
-      expect(children[0].tagName.toLowerCase()).toBe('unnnic-switch-stub');
-      expect(children[1].tagName.toLowerCase()).toBe('p');
+      expect(tooltip.exists()).toBe(true);
+      expect(tooltip.props('text')).toBe('');
+      expect(tooltip.props('enabled')).toBe(false);
+
+      await wrapper.setProps({
+        disabled: true,
+        tooltip: 'Feature unavailable',
+      });
+
+      expect(tooltip.props('text')).toBe('Feature unavailable');
+      expect(tooltip.props('enabled')).toBe(true);
     });
   });
 });
