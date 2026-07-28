@@ -931,12 +931,14 @@
         "agents_preview": {
           "title": "Prévia dos agentes",
           "agents_progressive_feedback": {
+            "description": "O agente pode fornecer atualizações breves enquanto formula a resposta final, ajudando o contato a acompanhar o processo em tempo real.",
             "title": "Feedback progressivo dos agentes (disponível somente para o Shopping Assistant)",
-            "description": "O agente pode fornecer atualizações breves enquanto formula a resposta final, ajudando o contato a acompanhar o processo em tempo real."
+            "tooltip": "Desative o formato de mensagem múltipla para ativar este recurso"
           },
           "multiple_message_format": {
+            "description": "O agente pode enviar várias mensagens formatadas, como respostas rápidas, listas, CTAs e catálogos.",
             "title": "Formato de mensagem múltipla",
-            "description": "O agente pode enviar várias mensagens formatadas, como respostas rápidas, listas, CTAs e catálogos."
+            "tooltip": "Desative o feedback progressivo dos agentes para ativar este recurso"
           }
         },
         "human_support": {

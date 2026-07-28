@@ -358,6 +358,7 @@ describe('EditManagerProfileDrawer.vue', () => {
       };
       tuningsStore.saveSettings.mockResolvedValue(false);
       tuningsStore.lastErrorMessageSaveFailed = true;
+      tuningsStore.lastSaveForbidden = false;
       const alertSpy = vi.spyOn(alertStore, 'add');
 
       await wrapper.vm.save();

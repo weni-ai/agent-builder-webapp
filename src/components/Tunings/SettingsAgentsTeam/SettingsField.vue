@@ -12,13 +12,25 @@
     class="form__field"
     data-testid="field"
   >
-    <UnnnicSwitch
-      data-testid="switch"
-      :disabled="disabled"
-      :modelValue="modelValue"
-      :textRight="textRight"
-      @update:model-value="emit('update:modelValue', $event)"
-    />
+    <UnnnicToolTip
+      side="top"
+      maxWidth="240px"
+      :text="tooltip"
+      :contentProps="{
+        align: 'start',
+        side: 'left',
+      }"
+      :enabled="Boolean(tooltip) && disabled"
+      data-testid="tooltip"
+    >
+      <UnnnicSwitch
+        data-testid="switch"
+        :disabled="disabled"
+        :modelValue="modelValue"
+        :textRight="textRight"
+        @update:model-value="emit('update:modelValue', $event)"
+      />
+    </UnnnicToolTip>
 
     <UnnnicIntelligenceText
       data-testid="description"
@@ -56,6 +68,10 @@ defineProps({
   disabled: {
     type: Boolean,
     default: false,
+  },
+  tooltip: {
+    type: String,
+    default: '',
   },
 });
 </script>
