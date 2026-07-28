@@ -307,11 +307,38 @@ describe('EditManagerProfileDrawer.vue', () => {
       tuningsStore.settings.data = { ...defaultSettingsData, manager: 'other' };
       tuningsStore.saveSettings.mockResolvedValue(false);
       tuningsStore.lastErrorMessageSaveFailed = false;
+      tuningsStore.lastSaveForbidden = false;
       const alertSpy = vi.spyOn(alertStore, 'add');
 
       await wrapper.vm.save();
 
       expect(alertSpy).toHaveBeenCalledWith({
+        text: i18n.global.t('router.tunings.settings.save_error'),
+        type: 'error',
+      });
+      expect(wrapper.vm.modelValue).toBe(true);
+    });
+
+    it('shows unauthorized alert when settings save fails with 403', async () => {
+      profileStore.name.current = profileStore.name.old;
+      profileStore.role.current = profileStore.role.old;
+      profileStore.personality.current = profileStore.personality.old;
+      profileStore.goal.current = profileStore.goal.old;
+
+      tuningsStore.initialSettings = { ...defaultSettingsData };
+      tuningsStore.settings.data = { ...defaultSettingsData, manager: 'other' };
+      tuningsStore.saveSettings.mockResolvedValue(false);
+      tuningsStore.lastErrorMessageSaveFailed = false;
+      tuningsStore.lastSaveForbidden = true;
+      const alertSpy = vi.spyOn(alertStore, 'add');
+
+      await wrapper.vm.save();
+
+      expect(alertSpy).toHaveBeenCalledWith({
+        text: i18n.global.t('unauthorized'),
+        type: 'error',
+      });
+      expect(alertSpy).not.toHaveBeenCalledWith({
         text: i18n.global.t('router.tunings.settings.save_error'),
         type: 'error',
       });

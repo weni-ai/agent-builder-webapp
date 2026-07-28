@@ -509,6 +509,19 @@ describe('Tunings Store', () => {
         const result = await store.saveSettings();
 
         expect(store.settings.status).toBe('error');
+        expect(store.lastSaveForbidden).toBe(false);
+        expect(result).toBe(false);
+      });
+
+      it('should mark lastSaveForbidden when save settings fails with 403', async () => {
+        nexusaiAPI.router.tunings.editProgressiveFeedback.mockRejectedValue({
+          response: { status: 403 },
+        });
+
+        const result = await store.saveSettings();
+
+        expect(store.settings.status).toBe('error');
+        expect(store.lastSaveForbidden).toBe(true);
         expect(result).toBe(false);
       });
 
@@ -709,6 +722,28 @@ describe('Tunings Store', () => {
         await store.saveTunings();
 
         expect(alertStore.add).toHaveBeenCalledWith({
+          text: 'router.tunings.settings.save_error',
+          type: 'error',
+        });
+        expect(alertStore.add).not.toHaveBeenCalledWith({
+          text: 'router.tunings.save_success',
+          type: 'success',
+        });
+      });
+
+      it('should show unauthorized error for settings failure with 403', async () => {
+        nexusaiAPI.router.tunings.editCredentials.mockResolvedValue();
+        nexusaiAPI.router.tunings.editComponents.mockRejectedValue({
+          response: { status: 403 },
+        });
+
+        await store.saveTunings();
+
+        expect(alertStore.add).toHaveBeenCalledWith({
+          text: 'unauthorized',
+          type: 'error',
+        });
+        expect(alertStore.add).not.toHaveBeenCalledWith({
           text: 'router.tunings.settings.save_error',
           type: 'error',
         });

@@ -33,6 +33,7 @@ export const useTuningsStore = defineStore('Tunings', () => {
 
   const initialSettings = ref(null);
   const lastErrorMessageSaveFailed = ref(false);
+  const lastSaveForbidden = ref(false);
   const settings = reactive({
     status: null,
     data: {
@@ -225,6 +226,7 @@ export const useTuningsStore = defineStore('Tunings', () => {
 
   async function saveSettings() {
     lastErrorMessageSaveFailed.value = false;
+    lastSaveForbidden.value = false;
 
     try {
       settings.status = 'loading';
@@ -312,6 +314,7 @@ export const useTuningsStore = defineStore('Tunings', () => {
 
       return !lastErrorMessageSaveFailed.value;
     } catch (error) {
+      lastSaveForbidden.value = error?.response?.status === 403;
       settings.status = 'error';
       return false;
     }
@@ -355,7 +358,11 @@ export const useTuningsStore = defineStore('Tunings', () => {
       if (settings.status === 'error') {
         hasSettingsError = true;
         alertStore.add({
-          text: i18n.global.t('router.tunings.settings.save_error'),
+          text: i18n.global.t(
+            lastSaveForbidden.value
+              ? 'unauthorized'
+              : 'router.tunings.settings.save_error',
+          ),
           type: 'error',
         });
       } else if (lastErrorMessageSaveFailed.value) {
@@ -389,6 +396,7 @@ export const useTuningsStore = defineStore('Tunings', () => {
     initialCredentials,
     initialSettings,
     lastErrorMessageSaveFailed,
+    lastSaveForbidden,
     getCredentialIndex,
     updateCredential,
     fetchCredentials,
