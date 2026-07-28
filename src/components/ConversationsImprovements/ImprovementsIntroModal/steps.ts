@@ -2,8 +2,7 @@ import step1Illustration from '@/assets/images/improvements-intro/step-1.png';
 import step2Illustration from '@/assets/images/improvements-intro/step-2.png';
 import step3Illustration from '@/assets/images/improvements-intro/step-3.png';
 import step4Illustration from '@/assets/images/improvements-intro/step-4.png';
-
-export const TOTAL_STEPS = 4;
+import step5Illustration from '@/assets/images/improvements-intro/step-5.png';
 
 export type IntroStep = {
   id: number;
@@ -37,7 +36,15 @@ export const INTRO_STEPS: IntroStep[] = [
     titleKey: 'audit.improvements.intro_modal.steps.4.title',
     descriptionKey: 'audit.improvements.intro_modal.steps.4.description',
   },
+  {
+    id: 5,
+    illustration: step5Illustration,
+    titleKey: 'audit.improvements.intro_modal.steps.5.title',
+    descriptionKey: 'audit.improvements.intro_modal.steps.5.description',
+  },
 ];
+
+export const TOTAL_STEPS = INTRO_STEPS.length;
 
 // TODO: replace with the final help guide URL when available
 export const HELP_GUIDE_URL = '';
