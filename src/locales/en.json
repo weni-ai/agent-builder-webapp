@@ -604,6 +604,11 @@
         "filter_conversations_drawer": "Filter conversations",
         "apply_filters": "Apply filters",
         "clear_filters": "Clear filters",
+        "analysis": {
+          "all_conversations": "All conversations",
+          "amazing_conversations": "Amazing conversations",
+          "label": "Analysis"
+        },
         "period": {
           "disclaimer": "Conversations older than 90 days are archived and can't be shown. To access them, contact support.",
           "label": "Period",
@@ -754,6 +759,10 @@
           "4": {
             "description": "Beyond the types above, you can define behaviors of your own to monitor, up to 10 per project. The more specific the definition, the better the AI identifies the problem.",
             "title": "Monitor what matters to your operation"
+          },
+          "5": {
+            "description": "The analysis doesn't just surface problems — it also flags standout conversations as Amazing Conversations on the Conversations tab. A way to see what good looks like, not just what to correct.",
+            "title": "It also highlights what's working"
           }
         },
         "view_help_guide": "View guide"

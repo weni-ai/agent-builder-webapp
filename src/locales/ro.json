@@ -603,6 +603,11 @@
         "filter_conversations_drawer": "Filtrează conversațiile",
         "apply_filters": "Aplicare filtre",
         "clear_filters": "Elimină filtrele",
+        "analysis": {
+          "all_conversations": "Toate conversațiile",
+          "amazing_conversations": "Conversații extraordinare",
+          "label": "Analiză"
+        },
         "period": {
           "disclaimer": "Conversațiile mai vechi de 90 de zile sunt arhivate și nu pot fi afișate. Pentru a le accesa, contactează asistența.",
           "label": "Perioadă",
@@ -752,6 +757,10 @@
           "4": {
             "description": "Pe lângă tipurile de mai sus, poți defini comportamente proprii de monitorizat, până la 10 pe proiect. Cu cât definiția este mai specifică, cu atât AI-ul identifică mai bine problema.",
             "title": "Monitorizează ce contează pentru operațiunea ta"
+          },
+          "5": {
+            "description": "Analiza nu doar identifică probleme — marchează și conversații remarcabile ca Conversații Uimitoare în fila Conversații. O modalitate de a vedea ce funcționează bine, nu doar ce trebuie corectat.",
+            "title": "Evidențiază și ce funcționează"
           }
         },
         "view_help_guide": "Vezi ghidul"

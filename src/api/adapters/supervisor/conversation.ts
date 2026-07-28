@@ -39,6 +39,7 @@ interface FilterData {
   status: string[];
   csat: string[];
   topics: string[];
+  isAmazing?: boolean | null;
 }
 
 interface ApiParams {
@@ -49,6 +50,7 @@ interface ApiParams {
   resolution?: number[];
   csat?: number[];
   topics?: string[];
+  is_amazing?: boolean;
 }
 
 const STATUS_BY_RESOLUTION: Record<number, string> = {
@@ -129,6 +131,7 @@ export const ConversationAdapter = {
       status = [],
       csat = [],
       topics = [],
+      isAmazing,
     } = filterData;
 
     return {
@@ -147,6 +150,7 @@ export const ConversationAdapter = {
           csat: csat.map((csatItem) => SCORE_BY_CSAT[csatItem]),
         }),
       ...(isArray(topics) && topics.length > 0 && { topics }),
+      ...(isAmazing === true && { is_amazing: true }),
     };
   },
 };

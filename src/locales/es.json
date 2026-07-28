@@ -604,6 +604,11 @@
         "filter_conversations_drawer": "Filtrar conversaciones",
         "apply_filters": "Aplicar filtros",
         "clear_filters": "Limpiar filtros",
+        "analysis": {
+          "all_conversations": "Todas las conversaciones",
+          "amazing_conversations": "Conversaciones increíbles",
+          "label": "Análisis"
+        },
         "period": {
           "disclaimer": "Las conversaciones con más de 90 días se archivan y no se pueden mostrar. Para acceder a ellas, comunícate con el soporte.",
           "label": "Periodo",
@@ -753,6 +758,10 @@
           "4": {
             "description": "Además de los tipos anteriores, puedes definir comportamientos propios para monitorear, hasta 10 por proyecto. Cuanto más específica sea la definición, mejor identifica el problema la IA.",
             "title": "Monitorea lo que importa para tu operación"
+          },
+          "5": {
+            "description": "El análisis no solo identifica problemas — también marca conversaciones destacadas como Conversaciones Increíbles en la pestaña Conversaciones. Una forma de ver lo que funciona bien, no solo lo que hay que corregir.",
+            "title": "También destaca lo que funciona"
           }
         },
         "view_help_guide": "Ver guía"
