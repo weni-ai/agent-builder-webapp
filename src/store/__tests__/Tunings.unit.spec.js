@@ -620,8 +620,29 @@ describe('Tunings Store', () => {
 
         expect(result).toBe(false);
         expect(store.lastErrorMessageSaveFailed).toBe(true);
+        expect(store.lastSaveForbidden).toBe(false);
         expect(store.settings.status).toBe('success');
         expect(store.initialSettings.components).toBe(true);
+        expect(store.initialSettings.errorMessage).toBe(
+          backendDefaultErrorMessage,
+        );
+      });
+
+      it('should mark lastSaveForbidden when error message save fails with 403', async () => {
+        store.settings.data.errorMessage = 'Updated error message';
+        nexusaiAPI.router.tunings.editProgressiveFeedback.mockResolvedValue();
+        nexusaiAPI.router.tunings.editComponents.mockResolvedValue();
+        nexusaiAPI.router.tunings.apiErrorMessage.edit.mockRejectedValue({
+          response: { status: 403 },
+        });
+        vi.spyOn(managerSelectorStore, 'saveManager').mockResolvedValue(true);
+
+        const result = await store.saveSettings();
+
+        expect(result).toBe(false);
+        expect(store.lastSaveForbidden).toBe(true);
+        expect(store.lastErrorMessageSaveFailed).toBe(false);
+        expect(store.settings.status).toBe('success');
         expect(store.initialSettings.errorMessage).toBe(
           backendDefaultErrorMessage,
         );

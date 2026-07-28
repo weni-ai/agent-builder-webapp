@@ -125,12 +125,12 @@ async function save() {
       hasError = true;
       let errorText = i18n.global.t('router.tunings.settings.save_error');
 
-      if (tuningsStore.lastErrorMessageSaveFailed) {
+      if (tuningsStore.lastSaveForbidden) {
+        errorText = i18n.global.t('unauthorized');
+      } else if (tuningsStore.lastErrorMessageSaveFailed) {
         errorText = i18n.global.t(
           'agent_builder.tunings.system_messages.error_message.save_error',
         );
-      } else if (tuningsStore.lastSaveForbidden) {
-        errorText = i18n.global.t('unauthorized');
       }
 
       alertStore.add({

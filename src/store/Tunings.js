@@ -298,21 +298,25 @@ export const useTuningsStore = defineStore('Tunings', () => {
 
           settings.data.errorMessage =
             errorMessage === '' ? savedErrorMessage : errorMessage;
-        } catch {
-          lastErrorMessageSaveFailed.value = true;
+        } catch (error) {
+          if (error?.response?.status === 403) {
+            lastSaveForbidden.value = true;
+          } else {
+            lastErrorMessageSaveFailed.value = true;
+          }
         }
       }
 
       const nextInitialSettings = cloneDeep(settings.data);
 
-      if (lastErrorMessageSaveFailed.value) {
+      if (lastErrorMessageSaveFailed.value || lastSaveForbidden.value) {
         nextInitialSettings.errorMessage = initialSettings.value.errorMessage;
       }
 
       initialSettings.value = nextInitialSettings;
       settings.status = 'success';
 
-      return !lastErrorMessageSaveFailed.value;
+      return !lastErrorMessageSaveFailed.value && !lastSaveForbidden.value;
     } catch (error) {
       lastSaveForbidden.value = error?.response?.status === 403;
       settings.status = 'error';
@@ -365,6 +369,11 @@ export const useTuningsStore = defineStore('Tunings', () => {
           ),
           type: 'error',
         });
+      } else if (lastSaveForbidden.value) {
+        alertStore.add({
+          text: i18n.global.t('unauthorized'),
+          type: 'error',
+        });
       } else if (lastErrorMessageSaveFailed.value) {
         alertStore.add({
           text: i18n.global.t(
@@ -378,7 +387,8 @@ export const useTuningsStore = defineStore('Tunings', () => {
     if (
       !hasCredentialsError &&
       !hasSettingsError &&
-      !lastErrorMessageSaveFailed.value
+      !lastErrorMessageSaveFailed.value &&
+      !lastSaveForbidden.value
     ) {
       alertStore.add({
         text: i18n.global.t('router.tunings.save_success'),
