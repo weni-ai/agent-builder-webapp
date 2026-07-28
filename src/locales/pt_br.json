@@ -680,6 +680,10 @@
           "4": {
             "description": "Além dos tipos acima, você pode definir comportamentos próprios para monitorar, até 10 por projeto. Quanto mais específica a definição, melhor a IA identifica o problema.",
             "title": "Monitore o que importa para a operação"
+          },
+          "5": {
+            "description": "A análise não só identifica problemas — ela também marca conversas de destaque como Conversas Incríveis na aba Conversas. Uma forma de ver o que funciona bem, não apenas o que corrigir.",
+            "title": "Também destaca o que está funcionando"
           }
         },
         "view_help_guide": "Ver guia"
