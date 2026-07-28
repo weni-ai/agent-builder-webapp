@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue';
+import { computed } from 'vue';
 import i18n from '@/utils/plugins/i18n';
 
 import { useSupervisorStore } from '@/store/Supervisor';
@@ -27,18 +27,14 @@ const analysisOptions = computed(() =>
   })),
 );
 
-const analysisFilter = ref(
-  supervisorStore.temporaryFilters.isAmazing
-    ? 'amazing_conversations'
-    : 'all_conversations',
-);
-
-watch(
-  analysisFilter,
-  (selected) => {
+const analysisFilter = computed({
+  get: () =>
+    supervisorStore.temporaryFilters.isAmazing
+      ? 'amazing_conversations'
+      : 'all_conversations',
+  set: (selected) => {
     supervisorStore.temporaryFilters.isAmazing =
       selected === 'amazing_conversations' ? true : null;
   },
-  { immediate: true },
-);
+});
 </script>
