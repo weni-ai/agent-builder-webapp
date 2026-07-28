@@ -155,7 +155,7 @@ describe('Supervisor view', () => {
 
       expect(wrapper.vm.isIntroModalOpen).toBe(true);
 
-      wrapper.vm.isIntroModalOpen = false;
+      await findIntroModal().vm.$emit('update:open', false);
       await wrapper.vm.$nextTick();
 
       expect(moduleStorage.setItem).toHaveBeenCalledWith(
