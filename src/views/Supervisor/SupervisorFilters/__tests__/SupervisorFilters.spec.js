@@ -43,6 +43,7 @@ describe('SupervisorFilters.vue', () => {
   const filterStatus = () => findComponent('filter-status');
   const filterCsat = () => findComponent('filter-csat');
   const filterTopics = () => findComponent('filter-topics');
+  const filterAnalysis = () => findComponent('filter-analysis');
 
   describe('Component rendering', () => {
     it('renders filter text', () => {
@@ -68,6 +69,7 @@ describe('SupervisorFilters.vue', () => {
       expect(filterStatus().exists()).toBe(true);
       expect(filterCsat().exists()).toBe(true);
       expect(filterTopics().exists()).toBe(true);
+      expect(filterAnalysis().exists()).toBe(true);
     });
   });
 
@@ -99,6 +101,18 @@ describe('SupervisorFilters.vue', () => {
       await wrapper.vm.$nextTick();
 
       expect(buttonFilter().props('text')).toContain(countTranslation(3));
+    });
+
+    it('includes isAmazing in the applied filters count', async () => {
+      const countTranslation = (count) =>
+        i18n.global.t('audit.conversations.filters.count_applied_filters', {
+          count,
+        });
+
+      store.filters.isAmazing = true;
+      await wrapper.vm.$nextTick();
+
+      expect(buttonFilter().props('text')).toContain(countTranslation(1));
     });
 
     beforeEach(() => {

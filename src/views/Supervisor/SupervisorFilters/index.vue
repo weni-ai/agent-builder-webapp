@@ -28,6 +28,7 @@
         <FilterStatus data-testid="filter-status" />
         <FilterCsat data-testid="filter-csat" />
         <FilterTopics data-testid="filter-topics" />
+        <FilterAnalysis data-testid="filter-analysis" />
       </template>
     </UnnnicDrawer>
   </section>
@@ -46,6 +47,7 @@ import FilterDate from './FilterDate.vue';
 import FilterStatus from './FilterStatus.vue';
 import FilterCsat from './FilterCsat.vue';
 import FilterTopics from './FilterTopics.vue';
+import FilterAnalysis from './FilterAnalysis.vue';
 
 const supervisorStore = useSupervisorStore();
 
@@ -61,9 +63,13 @@ const filterDrawerClearButtonDisabled = computed(() =>
 const countAppliedFilters = computed(() => {
   const filtersToCount = ['status', 'csat', 'topics'];
 
-  return filtersToCount.reduce((total, filter) => {
+  const arrayFiltersCount = filtersToCount.reduce((total, filter) => {
     return total + supervisorStore.filters[filter].length;
   }, 0);
+
+  const isAmazingCount = supervisorStore.filters.isAmazing ? 1 : 0;
+
+  return arrayFiltersCount + isAmazingCount;
 });
 
 const filterButtonText = computed(() => {
