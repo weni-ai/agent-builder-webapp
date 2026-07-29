@@ -5,7 +5,9 @@ import { createTestingPinia } from '@pinia/testing';
 import { useRouter } from 'vue-router';
 
 import Supervisor from '@/views/Supervisor/index.vue';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useSupervisorStore } from '@/store/Supervisor';
+import { moduleStorage } from '@/utils/storage';
 
 const mockRoute = reactive({
   name: 'conversations',
@@ -27,9 +29,17 @@ vi.mock('vue-router', async () => {
   };
 });
 
+vi.mock('@/utils/storage', () => ({
+  moduleStorage: {
+    getItem: vi.fn(() => null),
+    setItem: vi.fn(),
+  },
+}));
+
 describe('Supervisor view', () => {
   let wrapper;
   let supervisorStore;
+  let featureFlagsStore;
 
   const findHeader = () => wrapper.findComponent('[data-testid="header"]');
   const findConversations = () =>
@@ -37,27 +47,53 @@ describe('Supervisor view', () => {
   const findConversation = () =>
     wrapper.findComponent('[data-testid="supervisor-conversation"]');
   const findRouterView = () => wrapper.findComponent({ name: 'RouterView' });
+  const findIntroModal = () =>
+    wrapper.findComponent('[data-testid="improvements-intro-modal"]');
 
-  beforeEach(() => {
-    mockRoute.name = 'conversations';
+  const createWrapper = ({
+    conversationsImprovements = false,
+    introModalSeen = null,
+  } = {}) => {
+    moduleStorage.getItem.mockImplementation((key) => {
+      if (key === 'improvements-intro-modal-seen') {
+        return introModalSeen;
+      }
 
-    const pinia = createTestingPinia();
+      return null;
+    });
+
+    const pinia = createTestingPinia({
+      initialState: {
+        FeatureFlags: {
+          activeFeatures: conversationsImprovements ? ['improvements'] : [],
+        },
+      },
+    });
+
+    featureFlagsStore = useFeatureFlagsStore();
+    featureFlagsStore.activeFeatures = conversationsImprovements
+      ? ['improvements']
+      : [];
 
     supervisorStore = useSupervisorStore();
-
-    useRouter();
 
     wrapper = shallowMount(Supervisor, {
       global: {
         plugins: [pinia],
       },
     });
+  };
+
+  beforeEach(() => {
+    mockRoute.name = 'conversations';
+    vi.clearAllMocks();
+
+    useRouter();
+    createWrapper();
   });
 
   afterEach(() => {
     wrapper?.unmount();
-    vi.clearAllMocks();
-    vi.restoreAllMocks();
   });
 
   it('matches snapshot on conversations route', () => {
@@ -87,18 +123,54 @@ describe('Supervisor view', () => {
     expect(findConversation().exists()).toBe(true);
   });
 
+  describe('improvements intro modal', () => {
+    it('opens the modal when the improvements flag is enabled and storage is empty', async () => {
+      await wrapper.unmount();
+      createWrapper({ conversationsImprovements: true, introModalSeen: null });
+
+      expect(moduleStorage.getItem).toHaveBeenCalledWith(
+        'improvements-intro-modal-seen',
+      );
+      expect(findIntroModal().exists()).toBe(true);
+      expect(wrapper.vm.isIntroModalOpen).toBe(true);
+      expect(findIntroModal().props('open')).toBe(true);
+    });
+
+    it('does not open the modal when the storage flag is already set', async () => {
+      await wrapper.unmount();
+      createWrapper({ conversationsImprovements: true, introModalSeen: true });
+
+      expect(findIntroModal().exists()).toBe(true);
+      expect(wrapper.vm.isIntroModalOpen).toBe(false);
+      expect(findIntroModal().props('open')).toBe(false);
+    });
+
+    it('does not mount the modal when the improvements flag is disabled', () => {
+      expect(findIntroModal().exists()).toBe(false);
+    });
+
+    it('persists the seen flag when the modal is dismissed', async () => {
+      await wrapper.unmount();
+      createWrapper({ conversationsImprovements: true, introModalSeen: null });
+
+      expect(wrapper.vm.isIntroModalOpen).toBe(true);
+
+      await findIntroModal().vm.$emit('update:open', false);
+      await wrapper.vm.$nextTick();
+
+      expect(moduleStorage.setItem).toHaveBeenCalledWith(
+        'improvements-intro-modal-seen',
+        true,
+      );
+      expect(findIntroModal().props('open')).toBe(false);
+    });
+  });
+
   describe('improvements route', () => {
     beforeEach(async () => {
       mockRoute.name = 'improvements';
       await wrapper.unmount();
-
-      wrapper = shallowMount(Supervisor, {
-        global: {
-          plugins: [createTestingPinia()],
-        },
-      });
-
-      supervisorStore = useSupervisorStore();
+      createWrapper();
     });
 
     it('matches snapshot on improvements route', () => {

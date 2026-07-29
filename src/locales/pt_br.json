@@ -661,6 +661,32 @@
         "description": "Mínimo de {min} conversas necessárias para executar a análise",
         "title": "Volume insuficiente de conversas"
       },
+      "intro_modal": {
+        "step_of": "Passo {step} de {total}",
+        "steps": {
+          "1": {
+            "description": "Encontrar falhas recorrentes no seu agente costumava significar abrir conversas uma a uma. Agora a VTEX CX Platform analisa para você e agrupa o que encontra em uma lista para ação.\nA primeira análise já foi executada: os itens do backlog vieram de uma amostra das conversas de ontem. A amostra é representativa — revela padrões recorrentes sem processar todas as conversas.",
+            "title": "Novidade em Auditoria"
+          },
+          "2": {
+            "description": "Comportamento: o agente não agiu como deveria na conversa.\nConhecimento: o agente não tinha informações que deveria ter para responder.\nProblema técnico: algo falhou por motivos técnicos, como uma integração que não respondeu.\nAnálise personalizada: um comportamento que você mesmo definiu.",
+            "title": "O que a análise busca"
+          },
+          "3": {
+            "description": "Abra um item para ver o diagnóstico, uma solução sugerida e as conversas em que o problema apareceu. A correção é aplicada por você, em Instruções ou Base de conhecimento — nada muda automaticamente no seu agente.",
+            "title": "Todo item vem com evidências"
+          },
+          "4": {
+            "description": "Além dos tipos acima, você pode definir comportamentos próprios para monitorar, até 10 por projeto. Quanto mais específica a definição, melhor a IA identifica o problema.",
+            "title": "Monitore o que importa para a operação"
+          },
+          "5": {
+            "description": "A análise não só identifica problemas — ela também marca conversas de destaque como Conversas Incríveis na aba Conversas. Uma forma de ver o que funciona bem, não apenas o que corrigir.",
+            "title": "Também destaca o que está funcionando"
+          }
+        },
+        "view_help_guide": "Ver guia"
+      },
       "no_analysis": {
         "description": "Execute a primeira análise para identificar oportunidades de melhoria em uma amostra das conversas de ontem",
         "run_analysis": "Executar análise",
