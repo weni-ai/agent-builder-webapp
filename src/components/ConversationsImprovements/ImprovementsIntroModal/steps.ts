@@ -46,5 +46,5 @@ export const INTRO_STEPS: IntroStep[] = [
 
 export const TOTAL_STEPS = INTRO_STEPS.length;
 
-// TODO: replace with the final help guide URL when available
-export const HELP_GUIDE_URL = '';
+export const HELP_GUIDE_URL =
+  'https://docs.google.com/document/d/1ZvJZ7UqwFE_oyXhRcf0E9p0sw8W74B3HnW3RWDWqDq8/';
