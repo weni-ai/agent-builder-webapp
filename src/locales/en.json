@@ -563,7 +563,7 @@
       }
     },
     "improvements": {
-      "analysis_in_progress_disclaimer": "Analyzing conversations: {progress} of {total} processed. New items may appear shortly.",
+      "analysis_in_progress_disclaimer": "Analysis in progress: {percentage}% of conversations processed. New items may appear shortly.",
       "analysis_complete": {
         "no_improvements_description": "No improvements identified in the conversations from {date}",
         "ready_description": "Improvements from {date} are ready in your backlog.",
@@ -615,7 +615,7 @@
       "contact_technical_support_dialog": {
         "cancel": "Cancel",
         "contact_support": "Contact support",
-        "description": "We'll send an email to {support_email} with this information:",
+        "description": "An email will be sent to {support_email} with this information:",
         "error": "Support couldn't be contacted. Try again later",
         "identified_on": "Identified on {date} by {email}",
         "project_uuid": "Project UUID: {uuid}",
@@ -648,11 +648,9 @@
         "description": "Ran on {date} at {time}",
         "description_today": "Ran today at {time}",
         "run_analysis": "Run analysis",
-        "run_analysis_already_run_today_tooltip": "Analysis already ran today\nReturn tomorrow to run a new analysis",
+        "run_analysis_already_run_today_tooltip": "Analysis already ran in the last 24h.\nNext analysis available at {time}",
         "run_analysis_insufficient_volume_tooltip": "Insufficient conversation volume to run analysis\nMinimum of {min} conversations required",
-        "title": "{count, plural, one {Analysis of conversations from {date} · {count} improvement identified} other {Analysis of conversations from {date} · {count} improvements identified}}",
-        "run_analysis_insufficient_volume_tooltip.title": "Insufficient conversation volume",
-        "run_analysis_insufficient_volume_tooltip.description": "Minimum of {min} conversations required to run analysis"
+        "title": "{count, plural, =0 {Analysis of conversations from {date}} one {Analysis of conversations from {date} · {count} improvement identified} other {Analysis of conversations from {date} · {count} improvements identified}}"
       },
       "insufficient_volume": {
         "description": "Minimum of {min} conversations required to run analysis",

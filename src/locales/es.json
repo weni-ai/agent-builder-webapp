@@ -563,10 +563,10 @@
       }
     },
     "improvements": {
-      "analysis_in_progress_disclaimer": "Analizando conversaciones: {progress} de {total} procesadas. Es posible que se muestren nuevos ítems en breve.",
+      "analysis_in_progress_disclaimer": "Análisis en progreso: {percentage}% de conversaciones procesadas. Nuevos elementos pueden aparecer próximamente.",
       "analysis_complete": {
-        "no_improvements_description": "No se identificaron mejoras en las conversaciones del {date}",
-        "ready_description": "Las mejoras del {date} están listas en el backlog.",
+        "no_improvements_description": "No se identificaron mejoras en las conversaciones de {date}",
+        "ready_description": "Las mejoras de {date} están listas en tu backlog.",
         "title": "Análisis completo",
         "title_with_count": "{count, plural, one {Análisis completo ({count} mejora encontrada)} other {Análisis completo ({count} mejoras encontradas)}}"
       },
@@ -648,11 +648,9 @@
         "description": "Ejecutado el {date} a las {time}",
         "description_today": "Ejecutado hoy a las {time}",
         "run_analysis": "Ejecutar análisis",
-        "run_analysis_already_run_today_tooltip": "Análisis ya ejecutado hoy\nPodrás realizar uno nuevo mañana",
-        "run_analysis_insufficient_volume_tooltip": "No hay suficientes conversaciones para ejecutar el análisis\nSe requiere un mínimo de {min} conversaciones",
-        "title": "{count, plural, one {Análisis de las conversaciones del {date} · {count} mejora identificada} other {Análisis de las conversaciones del {date} · {count} mejoras identificadas}}",
-        "run_analysis_insufficient_volume_tooltip.title": "Volumen de conversaciones insuficiente",
-        "run_analysis_insufficient_volume_tooltip.description": "Se requiere un mínimo de {min} conversaciones para ejecutar el análisis"
+        "run_analysis_already_run_today_tooltip": "El análisis ya se ejecutó en las últimas 24h.\nPróximo análisis disponible a las {time}",
+        "run_analysis_insufficient_volume_tooltip": "Volumen de conversaciones insuficiente para ejecutar análisis\nMínimo de {min} conversaciones requeridas",
+        "title": "{count, plural, =0 {Análisis de conversaciones de {date}} one {Análisis de conversaciones de {date} · {count} mejora identificada} other {Análisis de conversaciones de {date} · {count} mejoras identificadas}}"
       },
       "insufficient_volume": {
         "description": "Mínimo de {min} conversaciones necesarias para ejecutar el análisis",
