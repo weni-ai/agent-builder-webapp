@@ -107,5 +107,16 @@ describe('FilterAnalysis.vue', () => {
 
       expect(store.temporaryFilters.isAmazing).toBeNull();
     });
+
+    it('follows the store when isAmazing is reset externally', async () => {
+      wrapper.unmount();
+      createWrapper(true);
+
+      store.temporaryFilters.isAmazing = null;
+      await nextTick();
+
+      expect(analysisSelect().props('modelValue')).toBe('all_conversations');
+      expect(store.temporaryFilters.isAmazing).toBeNull();
+    });
   });
 });
