@@ -533,6 +533,11 @@
         "filter_conversations_drawer": "Filtrează conversațiile",
         "apply_filters": "Aplicare filtre",
         "clear_filters": "Elimină filtrele",
+        "analysis": {
+          "all_conversations": "Toate conversațiile",
+          "amazing_conversations": "Conversații extraordinare",
+          "label": "Analiză"
+        },
         "period": {
           "label": "Perioadă"
         },

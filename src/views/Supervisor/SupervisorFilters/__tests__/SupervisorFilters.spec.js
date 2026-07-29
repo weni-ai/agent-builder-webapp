@@ -5,11 +5,13 @@ import { createTestingPinia } from '@pinia/testing';
 import SupervisorFilters from '../index.vue';
 import Unnnic from '@weni/unnnic-system';
 import { useSupervisorStore } from '@/store/Supervisor';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import i18n from '@/utils/plugins/i18n';
 
 describe('SupervisorFilters.vue', () => {
   let wrapper;
   let store;
+  let featureFlagsStore;
 
   beforeEach(() => {
     const pinia = createTestingPinia({
@@ -22,6 +24,9 @@ describe('SupervisorFilters.vue', () => {
             type: '',
           },
         },
+        FeatureFlags: {
+          activeFeatures: [],
+        },
       },
     });
 
@@ -32,6 +37,7 @@ describe('SupervisorFilters.vue', () => {
     });
 
     store = useSupervisorStore();
+    featureFlagsStore = useFeatureFlagsStore();
   });
 
   const findComponent = (dataTestId) =>
@@ -43,6 +49,7 @@ describe('SupervisorFilters.vue', () => {
   const filterStatus = () => findComponent('filter-status');
   const filterCsat = () => findComponent('filter-csat');
   const filterTopics = () => findComponent('filter-topics');
+  const filterAnalysis = () => findComponent('filter-analysis');
 
   describe('Component rendering', () => {
     it('renders filter text', () => {
@@ -68,6 +75,17 @@ describe('SupervisorFilters.vue', () => {
       expect(filterStatus().exists()).toBe(true);
       expect(filterCsat().exists()).toBe(true);
       expect(filterTopics().exists()).toBe(true);
+    });
+
+    it('does not render analysis filter when conversationsImprovements is disabled', () => {
+      expect(filterAnalysis().exists()).toBe(false);
+    });
+
+    it('renders analysis filter when conversationsImprovements is enabled', async () => {
+      featureFlagsStore.activeFeatures = ['improvements'];
+      await wrapper.vm.$nextTick();
+
+      expect(filterAnalysis().exists()).toBe(true);
     });
   });
 
@@ -99,6 +117,18 @@ describe('SupervisorFilters.vue', () => {
       await wrapper.vm.$nextTick();
 
       expect(buttonFilter().props('text')).toContain(countTranslation(3));
+    });
+
+    it('includes isAmazing in the applied filters count', async () => {
+      const countTranslation = (count) =>
+        i18n.global.t('audit.conversations.filters.count_applied_filters', {
+          count,
+        });
+
+      store.filters.isAmazing = true;
+      await wrapper.vm.$nextTick();
+
+      expect(buttonFilter().props('text')).toContain(countTranslation(1));
     });
 
     beforeEach(() => {

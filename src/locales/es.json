@@ -534,6 +534,11 @@
         "filter_conversations_drawer": "Filtrar conversaciones",
         "apply_filters": "Aplicar filtros",
         "clear_filters": "Limpiar filtros",
+        "analysis": {
+          "all_conversations": "Todas las conversaciones",
+          "amazing_conversations": "Conversaciones increíbles",
+          "label": "Análisis"
+        },
         "period": {
           "label": "Periodo"
         },
