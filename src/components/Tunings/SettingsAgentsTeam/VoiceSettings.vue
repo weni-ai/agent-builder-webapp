@@ -28,14 +28,14 @@
           </p>
 
           <section class="voice-settings__reproduction">
-            <UnnnicSelectSmart
+            <UnnnicSelect
               v-model:modelValue="selectedVoice"
               class="voice-settings__select"
               :options="voiceOptions"
               :disabled="!useVoice"
             />
             <AudioPlayerBar
-              :audio="selectedVoice[0]?.audio"
+              :audio="selectedVoiceAudio"
               :disabled="!useVoice"
             />
           </section>
@@ -102,7 +102,8 @@ const createVoiceOption = (voiceName) => ({
 });
 
 const voiceOptions = Object.keys(AUDIO_FILES).map(createVoiceOption);
-const selectedVoice = ref([voiceOptions[0]]);
+const selectedVoice = ref(voiceOptions[0].value);
+const selectedVoiceAudio = computed(() => AUDIO_FILES[selectedVoice.value]);
 </script>
 
 <style lang="scss" scoped>

@@ -34,10 +34,9 @@ describe('FilterCsat.vue', () => {
 
     store = useSupervisorStore();
 
-    store.getInitialSelectFilter = vi.fn().mockReturnValue([
-      { label: 'Very Satisfied', value: 'very_satisfied' },
-      { label: 'Satisfied', value: 'satisfied' },
-    ]);
+    store.getInitialSelectFilter = vi
+      .fn()
+      .mockReturnValue(['very_satisfied', 'satisfied']);
 
     wrapper = mount(FilterCsat, {
       global: {
@@ -54,10 +53,7 @@ describe('FilterCsat.vue', () => {
   describe('Component rendering', () => {
     it('renders with correct props', () => {
       expect(csatSelect().exists()).toBe(true);
-      expect(csatSelect().props('orderedByIndex')).toBe(true);
-      expect(csatSelect().props('multiple')).toBe(true);
-      expect(csatSelect().props('multipleWithoutSelectsMessage')).toBeDefined();
-      expect(csatSelect().props('autocomplete')).toBe(true);
+      expect(csatSelect().props('clearable')).toBe(true);
     });
 
     it('initializes with store csat values', () => {
@@ -72,16 +68,13 @@ describe('FilterCsat.vue', () => {
       const options = csatSelect().props('options');
       expect(options).toStrictEqual(wrapper.vm.csatOptions);
       expect(Array.isArray(options)).toBe(true);
-      expect(options.length).toBe(6); // 1 default + 5 csat options
+      expect(options.length).toBe(5);
     });
   });
 
   describe('CSAT selection functionality', () => {
     it('updates local csat filter when select changes', async () => {
-      const newCsatSelection = [
-        { label: 'Neutral', value: 'neutral' },
-        { label: 'Dissatisfied', value: 'dissatisfied' },
-      ];
+      const newCsatSelection = ['neutral', 'dissatisfied'];
 
       await csatSelect().vm.$emit('update:modelValue', newCsatSelection);
       await nextTick();
@@ -90,10 +83,7 @@ describe('FilterCsat.vue', () => {
     });
 
     it('updates store temporary filters when csat changes', async () => {
-      const newCsatSelection = [
-        { label: 'Very Dissatisfied', value: 'very_dissatisfied' },
-        { label: 'Neutral', value: 'neutral' },
-      ];
+      const newCsatSelection = ['very_dissatisfied', 'neutral'];
 
       await csatSelect().vm.$emit('update:modelValue', newCsatSelection);
       await nextTick();
@@ -105,20 +95,14 @@ describe('FilterCsat.vue', () => {
     });
 
     it('handles empty csat selection', async () => {
-      const emptySelection = [];
-
-      await csatSelect().vm.$emit('update:modelValue', emptySelection);
+      await csatSelect().vm.$emit('update:modelValue', []);
       await nextTick();
 
       expect(store.temporaryFilters.csat).toEqual([]);
     });
 
     it('handles single csat selection', async () => {
-      const singleSelection = [
-        { label: 'Very Satisfied', value: 'very_satisfied' },
-      ];
-
-      await csatSelect().vm.$emit('update:modelValue', singleSelection);
+      await csatSelect().vm.$emit('update:modelValue', ['very_satisfied']);
       await nextTick();
 
       expect(store.temporaryFilters.csat).toEqual(['very_satisfied']);
@@ -129,7 +113,6 @@ describe('FilterCsat.vue', () => {
     it('includes all expected csat options', () => {
       const options = csatSelect().props('options');
       const expectedValues = [
-        '',
         'very_satisfied',
         'satisfied',
         'neutral',
@@ -141,18 +124,6 @@ describe('FilterCsat.vue', () => {
       expectedValues.forEach((expectedValue) => {
         expect(actualValues).toContain(expectedValue);
       });
-    });
-
-    it('handles csat options with empty values', async () => {
-      const selectionWithEmpty = [
-        { label: 'CSAT', value: '' },
-        { label: 'Very Satisfied', value: 'very_satisfied' },
-      ];
-
-      await csatSelect().vm.$emit('update:modelValue', selectionWithEmpty);
-      await nextTick();
-
-      expect(store.temporaryFilters.csat).toEqual(['', 'very_satisfied']);
     });
   });
 });

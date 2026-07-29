@@ -66,9 +66,7 @@ describe('AgentsListFilters.vue', () => {
   });
 
   it('calls loadOfficialAgents when category changes', async () => {
-    await categorySelect().setValue([
-      { label: 'Payments and checkout', value: 'payments_and_checkout' },
-    ]);
+    await categorySelect().setValue('payments_and_checkout');
     await flushUpdates();
 
     expect(agentsTeamStore.loadOfficialAgents).toHaveBeenCalled();
@@ -77,7 +75,7 @@ describe('AgentsListFilters.vue', () => {
   it('computes localized category labels', () => {
     const options = wrapper.vm.categoryOptions;
 
-    expect(options[1].label).toBe(
+    expect(options[0].label).toBe(
       i18n.global.t(
         'agents.assign_agents.filters.category.product_discovery_and_recommendations',
       ),

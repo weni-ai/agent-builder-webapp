@@ -57,52 +57,50 @@
       @added-site="addedSites"
     />
 
-    <UnnnicModal
-      v-if="modalDeleteSite"
-      :text="$t('content_bases.sites.delete_site.title')"
-      :closeIcon="false"
-      class="delete-site-modal"
-      persistent
-      data-test="modal-remove-site"
+    <UnnnicDialog
+      data-testid="modal-remove-site"
+      :open="!!modalDeleteSite"
+      lazyMount
+      @update:open="onDeleteSiteModalOpenUpdate"
     >
-      <template #icon>
-        <UnnnicIcon
-          icon="error"
-          size="md"
-          scheme="red-10"
-        />
-      </template>
+      <UnnnicDialogContent v-if="modalDeleteSite">
+        <UnnnicDialogHeader type="warning">
+          <UnnnicDialogTitle>
+            {{ $t('content_bases.sites.delete_site.title') }}
+          </UnnnicDialogTitle>
+        </UnnnicDialogHeader>
 
-      <template #message>
-        <div
-          v-html="
-            $t('content_bases.sites.delete_site.description', {
-              name: modalDeleteSite.name,
-            })
-          "
-        ></div>
-      </template>
-      <template #options>
-        <UnnnicButton
-          class="create-repository__container__button"
-          type="tertiary"
-          data-test="button-cancel"
-          @click="closeModal"
+        <i18n-t
+          tag="p"
+          class="delete-site-modal__description"
+          keypath="content_bases.sites.delete_site.description"
         >
-          {{ $t('content_bases.sites.delete_site.cancel') }}
-        </UnnnicButton>
+          <template #name>
+            <b>{{ modalDeleteSite.name }}</b>
+          </template>
+        </i18n-t>
 
-        <UnnnicButton
-          class="create-repository__container__button attention-button"
-          type="warning"
-          :loading="modalDeleteSite.status === 'deleting'"
-          data-test="button-remove"
-          @click="remove"
-        >
-          {{ $t('content_bases.sites.delete_site.delete') }}
-        </UnnnicButton>
-      </template>
-    </UnnnicModal>
+        <UnnnicDialogFooter>
+          <UnnnicDialogClose>
+            <UnnnicButton
+              data-testid="button-cancel"
+              :text="$t('content_bases.sites.delete_site.cancel')"
+              type="tertiary"
+              :disabled="modalDeleteSite.status === 'deleting'"
+              @click="closeModal"
+            />
+          </UnnnicDialogClose>
+
+          <UnnnicButton
+            data-testid="button-remove"
+            :text="$t('content_bases.sites.delete_site.delete')"
+            type="warning"
+            :loading="modalDeleteSite.status === 'deleting'"
+            @click="remove"
+          />
+        </UnnnicDialogFooter>
+      </UnnnicDialogContent>
+    </UnnnicDialog>
   </section>
 </template>
 
@@ -158,7 +156,12 @@ const openDeleteSite = (siteUuid, siteURL) => {
 };
 
 const closeModal = () => {
+  if (modalDeleteSite.value?.status === 'deleting') return;
   modalDeleteSite.value = null;
+};
+
+const onDeleteSiteModalOpenUpdate = (open) => {
+  if (!open) closeModal();
 };
 
 const remove = () => {
@@ -170,7 +173,7 @@ const remove = () => {
     })
     .then(() => {
       alertStore.add({
-        type: 'default',
+        type: 'informational',
         text: i18n.global.t('content_bases.files.file_removed_from_base', {
           name: modalDeleteSite.value.name,
         }),
@@ -179,29 +182,22 @@ const remove = () => {
       props.items.removeItem({ uuid: modalDeleteSite.value.uuid });
     })
     .finally(() => {
-      closeModal();
+      modalDeleteSite.value = null;
     });
 };
 </script>
 
 <style lang="scss" scoped>
 .delete-site-modal {
-  :deep(.unnnic-modal-container-background-body-description-container) {
-    padding-bottom: $unnnic-spacing-xs;
-  }
+  &__description {
+    margin: $unnnic-space-6;
 
-  :deep(.unnnic-modal-container-background-body__icon-slot) {
-    display: flex;
-    justify-content: center;
-    margin-bottom: $unnnic-spacing-sm;
-  }
+    font: $unnnic-font-body;
+    color: $unnnic-color-fg-base;
 
-  :deep(.unnnic-modal-container-background-body-title) {
-    padding-bottom: $unnnic-spacing-sm;
-  }
-
-  :deep(.unnnic-modal-container-background-body) {
-    padding-top: $unnnic-spacing-giant;
+    :deep(b) {
+      font-weight: $unnnic-font-weight-bold;
+    }
   }
 }
 

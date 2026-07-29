@@ -153,15 +153,8 @@ describe('PreviewLogsFilters.vue', () => {
 
       const categoryOptions = wrapper.vm.categoryOptions;
 
-      expect(categoryOptions[0]).toEqual({
-        value: '',
-        label: i18n.global.t(
-          'agent_builder.traces.filter_logs.categories.placeholder',
-        ),
-      });
-
       expectedCategories.forEach((category, index) => {
-        expect(categoryOptions[index + 1]).toEqual({
+        expect(categoryOptions[index]).toEqual({
           value: category,
           label: i18n.global.t(
             `agent_builder.traces.filter_logs.categories.${category}`,
@@ -171,8 +164,7 @@ describe('PreviewLogsFilters.vue', () => {
     });
 
     it('emits filters-changed event when categories change', async () => {
-      const testCategories = [{ value: 'knowledge' }, { value: 'thinking' }];
-      wrapper.vm.selectedCategories = testCategories;
+      wrapper.vm.selectedCategories = ['knowledge', 'thinking'];
       await nextTick();
 
       expect(wrapper.emitted('filters-changed')).toBeTruthy();
@@ -190,7 +182,7 @@ describe('PreviewLogsFilters.vue', () => {
     it('emits filters-changed with correct structure', async () => {
       await filterButton().trigger('click');
       await searchInput().setValue('test');
-      wrapper.vm.selectedCategories = [{ value: 'knowledge' }];
+      wrapper.vm.selectedCategories = ['knowledge'];
       await nextTick();
 
       const emittedEvent = wrapper.emitted('filters-changed').slice(-1)[0][0];
@@ -215,10 +207,9 @@ describe('PreviewLogsFilters.vue', () => {
     it('computes categoryOptions correctly', () => {
       const options = wrapper.vm.categoryOptions;
 
-      expect(options.length).toBe(10);
-      expect(options[0].value).toBe('');
-      expect(options[1].value).toBe('knowledge');
-      expect(options[2].value).toBe('thinking');
+      expect(options.length).toBe(9);
+      expect(options[0].value).toBe('knowledge');
+      expect(options[1].value).toBe('thinking');
     });
   });
 
@@ -232,13 +223,13 @@ describe('PreviewLogsFilters.vue', () => {
     it('maintains state when filters are toggled', async () => {
       await filterButton().trigger('click');
       await searchInput().setValue('persistent search');
-      wrapper.vm.selectedCategories = [{ value: 'knowledge' }];
+      wrapper.vm.selectedCategories = ['knowledge'];
 
       await filterButton().trigger('click');
       await filterButton().trigger('click');
 
       expect(wrapper.vm.searchTerm).toBe('persistent search');
-      expect(wrapper.vm.selectedCategories).toEqual([{ value: 'knowledge' }]);
+      expect(wrapper.vm.selectedCategories).toEqual(['knowledge']);
     });
   });
 

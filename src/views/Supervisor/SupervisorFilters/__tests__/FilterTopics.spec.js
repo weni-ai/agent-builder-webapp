@@ -41,10 +41,9 @@ describe('FilterTopics.vue', () => {
 
     store = useSupervisorStore();
 
-    store.getInitialSelectFilter = vi.fn().mockReturnValue([
-      { label: 'Billing', value: 'billing' },
-      { label: 'Support', value: 'support' },
-    ]);
+    store.getInitialSelectFilter = vi
+      .fn()
+      .mockReturnValue(['billing', 'support']);
 
     wrapper = mount(FilterTopics, {
       global: {
@@ -61,12 +60,8 @@ describe('FilterTopics.vue', () => {
   describe('Component rendering', () => {
     it('renders with correct props', () => {
       expect(topicSelect().exists()).toBe(true);
-      expect(topicSelect().props('orderedByIndex')).toBe(true);
-      expect(topicSelect().props('multiple')).toBe(true);
-      expect(
-        topicSelect().props('multipleWithoutSelectsMessage'),
-      ).toBeDefined();
-      expect(topicSelect().props('autocomplete')).toBe(true);
+      expect(topicSelect().props('enableSearch')).toBe(true);
+      expect(topicSelect().props('clearable')).toBe(true);
     });
 
     it('initializes with store topic values', () => {
@@ -81,7 +76,7 @@ describe('FilterTopics.vue', () => {
       const options = topicSelect().props('options');
       expect(options).toStrictEqual(wrapper.vm.topicOptions);
       expect(Array.isArray(options)).toBe(true);
-      expect(options.length).toBe(6); // 1 default + 1 unclassified + 4 topic options
+      expect(options.length).toBe(5); // 1 unclassified + 4 topic options
     });
 
     it('provides a fixed unclassified topic option', () => {
@@ -99,10 +94,7 @@ describe('FilterTopics.vue', () => {
 
   describe('Topic selection functionality', () => {
     it('updates local topic filter when select changes', async () => {
-      const newTopicSelection = [
-        { label: 'Technical', value: 'technical' },
-        { label: 'General', value: 'general' },
-      ];
+      const newTopicSelection = ['technical', 'general'];
 
       await topicSelect().vm.$emit('update:modelValue', newTopicSelection);
       await nextTick();
@@ -111,10 +103,7 @@ describe('FilterTopics.vue', () => {
     });
 
     it('updates store temporary filters when topics change', async () => {
-      const newTopicSelection = [
-        { label: 'Technical', value: 'technical' },
-        { label: 'General', value: 'general' },
-      ];
+      const newTopicSelection = ['technical', 'general'];
 
       await topicSelect().vm.$emit('update:modelValue', newTopicSelection);
       await nextTick();
@@ -123,42 +112,37 @@ describe('FilterTopics.vue', () => {
     });
 
     it('handles empty topic selection', async () => {
-      const emptySelection = [];
-
-      await topicSelect().vm.$emit('update:modelValue', emptySelection);
+      await topicSelect().vm.$emit('update:modelValue', []);
       await nextTick();
 
       expect(store.temporaryFilters.topics).toEqual([]);
     });
 
     it('handles single topic selection', async () => {
-      const singleSelection = [{ label: 'Billing', value: 'billing' }];
-
-      await topicSelect().vm.$emit('update:modelValue', singleSelection);
+      await topicSelect().vm.$emit('update:modelValue', ['billing']);
       await nextTick();
 
       expect(store.temporaryFilters.topics).toEqual(['Billing']);
     });
 
     it('stores the unclassified topic by its id', async () => {
-      const selection = [{ label: 'Not classified', value: 'unclassified' }];
-
-      await topicSelect().vm.$emit('update:modelValue', selection);
+      await topicSelect().vm.$emit('update:modelValue', ['unclassified']);
       await nextTick();
 
       expect(store.temporaryFilters.topics).toEqual(['unclassified']);
     });
 
     it('stores the unclassified topic by id alongside regular topics by label', async () => {
-      const selection = [
-        { label: 'Not classified', value: 'unclassified' },
-        { label: 'Billing', value: 'billing' },
-      ];
-
-      await topicSelect().vm.$emit('update:modelValue', selection);
+      await topicSelect().vm.$emit('update:modelValue', [
+        'unclassified',
+        'billing',
+      ]);
       await nextTick();
 
-      expect(store.temporaryFilters.topics).toEqual(['unclassified', 'Billing']);
+      expect(store.temporaryFilters.topics).toEqual([
+        'unclassified',
+        'Billing',
+      ]);
     });
   });
 
@@ -166,8 +150,7 @@ describe('FilterTopics.vue', () => {
     it('includes all expected topic options', () => {
       const options = topicSelect().props('options');
       const expectedLabels = [
-        'Topic', // default option
-        'Not classified', // fixed unclassified option
+        'Not classified',
         'Billing',
         'Support',
         'Technical',
@@ -180,26 +163,10 @@ describe('FilterTopics.vue', () => {
       });
     });
 
-    it('handles topic options with empty values', async () => {
-      const selectionWithEmpty = [
-        { label: 'Topic', value: '' },
-        { label: 'Billing', value: 'billing' },
-      ];
-
-      await topicSelect().vm.$emit('update:modelValue', selectionWithEmpty);
-      await nextTick();
-
-      expect(store.temporaryFilters.topics).toEqual(['Topic', 'Billing']);
-    });
-
     it('handles rapid consecutive topic changes', async () => {
-      const selection1 = [{ label: 'Support', value: 'support' }];
-      const selection2 = [{ label: 'Billing', value: 'billing' }];
-      const selection3 = [{ label: 'Technical', value: 'technical' }];
-
-      await topicSelect().vm.$emit('update:modelValue', selection1);
-      await topicSelect().vm.$emit('update:modelValue', selection2);
-      await topicSelect().vm.$emit('update:modelValue', selection3);
+      await topicSelect().vm.$emit('update:modelValue', ['support']);
+      await topicSelect().vm.$emit('update:modelValue', ['billing']);
+      await topicSelect().vm.$emit('update:modelValue', ['technical']);
       await nextTick();
 
       expect(store.temporaryFilters.topics).toEqual(['Technical']);

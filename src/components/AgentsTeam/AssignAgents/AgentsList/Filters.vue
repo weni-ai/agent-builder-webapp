@@ -12,12 +12,12 @@
       data-testid="search-input"
     />
 
-    <UnnnicSelectSmart
+    <UnnnicSelect
       v-if="!isSystemCustom"
       v-model:modelValue="agentsTeamStore.assignAgentsFilters.category"
       :options="categoryOptions"
       :placeholder="$t('agents.assign_agents.filters.category.placeholder')"
-      orderedByIndex
+      clearable
       data-testid="category-select"
     />
   </section>
@@ -40,7 +40,6 @@ const categoryOptions = computed(() => {
     value: category,
   });
   return [
-    { label: 'Categories', value: '' },
     createCategoryOption('product_discovery_and_recommendations'),
     createCategoryOption('orders_status_and_tracking'),
     createCategoryOption('returns_exchanges_and_cancellations'),
@@ -69,9 +68,7 @@ watch(
   () => agentsTeamStore.assignAgentsFilters.search,
   debounce(loadAgents, 300),
 );
-watch(() => agentsTeamStore.assignAgentsFilters.category, loadAgents, {
-  deep: true,
-});
+watch(() => agentsTeamStore.assignAgentsFilters.category, loadAgents);
 </script>
 
 <style lang="scss" scoped>

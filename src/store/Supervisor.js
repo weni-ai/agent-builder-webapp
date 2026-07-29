@@ -94,13 +94,17 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
   }
 
   function getInitialSelectFilter(filter, filterOptions) {
-    return temporaryFilters[filter].map((item) => {
-      if (item === '') return { label: '', value: '' };
+    return temporaryFilters[filter]
+      .map((item) => {
+        if (item === '') return '';
 
-      return filterOptions.value.find(
-        (option) => option.value === item || option.label === item,
-      );
-    });
+        const option = filterOptions.value.find(
+          (option) => option.value === item || option.label === item,
+        );
+
+        return option?.value;
+      })
+      .filter((value) => value !== undefined);
   }
 
   async function loadConversations(page = 1) {
