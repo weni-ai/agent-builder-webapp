@@ -327,7 +327,7 @@
           "mcp_card_title": "MCP selectat",
           "credentials": {
             "disclaimer_title": "Acest agent folosește date de autentificare deja introduse în acest proiect",
-            "not_required": "Acest agent nu necesită date de autentificare"
+            "not_required": "Acest agent nu necesită credențiale"
           }
         },
         "start_button": "Începe configurarea",

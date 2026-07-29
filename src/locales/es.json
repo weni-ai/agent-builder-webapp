@@ -328,7 +328,7 @@
           "mcp_card_title": "MCP seleccionado",
           "credentials": {
             "disclaimer_title": "Este agente usa credenciais já inseridas neste projeto",
-            "not_required": "Este agente no requiere credenciales"
+            "not_required": "Este agente no necesita credenciales"
           }
         },
         "start_button": "Iniciar configuración",
