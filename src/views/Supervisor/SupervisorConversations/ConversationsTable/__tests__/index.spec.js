@@ -128,7 +128,7 @@ describe('ConversationsTable.vue', () => {
     expect(elements.columnHeader('status').text()).toBe('Status');
     expect(elements.columnHeader('feedback').text()).toBe('Feedback');
     expect(elements.columnHeader('date').text()).toBe('Date');
-    expect(elements.columnHeader('hour').text()).toBe('Hour');
+    expect(elements.columnHeader('hour').text()).toBe('Time');
   });
 
   it('does not reload conversations on mount when already loaded', () => {

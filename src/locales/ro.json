@@ -327,7 +327,7 @@
           "mcp_card_title": "MCP selectat",
           "credentials": {
             "disclaimer_title": "Acest agent folosește date de autentificare deja introduse în acest proiect",
-            "not_required": "Acest agent nu necesită date de autentificare"
+            "not_required": "Acest agent nu necesită credențiale"
           }
         },
         "start_button": "Începe configurarea",
@@ -453,7 +453,6 @@
             "name": "Informal",
             "tooltip": "Lejer, energic și informal pentru un stil mai accesibil și uman"
           }
-
         }
       }
     }
@@ -498,7 +497,7 @@
         "contact": "Contact",
         "date": "Dată",
         "feedback": "Feedback",
-        "hour": "Oră",
+        "hour": "Ora",
         "status": "Status"
       },
       "topic": "Subiect",
@@ -563,10 +562,10 @@
       }
     },
     "improvements": {
-      "analysis_in_progress_disclaimer": "Analiză în curs: {percentage}% din conversații procesate. Pot apărea elemente noi în curând.",
+      "analysis_in_progress_disclaimer": "Analiză în curs: {percentage}% din conversații procesate. Elemente noi pot apărea în curând.",
       "analysis_complete": {
-        "no_improvements_description": "Nu s-au identificat îmbunătățiri în conversațiile din {date}",
-        "ready_description": "Îmbunătățirile din {date} sunt gata în backlog.",
+        "no_improvements_description": "Nu au fost identificate îmbunătățiri în conversațiile din {date}",
+        "ready_description": "Îmbunătățirile din {date} sunt gata în backlog-ul tău.",
         "title": "Analiză finalizată",
         "title_with_count": "{count, plural, one {Analiză finalizată ({count} îmbunătățire găsită)} other {Analiză finalizată ({count} îmbunătățiri găsite)}}"
       },
@@ -597,7 +596,7 @@
           },
           "title": "Șterge analiza personalizată"
         },
-        "definition_helper": "Cu cât descrierea este mai specifică, cu atât mai bine poate AI-ul să identifice problema în conversații",
+        "definition_helper": "Cu cât descrierea este mai specifică, cu atât mai bine AI-ul poate identifica problema în conversații",
         "definition_label": "Ce dorești să monitorizezi?",
         "definition_placeholder": "De exemplu: Agentul oferă termene de livrare nerealiste",
         "description": "Descrie un comportament sau o problemă pe care AI-ul ar trebui să o monitorizeze în conversații. Când este identificată, apare automat în backlog-ul de îmbunătățiri",
@@ -608,48 +607,48 @@
         "list_heading_count": "{count} din {max}",
         "no_affected_conversations": "Nicio conversație afectată",
         "title": "Analiză personalizată",
-        "title_helper": "Etichetă scurtă pentru a identifica această analiză în listă",
+        "title_helper": "O etichetă scurtă pentru a identifica această analiză în listă",
         "title_label": "Titlu",
         "title_placeholder": "De exemplu: Termene de livrare nerealiste"
       },
       "contact_technical_support_dialog": {
         "cancel": "Anulează",
-        "contact_support": "Contactează asistența",
-        "description": "Vom trimite un email la {support_email} cu aceste informații:",
-        "error": "Asistența nu a putut fi contactată. Încearcă din nou mai târziu",
-        "identified_on": "Identificat la {date} de {email}",
-        "project_uuid": "UUID-ul proiectului: {uuid}",
+        "contact_support": "Contactează suportul",
+        "description": "Un e-mail va fi trimis la {support_email} cu aceste informații:",
+        "error": "Suportul nu a putut fi contactat. Încearcă din nou mai târziu",
+        "identified_on": "Identificat pe {date} de {email}",
+        "project_uuid": "UUID proiect: {uuid}",
         "success": {
           "description": "Ticket deschis pentru {improvement_title}",
-          "title": "Asistență notificată"
+          "title": "Suport notificat"
         },
-        "summary_type_and_count": "{type} · {count, plural, one {# conversație afectată} few {# conversații afectate} other {# de conversații afectate}}",
-        "title": "Contactează asistența"
+        "summary_type_and_count": "{type} · {count, plural, one {# conversație afectată} other {# conversații afectate}}",
+        "title": "Contactează suportul"
       },
       "drawer": {
-        "affected_conversations_count": "{count, plural, one {# instrucțiune actualizată de la analiză} few {# instrucțiuni actualizate de la analiză} other {# de instrucțiuni actualizate de la analiză}}",
+        "affected_conversations_count": "{count, plural, one {# conversație afectată} other {# conversații afectate}}",
         "affected_conversations_title": "Conversații afectate",
         "affected_instructions_title": "Editează și aceste instrucțiuni existente:",
-        "contact_technical_support": "Contactează asistența",
+        "contact_technical_support": "Contactează suportul",
         "diagnosis_title": "Diagnostic",
-        "go_to_instructions": "Accesează instrucțiunile",
-        "go_to_knowledge_base": "Accesează baza de cunoștințe",
+        "go_to_instructions": "Mergi la instrucțiuni",
+        "go_to_knowledge_base": "Mergi la baza de cunoștințe",
         "ignore_improvement": "Ignoră îmbunătățirea",
-        "instruction_updated_disclaimer": "{count, plural, one {# instrucțiune actualizată de la analiză} few {# instrucțiuni actualizate de la analiză} other {# de instrucțiuni actualizate de la analiză}}",
-        "mark_as_resolved": "Marchează ca rezolvată",
+        "instruction_updated_disclaimer": "{count, plural, one {# instrucțiune actualizată de la analiză} other {# instrucțiuni actualizate de la analiză}}",
+        "mark_as_resolved": "Marchează ca rezolvat",
         "suggested_solution_behavior_title": "Adaugă această instrucțiune la Manager:",
-        "suggested_solution_knowledge_title": "Conținut nou pentru baza de cunoștințe",
+        "suggested_solution_knowledge_title": "Conținut nou pentru Baza de Cunoștințe",
         "suggested_solution_technical_issue_title": "Acțiune recomandată",
         "suggested_solution_title": "Soluție sugerată",
         "view_full_conversation": "Vezi conversația completă"
       },
       "header": {
         "custom_analysis": "Analiză personalizată",
-        "description": "Rulat pe {date} la {time}",
-        "description_today": "Rulat astăzi la {time}",
+        "description": "Rulată pe {date} la {time}",
+        "description_today": "Rulată astăzi la {time}",
         "run_analysis": "Rulează analiza",
-        "run_analysis_already_run_today_tooltip": "Analiza a fost deja executată în ultimele 24h.\nUrmătoarea analiză este disponibilă la {time}",
-        "run_analysis_insufficient_volume_tooltip": "Volum insuficient de conversații pentru executarea analizei\nMinimum {min} conversații necesare",
+        "run_analysis_already_run_today_tooltip": "Analiza a fost deja rulată în ultimele 24h.\nUrmătoarea analiză disponibilă la {time}",
+        "run_analysis_insufficient_volume_tooltip": "Volum insuficient de conversații pentru a rula analiza\nMinim {min} conversații necesare",
         "title": "{count, plural, =0 {Analiza conversațiilor din {date}} one {Analiza conversațiilor din {date} · {count} îmbunătățire identificată} other {Analiza conversațiilor din {date} · {count} îmbunătățiri identificate}}"
       },
       "insufficient_volume": {
@@ -667,7 +666,7 @@
       },
       "run_analysis_dialog": {
         "cancel": "Anulează",
-        "description": "Încă există {count, plural, one {# îmbunătățire nerezolvată} few {# îmbunătățiri nerezolvate} other {# îmbunătățiri nerezolvate}} din {current_date}. O nouă analiză va înlocui această listă cu conversațiile din {new_date}. Îmbunătățirile actuale vor fi pierdute.",
+        "description": "Mai există {count, plural, one {# îmbunătățire nerezolvată} few {# îmbunătățiri nerezolvate} other {# de îmbunătățiri nerezolvate}} din {current_date}. O nouă analiză va înlocui această listă cu conversațiile din {new_date}. Îmbunătățirile actuale vor fi pierdute.",
         "run": "Rulează",
         "title": "Rulează analiza"
       },

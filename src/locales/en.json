@@ -328,7 +328,7 @@
           "mcp_card_title": "Selected MCP",
           "credentials": {
             "disclaimer_title": "This agent uses credentials already entered in this project",
-            "not_required": "This agent does not require enter credentials"
+            "not_required": "This agent doesn't require credentials"
           }
         },
         "start_button": "Start setup",
@@ -454,7 +454,6 @@
             "name": "Casual",
             "tooltip": "Light, energetic, and informal for a more approachable, human feel"
           }
-
         }
       }
     }
@@ -499,7 +498,7 @@
         "contact": "Contact",
         "date": "Date",
         "feedback": "Feedback",
-        "hour": "Hour",
+        "hour": "Time",
         "status": "Status"
       },
       "topic": "Topic",
@@ -563,7 +562,6 @@
         "error": "Error loading conversations"
       }
     },
-
     "improvements": {
       "analysis_in_progress_disclaimer": "Analysis in progress: {percentage}% of conversations processed. New items may appear shortly.",
       "analysis_complete": {
@@ -617,7 +615,7 @@
       "contact_technical_support_dialog": {
         "cancel": "Cancel",
         "contact_support": "Contact support",
-        "description": "We'll send an email to {support_email} with this information:",
+        "description": "An email will be sent to {support_email} with this information:",
         "error": "Support couldn't be contacted. Try again later",
         "identified_on": "Identified on {date} by {email}",
         "project_uuid": "Project UUID: {uuid}",
