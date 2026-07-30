@@ -56,6 +56,7 @@ import { useImprovementsStore } from '@/store/Improvements';
 
 import ImprovementDrawerSection from './ImprovementDrawerSection.vue';
 import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTag';
+import { redirectInParent } from '@/utils/parentRedirect';
 import { useProfileStore } from '@/store/Profile.js';
 import { UnnnicDisclaimer } from '@weni/unnnic-system';
 
@@ -115,21 +116,15 @@ const getInstructionById = (id: number) => {
 
 function handleCtaClick() {
   if (improvementCategory.value === 'knowledge') {
-    window.parent.postMessage(
-      {
-        event: 'redirect',
-        path: 'aiBuild:knowledge',
-      },
-      '*',
-    );
+    redirectInParent({
+      path: 'aiBuild:knowledge',
+      openInNew: true,
+    });
   } else if (improvementCategory.value === 'behavior') {
-    window.parent.postMessage(
-      {
-        event: 'redirect',
-        path: 'aiAgents:agents/instructions',
-      },
-      '*',
-    );
+    redirectInParent({
+      path: 'aiAgents:agents/instructions',
+      openInNew: true,
+    });
   } else if (improvementCategory.value === 'technical_issue') {
     emit('open-contact-support');
   }

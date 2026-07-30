@@ -65,9 +65,8 @@ describe('ImprovementDrawer.vue', () => {
           },
           AffectedConversationsSection: {
             template:
-              '<section data-testid="improvement-drawer-affected-conversations-section"><h2 data-testid="improvement-drawer-affected-conversations-title">{{ $t(\'audit.improvements.drawer.affected_conversations_title\') }}</h2><button data-testid="emit-close-drawer" @click="$emit(\'close-drawer\')" /></section>',
+              '<section data-testid="improvement-drawer-affected-conversations-section"><h2 data-testid="improvement-drawer-affected-conversations-title">{{ $t(\'audit.improvements.drawer.affected_conversations_title\') }}</h2></section>',
             props: ['open', 'improvementUuid'],
-            emits: ['close-drawer'],
           },
           UnnnicDrawerContent: {
             template: '<div><slot /></div>',
@@ -401,15 +400,6 @@ describe('ImprovementDrawer.vue', () => {
       createWrapper();
 
       await wrapper.find('[data-testid="emit-success"]').trigger('click');
-      await nextTick();
-
-      expect(wrapper.emitted('update:open')).toEqual([[false]]);
-    });
-
-    it('closes the drawer when affected conversations emits close-drawer', async () => {
-      createWrapper();
-
-      await wrapper.find('[data-testid="emit-close-drawer"]').trigger('click');
       await nextTick();
 
       expect(wrapper.emitted('update:open')).toEqual([[false]]);

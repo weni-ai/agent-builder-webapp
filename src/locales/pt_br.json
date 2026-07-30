@@ -328,7 +328,7 @@
           "mcp_card_title": "MCP selecionado",
           "credentials": {
             "disclaimer_title": "Este agente usa credenciais já inseridas neste projeto",
-            "not_required": "Este agente não precisa de credenciais"
+            "not_required": "Este agente não exige credenciais"
           }
         },
         "start_button": "Iniciar configuração",
@@ -525,7 +525,6 @@
             "name": "Informal",
             "tooltip": "Leve, energético, e informal para um tom mais acessível e humano"
           }
-
         }
       }
     }
@@ -729,11 +728,11 @@
       },
       "header": {
         "custom_analysis": "Análise personalizada",
-        "description": "Executado em {date} às {time}",
-        "description_today": "Executado hoje às {time}",
+        "description": "Executada em {date} às {time}",
+        "description_today": "Executada hoje às {time}",
         "run_analysis": "Executar análise",
-        "run_analysis_already_run_today_tooltip": "Análise já executada nas últimas 24h.\nPróxima análise disponível às {time}",
-        "run_analysis_insufficient_volume_tooltip": "Volume insuficiente de conversas para executar a análise\nMínimo de {min} conversas necessárias",
+        "run_analysis_already_run_today_tooltip": "A análise já foi executada nas últimas 24h.\nPróxima análise disponível às {time}",
+        "run_analysis_insufficient_volume_tooltip": "Volume de conversas insuficiente para executar análise\nMínimo de {min} conversas necessárias",
         "title": "{count, plural, =0 {Análise das conversas de {date}} one {Análise das conversas de {date} · {count} melhoria identificada} other {Análise das conversas de {date} · {count} melhorias identificadas}}"
       },
       "insufficient_volume": {
@@ -744,7 +743,7 @@
         "step_of": "Passo {step} de {total}",
         "steps": {
           "1": {
-            "description": "Encontrar falhas recorrentes no seu agente costumava significar abrir conversas uma a uma. Agora a VTEX CX Platform analisa para você e agrupa o que encontra em uma lista para ação.\n\nA primeira análise já foi executada: os itens do backlog vieram de uma amostra das conversas de ontem. A amostra é representativa — revela padrões recorrentes sem processar todas as conversas.",
+            "description": "Encontrar falhas recorrentes no seu agente costumava significar abrir conversas uma a uma. Agora a VTEX CX Platform analisa para você e agrupa o que encontra em uma lista para ação.\nA primeira análise já foi executada: os itens do backlog vieram de uma amostra das conversas de ontem. A amostra é representativa — revela padrões recorrentes sem processar todas as conversas.",
             "title": "Novidade em Auditoria"
           },
           "2": {

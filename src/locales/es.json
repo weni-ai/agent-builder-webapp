@@ -328,7 +328,7 @@
           "mcp_card_title": "MCP seleccionado",
           "credentials": {
             "disclaimer_title": "Este agente usa credenciais já inseridas neste projeto",
-            "not_required": "Este agente no requiere credenciales"
+            "not_required": "Este agente no necesita credenciales"
           }
         },
         "start_button": "Iniciar configuración",
@@ -525,7 +525,6 @@
             "name": "Informal",
             "tooltip": "Leve, energético, y informal para un tom más accesible y humano"
           }
-
         }
       }
     }
@@ -571,7 +570,7 @@
         "date": "Fecha",
         "feedback": "Feedback",
         "hour": "Hora",
-        "status": "Estado"
+        "status": "Status"
       },
       "topic": "Tópico",
       "conversation_details_collapse": "Detalles de la conversación",
@@ -647,10 +646,10 @@
       }
     },
     "improvements": {
-      "analysis_in_progress_disclaimer": "Análisis en curso: {percentage}% de las conversaciones procesadas. Pueden aparecer nuevos ítems en breve.",
+      "analysis_in_progress_disclaimer": "Análisis en progreso: {percentage}% de conversaciones procesadas. Nuevos elementos pueden aparecer próximamente.",
       "analysis_complete": {
-        "no_improvements_description": "No se identificaron mejoras en las conversaciones del {date}",
-        "ready_description": "Las mejoras del {date} están listas en el backlog.",
+        "no_improvements_description": "No se identificaron mejoras en las conversaciones de {date}",
+        "ready_description": "Las mejoras de {date} están listas en tu backlog.",
         "title": "Análisis completo",
         "title_with_count": "{count, plural, one {Análisis completo ({count} mejora encontrada)} other {Análisis completo ({count} mejoras encontradas)}}"
       },
@@ -732,9 +731,9 @@
         "description": "Ejecutado el {date} a las {time}",
         "description_today": "Ejecutado hoy a las {time}",
         "run_analysis": "Ejecutar análisis",
-        "run_analysis_already_run_today_tooltip": "Análisis ya ejecutado en las últimas 24h.\nPróximo análisis disponible a las {time}",
-        "run_analysis_insufficient_volume_tooltip": "Volumen insuficiente de conversaciones para ejecutar el análisis\nMínimo de {min} conversaciones necesarias",
-        "title": "{count, plural, =0 {Análisis de conversaciones del {date}} one {Análisis de conversaciones del {date} · {count} mejora identificada} other {Análisis de conversaciones del {date} · {count} mejoras identificadas}}"
+        "run_analysis_already_run_today_tooltip": "El análisis ya se ejecutó en las últimas 24h.\nPróximo análisis disponible a las {time}",
+        "run_analysis_insufficient_volume_tooltip": "Volumen de conversaciones insuficiente para ejecutar análisis\nMínimo de {min} conversaciones requeridas",
+        "title": "{count, plural, =0 {Análisis de conversaciones de {date}} one {Análisis de conversaciones de {date} · {count} mejora identificada} other {Análisis de conversaciones de {date} · {count} mejoras identificadas}}"
       },
       "insufficient_volume": {
         "description": "Mínimo de {min} conversaciones necesarias para ejecutar el análisis",
@@ -744,7 +743,7 @@
         "step_of": "Paso {step} de {total}",
         "steps": {
           "1": {
-            "description": "Encontrar fallas recurrentes en tu agente solía significar abrir conversaciones una por una. Ahora VTEX CX Platform las revisa por ti y agrupa lo que encuentra en una lista para actuar.\n\nYa se ejecutó el primer análisis: los ítems del backlog provienen de una muestra de las conversaciones de ayer. La muestra es representativa — revela patrones recurrentes sin procesar todas las conversaciones.",
+            "description": "Encontrar fallas recurrentes en tu agente solía significar abrir conversaciones una por una. Ahora VTEX CX Platform las revisa por ti y agrupa lo que encuentra en una lista para actuar.\nYa se ejecutó el primer análisis: los ítems del backlog provienen de una muestra de las conversaciones de ayer. La muestra es representativa — revela patrones recurrentes sin procesar todas las conversaciones.",
             "title": "Nuevo en Auditoría"
           },
           "2": {
@@ -777,7 +776,7 @@
       },
       "run_analysis_dialog": {
         "cancel": "Cancelar",
-        "description": "Aún hay {count, plural, one {# mejora sin resolver} other {# mejoras sin resolver}} del {current_date}. Un nuevo análisis reemplazará esta lista con las conversaciones del {new_date}. Las mejoras actuales se perderán.",
+        "description": "Todavía hay {count, plural, one {# mejora pendiente} other {# mejoras pendientes}} del {current_date}. Un nuevo análisis reemplazará esta lista por las conversaciones del {new_date}. Las mejoras actuales se perderán.",
         "run": "Ejecutar",
         "title": "Ejecutar análisis"
       },

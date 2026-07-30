@@ -50,7 +50,6 @@
         <AffectedConversationsSection
           :open="drawerOpen"
           :improvementUuid="improvement?.uuid ?? null"
-          @close-drawer="drawerOpen = false"
         />
       </section>
 
