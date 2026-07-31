@@ -92,6 +92,12 @@ describe('AgentsPreview.vue', () => {
       const field = progressiveFeedbackField();
 
       expect(field.props('modelValue')).toBe(false);
+      expect(field.props('disabled')).toBe(true);
+      expect(field.props('tooltip')).toBe(
+        i18n.global.t(
+          'router.tunings.settings.agents_preview.agents_progressive_feedback.tooltip',
+        ),
+      );
       expect(field.props('textRight')).toBe(
         i18n.global.t(
           'router.tunings.settings.agents_preview.agents_progressive_feedback.title',
@@ -133,6 +139,9 @@ describe('AgentsPreview.vue', () => {
 
   describe('Store integration', () => {
     it('updates store when progressive feedback field changes', async () => {
+      store.settings.data.components = false;
+      await nextTick();
+
       const field = progressiveFeedbackField();
 
       await field.vm.$emit('update:modelValue', true);
@@ -163,6 +172,9 @@ describe('AgentsPreview.vue', () => {
 
   describe('Form interactions', () => {
     it('handles multiple field updates correctly', async () => {
+      store.settings.data.components = false;
+      await nextTick();
+
       const progressiveField = progressiveFeedbackField();
       const messageFormatField = multipleMessageFormatField();
 
@@ -173,20 +185,63 @@ describe('AgentsPreview.vue', () => {
       expect(store.settings.data.components).toBe(false);
     });
 
-    it('maintains independent field states', async () => {
-      await progressiveFeedbackField().vm.$emit('update:modelValue', true);
+    it('disables progressive feedback when multiple message format is enabled', async () => {
+      store.settings.data.components = true;
+      await nextTick();
 
-      expect(store.settings.data.progressiveFeedback).toBe(true);
-      expect(store.settings.data.components).toBe(true);
+      expect(progressiveFeedbackField().props('disabled')).toBe(true);
+      expect(progressiveFeedbackField().props('tooltip')).toBe(
+        i18n.global.t(
+          'router.tunings.settings.agents_preview.agents_progressive_feedback.tooltip',
+        ),
+      );
+    });
+
+    it('disables multiple message format when progressive feedback is enabled', async () => {
+      store.settings.data.components = false;
+      store.settings.data.progressiveFeedback = true;
+      await nextTick();
+
+      expect(multipleMessageFormatField().props('disabled')).toBe(true);
+      expect(multipleMessageFormatField().props('tooltip')).toBe(
+        i18n.global.t(
+          'router.tunings.settings.agents_preview.multiple_message_format.tooltip',
+        ),
+      );
+    });
+
+    it('turns off progressive feedback when multiple message format is enabled', async () => {
+      store.settings.data.components = false;
+      store.settings.data.progressiveFeedback = true;
+      await nextTick();
+
+      store.settings.data.components = true;
+      await nextTick();
+
+      expect(store.settings.data.progressiveFeedback).toBe(false);
+    });
+
+    it('turns off multiple message format when progressive feedback is enabled', async () => {
+      store.settings.data.components = true;
+      store.settings.data.progressiveFeedback = false;
+      await nextTick();
+
+      store.settings.data.progressiveFeedback = true;
+      await nextTick();
+
+      expect(store.settings.data.components).toBe(false);
     });
   });
 
   describe('Store reactivity', () => {
     it('responds to external store changes', async () => {
+      store.settings.data.components = false;
+      await nextTick();
+
       expect(progressiveFeedbackField().props('modelValue')).toBe(false);
 
       store.settings.data.progressiveFeedback = true;
-      await wrapper.vm.$nextTick();
+      await nextTick();
 
       expect(progressiveFeedbackField().props('modelValue')).toBe(true);
     });

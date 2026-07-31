@@ -12,6 +12,7 @@
         v-model="tuningsStore.settings.data.components"
         data-testid="components"
         :disabled="isComponentsDisabled"
+        :tooltip="componentsTooltip"
         :textRight="
           $t(
             'router.tunings.settings.agents_preview.multiple_message_format.title',
@@ -29,6 +30,12 @@
         v-if="showProgressiveFeedback"
         v-model="tuningsStore.settings.data.progressiveFeedback"
         data-testid="progressive-feedback"
+        :disabled="isProgressiveFeedbackDisabled"
+        :tooltip="
+          $t(
+            'router.tunings.settings.agents_preview.agents_progressive_feedback.tooltip',
+          )
+        "
         :textRight="
           $t(
             'router.tunings.settings.agents_preview.agents_progressive_feedback.title',
@@ -48,6 +55,7 @@
 <script setup>
 import { computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
 
 import { useTuningsStore } from '@/store/Tunings';
 import { useProjectStore } from '@/store/Project';
@@ -56,6 +64,7 @@ import { useEngineSourceStore } from '@/store/EngineSource';
 
 import SettingsField from './SettingsField.vue';
 
+const { t } = useI18n();
 const tuningsStore = useTuningsStore();
 const projectStore = useProjectStore();
 const managerSelectorStore = useManagerSelectorStore();
@@ -75,7 +84,15 @@ const showProgressiveFeedback = computed(() => {
   return !useProjectStore().details?.backend?.toLowerCase().includes('openai');
 });
 
+const isProgressiveFeedbackDisabled = computed(() => {
+  return tuningsStore.settings.data.components === true;
+});
+
 const isComponentsDisabled = computed(() => {
+  if (tuningsStore.settings.data.progressiveFeedback) {
+    return true;
+  }
+
   if (engineSourceStore.engineType === 'custom') {
     return !engineSourceStore.selectedProviderAcceptsComponents;
   }
@@ -87,9 +104,25 @@ const isComponentsDisabled = computed(() => {
   );
 });
 
+const componentsTooltip = computed(() => {
+  if (!tuningsStore.settings.data.progressiveFeedback) {
+    return '';
+  }
+
+  return t(
+    'router.tunings.settings.agents_preview.multiple_message_format.tooltip',
+  );
+});
+
 watch(isComponentsDisabled, (disabled) => {
   if (disabled) {
     tuningsStore.settings.data.components = false;
+  }
+});
+
+watch(isProgressiveFeedbackDisabled, (disabled) => {
+  if (disabled) {
+    tuningsStore.settings.data.progressiveFeedback = false;
   }
 });
 </script>
