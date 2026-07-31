@@ -688,7 +688,7 @@
         "view_help_guide": "Ver guía"
       },
       "no_analysis": {
-        "description": "Ejecuta el primer análisis para identificar oportunidades de mejora en una muestra de las conversaciones de ayer",
+        "description": "Ejecuta tu primer análisis para identificar oportunidades de optimización en las conversaciones de ayer",
         "run_analysis": "Ejecutar análisis",
         "title": "Aún no se ha ejecutado ningún análisis"
       },
@@ -703,8 +703,8 @@
         "title": "Ejecutar análisis"
       },
       "running_analysis": {
-        "description": "Esto puede tardar unas horas. Puedes cerrar esta pantalla.",
-        "title": "Analizando una muestra de conversaciones de ayer"
+        "description": "Esto puede tardar algunas horas. Puedes cerrar esta ventana.",
+        "title": "Analizando {count} conversaciones de ayer"
       },
       "stale_analysis_disclaimer": {
         "description": "Ejecuta un nuevo análisis para identificar oportunidades de mejora",

@@ -688,7 +688,7 @@
         "view_help_guide": "View guide"
       },
       "no_analysis": {
-        "description": "Run your first analysis to identify opportunities for improvement in a sample of yesterday's conversations",
+        "description": "Run your first analysis to identify opportunities for improvement in yesterday's conversations",
         "run_analysis": "Run analysis",
         "title": "No analysis has been run yet"
       },
@@ -703,8 +703,8 @@
         "title": "Run analysis"
       },
       "running_analysis": {
-        "description": "This may take a few hours. You can close this screen.",
-        "title": "Analyzing a sample of conversations from yesterday"
+        "description": "This may take a few hours. You can close this window.",
+        "title": "Analyzing {count} conversations from yesterday"
       },
       "stale_analysis_disclaimer": {
         "description": "Run a new analysis to identify opportunities for improvement",
