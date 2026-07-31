@@ -509,6 +509,19 @@ describe('Tunings Store', () => {
         const result = await store.saveSettings();
 
         expect(store.settings.status).toBe('error');
+        expect(store.lastSaveForbidden).toBe(false);
+        expect(result).toBe(false);
+      });
+
+      it('should mark lastSaveForbidden when save settings fails with 403', async () => {
+        nexusaiAPI.router.tunings.editProgressiveFeedback.mockRejectedValue({
+          response: { status: 403 },
+        });
+
+        const result = await store.saveSettings();
+
+        expect(store.settings.status).toBe('error');
+        expect(store.lastSaveForbidden).toBe(true);
         expect(result).toBe(false);
       });
 
@@ -578,7 +591,7 @@ describe('Tunings Store', () => {
         expect(store.settings.data.errorMessage).toBe('Updated error message');
       });
 
-      it('should reset to default after clearing error message', async () => {
+      it('should use endpoint error message when local value is empty', async () => {
         store.settings.data = cloneDeep(store.initialSettings);
         store.initialSettings.errorMessage = 'Custom saved message';
         store.settings.data.errorMessage = '';
@@ -607,8 +620,29 @@ describe('Tunings Store', () => {
 
         expect(result).toBe(false);
         expect(store.lastErrorMessageSaveFailed).toBe(true);
+        expect(store.lastSaveForbidden).toBe(false);
         expect(store.settings.status).toBe('success');
         expect(store.initialSettings.components).toBe(true);
+        expect(store.initialSettings.errorMessage).toBe(
+          backendDefaultErrorMessage,
+        );
+      });
+
+      it('should mark lastSaveForbidden when error message save fails with 403', async () => {
+        store.settings.data.errorMessage = 'Updated error message';
+        nexusaiAPI.router.tunings.editProgressiveFeedback.mockResolvedValue();
+        nexusaiAPI.router.tunings.editComponents.mockResolvedValue();
+        nexusaiAPI.router.tunings.apiErrorMessage.edit.mockRejectedValue({
+          response: { status: 403 },
+        });
+        vi.spyOn(managerSelectorStore, 'saveManager').mockResolvedValue(true);
+
+        const result = await store.saveSettings();
+
+        expect(result).toBe(false);
+        expect(store.lastSaveForbidden).toBe(true);
+        expect(store.lastErrorMessageSaveFailed).toBe(false);
+        expect(store.settings.status).toBe('success');
         expect(store.initialSettings.errorMessage).toBe(
           backendDefaultErrorMessage,
         );
@@ -658,11 +692,13 @@ describe('Tunings Store', () => {
           components: true,
           progressiveFeedback: false,
           manager: 'manager-2.5',
+          errorMessage: backendDefaultErrorMessage,
         };
         store.initialSettings = {
           components: false,
           progressiveFeedback: false,
           manager: 'manager-2.5',
+          errorMessage: backendDefaultErrorMessage,
         };
         managerSelectorStore.options.currentManager = 'manager-2.5';
         managerSelectorStore.selectedManager = 'manager-2.5';
@@ -707,6 +743,28 @@ describe('Tunings Store', () => {
         await store.saveTunings();
 
         expect(alertStore.add).toHaveBeenCalledWith({
+          text: 'router.tunings.settings.save_error',
+          type: 'error',
+        });
+        expect(alertStore.add).not.toHaveBeenCalledWith({
+          text: 'router.tunings.save_success',
+          type: 'success',
+        });
+      });
+
+      it('should show unauthorized error for settings failure with 403', async () => {
+        nexusaiAPI.router.tunings.editCredentials.mockResolvedValue();
+        nexusaiAPI.router.tunings.editComponents.mockRejectedValue({
+          response: { status: 403 },
+        });
+
+        await store.saveTunings();
+
+        expect(alertStore.add).toHaveBeenCalledWith({
+          text: 'unauthorized',
+          type: 'error',
+        });
+        expect(alertStore.add).not.toHaveBeenCalledWith({
           text: 'router.tunings.settings.save_error',
           type: 'error',
         });

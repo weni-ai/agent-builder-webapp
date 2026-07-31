@@ -33,6 +33,7 @@ export const useTuningsStore = defineStore('Tunings', () => {
 
   const initialSettings = ref(null);
   const lastErrorMessageSaveFailed = ref(false);
+  const lastSaveForbidden = ref(false);
   const settings = reactive({
     status: null,
     data: {
@@ -225,6 +226,7 @@ export const useTuningsStore = defineStore('Tunings', () => {
 
   async function saveSettings() {
     lastErrorMessageSaveFailed.value = false;
+    lastSaveForbidden.value = false;
 
     try {
       settings.status = 'loading';
@@ -277,8 +279,9 @@ export const useTuningsStore = defineStore('Tunings', () => {
         }
       }
 
+      const errorMessage = settings.data.errorMessage ?? '';
       const hasErrorMessageChanges =
-        initialSettings.value.errorMessage !== settings.data.errorMessage;
+        initialSettings.value.errorMessage !== errorMessage;
 
       if (hasErrorMessageChanges) {
         try {
@@ -286,30 +289,36 @@ export const useTuningsStore = defineStore('Tunings', () => {
             await nexusaiAPI.router.tunings.apiErrorMessage.edit({
               projectUuid: projectUuid.value,
               data: {
-                errorMessage: settings.data.errorMessage,
+                errorMessage,
               },
               requestOptions: {
                 hideGenericErrorAlert: true,
               },
             });
 
-          settings.data.errorMessage = savedErrorMessage ?? '';
-        } catch {
-          lastErrorMessageSaveFailed.value = true;
+          settings.data.errorMessage =
+            errorMessage === '' ? savedErrorMessage : errorMessage;
+        } catch (error) {
+          if (error?.response?.status === 403) {
+            lastSaveForbidden.value = true;
+          } else {
+            lastErrorMessageSaveFailed.value = true;
+          }
         }
       }
 
       const nextInitialSettings = cloneDeep(settings.data);
 
-      if (lastErrorMessageSaveFailed.value) {
+      if (lastErrorMessageSaveFailed.value || lastSaveForbidden.value) {
         nextInitialSettings.errorMessage = initialSettings.value.errorMessage;
       }
 
       initialSettings.value = nextInitialSettings;
       settings.status = 'success';
 
-      return !lastErrorMessageSaveFailed.value;
+      return !lastErrorMessageSaveFailed.value && !lastSaveForbidden.value;
     } catch (error) {
+      lastSaveForbidden.value = error?.response?.status === 403;
       settings.status = 'error';
       return false;
     }
@@ -353,7 +362,16 @@ export const useTuningsStore = defineStore('Tunings', () => {
       if (settings.status === 'error') {
         hasSettingsError = true;
         alertStore.add({
-          text: i18n.global.t('router.tunings.settings.save_error'),
+          text: i18n.global.t(
+            lastSaveForbidden.value
+              ? 'unauthorized'
+              : 'router.tunings.settings.save_error',
+          ),
+          type: 'error',
+        });
+      } else if (lastSaveForbidden.value) {
+        alertStore.add({
+          text: i18n.global.t('unauthorized'),
           type: 'error',
         });
       } else if (lastErrorMessageSaveFailed.value) {
@@ -369,7 +387,8 @@ export const useTuningsStore = defineStore('Tunings', () => {
     if (
       !hasCredentialsError &&
       !hasSettingsError &&
-      !lastErrorMessageSaveFailed.value
+      !lastErrorMessageSaveFailed.value &&
+      !lastSaveForbidden.value
     ) {
       alertStore.add({
         text: i18n.global.t('router.tunings.save_success'),
@@ -387,6 +406,7 @@ export const useTuningsStore = defineStore('Tunings', () => {
     initialCredentials,
     initialSettings,
     lastErrorMessageSaveFailed,
+    lastSaveForbidden,
     getCredentialIndex,
     updateCredential,
     fetchCredentials,
