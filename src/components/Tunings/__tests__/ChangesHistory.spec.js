@@ -8,7 +8,7 @@ vi.mock('@/store/Project', () => ({
   useProjectStore: () => ({ uuid: 'mock-project-uuid' }),
 }));
 
-vi.spyOn(nexusaiAPI.router.tunings.historyChanges, 'read').mockResolvedValue({
+const defaultApiResponse = {
   data: {
     count: 1,
     next: null,
@@ -29,12 +29,19 @@ vi.spyOn(nexusaiAPI.router.tunings.historyChanges, 'read').mockResolvedValue({
       },
     ],
   },
-});
+};
+
+vi.spyOn(nexusaiAPI.router.tunings.historyChanges, 'read');
 
 describe('ChangesHistory.vue', () => {
   let wrapper;
 
   beforeEach(() => {
+    nexusaiAPI.router.tunings.historyChanges.read.mockClear();
+    nexusaiAPI.router.tunings.historyChanges.read.mockResolvedValue(
+      defaultApiResponse,
+    );
+
     wrapper = mount(ChangesHistory, {
       global: {
         plugins: [createTestingPinia()],
@@ -63,6 +70,15 @@ describe('ChangesHistory.vue', () => {
     expect(descriptionText[1].text()).toContain(
       wrapper.vm.$t('router.tunings.history.sub_description'),
     );
+  });
+
+  test('fetches the first page with the default filter on mount', () => {
+    expect(nexusaiAPI.router.tunings.historyChanges.read).toHaveBeenCalledWith({
+      projectUuid: 'mock-project-uuid',
+      pageSize: wrapper.vm.paginationInterval,
+      page: 1,
+      filter: '',
+    });
   });
 
   test('updates pagination and calls fetchData on page change', async () => {
@@ -216,11 +232,13 @@ describe('ChangesHistory.vue', () => {
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
       .mockImplementation(() => {});
-    vi.spyOn(
-      nexusaiAPI.router.tunings.historyChanges,
-      'read',
-    ).mockRejectedValue(new Error('API Error'));
+    nexusaiAPI.router.tunings.historyChanges.read.mockRejectedValue(
+      new Error('API Error'),
+    );
+
+    wrapper.vm.table.rows = [];
     await wrapper.vm.getChangesHistoryData(1, 'all');
+
     expect(wrapper.vm.table.rows).toHaveLength(0);
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       'Failed to fetch data:',
