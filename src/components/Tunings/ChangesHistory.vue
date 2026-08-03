@@ -162,10 +162,14 @@ watch(pagination, (newPage) => {
   getChangesHistoryData(newPage, currentFilterOption.value);
 });
 
-watch(currentFilterOption, (option) => {
-  getChangesHistoryData(1, option);
-  pagination.value = 1;
-});
+watch(
+  currentFilterOption,
+  (option) => {
+    getChangesHistoryData(1, option);
+    pagination.value = 1;
+  },
+  { immediate: true },
+);
 
 function formatTimeSince(dateString) {
   const now = new Date();
