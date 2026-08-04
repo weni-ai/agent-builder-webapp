@@ -5,30 +5,17 @@ import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
 import { useImprovementsStore } from '@/store/Improvements';
-import { useSupervisorStore } from '@/store/Supervisor';
+import { redirectInParent } from '@/utils/parentRedirect';
 
 import AffectedConversationsSection from '../AffectedConversationsSection.vue';
 
-const mockReplace = vi.fn().mockResolvedValue(undefined);
-
-vi.mock('vue-router', async (importOriginal) => {
-  const actual = await importOriginal();
-
-  return {
-    ...actual,
-    useRouter: () => ({
-      replace: mockReplace,
-    }),
-    useRoute: () => ({
-      query: {},
-    }),
-  };
-});
+vi.mock('@/utils/parentRedirect', () => ({
+  redirectInParent: vi.fn(),
+}));
 
 describe('AffectedConversationsSection.vue', () => {
   let wrapper;
   let improvementsStore;
-  let supervisorStore;
 
   const baseConversation = {
     uuid: 'conversation-uuid-1',
@@ -51,7 +38,6 @@ describe('AffectedConversationsSection.vue', () => {
     });
 
     improvementsStore = useImprovementsStore(pinia);
-    supervisorStore = useSupervisorStore(pinia);
 
     vi.spyOn(improvementsStore, 'fetchAffectedConversations');
     vi.spyOn(improvementsStore, 'resetAffectedConversations');
@@ -208,7 +194,7 @@ describe('AffectedConversationsSection.vue', () => {
     );
   });
 
-  it('navigates to conversations and closes the drawer on view full', async () => {
+  it('opens the full conversation in a new tab via the parent', async () => {
     createWrapper();
 
     improvementsStore.affectedConversations.status = 'complete';
@@ -221,17 +207,10 @@ describe('AffectedConversationsSection.vue', () => {
     await elements.items()[0].trigger('click');
     await nextTick();
 
-    expect(supervisorStore.selectedConversation).toEqual({
-      uuid: 'conversation-uuid-1',
-      urn: 'whatsapp:5511999999999',
-      username: 'Alessandra',
-      source: 'v2',
-      data: { status: null },
+    expect(redirectInParent).toHaveBeenCalledWith({
+      path: 'aiConversations:conversations',
+      query: { uuid: 'conversation-uuid-1' },
+      openInNew: true,
     });
-    expect(supervisorStore.queryConversationUuid).toBe('conversation-uuid-1');
-    expect(mockReplace).toHaveBeenCalledWith({
-      name: 'conversations',
-    });
-    expect(wrapper.emitted('close-drawer')).toEqual([[]]);
   });
 });
