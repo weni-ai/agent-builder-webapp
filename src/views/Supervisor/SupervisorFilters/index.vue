@@ -123,7 +123,8 @@ onMounted(async () => {
 <style lang="scss">
 .supervisor-filters__drawer {
   &.unnnic-drawer__container .unnnic-drawer__content {
-    overflow: visible;
+    overflow-x: visible;
+    overflow-y: auto;
 
     display: flex;
     flex-direction: column;

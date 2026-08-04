@@ -17,8 +17,8 @@ describe('FilterAnalysis.vue', () => {
   let wrapper;
   let store;
 
-  const analysisSelect = () =>
-    wrapper.findComponent('[data-testid="analysis-select"]');
+  const analysisRadioGroup = () =>
+    wrapper.findComponent('[data-testid="analysis-radio-group"]');
 
   const createWrapper = (isAmazing = null) => {
     const pinia = createTestingPinia({
@@ -50,46 +50,53 @@ describe('FilterAnalysis.vue', () => {
   });
 
   describe('Component rendering', () => {
-    it('renders the analysis select', () => {
-      expect(analysisSelect().exists()).toBe(true);
+    it('renders the analysis radio group', () => {
+      expect(analysisRadioGroup().exists()).toBe(true);
     });
 
     it('initializes with all conversations when isAmazing is null', () => {
-      expect(analysisSelect().props('modelValue')).toBe('all_conversations');
+      expect(analysisRadioGroup().props('modelValue')).toBe(
+        'all_conversations',
+      );
     });
 
     it('initializes with amazing conversations when isAmazing is true', () => {
       wrapper.unmount();
       createWrapper(true);
 
-      expect(analysisSelect().props('modelValue')).toBe(
+      expect(analysisRadioGroup().props('modelValue')).toBe(
         'amazing_conversations',
       );
     });
 
     it('provides correct analysis options', () => {
-      const options = analysisSelect().props('options');
+      const allConversationsRadio = wrapper.findComponent(
+        '[data-testid="analysis-radio-all_conversations"]',
+      );
+      const amazingConversationsRadio = wrapper.findComponent(
+        '[data-testid="analysis-radio-amazing_conversations"]',
+      );
 
-      expect(options).toStrictEqual([
-        {
-          label: i18n.global.t(
-            'audit.conversations.filters.analysis.all_conversations',
-          ),
-          value: 'all_conversations',
-        },
-        {
-          label: i18n.global.t(
-            'audit.conversations.filters.analysis.amazing_conversations',
-          ),
-          value: 'amazing_conversations',
-        },
-      ]);
+      expect(allConversationsRadio.props('label')).toBe(
+        i18n.global.t(
+          'audit.conversations.filters.analysis.all_conversations',
+        ),
+      );
+      expect(allConversationsRadio.props('value')).toBe('all_conversations');
+      expect(amazingConversationsRadio.props('label')).toBe(
+        i18n.global.t(
+          'audit.conversations.filters.analysis.amazing_conversations',
+        ),
+      );
+      expect(amazingConversationsRadio.props('value')).toBe(
+        'amazing_conversations',
+      );
     });
   });
 
   describe('Analysis selection functionality', () => {
     it('sets isAmazing to true when amazing conversations is selected', async () => {
-      await analysisSelect().vm.$emit(
+      await analysisRadioGroup().vm.$emit(
         'update:modelValue',
         'amazing_conversations',
       );
@@ -102,7 +109,10 @@ describe('FilterAnalysis.vue', () => {
       wrapper.unmount();
       createWrapper(true);
 
-      await analysisSelect().vm.$emit('update:modelValue', 'all_conversations');
+      await analysisRadioGroup().vm.$emit(
+        'update:modelValue',
+        'all_conversations',
+      );
       await nextTick();
 
       expect(store.temporaryFilters.isAmazing).toBeNull();
@@ -115,7 +125,7 @@ describe('FilterAnalysis.vue', () => {
       store.temporaryFilters.isAmazing = null;
       await nextTick();
 
-      expect(analysisSelect().props('modelValue')).toBe('all_conversations');
+      expect(analysisRadioGroup().props('modelValue')).toBe('all_conversations');
       expect(store.temporaryFilters.isAmazing).toBeNull();
     });
   });
