@@ -631,7 +631,7 @@
         "title": "Contactează suportul"
       },
       "drawer": {
-        "affected_conversations_count": "{count, plural, one {# conversație afectată} other {# conversații afectate}}",
+        "affected_conversations_count": "{count, plural, one {# conversație afectată} few {# conversații afectate} other {# de conversații afectate}}",
         "affected_conversations_title": "Conversații afectate",
         "affected_instructions_title": "Editează și aceste instrucțiuni existente:",
         "contact_technical_support": "Contactează suportul",
@@ -687,9 +687,9 @@
         "view_help_guide": "Vezi ghidul"
       },
       "no_analysis": {
-        "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire într-un eșantion din conversațiile de ieri",
+        "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire în conversațiile de ieri",
         "run_analysis": "Rulează analiza",
-        "title": "Nicio analiză nu a fost executată încă"
+        "title": "Nicio analiză nu a fost rulată încă"
       },
       "no_improvement_identified": {
         "description": "Nu au fost identificate îmbunătățiri în această analiză",
@@ -702,7 +702,7 @@
         "title": "Rulează analiza"
       },
       "running_analysis": {
-        "description": "Acest proces poate dura câteva ore. Poți închide acest ecran.",
+        "description": "Acest lucru poate dura câteva ore. Poți închide această fereastră.",
         "title": "Se analizează un eșantion de conversații de ieri"
       },
       "stale_analysis_disclaimer": {

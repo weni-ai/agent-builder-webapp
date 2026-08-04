@@ -688,7 +688,7 @@
         "view_help_guide": "Ver guia"
       },
       "no_analysis": {
-        "description": "Execute a primeira análise para identificar oportunidades de melhoria em uma amostra das conversas de ontem",
+        "description": "Execute sua primeira análise para identificar oportunidades de melhoria nas conversas de ontem",
         "run_analysis": "Executar análise",
         "title": "Nenhuma análise foi executada ainda"
       },
@@ -703,7 +703,7 @@
         "title": "Executar análise"
       },
       "running_analysis": {
-        "description": "Isso pode levar algumas horas. Você pode fechar esta tela.",
+        "description": "Isso pode levar algumas horas. Você pode fechar esta janela.",
         "title": "Analisando uma amostra de conversas de ontem"
       },
       "stale_analysis_disclaimer": {
