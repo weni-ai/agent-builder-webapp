@@ -431,8 +431,8 @@
       },
       "safety_guardrails": {
         "configure": "Configurează",
-        "description": "Subiecte sensibile pe care Manager refuză să le discute",
-        "title": "Guardrails de siguranță"
+        "description": "Strat suplimentar de blocări pentru subiecte sensibile, pe lângă securitatea integrată a Manager",
+        "title": "Măsuri suplimentare de siguranță"
       }
     },
     "profile": {

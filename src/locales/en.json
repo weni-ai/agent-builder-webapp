@@ -432,8 +432,8 @@
       },
       "safety_guardrails": {
         "configure": "Configure",
-        "description": "Sensitive topics Manager won't discuss",
-        "title": "Safety guardrails"
+        "description": "Extra layer of blocks on sensitive topics, in addition to Manager's built-in safety",
+        "title": "Extra safety guardrails"
       }
     },
     "profile": {

@@ -432,8 +432,8 @@
       },
       "safety_guardrails": {
         "configure": "Configurar",
-        "description": "Tópicos sensíveis que o Manager não discutirá",
-        "title": "Barreiras de segurança"
+        "description": "Camada extra de bloqueios para tópicos sensíveis, além da segurança integrada do Manager",
+        "title": "Camadas extras de segurança"
       }
     },
     "profile": {
