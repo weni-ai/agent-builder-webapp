@@ -5,6 +5,7 @@ import { Instructions } from './nexus/Instructions';
 import { Knowledge } from './nexus/Knowledge';
 import { Simulation } from './nexus/Simulation';
 import { FeatureFlags } from './nexus/FeatureFlags';
+import { GuardrailsConfig } from './nexus/GuardrailsConfig';
 
 import { ProgressiveFeedbackAdapter } from './adapters/tunings/progressiveFeedback';
 import { ComponentsAdapter } from './adapters/tunings/components';
@@ -235,6 +236,8 @@ export default {
         return request.$http.get(`api/${projectUuid}/project`);
       },
     },
+
+    guardrails_config: GuardrailsConfig,
 
     profile: {
       read({ projectUuid }) {
