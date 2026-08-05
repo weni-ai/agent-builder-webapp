@@ -431,8 +431,8 @@
         }
       },
       "safety_guardrails": {
-        "allowed": "Permitido",
-        "blocked": "Bloqueado",
+        "allowed": "Bloqueio extra desativado",
+        "blocked": "Bloqueio extra ativado",
         "configure": "Configurar",
         "description": "Camada extra de bloqueios para tópicos sensíveis, além da segurança integrada do Manager",
         "drawer": {
