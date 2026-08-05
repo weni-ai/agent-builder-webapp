@@ -89,10 +89,27 @@ describe('SafetyGuardrailsDrawer.vue', () => {
   it('renders drawer title, description, and topics from the store', async () => {
     await createWrapper();
 
-    expect(findTitle().text()).toBe('Safety guardrails');
-    expect(findDescription().text()).toBe(
-      'When a topic is on, Manager refuses to discuss it. Turn off to allow',
+    expect(findTitle().text()).toBe(
+      i18n.global.t('agents.instructions.safety_guardrails.drawer.title'),
     );
+
+    const descriptionText = findDescription().text();
+    expect(descriptionText).toContain(
+      i18n.global.t(
+        'agents.instructions.safety_guardrails.drawer.description.intro',
+      ),
+    );
+    expect(descriptionText).toContain(
+      i18n.global.t(
+        'agents.instructions.safety_guardrails.drawer.description.on',
+      ),
+    );
+    expect(descriptionText).toContain(
+      i18n.global.t(
+        'agents.instructions.safety_guardrails.drawer.description.off',
+      ),
+    );
+
     expect(nexusaiAPI.router.guardrails_config.read).toHaveBeenCalled();
     expect(findTopicList().props('topics')).toEqual(storeConfig.topics);
     expect(findTopicList().props('loading')).toBe(false);
