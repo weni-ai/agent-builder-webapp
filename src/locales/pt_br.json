@@ -433,6 +433,15 @@
       "safety_guardrails": {
         "configure": "Configurar",
         "description": "Camada extra de bloqueios para tópicos sensíveis, além da segurança integrada do Manager",
+        "drawer": {
+          "description": {
+            "intro": "Estes são bloqueios extras além da segurança integrada do Manager.",
+            "off": "Desativado: o bloqueio extra é removido, os limites de segurança integrada do Manager ainda se aplicam.",
+            "on": "Ativado: o Manager se recusa a discutir o tópico e mostra sua mensagem de bloqueio."
+          },
+          "title": "Camadas extras de segurança"
+        },
+        "save": "Salvar",
         "title": "Camadas extras de segurança"
       }
     },
