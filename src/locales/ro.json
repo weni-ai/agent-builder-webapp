@@ -430,8 +430,8 @@
         }
       },
       "safety_guardrails": {
-        "allowed": "Permis",
-        "blocked": "Blocat",
+        "allowed": "Blocarea extra dezactivată",
+        "blocked": "Blocarea extra activată",
         "configure": "Configurează",
         "description": "Strat suplimentar de blocări pentru subiecte sensibile, pe lângă securitatea integrată a Manager",
         "drawer": {

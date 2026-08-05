@@ -431,8 +431,8 @@
         }
       },
       "safety_guardrails": {
-        "allowed": "Permitido",
-        "blocked": "Bloqueado",
+        "allowed": "Bloqueo extra desactivado",
+        "blocked": "Bloqueo extra activado",
         "configure": "Configurar",
         "description": "Capa extra de bloqueos para temas sensibles, además de la seguridad integrada de Manager",
         "drawer": {
