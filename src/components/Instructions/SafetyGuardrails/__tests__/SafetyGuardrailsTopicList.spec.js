@@ -2,6 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import SafetyGuardrailsTopicList from '../SafetyGuardrailsTopicList.vue';
+import i18n from '@/utils/plugins/i18n.js';
 
 const topics = [
   { id: 'politics', enabled: true },
@@ -23,7 +24,7 @@ describe('SafetyGuardrailsTopicList.vue', () => {
     wrapper?.unmount();
   });
 
-  it('renders a switch for each topic with Blocked or Allowed status', () => {
+  it('renders a switch for each topic with Extra block on or Extra block off status', () => {
     wrapper = createWrapper();
 
     const politicsSwitch = wrapper.findComponent(
@@ -42,14 +43,14 @@ describe('SafetyGuardrailsTopicList.vue', () => {
       wrapper
         .find('[data-testid="safety-guardrails-topic-status-politics"]')
         .text(),
-    ).toBe('Blocked');
+    ).toBe(i18n.global.t('agents.instructions.safety_guardrails.blocked'));
 
     expect(hateSwitch.props('modelValue')).toBe(false);
     expect(
       wrapper
         .find('[data-testid="safety-guardrails-topic-status-hate"]')
         .text(),
-    ).toBe('Allowed');
+    ).toBe(i18n.global.t('agents.instructions.safety_guardrails.allowed'));
   });
 
   it('emits update:topic-enabled when a switch changes', async () => {

@@ -31,7 +31,11 @@
         </UnnnicDialogClose>
         <UnnnicButton
           data-testid="safety-guardrails-allow-topics-dialog-allow"
-          :text="$t('agents.instructions.safety_guardrails.allow_topics.allow')"
+          :text="
+            $t(
+              'agents.instructions.safety_guardrails.allow_topics.confirm_button',
+            )
+          "
           type="attention"
           :loading="loading"
           @click="emit('confirm')"

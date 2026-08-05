@@ -3,9 +3,17 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { nextTick } from 'vue';
 
 import SafetyGuardrailsAllowTopicsDialog from '../SafetyGuardrailsAllowTopicsDialog.vue';
+import i18n from '@/utils/plugins/i18n.js';
+import { formatListToReadable } from '@/utils/formatters';
 
 describe('SafetyGuardrailsAllowTopicsDialog.vue', () => {
   let wrapper;
+
+  const allowTopicsT = (key, params) =>
+    i18n.global.t(
+      `agents.instructions.safety_guardrails.allow_topics.${key}`,
+      params ?? {},
+    );
 
   const createWrapper = (props = {}) =>
     shallowMount(SafetyGuardrailsAllowTopicsDialog, {
@@ -34,24 +42,30 @@ describe('SafetyGuardrailsAllowTopicsDialog.vue', () => {
   it('renders single-topic title and description', () => {
     wrapper = createWrapper();
 
-    expect(findTitle().text()).toBe('Allow Manager to discuss Beliefs?');
+    expect(findTitle().text()).toBe(
+      allowTopicsT('title_single', { topic: 'Beliefs' }),
+    );
     expect(findDescription().text()).toBe(
-      'Manager will be able to answer questions about Beliefs. You can turn this guardrail back on at any time.',
+      allowTopicsT('description_single', { topic: 'Beliefs' }),
     );
   });
 
   it('renders multiple-topics title and description', () => {
-    wrapper = createWrapper({
-      topicNames: ['Beliefs', 'Politics', 'Religion'],
-    });
+    const topicNames = ['Beliefs', 'Politics', 'Religion'];
 
-    expect(findTitle().text()).toBe('Allow Manager to discuss 3 topics?');
+    wrapper = createWrapper({ topicNames });
+
+    expect(findTitle().text()).toBe(
+      allowTopicsT('title_multiple', { count: topicNames.length }),
+    );
     expect(findDescription().text()).toBe(
-      'Manager will be able to answer questions about Beliefs, Politics and Religion. You can turn these guardrails back on at any time.',
+      allowTopicsT('description_multiple', {
+        topics: formatListToReadable(topicNames),
+      }),
     );
   });
 
-  it('emits confirm when Allow is clicked', async () => {
+  it('emits confirm when confirm button is clicked', async () => {
     wrapper = createWrapper();
 
     await findAllow().trigger('click');
@@ -59,7 +73,7 @@ describe('SafetyGuardrailsAllowTopicsDialog.vue', () => {
     expect(wrapper.emitted('confirm')).toEqual([[]]);
   });
 
-  it('passes loading to the Allow button', async () => {
+  it('passes loading to the confirm button', async () => {
     wrapper = createWrapper({ loading: true });
     await nextTick();
 

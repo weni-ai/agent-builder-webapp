@@ -432,28 +432,32 @@
       },
       "safety_guardrails": {
         "allow_topics": {
-          "allow": "Allow",
-          "description_multiple": "Manager will be able to answer questions about {topics}. You can turn these guardrails back on at any time.",
-          "description_single": "Manager will be able to answer questions about {topic}. You can turn this guardrail back on at any time.",
-          "title_multiple": "Allow Manager to discuss {count} topics?",
-          "title_single": "Allow Manager to discuss {topic}?"
+          "confirm_button": "Remove",
+          "description_multiple": "Manager will be able to answer questions about {topics}. You can reactivate these extra blocks anytime",
+          "description_single": "Manager will be able to answer questions about {topic}. You can reactivate this extra block anytime",
+          "title_multiple": "Remove {count} extra blocks",
+          "title_single": "Remove extra block for {topic}"
         },
-        "allowed": "Allowed",
+        "allowed": "Extra block off",
         "block_message": {
           "helper": "Displayed to customers when Manager refuses a blocked topic",
           "label": "Block message"
         },
-        "blocked": "Blocked",
+        "blocked": "Extra block on",
         "configure": "Configure",
-        "description": "Sensitive topics Manager won't discuss",
+        "description": "Extra layer of blocks on sensitive topics, in addition to Manager's built-in safety",
         "drawer": {
-          "description": "When a topic is on, Manager refuses to discuss it. Turn off to allow",
-          "title": "Safety guardrails"
+          "description": {
+            "intro": "These are extra blocks on top of Manager's built-in safety.",
+            "off": "Off: the extra block is removed, Manager's built-in safety limits still apply.",
+            "on": "On: Manager refuses the topic and shows your block message."
+          },
+          "title": "Extra safety guardrails"
         },
         "save": "Save",
-        "save_error": "Safety guardrails couldn't be updated due to a technical issue",
-        "save_success": "Safety guardrails updated",
-        "title": "Safety guardrails",
+        "save_error": "Extra safety guardrails couldn't be updated due to a technical issue",
+        "save_success": "Extra safety guardrails updated",
+        "title": "Extra safety guardrails",
         "topics": {
           "beliefs": {
             "description": "Personal worldviews, ideologies, or philosophical convictions",
