@@ -11,6 +11,7 @@ import {
   getPaginationPayload,
   getPaginationStateFromResponse,
   normalizeConversationsBySource,
+  NEW_SOURCE,
 } from '@/api/adapters/supervisor/conversationSources';
 
 import i18n from '@/utils/plugins/i18n';
@@ -198,6 +199,8 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
       if (paginationPayload?.onlyLegacy) {
         conversations.data.legacyInitialAttempted = true;
       }
+
+      hydrateSelectedConversationFromResults();
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
 
@@ -267,6 +270,12 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     }
   }
 
+  function findConversationByUuid(uuid) {
+    return conversations.data.results?.find(
+      (conversation) => conversation.uuid === uuid,
+    );
+  }
+
   function selectConversation(uuid) {
     if (!uuid) {
       selectedConversation.value = null;
@@ -276,19 +285,37 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
 
     if (selectedConversation.value?.uuid === uuid) return;
 
-    const handleMatch = (conversation) => {
-      return conversation.uuid === uuid;
-    };
-
-    const conversation = conversations.data.results?.find(handleMatch);
+    const conversation = findConversationByUuid(uuid);
 
     queryConversationUuid.value = uuid;
 
     selectedConversation.value = {
+      source: NEW_SOURCE,
       ...conversation,
+      uuid,
       data: {
         status: null,
       },
+    };
+  }
+
+  /**
+   * Fills the selected conversation with the list row metadata (contact name,
+   * urn, date range), which a deep link carrying only the uuid cannot provide.
+   */
+  function hydrateSelectedConversationFromResults() {
+    const uuid = selectedConversation.value?.uuid;
+
+    if (!uuid || selectedConversation.value.urn) return;
+
+    const conversation = findConversationByUuid(uuid);
+
+    if (!conversation) return;
+
+    selectedConversation.value = {
+      ...selectedConversation.value,
+      ...conversation,
+      data: selectedConversation.value.data,
     };
   }
 

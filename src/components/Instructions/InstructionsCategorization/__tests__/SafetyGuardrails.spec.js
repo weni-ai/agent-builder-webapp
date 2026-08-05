@@ -1,6 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
 import { afterEach, describe, expect, it } from 'vitest';
 
+import i18n from '@/utils/plugins/i18n.js';
+
 import SafetyGuardrails from '../SafetyGuardrails.vue';
 import SafetyGuardrailsDrawer from '@/components/Instructions/SafetyGuardrails/SafetyGuardrailsDrawer.vue';
 
@@ -26,11 +28,15 @@ describe('SafetyGuardrails.vue', () => {
     wrapper = createWrapper();
 
     expect(findSection().exists()).toBe(true);
-    expect(findTitle().text()).toBe('Safety guardrails');
-    expect(findDescription().text()).toBe(
-      "Sensitive topics Manager won't discuss",
+    expect(findTitle().text()).toBe(
+      i18n.global.t('agents.instructions.safety_guardrails.title'),
     );
-    expect(findConfigure().props('text')).toBe('Configure');
+    expect(findDescription().text()).toBe(
+      i18n.global.t('agents.instructions.safety_guardrails.description'),
+    );
+    expect(findConfigure().props('text')).toBe(
+      i18n.global.t('agents.instructions.safety_guardrails.configure'),
+    );
   });
 
   it('opens the drawer when Configure is clicked', async () => {
