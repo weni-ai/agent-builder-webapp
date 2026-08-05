@@ -434,8 +434,12 @@
         "configure": "Configurar",
         "description": "Capa extra de bloqueos para temas sensibles, además de la seguridad integrada de Manager",
         "drawer": {
-          "description": "Cuando un tema está activado, Manager se niega a discutirlo. Desactiva para permitir",
-          "title": "Barreras de seguridad"
+          "description": {
+            "intro": "Estos son bloqueos adicionales además de la seguridad integrada de Manager.",
+            "off": "Desactivado: se elimina el bloqueo adicional, los límites de seguridad integrada de Manager siguen aplicando.",
+            "on": "Activado: Manager se niega a discutir el tema y muestra tu mensaje de bloqueo."
+          },
+          "title": "Capas adicionales de seguridad"
         },
         "save": "Guardar",
         "title": "Capas adicionales de seguridad"

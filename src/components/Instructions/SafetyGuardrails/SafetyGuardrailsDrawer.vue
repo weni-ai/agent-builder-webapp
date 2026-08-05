@@ -16,12 +16,34 @@
         class="safety-guardrails-drawer"
         data-testid="safety-guardrails-drawer-content"
       >
-        <p
+        <section
           class="safety-guardrails-drawer__description"
           data-testid="safety-guardrails-drawer-description"
         >
-          {{ $t('agents.instructions.safety_guardrails.drawer.description') }}
-        </p>
+          <p>
+            {{
+              $t(
+                'agents.instructions.safety_guardrails.drawer.description.intro',
+              )
+            }}
+          </p>
+          <div class="safety-guardrails-drawer__description-states">
+            <p>
+              {{
+                $t(
+                  'agents.instructions.safety_guardrails.drawer.description.on',
+                )
+              }}
+            </p>
+            <p>
+              {{
+                $t(
+                  'agents.instructions.safety_guardrails.drawer.description.off',
+                )
+              }}
+            </p>
+          </div>
+        </section>
       </section>
 
       <UnnnicDrawerFooter>
@@ -72,10 +94,18 @@ function onOpenChange(open) {
   overflow-y: auto;
 
   &__description {
-    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-space-2;
 
-    font: $unnnic-font-body;
+    @include unnnic-font-body;
     color: $unnnic-color-fg-base;
+  }
+
+  &__description-states {
+    display: flex;
+    flex-direction: column;
+    gap: $unnnic-space-1;
   }
 }
 </style>
