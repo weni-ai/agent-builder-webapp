@@ -428,6 +428,11 @@
             }
           }
         }
+      },
+      "safety_guardrails": {
+        "configure": "Configurează",
+        "description": "Strat suplimentar de blocări pentru subiecte sensibile, pe lângă securitatea integrată a Manager",
+        "title": "Măsuri suplimentare de siguranță"
       }
     },
     "profile": {

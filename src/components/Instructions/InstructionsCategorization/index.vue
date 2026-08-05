@@ -124,6 +124,10 @@ function onRemoveCategoryModalOpenChange(open) {
   flex-direction: column;
   gap: $unnnic-space-4;
 
+  margin-bottom: calc(
+    $unnnic-space-1 * 13
+  ); // 52px to fit the "test your agents" button
+
   // Mirrors UnnnicPageHeader's grid (1fr + minmax(250px, 20%))
   &__toolbar {
     display: grid;

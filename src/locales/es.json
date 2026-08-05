@@ -429,6 +429,11 @@
             }
           }
         }
+      },
+      "safety_guardrails": {
+        "configure": "Configurar",
+        "description": "Capa extra de bloqueos para temas sensibles, además de la seguridad integrada de Manager",
+        "title": "Capas adicionales de seguridad"
       }
     },
     "profile": {

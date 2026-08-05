@@ -429,6 +429,11 @@
             }
           }
         }
+      },
+      "safety_guardrails": {
+        "configure": "Configurar",
+        "description": "Camada extra de bloqueios para tópicos sensíveis, além da segurança integrada do Manager",
+        "title": "Camadas extras de segurança"
       }
     },
     "profile": {

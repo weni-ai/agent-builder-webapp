@@ -4,6 +4,7 @@ import { createTestingPinia } from '@pinia/testing';
 
 import CategoriesView from '../CategoriesView.vue';
 import CategoryAccordion from '../CategoryAccordion.vue';
+import SafetyGuardrails from '../SafetyGuardrails.vue';
 import { useInstructionsStore } from '@/store/Instructions';
 
 vi.mock('@/store/Project', () => ({
@@ -12,7 +13,10 @@ vi.mock('@/store/Project', () => ({
 
 vi.mock('@/store/FeatureFlags', () => ({
   useFeatureFlagsStore: () => ({
-    flags: { categorizationOfInstructions: true },
+    flags: {
+      categorizationOfInstructions: true,
+      customGuardrails: true,
+    },
   }),
 }));
 
@@ -158,5 +162,11 @@ describe('CategoriesView.vue', () => {
       .vm.$emit('delete-category', group);
 
     expect(wrapper.emitted('delete-category')).toEqual([[group]]);
+  });
+
+  it('renders SafetyGuardrails when the customGuardrails flag is enabled', () => {
+    wrapper = createWrapper();
+
+    expect(wrapper.findComponent(SafetyGuardrails).exists()).toBe(true);
   });
 });
