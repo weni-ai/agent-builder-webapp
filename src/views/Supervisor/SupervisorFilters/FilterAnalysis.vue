@@ -1,12 +1,18 @@
 <template>
-  <UnnnicFormElement :label="$t('audit.conversations.filters.analysis.label')">
-    <UnnnicSelect
-      v-model:modelValue="analysisFilter"
-      data-testid="analysis-select"
-      :options="analysisOptions"
-      :optionsLines="2"
+  <UnnnicRadioGroup
+    v-model:modelValue="analysisFilter"
+    state="vertical"
+    data-testid="analysis-radio-group"
+    :label="$t('audit.conversations.filters.analysis.label')"
+  >
+    <UnnnicRadio
+      v-for="option in analysisOptions"
+      :key="option.value"
+      :data-testid="`analysis-radio-${option.value}`"
+      :label="option.label"
+      :value="option.value"
     />
-  </UnnnicFormElement>
+  </UnnnicRadioGroup>
 </template>
 
 <script setup>
