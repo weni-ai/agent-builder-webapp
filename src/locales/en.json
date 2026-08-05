@@ -431,6 +431,13 @@
         }
       },
       "safety_guardrails": {
+        "allow_topics": {
+          "confirm_button": "Remove",
+          "description_multiple": "Manager will be able to answer questions about {topics}. You can reactivate these extra blocks anytime",
+          "description_single": "Manager will be able to answer questions about {topic}. You can reactivate this extra block anytime",
+          "title_multiple": "Remove {count} extra blocks",
+          "title_single": "Remove extra block for {topic}"
+        },
         "allowed": "Extra block off",
         "block_message": {
           "helper": "Displayed to customers when Manager refuses a blocked topic",

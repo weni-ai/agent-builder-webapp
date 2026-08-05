@@ -431,6 +431,13 @@
         }
       },
       "safety_guardrails": {
+        "allow_topics": {
+          "confirm_button": "Remover",
+          "description_multiple": "O Manager poderá responder perguntas sobre {topics}. Você pode reativar esses bloqueios extras a qualquer momento",
+          "description_single": "O Manager poderá responder perguntas sobre {topic}. Você pode reativar esse bloqueio extra a qualquer momento",
+          "title_multiple": "Remover {count} bloqueios extras",
+          "title_single": "Remover bloqueio extra para {topic}"
+        },
         "allowed": "Bloqueio extra desativado",
         "block_message": {
           "helper": "Exibida aos clientes quando o Manager recusa um tópico bloqueado",
