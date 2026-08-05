@@ -45,17 +45,17 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 
 import {
   AFFECTED_CONVERSATIONS_PAGE_SIZE,
   useImprovementsStore,
 } from '@/store/Improvements';
-import { useSupervisorStore } from '@/store/Supervisor';
 
 import ImprovementDrawerSection from './ImprovementDrawerSection.vue';
 import AffectedConversationItem from './AffectedConversationItem.vue';
+
+import { redirectInParent } from '@/utils/parentRedirect';
 
 import type { AffectedConversation } from '@/store/types/Improvements.types';
 
@@ -64,14 +64,7 @@ const props = defineProps<{
   improvementUuid: string | null;
 }>();
 
-const emit = defineEmits<{
-  'close-drawer': [];
-}>();
-
-const route = useRoute();
-const router = useRouter();
 const improvementsStore = useImprovementsStore();
-const supervisorStore = useSupervisorStore();
 
 const { affectedConversations } = storeToRefs(improvementsStore);
 
@@ -109,22 +102,12 @@ function handlePageUpdate(newPage: number) {
   fetchConversations(newPage);
 }
 
-async function handleViewFullConversation(conversation: AffectedConversation) {
-  supervisorStore.selectedConversation = {
-    uuid: conversation.uuid,
-    urn: conversation.contactUrn,
-    username: conversation.contactName,
-    source: 'v2',
-    data: { status: null },
-  };
-
-  emit('close-drawer');
-
-  await router.replace({
-    name: 'conversations',
+function handleViewFullConversation(conversation: AffectedConversation) {
+  redirectInParent({
+    path: 'aiConversations:conversations',
+    query: { uuid: conversation.uuid },
+    openInNew: true,
   });
-
-  supervisorStore.queryConversationUuid = conversation.uuid;
 }
 
 watch(
