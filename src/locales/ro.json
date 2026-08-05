@@ -433,8 +433,12 @@
         "configure": "Configurează",
         "description": "Strat suplimentar de blocări pentru subiecte sensibile, pe lângă securitatea integrată a Manager",
         "drawer": {
-          "description": "Când un subiect este activat, Manager refuză să îl discute. Dezactivează pentru a permite",
-          "title": "Guardrails de siguranță"
+          "description": {
+            "intro": "Acestea sunt blocări suplimentare pe lângă securitatea integrată a Manager.",
+            "off": "Dezactivat: blocarea suplimentară este eliminată, limitele de securitate integrate ale Manager se aplică în continuare.",
+            "on": "Activat: Manager refuză să discute subiectul și afișează mesajul tău de blocare."
+          },
+          "title": "Măsuri suplimentare de siguranță"
         },
         "save": "Salva",
         "title": "Măsuri suplimentare de siguranță"
