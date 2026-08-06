@@ -21,6 +21,7 @@ type WebpackHotModule = {
  * `export const … = defineStore(...)` under `src/store`.
  */
 export function registerStoreHMR(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useStore: StoreDefinition<any, any, any, any>,
   hot: WebpackHotModule | undefined,
 ) {
@@ -29,9 +30,11 @@ export function registerStoreHMR(
   hot.accept();
 
   hot.dispose((data) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data.pinia = getActivePinia() ?? (useStore as any)._pinia;
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pinia = getActivePinia() ?? (useStore as any)._pinia ?? hot.data?.pinia;
   if (!pinia) return;
 
