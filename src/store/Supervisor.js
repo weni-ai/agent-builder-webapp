@@ -11,6 +11,7 @@ import {
   getPaginationPayload,
   getPaginationStateFromResponse,
   normalizeConversationsBySource,
+  NEW_SOURCE,
 } from '@/api/adapters/supervisor/conversationSources';
 
 import i18n from '@/utils/plugins/i18n';
@@ -232,17 +233,24 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
         next: next ? selectedConversation.value.data.next : null,
       };
 
-      const response = await supervisorApi.conversations.getById(params);
+      const { conversation: conversationDetail, ...response } =
+        await supervisorApi.conversations.getById(params);
+
+      if (!selectedConversation.value) return;
 
       const mergedResults = next
         ? [...response.results, ...selectedConversation.value.data.results]
         : response.results;
 
-      selectedConversation.value.data = {
-        ...selectedConversation.value.data,
-        ...response,
-        results: mergedResults,
-        status: 'complete',
+      selectedConversation.value = {
+        ...selectedConversation.value,
+        ...conversationDetail,
+        data: {
+          ...selectedConversation.value.data,
+          ...response,
+          results: mergedResults,
+          status: 'complete',
+        },
       };
     } catch (error) {
       console.error('Error loading conversation data:', error);
@@ -267,6 +275,12 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     }
   }
 
+  function findConversationByUuid(uuid) {
+    return conversations.data.results?.find(
+      (conversation) => conversation.uuid === uuid,
+    );
+  }
+
   function selectConversation(uuid) {
     if (!uuid) {
       selectedConversation.value = null;
@@ -276,16 +290,14 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
 
     if (selectedConversation.value?.uuid === uuid) return;
 
-    const handleMatch = (conversation) => {
-      return conversation.uuid === uuid;
-    };
-
-    const conversation = conversations.data.results?.find(handleMatch);
+    const conversation = findConversationByUuid(uuid);
 
     queryConversationUuid.value = uuid;
 
     selectedConversation.value = {
+      source: NEW_SOURCE,
       ...conversation,
+      uuid,
       data: {
         status: null,
       },

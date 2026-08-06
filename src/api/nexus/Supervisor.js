@@ -1,6 +1,7 @@
 import nexusRequest from '../nexusaiRequest';
 import conversationsRequest from '../conversationsRequest';
 import { fetchConversationList } from '../adapters/supervisor/conversationSources';
+import { ConversationAdapter } from '../adapters/supervisor/conversation';
 import { ConversationMessageAdapter } from '../adapters/supervisor/conversationMessage';
 import { ImprovementsAdapter } from '../adapters/supervisor/improvements';
 import { AffectedConversationsAdapter } from '../adapters/supervisor/affectedConversations';
@@ -38,7 +39,12 @@ export const Supervisor = {
 
       const { data } = await nexusRequest.$http.get(url);
 
-      return ConversationMessageAdapter.fromApi(data);
+      // The detail root also carries contact metadata, which a deep link
+      // holding only the uuid cannot get from the conversation list.
+      return {
+        ...ConversationMessageAdapter.fromApi(data),
+        conversation: ConversationAdapter.fromDetailApi(data),
+      };
     },
 
     async getLogs({ projectUuid, messageId }) {

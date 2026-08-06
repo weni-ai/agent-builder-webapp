@@ -230,51 +230,111 @@ describe('Supervisor Store', () => {
           legacyInitialAttempted: false,
         });
       });
+
+      it('does not mutate the selected conversation when the list loads', async () => {
+        store.selectedConversation = {
+          uuid: 'uuid-1',
+          username: 'Alessandra',
+          urn: 'urn:1',
+          source: 'v2',
+          data: { status: 'complete', results: [{ id: 'message-1' }] },
+        };
+
+        nexusaiAPI.agent_builder.supervisor.conversations.list.mockResolvedValue(
+          {
+            results: [
+              {
+                uuid: 'uuid-1',
+                username: 'Renamed',
+                urn: 'urn:1',
+                source: 'v2',
+              },
+            ],
+          },
+        );
+
+        await store.loadConversations();
+
+        expect(store.selectedConversation.username).toBe('Alessandra');
+        expect(store.selectedConversation.data.results).toEqual([
+          { id: 'message-1' },
+        ]);
+      });
     });
 
     describe('selectConversation', () => {
       beforeEach(() => {
         store.conversations.data = {
           results: [
-            { id: 1, title: 'Conversation 1', urn: 'urn:1' },
-            { id: 2, title: 'Conversation 2', urn: 'urn:2' },
+            {
+              uuid: 'uuid-1',
+              username: 'Alessandra',
+              urn: 'urn:1',
+              source: 'v2',
+            },
+            { uuid: 'uuid-2', username: 'Rohan', urn: 'urn:2', source: 'v2' },
           ],
         };
       });
 
-      it('selects a conversation by ID', async () => {
-        store.selectConversation(1);
+      it('selects a loaded conversation by uuid', () => {
+        store.selectConversation('uuid-1');
 
         expect(store.selectedConversation).toEqual({
+          uuid: 'uuid-1',
+          username: 'Alessandra',
+          urn: 'urn:1',
+          source: 'v2',
           data: {
             status: null,
           },
         });
+        expect(store.queryConversationUuid).toBe('uuid-1');
       });
 
-      it('clears selection when no ID provided', () => {
-        store.selectedConversation = { id: 1 };
+      it('keeps the uuid and defaults the source when the list is not loaded', () => {
+        store.conversations.data = { results: [] };
+
+        store.selectConversation('uuid-3');
+
+        expect(store.selectedConversation).toEqual({
+          uuid: 'uuid-3',
+          source: 'v2',
+          data: {
+            status: null,
+          },
+        });
+        expect(store.queryConversationUuid).toBe('uuid-3');
+      });
+
+      it('ignores selecting the conversation that is already selected', () => {
+        store.selectConversation('uuid-1');
+
+        const previousSelection = store.selectedConversation;
+        store.selectedConversation.data.status = 'complete';
+
+        store.selectConversation('uuid-1');
+
+        expect(store.selectedConversation).toBe(previousSelection);
+        expect(store.selectedConversation.data.status).toBe('complete');
+      });
+
+      it('clears selection when no uuid provided', () => {
+        store.selectedConversation = { uuid: 'uuid-1' };
+        store.queryConversationUuid = 'uuid-1';
+
         store.selectConversation(null);
 
         expect(store.selectedConversation).toBeNull();
+        expect(store.queryConversationUuid).toBe('');
       });
 
-      it('clears selection when undefined ID provided', () => {
-        store.selectedConversation = { id: 1 };
+      it('clears selection when undefined uuid provided', () => {
+        store.selectedConversation = { uuid: 'uuid-1' };
+
         store.selectConversation(undefined);
 
         expect(store.selectedConversation).toBeNull();
-      });
-
-      it('handles non-existent conversation ID gracefully', () => {
-        store.selectConversation(999);
-
-        expect(store.selectedConversation).toEqual({
-          ...undefined,
-          data: {
-            status: null,
-          },
-        });
       });
     });
 
@@ -394,6 +454,37 @@ describe('Supervisor Store', () => {
         ]);
         expect(store.selectedConversation.data.next).toBe('new-token');
         expect(store.selectedConversation.data.status).toBe('complete');
+      });
+
+      it('hydrates the contact metadata returned by the detail endpoint', async () => {
+        store.selectedConversation = {
+          uuid: 'uuid-1',
+          source: 'v2',
+          data: { status: null, results: [] },
+        };
+
+        nexusaiAPI.agent_builder.supervisor.conversations.getById.mockResolvedValue(
+          {
+            results: [{ id: 'msg1', text: 'Hello' }],
+            next: null,
+            conversation: {
+              username: 'Alessandra',
+              urn: 'whatsapp:5511999999999',
+              csat: { score: 4, id: 'satisfied' },
+            },
+          },
+        );
+
+        await store.loadSelectedConversationData();
+
+        expect(store.selectedConversation).toMatchObject({
+          uuid: 'uuid-1',
+          username: 'Alessandra',
+          urn: 'whatsapp:5511999999999',
+          csat: { score: 4, id: 'satisfied' },
+        });
+        expect(store.selectedConversation.data.status).toBe('complete');
+        expect(store.selectedConversation.data.conversation).toBeUndefined();
       });
 
       it('handles errors when loading conversation data', async () => {

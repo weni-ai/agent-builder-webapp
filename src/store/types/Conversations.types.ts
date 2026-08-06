@@ -1,4 +1,4 @@
-interface Csat {
+export interface Csat {
   score: number;
   id: string;
 }

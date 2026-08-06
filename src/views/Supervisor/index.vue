@@ -100,11 +100,13 @@ const isConversationsRoute = computed(() => route.name === 'conversations');
 const conversations = computed(() => supervisorStore.conversations);
 
 function updateQuery(filters = supervisorStore.filters) {
-  const cleanedFilters = cleanParams(filters);
+  const { queryConversationUuid } = supervisorStore;
+
   router.replace({
-    query: {
-      ...cleanedFilters,
-    },
+    query: cleanParams({
+      ...filters,
+      uuid: queryConversationUuid,
+    }),
   });
 }
 
@@ -177,11 +179,8 @@ watch(
 
 watch(
   () => supervisorStore.queryConversationUuid,
-  (conversationUuid) => {
-    updateQuery({
-      ...route.query,
-      conversationUuid,
-    });
+  () => {
+    updateQuery();
   },
 );
 

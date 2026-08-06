@@ -132,6 +132,43 @@ describe('Supervisor.js', () => {
       expect(result.next).toBeNull();
     });
 
+    it('should return the contact metadata carried by the detail root', async () => {
+      nexusRequest.$http.get.mockResolvedValue({
+        data: {
+          ...mockV2Response.data,
+          contact_name: 'Alessandra',
+          contact_urn: 'whatsapp:5511999999999',
+          csat: '4',
+        },
+      });
+
+      const result = await Supervisor.conversations.getById({
+        projectUuid: 'project-123',
+        uuid: 'conv-123',
+      });
+
+      expect(result.conversation).toEqual({
+        username: 'Alessandra',
+        urn: 'whatsapp:5511999999999',
+        csat: { score: 4, id: 'satisfied' },
+      });
+      expect(result.results).toHaveLength(2);
+    });
+
+    it('should return an empty conversation when the detail has no contact data', async () => {
+      nexusRequest.$http.get.mockResolvedValue(mockLegacyResponse);
+
+      const result = await Supervisor.conversations.getById({
+        projectUuid: 'project-123',
+        source: 'legacy',
+        start: '01-01-2023',
+        end: '15-01-2023',
+        urn: 'tel:+123456789',
+      });
+
+      expect(result.conversation).toEqual({});
+    });
+
     it('should get conversation by id with next param', async () => {
       nexusRequest.$http.get.mockResolvedValue(mockV2ResponseWithNext);
 
