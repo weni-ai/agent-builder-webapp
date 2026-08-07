@@ -112,7 +112,7 @@
         "cancel": "Cancel",
         "success_alert": "Instruction deleted",
         "error_alert": "Couldn't delete instruction",
-        "error_alert_description": "Something went wrong and no changes were made. Try again."
+        "error_alert_description": "Something went wrong and nothing was changed. Try again."
       }
     },
     "traces": {
@@ -344,7 +344,7 @@
     },
     "instructions": {
       "title": "Instructions",
-      "description": "Define the rules that guide how Manager responds, communicates, and makes decisions",
+      "description": "Define the rules that guide how the Manager responds, communicates, and makes decisions",
       "new_instruction": "New instruction",
       "export_instructions": {
         "title": "Export instructions",
@@ -357,8 +357,8 @@
       },
       "delete_category": {
         "modal_title": "Delete category",
-        "modal_description": "Move {count} from {name} to Uncategorized. Nothing will be deleted, only the category label will be removed.",
-        "modal_description_empty": "{name} has no instructions. Deleting it will only remove this category from your list.",
+        "modal_description": "{count} from {name} to Uncategorized. Nothing will be deleted, only the category label is removed.",
+        "modal_description_empty": "{name} has no instructions. Deleting it will only remove it from your list",
         "instructions_count": "{count, plural, one {{count} instruction will be moved} other {{count} instructions will be moved}}",
         "cancel": "Cancel",
         "confirm": "Delete category",
@@ -366,7 +366,7 @@
         "success_description": "{count, plural, one {{count} instruction moved to Uncategorized} other {{count} instructions moved to Uncategorized}}",
         "success_description_empty": "Removed from your list",
         "error_title": "Couldn't delete category",
-        "error_description": "Something went wrong. Try again."
+        "error_description": "Something went wrong and nothing was changed. Try again."
       },
       "rename_category": {
         "cancel": "Cancel",
@@ -387,7 +387,7 @@
           "category": "Category",
           "instruction": "Instruction"
         },
-        "locked_tooltip": "Default instructions can't be edited or deleted",
+        "locked_tooltip": "Default instructions can't be edited or removed",
         "rename_category": "Rename category",
         "results_count": "{count, plural, =0 {No instructions found} one {{count} instruction found} other {{count} instructions found}}",
         "search_placeholder": "Search...",
@@ -396,13 +396,13 @@
           "list": "List"
         },
         "uncategorized": "Uncategorized",
-        "uncategorized_tooltip": "Instructions without a category appear here, and this group can't be deleted"
+        "uncategorized_tooltip": "Instructions without a category appear here\nThis group can't be removed"
       },
       "new_instruction_drawer": {
         "title": "New instruction",
         "edit_title": "Edit instruction",
         "category_label": "Category",
-        "re_validate": "Revalidate",
+        "re_validate": "Re-validate",
         "validate": "Validate",
         "save": "Save",
         "cancel": "Cancel",
@@ -573,8 +573,8 @@
         "transferred_to_human_support_description": "Includes conversations (AI-assisted and not assisted) transferred to a human representative."
       },
       "amazing_conversation": {
-        "description": "This conversation shows the agent's ability to address multiple customer questions effectively. The clear resolution and attentive follow-up resulted in a satisfied customer.",
-        "title": "Amazing conversation"
+        "description": "The agent addressed multiple customer questions with clear resolution and attentive follow-up. The customer was satisfied with the service.",
+        "title": "Great conversation"
       },
       "conversations_count": "{count} conversations found",
       "unnamed_contact": "Unnamed contact",
@@ -682,8 +682,8 @@
         "add": "Add",
         "affected_conversations": "{count, plural, one {# affected conversation} other {# affected conversations}}",
         "create": {
-          "error": "Custom analysis couldn't be saved due to a technical issue",
-          "limit_error": "Custom analysis couldn't be saved due to the 10 custom analysis limit",
+          "error": "Couldn't save custom analysis due to a technical issue",
+          "limit_error": "Couldn't save custom analysis. You've reached the limit of 10 custom analyses.",
           "success": {
             "title": "Custom analysis added",
             "description": "Issue will be monitored in upcoming analyses"
@@ -700,13 +700,13 @@
           },
           "title": "Delete custom analysis"
         },
-        "definition_helper": "The more specific the description, the better the AI can identify the issue in conversations",
+        "definition_helper": "The more specific the description, the better the AI can identify issues in conversations.",
         "definition_label": "What do you want to monitor?",
         "definition_placeholder": "For example: Agent is providing unrealistic delivery deadlines",
-        "description": "Describe a behavior or issue that the AI should monitor in conversations. When identified, it automatically appears in the improvement backlog",
+        "description": "Describe a behavior or issue that the AI should monitor in conversations. When identified, it automatically appears in the improvement backlog.",
         "empty_description": "Use the field above to start monitoring specific issues",
         "empty_title": "No custom analysis added",
-        "limit_disclaimer": "The limit of 10 custom analyses has been reached. Delete one to add a new one",
+        "limit_disclaimer": "You've reached the limit of 10 custom analyses. Delete one to create another.",
         "list_heading": "Custom analyses",
         "list_heading_count": "{count} of {max}",
         "no_affected_conversations": "No affected conversations",
@@ -717,9 +717,9 @@
       },
       "contact_technical_support_dialog": {
         "cancel": "Cancel",
-        "contact_support": "Contact support",
-        "description": "An email will be sent to {support_email} with this information:",
-        "error": "Support couldn't be contacted. Try again later",
+        "contact_support": "Contact Support",
+        "description": "We'll send an email to {support_email} with this information:",
+        "error": "Unable to contact Support. Try again later.",
         "identified_on": "Identified on {date} by {email}",
         "project_uuid": "Project UUID: {uuid}",
         "success": {
@@ -727,7 +727,7 @@
           "title": "Support notified"
         },
         "summary_type_and_count": "{type} · {count, plural, one {# affected conversation} other {# affected conversations}}",
-        "title": "Contact support"
+        "title": "Contact Support"
       },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# affected conversation} other {# affected conversations}}",
@@ -740,8 +740,8 @@
         "ignore_improvement": "Ignore improvement",
         "instruction_updated_disclaimer": "{count, plural, one {# instruction updated since the analysis} other {# instructions updated since the analysis}}",
         "mark_as_resolved": "Mark as resolved",
-        "suggested_solution_behavior_title": "Add this instruction to the Manager:",
-        "suggested_solution_knowledge_title": "New content for Knowledge Base",
+        "suggested_solution_behavior_title": "Add this instruction to the manager:",
+        "suggested_solution_knowledge_title": "New content for the knowledge base",
         "suggested_solution_technical_issue_title": "Recommended action",
         "suggested_solution_title": "Suggested solution",
         "view_full_conversation": "View full conversation"
@@ -751,7 +751,7 @@
         "description": "Ran on {date} at {time}",
         "description_today": "Ran today at {time}",
         "run_analysis": "Run analysis",
-        "run_analysis_already_run_today_tooltip": "Analysis has already run in the last 24 hours and will be available again at {time}",
+        "run_analysis_already_run_today_tooltip": "Analysis already ran in the last 24h.\nNext analysis available at {time}",
         "run_analysis_insufficient_volume_tooltip": "Not enough conversations from yesterday. At least {min} are required to run the analysis.",
         "title": "{count, plural, =0 {Analysis of conversations from {date}} one {Analysis of conversations from {date} · {count} improvement identified} other {Analysis of conversations from {date} · {count} improvements identified}}"
       },
@@ -786,12 +786,12 @@
         "view_help_guide": "View guide"
       },
       "no_analysis": {
-        "description": "Run your first analysis to identify opportunities for improvement in yesterday's conversations",
+        "description": "Run your first analysis to identify opportunities for improvement in a sample of yesterday's conversations",
         "run_analysis": "Run analysis",
         "title": "No analysis has been run yet"
       },
       "no_improvement_identified": {
-        "description": "No improvements were identified in this analysis",
+        "description": "No improvements identified",
         "title": "Looking good!"
       },
       "run_analysis_dialog": {
@@ -802,7 +802,7 @@
       },
       "running_analysis": {
         "description": "This may take a few hours. You can close this window.",
-        "title": "Analyzing a sample of conversations from yesterday"
+        "title": "Analyzing a sample of yesterday's conversations"
       },
       "stale_analysis_disclaimer": {
         "description": "Run a new analysis to identify opportunities for improvement",
@@ -831,7 +831,7 @@
           }
         },
         "success": {
-          "description": "The item was removed from the improvements backlog",
+          "description": "The item was removed from the improvement backlog",
           "ignored": {
             "title": "Improvement ignored"
           },
@@ -1102,7 +1102,7 @@
       "exceeds_limit": "File size exceeds the limit of {limitMB} MB",
       "delete_file": {
         "title": "Delete file",
-        "description": "Are you sure you want to delete the file {name}? The content will also be deleted from the AI base.",
+        "description": "Are you sure you want to delete the file {name}? The content of this file will be removed from the AI base.",
         "cancel": "Cancel",
         "delete": "Delete"
       },
@@ -1152,7 +1152,7 @@
       "add_site": "Add site",
       "delete_site": {
         "title": "Delete site",
-        "description": "Are you sure you want to delete the site {name}? All content from this site will be deleted from the AI base.",
+        "description": "Are you sure you want to delete the site {name}? All content from this site will be removed from the AI base.",
         "cancel": "Cancel",
         "delete": "Delete"
       },
