@@ -80,6 +80,7 @@
         />
 
         <SafetyGuardrailsManipulationAttempts
+          v-if="!guardrailsStore.isLoading"
           :modelValue="draftPromptInjectionEnabled"
           @update:model-value="onPromptInjectionEnabledChange"
         />
@@ -110,6 +111,7 @@
   <SafetyGuardrailsAllowTopicsDialog
     v-model:open="isAllowTopicsDialogOpen"
     :topicNames="unblockedTopicNames"
+    :promptInjectionOnly="isPromptInjectionOnlyRemoval"
     :loading="guardrailsStore.isSaving"
     @confirm="onConfirmAllowTopics"
   />
@@ -161,6 +163,11 @@ const unblockedTopicNames = computed(() => {
 
   return names;
 });
+
+const isPromptInjectionOnlyRemoval = computed(
+  () =>
+    isPromptInjectionUnblocked.value && unblockedTopicIds.value.length === 0,
+);
 
 const isDirty = computed(() => {
   if (draftBlockMessage.value !== snapshotBlockMessage.value) return true;

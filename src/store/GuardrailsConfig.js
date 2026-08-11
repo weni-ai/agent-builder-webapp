@@ -71,7 +71,9 @@ export const useGuardrailsConfigStore = defineStore('GuardrailsConfig', () => {
     );
   }
 
-  async function savePromptInjectionFilter(enabled = false) {
+  async function savePromptInjectionFilter(enabled) {
+    if (typeof enabled !== 'boolean') return;
+
     const filter = await nexusaiAPI.router.prompt_injection_filter.update({
       projectUuid: projectUuid.value,
       data: { enabled },

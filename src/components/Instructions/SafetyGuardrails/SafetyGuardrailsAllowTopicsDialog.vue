@@ -61,6 +61,10 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  promptInjectionOnly: {
+    type: Boolean,
+    default: false,
+  },
   loading: {
     type: Boolean,
     default: false,
@@ -87,7 +91,16 @@ function translateAllowTopics(key) {
 }
 
 const title = computed(() => translateAllowTopics('title'));
-const description = computed(() => translateAllowTopics('description'));
+
+const description = computed(() => {
+  if (props.promptInjectionOnly) {
+    return t(
+      'agents.instructions.safety_guardrails.allow_topics.prompt_injection.description',
+    );
+  }
+
+  return translateAllowTopics('description');
+});
 </script>
 
 <style scoped lang="scss">

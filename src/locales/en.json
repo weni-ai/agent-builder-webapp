@@ -435,6 +435,9 @@
           "confirm_button": "Remove",
           "description_multiple": "Manager will be able to answer questions about {topics}. You can reactivate these extra blocks anytime",
           "description_single": "Manager will be able to answer questions about {topic}. You can reactivate this extra block anytime",
+          "prompt_injection": {
+            "description": "Removes the extra protection against tampering attempts. The Manager's native resistance remains in effect, but this lock won't catch attempts that the model allows to pass"
+          },
           "title_multiple": "Remove {count} extra blocks",
           "title_single": "Remove extra block for {topic}"
         },

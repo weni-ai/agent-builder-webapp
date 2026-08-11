@@ -187,6 +187,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     expect(findTopicList().props('loading')).toBe(true);
     expect(findDescriptionSkeleton().exists()).toBe(true);
     expect(findBlockMessage().exists()).toBe(false);
+    expect(findManipulationAttempts().exists()).toBe(false);
 
     resolveFetch(storeConfig);
     resolveFilter(filterConfig);
@@ -195,6 +196,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     expect(findTopicList().props('loading')).toBe(false);
     expect(findDescriptionSkeleton().exists()).toBe(false);
     expect(findBlockMessage().exists()).toBe(true);
+    expect(findManipulationAttempts().exists()).toBe(true);
   });
 
   it('keeps Save disabled until a draft change is made', async () => {
@@ -248,6 +250,47 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     expect(nexusaiAPI.router.guardrails_config.update).not.toHaveBeenCalled();
     expect(findAllowTopicsDialog().props('open')).toBe(true);
     expect(findAllowTopicsDialog().props('topicNames')).toEqual(['Politics']);
+    expect(findAllowTopicsDialog().props('promptInjectionOnly')).toBe(false);
+  });
+
+  it('opens confirm dialog listing Prompt injection when it is turned off', async () => {
+    await createWrapper();
+
+    findManipulationAttempts().vm.$emit('update:modelValue', false);
+    await nextTick();
+
+    await findSave().trigger('click');
+    await nextTick();
+
+    expect(
+      nexusaiAPI.router.prompt_injection_filter.update,
+    ).not.toHaveBeenCalled();
+    expect(findAllowTopicsDialog().props('open')).toBe(true);
+    expect(findAllowTopicsDialog().props('topicNames')).toEqual([
+      'Prompt injection',
+    ]);
+    expect(findAllowTopicsDialog().props('promptInjectionOnly')).toBe(true);
+  });
+
+  it('sets promptInjectionOnly false when a topic is also unblocked', async () => {
+    await createWrapper();
+
+    findTopicList().vm.$emit('update:topic-enabled', {
+      id: 'politics',
+      enabled: false,
+    });
+    findManipulationAttempts().vm.$emit('update:modelValue', false);
+    await nextTick();
+
+    await findSave().trigger('click');
+    await nextTick();
+
+    expect(findAllowTopicsDialog().props('open')).toBe(true);
+    expect(findAllowTopicsDialog().props('topicNames')).toEqual([
+      'Politics',
+      'Prompt injection',
+    ]);
+    expect(findAllowTopicsDialog().props('promptInjectionOnly')).toBe(false);
   });
 
   it('opens confirm dialog listing Prompt injection when it is turned off', async () => {

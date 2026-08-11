@@ -65,6 +65,21 @@ describe('SafetyGuardrailsAllowTopicsDialog.vue', () => {
     );
   });
 
+  it('renders prompt injection description when promptInjectionOnly is true', () => {
+    wrapper = createWrapper({
+      topicNames: ['Prompt injection'],
+      promptInjectionOnly: true,
+    });
+
+    expect(findTitle().text()).toBe(
+      allowTopicsT('title_single', { topic: 'Prompt injection' }),
+    );
+    expect(findDescription().text()).toBe(
+      allowTopicsT('prompt_injection.description'),
+    );
+    expect(findAllow().props('text')).toBe(allowTopicsT('confirm_button'));
+  });
+
   it('emits confirm when confirm button is clicked', async () => {
     wrapper = createWrapper();
 
