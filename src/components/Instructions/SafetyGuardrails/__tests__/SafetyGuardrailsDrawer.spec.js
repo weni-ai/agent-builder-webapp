@@ -7,6 +7,7 @@ import SafetyGuardrailsDrawer from '../SafetyGuardrailsDrawer.vue';
 import SafetyGuardrailsTopicList from '../SafetyGuardrailsTopicList.vue';
 import SafetyGuardrailsBlockMessage from '../SafetyGuardrailsBlockMessage.vue';
 import SafetyGuardrailsAllowTopicsDialog from '../SafetyGuardrailsAllowTopicsDialog.vue';
+import SafetyGuardrailsManipulationAttempts from '../SafetyGuardrailsManipulationAttempts.vue';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
 import i18n from '@/utils/plugins/i18n';
@@ -15,6 +16,10 @@ vi.mock('@/api/nexusaiAPI', () => ({
   default: {
     router: {
       guardrails_config: {
+        read: vi.fn(),
+        update: vi.fn(),
+      },
+      prompt_injection_filter: {
         read: vi.fn(),
         update: vi.fn(),
       },
@@ -41,11 +46,26 @@ const storeConfig = {
   writable: true,
 };
 
+const filterConfig = {
+  enabled: true,
+};
+
+const drawerStubs = {
+  UnnnicDrawerNext: false,
+  SafetyGuardrailsTopicList: true,
+  SafetyGuardrailsBlockMessage: true,
+  SafetyGuardrailsAllowTopicsDialog: true,
+  SafetyGuardrailsManipulationAttempts: true,
+};
+
 describe('SafetyGuardrailsDrawer.vue', () => {
   let wrapper;
 
   const createWrapper = async (props = {}) => {
     nexusaiAPI.router.guardrails_config.read.mockResolvedValue(storeConfig);
+    nexusaiAPI.router.prompt_injection_filter.read.mockResolvedValue(
+      filterConfig,
+    );
 
     wrapper = mount(SafetyGuardrailsDrawer, {
       props: {
@@ -59,12 +79,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
             stubActions: false,
           }),
         ],
-        stubs: {
-          UnnnicDrawerNext: false,
-          SafetyGuardrailsTopicList: true,
-          SafetyGuardrailsBlockMessage: true,
-          SafetyGuardrailsAllowTopicsDialog: true,
-        },
+        stubs: drawerStubs,
       },
     });
 
@@ -79,6 +94,8 @@ describe('SafetyGuardrailsDrawer.vue', () => {
   const findTopicList = () => wrapper.findComponent(SafetyGuardrailsTopicList);
   const findBlockMessage = () =>
     wrapper.findComponent(SafetyGuardrailsBlockMessage);
+  const findManipulationAttempts = () =>
+    wrapper.findComponent(SafetyGuardrailsManipulationAttempts);
   const findAllowTopicsDialog = () =>
     wrapper.findComponent(SafetyGuardrailsAllowTopicsDialog);
   const findDescriptionSkeleton = () =>
@@ -94,8 +111,13 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     vi.clearAllMocks();
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     wrapper?.unmount();
+    wrapper = undefined;
+    await flushPromises();
+    vi.useFakeTimers();
+    vi.runAllTimers();
+    vi.useRealTimers();
   });
 
   it('renders drawer title, description, topics, and block message from the store', async () => {
@@ -123,19 +145,27 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     );
 
     expect(nexusaiAPI.router.guardrails_config.read).toHaveBeenCalled();
+    expect(nexusaiAPI.router.prompt_injection_filter.read).toHaveBeenCalled();
     expect(findTopicList().props('topics')).toEqual(storeConfig.topics);
     expect(findTopicList().props('loading')).toBe(false);
     expect(findBlockMessage().props('modelValue')).toBe(
       storeConfig.blockingMessage,
     );
     expect(findBlockMessage().props('maxLength')).toBe(250);
+    expect(findManipulationAttempts().props('modelValue')).toBe(true);
   });
 
   it('passes loading true to the topic list while fetching', async () => {
     let resolveFetch;
+    let resolveFilter;
     nexusaiAPI.router.guardrails_config.read.mockReturnValue(
       new Promise((resolve) => {
         resolveFetch = resolve;
+      }),
+    );
+    nexusaiAPI.router.prompt_injection_filter.read.mockReturnValue(
+      new Promise((resolve) => {
+        resolveFilter = resolve;
       }),
     );
 
@@ -148,12 +178,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
             stubActions: false,
           }),
         ],
-        stubs: {
-          UnnnicDrawerNext: false,
-          SafetyGuardrailsTopicList: true,
-          SafetyGuardrailsBlockMessage: true,
-          SafetyGuardrailsAllowTopicsDialog: true,
-        },
+        stubs: drawerStubs,
       },
     });
 
@@ -162,13 +187,16 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     expect(findTopicList().props('loading')).toBe(true);
     expect(findDescriptionSkeleton().exists()).toBe(true);
     expect(findBlockMessage().exists()).toBe(false);
+    expect(findManipulationAttempts().exists()).toBe(false);
 
     resolveFetch(storeConfig);
+    resolveFilter(filterConfig);
     await flushPromises();
 
     expect(findTopicList().props('loading')).toBe(false);
     expect(findDescriptionSkeleton().exists()).toBe(false);
     expect(findBlockMessage().exists()).toBe(true);
+    expect(findManipulationAttempts().exists()).toBe(true);
   });
 
   it('keeps Save disabled until a draft change is made', async () => {
@@ -196,6 +224,17 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     expect(findSave().props('disabled')).toBe(false);
   });
 
+  it('enables Save when the prompt injection switch changes', async () => {
+    await createWrapper();
+
+    expect(findSave().props('disabled')).toBe(true);
+
+    findManipulationAttempts().vm.$emit('update:modelValue', false);
+    await nextTick();
+
+    expect(findSave().props('disabled')).toBe(false);
+  });
+
   it('opens confirm dialog when saving with unblocked topics', async () => {
     await createWrapper();
 
@@ -211,6 +250,47 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     expect(nexusaiAPI.router.guardrails_config.update).not.toHaveBeenCalled();
     expect(findAllowTopicsDialog().props('open')).toBe(true);
     expect(findAllowTopicsDialog().props('topicNames')).toEqual(['Politics']);
+    expect(findAllowTopicsDialog().props('promptInjectionOnly')).toBe(false);
+  });
+
+  it('opens confirm dialog listing Prompt injection when it is turned off', async () => {
+    await createWrapper();
+
+    findManipulationAttempts().vm.$emit('update:modelValue', false);
+    await nextTick();
+
+    await findSave().trigger('click');
+    await nextTick();
+
+    expect(
+      nexusaiAPI.router.prompt_injection_filter.update,
+    ).not.toHaveBeenCalled();
+    expect(findAllowTopicsDialog().props('open')).toBe(true);
+    expect(findAllowTopicsDialog().props('topicNames')).toEqual([
+      'Prompt injection',
+    ]);
+    expect(findAllowTopicsDialog().props('promptInjectionOnly')).toBe(true);
+  });
+
+  it('sets promptInjectionOnly false when a topic is also unblocked', async () => {
+    await createWrapper();
+
+    findTopicList().vm.$emit('update:topic-enabled', {
+      id: 'politics',
+      enabled: false,
+    });
+    findManipulationAttempts().vm.$emit('update:modelValue', false);
+    await nextTick();
+
+    await findSave().trigger('click');
+    await nextTick();
+
+    expect(findAllowTopicsDialog().props('open')).toBe(true);
+    expect(findAllowTopicsDialog().props('topicNames')).toEqual([
+      'Politics',
+      'Prompt injection',
+    ]);
+    expect(findAllowTopicsDialog().props('promptInjectionOnly')).toBe(false);
   });
 
   it('saves after confirming allow topics dialog', async () => {
@@ -282,6 +362,31 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     expect(wrapper.emitted('update:modelValue')).toEqual([[false]]);
   });
 
+  it('saves promptInjectionEnabled in the PATCH payload', async () => {
+    await createWrapper();
+    nexusaiAPI.router.prompt_injection_filter.update.mockResolvedValue({
+      enabled: false,
+    });
+
+    findManipulationAttempts().vm.$emit('update:modelValue', false);
+    await nextTick();
+
+    await findSave().trigger('click');
+    await nextTick();
+
+    findAllowTopicsDialog().vm.$emit('confirm');
+    await flushPromises();
+
+    expect(
+      nexusaiAPI.router.prompt_injection_filter.update,
+    ).toHaveBeenCalledWith({
+      projectUuid: 'project-uuid',
+      data: { enabled: false },
+    });
+    expect(nexusaiAPI.router.guardrails_config.update).not.toHaveBeenCalled();
+    expect(wrapper.emitted('update:modelValue')).toEqual([[false]]);
+  });
+
   it('emits update:modelValue false when Cancel is clicked', async () => {
     await createWrapper();
 
@@ -293,6 +398,9 @@ describe('SafetyGuardrailsDrawer.vue', () => {
   it('closes the drawer when fetch fails', async () => {
     nexusaiAPI.router.guardrails_config.read.mockRejectedValue(
       new Error('failed'),
+    );
+    nexusaiAPI.router.prompt_injection_filter.read.mockResolvedValue(
+      filterConfig,
     );
     const consoleError = vi
       .spyOn(console, 'error')
@@ -307,12 +415,7 @@ describe('SafetyGuardrailsDrawer.vue', () => {
             stubActions: false,
           }),
         ],
-        stubs: {
-          UnnnicDrawerNext: false,
-          SafetyGuardrailsTopicList: true,
-          SafetyGuardrailsBlockMessage: true,
-          SafetyGuardrailsAllowTopicsDialog: true,
-        },
+        stubs: drawerStubs,
       },
     });
 

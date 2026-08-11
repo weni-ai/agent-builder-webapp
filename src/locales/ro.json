@@ -434,6 +434,9 @@
           "confirm_button": "Elimină",
           "description_multiple": "Manager va putea răspunde la întrebări despre {topics}. Poți reactiva aceste blocări suplimentare oricând",
           "description_single": "Manager va putea răspunde la întrebări despre {topic}. Poți reactiva această blocare suplimentară oricând",
+          "prompt_injection": {
+            "description": "Elimină protecția suplimentară împotriva tentativelor de manipulare. Rezistența nativă a Manager-ului rămâne în vigoare, dar această blocare nu va opri tentativele pe care modelul le lasă să treacă"
+          },
           "title_multiple": "Elimină {count} blocări suplimentare",
           "title_single": "Elimină blocarea suplimentară pentru {topic}"
         },
@@ -452,6 +455,13 @@
             "on": "Activat: Manager refuză să discute subiectul și afișează mesajul tău de blocare."
           },
           "title": "Măsuri suplimentare de siguranță"
+        },
+        "manipulation_attempts": {
+          "prompt_injection": {
+            "description": "Tentative de a înlocui instrucțiunile Manager-ului sau de a-l face să acționeze în afara rolului său",
+            "name": "Injecție de prompt"
+          },
+          "title": "Tentative de manipulare"
         },
         "save": "Salva",
         "save_error": "Măsuri suplimentare de siguranță nu au putut fi actualizate din cauza unei probleme tehnice",
