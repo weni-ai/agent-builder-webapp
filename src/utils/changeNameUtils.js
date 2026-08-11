@@ -23,12 +23,9 @@ function generateCustomizationUpdateText(t, actionDetails) {
     });
 
   if (isCustomization)
-    return t(
-      `router.tunings.history.fields.update-${actionDetails[0]?.key}`,
-      {
-        value: actionDetails[0]?.newValue,
-      },
-    );
+    return t(`router.tunings.history.fields.update-${actionDetails[0]?.key}`, {
+      value: actionDetails[0]?.newValue,
+    });
 
   return t(`router.tunings.history.fields.changes`);
 }
@@ -116,12 +113,9 @@ function handleChangeName(t, row) {
       D: {
         icon: 'person',
         user: row.created_by,
-        text: t(
-          'router.tunings.history.fields.remove-instruction',
-          {
-            value: row.action_details.old,
-          },
-        ),
+        text: t('router.tunings.history.fields.remove-instruction', {
+          value: row.action_details.old,
+        }),
       },
     },
   };
