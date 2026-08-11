@@ -435,6 +435,9 @@
           "confirm_button": "Remover",
           "description_multiple": "O Manager poderá responder perguntas sobre {topics}. Você pode reativar esses bloqueios extras a qualquer momento",
           "description_single": "O Manager poderá responder perguntas sobre {topic}. Você pode reativar esse bloqueio extra a qualquer momento",
+          "prompt_injection": {
+            "description": "Remove a proteção extra contra tentativas de manipulação. A resistência nativa do Manager continua em vigor, mas esse bloqueio não vai barrar tentativas que o modelo deixar passar"
+          },
           "title_multiple": "Remover {count} bloqueios extras",
           "title_single": "Remover bloqueio extra para {topic}"
         },
@@ -453,6 +456,13 @@
             "on": "Ativado: o Manager se recusa a discutir o tópico e mostra sua mensagem de bloqueio."
           },
           "title": "Camadas extras de segurança"
+        },
+        "manipulation_attempts": {
+          "prompt_injection": {
+            "description": "Tentativas de substituir as instruções do Manager ou fazê-lo agir fora de sua função",
+            "name": "Injeção de prompt"
+          },
+          "title": "Tentativas de manipulação"
         },
         "save": "Salvar",
         "save_error": "Não foi possível atualizar as camadas extras de segurança devido a um problema técnico",
