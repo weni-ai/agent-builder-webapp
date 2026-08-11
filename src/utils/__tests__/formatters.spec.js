@@ -44,6 +44,21 @@ describe('formatters', () => {
         expected: '+55 (11) 8877-6655',
         description: '8-digit landline number',
       },
+      {
+        input: 'whatsapp:br.27078165145141541',
+        expected: 'BR.27078165145141541',
+        description: 'BSUID with lowercase country code',
+      },
+      {
+        input: 'whatsapp:US.13491208655302741918',
+        expected: 'US.13491208655302741918',
+        description: 'BSUID with uppercase country code',
+      },
+      {
+        input: 'whatsapp:us.ent.11815799212886844830',
+        expected: 'US.ENT.11815799212886844830',
+        description: 'parent BSUID',
+      },
     ];
 
     validWhatsAppFormats.forEach(({ input, expected, description }) => {
