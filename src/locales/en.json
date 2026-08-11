@@ -426,7 +426,8 @@
               "already_exists": "Enter a category name that doesn't already exist",
               "invalid_chars": "Use only letters, numbers, spaces, and hyphens",
               "required": "Complete this field"
-            }
+            },
+            "placeholder": "Select..."
           }
         }
       },
