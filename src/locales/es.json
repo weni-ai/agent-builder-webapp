@@ -454,6 +454,13 @@
           },
           "title": "Capas adicionales de seguridad"
         },
+        "manipulation_attempts": {
+          "prompt_injection": {
+            "description": "Intentos de anular las instrucciones del Manager o hacerlo actuar fuera de su función",
+            "name": "Inyección de prompt"
+          },
+          "title": "Intentos de manipulación"
+        },
         "save": "Guardar",
         "save_error": "No se pudieron actualizar las capas adicionales de seguridad debido a un problema técnico",
         "save_success": "Capas adicionales de seguridad actualizadas",

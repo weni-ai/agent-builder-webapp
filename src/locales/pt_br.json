@@ -454,6 +454,13 @@
           },
           "title": "Camadas extras de segurança"
         },
+        "manipulation_attempts": {
+          "prompt_injection": {
+            "description": "Tentativas de substituir as instruções do Manager ou fazê-lo agir fora de sua função",
+            "name": "Injeção de prompt"
+          },
+          "title": "Tentativas de manipulação"
+        },
         "save": "Salvar",
         "save_error": "Não foi possível atualizar as camadas extras de segurança devido a um problema técnico",
         "save_success": "Camadas extras de segurança atualizadas",

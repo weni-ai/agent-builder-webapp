@@ -78,6 +78,11 @@
           v-model="draftBlockMessage"
           :maxLength="BLOCK_MESSAGE_MAX_LENGTH"
         />
+
+        <SafetyGuardrailsManipulationAttempts
+          :modelValue="draftPromptInjectionEnabled"
+          @update:model-value="onPromptInjectionEnabledChange"
+        />
       </section>
 
       <UnnnicDrawerFooter>
@@ -118,6 +123,7 @@ import { useGuardrailsConfigStore } from '@/store/GuardrailsConfig';
 
 import SafetyGuardrailsAllowTopicsDialog from './SafetyGuardrailsAllowTopicsDialog.vue';
 import SafetyGuardrailsBlockMessage from './SafetyGuardrailsBlockMessage.vue';
+import SafetyGuardrailsManipulationAttempts from './SafetyGuardrailsManipulationAttempts.vue';
 import SafetyGuardrailsTopicList from './SafetyGuardrailsTopicList.vue';
 
 const BLOCK_MESSAGE_MAX_LENGTH = 250;
@@ -132,19 +138,37 @@ const guardrailsStore = useGuardrailsConfigStore();
 
 const draftTopics = ref([]);
 const draftBlockMessage = ref('');
+const draftPromptInjectionEnabled = ref(false);
 const snapshotTopics = ref([]);
 const snapshotBlockMessage = ref('');
+const snapshotPromptInjectionEnabled = ref(false);
 const isAllowTopicsDialogOpen = ref(false);
 const unblockedTopicIds = ref([]);
+const isPromptInjectionUnblocked = ref(false);
 
 const unblockedTopicNames = computed(() => {
-  return unblockedTopicIds.value.map((id) =>
+  const names = unblockedTopicIds.value.map((id) =>
     t(`agents.instructions.safety_guardrails.topics.${id}.name`),
   );
+
+  if (isPromptInjectionUnblocked.value) {
+    names.push(
+      t(
+        'agents.instructions.safety_guardrails.manipulation_attempts.prompt_injection.name',
+      ),
+    );
+  }
+
+  return names;
 });
 
 const isDirty = computed(() => {
   if (draftBlockMessage.value !== snapshotBlockMessage.value) return true;
+  if (
+    draftPromptInjectionEnabled.value !== snapshotPromptInjectionEnabled.value
+  ) {
+    return true;
+  }
 
   return draftTopics.value.some((topic, index) => {
     return topic.enabled !== snapshotTopics.value[index]?.enabled;
@@ -186,18 +210,24 @@ function getUnblockedTopicIds() {
 async function loadDraft() {
   draftTopics.value = [];
   draftBlockMessage.value = '';
+  draftPromptInjectionEnabled.value = false;
   snapshotTopics.value = [];
   snapshotBlockMessage.value = '';
+  snapshotPromptInjectionEnabled.value = false;
   isAllowTopicsDialogOpen.value = false;
   unblockedTopicIds.value = [];
+  isPromptInjectionUnblocked.value = false;
 
   try {
     await guardrailsStore.fetchConfig();
 
     draftTopics.value = cloneTopics(guardrailsStore.topics);
     draftBlockMessage.value = guardrailsStore.blockingMessage;
+    draftPromptInjectionEnabled.value = guardrailsStore.promptInjectionEnabled;
     snapshotTopics.value = cloneTopics(guardrailsStore.topics);
     snapshotBlockMessage.value = guardrailsStore.blockingMessage;
+    snapshotPromptInjectionEnabled.value =
+      guardrailsStore.promptInjectionEnabled;
   } catch {
     close();
   }
@@ -210,6 +240,12 @@ function onTopicEnabledChange({ id, enabled }) {
   if (topic) topic.enabled = enabled;
 }
 
+function onPromptInjectionEnabledChange(enabled) {
+  if (!guardrailsStore.writable) return;
+
+  draftPromptInjectionEnabled.value = enabled;
+}
+
 async function persistChanges() {
   const categoryStates = guardrailsStore.buildCategoryStatesDiff(
     draftTopics.value,
@@ -217,8 +253,14 @@ async function persistChanges() {
   );
   const blockingMessageChanged =
     draftBlockMessage.value !== snapshotBlockMessage.value;
+  const promptInjectionChanged =
+    draftPromptInjectionEnabled.value !== snapshotPromptInjectionEnabled.value;
 
-  if (Object.keys(categoryStates).length === 0 && !blockingMessageChanged) {
+  if (
+    Object.keys(categoryStates).length === 0 &&
+    !blockingMessageChanged &&
+    !promptInjectionChanged
+  ) {
     return;
   }
 
@@ -232,6 +274,10 @@ async function persistChanges() {
     payload.blockingMessage = draftBlockMessage.value;
   }
 
+  if (promptInjectionChanged) {
+    payload.promptInjectionEnabled = draftPromptInjectionEnabled.value;
+  }
+
   await guardrailsStore.updateConfig(payload);
   close();
 }
@@ -240,9 +286,13 @@ async function save() {
   if (!canSave.value) return;
 
   const unblockedIds = getUnblockedTopicIds();
+  const promptInjectionWasUnblocked =
+    snapshotPromptInjectionEnabled.value === true &&
+    draftPromptInjectionEnabled.value === false;
 
-  if (unblockedIds.length > 0) {
+  if (unblockedIds.length > 0 || promptInjectionWasUnblocked) {
     unblockedTopicIds.value = unblockedIds;
+    isPromptInjectionUnblocked.value = promptInjectionWasUnblocked;
     isAllowTopicsDialogOpen.value = true;
     return;
   }

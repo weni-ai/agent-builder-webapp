@@ -453,6 +453,13 @@
           },
           "title": "Măsuri suplimentare de siguranță"
         },
+        "manipulation_attempts": {
+          "prompt_injection": {
+            "description": "Tentative de a înlocui instrucțiunile Manager-ului sau de a-l face să acționeze în afara rolului său",
+            "name": "Injecție de prompt"
+          },
+          "title": "Tentative de manipulare"
+        },
         "save": "Salva",
         "save_error": "Măsuri suplimentare de siguranță nu au putut fi actualizate din cauza unei probleme tehnice",
         "save_success": "Măsuri suplimentare de siguranță actualizate",

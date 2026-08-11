@@ -454,6 +454,13 @@
           },
           "title": "Extra safety guardrails"
         },
+        "manipulation_attempts": {
+          "prompt_injection": {
+            "description": "Attempts to override the Manager's instructions or make it act outside its role",
+            "name": "Prompt injection"
+          },
+          "title": "Manipulation attempts"
+        },
         "save": "Save",
         "save_error": "Extra safety guardrails couldn't be updated due to a technical issue",
         "save_success": "Extra safety guardrails updated",

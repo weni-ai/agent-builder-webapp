@@ -14,6 +14,7 @@ export const useGuardrailsConfigStore = defineStore('GuardrailsConfig', () => {
   const topics = ref([]);
   const blockingMessage = ref('');
   const writable = ref(false);
+  const promptInjectionEnabled = ref(false);
   const status = ref(null);
 
   const isLoading = computed(() => status.value === 'loading');
@@ -29,11 +30,17 @@ export const useGuardrailsConfigStore = defineStore('GuardrailsConfig', () => {
     status.value = 'loading';
 
     try {
-      const config = await nexusaiAPI.router.guardrails_config.read({
-        projectUuid: projectUuid.value,
-      });
+      const [config, filter] = await Promise.all([
+        nexusaiAPI.router.guardrails_config.read({
+          projectUuid: projectUuid.value,
+        }),
+        nexusaiAPI.router.prompt_injection_filter.read({
+          projectUuid: projectUuid.value,
+        }),
+      ]);
 
       setConfig(config);
+      promptInjectionEnabled.value = filter.enabled;
       status.value = 'success';
       return config;
     } catch (error) {
@@ -43,35 +50,59 @@ export const useGuardrailsConfigStore = defineStore('GuardrailsConfig', () => {
     }
   }
 
+  async function saveGuardrailsConfig({
+    categoryStates,
+    blockingMessage: nextBlockingMessage,
+  }) {
+    const data = {};
+
+    if (categoryStates) data.categoryStates = categoryStates;
+    if (typeof nextBlockingMessage === 'string') {
+      data.blockingMessage = nextBlockingMessage;
+    }
+
+    if (Object.keys(data).length === 0) return;
+
+    setConfig(
+      await nexusaiAPI.router.guardrails_config.update({
+        projectUuid: projectUuid.value,
+        data,
+      }),
+    );
+  }
+
+  async function savePromptInjectionFilter(enabled = false) {
+    const filter = await nexusaiAPI.router.prompt_injection_filter.update({
+      projectUuid: projectUuid.value,
+      data: { enabled },
+    });
+
+    promptInjectionEnabled.value = filter.enabled;
+  }
+
   /**
    * @param {{
    *   categoryStates?: Record<string, boolean>,
    *   blockingMessage?: string,
+   *   promptInjectionEnabled?: boolean,
    * }} params
    */
   async function updateConfig({
     categoryStates,
     blockingMessage: nextBlockingMessage,
+    promptInjectionEnabled: enabled,
   } = {}) {
     status.value = 'saving';
 
-    const data = {};
-
-    if (categoryStates) {
-      data.categoryStates = categoryStates;
-    }
-
-    if (typeof nextBlockingMessage === 'string') {
-      data.blockingMessage = nextBlockingMessage;
-    }
-
     try {
-      const config = await nexusaiAPI.router.guardrails_config.update({
-        projectUuid: projectUuid.value,
-        data,
-      });
+      await Promise.all([
+        saveGuardrailsConfig({
+          categoryStates,
+          blockingMessage: nextBlockingMessage,
+        }),
+        savePromptInjectionFilter(enabled),
+      ]);
 
-      setConfig(config);
       status.value = 'success';
 
       alertStore.add({
@@ -80,8 +111,6 @@ export const useGuardrailsConfigStore = defineStore('GuardrailsConfig', () => {
           'agents.instructions.safety_guardrails.save_success',
         ),
       });
-
-      return config;
     } catch (error) {
       status.value = 'error';
 
@@ -116,6 +145,7 @@ export const useGuardrailsConfigStore = defineStore('GuardrailsConfig', () => {
     topics,
     blockingMessage,
     writable,
+    promptInjectionEnabled,
     status,
     isLoading,
     isSaving,
