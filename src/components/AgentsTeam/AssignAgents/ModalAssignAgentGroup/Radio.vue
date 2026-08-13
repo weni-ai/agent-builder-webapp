@@ -18,8 +18,8 @@
       type="radio"
       :checked="selected"
       tabindex="-1"
-      @change.stop
       data-testid="modal-assign-agent-radio-input"
+      @change.stop
     />
 
     <img

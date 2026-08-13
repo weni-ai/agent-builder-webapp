@@ -46,14 +46,12 @@ describe('CredentialsStepContent', () => {
     expect(findCredentials().exists()).toBe(true);
   });
 
-
   it('passes selected system and MCP props to Summary', () => {
     wrapper = createWrapper();
     const summary = findSummary();
     expect(summary.props('selectedSystem')).toBe(wrapper.vm.selectedSystem);
     expect(summary.props('selectedMCP')).toEqual(wrapper.vm.selectedMCP);
   });
-
 
   it('binds credentials and credential values to the Credentials component', async () => {
     const credentials = [

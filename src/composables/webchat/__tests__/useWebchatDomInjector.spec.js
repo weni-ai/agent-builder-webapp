@@ -184,5 +184,4 @@ describe('useWebchatDomInjector', () => {
       expect(() => removeBySelector('.nonexistent')).not.toThrow();
     });
   });
-
 });

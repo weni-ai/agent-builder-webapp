@@ -72,11 +72,12 @@ export default {
 
   :deep(a) {
     text-decoration: underline;
-    
+
     cursor: pointer;
   }
 
-  :deep(ul), :deep(ol) {
+  :deep(ul),
+  :deep(ol) {
     margin: $unnnic-space-2 0;
     list-style: initial;
     padding-left: $unnnic-space-4;

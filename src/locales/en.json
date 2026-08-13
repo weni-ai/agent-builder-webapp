@@ -435,6 +435,9 @@
           "confirm_button": "Remove",
           "description_multiple": "Manager will be able to answer questions about {topics}. You can reactivate these extra blocks anytime",
           "description_single": "Manager will be able to answer questions about {topic}. You can reactivate this extra block anytime",
+          "prompt_injection": {
+            "description": "Removes the extra protection against tampering attempts. The Manager's native resistance remains in effect, but this lock won't catch attempts that the model allows to pass"
+          },
           "title_multiple": "Remove {count} extra blocks",
           "title_single": "Remove extra block for {topic}"
         },
@@ -453,6 +456,13 @@
             "on": "On: Manager refuses the topic and shows your block message."
           },
           "title": "Extra safety guardrails"
+        },
+        "manipulation_attempts": {
+          "prompt_injection": {
+            "description": "Attempts to override the Manager's instructions or make it act outside its role",
+            "name": "Prompt injection"
+          },
+          "title": "Manipulation attempts"
         },
         "save": "Save",
         "save_error": "Extra safety guardrails couldn't be updated due to a technical issue",

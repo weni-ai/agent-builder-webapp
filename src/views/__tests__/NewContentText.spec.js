@@ -1082,9 +1082,9 @@ describe('views/Knowledge/NewContentText.vue', () => {
         const next = runRouteLeaveGuard({ name: 'knowledge' });
 
         expect(next).toHaveBeenCalledWith();
-        expect(
-          wrapper.findComponent(elements.unsavedModal).props('open'),
-        ).toBe(false);
+        expect(wrapper.findComponent(elements.unsavedModal).props('open')).toBe(
+          false,
+        );
       });
 
       it('falls back to the default title when the loaded item has no title', async () => {

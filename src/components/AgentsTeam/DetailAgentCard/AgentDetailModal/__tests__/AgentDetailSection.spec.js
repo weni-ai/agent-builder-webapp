@@ -16,7 +16,8 @@ describe('AgentDetailSection.vue', () => {
     });
   };
 
-  const findSection = () => wrapper.find('[data-testid="agent-detail-section"]');
+  const findSection = () =>
+    wrapper.find('[data-testid="agent-detail-section"]');
   const findTitle = () =>
     wrapper.find('[data-testid="agent-detail-section-title"]');
   const findDescription = () =>

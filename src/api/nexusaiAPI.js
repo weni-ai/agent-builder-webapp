@@ -6,6 +6,7 @@ import { Knowledge } from './nexus/Knowledge';
 import { Simulation } from './nexus/Simulation';
 import { FeatureFlags } from './nexus/FeatureFlags';
 import { GuardrailsConfig } from './nexus/GuardrailsConfig';
+import { PromptInjectionFilter } from './nexus/PromptInjectionFilter';
 
 import { ProgressiveFeedbackAdapter } from './adapters/tunings/progressiveFeedback';
 import { ComponentsAdapter } from './adapters/tunings/components';
@@ -238,6 +239,7 @@ export default {
     },
 
     guardrails_config: GuardrailsConfig,
+    prompt_injection_filter: PromptInjectionFilter,
 
     profile: {
       read({ projectUuid }) {

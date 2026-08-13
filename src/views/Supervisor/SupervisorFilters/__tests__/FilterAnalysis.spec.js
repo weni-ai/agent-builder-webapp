@@ -78,9 +78,7 @@ describe('FilterAnalysis.vue', () => {
       );
 
       expect(allConversationsRadio.props('label')).toBe(
-        i18n.global.t(
-          'audit.conversations.filters.analysis.all_conversations',
-        ),
+        i18n.global.t('audit.conversations.filters.analysis.all_conversations'),
       );
       expect(allConversationsRadio.props('value')).toBe('all_conversations');
       expect(amazingConversationsRadio.props('label')).toBe(
@@ -125,7 +123,9 @@ describe('FilterAnalysis.vue', () => {
       store.temporaryFilters.isAmazing = null;
       await nextTick();
 
-      expect(analysisRadioGroup().props('modelValue')).toBe('all_conversations');
+      expect(analysisRadioGroup().props('modelValue')).toBe(
+        'all_conversations',
+      );
       expect(store.temporaryFilters.isAmazing).toBeNull();
     });
   });
