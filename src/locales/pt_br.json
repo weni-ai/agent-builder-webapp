@@ -344,7 +344,7 @@
     },
     "instructions": {
       "title": "Instruções",
-      "description": "Defina as regras que orientam como o Manager responde, se comunica e toma decisões",
+      "description": "Define as regras que determinam como o Manager responde, se comunica e toma decisões",
       "export_instructions": {
         "title": "Exportar instruções",
         "cancel_button": "Cancelar",
@@ -561,8 +561,8 @@
         "transferred_to_human_support_description": "Inclui conversas (Atendido por IA e Não atendido) encaminhadas a um atendente humano."
       },
       "amazing_conversation": {
-        "description": "Esta conversa mostra a capacidade do agente de responder múltiplas perguntas do cliente com eficiência. A resolução clara e o acompanhamento atencioso resultaram em um cliente satisfeito.",
-        "title": "Conversa incrível"
+        "description": "O agente respondeu a várias dúvidas do cliente com clareza, oferecendo soluções e acompanhando o caso de forma atenciosa. O cliente ficou satisfeito com o atendimento.",
+        "title": "Ótima conversa"
       },
       "conversations_count": "{count} conversas encontradas",
       "unnamed_contact": "Contato sem nome",
@@ -656,7 +656,7 @@
       "analysis_in_progress_disclaimer": "Análise em andamento: {percentage}% das conversas processadas. Novos itens podem aparecer em breve.",
       "analysis_complete": {
         "no_improvements_description": "Nenhuma melhoria identificada nas conversas de {date}",
-        "ready_description": "As melhorias de {date} estão prontas no backlog.",
+        "ready_description": "As melhorias de {date} estão prontas no seu backlog",
         "title": "Análise concluída",
         "title_with_count": "{count, plural, one {Análise concluída ({count} melhoria encontrada)} other {Análise concluída ({count} melhorias encontradas)}}"
       },
@@ -670,7 +670,7 @@
         "affected_conversations": "{count, plural, one {# conversa afetada} other {# conversas afetadas}}",
         "create": {
           "error": "Não foi possível salvar a análise personalizada devido a um problema técnico",
-          "limit_error": "Não foi possível salvar a análise personalizada devido ao limite de 10 análises personalizadas",
+          "limit_error": "Não foi possível salvar a análise personalizada. Você atingiu o limite de 10 análises personalizadas.",
           "success": {
             "title": "Análise personalizada adicionada",
             "description": "O problema será monitorado nas próximas análises"
@@ -679,7 +679,7 @@
         "delete": {
           "cancel": "Cancelar",
           "confirm": "Excluir",
-          "description": "A IA deixará de buscar {name} nas conversas. Esta ação não pode ser desfeita.",
+          "description": "A IA vai parar de buscar por {name} nas conversas. Esta ação não poderá ser desfeita.",
           "error": "Não foi possível excluir a análise personalizada devido a um problema técnico",
           "success": {
             "description": "Este problema não será monitorado nas próximas análises",
@@ -687,26 +687,26 @@
           },
           "title": "Excluir análise personalizada"
         },
-        "definition_helper": "Quanto mais específica a descrição, melhor a IA poderá identificar o problema nas conversas",
+        "definition_helper": "Quanto mais específica a descrição, melhor a IA consegue identificar problemas nas conversas.",
         "definition_label": "O que você deseja monitorar?",
-        "definition_placeholder": "Por exemplo: Atendente fornece prazos de entrega irreais",
-        "description": "Descreva um comportamento ou problema que a IA deve monitorar nas conversas. Quando identificado, ele aparece automaticamente no backlog de melhorias",
+        "definition_placeholder": "Exemplo: o agente está fornecendo prazos de entrega irreais",
+        "description": "Descreva um comportamento ou problema que a IA deve monitorar nas conversas. Quando identificado, ele aparece automaticamente no backlog de melhorias.",
         "empty_description": "Use o campo acima para começar a monitorar problemas específicos",
         "empty_title": "Nenhuma análise personalizada adicionada",
-        "limit_disclaimer": "O limite de 10 análises personalizadas foi atingido. Exclua uma para adicionar uma nova",
+        "limit_disclaimer": "Você atingiu o limite de 10 análises personalizadas. Exclua uma análise para criar outra.",
         "list_heading": "Análises personalizadas",
         "list_heading_count": "{count} de {max}",
         "no_affected_conversations": "Nenhuma conversa afetada",
         "title": "Análise personalizada",
-        "title_helper": "Rótulo curto para identificar esta análise na lista",
+        "title_helper": "Forneça uma breve descrição para identificar esta análise na lista",
         "title_label": "Título",
-        "title_placeholder": "Por exemplo: Prazos de entrega irreais"
+        "title_placeholder": "Exemplo: Prazos de entrega irreais"
       },
       "contact_technical_support_dialog": {
         "cancel": "Cancelar",
-        "contact_support": "Falar com o suporte",
+        "contact_support": "Fale com o Suporte",
         "description": "Enviaremos um email para {support_email} com estas informações:",
-        "error": "Não foi possível contatar o suporte. Tente novamente mais tarde",
+        "error": "Não foi possível entrar em contato com o Suporte. Tente novamente mais tarde.",
         "identified_on": "Identificado em {date} por {email}",
         "project_uuid": "UUID do projeto: {uuid}",
         "success": {
@@ -714,13 +714,13 @@
           "title": "Suporte notificado"
         },
         "summary_type_and_count": "{type} · {count, plural, one {# conversa afetada} other {# conversas afetadas}}",
-        "title": "Falar com o suporte"
+        "title": "Falar com o Suporte"
       },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# conversa afetada} other {# conversas afetadas}}",
         "affected_conversations_title": "Conversas afetadas",
         "affected_instructions_title": "Edite também estas instruções existentes:",
-        "contact_technical_support": "Falar com o suporte",
+        "contact_technical_support": "Falar com o Suporte",
         "diagnosis_title": "Diagnóstico",
         "go_to_instructions": "Acessar instruções",
         "go_to_knowledge_base": "Acessar base de conhecimento",
@@ -773,12 +773,12 @@
         "view_help_guide": "Ver guia"
       },
       "no_analysis": {
-        "description": "Execute sua primeira análise para identificar oportunidades de melhoria nas conversas de ontem",
+        "description": "Execute sua primeira análise para identificar oportunidades de melhoria em uma amostra das conversas de ontem",
         "run_analysis": "Executar análise",
         "title": "Nenhuma análise foi executada ainda"
       },
       "no_improvement_identified": {
-        "description": "Nenhuma melhoria foi identificada nesta análise",
+        "description": "Nenhuma melhoria identificada",
         "title": "Tudo certo!"
       },
       "run_analysis_dialog": {
@@ -789,21 +789,21 @@
       },
       "running_analysis": {
         "description": "Isso pode levar algumas horas. Você pode fechar esta janela.",
-        "title": "Analisando uma amostra de conversas de ontem"
+        "title": "Analisando uma amostra das conversas de ontem"
       },
       "stale_analysis_disclaimer": {
         "description": "Execute uma nova análise para identificar oportunidades de melhoria",
-        "title": "{days, plural, one {A última análise foi executada há # dia} other {A última análise foi executada há # dias}}"
+        "title": "{days, plural, one {A última análise foi executada # dia atrás} other {A última análise foi executada # dias atrás}}"
       },
       "status_dialog": {
         "cancel": "Cancelar",
         "ignored": {
-          "description": "Este problema será removido do backlog e não aparecerá mais nas sugestões de melhoria.",
+          "description": "Este problema será removido do backlog e não aparecerá mais nas suas sugestões de melhoria.",
           "title": "Ignorar melhoria"
         },
         "resolved": {
-          "description": "Confirme apenas após aplicar a solução sugerida. O problema será removido do backlog e abrirá espaço para novas melhorias.",
-          "title": "Marcar como resolvida"
+          "description": "Confirme somente após aplicar a solução sugerida. O problema será removido do backlog e irá liberar espaço para novas melhorias.",
+          "title": "Marcar como resolvido"
         }
       },
       "status_update": {
@@ -814,7 +814,7 @@
           },
           "resolved": {
             "description": "Devido a um problema técnico",
-            "title": "Não foi possível marcar como resolvida"
+            "title": "Não foi possível marcar a melhoria como resolvida"
           }
         },
         "success": {
