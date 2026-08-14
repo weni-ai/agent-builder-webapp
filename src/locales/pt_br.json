@@ -112,7 +112,7 @@
         "cancel": "Cancelar",
         "success_alert": "Instrução excluída",
         "error_alert": "Não foi possível excluir a instrução",
-        "error_alert_description": "Algo deu errado e nada foi alterado. Tente novamente."
+        "error_alert_description": "Algo deu errado e nenhuma alteração foi feita. Tente novamente."
       }
     },
     "traces": {
@@ -345,6 +345,7 @@
     "instructions": {
       "title": "Instruções",
       "description": "Defina as regras que orientam como o Manager responde, se comunica e toma decisões",
+      "new_instruction": "Nova instrução",
       "export_instructions": {
         "title": "Exportar instruções",
         "cancel_button": "Cancelar",
@@ -354,7 +355,6 @@
         "success_alert_description": "O arquivo CSV está pronto na pasta de downloads",
         "success_alert_title": "Instruções exportadas"
       },
-      "new_instruction": "Nova instrução",
       "delete_category": {
         "modal_title": "Excluir categoria",
         "modal_description": "{count} de {name} para Sem categoria. Nada será excluído, apenas o rótulo da categoria é removido.",
