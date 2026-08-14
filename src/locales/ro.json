@@ -357,7 +357,7 @@
       "delete_category": {
         "modal_title": "Șterge categoria",
         "modal_description": "{count} din {name} în Fără categorie. Nu se șterge nimic, se elimină doar eticheta categoriei.",
-        "modal_description_empty": "{name} nu are instrucțiuni. Ștergerea o va elimina doar din listă.",
+        "modal_description_empty": "{name} nu are instrucțiuni. Ștergerea doar va elimina această categorie din listă.",
         "instructions_count": "{count, plural, one {{count} instrucțiune va fi mutată} other {{count} instrucțiuni vor fi mutate}}",
         "cancel": "Anulează",
         "confirm": "Șterge categoria",
