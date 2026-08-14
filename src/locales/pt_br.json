@@ -345,6 +345,7 @@
     "instructions": {
       "title": "Instruções",
       "description": "Defina as regras que orientam como o Manager responde, se comunica e toma decisões",
+      "new_instruction": "Nova instrução",
       "export_instructions": {
         "title": "Exportar instruções",
         "cancel_button": "Cancelar",
@@ -354,7 +355,6 @@
         "success_alert_description": "O arquivo CSV está pronto na pasta de downloads",
         "success_alert_title": "Instruções exportadas"
       },
-      "new_instruction": "Nova instrução",
       "delete_category": {
         "modal_title": "Excluir categoria",
         "modal_description": "{count} de {name} para Sem categoria. Nada será excluído, apenas o rótulo da categoria é removido.",
@@ -1089,7 +1089,7 @@
       "exceeds_limit": "O tamanho do arquivo excede o limite de {limitMB} MB",
       "delete_file": {
         "title": "Excluir arquivo",
-        "description": "Tem certeza de que deseja excluir o arquivo {name}? O conteúdo deste arquivo será removido da base da IA.",
+        "description": "Tem certeza de que deseja excluir o arquivo {name}? O conteúdo também será excluído da base da IA.",
         "cancel": "Cancelar",
         "delete": "Excluir"
       },
@@ -1139,7 +1139,7 @@
       "add_site": "Adicionar site",
       "delete_site": {
         "title": "Excluir site",
-        "description": "Tem certeza de que deseja excluir o site {name}? O conteúdo deste site será removido da base da IA.",
+        "description": "Tem certeza de que deseja excluir o site {name}? Todo o conteúdo deste site será excluído da base da IA.",
         "cancel": "Cancelar",
         "delete": "Excluir"
       },

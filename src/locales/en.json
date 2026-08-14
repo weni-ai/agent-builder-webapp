@@ -1089,7 +1089,7 @@
       "exceeds_limit": "File size exceeds the limit of {limitMB} MB",
       "delete_file": {
         "title": "Delete file",
-        "description": "Are you sure you want to delete the file {name}? The content of this file will be removed from the AI base.",
+        "description": "Are you sure you want to delete the file {name}? The content will also be deleted from the AI base.",
         "cancel": "Cancel",
         "delete": "Delete"
       },
@@ -1139,7 +1139,7 @@
       "add_site": "Add site",
       "delete_site": {
         "title": "Delete site",
-        "description": "Are you sure you want to delete the site {name}? All content from this site will be removed from the AI base.",
+        "description": "Are you sure you want to delete the site {name}? All content from this site will be deleted from the AI base.",
         "cancel": "Cancel",
         "delete": "Delete"
       },
