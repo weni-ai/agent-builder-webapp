@@ -345,6 +345,7 @@
     "instructions": {
       "title": "Instrucciones",
       "description": "Define las reglas que guían cómo el Manager responde, se comunica y toma decisiones",
+      "new_instruction": "Nueva instrucción",
       "export_instructions": {
         "title": "Exportar instrucciones",
         "cancel_button": "Cancelar",
@@ -354,7 +355,6 @@
         "success_alert_description": "El archivo CSV está listo en la carpeta de descargas",
         "success_alert_title": "Instrucciones exportadas"
       },
-      "new_instruction": "Nueva instrucción",
       "delete_category": {
         "modal_title": "Eliminar categoría",
         "modal_description": "{count} de {name} a Sin categoría. No se eliminará nada, solo se quita la etiqueta de la categoría.",
@@ -402,10 +402,10 @@
           "suggested_category": "Categoría sugerida",
           "issues": "Problemas encontrados",
           "issues_types": {
-            "duplicate": "Duplicado",
-            "conflicts": "Conflicto",
+            "duplicate": "Duplicación",
+            "conflicts": "Conflicto de instrucciones",
             "ambiguity": "Ambigüedad",
-            "lack_of_clarity": "Claridad",
+            "lack_of_clarity": "Falta de claridad",
             "no_issues_found": "Todo bien. No se encontraron problemas."
           },
           "suggested_rewrite": "Reescritura sugerida",

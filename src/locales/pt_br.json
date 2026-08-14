@@ -345,6 +345,7 @@
     "instructions": {
       "title": "Instruções",
       "description": "Defina as regras que orientam como o Manager responde, se comunica e toma decisões",
+      "new_instruction": "Nova instrução",
       "export_instructions": {
         "title": "Exportar instruções",
         "cancel_button": "Cancelar",
@@ -354,7 +355,6 @@
         "success_alert_description": "O arquivo CSV está pronto na pasta de downloads",
         "success_alert_title": "Instruções exportadas"
       },
-      "new_instruction": "Nova instrução",
       "delete_category": {
         "modal_title": "Excluir categoria",
         "modal_description": "{count} de {name} para Sem categoria. Nada será excluído, apenas o rótulo da categoria é removido.",
@@ -397,15 +397,15 @@
         "cancel": "Cancelar",
         "ai_analysis": {
           "error": "Não foi possível validar a instrução. Tente novamente.",
-          "title": "Análise de IA",
+          "title": "Análise da IA",
           "validating": "Validando instrução...",
           "suggested_category": "Categoria sugerida",
           "issues": "Problemas encontrados",
           "issues_types": {
-            "duplicate": "Duplicado",
-            "conflicts": "Conflitos",
+            "duplicate": "Duplicação",
+            "conflicts": "Conflito de instruções",
             "ambiguity": "Ambiguidade",
-            "lack_of_clarity": "Clareza",
+            "lack_of_clarity": "Falta de clareza",
             "no_issues_found": "Tudo certo. Nenhum problema encontrado."
           },
           "suggested_rewrite": "Reescrita sugerida",

@@ -344,6 +344,7 @@
     "instructions": {
       "title": "Instrucțiuni",
       "description": "Definește regulile care ghidează modul în care Manager răspunde, comunică și ia decizii",
+      "new_instruction": "Instrucțiune nouă",
       "export_instructions": {
         "title": "Exportă instrucțiuni",
         "cancel_button": "Anulează",
@@ -353,7 +354,6 @@
         "success_alert_description": "Fișierul CSV este gata în folderul de descărcări",
         "success_alert_title": "Instrucțiuni exportate"
       },
-      "new_instruction": "Instrucțiune nouă",
       "delete_category": {
         "modal_title": "Șterge categoria",
         "modal_description": "{count} din {name} în Fără categorie. Nu se șterge nimic, se elimină doar eticheta categoriei.",
@@ -396,7 +396,7 @@
         "cancel": "Anulează",
         "ai_analysis": {
           "error": "Instrucțiunea nu a putut fi validată. Încearcă din nou.",
-          "title": "Analiză AI",
+          "title": "Analiză IA",
           "validating": "Se validează instrucțiunea...",
           "suggested_category": "Categorie sugerată",
           "issues": "Probleme găsite",
