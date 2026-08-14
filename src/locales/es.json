@@ -345,6 +345,7 @@
     "instructions": {
       "title": "Instrucciones",
       "description": "Define las reglas que guían cómo el Manager responde, se comunica y toma decisiones",
+      "new_instruction": "Nueva instrucción",
       "export_instructions": {
         "title": "Exportar instrucciones",
         "cancel_button": "Cancelar",
@@ -354,17 +355,16 @@
         "success_alert_description": "El archivo CSV está listo en la carpeta de descargas",
         "success_alert_title": "Instrucciones exportadas"
       },
-      "new_instruction": "Nueva instrucción",
       "delete_category": {
         "modal_title": "Eliminar categoría",
         "modal_description": "{count} de {name} a Sin categoría. No se eliminará nada, solo se quita la etiqueta de la categoría.",
-        "modal_description_empty": "{name} no tiene instrucciones. Eliminarla solo la quitará de tu lista",
+        "modal_description_empty": "{name} no tiene instrucciones. Eliminarla solo removerá esta categoría de tu lista.",
         "instructions_count": "{count, plural, one {{count} instrucción se moverá} other {{count} instrucciones se moverán}}",
         "cancel": "Cancelar",
         "confirm": "Eliminar categoría",
         "success_title": "Categoría eliminada",
         "success_description": "{count, plural, one {{count} instrucción movida a Sin categoría} other {{count} instrucciones movidas a Sin categoría}}",
-        "success_description_empty": "Eliminada de tu lista",
+        "success_description_empty": "Removida de tu lista",
         "error_title": "No se pudo eliminar la categoría",
         "error_description": "Algo salió mal y no se cambió nada. Inténtalo de nuevo."
       },
@@ -385,7 +385,7 @@
           "list": "Lista"
         },
         "uncategorized": "Sin categoría",
-        "uncategorized_tooltip": "Las instrucciones sin categoría aparecen aquí\nEste grupo no se puede eliminar"
+        "uncategorized_tooltip": "Las instrucciones sin categoría se muestran aquí y este grupo no se puede eliminar"
       },
       "new_instruction_drawer": {
         "title": "Nueva instrucción",
