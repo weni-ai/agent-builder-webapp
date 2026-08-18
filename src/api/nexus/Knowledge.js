@@ -1,10 +1,6 @@
-import { computed } from 'vue';
-
 import request from '@/api/nexusaiRequest';
 import forceHttps from '@/api/utils/forceHttps';
 import { useProjectStore } from '@/store/Project';
-
-const currentProjectUuid = computed(() => useProjectStore().uuid);
 
 const INLINE_CONTENT_BASE_ENDPOINTS = {
   TEXT: 'inline-content-base-text',
@@ -20,7 +16,7 @@ const INLINE_CONTENT_BASE_ENDPOINTS = {
  * @returns {string} Generated endpoint URL
  */
 const generateContentBaseEndpoint = ({ type, itemUuid }) => {
-  const projectUuid = currentProjectUuid.value;
+  const projectUuid = useProjectStore().uuid;
 
   let baseEndpoint;
 
