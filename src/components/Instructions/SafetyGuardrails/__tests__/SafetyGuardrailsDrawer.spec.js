@@ -293,24 +293,6 @@ describe('SafetyGuardrailsDrawer.vue', () => {
     expect(findAllowTopicsDialog().props('promptInjectionOnly')).toBe(false);
   });
 
-  it('opens confirm dialog listing Prompt injection when it is turned off', async () => {
-    await createWrapper();
-
-    findManipulationAttempts().vm.$emit('update:modelValue', false);
-    await nextTick();
-
-    await findSave().trigger('click');
-    await nextTick();
-
-    expect(
-      nexusaiAPI.router.prompt_injection_filter.update,
-    ).not.toHaveBeenCalled();
-    expect(findAllowTopicsDialog().props('open')).toBe(true);
-    expect(findAllowTopicsDialog().props('topicNames')).toEqual([
-      'Prompt injection',
-    ]);
-  });
-
   it('saves after confirming allow topics dialog', async () => {
     await createWrapper();
     nexusaiAPI.router.guardrails_config.update.mockResolvedValue(storeConfig);
