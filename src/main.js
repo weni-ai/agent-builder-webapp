@@ -13,7 +13,7 @@ import Unnnic from './utils/plugins/UnnnicSystem.ts';
 import env from './utils/env';
 import { isFederatedModule } from './utils/moduleFederation';
 import { getJwtToken, setupTokenRefreshListener } from './utils/jwt.js';
-import { getProjectUuid } from './utils/project.js';
+import { getProjectUuid, setupProjectUuidListener } from './utils/project.js';
 import { setupLanguageListener } from './utils/language.js';
 import { useUserStore } from './store/User.js';
 
@@ -43,6 +43,7 @@ export default async function mountAgentBuilderApp({
   if (!isFederatedModule && isInIframe) {
     const userStore = useUserStore();
     setupTokenRefreshListener(userStore);
+    setupProjectUuidListener();
   }
 
   app.use(Particles, {
