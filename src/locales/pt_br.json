@@ -426,7 +426,8 @@
               "already_exists": "Insira um nome de categoria que não exista",
               "invalid_chars": "Use apenas letras, números, espaços e hifens",
               "required": "Preencha este campo"
-            }
+            },
+            "placeholder": "Selecionar..."
           }
         }
       },

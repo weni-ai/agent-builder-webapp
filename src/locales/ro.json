@@ -425,7 +425,8 @@
               "already_exists": "Introdu un nume de categorie care nu există deja",
               "invalid_chars": "Folosește doar litere, cifre, spații și cratime",
               "required": "Completează acest câmp"
-            }
+            },
+            "placeholder": "Selectează..."
           }
         }
       },
