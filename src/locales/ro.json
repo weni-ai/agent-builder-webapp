@@ -396,7 +396,7 @@
         "cancel": "Anulează",
         "ai_analysis": {
           "error": "Instrucțiunea nu a putut fi validată. Încearcă din nou.",
-          "title": "Analiză AI",
+          "title": "Analiză IA",
           "validating": "Se validează instrucțiunea...",
           "suggested_category": "Categorie sugerată",
           "issues": "Probleme găsite",

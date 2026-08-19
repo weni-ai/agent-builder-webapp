@@ -402,10 +402,10 @@
           "suggested_category": "Categoría sugerida",
           "issues": "Problemas encontrados",
           "issues_types": {
-            "duplicate": "Duplicado",
-            "conflicts": "Conflicto",
+            "duplicate": "Duplicación",
+            "conflicts": "Conflicto de instrucciones",
             "ambiguity": "Ambigüedad",
-            "lack_of_clarity": "Claridad",
+            "lack_of_clarity": "Falta de claridad",
             "no_issues_found": "Todo bien. No se encontraron problemas."
           },
           "suggested_rewrite": "Reescritura sugerida",
