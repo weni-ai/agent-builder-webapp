@@ -112,7 +112,7 @@
         "cancel": "Cancelar",
         "success_alert": "Instrucción eliminada",
         "error_alert": "No se pudo eliminar la instrucción",
-        "error_alert_description": "Algo salió mal y no se cambió nada. Inténtalo de nuevo."
+        "error_alert_description": "Se produjo un error y no se aplicaron los cambios. Inténtalo de nuevo."
       }
     },
     "traces": {

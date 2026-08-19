@@ -112,7 +112,7 @@
         "cancel": "Cancelar",
         "success_alert": "Instrução excluída",
         "error_alert": "Não foi possível excluir a instrução",
-        "error_alert_description": "Algo deu errado e nada foi alterado. Tente novamente."
+        "error_alert_description": "Algo deu errado e nenhuma alteração foi feita. Tente novamente."
       }
     },
     "traces": {

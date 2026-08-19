@@ -112,7 +112,7 @@
         "cancel": "Anulează",
         "success_alert": "Instrucțiune ștearsă",
         "error_alert": "Instrucțiunea nu a putut fi ștearsă",
-        "error_alert_description": "Ceva nu a funcționat și nimic nu a fost modificat. Încearcă din nou."
+        "error_alert_description": "Ceva nu a funcționat și nu s-a modificat nimic. Încearcă din nou."
       }
     },
     "traces": {

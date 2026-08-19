@@ -112,7 +112,7 @@
         "cancel": "Cancel",
         "success_alert": "Instruction deleted",
         "error_alert": "Couldn't delete instruction",
-        "error_alert_description": "Something went wrong and nothing was changed. Try again."
+        "error_alert_description": "Something went wrong and no changes were made. Try again."
       }
     },
     "traces": {
