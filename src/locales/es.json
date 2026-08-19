@@ -1090,7 +1090,7 @@
       "exceeds_limit": "El tamaño del archivo excede el límite de {limitMB} MB",
       "delete_file": {
         "title": "Eliminar archivo",
-        "description": "¿Realmente deseas eliminar el archivo {name}? El contenido de este archivo se removerá de la base de la IA.",
+        "description": "¿Realmente deseas eliminar el archivo {name}? El contenido de este archivo se eliminará de la base de la IA.",
         "cancel": "Cancelar",
         "delete": "Eliminar"
       },
@@ -1140,7 +1140,7 @@
       "add_site": "Agregar sitio web",
       "delete_site": {
         "title": "Eliminar sitio web",
-        "description": "¿Realmente deseas eliminar el sitio web {name}? El contenido de este sitio web se removerá de la base de la IA.",
+        "description": "¿Realmente deseas eliminar el sitio web {name}? El contenido de este sitio web se eliminará de la base de la IA.",
         "cancel": "Cancelar",
         "delete": "Eliminar"
       },
