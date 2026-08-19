@@ -357,16 +357,16 @@
       },
       "delete_category": {
         "modal_title": "Eliminar categoría",
-        "modal_description": "{count} de {name} a Sin categoría. No se eliminará nada, solo se quita la etiqueta de la categoría.",
+        "modal_description": "Mover {count} de {name} a Sin categoría. No se eliminará nada, solo se removerá la etiqueta de categoría.",
         "modal_description_empty": "{name} no tiene instrucciones. Eliminarla solo la quitará de tu lista",
-        "instructions_count": "{count, plural, one {{count} instrucción se moverá} other {{count} instrucciones se moverán}}",
+        "instructions_count": "{count, plural, one {Se moverá {count} instrucción} other {Se moverán {count} instrucciones}}",
         "cancel": "Cancelar",
         "confirm": "Eliminar categoría",
         "success_title": "Categoría eliminada",
-        "success_description": "{count, plural, one {{count} instrucción movida a Sin categoría} other {{count} instrucciones movidas a Sin categoría}}",
+        "success_description": "{count, plural, one {Se movió {count} instrucción a Sin categoría} other {Se movieron {count} instrucciones a Sin categoría}}",
         "success_description_empty": "Eliminada de tu lista",
         "error_title": "No se pudo eliminar la categoría",
-        "error_description": "Algo salió mal y no se cambió nada. Inténtalo de nuevo."
+        "error_description": "Se produjo un error. Vuelve a intentarlo."
       },
       "view": {
         "default_instruction": "Instrucción predeterminada",
