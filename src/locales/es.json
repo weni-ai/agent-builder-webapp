@@ -740,12 +740,12 @@
         "description_today": "Ejecutado hoy a las {time}",
         "run_analysis": "Ejecutar análisis",
         "run_analysis_already_run_today_tooltip": "El análisis ya se ejecutó en las últimas 24 horas y volverá a estar disponible a las {time}",
-        "run_analysis_insufficient_volume_tooltip": "Volumen de conversaciones insuficiente para ejecutar análisis\nMínimo de {min} conversaciones requeridas",
+        "run_analysis_insufficient_volume_tooltip": "No hay suficientes conversaciones de ayer para ejecutar el análisis. Se requieren al menos {min} conversaciones.",
         "title": "{count, plural, =0 {Análisis de conversaciones de {date}} one {Análisis de conversaciones de {date} · {count} mejora identificada} other {Análisis de conversaciones de {date} · {count} mejoras identificadas}}"
       },
       "insufficient_volume": {
-        "description": "Mínimo de {min} conversaciones necesarias para ejecutar el análisis",
-        "title": "Volumen insuficiente de conversaciones"
+        "description": "El análisis se ejecuta en las conversaciones de ayer. Se requieren al menos {min} conversaciones.",
+        "title": "No hay suficientes conversaciones de ayer para ejecutar el análisis"
       },
       "intro_modal": {
         "step_of": "Paso {step} de {total}",
