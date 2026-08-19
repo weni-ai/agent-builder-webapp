@@ -424,7 +424,7 @@
             "create": "Criar",
             "validation": {
               "already_exists": "Insira um nome de categoria que não exista",
-              "invalid_chars": "Use apenas letras, números, espaços e hifens",
+              "invalid_chars": "Use apenas letras, números, espaços e hífens",
               "required": "Preencha este campo"
             },
             "placeholder": "Selecionar..."
