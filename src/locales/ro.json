@@ -112,7 +112,7 @@
         "cancel": "Anulează",
         "success_alert": "Instrucțiune ștearsă",
         "error_alert": "Instrucțiunea nu a putut fi ștearsă",
-        "error_alert_description": "Ceva nu a funcționat și nimic nu a fost modificat. Încearcă din nou."
+        "error_alert_description": "Ceva nu a funcționat și nu s-a modificat nimic. Încearcă din nou."
       }
     },
     "traces": {
@@ -344,6 +344,7 @@
     "instructions": {
       "title": "Instrucțiuni",
       "description": "Definește regulile care ghidează modul în care Manager răspunde, comunică și ia decizii",
+      "new_instruction": "Instrucțiune nouă",
       "export_instructions": {
         "title": "Exportă instrucțiuni",
         "cancel_button": "Anulează",
@@ -353,11 +354,10 @@
         "success_alert_description": "Fișierul CSV este gata în folderul de descărcări",
         "success_alert_title": "Instrucțiuni exportate"
       },
-      "new_instruction": "Instrucțiune nouă",
       "delete_category": {
         "modal_title": "Șterge categoria",
-        "modal_description": "{count} din {name} în Fără categorie. Nu se șterge nimic, se elimină doar eticheta categoriei.",
-        "modal_description_empty": "{name} nu are instrucțiuni. Ștergerea o va elimina doar din listă",
+        "modal_description": "Mută {count} din {name} în Fără categorie. Nu se va șterge nimic, se va elimina doar eticheta categoriei.",
+        "modal_description_empty": "{name} nu are instrucțiuni. Ștergerea doar va elimina această categorie din listă.",
         "instructions_count": "{count, plural, one {{count} instrucțiune va fi mutată} other {{count} instrucțiuni vor fi mutate}}",
         "cancel": "Anulează",
         "confirm": "Șterge categoria",
@@ -365,7 +365,7 @@
         "success_description": "{count, plural, one {{count} instrucțiune mutată în Fără categorie} other {{count} instrucțiuni mutate în Fără categorie}}",
         "success_description_empty": "Eliminată din listă",
         "error_title": "Categoria nu a putut fi ștearsă",
-        "error_description": "Ceva nu a funcționat și nimic nu a fost modificat. Încearcă din nou."
+        "error_description": "Ceva nu a funcționat. Încearcă din nou."
       },
       "view": {
         "default_instruction": "Instrucțiune implicită",
@@ -376,7 +376,7 @@
           "category": "Categorie",
           "instruction": "Instrucțiune"
         },
-        "locked_tooltip": "Instrucțiunile implicite nu pot fi editate sau eliminate",
+        "locked_tooltip": "Instrucțiunile implicite nu pot fi editate sau șterse",
         "results_count": "{count, plural, =0 {Nu s-au găsit instrucțiuni} one {{count} instrucțiune găsită} few {{count} instrucțiuni găsite} other {{count} de instrucțiuni găsite}}",
         "search_placeholder": "Caută...",
         "segmented": {
@@ -384,7 +384,7 @@
           "list": "Listă"
         },
         "uncategorized": "Fără categorie",
-        "uncategorized_tooltip": "Instrucțiunile fără categorie apar aici\nAcest grup nu poate fi eliminat"
+        "uncategorized_tooltip": "Instrucțiunile fără categorie apar aici, iar acest grup nu poate fi șters"
       },
       "new_instruction_drawer": {
         "title": "Instrucțiune nouă",
@@ -396,7 +396,7 @@
         "cancel": "Anulează",
         "ai_analysis": {
           "error": "Instrucțiunea nu a putut fi validată. Încearcă din nou.",
-          "title": "Analiză AI",
+          "title": "Analiză IA",
           "validating": "Se validează instrucțiunea...",
           "suggested_category": "Categorie sugerată",
           "issues": "Probleme găsite",
@@ -412,7 +412,7 @@
           "undo_button": "Anulează",
           "apply_button": "Aplică",
           "category": {
-            "new_badge": "Nouă",
+            "new_badge": "Nou",
             "suggested_category": "Categorie sugerată",
             "other_categories": "Alte categorii",
             "create_action": "Nouă categorie",
@@ -425,7 +425,8 @@
               "already_exists": "Introdu un nume de categorie care nu există deja",
               "invalid_chars": "Folosește doar litere, cifre, spații și cratime",
               "required": "Completează acest câmp"
-            }
+            },
+            "placeholder": "Selectează..."
           }
         }
       },
@@ -737,13 +738,13 @@
         "description": "Rulată pe {date} la {time}",
         "description_today": "Rulată astăzi la {time}",
         "run_analysis": "Rulează analiza",
-        "run_analysis_already_run_today_tooltip": "Analiza a fost deja rulată în ultimele 24h.\nUrmătoarea analiză disponibilă la {time}",
-        "run_analysis_insufficient_volume_tooltip": "Volum insuficient de conversații pentru a rula analiza\nMinim {min} conversații necesare",
+        "run_analysis_already_run_today_tooltip": "Analiza a fost deja executată în ultimele 24h și va fi disponibilă din nou la {time}",
+        "run_analysis_insufficient_volume_tooltip": "Nu există suficiente conversații de ieri pentru a rula analiza. Sunt necesare cel puțin {min} conversații.",
         "title": "{count, plural, =0 {Analiza conversațiilor din {date}} one {Analiza conversațiilor din {date} · {count} îmbunătățire identificată} other {Analiza conversațiilor din {date} · {count} îmbunătățiri identificate}}"
       },
       "insufficient_volume": {
-        "description": "Minimum {min} conversații necesare pentru executarea analizei",
-        "title": "Volum insuficient de conversații"
+        "description": "Analiza rulează pe conversațiile de ieri. Sunt necesare cel puțin {min} conversații.",
+        "title": "Nu există suficiente conversații de ieri pentru a rula analiza"
       },
       "intro_modal": {
         "step_of": "Pasul {step} din {total}",
@@ -1088,7 +1089,7 @@
       "exceeds_limit": "Dimensiunea fișierului depășește limita de {limitMB} MB",
       "delete_file": {
         "title": "Ștergere fișier",
-        "description": "Sigur dorești să ștergi fișierul {name}? Conținutul acestui fișier va fi eliminat din baza AI.",
+        "description": "Sigur dorești să ștergi fișierul {name}? Conținutul acestui fișier va fi eliminat din baza IA.",
         "cancel": "Anulează",
         "delete": "Ștergere"
       },
@@ -1138,7 +1139,7 @@
       "add_site": "Adaugă site",
       "delete_site": {
         "title": "Șterge site-ul",
-        "description": "Sigur dorești să ștergi site-ul {name}? Tot conținutul acestui site va fi eliminat din baza AI.",
+        "description": "Sigur dorești să ștergi site-ul {name}? Tot conținutul acestui site va fi eliminat din baza IA.",
         "cancel": "Anulează",
         "delete": "Ștergere"
       },

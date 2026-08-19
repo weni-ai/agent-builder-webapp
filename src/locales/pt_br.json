@@ -112,7 +112,7 @@
         "cancel": "Cancelar",
         "success_alert": "Instrução excluída",
         "error_alert": "Não foi possível excluir a instrução",
-        "error_alert_description": "Algo deu errado e nada foi alterado. Tente novamente."
+        "error_alert_description": "Algo deu errado e nenhuma alteração foi feita. Tente novamente."
       }
     },
     "traces": {
@@ -345,20 +345,20 @@
     "instructions": {
       "title": "Instruções",
       "description": "Defina as regras que orientam como o Manager responde, se comunica e toma decisões",
+      "new_instruction": "Nova instrução",
       "export_instructions": {
         "title": "Exportar instruções",
         "cancel_button": "Cancelar",
         "export_button": "Exportar",
-        "modal_description": "As instruções serão baixadas em um arquivo CSV, compatível com Excel, Google Sheets e ferramentas similares",
+        "modal_description": "As instruções serão baixadas em um arquivo CSV, compatível com Excel, Google Sheets e ferramentas similares.",
         "modal_title": "Exportar instruções",
         "success_alert_description": "O arquivo CSV está pronto na pasta de downloads",
         "success_alert_title": "Instruções exportadas"
       },
-      "new_instruction": "Nova instrução",
       "delete_category": {
         "modal_title": "Excluir categoria",
-        "modal_description": "{count} de {name} para Sem categoria. Nada será excluído, apenas o rótulo da categoria é removido.",
-        "modal_description_empty": "{name} não tem instruções. Excluí-la só a removerá da sua lista",
+        "modal_description": "Mover {count} de {name} para Sem Categoria. Nada será excluído, apenas o rótulo da categoria será removido.",
+        "modal_description_empty": "{name} não tem instruções. Excluí-la apenas removerá esta categoria da sua lista.",
         "instructions_count": "{count, plural, one {{count} instrução será movida} other {{count} instruções serão movidas}}",
         "cancel": "Cancelar",
         "confirm": "Excluir categoria",
@@ -366,13 +366,13 @@
         "success_description": "{count, plural, one {{count} instrução movida para Sem categoria} other {{count} instruções movidas para Sem categoria}}",
         "success_description_empty": "Removida da sua lista",
         "error_title": "Não foi possível excluir a categoria",
-        "error_description": "Algo deu errado e nada foi alterado. Tente novamente."
+        "error_description": "Algo deu errado. Tente novamente."
       },
       "view": {
         "default_instruction": "Instrução padrão",
         "default_instructions": "Instruções padrão",
         "delete_category": "Excluir categoria",
-        "empty_category": "Ainda não há instruções nesta categoria",
+        "empty_category": "Nenhuma instrução nesta categoria ainda",
         "list_columns": {
           "category": "Categoria",
           "instruction": "Instrução"
@@ -385,7 +385,7 @@
           "list": "Lista"
         },
         "uncategorized": "Sem categoria",
-        "uncategorized_tooltip": "Instruções sem categoria aparecem aqui\nEste grupo não pode ser removido"
+        "uncategorized_tooltip": "Instruções sem categoria aparecem aqui e este grupo não pode ser excluído"
       },
       "new_instruction_drawer": {
         "title": "Nova instrução",
@@ -397,15 +397,15 @@
         "cancel": "Cancelar",
         "ai_analysis": {
           "error": "Não foi possível validar a instrução. Tente novamente.",
-          "title": "Análise de IA",
+          "title": "Análise da IA",
           "validating": "Validando instrução...",
           "suggested_category": "Categoria sugerida",
           "issues": "Problemas encontrados",
           "issues_types": {
-            "duplicate": "Duplicado",
-            "conflicts": "Conflitos",
+            "duplicate": "Duplicação",
+            "conflicts": "Conflito de instruções",
             "ambiguity": "Ambiguidade",
-            "lack_of_clarity": "Clareza",
+            "lack_of_clarity": "Falta de clareza",
             "no_issues_found": "Tudo certo. Nenhum problema encontrado."
           },
           "suggested_rewrite": "Reescrita sugerida",
@@ -423,10 +423,11 @@
             "cancel": "Cancelar",
             "create": "Criar",
             "validation": {
-              "already_exists": "Insira um nome de categoria que não exista",
-              "invalid_chars": "Use apenas letras, números, espaços e hifens",
+              "already_exists": "Insira um nome de categoria que ainda não existe",
+              "invalid_chars": "Use apenas letras, números, espaços e hífens",
               "required": "Preencha este campo"
-            }
+            },
+            "placeholder": "Selecionar..."
           }
         }
       },
@@ -738,13 +739,13 @@
         "description": "Executada em {date} às {time}",
         "description_today": "Executada hoje às {time}",
         "run_analysis": "Executar análise",
-        "run_analysis_already_run_today_tooltip": "A análise já foi executada nas últimas 24h.\nPróxima análise disponível às {time}",
-        "run_analysis_insufficient_volume_tooltip": "Volume de conversas insuficiente para executar análise\nMínimo de {min} conversas necessárias",
+        "run_analysis_already_run_today_tooltip": "A análise já foi executada nas últimas 24h e ficará disponível novamente às {time}",
+        "run_analysis_insufficient_volume_tooltip": "Não há conversas suficientes de ontem para executar a análise. São necessárias pelo menos {min} conversas.",
         "title": "{count, plural, =0 {Análise das conversas de {date}} one {Análise das conversas de {date} · {count} melhoria identificada} other {Análise das conversas de {date} · {count} melhorias identificadas}}"
       },
       "insufficient_volume": {
-        "description": "Mínimo de {min} conversas necessárias para executar a análise",
-        "title": "Volume insuficiente de conversas"
+        "description": "A análise é executada nas conversas de ontem. São necessárias pelo menos {min} conversas.",
+        "title": "Não há conversas suficientes de ontem para executar a análise"
       },
       "intro_modal": {
         "step_of": "Passo {step} de {total}",
@@ -1089,7 +1090,7 @@
       "exceeds_limit": "O tamanho do arquivo excede o limite de {limitMB} MB",
       "delete_file": {
         "title": "Excluir arquivo",
-        "description": "Tem certeza de que deseja excluir o arquivo {name}? O conteúdo deste arquivo será removido da base da IA.",
+        "description": "Tem certeza de que deseja excluir o arquivo {name}? O conteúdo também será excluído da base da IA.",
         "cancel": "Cancelar",
         "delete": "Excluir"
       },
@@ -1139,7 +1140,7 @@
       "add_site": "Adicionar site",
       "delete_site": {
         "title": "Excluir site",
-        "description": "Tem certeza de que deseja excluir o site {name}? O conteúdo deste site será removido da base da IA.",
+        "description": "Tem certeza de que deseja excluir o site {name}? Todo o conteúdo deste site será excluído da base da IA.",
         "cancel": "Cancelar",
         "delete": "Excluir"
       },
