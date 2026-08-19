@@ -350,7 +350,7 @@
         "title": "Exportar instrucciones",
         "cancel_button": "Cancelar",
         "export_button": "Exportar",
-        "modal_description": "Las instrucciones se descargarán en un archivo CSV, compatible con Excel, Google Sheets y herramientas similares",
+        "modal_description": "Las instrucciones se descargarán en un archivo CSV compatible con Excel, Google Sheets y herramientas similares",
         "modal_title": "Exportar instrucciones",
         "success_alert_description": "El archivo CSV está listo en la carpeta de descargas",
         "success_alert_title": "Instrucciones exportadas"
