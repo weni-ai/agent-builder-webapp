@@ -391,7 +391,7 @@
         "title": "New instruction",
         "edit_title": "Edit instruction",
         "category_label": "Category",
-        "re_validate": "Re-validate",
+        "re_validate": "Revalidate",
         "validate": "Validate",
         "save": "Save",
         "cancel": "Cancel",
@@ -426,7 +426,8 @@
               "already_exists": "Enter a category name that doesn't already exist",
               "invalid_chars": "Use only letters, numbers, spaces, and hyphens",
               "required": "Complete this field"
-            }
+            },
+            "placeholder": "Select..."
           }
         }
       },

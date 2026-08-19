@@ -397,15 +397,15 @@
         "cancel": "Cancelar",
         "ai_analysis": {
           "error": "Não foi possível validar a instrução. Tente novamente.",
-          "title": "Análise de IA",
+          "title": "Análise da IA",
           "validating": "Validando instrução...",
           "suggested_category": "Categoria sugerida",
           "issues": "Problemas encontrados",
           "issues_types": {
-            "duplicate": "Duplicado",
-            "conflicts": "Conflitos",
+            "duplicate": "Duplicação",
+            "conflicts": "Conflito de instruções",
             "ambiguity": "Ambiguidade",
-            "lack_of_clarity": "Clareza",
+            "lack_of_clarity": "Falta de clareza",
             "no_issues_found": "Tudo certo. Nenhum problema encontrado."
           },
           "suggested_rewrite": "Reescrita sugerida",
@@ -426,7 +426,8 @@
               "already_exists": "Insira um nome de categoria que não exista",
               "invalid_chars": "Use apenas letras, números, espaços e hífens",
               "required": "Preencha este campo"
-            }
+            },
+            "placeholder": "Selecionar..."
           }
         }
       },
