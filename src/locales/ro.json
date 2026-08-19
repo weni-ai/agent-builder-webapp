@@ -112,7 +112,7 @@
         "cancel": "Anulează",
         "success_alert": "Instrucțiune ștearsă",
         "error_alert": "Instrucțiunea nu a putut fi ștearsă",
-        "error_alert_description": "Ceva nu a funcționat și nimic nu a fost modificat. Încearcă din nou."
+        "error_alert_description": "Ceva nu a funcționat și nu s-a modificat nimic. Încearcă din nou."
       }
     },
     "traces": {
@@ -356,7 +356,7 @@
       },
       "delete_category": {
         "modal_title": "Șterge categoria",
-        "modal_description": "{count} din {name} în Fără categorie. Nu se șterge nimic, se elimină doar eticheta categoriei.",
+        "modal_description": "Mută {count} din {name} în Fără categorie. Nu se va șterge nimic, se va elimina doar eticheta categoriei.",
         "modal_description_empty": "{name} nu are instrucțiuni. Ștergerea doar va elimina această categorie din listă.",
         "instructions_count": "{count, plural, one {{count} instrucțiune va fi mutată} other {{count} instrucțiuni vor fi mutate}}",
         "cancel": "Anulează",
@@ -365,7 +365,7 @@
         "success_description": "{count, plural, one {{count} instrucțiune mutată în Fără categorie} other {{count} instrucțiuni mutate în Fără categorie}}",
         "success_description_empty": "Eliminată din listă",
         "error_title": "Categoria nu a putut fi ștearsă",
-        "error_description": "Ceva nu a funcționat și nimic nu a fost modificat. Încearcă din nou."
+        "error_description": "Ceva nu a funcționat. Încearcă din nou."
       },
       "view": {
         "default_instruction": "Instrucțiune implicită",
@@ -376,7 +376,7 @@
           "category": "Categorie",
           "instruction": "Instrucțiune"
         },
-        "locked_tooltip": "Instrucțiunile implicite nu pot fi editate sau eliminate",
+        "locked_tooltip": "Instrucțiunile implicite nu pot fi editate sau șterse",
         "results_count": "{count, plural, =0 {Nu s-au găsit instrucțiuni} one {{count} instrucțiune găsită} few {{count} instrucțiuni găsite} other {{count} de instrucțiuni găsite}}",
         "search_placeholder": "Caută...",
         "segmented": {
@@ -396,7 +396,7 @@
         "cancel": "Anulează",
         "ai_analysis": {
           "error": "Instrucțiunea nu a putut fi validată. Încearcă din nou.",
-          "title": "Analiză AI",
+          "title": "Analiză IA",
           "validating": "Se validează instrucțiunea...",
           "suggested_category": "Categorie sugerată",
           "issues": "Probleme găsite",
@@ -412,7 +412,7 @@
           "undo_button": "Anulează",
           "apply_button": "Aplică",
           "category": {
-            "new_badge": "Nouă",
+            "new_badge": "Nou",
             "suggested_category": "Categorie sugerată",
             "other_categories": "Alte categorii",
             "create_action": "Nouă categorie",
@@ -425,7 +425,8 @@
               "already_exists": "Introdu un nume de categorie care nu există deja",
               "invalid_chars": "Folosește doar litere, cifre, spații și cratime",
               "required": "Completează acest câmp"
-            }
+            },
+            "placeholder": "Selectează..."
           }
         }
       },

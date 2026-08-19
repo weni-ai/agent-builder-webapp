@@ -112,7 +112,7 @@
         "cancel": "Cancelar",
         "success_alert": "Instrucción eliminada",
         "error_alert": "No se pudo eliminar la instrucción",
-        "error_alert_description": "Algo salió mal y no se cambió nada. Inténtalo de nuevo."
+        "error_alert_description": "Se produjo un error y no se aplicaron los cambios. Inténtalo de nuevo."
       }
     },
     "traces": {
@@ -350,23 +350,23 @@
         "title": "Exportar instrucciones",
         "cancel_button": "Cancelar",
         "export_button": "Exportar",
-        "modal_description": "Las instrucciones se descargarán en un archivo CSV, compatible con Excel, Google Sheets y herramientas similares",
+        "modal_description": "Las instrucciones se descargarán en un archivo CSV compatible con Excel, Google Sheets y herramientas similares",
         "modal_title": "Exportar instrucciones",
         "success_alert_description": "El archivo CSV está listo en la carpeta de descargas",
         "success_alert_title": "Instrucciones exportadas"
       },
       "delete_category": {
         "modal_title": "Eliminar categoría",
-        "modal_description": "{count} de {name} a Sin categoría. No se eliminará nada, solo se quita la etiqueta de la categoría.",
+        "modal_description": "Mover {count} de {name} a Sin categoría. No se eliminará nada, solo se removerá la etiqueta de categoría.",
         "modal_description_empty": "{name} no tiene instrucciones. Eliminarla solo removerá esta categoría de tu lista.",
-        "instructions_count": "{count, plural, one {{count} instrucción se moverá} other {{count} instrucciones se moverán}}",
+        "instructions_count": "{count, plural, one {Se moverá {count} instrucción} other {Se moverán {count} instrucciones}}",
         "cancel": "Cancelar",
         "confirm": "Eliminar categoría",
         "success_title": "Categoría eliminada",
-        "success_description": "{count, plural, one {{count} instrucción movida a Sin categoría} other {{count} instrucciones movidas a Sin categoría}}",
+        "success_description": "{count, plural, one {Se movió {count} instrucción a Sin categoría} other {Se movieron {count} instrucciones a Sin categoría}}",
         "success_description_empty": "Removida de tu lista",
         "error_title": "No se pudo eliminar la categoría",
-        "error_description": "Algo salió mal y no se cambió nada. Inténtalo de nuevo."
+        "error_description": "Se produjo un error. Vuelve a intentarlo."
       },
       "view": {
         "default_instruction": "Instrucción predeterminada",
@@ -402,10 +402,10 @@
           "suggested_category": "Categoría sugerida",
           "issues": "Problemas encontrados",
           "issues_types": {
-            "duplicate": "Duplicado",
-            "conflicts": "Conflicto",
+            "duplicate": "Duplicación",
+            "conflicts": "Conflicto de instrucciones",
             "ambiguity": "Ambigüedad",
-            "lack_of_clarity": "Claridad",
+            "lack_of_clarity": "Falta de claridad",
             "no_issues_found": "Todo bien. No se encontraron problemas."
           },
           "suggested_rewrite": "Reescritura sugerida",
@@ -413,7 +413,7 @@
           "undo_button": "Deshacer",
           "apply_button": "Aplicar",
           "category": {
-            "new_badge": "Nueva",
+            "new_badge": "Nuevo",
             "suggested_category": "Categoría sugerida",
             "other_categories": "Otras categorías",
             "create_action": "Nueva categoría",
@@ -425,8 +425,9 @@
             "validation": {
               "already_exists": "Ingresa un nombre de categoría que no exista",
               "invalid_chars": "Usa solo letras, números, espacios y guiones",
-              "required": "Completa este campo"
-            }
+              "required": "Llena este campo"
+            },
+            "placeholder": "Seleccionar..."
           }
         }
       },
