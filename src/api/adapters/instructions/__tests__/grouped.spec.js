@@ -65,3 +65,16 @@ describe('InstructionsGroupedAdapter.toUpdateApi', () => {
     });
   });
 });
+
+describe('InstructionsGroupedAdapter.toRenameCategoryApi', () => {
+  it('builds a categories payload with id and trimmed name', () => {
+    expect(
+      InstructionsGroupedAdapter.toRenameCategoryApi({
+        id: 10,
+        name: '  Marketing  ',
+      }),
+    ).toEqual({
+      categories: [{ id: 10, name: 'Marketing' }],
+    });
+  });
+});

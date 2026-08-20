@@ -42,6 +42,14 @@ export const Instructions = {
     return InstructionsGroupedAdapter.fromApi(response.data);
   },
 
+  async renameCategory({ projectUuid, id, name }) {
+    await request.$http.patch(
+      `api/${projectUuid}/instructions/`,
+      InstructionsGroupedAdapter.toRenameCategoryApi({ id, name }),
+      { hideGenericErrorAlert: true },
+    );
+  },
+
   async deleteInstruction({ projectUuid, id }) {
     await request.$http.delete(`api/${projectUuid}/instructions/?id=${id}`);
   },
