@@ -18,10 +18,8 @@ vi.mock('@/api/utils/forceHttps', () => ({
   default: vi.fn((url) => `https://${url}`),
 }));
 
-vi.mock('@/utils/storage', () => ({
-  moduleStorage: {
-    getItem: vi.fn(() => 'project1'),
-  },
+vi.mock('@/store/Project', () => ({
+  useProjectStore: () => ({ uuid: 'project1' }),
 }));
 
 vi.mock('@/utils/env', () => ({

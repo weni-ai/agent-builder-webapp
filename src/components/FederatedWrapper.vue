@@ -23,7 +23,7 @@ import { useI18n } from 'vue-i18n';
 import { safeImport } from '@/utils/moduleFederation';
 import { moduleStorage } from '@/utils/storage';
 
-import { useProjectStore } from '@/store/Project';
+import { setProjectUuid, useProjectStore } from '@/store/Project';
 import { useUserStore } from '@/store/User';
 import { useTuningsStore } from '@/store/Tunings';
 
@@ -75,13 +75,13 @@ onBeforeMount(async () => {
     const newProjectUuid = sharedStore.current.project.uuid;
 
     const currentToken = moduleStorage.getItem('authToken');
-    const currentProjectUuid = moduleStorage.getItem('projectUuid');
+    const currentProjectUuid = useProjectStore().uuid;
 
     const hasContextChanged =
       newToken !== currentToken || newProjectUuid !== currentProjectUuid;
 
     moduleStorage.setItem('authToken', newToken);
-    moduleStorage.setItem('projectUuid', newProjectUuid);
+    setProjectUuid(newProjectUuid);
 
     if (hasContextChanged) {
       useUserStore().setToken(newToken);

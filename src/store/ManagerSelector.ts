@@ -25,7 +25,7 @@ const parseDate = (dateString?: string | null): Date | null => {
 
 export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
   const alertStore = useAlertStore();
-  const projectUuid = useProjectStore().uuid;
+  const projectUuid = computed(() => useProjectStore().uuid);
 
   const options = ref<ManagerSelector['options']>({
     currentManager: '',
@@ -155,7 +155,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
       status.value = 'loading';
 
       const { data } = await nexusaiAPI.router.tunings.manager.read({
-        projectUuid,
+        projectUuid: projectUuid.value,
       });
 
       options.value = data;
@@ -176,7 +176,7 @@ export const useManagerSelectorStore = defineStore('ManagerSelector', () => {
       saveStatus.value = 'loading';
 
       await nexusaiAPI.router.tunings.manager.edit({
-        projectUuid,
+        projectUuid: projectUuid.value,
         manager: selectedManager.value,
       });
 

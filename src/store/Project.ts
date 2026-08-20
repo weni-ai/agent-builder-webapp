@@ -1,8 +1,18 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import nexusaiAPI from '@/api/nexusaiAPI';
-import { moduleStorage } from '@/utils/storage';
+
+/**
+ * Lives at module scope so the UUID survives Pinia `$dispose()` (federated
+ * remounts) and can be set during the iframe handshake before `createPinia()`.
+ * It must not go into Web Storage: that is shared across tabs.
+ */
+const currentProjectUuid = ref('');
+
+export function setProjectUuid(uuid: string) {
+  currentProjectUuid.value = uuid || '';
+}
 
 interface ProjectDetails {
   status: null | 'loading' | 'success' | 'error';
@@ -18,7 +28,8 @@ interface ProjectInfo {
 }
 
 export const useProjectStore = defineStore('Project', () => {
-  const uuid = moduleStorage.getItem('projectUuid') || '';
+  const uuid = computed(() => currentProjectUuid.value);
+
   const details = ref<ProjectDetails>({
     status: null,
   });
@@ -34,7 +45,7 @@ export const useProjectStore = defineStore('Project', () => {
 
     try {
       const { data } = await nexusaiAPI.router.project.read({
-        projectUuid: uuid,
+        projectUuid: uuid.value,
       });
 
       project.value.name = data.name ?? '';
@@ -51,7 +62,7 @@ export const useProjectStore = defineStore('Project', () => {
 
     try {
       const data = await nexusaiAPI.router.tunings.projectDetails.read({
-        projectUuid: uuid,
+        projectUuid: uuid.value,
       });
 
       details.value = { ...details.value, ...data };

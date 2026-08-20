@@ -19,10 +19,8 @@ vi.mock('@/api/utils/forceHttps', () => ({
   default: vi.fn((url) => `https-forced::${url}`),
 }));
 
-vi.mock('@/utils/storage', () => ({
-  moduleStorage: {
-    getItem: vi.fn(() => 'project-uuid'),
-  },
+vi.mock('@/store/Project', () => ({
+  useProjectStore: () => ({ uuid: 'project-uuid' }),
 }));
 
 describe('Knowledge API — texts.list', () => {

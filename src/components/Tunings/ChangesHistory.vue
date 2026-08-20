@@ -57,7 +57,7 @@ import { handleChangeName } from '@/utils/changeNameUtils';
 import { useProjectStore } from '@/store/Project';
 
 const { t } = useI18n();
-const projectUuid = useProjectStore().uuid;
+const projectUuid = computed(() => useProjectStore().uuid);
 
 const pagination = ref(1);
 const paginationTotal = ref(0);
@@ -144,7 +144,7 @@ const getChangesHistoryData = async (page = 1, filter = '') => {
   isLoading.value = true;
   try {
     const { data } = await nexusaiAPI.router.tunings.historyChanges.read({
-      projectUuid,
+      projectUuid: projectUuid.value,
       pageSize: paginationInterval.value,
       page,
       filter: filter === 'all' ? '' : filter,
