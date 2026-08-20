@@ -43,8 +43,10 @@
 
       <CategoriesView
         v-if="showCategoriesView"
+        :scrollToGroupKey="scrollToCategoryKey"
         data-testid="instructions-categories-view"
         @delete-category="onDeleteCategory"
+        @rename-category="onRenameCategory"
         @edit="instructionsStore.startEditingInstruction"
       />
 
@@ -62,6 +64,15 @@
       data-testid="instructions-remove-category-modal"
       @update:model-value="onRemoveCategoryModalOpenChange"
     />
+
+    <ModalRenameCategory
+      v-if="categoryToRename"
+      v-model="isRenameCategoryModalOpen"
+      :category="categoryToRename"
+      data-testid="instructions-rename-category-modal"
+      @renamed="onCategoryRenamed"
+      @update:model-value="onRenameCategoryModalOpenChange"
+    />
   </section>
 </template>
 
@@ -74,6 +85,7 @@ import InstructionsResultsCount from './InstructionsResultsCount.vue';
 import CategoriesView from './CategoriesView.vue';
 import ListView from './ListView.vue';
 import ModalRemoveCategory from '@/components/Instructions/ModalRemoveCategory.vue';
+import ModalRenameCategory from '@/components/Instructions/ModalRenameCategory.vue';
 
 const views = ['categories', 'list'];
 
@@ -85,6 +97,10 @@ if (instructionsStore.instructions.status === null) {
 
 const categoryToDelete = ref(null);
 const isRemoveCategoryModalOpen = ref(false);
+
+const categoryToRename = ref(null);
+const isRenameCategoryModalOpen = ref(false);
+const scrollToCategoryKey = ref(null);
 
 const isLoading = computed(
   () => instructionsStore.instructions.status === 'loading',
@@ -113,6 +129,21 @@ function onRemoveCategoryModalOpenChange(open) {
   if (!open) {
     categoryToDelete.value = null;
   }
+}
+
+function onRenameCategory(group) {
+  categoryToRename.value = { id: group.categoryId, name: group.label };
+  isRenameCategoryModalOpen.value = true;
+}
+
+function onRenameCategoryModalOpenChange(open) {
+  if (!open) {
+    categoryToRename.value = null;
+  }
+}
+
+function onCategoryRenamed(id) {
+  scrollToCategoryKey.value = `category-${id}`;
 }
 </script>
 

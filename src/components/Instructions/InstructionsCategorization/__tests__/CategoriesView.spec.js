@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import { describe, it, expect, afterEach, vi } from 'vitest';
+import { nextTick } from 'vue';
 import { createTestingPinia } from '@pinia/testing';
 
 import CategoriesView from '../CategoriesView.vue';
@@ -23,7 +24,7 @@ vi.mock('@/store/FeatureFlags', () => ({
 describe('CategoriesView.vue', () => {
   let wrapper;
 
-  const createWrapper = ({ instructionsState = {} } = {}) => {
+  const createWrapper = ({ instructionsState = {}, props = {} } = {}) => {
     const pinia = createTestingPinia({
       initialState: {
         Instructions: {
@@ -39,6 +40,7 @@ describe('CategoriesView.vue', () => {
     useInstructionsStore();
 
     return shallowMount(CategoriesView, {
+      props,
       global: { plugins: [pinia] },
     });
   };
@@ -162,6 +164,65 @@ describe('CategoriesView.vue', () => {
       .vm.$emit('delete-category', group);
 
     expect(wrapper.emitted('delete-category')).toEqual([[group]]);
+  });
+
+  it('forwards the rename-category event from an accordion', async () => {
+    wrapper = createWrapper({
+      instructionsState: {
+        instructions: {
+          data: [
+            { id: 1, text: 'Sales A', category: { id: 10, name: 'Sales' } },
+          ],
+          status: 'complete',
+        },
+        categories: [{ id: 10, name: 'Sales' }],
+      },
+    });
+
+    const group = { key: 'category-10' };
+    await wrapper
+      .findComponent(CategoryAccordion)
+      .vm.$emit('rename-category', group);
+
+    expect(wrapper.emitted('rename-category')).toEqual([[group]]);
+  });
+
+  it('scrolls the target accordion into view when scrollToGroupKey changes', async () => {
+    wrapper = createWrapper({
+      instructionsState: {
+        instructions: {
+          data: [
+            { id: 1, text: 'Sales A', category: { id: 10, name: 'Sales' } },
+            { id: 2, text: 'Support A', category: { id: 20, name: 'Support' } },
+          ],
+          status: 'complete',
+        },
+        categories: [
+          { id: 10, name: 'Sales' },
+          { id: 20, name: 'Support' },
+        ],
+      },
+    });
+
+    await nextTick();
+
+    const scrollIntoView = vi.fn();
+    const accordion = wrapper
+      .findAllComponents(CategoryAccordion)
+      .find((component) => component.props('group').key === 'category-10');
+
+    Object.defineProperty(accordion.vm.$el, 'scrollIntoView', {
+      value: scrollIntoView,
+      configurable: true,
+    });
+
+    await wrapper.setProps({ scrollToGroupKey: 'category-10' });
+    await nextTick();
+
+    expect(scrollIntoView).toHaveBeenCalledWith({
+      block: 'nearest',
+      behavior: 'smooth',
+    });
   });
 
   it('renders SafetyGuardrails when the customGuardrails flag is enabled', () => {

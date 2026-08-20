@@ -5,6 +5,7 @@ import { createTestingPinia } from '@pinia/testing';
 import InstructionsCategorization from '../index.vue';
 import InstructionsResultsCount from '../InstructionsResultsCount.vue';
 import ModalRemoveCategory from '@/components/Instructions/ModalRemoveCategory.vue';
+import ModalRenameCategory from '@/components/Instructions/ModalRenameCategory.vue';
 import { useInstructionsStore } from '@/store/Instructions';
 import i18n from '@/utils/plugins/i18n';
 
@@ -142,6 +143,56 @@ describe('InstructionsCategorization/index.vue', () => {
       await removeModal().vm.$emit('update:model-value', false);
 
       expect(removeModal().exists()).toBe(false);
+    });
+  });
+
+  describe('Rename category', () => {
+    const renameModal = () => wrapper.findComponent(ModalRenameCategory);
+
+    it('does not render the rename category modal by default', () => {
+      expect(renameModal().exists()).toBe(false);
+    });
+
+    it('opens the rename category modal with the selected category', async () => {
+      await findComponent('categoriesView').vm.$emit('rename-category', {
+        key: 'category-10',
+        categoryId: 10,
+        label: 'Sales',
+      });
+
+      expect(renameModal().exists()).toBe(true);
+      expect(renameModal().props('category')).toEqual({
+        id: 10,
+        name: 'Sales',
+      });
+    });
+
+    it('unmounts the rename category modal when it closes', async () => {
+      await findComponent('categoriesView').vm.$emit('rename-category', {
+        key: 'category-10',
+        categoryId: 10,
+        label: 'Sales',
+      });
+
+      expect(renameModal().exists()).toBe(true);
+
+      await renameModal().vm.$emit('update:model-value', false);
+
+      expect(renameModal().exists()).toBe(false);
+    });
+
+    it('passes the scroll key to CategoriesView after a successful rename', async () => {
+      await findComponent('categoriesView').vm.$emit('rename-category', {
+        key: 'category-10',
+        categoryId: 10,
+        label: 'Sales',
+      });
+
+      await renameModal().vm.$emit('renamed', 10);
+
+      expect(findComponent('categoriesView').props('scrollToGroupKey')).toBe(
+        'category-10',
+      );
     });
   });
 

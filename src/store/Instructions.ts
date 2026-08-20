@@ -459,6 +459,48 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     }
   }
 
+  async function renameCategory(id: number, name: string) {
+    const alertStore = useAlertStore();
+    const categoryT = (key: string) =>
+      i18n.global.t(`agents.instructions.rename_category.${key}`);
+    const trimmedName = name.trim();
+
+    try {
+      await nexusaiAPI.agent_builder.instructions.renameCategory({
+        projectUuid: projectUuid.value,
+        id,
+        name: trimmedName,
+      });
+
+      categories.value = categories.value.map((category) =>
+        category.id === id ? { ...category, name: trimmedName } : category,
+      );
+      instructions.data = instructions.data.map((instruction) =>
+        instruction.category?.id === id
+          ? {
+              ...instruction,
+              category: { ...instruction.category, name: trimmedName },
+            }
+          : instruction,
+      );
+
+      alertStore.add({
+        type: 'success',
+        text: categoryT('success_title'),
+      });
+
+      return { status: null };
+    } catch {
+      alertStore.add({
+        type: 'error',
+        text: categoryT('error_title'),
+        description: categoryT('error_description'),
+      });
+
+      return { status: 'error' };
+    }
+  }
+
   async function getInstructionSuggestionByAI(instruction: string) {
     instructionSuggestedByAI.status = 'loading';
 
@@ -604,6 +646,7 @@ export const useInstructionsStore = defineStore('Instructions', () => {
     editInstruction,
     removeInstruction,
     deleteCategory,
+    renameCategory,
     getInstructionSuggestionByAI,
     updateValidateInstructionByAI,
     resetInstructionSuggestedByAI,

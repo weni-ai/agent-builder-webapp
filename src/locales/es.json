@@ -368,6 +368,16 @@
         "error_title": "No se pudo eliminar la categoría",
         "error_description": "Se produjo un error. Vuelve a intentarlo."
       },
+      "rename_category": {
+        "cancel": "Cancelar",
+        "confirm": "Guardar",
+        "disclaimer": "Solo el nombre cambiará. Las instrucciones de esta categoría permanecen agrupadas, y el nuevo nombre aparecerá en la lista, el selector de categorías y la exportación CSV.",
+        "error_description": "Se produjo un error. Inténtalo de nuevo.",
+        "error_title": "No se pudo renombrar la categoría",
+        "modal_title": "Renombrar categoría",
+        "name_label": "Nombre de la categoría",
+        "success_title": "Categoría renombrada"
+      },
       "view": {
         "default_instruction": "Instrucción predeterminada",
         "default_instructions": "Instrucciones predeterminadas",
@@ -378,6 +388,7 @@
           "instruction": "Instrucción"
         },
         "locked_tooltip": "Las instrucciones predeterminadas no se pueden editar ni eliminar",
+        "rename_category": "Renombrar categoría",
         "results_count": "{count, plural, =0 {No se encontraron instrucciones} one {{count} instrucción encontrada} other {{count} instrucciones encontradas}}",
         "search_placeholder": "Buscar...",
         "segmented": {
