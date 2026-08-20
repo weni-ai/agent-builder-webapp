@@ -368,6 +368,16 @@
         "error_title": "Couldn't delete category",
         "error_description": "Something went wrong. Try again."
       },
+      "rename_category": {
+        "cancel": "Cancel",
+        "confirm": "Save",
+        "disclaimer": "Only the name changes. Instructions in this category stay grouped, and the new name appears in the list, the category selector, and the CSV export.",
+        "error_description": "Something went wrong. Try again.",
+        "error_title": "Couldn't rename category",
+        "modal_title": "Rename category",
+        "name_label": "Category name",
+        "success_title": "Category renamed"
+      },
       "view": {
         "default_instruction": "Default instruction",
         "default_instructions": "Default instructions",
@@ -378,6 +388,7 @@
           "instruction": "Instruction"
         },
         "locked_tooltip": "Default instructions can't be edited or deleted",
+        "rename_category": "Rename category",
         "results_count": "{count, plural, =0 {No instructions found} one {{count} instruction found} other {{count} instructions found}}",
         "search_placeholder": "Search...",
         "segmented": {

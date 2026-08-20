@@ -368,6 +368,16 @@
         "error_title": "Não foi possível excluir a categoria",
         "error_description": "Algo deu errado. Tente novamente."
       },
+      "rename_category": {
+        "cancel": "Cancelar",
+        "confirm": "Salvar",
+        "disclaimer": "Apenas o nome será alterado. As instruções desta categoria permanecem agrupadas, e o novo nome aparece na lista, no seletor de categoria e na exportação CSV.",
+        "error_description": "Algo deu errado. Tente novamente.",
+        "error_title": "Não foi possível renomear a categoria",
+        "modal_title": "Renomear categoria",
+        "name_label": "Nome da categoria",
+        "success_title": "Categoria renomeada"
+      },
       "view": {
         "default_instruction": "Instrução padrão",
         "default_instructions": "Instruções padrão",
@@ -378,6 +388,7 @@
           "instruction": "Instrução"
         },
         "locked_tooltip": "As instruções padrão não podem ser editadas nem removidas",
+        "rename_category": "Renomear categoria",
         "results_count": "{count, plural, =0 {Nenhuma instrução encontrada} one {{count} instrução encontrada} other {{count} instruções encontradas}}",
         "search_placeholder": "Buscar...",
         "segmented": {

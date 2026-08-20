@@ -367,6 +367,16 @@
         "error_title": "Categoria nu a putut fi ștearsă",
         "error_description": "Ceva nu a funcționat. Încearcă din nou."
       },
+      "rename_category": {
+        "cancel": "Anulează",
+        "confirm": "Salvează",
+        "disclaimer": "Doar numele se modifică. Instrucțiunile din această categorie rămân grupate, iar noul nume va apărea în listă, în selectorul de categorii și în exportul CSV.",
+        "error_description": "Ceva nu a funcționat corect. Încearcă din nou.",
+        "error_title": "Categoria nu a putut fi redenumită",
+        "modal_title": "Redenumește categoria",
+        "name_label": "Numele categoriei",
+        "success_title": "Categorie redenumită"
+      },
       "view": {
         "default_instruction": "Instrucțiune implicită",
         "default_instructions": "Instrucțiuni implicite",
@@ -377,6 +387,7 @@
           "instruction": "Instrucțiune"
         },
         "locked_tooltip": "Instrucțiunile implicite nu pot fi editate sau șterse",
+        "rename_category": "Redenumește categoria",
         "results_count": "{count, plural, =0 {Nu s-au găsit instrucțiuni} one {{count} instrucțiune găsită} few {{count} instrucțiuni găsite} other {{count} de instrucțiuni găsite}}",
         "search_placeholder": "Caută...",
         "segmented": {
