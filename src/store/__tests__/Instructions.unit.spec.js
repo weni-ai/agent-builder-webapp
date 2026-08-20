@@ -19,6 +19,7 @@ vi.mock('@/api/nexusaiAPI', () => ({
         update: vi.fn(),
         deleteInstruction: vi.fn(),
         deleteCategory: vi.fn(),
+        renameCategory: vi.fn(),
         getSuggestionByAI: vi.fn(),
         export: vi.fn(),
       },
@@ -651,6 +652,87 @@ describe('Instructions Store', () => {
           ),
           description: i18n.global.t(
             'agents.instructions.delete_category.error_description',
+          ),
+        });
+        expect(result).toEqual({ status: 'error' });
+      });
+    });
+
+    describe('renameCategory', () => {
+      beforeEach(() => {
+        store.categories = [
+          { id: 10, name: 'Sales' },
+          { id: 20, name: 'Support' },
+        ];
+        store.instructions.data = [
+          { id: 1, text: 'A', category: { id: 10, name: 'Sales' } },
+          { id: 2, text: 'B', category: { id: 10, name: 'Sales' } },
+          { id: 3, text: 'C', category: { id: 20, name: 'Support' } },
+        ];
+      });
+
+      it('updates the category name in categories and instructions', async () => {
+        nexusaiAPI.agent_builder.instructions.renameCategory.mockResolvedValue();
+
+        const result = await store.renameCategory(10, 'Marketing');
+
+        expect(
+          nexusaiAPI.agent_builder.instructions.renameCategory,
+        ).toHaveBeenCalledWith({
+          projectUuid: 'test-project-uuid',
+          id: 10,
+          name: 'Marketing',
+        });
+        expect(store.categories).toEqual([
+          { id: 10, name: 'Marketing' },
+          { id: 20, name: 'Support' },
+        ]);
+        expect(
+          store.instructions.data.find((i) => i.id === 1).category,
+        ).toEqual({ id: 10, name: 'Marketing' });
+        expect(
+          store.instructions.data.find((i) => i.id === 2).category,
+        ).toEqual({ id: 10, name: 'Marketing' });
+        expect(
+          store.instructions.data.find((i) => i.id === 3).category,
+        ).toEqual({ id: 20, name: 'Support' });
+        expect(result).toEqual({ status: null });
+      });
+
+      it('shows a success toast without a description', async () => {
+        nexusaiAPI.agent_builder.instructions.renameCategory.mockResolvedValue();
+
+        await store.renameCategory(10, 'Marketing');
+
+        expect(alertStore.add).toHaveBeenCalledWith({
+          type: 'success',
+          text: i18n.global.t(
+            'agents.instructions.rename_category.success_title',
+          ),
+        });
+      });
+
+      it('keeps state and shows an error toast on failure', async () => {
+        nexusaiAPI.agent_builder.instructions.renameCategory.mockRejectedValue(
+          new Error('API Error'),
+        );
+
+        const result = await store.renameCategory(10, 'Marketing');
+
+        expect(store.categories).toEqual([
+          { id: 10, name: 'Sales' },
+          { id: 20, name: 'Support' },
+        ]);
+        expect(
+          store.instructions.data.find((i) => i.id === 1).category,
+        ).toEqual({ id: 10, name: 'Sales' });
+        expect(alertStore.add).toHaveBeenCalledWith({
+          type: 'error',
+          text: i18n.global.t(
+            'agents.instructions.rename_category.error_title',
+          ),
+          description: i18n.global.t(
+            'agents.instructions.rename_category.error_description',
           ),
         });
         expect(result).toEqual({ status: 'error' });

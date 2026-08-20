@@ -103,6 +103,17 @@ describe('CategoryAccordion.vue', () => {
     expect(wrapper.emitted('delete-category')).toEqual([[group]]);
   });
 
+  it('emits rename-category with the group when the rename action is clicked', async () => {
+    const group = customGroup();
+    wrapper = createWrapper(group);
+
+    await wrapper
+      .find(`[data-test="${viewT('rename_category')}"]`)
+      .trigger('click');
+
+    expect(wrapper.emitted('rename-category')).toEqual([[group]]);
+  });
+
   it('renders a locked tag with tooltip and no menu for default groups', () => {
     wrapper = createWrapper(lockedGroup());
 
