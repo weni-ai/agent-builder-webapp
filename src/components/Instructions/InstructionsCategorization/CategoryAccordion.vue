@@ -101,7 +101,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['delete-category', 'edit']);
+const emit = defineEmits(['delete-category', 'edit', 'rename-category']);
 
 const { t } = useI18n();
 const viewT = (key) => t(`agents.instructions.view.${key}`);
@@ -127,6 +127,11 @@ const lockedTooltip = computed(() => {
 const emptyText = computed(() => viewT('empty_category'));
 
 const actions = computed(() => [
+  {
+    text: viewT('rename_category'),
+    icon: 'edit_square',
+    onClick: () => emit('rename-category', props.group),
+  },
   {
     text: viewT('delete_category'),
     icon: 'delete',

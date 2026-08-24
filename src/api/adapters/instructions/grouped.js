@@ -65,4 +65,8 @@ export const InstructionsGroupedAdapter = {
       ],
     };
   },
+
+  toRenameCategoryApi({ id, name }) {
+    return { categories: [{ id, name: name.trim() }] };
+  },
 };
