@@ -636,6 +636,11 @@
           "amazing_conversations": "Conversaciones increíbles",
           "label": "Análisis"
         },
+        "origin": {
+          "all_conversations": "Todas las conversaciones",
+          "label": "Origen",
+          "started_with_conversation_starter": "Iniciadas con un iniciador de conversación"
+        },
         "period": {
           "label": "Periodo"
         },
