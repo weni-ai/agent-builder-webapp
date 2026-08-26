@@ -93,6 +93,7 @@ interface FilterData {
   csat: string[];
   topics: string[];
   isAmazing?: boolean | null;
+  hasConversationStarter?: boolean | null;
 }
 
 interface ApiParams {
@@ -104,6 +105,7 @@ interface ApiParams {
   csat: number[];
   topics: string[];
   is_amazing?: boolean;
+  has_conversation_starter?: boolean;
 }
 
 export const ConversationAdapter = {
@@ -182,6 +184,7 @@ export const ConversationAdapter = {
       csat = [],
       topics = [],
       isAmazing,
+      hasConversationStarter,
     } = filterData;
 
     const statusMap = {
@@ -215,6 +218,9 @@ export const ConversationAdapter = {
         }),
       ...(isArray(topics) && topics.length > 0 && { topics }),
       ...(isAmazing === true && { is_amazing: true }),
+      ...(hasConversationStarter === true && {
+        has_conversation_starter: true,
+      }),
     };
 
     return params;

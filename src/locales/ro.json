@@ -635,6 +635,11 @@
           "amazing_conversations": "Conversații extraordinare",
           "label": "Analiză"
         },
+        "origin": {
+          "all_conversations": "Toate conversațiile",
+          "label": "Origine",
+          "started_with_conversation_starter": "Începute cu un inițiator de conversație"
+        },
         "period": {
           "label": "Perioadă"
         },

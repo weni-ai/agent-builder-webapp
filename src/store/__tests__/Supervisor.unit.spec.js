@@ -94,6 +94,7 @@ describe('Supervisor Store', () => {
         csat: [],
         topics: [],
         isAmazing: null,
+        hasConversationStarter: null,
       });
     });
   });
@@ -139,6 +140,7 @@ describe('Supervisor Store', () => {
             csat: [],
             topics: [],
             isAmazing: null,
+            hasConversationStarter: null,
           },
         });
 
@@ -178,6 +180,7 @@ describe('Supervisor Store', () => {
             csat: [],
             topics: [],
             isAmazing: null,
+            hasConversationStarter: null,
           },
         });
       });
@@ -188,6 +191,7 @@ describe('Supervisor Store', () => {
         store.filters.csat = 'test csat';
         store.filters.topics = 'test topics';
         store.filters.isAmazing = true;
+        store.filters.hasConversationStarter = true;
 
         nexusaiAPI.agent_builder.supervisor.conversations.list.mockResolvedValue(
           [],
@@ -210,6 +214,7 @@ describe('Supervisor Store', () => {
             csat: 'test csat',
             topics: 'test topics',
             isAmazing: true,
+            hasConversationStarter: true,
           },
         });
       });
@@ -640,6 +645,7 @@ describe('Supervisor Store', () => {
           csat: [],
           topics: [],
           isAmazing: null,
+          hasConversationStarter: null,
         },
       });
     });

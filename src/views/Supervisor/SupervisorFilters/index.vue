@@ -28,10 +28,8 @@
         <FilterStatus data-testid="filter-status" />
         <FilterCsat data-testid="filter-csat" />
         <FilterTopics data-testid="filter-topics" />
-        <FilterAnalysis
-          v-if="featureFlagsStore.flags.conversationsImprovements"
-          data-testid="filter-analysis"
-        />
+        <FilterOrigin data-testid="filter-origin" />
+        <FilterAnalysis data-testid="filter-analysis" />
       </template>
     </UnnnicDrawer>
   </section>
@@ -44,17 +42,16 @@ import { isEqual } from 'lodash';
 import i18n from '@/utils/plugins/i18n';
 
 import { useSupervisorStore } from '@/store/Supervisor';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 import FilterText from './FilterText.vue';
 import FilterDate from './FilterDate.vue';
 import FilterStatus from './FilterStatus.vue';
 import FilterCsat from './FilterCsat.vue';
 import FilterTopics from './FilterTopics.vue';
+import FilterOrigin from './FilterOrigin.vue';
 import FilterAnalysis from './FilterAnalysis.vue';
 
 const supervisorStore = useSupervisorStore();
-const featureFlagsStore = useFeatureFlagsStore();
 
 const isFilterDrawerOpen = ref(false);
 const filterDrawerApplyButtonDisabled = computed(() =>
@@ -73,8 +70,12 @@ const countAppliedFilters = computed(() => {
   }, 0);
 
   const isAmazingCount = supervisorStore.filters.isAmazing ? 1 : 0;
+  const hasConversationStarterCount = supervisorStore.filters
+    .hasConversationStarter
+    ? 1
+    : 0;
 
-  return arrayFiltersCount + isAmazingCount;
+  return arrayFiltersCount + isAmazingCount + hasConversationStarterCount;
 });
 
 const filterButtonText = computed(() => {
