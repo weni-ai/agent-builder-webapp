@@ -49,6 +49,7 @@ describe('SupervisorFilters.vue', () => {
   const filterStatus = () => findComponent('filter-status');
   const filterCsat = () => findComponent('filter-csat');
   const filterTopics = () => findComponent('filter-topics');
+  const filterOrigin = () => findComponent('filter-origin');
   const filterAnalysis = () => findComponent('filter-analysis');
 
   describe('Component rendering', () => {
@@ -77,14 +78,16 @@ describe('SupervisorFilters.vue', () => {
       expect(filterTopics().exists()).toBe(true);
     });
 
-    it('does not render analysis filter when conversationsImprovements is disabled', () => {
+    it('does not render origin and analysis filters when conversationsImprovements is disabled', () => {
+      expect(filterOrigin().exists()).toBe(false);
       expect(filterAnalysis().exists()).toBe(false);
     });
 
-    it('renders analysis filter when conversationsImprovements is enabled', async () => {
+    it('renders origin and analysis filters when conversationsImprovements is enabled', async () => {
       featureFlagsStore.activeFeatures = ['improvements'];
       await wrapper.vm.$nextTick();
 
+      expect(filterOrigin().exists()).toBe(true);
       expect(filterAnalysis().exists()).toBe(true);
     });
   });
@@ -126,6 +129,18 @@ describe('SupervisorFilters.vue', () => {
         });
 
       store.filters.isAmazing = true;
+      await wrapper.vm.$nextTick();
+
+      expect(buttonFilter().props('text')).toContain(countTranslation(1));
+    });
+
+    it('includes hasConversationStarter in the applied filters count', async () => {
+      const countTranslation = (count) =>
+        i18n.global.t('audit.conversations.filters.count_applied_filters', {
+          count,
+        });
+
+      store.filters.hasConversationStarter = true;
       await wrapper.vm.$nextTick();
 
       expect(buttonFilter().props('text')).toContain(countTranslation(1));

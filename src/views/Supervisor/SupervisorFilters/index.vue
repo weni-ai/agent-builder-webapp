@@ -28,6 +28,10 @@
         <FilterStatus data-testid="filter-status" />
         <FilterCsat data-testid="filter-csat" />
         <FilterTopics data-testid="filter-topics" />
+        <FilterOrigin
+          v-if="featureFlagsStore.flags.conversationsImprovements"
+          data-testid="filter-origin"
+        />
         <FilterAnalysis
           v-if="featureFlagsStore.flags.conversationsImprovements"
           data-testid="filter-analysis"
@@ -51,6 +55,7 @@ import FilterDate from './FilterDate.vue';
 import FilterStatus from './FilterStatus.vue';
 import FilterCsat from './FilterCsat.vue';
 import FilterTopics from './FilterTopics.vue';
+import FilterOrigin from './FilterOrigin.vue';
 import FilterAnalysis from './FilterAnalysis.vue';
 
 const supervisorStore = useSupervisorStore();
@@ -73,8 +78,12 @@ const countAppliedFilters = computed(() => {
   }, 0);
 
   const isAmazingCount = supervisorStore.filters.isAmazing ? 1 : 0;
+  const hasConversationStarterCount = supervisorStore.filters
+    .hasConversationStarter
+    ? 1
+    : 0;
 
-  return arrayFiltersCount + isAmazingCount;
+  return arrayFiltersCount + isAmazingCount + hasConversationStarterCount;
 });
 
 const filterButtonText = computed(() => {

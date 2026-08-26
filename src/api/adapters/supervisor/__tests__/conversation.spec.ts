@@ -53,4 +53,44 @@ describe('Supervisor conversation adapter', () => {
       });
     });
   });
+
+  describe('toApi', () => {
+    const baseFilterData = {
+      page: 1,
+      start: '01-01-2026',
+      end: '31-01-2026',
+      search: '',
+      status: [],
+      csat: [],
+      topics: [],
+    };
+
+    it('omits origin and analysis params when they are not applied', () => {
+      expect(
+        ConversationAdapter.toApi({
+          ...baseFilterData,
+          isAmazing: null,
+          hasConversationStarter: null,
+        }),
+      ).toEqual({
+        page: 1,
+        start_date: '01-01-2026',
+        end_date: '31-01-2026',
+      });
+    });
+
+    it('sends has_conversation_starter when the origin filter is applied', () => {
+      expect(
+        ConversationAdapter.toApi({
+          ...baseFilterData,
+          hasConversationStarter: true,
+        }),
+      ).toEqual({
+        page: 1,
+        start_date: '01-01-2026',
+        end_date: '31-01-2026',
+        has_conversation_starter: true,
+      });
+    });
+  });
 });

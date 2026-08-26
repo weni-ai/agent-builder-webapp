@@ -115,6 +115,7 @@ watch(
     () => supervisorStore.filters.csat,
     () => supervisorStore.filters.topics,
     () => supervisorStore.filters.isAmazing,
+    () => supervisorStore.filters.hasConversationStarter,
   ],
   (newValue, oldValue) => {
     const isInitialRun =
