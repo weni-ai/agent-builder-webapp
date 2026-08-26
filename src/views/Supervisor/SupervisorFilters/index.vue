@@ -28,14 +28,8 @@
         <FilterStatus data-testid="filter-status" />
         <FilterCsat data-testid="filter-csat" />
         <FilterTopics data-testid="filter-topics" />
-        <FilterOrigin
-          v-if="featureFlagsStore.flags.conversationsImprovements"
-          data-testid="filter-origin"
-        />
-        <FilterAnalysis
-          v-if="featureFlagsStore.flags.conversationsImprovements"
-          data-testid="filter-analysis"
-        />
+        <FilterOrigin data-testid="filter-origin" />
+        <FilterAnalysis data-testid="filter-analysis" />
       </template>
     </UnnnicDrawer>
   </section>
@@ -48,7 +42,6 @@ import { isEqual } from 'lodash';
 import i18n from '@/utils/plugins/i18n';
 
 import { useSupervisorStore } from '@/store/Supervisor';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 
 import FilterText from './FilterText.vue';
 import FilterDate from './FilterDate.vue';
@@ -59,7 +52,6 @@ import FilterOrigin from './FilterOrigin.vue';
 import FilterAnalysis from './FilterAnalysis.vue';
 
 const supervisorStore = useSupervisorStore();
-const featureFlagsStore = useFeatureFlagsStore();
 
 const isFilterDrawerOpen = ref(false);
 const filterDrawerApplyButtonDisabled = computed(() =>
