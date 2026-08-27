@@ -955,7 +955,7 @@
           "multiple_message_format": {
             "description": "Agentul poate trimite mai multe mesaje formatate, cum ar fi răspunsuri rapide, liste, CTA-uri și cataloage.",
             "title": "Format multiplu de mesaje",
-            "tooltip": "Dezactivează feedbackul progresiv agent pentru a activa această funcție"
+            "tooltip": "Dezactivează feedbackul progresiv al agentului pentru a activa această funcție"
           }
         },
         "human_support": {
