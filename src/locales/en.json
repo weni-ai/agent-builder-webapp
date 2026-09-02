@@ -951,12 +951,12 @@
           "agents_progressive_feedback": {
             "description": "The agent can provide brief updates while formulating the final response, helping the contact follow the process in real time.",
             "title": "Agent progressive feedback (only available for Shopping Assistant)",
-            "tooltip": "Disable Multiple message format to enable this feature"
+            "tooltip": "Deactivate the multiple message format to use this feature"
           },
           "multiple_message_format": {
             "description": "The agent can send multiple formatted messages, such as quick responses, lists, CTAs, and catalogs.",
             "title": "Multiple message format",
-            "tooltip": "Disable Agent progressive feedback to enable this feature"
+            "tooltip": "Deactivate the agent progressive feedback to use this feature"
           }
         },
         "human_support": {
