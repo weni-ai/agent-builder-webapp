@@ -47,6 +47,20 @@ describe('Supervisor conversation adapter', () => {
       });
     });
 
+    it('keeps an explicit null topic', () => {
+      expect(ConversationAdapter.fromDetailApi({ topic: null })).toEqual({
+        topics: null,
+      });
+    });
+
+    it('keeps the unclassified topic value', () => {
+      expect(
+        ConversationAdapter.fromDetailApi({ topic: 'unclassified' }),
+      ).toEqual({
+        topics: 'unclassified',
+      });
+    });
+
     it('falls back to in_progress for unknown resolutions', () => {
       expect(ConversationAdapter.fromDetailApi({ resolution: 99 })).toEqual({
         status: 'in_progress',

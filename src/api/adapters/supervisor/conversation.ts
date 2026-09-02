@@ -160,7 +160,7 @@ export const ConversationAdapter = {
       ...(contact_urn && { urn: contact_urn }),
       ...(start_date && { start: start_date }),
       ...(end_date && { end: end_date }),
-      ...(topic && { topics: topic }),
+      ...(topic !== undefined && { topics: topic }),
       ...(resolution !== undefined && { status: mapStatus(resolution) }),
       ...(csat !== undefined && { csat: mapCsat(csat) }),
       ...(is_amazing !== undefined && { isAmazing: Boolean(is_amazing) }),
