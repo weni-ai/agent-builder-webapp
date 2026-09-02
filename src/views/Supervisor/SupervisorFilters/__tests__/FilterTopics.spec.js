@@ -86,7 +86,7 @@ describe('FilterTopics.vue', () => {
       );
 
       expect(unclassifiedOption).toStrictEqual({
-        label: 'Not classified',
+        label: 'No matching topic',
         value: 'unclassified',
       });
     });
@@ -150,7 +150,7 @@ describe('FilterTopics.vue', () => {
     it('includes all expected topic options', () => {
       const options = topicSelect().props('options');
       const expectedLabels = [
-        'Not classified',
+        'No matching topic',
         'Billing',
         'Support',
         'Technical',

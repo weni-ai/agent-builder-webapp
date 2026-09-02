@@ -660,8 +660,9 @@
           "very_dissatisfied": "😡 Foarte nemulțumit"
         },
         "topic": {
+          "could_not_classify": "Nu s-a putut clasifica",
           "topic": "Subiect",
-          "unclassified": "Neclasificat"
+          "unclassified": "Niciun subiect corespunzător"
         }
       },
       "load_conversations": {
