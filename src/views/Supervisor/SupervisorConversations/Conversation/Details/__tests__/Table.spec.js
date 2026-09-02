@@ -8,7 +8,7 @@ import i18n from '@/utils/plugins/i18n';
 describe('DetailsTable', () => {
   let wrapper;
 
-  const createWrapper = ({ topics, isCollapsed = true } = {}) => {
+  const createWrapper = ({ topics, status, isCollapsed = true } = {}) => {
     wrapper = shallowMount(DetailsTable, {
       props: { isCollapsed },
       global: {
@@ -20,6 +20,7 @@ describe('DetailsTable', () => {
                 selectedConversation: {
                   urn: 'whatsapp:5511999999999',
                   topics,
+                  status,
                   csat: null,
                 },
               },
@@ -38,27 +39,33 @@ describe('DetailsTable', () => {
   });
 
   it('shows the topic name when the conversation has a matching topic', () => {
-    createWrapper({ topics: 'Delivery' });
+    createWrapper({ topics: 'Delivery', status: 'optimized_resolution' });
 
     expect(findTopicRow().props('data')).toBe('Delivery');
   });
 
   it('shows no matching topic when the conversation is unclassified', () => {
-    createWrapper({ topics: 'unclassified' });
+    createWrapper({ topics: 'unclassified', status: 'optimized_resolution' });
 
     expect(findTopicRow().props('data')).toBe('No matching topic');
   });
 
-  it('shows could not classify when topic classification failed', () => {
-    createWrapper({ topics: null });
+  it('shows a dash when the topic is null and the conversation is in progress', () => {
+    createWrapper({ topics: null, status: 'in_progress' });
+
+    expect(findTopicRow().props('data')).toBe('-');
+  });
+
+  it('shows could not classify when the topic is null and the conversation is not in progress', () => {
+    createWrapper({ topics: null, status: 'optimized_resolution' });
 
     expect(findTopicRow().props('data')).toBe("Couldn't classify");
   });
 
-  it('shows could not classify when the topic list is empty', () => {
-    createWrapper({ topics: [] });
+  it('shows a dash when the topic list is empty and the conversation is in progress', () => {
+    createWrapper({ topics: [], status: 'in_progress' });
 
-    expect(findTopicRow().props('data')).toBe("Couldn't classify");
+    expect(findTopicRow().props('data')).toBe('-');
   });
 
   it('formats a list of topics into readable text', () => {
