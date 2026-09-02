@@ -43,15 +43,20 @@ const conversation = computed(() => supervisorStore.selectedConversation);
 const formattedUrn = computed(() => formatWhatsappUrn(conversation.value?.urn));
 const formattedTopics = computed(() => {
   const topics = conversation.value?.topics;
+  const status = conversation.value?.status;
 
   if (topics === 'unclassified') {
     return i18n.global.t('audit.conversations.filters.topic.unclassified');
   }
 
   if (!topics || topics.length === 0) {
-    return i18n.global.t(
-      'audit.conversations.filters.topic.could_not_classify',
-    );
+    if (status && status !== 'in_progress') {
+      return i18n.global.t(
+        'audit.conversations.filters.topic.could_not_classify',
+      );
+    }
+
+    return '-';
   }
 
   if (Array.isArray(topics)) return formatListToReadable(topics);
