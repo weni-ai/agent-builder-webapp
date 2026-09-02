@@ -13,6 +13,6 @@ export interface Conversation {
   urn: string;
   status: string;
   csat: Csat | null;
-  topics: string;
+  topics: string | string[] | null;
   source?: 'legacy' | 'v2';
 }

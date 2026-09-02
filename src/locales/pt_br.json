@@ -656,8 +656,9 @@
           "very_dissatisfied": "😡 Muito insatisfeito"
         },
         "topic": {
+          "could_not_classify": "Não foi possível classificar",
           "topic": "Tópico",
-          "unclassified": "Não classificado"
+          "unclassified": "Nenhum tópico correspondente"
         }
       },
       "load_conversations": {
