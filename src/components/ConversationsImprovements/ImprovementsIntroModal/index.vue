@@ -96,13 +96,13 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { HELP_GUIDE_URL, INTRO_STEPS, TOTAL_STEPS } from './steps';
+import { getHelpGuideUrl, INTRO_STEPS, TOTAL_STEPS } from './steps';
 
 const open = defineModel<boolean>('open', {
   required: true,
 });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const currentStep = ref(1);
 
@@ -136,8 +136,7 @@ function handleNext() {
 }
 
 function handleViewHelpGuide() {
-  if (!HELP_GUIDE_URL) return;
-  window.open(HELP_GUIDE_URL, '_blank', 'noopener,noreferrer');
+  window.open(getHelpGuideUrl(locale.value), '_blank', 'noopener,noreferrer');
 }
 </script>
 
