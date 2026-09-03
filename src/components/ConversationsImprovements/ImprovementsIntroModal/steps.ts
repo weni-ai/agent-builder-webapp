@@ -46,5 +46,13 @@ export const INTRO_STEPS: IntroStep[] = [
 
 export const TOTAL_STEPS = INTRO_STEPS.length;
 
-export const HELP_GUIDE_URL =
-  'https://docs.google.com/document/d/1ZvJZ7UqwFE_oyXhRcf0E9p0sw8W74B3HnW3RWDWqDq8/';
+const HELP_GUIDE_URLS: Record<string, string> = {
+  en: 'https://help.vtex.com/en/docs/tutorials/audit-improvements-backlog',
+  es: 'https://help.vtex.com/es/docs/tutorials/auditoria-backlog-de-mejoras',
+  'pt-br':
+    'https://help.vtex.com/pt/docs/tutorials/auditoria-backlog-de-melhorias',
+};
+
+export function getHelpGuideUrl(locale?: string): string {
+  return HELP_GUIDE_URLS[locale ?? ''] ?? HELP_GUIDE_URLS.en;
+}
