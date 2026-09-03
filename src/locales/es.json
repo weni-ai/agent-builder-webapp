@@ -344,7 +344,7 @@
     },
     "instructions": {
       "title": "Instrucciones",
-      "description": "Define las reglas que guían cómo el Manager responde, se comunica y toma decisiones",
+      "description": "Define las reglas que establecen la forma en que el Manager responde, se comunica y toma decisiones",
       "new_instruction": "Nueva instrucción",
       "export_instructions": {
         "title": "Exportar instrucciones",
@@ -573,8 +573,8 @@
         "transferred_to_human_support_description": "Incluye conversaciones (Atendido por IA y No atendido) transferidas a un representante humano."
       },
       "amazing_conversation": {
-        "description": "Esta conversación muestra la capacidad del agente para responder múltiples preguntas del cliente de manera efectiva. La resolución clara y el seguimiento atento dieron como resultado un cliente satisfecho.",
-        "title": "Conversación increíble"
+        "description": "El agente atendió varias consultas del cliente con claridad, proporcionó soluciones y dio seguimiento al caso de forma atenta. El cliente se mostró satisfecho con la atención recibida.",
+        "title": "Excelente conversación"
       },
       "conversations_count": "{count} conversaciones encontradas",
       "unnamed_contact": "Contacto sin nombre",
@@ -666,12 +666,12 @@
       }
     },
     "improvements": {
-      "analysis_in_progress_disclaimer": "Análisis en progreso: {percentage}% de conversaciones procesadas. Nuevos elementos pueden aparecer próximamente.",
+      "analysis_in_progress_disclaimer": "Análisis en curso: {percentage}% de las conversaciones procesadas. Es posible que se muestren nuevos ítems en breve.",
       "analysis_complete": {
-        "no_improvements_description": "No se identificaron mejoras en las conversaciones de {date}",
-        "ready_description": "Las mejoras de {date} están listas en tu backlog.",
-        "title": "Análisis completo",
-        "title_with_count": "{count, plural, one {Análisis completo ({count} mejora encontrada)} other {Análisis completo ({count} mejoras encontradas)}}"
+        "no_improvements_description": "No se identificaron mejoras en las conversaciones del {date}",
+        "ready_description": "Las mejoras del {date} están listas en tu backlog",
+        "title": "Análisis completado",
+        "title_with_count": "{count, plural, one {Análisis completado ({count} mejora encontrada)} other {Análisis completado ({count} mejoras encontradas)}}"
       },
       "columns": {
         "affected_conversations": "Conversaciones afectadas",
@@ -683,7 +683,7 @@
         "affected_conversations": "{count, plural, one {# conversación afectada} other {# conversaciones afectadas}}",
         "create": {
           "error": "No se pudo guardar el análisis personalizado debido a un problema técnico",
-          "limit_error": "No se pudo guardar el análisis personalizado debido al límite de 10 análisis personalizados",
+          "limit_error": "No se pudo guardar el análisis personalizado. Alcanzaste el límite de 10 análisis personalizados.",
           "success": {
             "title": "Análisis personalizado agregado",
             "description": "El problema se monitoreará en los próximos análisis"
@@ -700,48 +700,48 @@
           },
           "title": "Eliminar análisis personalizado"
         },
-        "definition_helper": "Cuanto más específica sea la descripción, mejor podrá la IA identificar el problema en las conversaciones",
+        "definition_helper": "Cuanto más específica sea la descripción, mejor podrá la IA identificar problemas en las conversaciones.",
         "definition_label": "¿Qué deseas monitorear?",
-        "definition_placeholder": "Por ejemplo: Agente proporciona plazos de entrega poco realistas",
-        "description": "Describe un comportamiento o problema que la IA debe monitorear en las conversaciones. Cuando se identifica, aparece automáticamente en el backlog de mejoras",
-        "empty_description": "Usa el campo de arriba para comenzar a monitorear problemas específicos",
-        "empty_title": "Ningún análisis personalizado agregado",
-        "limit_disclaimer": "Se alcanzó el límite de 10 análisis personalizados. Elimina uno para agregar uno nuevo",
+        "definition_placeholder": "Por ejemplo: el agente está proporcionando plazos de entrega poco realistas",
+        "description": "Describe un comportamiento o problema que la IA debe monitorear en las conversaciones. Cuando se identifica, aparece automáticamente en el backlog de mejoras.",
+        "empty_description": "Utiliza el campo anterior para comenzar a monitorear problemas específicos",
+        "empty_title": "No se ha agregado ningún análisis personalizado",
+        "limit_disclaimer": "Alcanzaste el límite de 10 análisis personalizados. Elimina uno para crear otro.",
         "list_heading": "Análisis personalizados",
         "list_heading_count": "{count} de {max}",
-        "no_affected_conversations": "Ninguna conversación afectada",
+        "no_affected_conversations": "No hay conversaciones afectadas",
         "title": "Análisis personalizado",
-        "title_helper": "Etiqueta breve para identificar este análisis en la lista",
+        "title_helper": "Una descripción breve para identificar este análisis en la lista",
         "title_label": "Título",
-        "title_placeholder": "Por ejemplo: Plazos de entrega poco realistas"
+        "title_placeholder": "Por ejemplo: plazos de entrega poco realistas"
       },
       "contact_technical_support_dialog": {
         "cancel": "Cancelar",
-        "contact_support": "Contactar con soporte",
-        "description": "Enviaremos un correo electrónico a {support_email} con esta información:",
-        "error": "No se pudo contactar con soporte. Intenta nuevamente más tarde",
+        "contact_support": "Comunicarse con Soporte",
+        "description": "Enviaremos un email a {support_email} con la información siguiente:",
+        "error": "No se pudo contactar con Soporte. Vuelve a intentarlo más tarde.",
         "identified_on": "Identificado el {date} por {email}",
         "project_uuid": "UUID del proyecto: {uuid}",
         "success": {
-          "description": "Ticket abierto para {improvement_title}",
+          "description": "Se abrió un ticket de soporte para {improvement_title}",
           "title": "Soporte notificado"
         },
         "summary_type_and_count": "{type} · {count, plural, one {# conversación afectada} other {# conversaciones afectadas}}",
-        "title": "Contactar con soporte"
+        "title": "Comunicarse con Soporte"
       },
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# conversación afectada} other {# conversaciones afectadas}}",
         "affected_conversations_title": "Conversaciones afectadas",
-        "affected_instructions_title": "Edita también estas instrucciones existentes:",
-        "contact_technical_support": "Contactar con soporte",
+        "affected_instructions_title": "Edita también estas instrucciones registradas:",
+        "contact_technical_support": "Comunicarse con Soporte",
         "diagnosis_title": "Diagnóstico",
-        "go_to_instructions": "Acceder a instrucciones",
-        "go_to_knowledge_base": "Acceder a base de conocimiento",
+        "go_to_instructions": "Acceder a las instrucciones",
+        "go_to_knowledge_base": "Acceder a la base de conocimientos",
         "ignore_improvement": "Ignorar mejora",
         "instruction_updated_disclaimer": "{count, plural, one {# instrucción actualizada desde el análisis} other {# instrucciones actualizadas desde el análisis}}",
         "mark_as_resolved": "Marcar como resuelta",
-        "suggested_solution_behavior_title": "Agrega esta instrucción al Manager:",
-        "suggested_solution_knowledge_title": "Nuevo contenido para la base de conocimiento",
+        "suggested_solution_behavior_title": "Agrega esta instrucción al manager:",
+        "suggested_solution_knowledge_title": "Nuevo contenido para la base de conocimientos",
         "suggested_solution_technical_issue_title": "Acción recomendada",
         "suggested_solution_title": "Solución sugerida",
         "view_full_conversation": "Ver conversación completa"
@@ -753,7 +753,7 @@
         "run_analysis": "Ejecutar análisis",
         "run_analysis_already_run_today_tooltip": "El análisis ya se ejecutó en las últimas 24 horas y volverá a estar disponible a las {time}",
         "run_analysis_insufficient_volume_tooltip": "Ayer no hubo suficientes conversaciones para ejecutar el análisis. Se requieren al menos {min} conversaciones.",
-        "title": "{count, plural, =0 {Análisis de conversaciones de {date}} one {Análisis de conversaciones de {date} · {count} mejora identificada} other {Análisis de conversaciones de {date} · {count} mejoras identificadas}}"
+        "title": "{count, plural, =0 {Análisis de las conversaciones del {date}} one {Análisis de las conversaciones del {date} · {count} mejora identificada} other {Análisis de las conversaciones del {date} · {count} mejoras identificadas}}"
       },
       "insufficient_volume": {
         "description": "El análisis se basa en las conversaciones de ayer. Se requieren al menos {min} conversaciones.",
@@ -786,13 +786,13 @@
         "view_help_guide": "Ver guía"
       },
       "no_analysis": {
-        "description": "Ejecuta tu primer análisis para identificar oportunidades de optimización en las conversaciones de ayer",
+        "description": "Ejecuta tu primer análisis para identificar oportunidades de optimización en una muestra de las conversaciones de ayer",
         "run_analysis": "Ejecutar análisis",
         "title": "Aún no se ha ejecutado ningún análisis"
       },
       "no_improvement_identified": {
-        "description": "No se identificaron mejoras en este análisis",
-        "title": "¡Todo bien!"
+        "description": "No se identificaron mejoras",
+        "title": "¡Todo en orden!"
       },
       "run_analysis_dialog": {
         "cancel": "Cancelar",
@@ -802,7 +802,7 @@
       },
       "running_analysis": {
         "description": "Esto puede tardar algunas horas. Puedes cerrar esta ventana.",
-        "title": "Analizando una muestra de conversaciones de ayer"
+        "title": "Analizando una muestra de las conversaciones de ayer"
       },
       "stale_analysis_disclaimer": {
         "description": "Ejecuta un nuevo análisis para identificar oportunidades de mejora",
@@ -811,11 +811,11 @@
       "status_dialog": {
         "cancel": "Cancelar",
         "ignored": {
-          "description": "Este problema se eliminará del backlog y ya no aparecerá en las sugerencias de mejora.",
+          "description": "Este problema se removerá del backlog y ya no aparecerá en tus sugerencias de mejora.",
           "title": "Ignorar mejora"
         },
         "resolved": {
-          "description": "Confirma solo después de aplicar la solución sugerida. El problema se eliminará del backlog y abrirá espacio para nuevas mejoras.",
+          "description": "Confirma solo después de aplicar la solución sugerida. El problema se removerá del backlog y dejará espacio para nuevas mejoras.",
           "title": "Marcar como resuelta"
         }
       },
@@ -827,11 +827,11 @@
           },
           "resolved": {
             "description": "Debido a un problema técnico",
-            "title": "No se pudo marcar como resuelta"
+            "title": "No se pudo marcar la mejora como resuelta"
           }
         },
         "success": {
-          "description": "El ítem se eliminó del backlog de mejoras",
+          "description": "El ítem se removió del backlog de mejoras",
           "ignored": {
             "title": "Mejora ignorada"
           },
