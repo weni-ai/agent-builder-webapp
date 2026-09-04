@@ -59,7 +59,10 @@ import { useI18n } from 'vue-i18n';
 import { useImprovementsStore } from '@/store/Improvements';
 
 import ImprovementDrawerSection from './ImprovementDrawerSection.vue';
-import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTag';
+import {
+  getImprovementTypeTag,
+  type ImprovementTagCategory,
+} from '@/utils/improvements/getImprovementTypeTag';
 import { redirectInParent } from '@/utils/parentRedirect';
 import { useProfileStore } from '@/store/Profile.js';
 import { UnnnicDisclaimer } from '@weni/unnnic-system';
@@ -119,13 +122,14 @@ const affectedInstructionsTitle = computed(() => {
     : undefined;
 });
 const ctaText = computed(() => {
-  const ctaKeyMap = {
+  const ctaKeyMap: Partial<Record<ImprovementTagCategory, string>> = {
     knowledge: 'go_to_knowledge_base',
     behavior: 'go_to_instructions',
     technical_issue: 'contact_technical_support',
   };
 
-  const key = ctaKeyMap[improvementCategory.value];
+  const category = improvementCategory.value;
+  const key = category ? ctaKeyMap[category] : undefined;
 
   return key ? t(`audit.improvements.drawer.${key}`) : undefined;
 });
