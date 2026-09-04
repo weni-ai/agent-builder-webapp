@@ -136,6 +136,7 @@ describe('Supervisor improvements adapter', () => {
         description: 'Sample diagnosis',
         suggested_change: 'Update the tone instruction',
         status: 'pending',
+        recommended_action: 'fix_instruction',
         affected_instructions: [
           {
             instruction_id: 42,
@@ -152,6 +153,7 @@ describe('Supervisor improvements adapter', () => {
         description: 'Sample diagnosis',
         suggestedSolution: 'Update the tone instruction',
         status: 'pending',
+        recommendedAction: 'fix_instruction',
         affectedInstructions: [
           {
             id: 42,
@@ -205,6 +207,7 @@ describe('Supervisor improvements adapter', () => {
         description: 'Sample diagnosis',
         suggestedSolution: null,
         status: 'pending',
+        recommendedAction: null,
         affectedInstructions: [
           {
             id: 42,
@@ -213,6 +216,26 @@ describe('Supervisor improvements adapter', () => {
           },
         ],
       });
+    });
+
+    it('maps recommended_action and defaults invalid values to null', () => {
+      expect(
+        ImprovementsAdapter.fromDetailApi({
+          uuid: 'improvement-uuid-1',
+          text: 'Sample improvement text',
+          type: 'personality_deviation',
+          recommended_action: 'remove_instruction',
+        })?.recommendedAction,
+      ).toBe('remove_instruction');
+
+      expect(
+        ImprovementsAdapter.fromDetailApi({
+          uuid: 'improvement-uuid-1',
+          text: 'Sample improvement text',
+          type: 'personality_deviation',
+          recommended_action: 'unknown',
+        })?.recommendedAction,
+      ).toBeNull();
     });
   });
 });

@@ -366,6 +366,7 @@ describe('Supervisor.js', () => {
         suggested_change:
           'Update the tone instruction to reinforce formal and empathetic language during refund interactions.',
         status: 'pending',
+        recommended_action: 'fix_instruction',
         affected_instructions: [
           {
             instruction_id: 12,
@@ -397,6 +398,7 @@ describe('Supervisor.js', () => {
         suggestedSolution:
           'Update the tone instruction to reinforce formal and empathetic language during refund interactions.',
         status: 'pending',
+        recommendedAction: 'fix_instruction',
         affectedInstructions: [
           {
             id: 12,
