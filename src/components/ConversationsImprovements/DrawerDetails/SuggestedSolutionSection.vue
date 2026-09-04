@@ -1,16 +1,16 @@
 <template>
   <ImprovementDrawerSection
-    v-if="ctaText"
+    v-if="improvementDetail && ctaText"
     testId="suggested-solution"
     :title="$t('audit.improvements.drawer.suggested_solution_title')"
   >
     <section class="suggested-solution-content">
       <p data-testid="improvement-drawer-suggested-solution-description">
-        {{ improvementDetail?.suggestedSolution }}
+        {{ improvementDetail.suggestedSolution }}
       </p>
 
       <section
-        v-if="improvementDetail.affectedInstructions.length"
+        v-if="visibleAffectedInstructions.length"
         class="suggested-solution-content__affected-instructions"
       >
         <h3
@@ -21,12 +21,16 @@
           {{ affectedInstructionsTitle }}
         </h3>
 
-        <ul class="suggested-solution-content__affected-instructions-list">
+        <ul
+          class="suggested-solution-content__affected-instructions-list"
+          data-testid="suggested-solution-affected-instructions-list"
+        >
           <li
-            v-for="instruction in improvementDetail.affectedInstructions"
+            v-for="instruction in visibleAffectedInstructions"
             :key="instruction.id"
+            data-testid="suggested-solution-affected-instruction"
           >
-            • "{{ getInstructionById(instruction.id)?.instruction }}"
+            • "{{ instruction.text }}"
           </li>
         </ul>
 
@@ -59,13 +63,27 @@ import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTa
 import { redirectInParent } from '@/utils/parentRedirect';
 import { useProfileStore } from '@/store/Profile.js';
 import { UnnnicDisclaimer } from '@weni/unnnic-system';
-import type { RecommendedAction } from '@/store/types/Improvements.types';
+import type {
+  AffectedInstruction,
+  RecommendedAction,
+} from '@/store/types/Improvements.types';
+
+type ProfileInstruction = {
+  id?: number;
+  instruction?: string;
+};
+
+type VisibleAffectedInstruction = {
+  id: number;
+  text: string;
+};
 
 const emit = defineEmits<{
   'open-contact-support': [];
 }>();
 
 const { t } = useI18n();
+const profileStore = useProfileStore();
 
 const improvementDetail = computed(
   () => useImprovementsStore().improvementDetail.data,
@@ -77,9 +95,11 @@ const improvementCategory = computed(() => {
 });
 
 const instructionsUpdatedCount = computed(() => {
-  return improvementDetail.value?.affectedInstructions.filter(
-    (instruction) => instruction.wasChanged,
-  ).length;
+  return (
+    improvementDetail.value?.affectedInstructions.filter(
+      (instruction) => instruction.wasChanged,
+    ).length || 0
+  );
 });
 const instructionUpdatedDisclaimer = computed(() =>
   t('audit.improvements.drawer.instruction_updated_disclaimer', {
@@ -110,11 +130,33 @@ const ctaText = computed(() => {
   return key ? t(`audit.improvements.drawer.${key}`) : undefined;
 });
 
-const getInstructionById = (id: number) => {
-  return useProfileStore().instructions.current.find(
+function getProfileInstructionText(id: number): string {
+  const instructions: ProfileInstruction[] =
+    profileStore.instructions?.current ?? [];
+  const matchedInstruction = instructions.find(
     (instruction) => instruction.id === id,
   );
-};
+
+  return matchedInstruction?.instruction?.trim() ?? '';
+}
+
+function toVisibleAffectedInstruction({
+  id,
+}: AffectedInstruction): VisibleAffectedInstruction | null {
+  const text = getProfileInstructionText(id);
+
+  if (!text) {
+    return null;
+  }
+
+  return { id, text };
+}
+
+const visibleAffectedInstructions = computed<VisibleAffectedInstruction[]>(() =>
+  (improvementDetail.value?.affectedInstructions ?? [])
+    .map(toVisibleAffectedInstruction)
+    .filter((instruction) => instruction !== null),
+);
 
 function handleCtaClick() {
   if (improvementCategory.value === 'knowledge') {
