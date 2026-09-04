@@ -20,6 +20,8 @@ export type ImprovementDetailStatus = 'pending' | 'resolved' | 'ignored';
 
 export type InstructionChangeType = 'fix' | 'add' | 'remove';
 
+export type RecommendedAction = 'fix_instruction' | 'remove_instruction';
+
 export interface AffectedInstruction {
   id: number;
   changeType: InstructionChangeType;
@@ -33,6 +35,7 @@ export interface ImprovementDetail {
   description: string;
   suggestedSolution: string | null;
   status: ImprovementDetailStatus;
+  recommendedAction: RecommendedAction | null;
   affectedInstructions: AffectedInstruction[];
 }
 
