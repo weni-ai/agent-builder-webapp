@@ -732,14 +732,15 @@
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# conversa afetada} other {# conversas afetadas}}",
         "affected_conversations_title": "Conversas afetadas",
-        "affected_instructions_title": "Edite também estas instruções existentes:",
         "contact_technical_support": "Falar com o Suporte",
         "diagnosis_title": "Diagnóstico",
+        "edit_instructions_below": "Edite as instruções abaixo:",
         "go_to_instructions": "Acessar instruções",
         "go_to_knowledge_base": "Acessar base de conhecimento",
         "ignore_improvement": "Ignorar melhoria",
         "instruction_updated_disclaimer": "{count, plural, one {# instrução atualizada desde a análise} other {# instruções atualizadas desde a análise}}",
         "mark_as_resolved": "Marcar como resolvida",
+        "remove_instructions_below": "Remova as instruções abaixo:",
         "suggested_solution_title": "Solução sugerida",
         "view_full_conversation": "Ver conversa completa"
       },

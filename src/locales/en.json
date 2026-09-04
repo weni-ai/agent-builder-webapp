@@ -732,14 +732,15 @@
       "drawer": {
         "affected_conversations_count": "{count, plural, one {# affected conversation} other {# affected conversations}}",
         "affected_conversations_title": "Affected conversations",
-        "affected_instructions_title": "Also edit these existing instructions:",
         "contact_technical_support": "Contact support",
         "diagnosis_title": "Diagnosis",
+        "edit_instructions_below": "Edit the instructions below:",
         "go_to_instructions": "Go to instructions",
         "go_to_knowledge_base": "Go to knowledge base",
         "ignore_improvement": "Ignore improvement",
         "instruction_updated_disclaimer": "{count, plural, one {# instruction updated since the analysis} other {# instructions updated since the analysis}}",
         "mark_as_resolved": "Mark as resolved",
+        "remove_instructions_below": "Remove the instructions below:",
         "suggested_solution_title": "Suggested solution",
         "view_full_conversation": "View full conversation"
       },

@@ -13,8 +13,12 @@
         v-if="improvementDetail.affectedInstructions.length"
         class="suggested-solution-content__affected-instructions"
       >
-        <h3 class="suggested-solution-content__title">
-          {{ $t('audit.improvements.drawer.affected_instructions_title') }}
+        <h3
+          v-if="affectedInstructionsTitle"
+          class="suggested-solution-content__title"
+          data-testid="suggested-solution-affected-instructions-title"
+        >
+          {{ affectedInstructionsTitle }}
         </h3>
 
         <ul class="suggested-solution-content__affected-instructions-list">
@@ -55,6 +59,7 @@ import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTa
 import { redirectInParent } from '@/utils/parentRedirect';
 import { useProfileStore } from '@/store/Profile.js';
 import { UnnnicDisclaimer } from '@weni/unnnic-system';
+import type { RecommendedAction } from '@/store/types/Improvements.types';
 
 const emit = defineEmits<{
   'open-contact-support': [];
@@ -81,6 +86,18 @@ const instructionUpdatedDisclaimer = computed(() =>
     count: instructionsUpdatedCount.value,
   }),
 );
+const affectedInstructionsTitle = computed(() => {
+  const titleKeyMap: Record<RecommendedAction, string> = {
+    fix_instruction: 'edit_instructions_below',
+    remove_instruction: 'remove_instructions_below',
+  };
+
+  const recommendedAction = improvementDetail.value?.recommendedAction;
+
+  return recommendedAction
+    ? t(`audit.improvements.drawer.${titleKeyMap[recommendedAction]}`)
+    : undefined;
+});
 const ctaText = computed(() => {
   const ctaKeyMap = {
     knowledge: 'go_to_knowledge_base',
@@ -127,8 +144,8 @@ function handleCtaClick() {
   gap: $unnnic-space-2;
 
   &__title {
-    @include unnnic-font-action;
-    color: $unnnic-color-fg-emphasized;
+    @include unnnic-font-emphasis;
+    color: $unnnic-color-fg-base;
   }
 
   &__affected-instructions {

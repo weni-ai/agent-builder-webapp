@@ -40,6 +40,10 @@ describe('SuggestedSolutionSection.vue', () => {
 
   const elements = {
     cta: () => wrapper.findComponent('[data-testid="suggested-solution-cta"]'),
+    affectedInstructionsTitle: () =>
+      wrapper.find(
+        '[data-testid="suggested-solution-affected-instructions-title"]',
+      ),
   };
 
   it('opens the knowledge base in a new tab when the CTA is clicked', async () => {
@@ -103,5 +107,55 @@ describe('SuggestedSolutionSection.vue', () => {
 
     expect(wrapper.emitted('open-contact-support')).toEqual([[]]);
     expect(redirectInParent).not.toHaveBeenCalled();
+  });
+
+  describe('affected instructions title', () => {
+    const affectedInstructions = [
+      { id: 1, changeType: 'fix', wasChanged: false },
+    ];
+
+    it.each([
+      {
+        recommendedAction: 'fix_instruction',
+        localeKey: 'audit.improvements.drawer.edit_instructions_below',
+      },
+      {
+        recommendedAction: 'remove_instruction',
+        localeKey: 'audit.improvements.drawer.remove_instructions_below',
+      },
+    ])(
+      'renders the $recommendedAction title',
+      async ({ recommendedAction, localeKey }) => {
+        createWrapper();
+
+        improvementsStore.improvementDetail.data = {
+          type: 'wrong_behavior_due_to_instructions',
+          suggestedSolution: 'Update instructions',
+          recommendedAction,
+          affectedInstructions,
+        };
+
+        await wrapper.vm.$nextTick();
+
+        expect(elements.affectedInstructionsTitle().text()).toBe(
+          i18n.global.t(localeKey),
+        );
+      },
+    );
+
+    it('does not render a title when recommendedAction is missing', async () => {
+      createWrapper();
+
+      improvementsStore.improvementDetail.data = {
+        type: 'wrong_behavior_due_to_instructions',
+        suggestedSolution: 'Update instructions',
+        recommendedAction: null,
+        affectedInstructions,
+      };
+
+      await wrapper.vm.$nextTick();
+
+      expect(elements.affectedInstructionsTitle().exists()).toBe(false);
+    });
   });
 });
