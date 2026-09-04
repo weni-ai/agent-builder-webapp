@@ -778,11 +778,11 @@
             "title": "Monitorizează ce contează pentru operațiunea ta"
           },
           "5": {
-            "description": "Analiza nu doar identifică probleme — marchează și conversații remarcabile ca Conversații Uimitoare în fila Conversații. O modalitate de a vedea ce funcționează bine, nu doar ce trebuie corectat.",
+            "description": "Analiza nu doar identifică probleme — marchează și conversații remarcabile drept Conversații uimitoare în fila Conversații. O modalitate de a vedea ce funcționează bine, nu doar ce trebuie corectat.",
             "title": "Evidențiază și ce funcționează"
           }
         },
-        "view_help_guide": "Vezi ghidul"
+        "view_help_guide": "Vizualizează ghidul"
       },
       "no_analysis": {
         "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire într-un eșantion al conversațiilor de ieri",
