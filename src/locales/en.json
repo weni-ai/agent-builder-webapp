@@ -767,7 +767,7 @@
             "title": "New in Audit"
           },
           "2": {
-            "description": "Behavior: The agent didn't act the way it was supposed to in the conversation.\nKnowledge: The agent lacked information it should have had to answer.\nTechnical issue: Something failed for technical reasons, like an integration that didn't respond.\nCustom analysis: A behavior you defined yourself.",
+            "description": "Behavior: The agent didn't act as expected during the conversation.\nKnowledge: The agent lacked information it needed to answer.\nTechnical issue: Something failed due to a technical issue, such as an integration that didn't respond.\nCustom analysis: A behavior you defined yourself.",
             "title": "What the analysis looks for"
           },
           "3": {
@@ -775,11 +775,11 @@
             "title": "Every item comes with evidence"
           },
           "4": {
-            "description": "Beyond the types above, you can define behaviors of your own to monitor, up to 10 per project. The more specific the definition, the better the AI identifies the problem.",
+            "description": "Beyond the types above, you can define your own behaviors to monitor, up to 10 per project. The more specific the definition, the better the AI identifies the problem.",
             "title": "Monitor what matters to your operation"
           },
           "5": {
-            "description": "The analysis doesn't just surface problems — it also flags standout conversations as Amazing Conversations on the Conversations tab. A way to see what good looks like, not just what to correct.",
+            "description": "The analysis doesn't just surface problems — it also flags standout conversations as Great conversations on the Conversations tab. A way to see what good looks like, not just what to correct.",
             "title": "It also highlights what's working"
           }
         },
