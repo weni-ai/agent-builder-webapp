@@ -739,9 +739,6 @@
         "ignore_improvement": "Ignoră îmbunătățirea",
         "instruction_updated_disclaimer": "{count, plural, one {# instrucțiune actualizată de la analiză} few {# instrucțiuni actualizate de la analiză} other {# de instrucțiuni actualizate de la analiză}}",
         "mark_as_resolved": "Marchează ca rezolvat",
-        "suggested_solution_behavior_title": "Adaugă această instrucțiune managerului:",
-        "suggested_solution_knowledge_title": "Conținut nou pentru baza de cunoștințe",
-        "suggested_solution_technical_issue_title": "Acțiune recomandată",
         "suggested_solution_title": "Soluție sugerată",
         "view_full_conversation": "Vizualizează conversația completă"
       },

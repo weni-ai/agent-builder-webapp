@@ -1,14 +1,10 @@
 <template>
   <ImprovementDrawerSection
-    v-if="suggestedSolutionTitle"
+    v-if="ctaText"
     testId="suggested-solution"
     :title="$t('audit.improvements.drawer.suggested_solution_title')"
   >
     <section class="suggested-solution-content">
-      <h3 class="suggested-solution-content__title">
-        {{ suggestedSolutionTitle }}
-      </h3>
-
       <p data-testid="improvement-drawer-suggested-solution-description">
         {{ improvementDetail?.suggestedSolution }}
       </p>
@@ -75,17 +71,6 @@ const improvementCategory = computed(() => {
     : null;
 });
 
-const suggestedSolutionTitle = computed(() => {
-  const titleKeyMap = {
-    knowledge: 'suggested_solution_knowledge_title',
-    behavior: 'suggested_solution_behavior_title',
-    technical_issue: 'suggested_solution_technical_issue_title',
-  };
-
-  const key = titleKeyMap[improvementCategory.value];
-
-  return key ? t(`audit.improvements.drawer.${key}`) : undefined;
-});
 const instructionsUpdatedCount = computed(() => {
   return improvementDetail.value?.affectedInstructions.filter(
     (instruction) => instruction.wasChanged,

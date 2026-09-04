@@ -740,9 +740,6 @@
         "ignore_improvement": "Ignore improvement",
         "instruction_updated_disclaimer": "{count, plural, one {# instruction updated since the analysis} other {# instructions updated since the analysis}}",
         "mark_as_resolved": "Mark as resolved",
-        "suggested_solution_behavior_title": "Add this instruction to the manager:",
-        "suggested_solution_knowledge_title": "New content for the knowledge base",
-        "suggested_solution_technical_issue_title": "Recommended action",
         "suggested_solution_title": "Suggested solution",
         "view_full_conversation": "View full conversation"
       },
