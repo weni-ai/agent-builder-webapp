@@ -89,6 +89,7 @@ const buildImprovementDetail = (overrides = {}) => ({
   description: 'Sample diagnosis',
   suggestedSolution: 'Update the tone instruction',
   status: 'pending',
+  recommendedAction: null,
   affectedInstructions: [
     {
       id: 42,

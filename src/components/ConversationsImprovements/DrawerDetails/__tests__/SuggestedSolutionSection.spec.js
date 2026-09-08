@@ -4,6 +4,7 @@ import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
 import { useImprovementsStore } from '@/store/Improvements';
+import { useProfileStore } from '@/store/Profile';
 import { redirectInParent } from '@/utils/parentRedirect';
 
 import SuggestedSolutionSection from '../SuggestedSolutionSection.vue';
@@ -15,13 +16,16 @@ vi.mock('@/utils/parentRedirect', () => ({
 describe('SuggestedSolutionSection.vue', () => {
   let wrapper;
   let improvementsStore;
+  let profileStore;
 
-  const createWrapper = () => {
+  const createWrapper = ({ profileInstructions = [] } = {}) => {
     const pinia = createTestingPinia({
       stubActions: true,
     });
 
     improvementsStore = useImprovementsStore(pinia);
+    profileStore = useProfileStore(pinia);
+    profileStore.instructions.current = profileInstructions;
 
     wrapper = mount(SuggestedSolutionSection, {
       global: {
@@ -40,6 +44,18 @@ describe('SuggestedSolutionSection.vue', () => {
 
   const elements = {
     cta: () => wrapper.findComponent('[data-testid="suggested-solution-cta"]'),
+    affectedInstructionsTitle: () =>
+      wrapper.find(
+        '[data-testid="suggested-solution-affected-instructions-title"]',
+      ),
+    affectedInstructionsList: () =>
+      wrapper.find(
+        '[data-testid="suggested-solution-affected-instructions-list"]',
+      ),
+    affectedInstructions: () =>
+      wrapper.findAll(
+        '[data-testid="suggested-solution-affected-instruction"]',
+      ),
   };
 
   it('opens the knowledge base in a new tab when the CTA is clicked', async () => {
@@ -103,5 +119,134 @@ describe('SuggestedSolutionSection.vue', () => {
 
     expect(wrapper.emitted('open-contact-support')).toEqual([[]]);
     expect(redirectInParent).not.toHaveBeenCalled();
+  });
+
+  describe('affected instructions title', () => {
+    const affectedInstructions = [
+      { id: 1, changeType: 'fix', wasChanged: false },
+    ];
+    const profileInstructions = [
+      { id: 1, instruction: 'Use a formal tone in refund conversations' },
+    ];
+
+    it.each([
+      {
+        recommendedAction: 'fix_instruction',
+        localeKey: 'audit.improvements.drawer.edit_instructions_below',
+      },
+      {
+        recommendedAction: 'remove_instruction',
+        localeKey: 'audit.improvements.drawer.remove_instructions_below',
+      },
+    ])(
+      'renders the $recommendedAction title',
+      async ({ recommendedAction, localeKey }) => {
+        createWrapper({ profileInstructions });
+
+        improvementsStore.improvementDetail.data = {
+          type: 'wrong_behavior_due_to_instructions',
+          suggestedSolution: 'Update instructions',
+          recommendedAction,
+          affectedInstructions,
+        };
+
+        await wrapper.vm.$nextTick();
+
+        expect(elements.affectedInstructionsTitle().text()).toBe(
+          i18n.global.t(localeKey),
+        );
+      },
+    );
+
+    it('does not render a title when recommendedAction is missing', async () => {
+      createWrapper({ profileInstructions });
+
+      improvementsStore.improvementDetail.data = {
+        type: 'wrong_behavior_due_to_instructions',
+        suggestedSolution: 'Update instructions',
+        recommendedAction: null,
+        affectedInstructions,
+      };
+
+      await wrapper.vm.$nextTick();
+
+      expect(elements.affectedInstructionsTitle().exists()).toBe(false);
+    });
+  });
+
+  describe('affected instructions list', () => {
+    it('renders instructions that have text', async () => {
+      createWrapper({
+        profileInstructions: [
+          { id: 1, instruction: 'Use a formal tone' },
+          { id: 2, instruction: 'Ask for the order number' },
+        ],
+      });
+
+      improvementsStore.improvementDetail.data = {
+        type: 'wrong_behavior_due_to_instructions',
+        suggestedSolution: 'Update instructions',
+        affectedInstructions: [
+          { id: 1, changeType: 'fix', wasChanged: false },
+          { id: 2, changeType: 'fix', wasChanged: false },
+        ],
+      };
+
+      await wrapper.vm.$nextTick();
+
+      const items = elements.affectedInstructions();
+
+      expect(items).toHaveLength(2);
+      expect(items[0].text()).toContain('Use a formal tone');
+      expect(items[1].text()).toContain('Ask for the order number');
+    });
+
+    it('does not render empty, missing, or whitespace-only instructions', async () => {
+      createWrapper({
+        profileInstructions: [
+          { id: 1, instruction: 'Use a formal tone' },
+          { id: 2, instruction: '' },
+          { id: 3, instruction: '   ' },
+        ],
+      });
+
+      improvementsStore.improvementDetail.data = {
+        type: 'wrong_behavior_due_to_instructions',
+        suggestedSolution: 'Update instructions',
+        affectedInstructions: [
+          { id: 1, changeType: 'fix', wasChanged: false },
+          { id: 2, changeType: 'fix', wasChanged: false },
+          { id: 3, changeType: 'fix', wasChanged: false },
+          { id: 4, changeType: 'fix', wasChanged: false },
+        ],
+      };
+
+      await wrapper.vm.$nextTick();
+
+      const items = elements.affectedInstructions();
+
+      expect(items).toHaveLength(1);
+      expect(items[0].text()).toContain('Use a formal tone');
+    });
+
+    it('does not render the list when all instructions are empty', async () => {
+      createWrapper({
+        profileInstructions: [{ id: 1, instruction: '' }],
+      });
+
+      improvementsStore.improvementDetail.data = {
+        type: 'wrong_behavior_due_to_instructions',
+        suggestedSolution: 'Update instructions',
+        recommendedAction: 'fix_instruction',
+        affectedInstructions: [
+          { id: 1, changeType: 'fix', wasChanged: false },
+        ],
+      };
+
+      await wrapper.vm.$nextTick();
+
+      expect(elements.affectedInstructionsList().exists()).toBe(false);
+      expect(elements.affectedInstructionsTitle().exists()).toBe(false);
+    });
   });
 });

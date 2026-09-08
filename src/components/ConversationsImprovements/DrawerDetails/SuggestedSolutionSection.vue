@@ -1,32 +1,36 @@
 <template>
   <ImprovementDrawerSection
-    v-if="suggestedSolutionTitle"
+    v-if="improvementDetail && ctaText"
     testId="suggested-solution"
     :title="$t('audit.improvements.drawer.suggested_solution_title')"
   >
     <section class="suggested-solution-content">
-      <h3 class="suggested-solution-content__title">
-        {{ suggestedSolutionTitle }}
-      </h3>
-
       <p data-testid="improvement-drawer-suggested-solution-description">
-        {{ improvementDetail?.suggestedSolution }}
+        {{ improvementDetail.suggestedSolution }}
       </p>
 
       <section
-        v-if="improvementDetail.affectedInstructions.length"
+        v-if="visibleAffectedInstructions.length"
         class="suggested-solution-content__affected-instructions"
       >
-        <h3 class="suggested-solution-content__title">
-          {{ $t('audit.improvements.drawer.affected_instructions_title') }}
+        <h3
+          v-if="affectedInstructionsTitle"
+          class="suggested-solution-content__title"
+          data-testid="suggested-solution-affected-instructions-title"
+        >
+          {{ affectedInstructionsTitle }}
         </h3>
 
-        <ul class="suggested-solution-content__affected-instructions-list">
+        <ul
+          class="suggested-solution-content__affected-instructions-list"
+          data-testid="suggested-solution-affected-instructions-list"
+        >
           <li
-            v-for="instruction in improvementDetail.affectedInstructions"
+            v-for="instruction in visibleAffectedInstructions"
             :key="instruction.id"
+            data-testid="suggested-solution-affected-instruction"
           >
-            • "{{ getInstructionById(instruction.id)?.instruction }}"
+            • "{{ instruction.text }}"
           </li>
         </ul>
 
@@ -55,16 +59,34 @@ import { useI18n } from 'vue-i18n';
 import { useImprovementsStore } from '@/store/Improvements';
 
 import ImprovementDrawerSection from './ImprovementDrawerSection.vue';
-import { getImprovementTypeTag } from '@/utils/improvements/getImprovementTypeTag';
+import {
+  getImprovementTypeTag,
+  type ImprovementTagCategory,
+} from '@/utils/improvements/getImprovementTypeTag';
 import { redirectInParent } from '@/utils/parentRedirect';
 import { useProfileStore } from '@/store/Profile.js';
 import { UnnnicDisclaimer } from '@weni/unnnic-system';
+import type {
+  AffectedInstruction,
+  RecommendedAction,
+} from '@/store/types/Improvements.types';
+
+type ProfileInstruction = {
+  id?: number;
+  instruction?: string;
+};
+
+type VisibleAffectedInstruction = {
+  id: number;
+  text: string;
+};
 
 const emit = defineEmits<{
   'open-contact-support': [];
 }>();
 
 const { t } = useI18n();
+const profileStore = useProfileStore();
 
 const improvementDetail = computed(
   () => useImprovementsStore().improvementDetail.data,
@@ -75,44 +97,70 @@ const improvementCategory = computed(() => {
     : null;
 });
 
-const suggestedSolutionTitle = computed(() => {
-  const titleKeyMap = {
-    knowledge: 'suggested_solution_knowledge_title',
-    behavior: 'suggested_solution_behavior_title',
-    technical_issue: 'suggested_solution_technical_issue_title',
-  };
-
-  const key = titleKeyMap[improvementCategory.value];
-
-  return key ? t(`audit.improvements.drawer.${key}`) : undefined;
-});
 const instructionsUpdatedCount = computed(() => {
-  return improvementDetail.value?.affectedInstructions.filter(
-    (instruction) => instruction.wasChanged,
-  ).length;
+  return (
+    improvementDetail.value?.affectedInstructions.filter(
+      (instruction) => instruction.wasChanged,
+    ).length || 0
+  );
 });
 const instructionUpdatedDisclaimer = computed(() =>
   t('audit.improvements.drawer.instruction_updated_disclaimer', {
     count: instructionsUpdatedCount.value,
   }),
 );
+const affectedInstructionsTitle = computed(() => {
+  const titleKeyMap: Record<RecommendedAction, string> = {
+    fix_instruction: 'edit_instructions_below',
+    remove_instruction: 'remove_instructions_below',
+  };
+
+  const recommendedAction = improvementDetail.value?.recommendedAction;
+
+  return recommendedAction
+    ? t(`audit.improvements.drawer.${titleKeyMap[recommendedAction]}`)
+    : undefined;
+});
 const ctaText = computed(() => {
-  const ctaKeyMap = {
+  const ctaKeyMap: Partial<Record<ImprovementTagCategory, string>> = {
     knowledge: 'go_to_knowledge_base',
     behavior: 'go_to_instructions',
     technical_issue: 'contact_technical_support',
   };
 
-  const key = ctaKeyMap[improvementCategory.value];
+  const category = improvementCategory.value;
+  const key = category ? ctaKeyMap[category] : undefined;
 
   return key ? t(`audit.improvements.drawer.${key}`) : undefined;
 });
 
-const getInstructionById = (id: number) => {
-  return useProfileStore().instructions.current.find(
+function getProfileInstructionText(id: number): string {
+  const instructions: ProfileInstruction[] =
+    profileStore.instructions?.current ?? [];
+  const matchedInstruction = instructions.find(
     (instruction) => instruction.id === id,
   );
-};
+
+  return matchedInstruction?.instruction?.trim() ?? '';
+}
+
+function toVisibleAffectedInstruction({
+  id,
+}: AffectedInstruction): VisibleAffectedInstruction | null {
+  const text = getProfileInstructionText(id);
+
+  if (!text) {
+    return null;
+  }
+
+  return { id, text };
+}
+
+const visibleAffectedInstructions = computed<VisibleAffectedInstruction[]>(() =>
+  (improvementDetail.value?.affectedInstructions ?? [])
+    .map(toVisibleAffectedInstruction)
+    .filter((instruction) => instruction !== null),
+);
 
 function handleCtaClick() {
   if (improvementCategory.value === 'knowledge') {
@@ -142,8 +190,8 @@ function handleCtaClick() {
   gap: $unnnic-space-2;
 
   &__title {
-    @include unnnic-font-action;
-    color: $unnnic-color-fg-emphasized;
+    @include unnnic-font-emphasis;
+    color: $unnnic-color-fg-base;
   }
 
   &__affected-instructions {

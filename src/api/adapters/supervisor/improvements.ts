@@ -7,6 +7,7 @@ import type {
   ImprovementsAnalysis,
   ImprovementsTask,
   InstructionChangeType,
+  RecommendedAction,
 } from '@/store/types/Improvements.types';
 import { DEFAULT_IMPROVEMENTS_TASK } from '@/store/types/Improvements.types';
 
@@ -43,6 +44,7 @@ export interface ImprovementDetailApi {
   description?: string;
   suggested_change?: string | null;
   status?: string;
+  recommended_action?: string | null;
   affected_instructions?: AffectedInstructionApi[];
 }
 
@@ -98,6 +100,11 @@ const INSTRUCTION_CHANGE_TYPES: InstructionChangeType[] = [
   'remove',
 ];
 
+const RECOMMENDED_ACTIONS: RecommendedAction[] = [
+  'fix_instruction',
+  'remove_instruction',
+];
+
 function isImprovementDetailStatus(
   value: unknown,
 ): value is ImprovementDetailStatus {
@@ -108,6 +115,14 @@ function isInstructionChangeType(
   value: unknown,
 ): value is InstructionChangeType {
   return INSTRUCTION_CHANGE_TYPES.includes(value as InstructionChangeType);
+}
+
+function getRecommendedAction(value: unknown): RecommendedAction | null {
+  if (!value || !RECOMMENDED_ACTIONS.includes(value as RecommendedAction)) {
+    return null;
+  }
+
+  return value as RecommendedAction;
 }
 
 function parseAffectedInstruction(
@@ -142,6 +157,7 @@ function parseImprovementDetail(
     status: isImprovementDetailStatus(apiData.status)
       ? apiData.status
       : 'pending',
+    recommendedAction: getRecommendedAction(apiData.recommended_action),
     affectedInstructions: (apiData.affected_instructions ?? [])
       .map(parseAffectedInstruction)
       .filter((item): item is AffectedInstruction => item !== null),
