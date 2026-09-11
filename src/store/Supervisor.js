@@ -48,6 +48,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     csat: [],
     topics: [],
     isAmazing: null,
+    hasConversationStarter: null,
   };
 
   const parseArray = (value) => value?.split(',').filter(Boolean) || null;
@@ -63,6 +64,9 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     csat: parseArray(query?.csat) || defaultFilters.csat,
     topics: parseArray(query?.topics) || defaultFilters.topics,
     isAmazing: parseBoolean(query?.isAmazing) ?? defaultFilters.isAmazing,
+    hasConversationStarter:
+      parseBoolean(query?.hasConversationStarter) ??
+      defaultFilters.hasConversationStarter,
   });
 
   const temporaryFilters = reactive({
@@ -73,6 +77,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     csat: filters.csat,
     topics: filters.topics,
     isAmazing: filters.isAmazing,
+    hasConversationStarter: filters.hasConversationStarter,
   });
 
   const topics = ref([]);
@@ -81,7 +86,15 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
   const queryConversationUuid = ref(query?.uuid || '');
 
   function resetFilters() {
-    const { start, end, status, csat, topics, isAmazing } = defaultFilters;
+    const {
+      start,
+      end,
+      status,
+      csat,
+      topics,
+      isAmazing,
+      hasConversationStarter,
+    } = defaultFilters;
 
     [filters, temporaryFilters].forEach((filter) => {
       filter.start = start;
@@ -90,6 +103,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
       filter.csat = csat;
       filter.topics = topics;
       filter.isAmazing = isAmazing;
+      filter.hasConversationStarter = hasConversationStarter;
     });
   }
 
@@ -101,6 +115,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
     filters.csat = temporaryFilters.csat;
     filters.topics = temporaryFilters.topics;
     filters.isAmazing = temporaryFilters.isAmazing;
+    filters.hasConversationStarter = temporaryFilters.hasConversationStarter;
   }
 
   function getInitialSelectFilter(filter, filterOptions) {
@@ -145,6 +160,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
       csat: filters.csat,
       topics: filters.topics,
       isAmazing: filters.isAmazing,
+      hasConversationStarter: filters.hasConversationStarter,
     };
 
     const paginationPayload = getPaginationPayload(
