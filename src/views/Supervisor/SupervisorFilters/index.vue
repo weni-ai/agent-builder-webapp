@@ -130,6 +130,8 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     gap: $unnnic-spacing-sm;
+
+    padding: $unnnic-space-6;
   }
 }
 </style>
