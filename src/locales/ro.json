@@ -1013,14 +1013,12 @@
         "agents_preview": {
           "title": "Previzualizare agent",
           "agents_progressive_feedback": {
-            "description": "Agentul poate oferi actualizări sumare în timp ce formulează răspunsul final, ajutând contactul să urmărească procesul în timp real.",
-            "title": "Feedback progresiv agent (disponibil doar pentru Shopping Assistant)",
-            "tooltip": "Dezactivează formatul multiplu de mesaje pentru a activa această funcție"
+            "description": "Agentul poate oferi actualizări sumare în timp ce formulează răspunsul final, ajutând contactul să urmărească procesul în timp real. Nu poate fi folosit împreună cu formatul multiplu de mesaje.",
+            "title": "Feedback progresiv agent (disponibil doar pentru Shopping Assistant)"
           },
           "multiple_message_format": {
-            "description": "Agentul poate trimite mai multe mesaje formatate, cum ar fi răspunsuri rapide, liste, CTA-uri și cataloage.",
-            "title": "Format multiplu de mesaje",
-            "tooltip": "Dezactivează feedbackul progresiv al agentului pentru a activa această funcție"
+            "description": "Agentul poate trimite mai multe mesaje formatate, cum ar fi răspunsuri rapide, liste, CTA-uri și cataloage. Nu poate fi folosit împreună cu feedbackul progresiv al agentului.",
+            "title": "Format multiplu de mesaje"
           }
         },
         "human_support": {

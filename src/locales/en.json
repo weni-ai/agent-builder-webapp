@@ -1014,14 +1014,12 @@
         "agents_preview": {
           "title": "Agent preview",
           "agents_progressive_feedback": {
-            "description": "The agent can provide brief updates while formulating the final response, helping the contact follow the process in real time.",
-            "title": "Agent progressive feedback (only available for Shopping Assistant)",
-            "tooltip": "Deactivate the multiple message format to use this feature"
+            "description": "The agent can provide brief updates while formulating the final response, helping the contact follow the process in real time. Can't be used together with Multiple message format.",
+            "title": "Agent progressive feedback (only available for Shopping Assistant)"
           },
           "multiple_message_format": {
-            "description": "The agent can send multiple formatted messages, such as quick responses, lists, CTAs, and catalogs.",
-            "title": "Multiple message format",
-            "tooltip": "Deactivate the agent progressive feedback to use this feature"
+            "description": "The agent can send multiple formatted messages, such as quick responses, lists, CTAs, and catalogs. Can't be used together with Agent progressive feedback.",
+            "title": "Multiple message format"
           }
         },
         "human_support": {
