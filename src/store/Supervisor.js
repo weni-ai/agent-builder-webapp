@@ -33,6 +33,7 @@ export const useSupervisorStore = defineStore('Supervisor', () => {
       newNext: null,
       legacyNext: null,
       legacyInitialAttempted: false,
+      count: 0,
     },
   });
 

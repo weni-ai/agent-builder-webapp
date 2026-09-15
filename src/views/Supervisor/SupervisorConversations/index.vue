@@ -4,10 +4,23 @@
   >
     <SupervisorFilters data-testid="supervisor-filters" />
 
-    <ConversationsTable
-      ref="conversationsTable"
-      data-testid="conversations-table"
-    />
+    <div class="conversations__list">
+      <p
+        class="conversations__count"
+        data-testid="conversations-count"
+      >
+        {{
+          $t('audit.conversations.conversations_count', {
+            count: conversationsCount,
+          })
+        }}
+      </p>
+
+      <ConversationsTable
+        ref="conversationsTable"
+        data-testid="conversations-table"
+      />
+    </div>
   </section>
 </template>
 
@@ -24,6 +37,10 @@ const hasConversations = computed(
   () => supervisorStore.conversations.data.results.length > 0,
 );
 
+const conversationsCount = computed(
+  () => supervisorStore.conversations.data.count ?? 0,
+);
+
 const conversationsTable = ref(null);
 
 defineExpose({
@@ -35,11 +52,25 @@ defineExpose({
 .conversations {
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: $unnnic-space-6;
+  gap: $unnnic-space-4;
   align-items: start;
 
   &--empty {
     height: 100%;
+  }
+
+  &__list {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: $unnnic-space-3;
+    min-height: 0;
+  }
+
+  &__count {
+    @include unnnic-font-caption-1;
+    color: $unnnic-color-fg-muted;
+
+    margin-left: $unnnic-space-3;
   }
 }
 </style>

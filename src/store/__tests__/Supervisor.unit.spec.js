@@ -72,6 +72,7 @@ describe('Supervisor Store', () => {
           newNext: null,
           legacyNext: null,
           legacyInitialAttempted: false,
+          count: 0,
         },
       });
     });
@@ -151,6 +152,23 @@ describe('Supervisor Store', () => {
           legacyInitialAttempted: false,
           results: mockApiResponse.results,
         });
+      });
+
+      it('stores count from the API response', async () => {
+        const mockApiResponse = {
+          results: [{ id: 1, title: 'Conversation 1' }],
+          count: 10,
+          next: null,
+          previous: null,
+        };
+
+        nexusaiAPI.agent_builder.supervisor.conversations.list.mockResolvedValue(
+          mockApiResponse,
+        );
+
+        await store.loadConversations();
+
+        expect(store.conversations.data.count).toBe(10);
       });
 
       it('fetches conversations with custom page number', async () => {
@@ -233,6 +251,7 @@ describe('Supervisor Store', () => {
           newNext: null,
           legacyNext: null,
           legacyInitialAttempted: false,
+          count: 0,
         });
       });
 
