@@ -48,6 +48,7 @@ export const useFeatureFlagsStore = defineStore('FeatureFlags', () => {
       'categorization_of_instructions',
     ),
     customGuardrails: isFeatureFlagEnabled('custom_guardrails'),
+    conversationsCounter: isFeatureFlagEnabled('conversations_counter'),
   }));
 
   return {

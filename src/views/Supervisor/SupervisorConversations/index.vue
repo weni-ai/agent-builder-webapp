@@ -6,6 +6,7 @@
 
     <div class="conversations__list">
       <p
+        v-if="featureFlagsStore.flags.conversationsCounter"
         class="conversations__count"
         data-testid="conversations-count"
       >
@@ -29,9 +30,11 @@ import { ref, defineExpose, computed } from 'vue';
 
 import SupervisorFilters from '../SupervisorFilters/index.vue';
 import ConversationsTable from './ConversationsTable/index.vue';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useSupervisorStore } from '@/store/Supervisor';
 
 const supervisorStore = useSupervisorStore();
+const featureFlagsStore = useFeatureFlagsStore();
 
 const hasConversations = computed(
   () => supervisorStore.conversations.data.results.length > 0,

@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import SupervisorConversations from '../index.vue';
 
 describe('SupervisorConversations', () => {
@@ -13,8 +14,12 @@ describe('SupervisorConversations', () => {
   const conversationsCount = () =>
     wrapper.find('[data-testid="conversations-count"]');
 
-  const createWrapper = (conversationsData = {}) => {
+  const createWrapper = ({
+    conversationsData = {},
+    conversationsCounter = false,
+  } = {}) => {
     const pinia = createTestingPinia({
+      stubActions: false,
       initialState: {
         Supervisor: {
           conversations: {
@@ -25,8 +30,16 @@ describe('SupervisorConversations', () => {
             },
           },
         },
+        FeatureFlags: {
+          activeFeatures: conversationsCounter ? ['conversations_counter'] : [],
+        },
       },
     });
+
+    const featureFlagsStore = useFeatureFlagsStore();
+    featureFlagsStore.activeFeatures = conversationsCounter
+      ? ['conversations_counter']
+      : [];
 
     wrapper = shallowMount(SupervisorConversations, {
       global: {
@@ -46,10 +59,13 @@ describe('SupervisorConversations', () => {
       expect(conversationsTable().exists()).toBe(true);
     });
 
-    it('renders the conversations count from the store', () => {
+    it('renders the conversations count when the conversationsCounter flag is enabled', () => {
       createWrapper({
-        results: [{ uuid: '1' }],
-        count: 512,
+        conversationsData: {
+          results: [{ uuid: '1' }],
+          count: 512,
+        },
+        conversationsCounter: true,
       });
 
       expect(conversationsCount().text()).toBe(
@@ -57,6 +73,17 @@ describe('SupervisorConversations', () => {
           count: 512,
         }),
       );
+    });
+
+    it('does not render the conversations count when the conversationsCounter flag is disabled', () => {
+      createWrapper({
+        conversationsData: {
+          results: [{ uuid: '1' }],
+          count: 512,
+        },
+      });
+
+      expect(conversationsCount().exists()).toBe(false);
     });
   });
 });
