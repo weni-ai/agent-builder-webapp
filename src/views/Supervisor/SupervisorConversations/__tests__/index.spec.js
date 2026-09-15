@@ -36,10 +36,11 @@ describe('SupervisorConversations', () => {
       },
     });
 
-    const featureFlagsStore = useFeatureFlagsStore();
+    const featureFlagsStore = useFeatureFlagsStore(pinia);
     featureFlagsStore.activeFeatures = conversationsCounter
       ? ['conversations_counter']
       : [];
+    featureFlagsStore.flags.conversationsCounter = conversationsCounter;
 
     wrapper = shallowMount(SupervisorConversations, {
       global: {
