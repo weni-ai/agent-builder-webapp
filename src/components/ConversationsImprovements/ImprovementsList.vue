@@ -6,6 +6,8 @@
     ]"
     data-testid="improvements-list"
   >
+    <McpDisclaimer />
+
     <UnnnicTable version="2">
       <UnnnicTableHeader class="improvements-list__header">
         <UnnnicTableRow>
@@ -47,6 +49,7 @@ import { useImprovementsStore } from '@/store/Improvements';
 
 import ImprovementDrawer from './DrawerDetails/ImprovementDrawer.vue';
 import ImprovementRow from './ImprovementRow.vue';
+import McpDisclaimer from './McpDisclaimer/index.vue';
 
 import type { Improvement } from '@/store/types/Improvements.types';
 
@@ -87,6 +90,7 @@ watch(isDrawerOpen, (open) => {
 
   display: flex;
   flex-direction: column;
+  gap: $unnnic-space-4;
 
   > * {
     overflow: initial;

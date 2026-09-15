@@ -788,6 +788,67 @@
         },
         "view_help_guide": "Ver guía"
       },
+      "mcp_disclaimer": {
+        "button": "Ver cómo funciona",
+        "description": "Conecta Claude, ChatGPT u otro asistente de IA a VTEX CX y pregunta sobre estas mejoras en el chat: qué está fallando, por qué y cómo solucionarlo.",
+        "title": "Backlog de mejoras en tu asistente de IA"
+      },
+      "mcp_drawer": {
+        "across_your_project": "En todo tu proyecto",
+        "copy_error": "No se pudo copiar la URL debido a un problema técnico",
+        "copy_success": "URL copiada",
+        "description": "Conecta Claude, ChatGPT u otro asistente de IA a VTEX CX y pregunta sobre tu agente en lenguaje natural en el chat.",
+        "disclaimer": "Tu asistente lee tus datos pero no puede cambiar tu agente. Aplica las correcciones en Instrucciones y Base de conocimiento.",
+        "features": {
+          "check_conversations": {
+            "description": "Ve de una mejora a las conversaciones detrás de ella.",
+            "title": "Revisar conversaciones"
+          },
+          "conversations_contacts": {
+            "description": "Consulta volúmenes, resolución y transferencias a soporte humano.",
+            "title": "Conversaciones y contactos"
+          },
+          "customer_satisfaction": {
+            "description": "Consulta el índice de satisfacción del cliente e índice neto de recomendación para tu agente de IA y soporte humano.",
+            "title": "Satisfacción del cliente"
+          },
+          "draft_fixes": {
+            "description": "Recibe una sugerencia de cambio de instrucción para revisar y aplicar en Instrucciones.",
+            "title": "Borrador de correcciones"
+          },
+          "human_support": {
+            "description": "Consulta colas, tiempos de espera y horas pico.",
+            "title": "Soporte humano"
+          },
+          "review_backlog": {
+            "description": "Consulta los resultados del análisis más reciente y las mejoras que afectan la mayoría de las conversaciones.",
+            "title": "Revisar backlog"
+          },
+          "run_analyses": {
+            "description": "Inicia un nuevo análisis y revisa su progreso desde el chat.",
+            "title": "Ejecutar análisis"
+          },
+          "sales": {
+            "description": "Consulta el embudo, los términos más buscados y los carritos.",
+            "title": "Ventas"
+          },
+          "whatsapp_templates": {
+            "description": "Consulta entregas, lecturas y clics en botones.",
+            "title": "Plantillas de WhatsApp"
+          }
+        },
+        "how_to_connect": "Cómo conectar",
+        "mcp_description": "Funciona a través de MCP, un estándar abierto que permite que los asistentes de IA se conecten a otras herramientas.",
+        "step_1_title": "Copia la URL del servidor",
+        "step_2_description": "En la configuración de tu asistente, busca la opción para agregar un conector personalizado o servidor MCP y pega la URL.",
+        "step_2_title": "Agrégalo a tu asistente",
+        "step_3_description": "Después de autorizar el acceso, inicia un nuevo chat. Solo necesitas hacer esto una vez.",
+        "step_3_title": "Inicia sesión con tu cuenta VTEX CX",
+        "title": "Usar VTEX CX en tu asistente de IA",
+        "view_documentation": "Ver documentación completa",
+        "what_you_can_do": "Qué puedes hacer",
+        "with_improvements_backlog": "Con backlog de mejoras"
+      },
       "no_analysis": {
         "description": "Ejecuta tu primer análisis para identificar oportunidades de optimización en una muestra de las conversaciones de ayer",
         "run_analysis": "Ejecutar análisis",

@@ -49,6 +49,10 @@ describe('ImprovementsList.vue', () => {
       global: {
         plugins: [pinia],
         stubs: {
+          McpDisclaimer: {
+            name: 'McpDisclaimer',
+            template: '<div data-testid="mcp-disclaimer" />',
+          },
           ImprovementDrawer: true,
           UnnnicTable: {
             template: '<table><slot /></table>',
@@ -78,6 +82,7 @@ describe('ImprovementsList.vue', () => {
       wrapper.find(`[data-testid="improvement-table-head-${column}"]`),
     rows: () => wrapper.findAllComponents(ImprovementRow),
     drawer: () => wrapper.findComponent(ImprovementDrawer),
+    mcpDisclaimer: () => wrapper.find('[data-testid="mcp-disclaimer"]'),
   };
 
   beforeEach(() => {
@@ -92,6 +97,10 @@ describe('ImprovementsList.vue', () => {
   describe('Component rendering', () => {
     it('renders the improvements list section', () => {
       expect(elements.list().exists()).toBe(true);
+    });
+
+    it('renders the MCP disclaimer above the table', () => {
+      expect(elements.mcpDisclaimer().exists()).toBe(true);
     });
 
     it('renders the table column headers', () => {
