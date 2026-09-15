@@ -1,9 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 
 import i18n from '@/utils/plugins/i18n';
-import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import SupervisorConversations from '../index.vue';
 
 describe('SupervisorConversations', () => {
@@ -19,6 +18,7 @@ describe('SupervisorConversations', () => {
     conversationsCounter = false,
   } = {}) => {
     const pinia = createTestingPinia({
+      createSpy: vi.fn,
       stubActions: false,
       initialState: {
         Supervisor: {
@@ -35,12 +35,6 @@ describe('SupervisorConversations', () => {
         },
       },
     });
-
-    const featureFlagsStore = useFeatureFlagsStore(pinia);
-    featureFlagsStore.activeFeatures = conversationsCounter
-      ? ['conversations_counter']
-      : [];
-    featureFlagsStore.flags.conversationsCounter = conversationsCounter;
 
     wrapper = shallowMount(SupervisorConversations, {
       global: {
