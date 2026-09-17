@@ -6,7 +6,7 @@
 
     <div class="conversations__list">
       <p
-        v-if="featureFlagsStore.flags.conversationsCounter"
+        v-if="featureFlagsStore.flags.conversationsCounter && hasConversations"
         class="conversations__count"
         data-testid="conversations-count"
       >
@@ -60,6 +60,11 @@ defineExpose({
 
   &--empty {
     height: 100%;
+
+    .conversations__list {
+      grid-template-rows: 1fr;
+      height: 100%;
+    }
   }
 
   &__list {
