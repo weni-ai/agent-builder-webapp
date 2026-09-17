@@ -4,10 +4,24 @@
   >
     <SupervisorFilters data-testid="supervisor-filters" />
 
-    <ConversationsTable
-      ref="conversationsTable"
-      data-testid="conversations-table"
-    />
+    <div class="conversations__list">
+      <p
+        v-if="featureFlagsStore.flags.conversationsCounter && hasConversations"
+        class="conversations__count"
+        data-testid="conversations-count"
+      >
+        {{
+          $t('audit.conversations.conversations_count', {
+            count: conversationsCount,
+          })
+        }}
+      </p>
+
+      <ConversationsTable
+        ref="conversationsTable"
+        data-testid="conversations-table"
+      />
+    </div>
   </section>
 </template>
 
@@ -16,12 +30,18 @@ import { ref, defineExpose, computed } from 'vue';
 
 import SupervisorFilters from '../SupervisorFilters/index.vue';
 import ConversationsTable from './ConversationsTable/index.vue';
+import { useFeatureFlagsStore } from '@/store/FeatureFlags';
 import { useSupervisorStore } from '@/store/Supervisor';
 
 const supervisorStore = useSupervisorStore();
+const featureFlagsStore = useFeatureFlagsStore();
 
 const hasConversations = computed(
   () => supervisorStore.conversations.data.results.length > 0,
+);
+
+const conversationsCount = computed(
+  () => supervisorStore.conversations.data.count ?? 0,
 );
 
 const conversationsTable = ref(null);
@@ -35,11 +55,30 @@ defineExpose({
 .conversations {
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: $unnnic-space-6;
+  gap: $unnnic-space-4;
   align-items: start;
 
   &--empty {
     height: 100%;
+
+    .conversations__list {
+      grid-template-rows: 1fr;
+      height: 100%;
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: $unnnic-space-3;
+    min-height: 0;
+  }
+
+  &__count {
+    @include unnnic-font-caption-1;
+    color: $unnnic-color-fg-muted;
+
+    margin-left: $unnnic-space-3;
   }
 }
 </style>
