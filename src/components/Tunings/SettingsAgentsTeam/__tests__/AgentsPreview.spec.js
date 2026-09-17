@@ -92,12 +92,7 @@ describe('AgentsPreview.vue', () => {
       const field = progressiveFeedbackField();
 
       expect(field.props('modelValue')).toBe(false);
-      expect(field.props('disabled')).toBe(true);
-      expect(field.props('tooltip')).toBe(
-        i18n.global.t(
-          'router.tunings.settings.agents_preview.agents_progressive_feedback.tooltip',
-        ),
-      );
+      expect(field.props('disabled')).toBe(false);
       expect(field.props('textRight')).toBe(
         i18n.global.t(
           'router.tunings.settings.agents_preview.agents_progressive_feedback.title',
@@ -185,29 +180,19 @@ describe('AgentsPreview.vue', () => {
       expect(store.settings.data.components).toBe(false);
     });
 
-    it('disables progressive feedback when multiple message format is enabled', async () => {
+    it('keeps progressive feedback interactive when multiple message format is enabled', async () => {
       store.settings.data.components = true;
       await nextTick();
 
-      expect(progressiveFeedbackField().props('disabled')).toBe(true);
-      expect(progressiveFeedbackField().props('tooltip')).toBe(
-        i18n.global.t(
-          'router.tunings.settings.agents_preview.agents_progressive_feedback.tooltip',
-        ),
-      );
+      expect(progressiveFeedbackField().props('disabled')).toBe(false);
     });
 
-    it('disables multiple message format when progressive feedback is enabled', async () => {
+    it('keeps multiple message format interactive when progressive feedback is enabled', async () => {
       store.settings.data.components = false;
       store.settings.data.progressiveFeedback = true;
       await nextTick();
 
-      expect(multipleMessageFormatField().props('disabled')).toBe(true);
-      expect(multipleMessageFormatField().props('tooltip')).toBe(
-        i18n.global.t(
-          'router.tunings.settings.agents_preview.multiple_message_format.tooltip',
-        ),
-      );
+      expect(multipleMessageFormatField().props('disabled')).toBe(false);
     });
 
     it('turns off progressive feedback when multiple message format is enabled', async () => {
