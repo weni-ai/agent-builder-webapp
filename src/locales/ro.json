@@ -787,6 +787,67 @@
         },
         "view_help_guide": "Vizualizează ghidul"
       },
+      "mcp_disclaimer": {
+        "button": "Vezi cum funcționează",
+        "description": "Conectează Claude, ChatGPT sau alt asistent AI la VTEX CX și întreabă despre aceste îmbunătățiri în chat: ce nu funcționează, de ce și cum să rezolvi.",
+        "title": "Backlog de îmbunătățiri în asistentul tău AI"
+      },
+      "mcp_drawer": {
+        "across_your_project": "În tot proiectul tău",
+        "copy_error": "URL-ul nu a putut fi copiat din cauza unei probleme tehnice",
+        "copy_success": "URL copiat",
+        "description": "Conectează Claude, ChatGPT sau alt asistent AI la VTEX CX și întreabă despre agentul tău în limbaj natural în chat.",
+        "disclaimer": "Asistentul tău citește datele tale, dar nu poate modifica agentul tău. Aplici corecțiile în Instrucțiuni și Baza de cunoștințe.",
+        "features": {
+          "check_conversations": {
+            "description": "Treci de la o îmbunătățire la conversațiile din spatele ei.",
+            "title": "Verifică conversațiile"
+          },
+          "conversations_contacts": {
+            "description": "Consultă volume, rezoluție și transferuri către suport uman.",
+            "title": "Conversații și contacte"
+          },
+          "customer_satisfaction": {
+            "description": "Consultă CSAT și NPS pentru agentul tău AI și suportul uman.",
+            "title": "Satisfacția clienților"
+          },
+          "draft_fixes": {
+            "description": "Primește o sugestie de modificare a instrucțiunii pentru revizuire și aplicare în Instrucțiuni.",
+            "title": "Proiect de corecții"
+          },
+          "human_support": {
+            "description": "Consultă cozi, timpii de așteptare și orele de vârf.",
+            "title": "Suport uman"
+          },
+          "review_backlog": {
+            "description": "Consultă rezultatele celei mai recente analize și îmbunătățirile care afectează cele mai multe conversații.",
+            "title": "Revizuiește backlog-ul"
+          },
+          "run_analyses": {
+            "description": "Începe o nouă analiză și verifică progresul din chat.",
+            "title": "Rulează analize"
+          },
+          "sales": {
+            "description": "Consultă funnel-ul, termenii cei mai căutați și coșurile.",
+            "title": "Vânzări"
+          },
+          "whatsapp_templates": {
+            "description": "Consultă livrări, citiri și clicuri pe butoane.",
+            "title": "Șabloane WhatsApp"
+          }
+        },
+        "how_to_connect": "Cum să te conectezi",
+        "mcp_description": "Funcționează prin MCP, un standard deschis care permite asistenților AI să se conecteze la alte instrumente.",
+        "step_1_title": "Copiază URL-ul serverului",
+        "step_2_description": "În setările asistentului tău, caută opțiunea de a adăuga un conector personalizat sau server MCP și lipește URL-ul.",
+        "step_2_title": "Adaugă-l la asistentul tău",
+        "step_3_description": "După ce autorizezi accesul, începe un chat nou. Trebuie să faci asta doar o dată.",
+        "step_3_title": "Autentifică-te cu contul tău VTEX CX",
+        "title": "Folosește VTEX CX în asistentul tău AI",
+        "view_documentation": "Vezi documentația completă",
+        "what_you_can_do": "Ce poți face",
+        "with_improvements_backlog": "Cu backlog de îmbunătățiri"
+      },
       "no_analysis": {
         "description": "Rulează prima analiză pentru a identifica oportunități de îmbunătățire într-un eșantion al conversațiilor de ieri",
         "run_analysis": "Rulează analiza",

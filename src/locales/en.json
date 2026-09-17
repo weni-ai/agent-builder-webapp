@@ -788,6 +788,67 @@
         },
         "view_help_guide": "View guide"
       },
+      "mcp_disclaimer": {
+        "button": "See how it works",
+        "description": "Connect Claude, ChatGPT, or another AI assistant to VTEX CX and ask about these improvements in the chat: what's failing, why, and how to fix it.",
+        "title": "Improvements backlog in your AI assistant"
+      },
+      "mcp_drawer": {
+        "across_your_project": "Across your project",
+        "copy_error": "URL couldn't be copied due to a technical issue",
+        "copy_success": "URL copied",
+        "description": "Connect Claude, ChatGPT, or another AI assistant to VTEX CX and ask about your agent in plain language in the chat.",
+        "disclaimer": "Your assistant reads your data but can't change your agent. Apply fixes in Instructions and Knowledge Base.",
+        "features": {
+          "check_conversations": {
+            "description": "Go from an improvement to the conversations behind it.",
+            "title": "Check conversations"
+          },
+          "conversations_contacts": {
+            "description": "Check volumes, resolution, and transfers to human support.",
+            "title": "Conversations and contacts"
+          },
+          "customer_satisfaction": {
+            "description": "Check CSAT and NPS for your AI agent and human support.",
+            "title": "Customer satisfaction"
+          },
+          "draft_fixes": {
+            "description": "Get a suggested instruction change to review and apply in Instructions.",
+            "title": "Draft fixes"
+          },
+          "human_support": {
+            "description": "Check queues, wait times, and peak hours.",
+            "title": "Human support"
+          },
+          "review_backlog": {
+            "description": "Check latest analysis findings and improvements that affect the most conversations.",
+            "title": "Review backlog"
+          },
+          "run_analyses": {
+            "description": "Start a new analysis and check its progress from the chat.",
+            "title": "Run analyses"
+          },
+          "sales": {
+            "description": "Check funnel, most searched terms, and carts.",
+            "title": "Sales"
+          },
+          "whatsapp_templates": {
+            "description": "Check deliveries, reads, and button clicks.",
+            "title": "WhatsApp templates"
+          }
+        },
+        "how_to_connect": "How to connect",
+        "mcp_description": "Works through MCP, an open standard that lets AI assistants connect to other tools.",
+        "step_1_title": "Copy server URL",
+        "step_2_description": "In your assistant's settings, look for the option to add a custom connector or MCP server and paste the URL.",
+        "step_2_title": "Add it to your assistant",
+        "step_3_description": "After you authorize access, start a new chat. You only need to do this once.",
+        "step_3_title": "Sign in with your VTEX CX account",
+        "title": "Use VTEX CX in your AI assistant",
+        "view_documentation": "View full documentation",
+        "what_you_can_do": "What you can do",
+        "with_improvements_backlog": "With Improvements backlog"
+      },
       "no_analysis": {
         "description": "Run your first analysis to identify opportunities for improvement in a sample of yesterday's conversations",
         "run_analysis": "Run analysis",
