@@ -80,5 +80,13 @@ describe('SupervisorConversations', () => {
 
       expect(conversationsCount().exists()).toBe(false);
     });
+
+    it('does not render the conversations count when there are no conversations', () => {
+      createWrapper({
+        conversationsCounter: true,
+      });
+
+      expect(conversationsCount().exists()).toBe(false);
+    });
   });
 });

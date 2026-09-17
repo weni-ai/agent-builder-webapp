@@ -54,14 +54,10 @@
       class="conversations-table__empty"
       data-testid="conversations-table-empty"
     >
-      <UnnnicIcon
-        icon="chat_bubble"
-        size="avatar-sm"
-        scheme="gray-100"
-        filled
-      />
-
-      <p class="conversations-table__empty-title">
+      <p
+        class="conversations-table__empty-title"
+        data-testid="conversations-table-empty-title"
+      >
         {{ $t('audit.conversations.conversations_empty') }}
       </p>
     </section>
@@ -183,15 +179,12 @@ defineExpose({
     height: 100%;
 
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    gap: $unnnic-spacing-nano;
-
     &-title {
-      font: $unnnic-font-display-3;
-      color: $unnnic-color-gray-900;
+      font: $unnnic-font-action;
+      color: $unnnic-color-fg-emphasized;
     }
   }
 }

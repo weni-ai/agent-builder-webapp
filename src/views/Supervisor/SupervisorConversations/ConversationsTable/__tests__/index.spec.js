@@ -7,6 +7,7 @@ import { nextTick } from 'vue';
 import ConversationsTable from '../index.vue';
 import ConversationRow from '../ConversationRow.vue';
 import { NEW_SOURCE } from '@/api/adapters/supervisor/conversationSources';
+import i18n from '@/utils/plugins/i18n.js';
 
 vi.mock('@/api/nexusaiAPI', () => ({
   default: {
@@ -103,6 +104,8 @@ describe('ConversationsTable.vue', () => {
   const elements = {
     table: () => wrapper.find('[data-testid="conversations-table"]'),
     emptyState: () => wrapper.find('[data-testid="conversations-table-empty"]'),
+    emptyStateTitle: () =>
+      wrapper.find('[data-testid="conversations-table-empty-title"]'),
     conversationRows: () => wrapper.findAll('[data-testid="conversation-row"]'),
     conversationRowComponents: () => wrapper.findAllComponents(ConversationRow),
     columnHeader: (column) =>
@@ -169,6 +172,9 @@ describe('ConversationsTable.vue', () => {
     await nextTick();
 
     expect(elements.emptyState().exists()).toBe(true);
+    expect(elements.emptyStateTitle().text()).toBe(
+      i18n.global.t('audit.conversations.conversations_empty'),
+    );
     expect(elements.conversationRows()).toHaveLength(0);
   });
 });
