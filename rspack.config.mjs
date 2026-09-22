@@ -28,4 +28,14 @@ export default defineWeniConfig({
           'src/stubs/connectSharedStore.js',
         ),
       },
+  sharedDeps: {
+    pinia: {
+      singleton: true,
+      requiredVersion: pkg.dependencies.pinia,
+    },
+    'vue-router': {
+      singleton: true,
+      requiredVersion: pkg.dependencies['vue-router'],
+    },
+  },
 });
