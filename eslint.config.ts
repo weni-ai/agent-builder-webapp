@@ -19,7 +19,13 @@ export default defineConfigWithVueTs(
     files: ['**/*.{js,ts,mts,vue}'],
   },
 
-  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
+  globalIgnores([
+    '**/dist/**',
+    '**/dist-ssr/**',
+    '**/coverage/**',
+    // localization-lock scripts are plain CommonJS Node scripts, not app code
+    'scripts/localization-lock*.js',
+  ]),
 
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
