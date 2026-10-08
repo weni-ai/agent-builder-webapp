@@ -663,7 +663,7 @@
         "topic": {
           "could_not_classify": "No se pudo clasificar",
           "topic": "Tópico",
-          "unclassified": "Ningún tópico coincidente"
+          "unclassified": "Ningún asunto coincide"
         }
       },
       "load_conversations": {
